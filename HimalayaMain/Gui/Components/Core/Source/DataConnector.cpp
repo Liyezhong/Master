@@ -908,7 +908,6 @@ void CDataConnector::ReagentRemoveHandler(Global::tRefType Ref,
     Result = ReagentList->DeleteReagent(Command.GetReagentID());
     if (Result && ResultUpdateStation) {
         mp_WaitDialog->accept();
-        emit DashboardStationsUpdated();
         emit ReagentsUpdated();
     }
     else {
@@ -1037,9 +1036,9 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    /*mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
-    mp_WaitDialog->show();
+    mp_WaitDialog->show();*/
 }
 /****************************************************************************/
 /*!
@@ -1340,6 +1339,7 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     // change the language whenever the new language file receives from Main
     Global::UITranslator::TranslatorInstance().SetDefaultLanguage(SettingsInterface->GetUserSettings()->GetLanguage());
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit LanguageChanged(Global::LanguageToString(Command.GetCurrentLanuage()));
 }
 
 /****************************************************************************/

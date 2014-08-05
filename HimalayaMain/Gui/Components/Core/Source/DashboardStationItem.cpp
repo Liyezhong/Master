@@ -94,14 +94,15 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_PixmapParaffinbathBackground.load(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png");
     m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
     m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
-
+    CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
     PrepareStationItemLabel();
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
     mp_SuckDrainTimer->setInterval(500);
     CONNECTSIGNALSLOT(mp_SuckDrainTimer, timeout(), this, SuckDrainAnimation());
-
 }
 
 /****************************************************************************/
@@ -169,12 +170,7 @@ void CDashboardStationItem::UpdateImage()
         Painter.fillRect(this->boundingRect(), QColor(226, 227, 228));
         LoadStationImages(Painter);
         DrawStationItemLabel(Painter);
-        return;
     }
-
-    CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
-    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
-    CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
 }
 
 /****************************************************************************/
@@ -206,7 +202,6 @@ void CDashboardStationItem::SetDashboardStation(DataManager::CDashboardStation* 
     mp_DashboardStation = p_DashboardStation;
     if(mp_DashboardStation) {
         m_DashboardStationID = mp_DashboardStation->GetDashboardStationID();
-        UpdateImage();
     }
 }
 
@@ -248,14 +243,8 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
             Painter.drawPixmap(0, 0, m_PixmapParaffinbathBackground);
     } else {
-        if(m_StationSelected) {
             Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
             Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
-        } else {
-            Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
-            Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
-        }
-
     }
 }
 
@@ -295,6 +284,8 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
         if (bRedraw)
             DrawStationItemImage();
     }
+    else
+        DrawStationItemImage();
 
 }
 
@@ -382,18 +373,22 @@ void CDashboardStationItem::DrawStationItemImage()
     LoadStationImages(Painter);
 
     QString ReagentStatus = "";
+    QString ReagentID = "";
     if (mp_DashboardStation)
+    {
         ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
-
+        ReagentID = mp_DashboardStation->GetDashboardReagentID();
+    }
     // If Reagent Status is Not Empty and Station Selected for the Program then fill the Reagent Color
     if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive)) {
         FillReagentColor(Painter);
     }
 
-    if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
+    if(("" != ReagentID) && (STATIONS_GROUP_BOTTLE == m_DashboardStationGroup))
     {
         DrawReagentName(Painter);
     }
+
     DrawStationItemLabel(Painter);
     update();
 }

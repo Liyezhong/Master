@@ -105,6 +105,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_Users, ChangePasswordClicked(QDataStream &), mp_DataConnector,
                       SendChangepassword(QDataStream &));
 
+    CONNECTSIGNALSLOT(mp_DataConnector, LanguageChanged(const QString&), mp_KeyBoardWidget, SwitchLayout(const QString&));
 
     // signals for the users
     CONNECTSIGNALSLOT(mp_DataConnector, UserAuthentication(const qint32 &), mp_Users, UserAuthenticated(const qint32 &));

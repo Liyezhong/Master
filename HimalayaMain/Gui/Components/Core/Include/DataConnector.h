@@ -683,6 +683,16 @@ signals:
     /****************************************************************************/
     void EnableRemoteSWButton(bool Status);
 
+    /****************************************************************************/
+    /**
+     * \brief This signal is emitted when Language changed acknowledgement is
+     *        sent from main to GUI.
+     *
+     * \iparam CurrentLanguage
+     */
+    /****************************************************************************/
+    void LanguageChanged(const QString& CurrentLanguage);
+
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 
