@@ -29,7 +29,6 @@
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/MainWindow.h"
 
-#include "ui_InstallationSettingsWidget.h"
 
 namespace Settings {
 
