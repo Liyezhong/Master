@@ -276,6 +276,9 @@
 		<Event Code="" ErrorID="511040022" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="101040022" RDStringID="111040022" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
+		<Event Code="" ErrorID="512020090" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="102020090" RDStringID="112020090" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+		</Event>
 		<Event Code="" ErrorID="512040052" ErrorType="ERROR" AuthorityType="Auth_SERV" AlarmType=""  EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="102040052" RDStringID="112040052" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
@@ -283,10 +286,10 @@
 			<Step ID="0" Type="MSG" StringID="102040053" RDStringID="112040053" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="512050401" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="102050401" RDStringID="112050401" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>			<Step ID="1" Type="ACT" Action="RC_Restart"/>
+			<Step ID="0" Type="MSG" StringID="102050401" RDStringID="112050401" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="512050411" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_DEVICE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="102050411" RDStringID="112050411" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>			<Step ID="1" Type="ACT" Action="RC_Restart"/>
+			<Step ID="0" Type="MSG" StringID="102050411" RDStringID="112050411" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="513045163" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="103045163" RDStringID="113045163" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
