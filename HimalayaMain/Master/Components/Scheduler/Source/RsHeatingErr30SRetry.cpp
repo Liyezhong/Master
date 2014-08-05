@@ -45,7 +45,7 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
 
     mp_StateMachine->setInitialState(mp_ReleasePressure.data());
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController,ReleasePressure());
-    mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeaters), mp_ShutdownFailedHeater.data());
+    mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeaters()), mp_ShutdownFailedHeater.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(WaitFor10Seconds()), mp_WaitFor10Seconds.data());
     mp_WaitFor10Seconds->addTransition(this, SIGNAL(RestartFailedHeater()), mp_RestartFailedHeater.data());
     mp_RestartFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());

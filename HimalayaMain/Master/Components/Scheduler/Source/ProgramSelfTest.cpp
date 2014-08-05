@@ -49,7 +49,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
 
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureContrlOn()), mp_RTTempCtrlOn.data());
+    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOn()), mp_RTTempCtrlOn.data());
     mp_RTTempCtrlOn->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()),mp_Wait3SRTCurrent.data());
     mp_Wait3SRTCurrent->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
