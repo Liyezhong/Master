@@ -105,19 +105,17 @@ void CSettings::UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, Ma
 {
     mp_ServiceDataConnector = DataConnector;
     mp_MainWindow = MainWindow;
-    /*
-    if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageMNetworkSettings);
-        mp_Ui->pageSNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
+
+    QString IPAddress("XXX.XXX.XXX.XXX");
+    if (mp_ServiceDataConnector->GetServiceParameters()) {
+        IPAddress = mp_ServiceDataConnector->GetServiceParameters()->GetProxyIPAddress();
     }
-    else {
-        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageSNetworkSettings);
-        mp_Ui->pageMNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
-    }
-    */
+
     mp_Ui->pageNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageLanguageSettings->SetPtrToMainWindow(mp_MainWindow);
+
+    mp_Ui->pageNetworkSettings->UpdateIpAddress(IPAddress);
 }
 
 /****************************************************************************/
@@ -165,9 +163,9 @@ void CSettings::ResetButtonStatus()
  *  \iparam Color = color
  */
 /****************************************************************************/
-void CSettings::SetInformwationText(QString Text, QString Color)
+void CSettings::SetInformationText(QString Text, QString Color)
 {
-    mp_Ui->pageNetworkSettings->SetInformwationText(Text, Color);
+    mp_Ui->pageNetworkSettings->SetInformationText(Text, Color);
 }
 
 /****************************************************************************/

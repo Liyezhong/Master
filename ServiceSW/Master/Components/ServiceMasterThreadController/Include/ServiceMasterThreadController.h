@@ -387,6 +387,15 @@ signals:
       /****************************************************************************/
       void SetNetworkSettingsResult(PlatformService::NetworkSettings_t Param, bool Result);
 
+      /****************************************************************************/
+      /**
+       * \brief Signal is emitted to set network settings information
+       * \iparam Text  = text of information
+       * \iparam Color = text of text
+       */
+      /****************************************************************************/
+      void SetInformationToNetworkSettings(QString Text, QString Color);
+
 private slots:
     /****************************************************************************/
     /**

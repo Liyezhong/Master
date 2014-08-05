@@ -48,6 +48,7 @@
 #include "IENetworkClient/Include/IENetworkClient.h"
 
 #include "Core/Include/ServiceUtils.h"
+#include "Core/Include/CMessageString.h"
 
 namespace Threads {
 using namespace Global;
@@ -231,6 +232,10 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     if (!QObject::connect(this, SIGNAL(SetNetworkSettingsResult(PlatformService::NetworkSettings_t , bool )),
                           mp_GUIStartup, SIGNAL(SetNetworkSettingsResult(PlatformService::NetworkSettings_t , bool )))) {
         qDebug() << "CStartup: cannot connect 'SetNetworkSettingsResult' signal";
+    }
+    if (!QObject::connect(this, SIGNAL(SetInformationToNetworkSettings(QString, QString)),
+                          mp_GUIStartup, SIGNAL(SetInformationToNetworkSettings(QString, QString)))) {
+        qDebug() << "CStartup: cannot connect 'SetInformationToNetworkSettings' signal";
     }
     if (!QObject::connect(mp_GUIStartup, SIGNAL(PerformNetworkTests()),
                           this , SLOT(PerformNetworkTests()))) {
@@ -1705,6 +1710,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString ReportPath = mp_ServiceDataContainer->ServiceParameters->GetTestReportFolderPath();
+
         NetworkClient::IENetworkClient *IEClient(NULL);
         IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
@@ -1763,7 +1769,9 @@ void ServiceMasterThreadController::PerformNetworkChecks()
 
 void ServiceMasterThreadController::DownloadFirmware()
 {
-    bool ret = false;
+    bool Ret      = false;
+    QString Color = "red";
+    QString Information("");
     try {
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
@@ -1773,33 +1781,39 @@ void ServiceMasterThreadController::DownloadFirmware()
 
         if (!IEClient->PerformHostReachableTest())
         {
+            Information = Service::CMessageString::MSG_SETTINGS_IP_CANNOT_REACHABLE;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the ip can't reachable :"<<IPAddress;
             goto Download_Finished;
         }
 
         if (!IEClient->PerformAccessRightsCheck(FirmFolder))
         {
+            Information = Service::CMessageString::MSG_SETTINGS_FOLDER_CANNOT_ACCESS;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the folder can't access :"<<FirmFolder;
             goto Download_Finished;
         }
 
         if (!IEClient->CheckForNewFiles(FirmFolder))
         {
-            ret = true;
+            Ret = true;
             goto Download_Finished;
         }
 
         if (!IEClient->DownloadFiles(FirmFolder))
         {
+            Information = Service::CMessageString::MSG_SETTINGS_DOWNLOAD_FILES_FAILED;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: download files failed :"<<FirmFolder;
             goto Download_Finished;
         }
-        ret = true;
+        Ret = true;
     }
     CATCHALL();
 Download_Finished:
 
-    emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , ret);
+    emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , Ret);
+    if (!Ret) {
+        emit SetInformationToNetworkSettings(Information, Color);
+    }
     qDebug()<<"ServiceMasterThreadController::Download firmware ok.";
 }
 

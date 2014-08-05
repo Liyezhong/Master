@@ -134,7 +134,7 @@ public slots:
       *  \param Text = information text, Color = color of this information
       */
      /****************************************************************************/
-     void SetInformwationText(QString Text, QString Color);
+     void SetInformationText(QString Text, QString Color);
 
      /****************************************************************************/
      /*!

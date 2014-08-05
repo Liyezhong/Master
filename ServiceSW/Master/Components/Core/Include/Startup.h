@@ -373,6 +373,15 @@ signals:
     /****************************************************************************/
     void SetNetworkSettingsResult(PlatformService::NetworkSettings_t Param, bool Result);
 
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to set network settings infomation
+     * \iparam Text = Text of information
+     * \iparam Color = The text color
+     */
+    /****************************************************************************/
+    void SetInformationToNetworkSettings(QString Text, QString Color);
+
     /*******************************************************************************/
     /*!
      *  \brief Signal is emitted to perform network tests.

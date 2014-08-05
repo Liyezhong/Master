@@ -110,6 +110,10 @@ QString CMessageString::MSG_DEVICECOMMAND_TIMEOUT;                         //!<E
 
 QString CMessageString::MSG_MANUFACTURINGTEST_RESULT;                      //!<Manufacturing Test Result
 
+QString CMessageString::MSG_SETTINGS_IP_CANNOT_REACHABLE;                  //!<The server ip can't reachable.
+QString CMessageString::MSG_SETTINGS_FOLDER_CANNOT_ACCESS;                 //!<Server folder can't access.
+QString CMessageString::MSG_SETTINGS_DOWNLOAD_FILES_FAILED;                //!<Download firmware files failed.
+
 QString CMessageString::MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
 QString CMessageString::MSG_DEVICE_RELEASE_PRESSURE_FAILED;                //!<ERROR: Release pressure failure.
 QString CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED;     //!<ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!
@@ -219,6 +223,9 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_TUBE_TEMP_NO_MATCH                = (QApplication::translate("Service", "Tube Current Temperature is (%1) which is not in (%2~%3)", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICECOMMAND_TIMEOUT                         = (QApplication::translate("Service", "ERROR: Device is not responding restart the system!", 0, QApplication::UnicodeUTF8));
 	MSG_MANUFACTURINGTEST_RESULT                      = (QApplication::translate("Service", "Manufacturing Test Result", 0, QApplication::UnicodeUTF8));
+	MSG_SETTINGS_IP_CANNOT_REACHABLE                  = (QApplication::translate("Service", "The server ip can't reachable.", 0, QApplication::UnicodeUTF8));
+	MSG_SETTINGS_FOLDER_CANNOT_ACCESS                 = (QApplication::translate("Service", "Server folder can't access.", 0, QApplication::UnicodeUTF8));
+	MSG_SETTINGS_DOWNLOAD_FILES_FAILED                = (QApplication::translate("Service", "Download firmware files failed.", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_NOTYET_READY                           = (QApplication::translate("Service", "Error: Device Layer not yet Initialized. Please retry after some time...", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_RELEASE_PRESSURE_FAILED                = (QApplication::translate("Service", "ERROR: Release pressure failure.", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED     = (QApplication::translate("Service", "ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!", 0, QApplication::UnicodeUTF8));
