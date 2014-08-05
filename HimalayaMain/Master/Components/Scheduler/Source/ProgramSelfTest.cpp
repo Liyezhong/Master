@@ -241,7 +241,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (3 == m_PressureCalibrationCounter)
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration failed");
-                    mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_INTERNAL_ERR);
+                    mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
                 }
                 else
                 {
