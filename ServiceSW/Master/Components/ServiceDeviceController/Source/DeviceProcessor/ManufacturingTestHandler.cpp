@@ -1084,7 +1084,7 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker()
     QStringList PlayParams;
 
     SetVolume = "amixer set PCM " + VolumeLevel + " %";
-    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note1.ogg";
+    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note6.ogg";
 
     mp_SpeakProc->start(SetVolume);
     mp_SpeakProc->waitForFinished();
@@ -1136,12 +1136,21 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
         p_TestCase->SetParameter("AlarmFlag", QString::number(!AlarmFlag));
 
     }
+#if 0  // this is for pre-alpha
     if (RetValue == 0) {
         Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_DISCONNECTED);
     }
     else {
         Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CONNECTED);
     }
+#else // this is for alpha
+    if (RetValue == 0) {
+        Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CONNECTED);
+    }
+    else {
+        Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_DISCONNECTED);
+    }
+#endif
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;

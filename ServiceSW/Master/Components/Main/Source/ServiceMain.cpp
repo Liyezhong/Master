@@ -37,11 +37,7 @@
 /****************************************************************************/
 int main(int Argc, char *p_Argv[])
 {
-    Global::ToConsole("Service Sotware execution started..");
-
-    // catch unexpected signals
-    Global::SignalHandler signalHandler;
-    signalHandler.init();
+//    Global::ToConsole("Service Sotware execution started..");
 
     //************Create all the singleton objects.********************//
     //! \warning changing order of below function call an cause ugly bugs & deadlocks!!
@@ -98,6 +94,9 @@ int main(int Argc, char *p_Argv[])
     FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
     DataManager::CTestCaseGuide::Instance().InitData(FileName);
 
+    // catch unexpected signals
+    Global::SignalHandler signalHandler;
+    signalHandler.init();
 
     QThread thrMasterThread;
 
