@@ -264,11 +264,12 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition passed");
-					m_RVPositioinChkSeq = 0; //reset
+                    m_RVPositioinChkSeq = 0; //reset to initial value
                     emit PressureCalibration();
                 }
                 else
                 {
+                    m_RVPositioinChkSeq = 0; //reset to initial value
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }

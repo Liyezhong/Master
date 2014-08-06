@@ -69,14 +69,14 @@ typedef struct
 	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
 	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus
 	quint16			RetortLockStatus;       ///<  Definition/Declaration of variable RetortLockStatus
-    qreal           CurrentRTSide;          ///< Current of Retort Side
-    qreal           CurrentRTBottom;        ///< Current of Retort Bottom
-    qreal           CurrentOvenTop;         ///< Current of Oven Top
-    qreal           CurrentOvenBottom;      ///< Current of Oven Bottom
-    qreal           CurrentLALevelSensor;   ///< Current of LA Level Sensor
-    qreal           CurrentLATube1;         ///< Current of LA Tube1
-    qreal           CurrentLATube2;         ///< Current of LA Tube2
-    qreal           CurrentRVTemp;          ///< Current of Rotary Valve temperautre module
+    quint16           CurrentRTSide;          ///< Current of Retort Side
+    quint16           CurrentRTBottom;        ///< Current of Retort Bottom
+    quint16           CurrentOvenTop;         ///< Current of Oven Top
+    quint16           CurrentOvenBottom;      ///< Current of Oven Bottom
+    quint16           CurrentLALevelSensor;   ///< Current of LA Level Sensor
+    quint16           CurrentLATube1;         ///< Current of LA Tube1
+    quint16           CurrentLATube2;         ///< Current of LA Tube2
+    quint16           CurrentRVTemp;          ///< Current of Rotary Valve temperautre module
 
     /****************************************************************************/
     /*!
