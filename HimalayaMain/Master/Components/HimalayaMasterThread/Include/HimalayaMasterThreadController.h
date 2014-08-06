@@ -825,8 +825,8 @@ private slots:
                                   SetDayRunLogFilesDirectoryName(const QString &));
 
 //                // connect the siganl slot mechanism to set directory name.
-                CONNECTSIGNALSIGNAL(p_ImportExportThreadController,
-                                    Export(QString), this, RemoteCareExportFinished(QString));
+//                CONNECTSIGNALSIGNAL(p_ImportExportThreadController,
+//                                    Export(QString), this, RemoteCareExportFinished(QString));
             }
 
             // connect the siganl slot mechanism to create the containers for the Import.
