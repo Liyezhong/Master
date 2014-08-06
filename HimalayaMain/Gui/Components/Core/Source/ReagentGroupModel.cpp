@@ -39,7 +39,8 @@ namespace Core {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CReagentGroupModel::CReagentGroupModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CReagentGroupModel::CReagentGroupModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
+    m_ShowCleaningReagent(true)
 {
     mp_ReagentGroupList = NULL;
     m_Columns = 0;
@@ -55,8 +56,10 @@ CReagentGroupModel::CReagentGroupModel(QObject *p_Parent) : QAbstractTableModel(
  *  \param Columns =  qint32 type parameter
  */
  /****************************************************************************/
-void CReagentGroupModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList, qint32 Columns)
+void CReagentGroupModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList,
+                                             qint32 Columns, bool bShowCleaningReagent)
 {
+    m_ShowCleaningReagent = bShowCleaningReagent;
     mp_ReagentGroupList = p_ReagentGroupList;
     m_Columns = Columns;
     UpdateReagentGroupList();
@@ -79,10 +82,17 @@ void CReagentGroupModel::UpdateReagentGroupList()
         for(qint32 i = 0; i < mp_ReagentGroupList->GetNumberOfReagentGroups(); i++) {
             DataManager::CReagentGroup *p_ReagentGroup = NULL;
             p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(i));
-            if (p_ReagentGroup) {
+            if (!m_ShowCleaningReagent)
+            {
+                if (!p_ReagentGroup->IsCleaningReagentGroup()) {
+                    m_ReagentGroupNames << p_ReagentGroup->GetReagentGroupName();
+                    m_Identifiers[p_ReagentGroup->GetReagentGroupName()] = p_ReagentGroup->GetGroupID();
+                }
+            }
+            else
+            {
                 m_ReagentGroupNames << p_ReagentGroup->GetReagentGroupName();
                 m_Identifiers[p_ReagentGroup->GetReagentGroupName()] = p_ReagentGroup->GetGroupID();
-
             }
         }
     }    

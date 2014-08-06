@@ -41,7 +41,7 @@ class CReagentGroupModel : public QAbstractTableModel
 
 public:
     CReagentGroupModel(QObject *p_Parent = NULL);
-    void SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList, qint32 Columns);
+    void SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList, qint32 Columns, bool bShowCleaningReagent = true);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
@@ -112,7 +112,8 @@ private:
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
-    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
+    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
+    bool m_ShowCleaningReagent;                         //!< Sometimes CleaningReagent group should exclude
 };
 
 } // end namespace Core

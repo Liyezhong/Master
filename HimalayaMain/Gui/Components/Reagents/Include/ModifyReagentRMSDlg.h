@@ -89,7 +89,8 @@ public:
     virtual ~CModifyReagentRMSDlg();
     void InitDialog(DataManager::CReagent const *p_Reagent,
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
-                    Global::RMSOptions_t Option);
+                    Global::RMSOptions_t Option,
+                    bool bShowCleaningReagent = true);
     void UpdateRmsLabel(Global::RMSOptions_t Option);
     /****************************************************************************/
     /*!

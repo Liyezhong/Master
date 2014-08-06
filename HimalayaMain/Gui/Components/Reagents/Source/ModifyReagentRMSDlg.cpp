@@ -170,11 +170,13 @@ void CModifyReagentRMSDlg::changeEvent(QEvent *p_Event)
  */
 /****************************************************************************/
 void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
-                                   DataManager::CDataReagentGroupList const *p_ReagentGroupList, Global::RMSOptions_t Option)
+                                   DataManager::CDataReagentGroupList const *p_ReagentGroupList,
+                                      Global::RMSOptions_t Option,
+                                      bool bShowCleaningReagent)
 {
     if (p_ReagentGroupList != NULL) {
         mp_ReagentGroupList = const_cast<DataManager::CDataReagentGroupList*>(p_ReagentGroupList);
-        m_ReagentGroupModel.SetReagentGroupList(mp_ReagentGroupList, 2);
+        m_ReagentGroupModel.SetReagentGroupList(mp_ReagentGroupList, 2, bShowCleaningReagent);
         ResizeHorizontalSection();
         // always select the first one
         //mp_TableWidget->selectRow(0);
