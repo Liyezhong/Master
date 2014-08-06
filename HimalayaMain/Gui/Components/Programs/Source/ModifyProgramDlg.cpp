@@ -32,6 +32,8 @@
 #include "DataManager/Helper/Include/Helper.h"
 #include "DataManager/Helper/Include/Types.h"
 #include "ui_ModifyProgramDlg.h"
+#include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
+#include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 
 namespace Programs {
 
@@ -354,6 +356,22 @@ void CModifyProgramDlg::DisconnectKeyBoardSignalSlots()
     }
 }
 
+bool CModifyProgramDlg::CheckProgramNameOK(QString &name)
+{
+    DataManager::CDataProgramList* progList = mp_DataConnector->ProgramList;
+    DataManager::CProgram *prog = NULL;
+    bool ret = true;
+
+    for (int i = 0; i < progList->GetNumberOfPrograms(); ++ i) {
+            prog = progList->GetProgram(i);
+            if (prog->GetName() == name) {
+                ret = false;
+                break;
+            }
+    }
+    return ret;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Shows the on screen keyboard to edit the program name
@@ -513,8 +531,18 @@ void CModifyProgramDlg::OnSave()
         (void) mp_MessageDlg->exec();
         return;
     }
-    m_Program.SetName(mp_Ui->btnPrgName->text());
 
+    if (m_ButtonType == EDIT_BTN_CLICKED || m_ButtonType == COPY_BTN_CLICKED) {
+        // check if program's name is duplicated!!
+        QString newName = mp_Ui->btnPrgName->text();
+        if (!CheckProgramNameOK(newName)) {
+            mp_MessageDlg->SetText(m_strNameDuplicated);
+            (void) mp_MessageDlg->exec();
+            return ;
+        }
+    }
+
+    m_Program.SetName(mp_Ui->btnPrgName->text());
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
@@ -931,6 +959,7 @@ void CModifyProgramDlg::RetranslateUI()
    m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
    m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
    m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
+   m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program Name duplicated!", 0, QApplication::UnicodeUTF8);
    m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
    m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 
