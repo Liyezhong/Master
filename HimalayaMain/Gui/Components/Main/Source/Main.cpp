@@ -40,11 +40,8 @@ int main(int Argc, char *p_Argv[])
 
     //lint -esym(526, qInitResources_*)
     //lint -esym(534, qInitResources_*)
-    Q_INIT_RESOURCE(Main);
     Q_INIT_RESOURCE(MainMenu);
     Q_INIT_RESOURCE(Application);
-    Q_INIT_RESOURCE(Popup);
-    Q_INIT_RESOURCE(Progress);
     Q_INIT_RESOURCE(KeyBoard);
     Q_INIT_RESOURCE(SpellerButtons);
     Q_INIT_RESOURCE(Speller);

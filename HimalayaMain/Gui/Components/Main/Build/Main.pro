@@ -32,11 +32,6 @@ PLATFORM_GUI_COMPONENTS = Application \
 
 ################################################################
 
-
-################# list used shared libraries #################
-SHARED_COMPONENTS_DIR = ../../../../../Shared/Gui/Components
-SHARED_COMPONENTS = Images
-
 ##############################################################
 
 ################# list used shared master libraries #################
@@ -78,7 +73,6 @@ DESTDIR = bin_$$CONFIG_SUFFIX
 ################# edit include path
 INCLUDEPATH += $$PLATFORM_COMPONENTS_DIR \
                $$PLATFORM_GUI_COMPONENTS_DIR\
-               $$SHARED_COMPONENTS_DIR \
                $$SHARED_MASTER_COMPONENTS_DIR \
                $$HIMALAYA_COMPONENTS_DIR
                
@@ -102,13 +96,6 @@ for(TheComponent, PLATFORM_COMPONENTS) {
 ################# include platform libraries and set dependencies
 for(TheComponent, PLATFORM_GUI_COMPONENTS) {
     THELIBPATH       = $$PLATFORM_GUI_COMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
-    PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
-    LIBS            += $$THELIBPATH/lib$${TheComponent}.a
-}
-
-################# include shared libraries and set dependencies
-for(TheComponent, SHARED_COMPONENTS) {
-    THELIBPATH       = $$SHARED_COMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
     PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
     LIBS            += $$THELIBPATH/lib$${TheComponent}.a
 }
