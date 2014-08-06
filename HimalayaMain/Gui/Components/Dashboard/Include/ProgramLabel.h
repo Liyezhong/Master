@@ -54,7 +54,7 @@ public:
      */
     /****************************************************************************/
     void setText(const QString &text, bool highlight = false);
-
+public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setText

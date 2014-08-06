@@ -742,7 +742,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),
                                   cmd.CostedTimeBeforeParaffin(), cmd.ParaffinMeltCostedTime(), m_TimeDelta, bCanotRun);
 
-
     //firstly check whether there is any station not existing for some program steps
     for (int i = 0; i < stationList.count(); i++)
     {
@@ -788,11 +787,10 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                 }
                 return;
             }
-            else {
-                emit ResetFocus(false);
-            }
         }
     }
+
+    emit ResetFocus(false);
 
     m_SelectedProgramId = m_NewSelectedProgramId;
     m_StationList.clear();

@@ -173,13 +173,13 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
-        qDebug()<<"CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel  ---iconname="<<strIconName;
 
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
         m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
         CProgramLabel* label = m_mapLabel.value(j);
         label->setText(ProgramName);
+        CONNECTSIGNALSLOT(m_ButtonGroup.button(j), toggled(bool), label, setHighlight(bool));
     }
 }
 
@@ -221,7 +221,6 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
         m_LastSelectedButtonId = m_ButtonGroup.checkedId();
         m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
         SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
-        UpdateProgLabel();
 
         emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
