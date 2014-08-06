@@ -96,7 +96,6 @@ private:
     /****************************************************************************/
     void WriteReportFile(QTextStream& TextStream);
 
-
     Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
     QList<Service::ModuleTestCaseID> m_TestCaseList; //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
@@ -106,18 +105,6 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;            //!< Information dialog
     MainMenu::CWaitDialog *mp_WaitDlg;               //!< Waiting dialog
     NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
-
-    QEventLoop m_Loop;
-
-public slots:
-    /****************************************************************************/
-    /**
-     * \brief Stop send report.
-     */
-    /****************************************************************************/
-    void StopSend();
-
-    void ShowWaitDialog();
 };
 
 } // end namespace DiagnosticsManufacturing

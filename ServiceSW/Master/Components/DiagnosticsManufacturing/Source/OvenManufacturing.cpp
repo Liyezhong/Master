@@ -419,7 +419,6 @@ void COven::SendTestReport()
     }
 
     mp_TestReporter->SetSerialNumber(serialNumber);
-    //mp_TestReporter->ShowWaitDialog();
 
     if (mp_TestReporter->GenReportFile()) {
         (void)mp_TestReporter->SendReportFile();

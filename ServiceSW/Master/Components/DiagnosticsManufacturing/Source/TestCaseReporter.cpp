@@ -27,6 +27,7 @@
 #include "Core/Include/CMessageString.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Core/Include/ServiceUtils.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -35,12 +36,12 @@ CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUI
     m_ModuleName(ModuleName),
     mp_DataConnector(p_DataConnector),
     mp_IEClient(NULL),
-    m_ReportDir(""),
-    QObject(p_Parent)
+    m_ReportDir("")
 {
     mp_MessageDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_WaitDlg    = new MainMenu::CWaitDialog(p_Parent);
     mp_WaitDlg->setModal(true);
+
     InitIEClient();
 }
 
@@ -107,9 +108,13 @@ bool CTestCaseReporter::GenReportFile()
 
 bool CTestCaseReporter::SendReportFile()
 {
-    //ShowWaitDialog();
     bool Result = false;
     QString Msg("");
+
+    mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
+    mp_WaitDlg->HideAbort();
+    mp_WaitDlg->show();
+    Core::CServiceUtils::delay(500);
 
     mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
     mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
@@ -119,6 +124,7 @@ bool CTestCaseReporter::SendReportFile()
         qDebug()<<"invalid ie client.";
         return false;
     }
+
     if (!mp_IEClient->PerformHostReachableTest()) {
         Msg = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
         goto Send_Finished;
@@ -150,7 +156,6 @@ bool CTestCaseReporter::SendReportFile()
 
 Send_Finished:
 
-    //mp_WaitDlg->close();
     mp_MessageDlg->SetText(Msg);
     if (Result) {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -158,7 +163,8 @@ Send_Finished:
     else {
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
     }
-    (void)mp_MessageDlg->exec();
+    mp_WaitDlg->close();
+    mp_MessageDlg->open();
 
     return Result;
 }
@@ -194,22 +200,6 @@ void CTestCaseReporter::InitIEClient()
 
         mp_IEClient = new NetworkClient::IENetworkClient(IPAddress, Username, Global::SystemPaths::Instance().GetScriptsPath());
     }
-}
-
-void CTestCaseReporter::ShowWaitDialog()
-{
-    //QEventLoop loop;
-    mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
-    mp_WaitDlg->HideAbort();
-    mp_WaitDlg->show();
-
-    //connect(mp_WaitDlg, SIGNAL(finished(int)), &m_Loop, SLOT(quit()));
-    //m_Loop.exec();
-}
-
-void CTestCaseReporter::StopSend()
-{
-
 }
 
 }  // end of namespace DiagnosticsManufacturing

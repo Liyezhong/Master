@@ -2,6 +2,6 @@
 <!DOCTYPE ServiceParameters>
 <ServiceParameters Version="1">
     <Network ProxyIPAddress="192.168.25.32" UserName="sunny"/>
-    <TestReportFolder TestReportFolderPath="/home/sunny/manufacturing-line-server/test-reports/"/>
-    <FirmwareFolder FirmwareFolderPath="/home/sunny/manufacturing-line-server/software/Firmware/"/>
+    <TestReportFolder TestReportFolderPath="/home/sunny/manufacturing-line-server/test-reports"/>
+    <FirmwareFolder FirmwareFolderPath="/home/sunny/manufacturing-line-server/software/Firmware"/>
 </ServiceParameters>
