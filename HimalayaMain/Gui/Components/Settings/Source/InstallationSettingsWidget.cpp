@@ -137,8 +137,7 @@ void CInstallationSettingsWidget::RefreshSetting()
     QString serial = mp_DeviceConfig->GetValue("SERIALNUMBER");
     mp_Ui->serialnumber->setText(serial);
 
-    QString softVer = mp_Ui->softwareversion->text();
-    softVer += mp_SWVersion->GetSWReleaseVersion();
+    QString softVer = m_strSoftVer + mp_SWVersion->GetSWReleaseVersion();
     mp_Ui->softwareversion->setText(softVer);
 }
 
@@ -154,10 +153,7 @@ void CInstallationSettingsWidget::RetranslateUI()
                                "Settings::CInstallationSettingsWidget",
                                "Edit", 0, QApplication::UnicodeUTF8));
 
-   mp_Ui->softwareversion->setText(QApplication::translate(
-                                       "Settings::CInstallationSettingsWidget",
-                                       "SoftwareVersion: ",
-                                       0, QApplication::UnicodeUTF8));
+   m_strSoftVer = QApplication::translate( "Settings::CInstallationSettingsWidget", "SoftwareVersion: ", 0, QApplication::UnicodeUTF8);
    mp_Ui->driverversion->setText(QApplication::translate(
                                      "Settings::CInstallationSettingsWidget",
                                      "Driver Version : ",

@@ -60,6 +60,7 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
+    QString m_strSoftVer;       //!< Software version string
 public:
     explicit CInstallationSettingsWidget(QWidget *p_Parent = NULL);
     ~CInstallationSettingsWidget();
