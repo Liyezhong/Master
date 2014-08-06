@@ -192,6 +192,7 @@ void CModifyProgramDlg::ResizeHorizontalSection()
 /****************************************************************************/
 void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 {
+    m_bIconSelected = false;
     if (p_Program != NULL) {
         m_Program = *(p_Program);
     }

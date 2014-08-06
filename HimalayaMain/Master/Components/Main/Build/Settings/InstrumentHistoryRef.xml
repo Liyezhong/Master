@@ -75,7 +75,7 @@
             </SubModule>
             <SubModule name="oven_door_status" type="Digital Input" description="">
                 <parameter name="SoftwareVersion" unit="">3</parameter>
-                <parameter name="OperationTime" unit="">17</parameter>
+                <parameter name="OperationTime" unit="">18</parameter>
             </SubModule>
         </Module>
         <Module name="RotaryValveDevice" description="RotaryValveDevice">
@@ -160,7 +160,7 @@
             </SubModule>
             <SubModule name="temp_lsensor" type="Temperature Control" description="">
                 <parameter name="SoftwareVersion" unit="">1</parameter>
-                <parameter name="OperationCycles" unit="">730</parameter>
+                <parameter name="OperationCycles" unit="">616</parameter>
                 <parameter name="OperationTime" unit="seconds">0</parameter>
             </SubModule>
         </Module>
@@ -172,16 +172,16 @@
             <TestDate></TestDate>
             <TestResult></TestResult>
             <SubModule name="EBox" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34923</parameter>
+                <parameter name="OperationTime" unit="seconds">34930</parameter>
             </SubModule>
             <SubModule name="Pressure_Sensor" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34923</parameter>
+                <parameter name="OperationTime" unit="seconds">34930</parameter>
             </SubModule>
             <SubModule name="Touch_Screen" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34924</parameter>
+                <parameter name="OperationTime" unit="seconds">34931</parameter>
             </SubModule>
             <SubModule name="Ventilation_Fan" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34925</parameter>
+                <parameter name="OperationTime" unit="seconds">34932</parameter>
             </SubModule>
         </Module>
     </ModuleList>
