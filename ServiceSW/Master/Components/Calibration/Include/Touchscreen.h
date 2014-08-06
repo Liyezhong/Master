@@ -55,6 +55,13 @@ private:
 public slots:
     void TouchScreenCalibration();
 
+signals:
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to shut down system
+     */
+    /*******************************************************************************/
+    void ShutdownSystem(bool NeedUpdate=true);
 };
 
 } // end namespace Calibration

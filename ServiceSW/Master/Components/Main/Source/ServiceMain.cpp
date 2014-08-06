@@ -122,5 +122,4 @@ int main(int Argc, char *p_Argv[])
     thrMasterThread.start();
 
     return App.exec();
-
 }

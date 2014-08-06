@@ -1700,7 +1700,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     }
 
     p_TempCtrl->StopTemperatureControl();
-    qDebug()<<"Start Temperature control return : "<<p_TempCtrl->StartTemperatureControl(TargetTemp);
+    p_TempCtrl->StartTemperatureControl(TargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {

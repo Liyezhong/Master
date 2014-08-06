@@ -58,7 +58,7 @@ void CSystem::OnShutDown(void)
     mp_MessageDlg->HideAllButtons();
     mp_MessageDlg->Show();
 
-    emit ShutdownSystem();
+    emit ShutdownSystem(true);
 }
 
 

@@ -1,3 +1,4 @@
+
 /****************************************************************************/
 /*! \file Touchscreen.cpp
  *
@@ -26,6 +27,7 @@
 #include "Global/Include/Utils.h"
 #include "ui_Touchscreen.h"
 #include <QDebug>
+#include <QProcess>
 
 namespace Calibration {
 
@@ -85,14 +87,28 @@ void CTouchscreen::TouchScreenCalibration()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_TOUCHSCREEN);
 
+#if 0
     if (QFile::exists(qApp->applicationDirPath() + "/TouchscreenCalibration.sh") && QFile::exists(qApp->applicationDirPath() + "/himalaya_service")) {
+        (void) system("chmod 755 TouchscreenCalibration.sh");
+        emit ShutdownSystem();
+        QStringList Params;
+
         if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-            (void) system("chmod 755 TouchscreenCalibration.sh");
-            (void) system("./TouchscreenCalibration.sh ts_Service &");
-        } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
-            (void) system("./TouchscreenCalibration.sh ts_Manufacturing &");
-         }
+            Params.append("ts_Service");
+        } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {            
+            Params.append("ts_Manufacturing");
+        }
+        (void) QProcess::startDetached("./TouchscreenCalibration.sh", Params);
     }
+#else
+    if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        system("echo ts_Service >/tmp/.ts_calibrate");
+    } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
+        system("echo ts_Manufacturing > /tmp/.ts_calibrate");
+    }
+
+    emit ShutdownSystem(false);
+#endif
 }
 
 } // end namespace Calibration

@@ -521,7 +521,7 @@ private slots:
      * \brief ShutdownSystem.
      */
     /****************************************************************************/
-    void ShutdownSystem();
+    void ShutdownSystem(bool NeedUpdate=true);
 
 
 

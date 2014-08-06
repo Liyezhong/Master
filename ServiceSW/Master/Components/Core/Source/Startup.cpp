@@ -266,6 +266,7 @@ CStartup::CStartup() : QObject(),
     /* Calibration Signals */
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, OvenLidInitCalibrationRequest(), this, OvenLidInitCalibrationRequest());
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PressureSensorCalibrationRequest(), this, PressureSensorCalibrationRequest());
+    CONNECTSIGNALSIGNAL(mp_CalibrationHandler, ShutdownSystem(bool), this, ShutdownSystem(bool));
 
     CONNECTSIGNALSLOT(this, SetSettingsButtonStatus(), mp_Setting, ResetButtonStatus());
     CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
@@ -277,7 +278,7 @@ CStartup::CStartup() : QObject(),
 
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
-    CONNECTSIGNALSIGNAL(mp_UpdateSystem, ShutdownSystem(), this, ShutdownSystem());
+    CONNECTSIGNALSIGNAL(mp_UpdateSystem, ShutdownSystem(bool), this, ShutdownSystem(bool));
 
     /* Network Settings */
     CONNECTSIGNALSLOT(this, SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool), mp_Setting , SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool));

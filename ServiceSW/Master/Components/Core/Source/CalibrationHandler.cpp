@@ -41,6 +41,8 @@ CCalibrationHanlder::CCalibrationHanlder(CServiceGUIConnector *p_ServiceGUIConne
     mp_PressureSensor = new Calibration::CPressureSensor();
     mp_Touchscreen = new Calibration::CTouchscreen(mp_MainWindow);
     CONNECTSIGNALSLOT(mp_PressureSensor, CalibrationPressureSensor(), this, OnPressureSensorCalibration());
+
+    CONNECTSIGNALSIGNAL(mp_Touchscreen, ShutdownSystem(bool), this, ShutdownSystem(bool));
 }
 
 /****************************************************************************/

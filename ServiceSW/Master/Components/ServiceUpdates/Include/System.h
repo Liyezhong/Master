@@ -71,7 +71,7 @@ signals:
      *  \brief Signal emitted to shut down system
      */
     /*******************************************************************************/
-    void ShutdownSystem();
+    void ShutdownSystem(bool NeedUpdate=true);
 
 private:
     Ui::CSystem   *mp_Ui;                   //!< User Interface

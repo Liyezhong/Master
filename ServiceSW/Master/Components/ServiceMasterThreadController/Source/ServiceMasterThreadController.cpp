@@ -224,7 +224,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     // Shut down
-    if (!connect(mp_GUIStartup, SIGNAL(ShutdownSystem()), this, SLOT(ShutdownSystem()))){
+    if (!connect(mp_GUIStartup, SIGNAL(ShutdownSystem(bool)), this, SLOT(ShutdownSystem(bool)))){
         qDebug() <<"CStartup: cannot connect 'ShutDownSystem' signal";
     }
 
@@ -1569,7 +1569,7 @@ void ServiceMasterThreadController::sendManufacturingTestCommand(Service::Module
 
 }
 
-void ServiceMasterThreadController::ShutdownSystem()
+void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
@@ -1583,31 +1583,31 @@ void ServiceMasterThreadController::ShutdownSystem()
     connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
     loop.exec();
 
-    QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
-    QFile BootConfigFile(RebootPath);
+    if (NeedUpdate) {
+        QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
+        QFile BootConfigFile(RebootPath);
 
-    m_BootConfigFileContent.clear();
-    if (BootConfigFile.exists()) {
-        ReadBootConfigFile(&BootConfigFile);
+        m_BootConfigFileContent.clear();
+        if (BootConfigFile.exists()) {
+            ReadBootConfigFile(&BootConfigFile);
+        }
+
+        m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
+
+        UpdateRebootFile(m_BootConfigFileContent);
+
+        const QString MD5sumGenerator = QString("%1%2").arg(Global::SystemPaths::Instance().GetScriptsPath()).
+                                        arg(QString("/EBox-Utils.sh update_md5sum_for_settings"));
+        (void)system(MD5sumGenerator.toStdString().c_str());
+
+
+        std::cout <<"\n\n Shutdown Start time " << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
+        Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_TERMINATING, Global::tTranslatableStringList() <<"");
+        //write buffered data to disk-> refer man pages for sync
+        (void)system("sync &");
+        //(void)system("lcd off");
+
     }
-
-    m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
-
-    UpdateRebootFile(m_BootConfigFileContent);
-
-#if 1  // disabled for test
-    const QString MD5sumGenerator = QString("%1%2").arg(Global::SystemPaths::Instance().GetScriptsPath()).
-                                    arg(QString("/EBox-Utils.sh update_md5sum_for_settings"));
-    (void)system(MD5sumGenerator.toStdString().c_str());
-
-
-    std::cout <<"\n\n Shutdown Start time " << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
-    Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_TERMINATING, Global::tTranslatableStringList() <<"");
-    //write buffered data to disk-> refer man pages for sync
-    (void)system("sync &");
-    //(void)system("lcd off");
-#endif
-
     qDebug()<<"emit SendStop ----";
 
     // send Stop signal to all thread controllers

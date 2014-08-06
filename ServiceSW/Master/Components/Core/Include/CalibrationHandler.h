@@ -83,6 +83,13 @@ signals:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);
 
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to shut down system
+     */
+    /*******************************************************************************/
+    void ShutdownSystem(bool NeedUpdate=true);
+
 public slots:
 
     /****************************************************************************/

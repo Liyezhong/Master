@@ -362,7 +362,7 @@ signals:
      *  \brief Signal emitted to shut down system
      */
     /*******************************************************************************/
-    void ShutdownSystem();
+    void ShutdownSystem(bool NeedUpdate=true);
 
     /****************************************************************************/
     /**
