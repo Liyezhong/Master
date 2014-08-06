@@ -24,8 +24,11 @@
 #include <QTextStream>
 #include <QFile>
 #include <QList>
-#include <QProcess>
 #include "Core/Include/ServiceDefines.h"
+#include "Core/Include/ServiceGUIConnector.h"
+#include "MainMenu/Include/MessageDlg.h"
+#include "MainMenu/Include/MainWindow.h"
+#include "IENetworkClient/Include/IENetworkClient.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -38,7 +41,8 @@ public:
      * \brief Default constructor.
      */
     /****************************************************************************/
-    CTestCaseReporter(const QString ModuleName);
+    CTestCaseReporter(const QString ModuleName, Core::CServiceGUIConnector *p_DataConnector = NULL,
+                      MainMenu::CMainWindow *p_Parent = NULL);
 
     /****************************************************************************/
     /**
@@ -80,17 +84,30 @@ public:
 private:
     /****************************************************************************/
     /**
+     * \brief Init IE network client.
+     */
+    /****************************************************************************/
+    void InitIEClient();
+
+    /****************************************************************************/
+    /**
      * \brief write report file.
      */
     /****************************************************************************/
     void WriteReportFile(QTextStream& TextStream);
 
+
+    Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
     QList<Service::ModuleTestCaseID> m_TestCaseList; //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
     QString m_ModuleName;                            //!< Stores module name
     QString m_SerialNumber;                          //!< Stores serial number
+    QString m_ReportDir;                             //!< The server report folder
+    MainMenu::CMessageDlg *mp_MessageDlg;            //!< Information dialog
+    MainMenu::CWaitDialog *mp_WaitDlg;               //!< Waiting dialog
+    NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
 
-    QProcess* mp_Process;                   //!< The Process for run external command
+    QEventLoop m_Loop;
 
 public slots:
     /****************************************************************************/
@@ -99,6 +116,8 @@ public slots:
      */
     /****************************************************************************/
     void StopSend();
+
+    void ShowWaitDialog();
 };
 
 } // end namespace DiagnosticsManufacturing

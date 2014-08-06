@@ -49,7 +49,8 @@ public:
 	static QString MSG_DIAGNOSTICS_SELECT_TEST_CASE;                  //!<Please select a test case.
 	static QString MSG_DIAGNOSTICS_SENDING;                           //!<Sending...
 	static QString MSG_DIAGNOSTICS_SEND_REPORT_OK;                    //!<Send test report ok.
-	static QString MSG_DIAGNOSTICS_SEND_REPORT_FAILED;                //!<Send test report failed.
+	static QString MSG_DIAGNOSTICS_GEN_REPORT_FILE_FAILED;            //!<Generation report file failed.
+	static QString MSG_DIAGNOSTICS_REPORT_FILE_NOT_EXISTS;            //!<The report file is not exists.
 	static QString MSG_DIAGNOSTICS_TEST_NUMBER;                       //!<Nr.
 	static QString MSG_DIAGNOSTICS_TEST_NAME;                         //!<Tests
 	static QString MSG_DIAGNOSTICS_CURRENT_TEMP;                      //!<Current Temperature:
@@ -115,9 +116,10 @@ public:
 
 	static QString MSG_MANUFACTURINGTEST_RESULT;                      //!<Manufacturing Test Result
 
-	static QString MSG_SETTINGS_IP_CANNOT_REACHABLE;                  //!<The server ip can't reachable.
-	static QString MSG_SETTINGS_FOLDER_CANNOT_ACCESS;                 //!<Server folder can't access.
-	static QString MSG_SETTINGS_DOWNLOAD_FILES_FAILED;                //!<Download firmware files failed.
+	static QString MSG_SERVER_IP_CANNOT_REACHABLE;                    //!<The server ip can't reachable.
+	static QString MSG_SERVER_FOLDER_CANNOT_ACCESS;                   //!<Server folder can't access.
+	static QString MSG_SERVER_DOWNLOAD_FILES_FAILED;                  //!<Download firmware files failed.
+	static QString MSG_SERVER_SEND_REPORT_FALIED;                     //!<Send report file to server failed.
 
 	static QString MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
 	static QString MSG_DEVICE_RELEASE_PRESSURE_FAILED;                //!<ERROR: Release pressure failure.

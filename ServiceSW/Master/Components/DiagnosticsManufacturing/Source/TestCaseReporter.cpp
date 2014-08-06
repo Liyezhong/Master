@@ -19,27 +19,39 @@
 /****************************************************************************/
 #include <QList>
 #include <QDateTime>
-#include <QApplication>
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Global/Include/Utils.h"
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/AdjustedTime.h"
 #include "Core/Include/SelectTestOptions.h"
+#include "Core/Include/CMessageString.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 
 namespace DiagnosticsManufacturing {
 
-CTestCaseReporter::CTestCaseReporter(const QString ModuleName):
-    m_ModuleName(ModuleName)
+CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUIConnector *p_DataConnector,
+                                     MainMenu::CMainWindow *p_Parent):
+    m_ModuleName(ModuleName),
+    mp_DataConnector(p_DataConnector),
+    mp_IEClient(NULL),
+    m_ReportDir(""),
+    QObject(p_Parent)
 {
-    mp_Process = new QProcess;
+    mp_MessageDlg = new MainMenu::CMessageDlg(p_Parent);
+    mp_WaitDlg    = new MainMenu::CWaitDialog(p_Parent);
+    mp_WaitDlg->setModal(true);
+    InitIEClient();
 }
 
 CTestCaseReporter::~CTestCaseReporter()
 {
     try {
-        delete mp_Process;
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
+        if (mp_IEClient) {
+            delete mp_IEClient;
+        }
     }
     catch(...) {
 
@@ -56,10 +68,10 @@ bool CTestCaseReporter::GenReportFile()
     }
 
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        TempPath.append("/EndTest");
+        TempPath.append("/endtest");
     }
     else {
-        TempPath.append("/StationTest");
+        TempPath.append("/stationtest");
     }
 
     if (!TempDir.exists(TempPath) && !TempDir.mkdir(TempPath)) {
@@ -95,30 +107,60 @@ bool CTestCaseReporter::GenReportFile()
 
 bool CTestCaseReporter::SendReportFile()
 {
-    /*
-    QStringList Params;
-    Params<<"-c"<<"4"<<"192.168.25.32";
-    mp_Process->start("ping", Params);
+    //ShowWaitDialog();
+    bool Result = false;
+    QString Msg("");
 
-    QEventLoop loop;
-    (void)loop.connect(mp_Process, SIGNAL(finished(int)), &loop, SLOT(quit()));
-    (void)loop.exec();
-    if (mp_Process->exitCode() || mp_Process->exitStatus()) {
-        qDebug()<<"ping error.";
+    mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
+    mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
+    mp_MessageDlg->HideButtons();
+
+    if (!mp_IEClient) {
+        qDebug()<<"invalid ie client.";
         return false;
     }
-    */
+    if (!mp_IEClient->PerformHostReachableTest()) {
+        Msg = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
+        goto Send_Finished;
+    }
+
+    if (!mp_IEClient->PerformAccessRightsCheck(m_ReportDir)) {
+        Msg = Service::CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;
+        goto Send_Finished;
+    }
     if (QFile::exists(m_TestReportFile)) {
-        //QFileInfo FileInfo(m_TestReportFile);
-        //QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
-        //QCoreApplication::processEvents();
-        //return QFile::copy(m_TestReportFile, DestFile);
-        return true;
+        QString ReportPath = m_ReportDir;
+        if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+            ReportPath.append("/endtest");
+        }
+        else {
+            ReportPath.append("/stationtest");
+        }
+        if (mp_IEClient->SendReprotFile(m_TestReportFile, ReportPath)) {
+            Result = true;
+            Msg = Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_OK;
+        }
+        else {
+            Msg = Service::CMessageString::MSG_SERVER_SEND_REPORT_FALIED;
+        }
     }
     else {
-        qDebug()<<"CTestCaseReporter:: send report file failed.";
-        return false;
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_REPORT_FILE_NOT_EXISTS;
     }
+
+Send_Finished:
+
+    //mp_WaitDlg->close();
+    mp_MessageDlg->SetText(Msg);
+    if (Result) {
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+    }
+    else {
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+    }
+    (void)mp_MessageDlg->exec();
+
+    return Result;
 }
 
 void CTestCaseReporter::WriteReportFile(QTextStream& TextStream)
@@ -143,11 +185,30 @@ void CTestCaseReporter::WriteReportFile(QTextStream& TextStream)
 
 }
 
+void CTestCaseReporter::InitIEClient()
+{
+    if (mp_DataConnector && mp_DataConnector->GetServiceParameters()) {
+        QString Username  = mp_DataConnector->GetServiceParameters()->GetUserName();
+        QString IPAddress = mp_DataConnector->GetServiceParameters()->GetProxyIPAddress();
+        m_ReportDir       = mp_DataConnector->GetServiceParameters()->GetTestReportFolderPath();
+
+        mp_IEClient = new NetworkClient::IENetworkClient(IPAddress, Username, Global::SystemPaths::Instance().GetScriptsPath());
+    }
+}
+
+void CTestCaseReporter::ShowWaitDialog()
+{
+    //QEventLoop loop;
+    mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
+    mp_WaitDlg->HideAbort();
+    mp_WaitDlg->show();
+
+    //connect(mp_WaitDlg, SIGNAL(finished(int)), &m_Loop, SLOT(quit()));
+    //m_Loop.exec();
+}
+
 void CTestCaseReporter::StopSend()
 {
-    if (mp_Process->isOpen()) {
-        mp_Process->terminate();
-    }
 
 }
 

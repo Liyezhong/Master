@@ -69,7 +69,7 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
-    mp_TestReporter = new CTestCaseReporter("System");
+    mp_TestReporter = new CTestCaseReporter("System", mp_DataConnector, mp_MainWindow);
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDlg->setModal(true);
@@ -394,32 +394,13 @@ void CSystem::SendTestReport()
     mp_TestReporter->SetSerialNumber(m_SystemSNString);
 
     if (mp_TestReporter->GenReportFile()) {
-        mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
-        mp_WaitDlg->show();
-        if (mp_TestReporter->SendReportFile()) {
-            mp_WaitDlg->accept();
-            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
-            mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_OK);
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            (void)mp_MessageDlg->exec();
-        }
-        else {
-            mp_WaitDlg->accept();
-            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
-            mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_FAILED);
-            mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            (void)mp_MessageDlg->exec();
-        }
+        (void)mp_TestReporter->SendReportFile();
     }
     else {
         mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
         mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_FAILED);
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_GEN_REPORT_FILE_FAILED);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         (void)mp_MessageDlg->exec();
     }

@@ -1772,23 +1772,23 @@ void ServiceMasterThreadController::DownloadFirmware()
     bool Ret      = false;
     QString Color = "red";
     QString Information("");
+    NetworkClient::IENetworkClient *IEClient(NULL);
     try {
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString FirmFolder = mp_ServiceDataContainer->ServiceParameters->GetFirmwareFolderPath();
-        NetworkClient::IENetworkClient *IEClient(NULL);
         IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
         if (!IEClient->PerformHostReachableTest())
         {
-            Information = Service::CMessageString::MSG_SETTINGS_IP_CANNOT_REACHABLE;
+            Information = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the ip can't reachable :"<<IPAddress;
             goto Download_Finished;
         }
 
         if (!IEClient->PerformAccessRightsCheck(FirmFolder))
         {
-            Information = Service::CMessageString::MSG_SETTINGS_FOLDER_CANNOT_ACCESS;
+            Information = Service::CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the folder can't access :"<<FirmFolder;
             goto Download_Finished;
         }
@@ -1801,7 +1801,7 @@ void ServiceMasterThreadController::DownloadFirmware()
 
         if (!IEClient->DownloadFiles(FirmFolder))
         {
-            Information = Service::CMessageString::MSG_SETTINGS_DOWNLOAD_FILES_FAILED;
+            Information = Service::CMessageString::MSG_SERVER_DOWNLOAD_FILES_FAILED;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: download files failed :"<<FirmFolder;
             goto Download_Finished;
         }
@@ -1809,6 +1809,12 @@ void ServiceMasterThreadController::DownloadFirmware()
     }
     CATCHALL();
 Download_Finished:
+
+    if(NULL != IEClient)
+    {
+        delete IEClient;
+        IEClient = NULL;
+    }
 
     emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , Ret);
     if (!Ret) {
