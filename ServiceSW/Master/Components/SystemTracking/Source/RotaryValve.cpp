@@ -102,6 +102,22 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
         *mp_ModuleList = *ModuleList;
     }
 
+    m_SubModuleNames<<SUBMODULE_HEATER<<SUBMODULE_MOTOR;
+
+    ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
+    if (p_SubModuleHeater) {
+        p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
+        p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+    }
+
+    ServiceDataManager::CSubModule* p_SubModuleMotor = Module.GetSubModuleInfo(SUBMODULE_MOTOR);
+    if (p_SubModuleMotor) {
+        p_SubModuleMotor->UpdateParameterInfo("OperationTime", "0");
+        p_SubModuleMotor->UpdateParameterInfo("EndTestDate", "N/A");
+        p_SubModuleMotor->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+    }
+
     (void)mp_ModuleList->UpdateModule(&Module);
 
     emit ModuleListChanged();
@@ -339,6 +355,7 @@ void CRotaryValve::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_ROTARYVALVE);
+    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

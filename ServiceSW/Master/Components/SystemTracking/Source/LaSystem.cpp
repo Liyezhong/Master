@@ -354,6 +354,7 @@ void CLaSystem::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_LASYSTEM);
+    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

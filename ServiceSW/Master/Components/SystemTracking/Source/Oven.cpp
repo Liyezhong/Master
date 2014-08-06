@@ -90,10 +90,17 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "COven::UpdateModule !"
              << Module.GetModuleName();
 
-    if (0 == mp_ModuleList)
-    {
+    if (0 == mp_ModuleList) {
         qDebug() << "COven::UpdateModule(): Invalid module list!";
         return;
+    }
+
+    m_SubModuleNames<<SUBMODULE_HEATER;
+    ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
+    if (p_SubModuleHeater) {
+        p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
+        p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
     }
 
     (void)mp_ModuleList->UpdateModule(&Module);
@@ -327,6 +334,7 @@ void COven::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_OVEN);
+    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

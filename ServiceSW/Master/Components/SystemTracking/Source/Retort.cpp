@@ -107,6 +107,22 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
         *mp_ModuleList = *ModuleList;
     }
 
+    m_SubModuleNames<<SUBMODULE_HEATER<<SUBMODULE_LEVELSENSOR;
+
+    ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
+    if (p_SubModuleHeater) {
+        p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
+        p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+    }
+
+    ServiceDataManager::CSubModule* p_SubModuleLSensor = Module.GetSubModuleInfo(SUBMODULE_LEVELSENSOR);
+    if (p_SubModuleLSensor) {
+        p_SubModuleLSensor->UpdateParameterInfo("OperationCycles", "0");
+        p_SubModuleLSensor->UpdateParameterInfo("EndTestDate", "N/A");
+        p_SubModuleLSensor->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+    }
+
     (void)mp_ModuleList->UpdateModule(&Module);
 
     emit ModuleListChanged();
@@ -351,6 +367,7 @@ void CRetort::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_RETORT);
+    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
