@@ -42,7 +42,8 @@ namespace Dashboard {
          */
         /****************************************************************************/
         int CassetteNumber();
-
+        void ShowLabel(bool on = true);
+        void SetCurrentCassette(int count);
     private:
         Ui::CCassetteNumberInputWidget *ui;       ///<  Definition/Declaration of variable ui
         MainMenu::CScrollWheel *mp_singleWheel;       ///<  Definition/Declaration of variable mp_singleWheel
@@ -52,6 +53,8 @@ namespace Dashboard {
         QString m_strMsg;       ///<  Definition/Declaration of variable m_strMsg
         QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
         QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+        QString m_strTotalCassette; ///<  Definition/Declaration of variable m_strTotalCassette
+        QString m_strInputCassetteHint; ///<  Definition/Declaration of variable m_strInputCassetteHint
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function RetranslateUI

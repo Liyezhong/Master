@@ -2,6 +2,7 @@
 #include "ui_CassetteNumberInputWidget.h"
 #include "Global/Include/Utils.h"
 #include "MainMenu/Include/MessageDlg.h"
+#include <QRect>
 
 using namespace Dashboard;
 
@@ -15,6 +16,11 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QWidget
 {
     ui->setupUi(this);
     RetranslateUI();//As the overrided function changeEvent(QEvent *p_Event) cannot be revoked in this class, we should call it here
+
+    ui->totalcassettelbl->setText(m_strTotalCassette);
+    ui->inputhintlbl->setText(m_strInputCassetteHint);
+
+    ShowLabel(false);
 
     this->setWindowModality(Qt::ApplicationModal);
     CONNECTSIGNALSLOT(ui->btnOK, clicked(), this, OnOK());
@@ -93,11 +99,31 @@ int CCassetteNumberInputWidget::CassetteNumber()
     return m_CassetteNumber;
 }
 
+void CCassetteNumberInputWidget::ShowLabel(bool on)
+{
+    if (on) {
+        ui->totalcassettelbl->show();
+        ui->inputhintlbl->show();
+    }
+    else {
+        ui->totalcassettelbl->hide();
+        ui->inputhintlbl->hide();
+    }
+}
+
+void CCassetteNumberInputWidget::SetCurrentCassette(int count)
+{
+    QString text = m_strTotalCassette;
+    text += QString::number(count);
+    ui->totalcassettelbl->setText(text);
+}
+
 void CCassetteNumberInputWidget::RetranslateUI()
 {
     m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The entered cassette number should be between 1 and 200.", 0, QApplication::UnicodeUTF8);
     m_strWarning = QApplication::translate("CCassetteNumberInputWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("CCassetteNumberInputWidget", "OK", 0, QApplication::UnicodeUTF8);
-
+    m_strTotalCassette = QApplication::translate("CCassetteNumberInputWidget", "Current cassettle number: ", 0, QApplication::UnicodeUTF8);
+    m_strInputCassetteHint = QApplication::translate("CCassetteNumberInputWidget", "Add more cassette", 0, QApplication::UnicodeUTF8);
 }
 

@@ -178,6 +178,7 @@ private:
     QString m_strChangeCassetteBoxTitle;
     QString m_strAddCassete;
     bool m_bIsFirstStepFixation;
+    quint32 m_TotalCassette;
 public slots:
     /****************************************************************************/
     /*!
