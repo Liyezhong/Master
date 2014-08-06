@@ -96,6 +96,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsCheckBlockageState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsPauseState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsRVWaitintTempUpState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -233,9 +234,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsPause()), mp_ErrorRsPauseState.data());
     mp_ErrorRsPauseState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
+    //RS_RV_WaitingTempUp
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsRVWaitingTempUp()), mp_ErrorRsRVWaitintTempUpState.data());
+    mp_ErrorRsRVWaitintTempUpState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_LevelSensorWaitTime = 0;
-
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
     m_RVOrgPosCmdTime = 0;
     m_RcFilling = HEATING_LEVELSENSOR;
@@ -243,6 +247,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RsCheckBlockageStartTime = 0;
     m_RsPauseStartTime = 0;
     m_RsPauseCount = 0;
+    m_RsRVWaitingTempUp = STOP_HEATING;
+    m_RsRVWaitingTempUpTime = 0;
 }
 
 
@@ -454,6 +460,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsPauseState.data()))
         {
             return SM_ERR_RS_PS_PAUSE;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsRVWaitintTempUpState.data()))
+        {
+            return SM_ERR_RS_RV_WAITINGTEMPUP;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -777,6 +787,11 @@ void CSchedulerStateMachine::EnterRsCheckBlockage()
 void CSchedulerStateMachine::EnterRsPause()
 {
     emit SigRsPause();
+}
+
+void CSchedulerStateMachine::EnterRsRVWaitingTempUp()
+{
+    emit SigRsRVWaitingTempUp();
 }
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
@@ -1139,6 +1154,54 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow()
     {
         OnTasksDone(true);
         m_RsPauseCount =0;
+    }
+}
+
+void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    qint64 nowTime = 0;
+    switch(m_RsRVWaitingTempUp)
+    {
+    case STOP_HEATING:
+        if(DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RV"))
+        {
+            m_RsRVWaitingTempUp = START_HEATING;
+        }
+        else
+        {
+            OnTasksDone(false);
+        }
+        break;
+    case START_HEATING:
+        if(DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("RV"))
+        {
+            m_RsRVWaitingTempUp = CHECK_RVTEMP;
+            m_RsRVWaitingTempUpTime = QDateTime::currentMSecsSinceEpoch();
+        }
+        else
+        {
+            m_RsRVWaitingTempUp = STOP_HEATING;
+            OnTasksDone(false);
+        }
+        break;
+    case CHECK_RVTEMP:
+         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 < 40)
+         {
+            nowTime = QDateTime::currentMSecsSinceEpoch();
+            if(nowTime - m_RsRVWaitingTempUpTime > 10 * 1000)
+            {
+                OnTasksDone(false);
+                m_RsRVWaitingTempUp = STOP_HEATING;
+            }
+         }
+         else
+         {
+            OnTasksDone(true);
+            m_RsRVWaitingTempUp = STOP_HEATING;
+         }
+        break;
+    default:
+        break;
     }
 }
 

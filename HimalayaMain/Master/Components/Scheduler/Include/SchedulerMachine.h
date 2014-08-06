@@ -102,6 +102,7 @@ private:
     QSharedPointer<QState> mp_ErrorRsFillingAfterFlushState;                            ///<  Error State's sub state: for RS_FillingAfterFlush
     QSharedPointer<QState> mp_ErrorRsCheckBlockageState;                                ///<  Error State's sub state: for RS_Check_Blockage
     QSharedPointer<QState> mp_ErrorRsPauseState;                                        ///<  Error State's sub state: for RS_Pause
+    QSharedPointer<QState> mp_ErrorRsRVWaitintTempUpState;                              ///<  Error State's sub state: for RS_RV_WaitingTempUp
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -122,8 +123,8 @@ private:
         WAIT2SECONDS
     } LEVELSENSOR_RESTART_STAGE_t;
 
-    LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;
-    qint64                      m_LevelSensorWaitTime;
+    LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;                                   ///< State restart Level sensor sub state
+    qint64                      m_LevelSensorWaitTime;                                  ///< The restart Level Sensor begin time
 
     typedef enum
     {
@@ -131,8 +132,8 @@ private:
         CHECK_INITIAL_POS_RESULT
     } GET_RV_ORIGINALPOS_t;
 
-    GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;
-    qint64               m_RVOrgPosCmdTime;
+    GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;                                      ///< Get Original Position sub state
+    qint64               m_RVOrgPosCmdTime;                                            ///< Get Original Position begin time
 
     typedef enum
     {
@@ -140,7 +141,7 @@ private:
         CHECK_FILLINGTEMP,
         RC_FILLING
     }RC_FILLING_t;
-    RC_FILLING_t m_RcFilling;
+    RC_FILLING_t m_RcFilling;                                                        ///< RC_Filling sub state
 
     typedef enum
     {
@@ -152,11 +153,25 @@ private:
     qint64              m_RsCheckBlockageStartTime;                                     ///<  The Rs_Check_Blockage begin time
 
     qint64              m_RsPauseCount;                                                 ///<  The number of RS_Pause
-    qint64              m_RsPauseStartTime;                                             ///<  The RS_Pause begint time
+    qint64              m_RsPauseStartTime;                                             ///<  The RS_Pause begin time
+
+    typedef enum
+    {
+        STOP_HEATING,
+        START_HEATING,
+        CHECK_RVTEMP
+    }RS_RV_WAITINGTEMPUP_t;
+    RS_RV_WAITINGTEMPUP_t m_RsRVWaitingTempUp;                                          ///< The RS_RV_WaitingTempUp sub state
+    qint64                m_RsRVWaitingTempUpTime;                                      ///< The RS_RV_WaitingTempUp begin time
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDeviceName
+     *  \return from QString
+     */
+    /****************************************************************************/
     QString GetDeviceName();
-
 
 public:
     /****************************************************************************/
@@ -749,6 +764,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsRVWaitingTempUp
+     *
+     *  \return from EnterRsRVWaitingTempUp
+     */
+    /****************************************************************************/
+    void EnterRsRVWaitingTempUp();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -929,13 +953,20 @@ public:
     /*!
      *  \brief Handle the whole work flow for HandleRsPauseWorkFlow
      *
-     *  \param cmdName - command name
-     *  \param retCode - return code
-     *
      *  \return void
      */
     /****************************************************************************/
     void HandleRsPauseWorkFlow();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRsRVWaitingTempUpWorkFlow
+     *  \param cmdName - command name
+     *  \param retCode - return cod
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsRVWaitingTempUpWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1704,6 +1735,13 @@ signals:
      */
     /****************************************************************************/
     void SigRsPause();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsPause
+     */
+    /****************************************************************************/
+    void SigRsRVWaitingTempUp();
 
     /****************************************************************************/
     /*!

@@ -1760,6 +1760,13 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         }
         emit RetortLockStatusChanged(Command);
     }
+    else if (Command.LockType() == DataManager::PARAFFIN_BATH_LOCK)
+    {
+        if (Command.IsLocked())
+        {
+            mp_MesgBoxManager->EnableOKButton();
+        }
+    }
 }
 
 void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)

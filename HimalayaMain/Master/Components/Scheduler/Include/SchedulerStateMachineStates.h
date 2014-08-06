@@ -42,6 +42,7 @@ namespace Scheduler{
 #define L2_ERR_RS_FILLINGAFTERFLUSH                 (0x10)
 #define L2_ERR_RS_CHECK_BLOCKAGE                    (0x11)
 #define L2_ERR_RS_PAUSE                             (0x12)
+#define L2_ERR_RS_RVWAITINGTEMPUP                   (0x13)
 
 typedef enum
 {
@@ -88,7 +89,8 @@ typedef enum
     SM_ERR_RS_BOTTLECHECK_I = ((L2_ERR_RC_BOTTLECHECK_I << 8) | L1_ERROR),
     SM_ERR_RS_FILLINGAFTERFFLUSH = ((L2_ERR_RS_FILLINGAFTERFLUSH << 8) | L1_ERROR),
     SM_ERR_RS_CHECK_BLOCKAGE = ((L2_ERR_RS_CHECK_BLOCKAGE << 8) | L1_ERROR),
-    SM_ERR_RS_PS_PAUSE = ((L2_ERR_RS_PAUSE << 8) | L1_ERROR)
+    SM_ERR_RS_PS_PAUSE = ((L2_ERR_RS_PAUSE << 8) | L1_ERROR),
+    SM_ERR_RS_RV_WAITINGTEMPUP = ((L2_ERR_RS_RVWAITINGTEMPUP << 8) | L1_ERROR)
 
 } SchedulerStateMachine_t;
 }

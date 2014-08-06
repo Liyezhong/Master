@@ -97,7 +97,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_NewProgramID("")
         , m_PauseToBeProcessed(false)
         , m_ProcessCassetteCount(0)
-        , m_OvenLidStatus(UNDEFINED_VALUE)
+        , m_OvenLidStatus(0)
         , m_RetortLockStatus(UNDEFINED_VALUE)
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
@@ -496,7 +496,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_FILLING == stepState)
         {
-            LogDebug("Program Step Filling In Progress");
             m_CurrentStepState = PSSM_FILLING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -702,27 +701,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              }
 
              //In case that Scheduler was recovered from Error
-             if (true == m_RecoveryFromError)
-             {
-                 m_RecoveryFromError = false; //Reset
-                 for (int i=0; i<m_RecvCommandList.size(); ++i)
-                 {
-                     if ("Scheduler::ALDraining" == m_RecvCommandList[i].cmdName)
-                     {
-                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                         {
-                             LogDebug(QString("Program Step Filling OK"));
-                             m_SchedulerMachine->NotifyFillFinished();
-                         }
-                         else
-                         {
-                             LogDebug(QString("Program Step Filling failed"));
-                             RaiseError(0, retCode, m_CurrentScenario, true);
-                             m_SchedulerMachine->SendErrorSignal();
-                         }
-                     }
-                 }
-             }
             if( "Scheduler::ALDraining"== cmdName)
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -935,7 +913,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             LogDebug("Go to RC_Restart");
-            m_RecoveryFromError = true;
+            //m_RecoveryFromError = true;
             m_SchedulerMachine->EnterRcRestart();
         }
         if (CTRL_CMD_RC_REPORT == ctrlCmd)
@@ -1022,6 +1000,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_Pause");
             m_SchedulerMachine->EnterRsPause();
         }
+        else if(CTRL_CMD_RS_RV_WAITINGTEMPUP == ctrlCmd)
+        {
+            LogDebug("Go to RS_RV_WaitingTempUp");
+            m_SchedulerMachine->EnterRsRVWaitingTempUp();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1107,6 +1090,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RS_Pause state");
         m_SchedulerMachine->HandleRsPauseWorkFlow();
+    }
+    else if(SM_ERR_RS_RV_WAITINGTEMPUP == currentState)
+    {
+        LogDebug("In RS_RV_WaitingTempUp");
+        m_SchedulerMachine->HandleRsRVWaitingTempUpWorkFlow(cmdName, retCode);
     }
     else
     {
@@ -1232,6 +1220,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_pause")
         {
             return CTRL_CMD_RS_PAUSE;
+        }
+        if (cmd == "rs_rv_waitingtempup")
+        {
+            return CTRL_CMD_RS_RV_WAITINGTEMPUP;
         }
     }
     return CTRL_CMD_UNKNOWN;
@@ -2154,6 +2146,15 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV2))
 	{
         m_TempRV2 = strctHWMonitor.TempRV2;
+        if (200 == m_CurrentScenario)
+        {
+            if (m_TempRV2 < 40)
+            {
+                LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(m_CurrentScenario));
+                RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, m_CurrentScenario, true);
+                m_SchedulerMachine->SendErrorSignal();
+            }
+        }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
 	{
@@ -2173,7 +2174,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	}
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
-        if(strctHWMonitor.OvenLidStatus == 1)
+        if ( (m_OvenLidStatus == 0) && (strctHWMonitor.OvenLidStatus == 1) )
         {
             //oven is open
             if ( (m_CurrentScenario >= 2 && m_CurrentScenario <= 205) || (m_CurrentScenario >= 211 && m_CurrentScenario <= 257)
@@ -2191,6 +2192,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
+        if ( (m_OvenLidStatus == 1) && (strctHWMonitor.OvenLidStatus == 0) )
+        {
+            //oven is closed
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
 	}
@@ -2783,10 +2796,6 @@ void SchedulerMainThreadController::RCDrain()
 
 void SchedulerMainThreadController::Drain()
 {
-    if (true == m_RecoveryFromError)
-    {
-        return;
-    }
     LogDebug("Send cmd to DCL to Drain");
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
