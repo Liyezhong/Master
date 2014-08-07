@@ -30,11 +30,9 @@
 #****************************************************************************/
 
 
-#FIRMWARE_PATH=/home/Leica/Firmware
-#BASE_PATH=/home/Leica
+FIRMWARE_PATH=/home/Leica/Firmware
+BASE_PATH=/home/Leica
 TIME_OUT=10 #second
-FIRMWARE_PATH=/home/ldx/workspaces/Himalaya/ServiceSW/Master/Components/Main/Build/Firmware
-BASE_PATH=/home/ldx/workspaces/Himalaya/ServiceSW/Master/Components/Main/Build
 
 #######################################################
 # Ping test for SaM server
