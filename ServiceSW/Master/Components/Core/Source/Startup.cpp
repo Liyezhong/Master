@@ -1308,17 +1308,19 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
     qDebug()<<Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    if (p_TestCase->GetParameter("TestType") == QString("AutoDetect")) {
-        mp_MainControlConfig->UpdateSubModule(Status);
-        return;
-    }
+
     ServiceDataManager::CModule* EboxModule = NULL;
     ServiceDataManager::CSubModule* SlaveModule = NULL;
-    mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
-
-    if (mp_ServiceConnector->GetModuleListContainer()) {
-        EboxModule = mp_ServiceConnector->GetModuleListContainer()->GetModule("Main Control");
+    if (p_TestCase->GetParameter("TestType") == QString("AutoDetect")) {
+        EboxModule = mp_MainControlConfig->GetModule();
     }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        if (mp_ServiceConnector->GetModuleListContainer()) {
+            EboxModule = mp_ServiceConnector->GetModuleListContainer()->GetModule("Main Control");
+        }
+    }
+
 
     int SlaveType = Status.value("SlaveType").toInt();
     QString SlaveName;

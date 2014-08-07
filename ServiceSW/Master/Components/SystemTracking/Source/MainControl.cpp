@@ -104,20 +104,25 @@ CMainControl::~CMainControl()
     catch (...) { }
 }
 
-void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
+ServiceDataManager::CModule* CMainControl::GetModule()
 {
     if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
             qDebug() << "CMainControl::UpdateSubModule(): Invalid module list!";
-            return;
+            return NULL;
         }
 
         *mp_ModuleList = *ModuleList;
     }
+    return mp_ModuleList->GetModule(MODULE_MAINCONTROL);
+}
 
-    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_MAINCONTROL);
+
+void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
+{
+    ServiceDataManager::CModule *pModule = GetModule();
     if (0 == pModule)
     {
         qDebug() << "CMainControl::UpdateSubModule(): Invalid module : "
@@ -130,56 +135,6 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
-}
-
-void CMainControl::UpdateSubModule(const Service::ModuleTestStatus &Status)
-{
-    if (!mp_ModuleList) {
-        mp_ModuleList = new ServiceDataManager::CModuleDataList;
-        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
-        if (!ModuleList) {
-            qDebug() << "CMainControl::UpdateSubModule(): Invalid module list!";
-            return;
-        }
-
-        *mp_ModuleList = *ModuleList;
-    }
-
-    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_MAINCONTROL);
-    if (0 == pModule)
-    {
-        qDebug() << "CMainControl::UpdateSubModule(): Invalid module : "
-                 << MODULE_MAINCONTROL;
-        return;
-    }
-
-    QString SlaveName;
-    int SlaveType = Status.value("SlaveType").toInt();
-    switch (SlaveType) {
-    case 3:
-        SlaveName = "ASB3";
-        break;
-    case 5:
-        SlaveName = "ASB5";
-        break;
-    case 15:
-        SlaveName = "ASB15";
-        break;
-    default:
-        return;
-    }
-
-    ServiceDataManager::CSubModule* SlaveModule = pModule->GetSubModuleInfo(SlaveName);
-
-    if (SlaveModule) {
-        QMap<QString, QString>::const_iterator itr = Status.constBegin();
-        for (; itr != Status.constEnd(); ++itr) {
-            if (itr.key() != "SlaveType" && !SlaveModule->UpdateParameterInfo(itr.key(), itr.value())) {
-                qDebug()<<"Update "<<SlaveName<<" info "<<itr.key()
-                       <<"to "<<itr.value()<<" failed.";
-            }
-        }
-    }
 }
 
 void CMainControl::ModifyEBox()
@@ -336,18 +291,7 @@ void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
 void CMainControl::ModifySubModule(const QString &ModuleName,
                                    const QString &SubModuleName)
 {
-    if (!mp_ModuleList) {
-        mp_ModuleList = new ServiceDataManager::CModuleDataList;
-        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
-        if (!ModuleList) {
-            qDebug() << "CMainControl::UpdateSubModule(): Invalid module list!";
-            return;
-        }
-
-        *mp_ModuleList = *ModuleList;
-    }
-
-    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = GetModule();
     if (0 == pModule)
     {
         qDebug() << "CMainControl::ModifySubModule(): Invalid module : "
