@@ -2112,6 +2112,13 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             m_SchedulerMachine->SendErrorSignal();
         }
     }
+
+    // Monitor the sensors' current
+    if ("ERROR" != StepID)
+    {
+        this->CheckTempSensorCurrentOverRange(Scenario);
+    }
+
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
@@ -3181,6 +3188,74 @@ bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenar
         }
     }
     return true;
+}
+
+void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scenario)
+{
+    ReportError_t reportError1;
+    memset(&reportError1, 0, sizeof(reportError1));
+    ReportError_t reportError2;
+    memset(&reportError2, 0, sizeof(reportError2));
+    ReportError_t reportError3;
+    memset(&reportError3, 0, sizeof(reportError3));
+    ReportError_t reportError4;
+    memset(&reportError4, 0, sizeof(reportError4));
+    ReportError_t reportError5;
+    memset(&reportError5, 0, sizeof(reportError5));
+    ReportError_t reportError6;
+    memset(&reportError6, 0, sizeof(reportError6));
+    ReportError_t reportError7;
+    memset(&reportError7, 0, sizeof(reportError7));
+    ReportError_t reportError8;
+    memset(&reportError8, 0, sizeof(reportError8));
+    reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_BOTTOM);
+    reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
+    reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
+    reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
+    reportError5 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_LEVELSENSOR);
+    reportError6 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
+    reportError7 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
+    reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
+    if (reportError1.instanceID != 0)
+    {
+        RaiseError(0,DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError2.instanceID != 0)
+    {
+        RaiseError(0,DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError3.instanceID != 0 )
+    {
+        RaiseError(0,DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError4.instanceID != 0)
+    {
+        RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError5.instanceID != 0)
+    {
+        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+        //m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError6.instanceID != 0)
+    {
+        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+       // m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError7.instanceID != 0)
+    {
+        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+       // m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError8.instanceID != 0)
+    {
+        RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
 }
 
 void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)

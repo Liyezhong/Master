@@ -599,7 +599,28 @@ typedef struct
          /****************************************************************************/
          qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
 
+         /****************************************************************************/
+         /*!
+          *  \brief Check no-signal error for temperature sensors
+          *
+          *  \param Scenario - current scenario
+          *  \param HwTemp - current temperature of sensor
+          *
+          *  \return ture - no error, false - error was gotten
+          */
+         /****************************************************************************/
          bool CheckRetortTempSensorNoSignal(quint32 Scenario, qreal HWTemp);
+
+         /****************************************************************************/
+         /*!
+          *  \brief Check if current over range error occurs
+          *
+          *    \param Scenario - current scenario
+          *
+          *  \return void
+          */
+         /****************************************************************************/
+         void CheckTempSensorCurrentOverRange(quint32 Scenario);
 signals:
          /****************************************************************************/
          /*!

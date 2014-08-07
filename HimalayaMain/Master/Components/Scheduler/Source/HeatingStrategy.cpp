@@ -76,12 +76,17 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     //For Oven Top
     if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
     {
-        return DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE;
+        return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
     }
-    //For Oven Bottom
+    //For Oven Bottom1
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
     {
-        return DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE;
+        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+    }
+    //For Oven Bottom2
+    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2))
+    {
+        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
     }
     //For Rotary Valve Rod
     if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, strctHWMonitor.TempRV1))
