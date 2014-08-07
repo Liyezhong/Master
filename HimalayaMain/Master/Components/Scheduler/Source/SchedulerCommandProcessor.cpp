@@ -120,7 +120,6 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempOvenTop			= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
 	strctHWMonitor.OvenLidStatus		= mp_IDeviceProcessing->OvenGetRecentLidStatus();
 	strctHWMonitor.RetortLockStatus		= mp_IDeviceProcessing->RTGetRecentLockStatus();
-#if 0
     strctHWMonitor.CurrentRTSide        = mp_IDeviceProcessing->GetSensorCurrent("Retort",0);
     strctHWMonitor.CurrentRTBottom      = mp_IDeviceProcessing->GetSensorCurrent("Retort",1);
     strctHWMonitor.CurrentOvenTop       = mp_IDeviceProcessing->GetSensorCurrent("Oven",0);
@@ -129,7 +128,6 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.CurrentLATube1       = mp_IDeviceProcessing->GetSensorCurrent("LA",1);
     strctHWMonitor.CurrentLATube2       = mp_IDeviceProcessing->GetSensorCurrent("LA",2);
     strctHWMonitor.CurrentRVTemp        = mp_IDeviceProcessing->GetSensorCurrent("RV",0);
-#endif
     return strctHWMonitor;
 }
 
