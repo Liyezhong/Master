@@ -1306,6 +1306,12 @@ void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, co
 void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     qDebug()<<Status;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    if (p_TestCase->GetParameter("TestType") == QString("AutoDetect")) {
+        mp_MainControlConfig->UpdateSubModule(Status);
+        return;
+    }
     ServiceDataManager::CModule* EboxModule = NULL;
     ServiceDataManager::CSubModule* SlaveModule = NULL;
     mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
@@ -1315,7 +1321,6 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
     }
 
     int SlaveType = Status.value("SlaveType").toInt();
-    //Status.remove("SlaveType");
     QString SlaveName;
     switch (SlaveType) {
     case 3:

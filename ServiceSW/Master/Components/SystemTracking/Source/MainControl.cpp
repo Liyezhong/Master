@@ -132,6 +132,56 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
+void CMainControl::UpdateSubModule(const Service::ModuleTestStatus &Status)
+{
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CMainControl::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
+    }
+
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_MAINCONTROL);
+    if (0 == pModule)
+    {
+        qDebug() << "CMainControl::UpdateSubModule(): Invalid module : "
+                 << MODULE_MAINCONTROL;
+        return;
+    }
+
+    QString SlaveName;
+    int SlaveType = Status.value("SlaveType").toInt();
+    switch (SlaveType) {
+    case 3:
+        SlaveName = "ASB3";
+        break;
+    case 5:
+        SlaveName = "ASB5";
+        break;
+    case 15:
+        SlaveName = "ASB15";
+        break;
+    default:
+        return;
+    }
+
+    ServiceDataManager::CSubModule* SlaveModule = pModule->GetSubModuleInfo(SlaveName);
+
+    if (SlaveModule) {
+        QMap<QString, QString>::const_iterator itr = Status.constBegin();
+        for (; itr != Status.constEnd(); ++itr) {
+            if (itr.key() != "SlaveType" && !SlaveModule->UpdateParameterInfo(itr.key(), itr.value())) {
+                qDebug()<<"Update "<<SlaveName<<" info "<<itr.key()
+                       <<"to "<<itr.value()<<" failed.";
+            }
+        }
+    }
+}
+
 void CMainControl::ModifyEBox()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
@@ -278,6 +328,7 @@ void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
     QString SubModuleName = SubModule.GetSubModuleName();
     QString SlaveType = SubModuleName.remove("ASB");
     p_TestCase->SetParameter("SlaveType", SlaveType);
+    p_TestCase->SetParameter("TestType", "AutoDetect");
 
     emit PerformManufacturingTest(Id);
 }
