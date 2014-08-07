@@ -15,11 +15,12 @@ cd $BIN_DIR
 
 while true
 do
-	if [ -f $FLAG_FILE ] ; then
+	if [ ! -f $FLAG_FILE ] ; then
 		break;
 	else
 		ts_calibrate
 		PARAM=`cat $FLAG_FILE | tr -d '\n\r'`
+		rm $FLAG_FILE
 		./himalaya_service $PARAM -qws
 	fi
 done
