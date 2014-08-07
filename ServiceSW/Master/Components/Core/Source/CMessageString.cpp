@@ -114,6 +114,8 @@ QString CMessageString::MSG_MANUFACTURINGTEST_RESULT;                      //!<M
 QString CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;                    //!<The server ip can't reachable.
 QString CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;                   //!<Server folder can't access.
 QString CMessageString::MSG_SERVER_DOWNLOAD_FILES_FAILED;                  //!<Download firmware files failed.
+QString CMessageString::MSG_SERVER_NO_NEW_FILES;                           //!<The current version is latest one.
+QString CMessageString::MSG_SERVER_DOWNLOAD_FILES_SUCCESS;                 //!<Download firmware files success.
 QString CMessageString::MSG_SERVER_SEND_REPORT_FALIED;                     //!<Send report file to server failed.
 
 QString CMessageString::MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
@@ -229,6 +231,8 @@ void CMessageString::RetranslateUI()
 	MSG_SERVER_IP_CANNOT_REACHABLE                    = (QApplication::translate("Service", "The server ip can't reachable.", 0, QApplication::UnicodeUTF8));
 	MSG_SERVER_FOLDER_CANNOT_ACCESS                   = (QApplication::translate("Service", "Server folder can't access.", 0, QApplication::UnicodeUTF8));
 	MSG_SERVER_DOWNLOAD_FILES_FAILED                  = (QApplication::translate("Service", "Download firmware files failed.", 0, QApplication::UnicodeUTF8));
+	MSG_SERVER_NO_NEW_FILES                           = (QApplication::translate("Service", "The current version is latest one.", 0, QApplication::UnicodeUTF8));
+	MSG_SERVER_DOWNLOAD_FILES_SUCCESS                 = (QApplication::translate("Service", "Download firmware files success.", 0, QApplication::UnicodeUTF8));
 	MSG_SERVER_SEND_REPORT_FALIED                     = (QApplication::translate("Service", "Send report file to server failed.", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_NOTYET_READY                           = (QApplication::translate("Service", "Error: Device Layer not yet Initialized. Please retry after some time...", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_RELEASE_PRESSURE_FAILED                = (QApplication::translate("Service", "ERROR: Release pressure failure.", 0, QApplication::UnicodeUTF8));

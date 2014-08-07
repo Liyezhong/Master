@@ -43,8 +43,6 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
 {
     mp_Ui->setupUi(this);
 
-    RetranslateUI();
-
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(380,500);
 
@@ -102,8 +100,10 @@ void CFirmwareUpdate::UpdateGUI()
 
     if (mp_DataConnector->GetModuleListContainer()) {
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
-    }
+    }   
     if (mp_Module) {
+        m_Model.clear();
+        RetranslateUI();
         for (int i = 0; i < mp_Module->GetNumberofSubModules(); ++i) {
             SlaveModule = mp_Module->GetSubModuleInfo(i);
             if (SlaveModule->GetSubModuleName().contains("ASB")) {

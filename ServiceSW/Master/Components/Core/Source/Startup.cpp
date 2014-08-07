@@ -193,6 +193,10 @@ CStartup::CStartup() : QObject(),
                   mp_DataManagement,
                   SLOT(ExportFinished(bool)));
 
+    (void)connect(mp_Setting,
+                  SIGNAL(RefreshLatestVersion()),
+                  mp_FirmwareUpdate, SLOT(RefreshLatestVersion()));
+
 
     if (!connect(mp_Clock, SIGNAL(timeout()), this, SLOT(UpdateDateTime())))
     {

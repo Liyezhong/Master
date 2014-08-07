@@ -178,6 +178,9 @@ void CSettings::SetInformationText(QString Text, QString Color)
 void CSettings::SetNetworkSettingsResult(PlatformService::NetworkSettings_t NtService, bool Result)
 {
     mp_Ui->pageNetworkSettings->SetNetworkSettingsResult(NtService, Result);
+    if (Result) {
+        emit RefreshLatestVersion();
+    }
 }
 
 } // end namespace ServiceUpdates

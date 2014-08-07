@@ -1796,6 +1796,9 @@ void ServiceMasterThreadController::DownloadFirmware()
         if (!IEClient->CheckForNewFiles(FirmFolder))
         {
             Ret = true;
+            Color = "Green";
+            Information = Service::CMessageString::MSG_SERVER_NO_NEW_FILES;
+            qDebug() << " ServiceMasterThreadController::Download firmware ok: no new version";
             goto Download_Finished;
         }
 
@@ -1805,9 +1808,17 @@ void ServiceMasterThreadController::DownloadFirmware()
             qDebug() << " ServiceMasterThreadController::Download firmware failed: download files failed :"<<FirmFolder;
             goto Download_Finished;
         }
-        Ret = true;
+        else
+        {
+            Ret = true;
+            Color = "green";
+            Information = Service::CMessageString::MSG_SERVER_DOWNLOAD_FILES_SUCCESS;
+            qDebug() << " ServiceMasterThreadController::Download firmware ok: Download firmware success";
+        }
+
     }
     CATCHALL();
+
 Download_Finished:
 
     if(NULL != IEClient)
@@ -1817,10 +1828,8 @@ Download_Finished:
     }
 
     emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , Ret);
-    if (!Ret) {
-        emit SetInformationToNetworkSettings(Information, Color);
-    }
-    qDebug()<<"ServiceMasterThreadController::Download firmware ok.";
+    //Core::CServiceUtils::delay(500);
+    emit SetInformationToNetworkSettings(Information, Color);
 }
 
 void ServiceMasterThreadController::PerformNetworkTests()

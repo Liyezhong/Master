@@ -100,6 +100,13 @@ signals:
      */
     /****************************************************************************/
     void PerformNetworkTests();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to Refresh latest version from firmware config file
+     */
+    /****************************************************************************/
+    void RefreshLatestVersion();
 private slots:
      void TabIndexChanged(int);
      void OnCurrentTabChanged(int CurrentTabIndex);

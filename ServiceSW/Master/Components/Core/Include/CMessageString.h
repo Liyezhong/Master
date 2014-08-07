@@ -119,6 +119,8 @@ public:
 	static QString MSG_SERVER_IP_CANNOT_REACHABLE;                    //!<The server ip can't reachable.
 	static QString MSG_SERVER_FOLDER_CANNOT_ACCESS;                   //!<Server folder can't access.
 	static QString MSG_SERVER_DOWNLOAD_FILES_FAILED;                  //!<Download firmware files failed.
+	static QString MSG_SERVER_NO_NEW_FILES;                           //!<The current version is latest one.
+	static QString MSG_SERVER_DOWNLOAD_FILES_SUCCESS;                 //!<Download firmware files success.
 	static QString MSG_SERVER_SEND_REPORT_FALIED;                     //!<Send report file to server failed.
 
 	static QString MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
