@@ -258,7 +258,7 @@ void CReagentRMSWidget::OnCleaningRMSDays()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnEdit()
@@ -280,7 +280,7 @@ void CReagentRMSWidget::OnEdit()
 
 /****************************************************************************/
 /*!
- *  \brief Creates a new staining reagent and opens its edit dialog
+ *  \brief Creates a new reagent and opens its edit dialog
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnNew()
@@ -305,7 +305,7 @@ void CReagentRMSWidget::OnNew()
 
 /****************************************************************************/
 /*!
- *  \brief Deletes the currently selected staining reagent
+ *  \brief Deletes the currently selected reagent
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnDelete()

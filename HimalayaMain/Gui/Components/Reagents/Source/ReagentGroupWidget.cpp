@@ -204,7 +204,7 @@ void CReagentGroupWidget::RetranslateUI()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentGroupWidget::OnEdit()

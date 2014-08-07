@@ -293,7 +293,6 @@ void CModifyProgramDlg::NewProgram()
     m_StepModel.SetProgram(NULL,NULL, NULL, NULL, 5);
     mp_TableWidget->setModel(&m_StepModel);
     m_StepModel.SetModifyProgramDlgPtr(this);
-    ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
 }
 

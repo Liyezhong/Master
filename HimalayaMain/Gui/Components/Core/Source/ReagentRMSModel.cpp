@@ -444,9 +444,6 @@ QVariant CReagentRMSModel::dataStatus(const QModelIndex &Index, int Role) const
 /****************************************************************************/
 Qt::ItemFlags CReagentRMSModel::flags(const QModelIndex &Index) const
 {
-    if (Index.column() == 1) {
-        return Qt::NoItemFlags;
-    }
     if (mp_ReagentList) {
         if (Index.row() >= mp_ReagentList->GetNumberOfReagents()) {
             return Qt::NoItemFlags;

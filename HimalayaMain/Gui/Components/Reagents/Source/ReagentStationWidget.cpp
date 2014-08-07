@@ -101,7 +101,7 @@ void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSe
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentStationWidget::OnEdit()

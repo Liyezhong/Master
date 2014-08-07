@@ -179,6 +179,7 @@ void CAlarmSettingsDlg::UpdateDisplay(void)
         }
         else
         {
+            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosLeft);
             mp_Ui->periodictime_scrolltable->SetDisabled(false);
         }
     }
@@ -201,6 +202,7 @@ void CAlarmSettingsDlg::UpdateDisplay(void)
         }
         else
         {
+            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosLeft);
             mp_Ui->periodictime_scrolltable->SetDisabled(false);
         }
     }
