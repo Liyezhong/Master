@@ -30,8 +30,11 @@
 #****************************************************************************/
 
 
-FIRMWARE_PATH=/home/Leica/Firmware
-BASE_PATH=/home/Leica
+#FIRMWARE_PATH=/home/Leica/Firmware
+#BASE_PATH=/home/Leica
+TIME_OUT=10 #second
+FIRMWARE_PATH=/home/ldx/workspaces/Himalaya/ServiceSW/Master/Components/Main/Build/Firmware
+BASE_PATH=/home/ldx/workspaces/Himalaya/ServiceSW/Master/Components/Main/Build
 
 #######################################################
 # Ping test for SaM server
@@ -62,13 +65,13 @@ test_file_copy_to_SaM_server()
     local DeleteFailed=2
     local TestFileNotFound=3
     [ -f $1 ] || return $TestFileNotFound
-    scp "$1" "$2":"$3" >/dev/null 2>&1
+    scp -o ConnectTimeout=$TIME_OUT "$1" "$2":"$3" >/dev/null 2>&1
     ScpReturnVal=$?
     [ $ScpReturnVal -ne 0 ] && return $CopyingFailed
     local FileName=$(basename $1)
     #delete test file, we don't want to flood SaM server
     #with test files B-)
-    ssh "$2" "rm $3/$FileName" >/dev/null 2>&1
+    ssh -o ConnectTimeout=$TIME_OUT "$2" "rm $3/$FileName" >/dev/null 2>&1
     [ $? -ne 0 ] && return $DeleteFailed || return 0
 }
 
@@ -82,7 +85,7 @@ test_file_copy_to_SaM_server()
 #######################################################
 send_reports_to_SaM_server()
 {
-    scp "$1" "$2":"$3" >/dev/null 2>&1
+    scp -o ConnectTimeout=$TIME_OUT "$1" "$2":"$3" >/dev/null 2>&1
     return $?
 }
 
@@ -97,7 +100,7 @@ copy_firmware_files_from_SaM_server()
 {
     local CopyFailed=1
     local Md5sumFailed=2
-    scp -r "$1":"$2" "$BASE_PATH" >/dev/null 2>&1
+    scp -o ConnectTimeout=$TIME_OUT -r "$1":"$2" "$BASE_PATH" >/dev/null 2>&1
     [ $? -ne 0 ] && return $CopyFailed
     cd $FIRMWARE_PATH && md5sum -c .md5sum.txt >/dev/null 2>&1
     [ $? -eq 0 ] && return 0 || return $Md5sumFailed
@@ -116,7 +119,7 @@ check_if_SaM_server_has_new_firmware()
 {
     #login to SaM server, and compare md5sum of our firmwares against
     #firmwares on SaM server.
-    ssh "$1" "cat $2/.md5sum.txt" | diff - "$FIRMWARE_PATH"/.md5sum.txt > /dev/null 2>&1
+    ssh -o ConnectTimeout=$TIME_OUT "$1" "cat $2/.md5sum.txt" | diff - "$FIRMWARE_PATH"/.md5sum.txt > /dev/null 2>&1
     #invert return value
     [ $? -eq 0 ] && return 1 || return 0
 }
