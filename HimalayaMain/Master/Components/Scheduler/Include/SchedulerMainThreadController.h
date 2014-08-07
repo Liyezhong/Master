@@ -266,7 +266,6 @@ typedef struct
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
-        bool                   m_RecoveryFromError;           ///< Flag to indicate if Scheduler was recovred from error
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

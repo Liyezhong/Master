@@ -103,7 +103,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
         , m_IsInSoakDelay(false)
-        , m_RecoveryFromError(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -913,7 +912,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             LogDebug("Go to RC_Restart");
-            //m_RecoveryFromError = true;
             m_SchedulerMachine->EnterRcRestart();
         }
         if (CTRL_CMD_RC_REPORT == ctrlCmd)
