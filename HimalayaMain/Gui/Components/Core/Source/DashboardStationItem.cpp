@@ -221,12 +221,6 @@ bool CDashboardStationItem::IsEmpty()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Load the Initial Images of Stations
- *
- */
-/****************************************************************************/
 
 void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 {

@@ -42,6 +42,13 @@ public:
     explicit CDateTimeWidget(QWidget *p_Parent = 0);
     virtual ~CDateTimeWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+    /****************************************************************************/
+    /*!
+     *  \brief Used to set pointer to mainwindow, used to retreive user role and
+     *         process state changed.
+     *  \param the application's main window
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     MainMenu::CDateTime *GetContent();
 

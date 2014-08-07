@@ -282,25 +282,39 @@ private slots:
     /****************************************************************************/
     void CheckPreConditionsToRunProgram();
  signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  refresh the program selection
+     *  \param whether reset the selected program or not
+     */
+    /****************************************************************************/
     void ResetFocus(bool reset);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal AddItemsToFavoritePanel
+     *  \Param  bOnlyAddCleaningProgram = whether only show cleaning program or not
      */
     /****************************************************************************/
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramSelected
+     *  \brief  when selete a program, emit signal ProgramSelected
+     *  \param  programId = the seleted program ID
+     *  \param  selectedStationList = the used station for the selected program
      */
     /****************************************************************************/
     void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramSelected
+     *  \brief  when selete a program, emit signal ProgramSelected
+     *  \param  programId = the seleted program ID
+     *  \param asapEndTime = as soon as possible end time
+     *  \param bProgramStartReady = whether program start is ready or not
+     *  \param bIsFirstStepFixation = the first program step is fixation reagent
+     *  \param selectedStationList = the selected stations
      */
     /****************************************************************************/
-    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, bool , QList<QString>& selectedStationList);
+    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateSelectedStationList
@@ -309,10 +323,14 @@ private slots:
     void UpdateSelectedStationList(QList<QString>&);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramActionStarted
+     *  \brief  Declaration of signal ProgramActionStarted
+     *  \param programActionType = opration type, eg.Start/pause/abort.
+     *  \param  remainingTimeTotal = the total remaining time
+     *  \param  startDateTime = program start datetime
+     *  \param IsResume = is resume to run program
      */
     /****************************************************************************/
-    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void ProgramActionStarted(DataManager::ProgramActionType_t programActionType, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramActionStopped
@@ -349,7 +367,13 @@ private slots:
      */
     /****************************************************************************/
     void UpdateProgram(DataManager::CProgram &);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SendAsapDateTime
+     *  \param asapDateTime = as soon as possible datetime
+     *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
+     */
+    /****************************************************************************/
     void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
 
 };

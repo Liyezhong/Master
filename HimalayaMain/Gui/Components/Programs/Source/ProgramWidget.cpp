@@ -561,7 +561,7 @@ void CProgramWidget::OnCurrentTabChanged(int CurrentIndex)
 /****************************************************************************/
 /*!
  *  \brief Calculates the number of User Programs
- *
+ *  \return the count of user program
  */
 /****************************************************************************/
 int CProgramWidget::GetNumberOfUserPrograms()

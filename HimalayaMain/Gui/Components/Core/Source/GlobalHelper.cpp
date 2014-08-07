@@ -37,11 +37,7 @@ bool CGlobalHelper::m_programIsPaused = false;
 QStringList CGlobalHelper::m_StationList;
 Core::CDataConnector* CGlobalHelper::p_StaticDataConnector = NULL;
 
-/****************************************************************************/
-/*!
- *  \brief Constructor
- */
-/****************************************************************************/
+
 CGlobalHelper::CGlobalHelper(Core::CDataConnector *p_DataConnector) : QObject(),
     mp_DataConnector(p_DataConnector)
 {

@@ -48,6 +48,13 @@ public:
     explicit CAlarmSettingsWidget(QWidget *p_Parent = 0);
     ~CAlarmSettingsWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+    /****************************************************************************/
+    /*!
+     *  \brief Used to set pointer to mainwindow, used to retreive user role and
+     *         process state changed.
+     *  \point to the main window
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     /****************************************************************************/
     /*!
@@ -129,10 +136,19 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal AlarmSettingsChanged
+     *  \param  Settings = current user settings.
      */
     /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
-    void PlayTestTone(quint8 , quint8 , bool );
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal PlayTestTone
+     *  \param  volume = volume value
+     *  \param  sound = which sound number
+     *  \param isAlarmAudio = it is alarm or note audio file
+     */
+    /****************************************************************************/
+    void PlayTestTone(quint8 volume, quint8 sound, bool isAlarmAudio);
 };
 
 } // end namespace Settings

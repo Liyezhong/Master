@@ -233,6 +233,7 @@ void CDataManagementWidget::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = the main window
  */
 /****************************************************************************/
 void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

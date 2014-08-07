@@ -212,12 +212,6 @@ void CRegionalSettingsWidget::RetranslateUI()
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CRegionalSettingsWidget", "Regional Settings", 0, QApplication::UnicodeUTF8));
 }
 
-/****************************************************************************/
-/*!
- *  \brief Used to set pointer to mainwindow, used to retreive user role and
- *         process state changed.
- */
-/****************************************************************************/
 void CRegionalSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;

@@ -1595,11 +1595,7 @@ void CDataConnector::OnUserSettingsAck(Global::tRefType Ref, const Global::AckOK
         }
     }
 }
-/****************************************************************************/
-/*!
- *  \brief OnProgramAck
- */
-/****************************************************************************/
+
 void CDataConnector::OnProgramAck(Global::tRefType Ref, const Global::AckOKNOK &Ack)
 {
     Q_UNUSED(Ref);
@@ -1613,11 +1609,7 @@ void CDataConnector::OnProgramAck(Global::tRefType Ref, const Global::AckOKNOK &
         }
     }
 }
-/****************************************************************************/
-/*!
- *  \brief OnReagentAck
- */
-/****************************************************************************/
+
 void CDataConnector::OnReagentAck(Global::tRefType Ref, const Global::AckOKNOK &Ack)
 {
     Q_UNUSED(Ref);

@@ -93,6 +93,10 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of OnProgramActionStarted
+         *  \param  ProgramActionType = program operation type
+         *  \param  remainingTimeTotal = the total remaining time in seconds
+         *  \param  start DateTime for the selected program
+         *  \param  whether resume to run or not
          */
         /****************************************************************************/
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
@@ -100,6 +104,7 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of OnProgramActionStopped
+         *  \param  ProgramStatusType = program satus type(paused/completed/aborted)
          */
         /****************************************************************************/
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);

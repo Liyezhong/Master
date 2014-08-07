@@ -127,7 +127,21 @@ public:
     DataManager::CDashboardStation *GetDashboardStation() const;
     void SetDashboardStation(DataManager::CDashboardStation *p_DashboardStation);
     bool IsEmpty();
+    /****************************************************************************/
+    /*!
+     *  \brief Load the Initial Images of Stations
+     *  \param Painter = painter device
+     */
+    /****************************************************************************/
     void LoadStationImages(QPainter & Painter);
+    /****************************************************************************/
+    /*!
+     *  \brief Declaration of function DrawReagentName, the reagent name on the station.
+     *
+     *  \param Painter = painter deive
+     *
+     */
+    /****************************************************************************/
     void DrawReagentName(QPainter & Painter);
     void PrepareStationItemLabel();
     void PrepareReagentName();
@@ -195,6 +209,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Gets station selected
+     *  \return whether the station is selected or not
      */
     /****************************************************************************/
     bool GetStationSelect(){return m_StationSelected;}
@@ -212,6 +227,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Gets Station group type
+     *  \return station type (retort/paraffin bath/bottle)
      */
     /****************************************************************************/
     StationGroupType_t GetStationGroup(){ return m_DashboardStationGroup; }

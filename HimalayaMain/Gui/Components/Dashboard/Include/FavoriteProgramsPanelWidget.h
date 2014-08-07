@@ -75,6 +75,7 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of AddItemsToFavoritePanel
+         *  \param bOnlyAddCleaningProgram = whether or not only show cleaning program
          */
         /****************************************************************************/
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
@@ -113,18 +114,37 @@ namespace Dashboard {
     signals:
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of signal PrepareSelectedProgramChecking
+         *  \brief  Declaration of signal Checking the selected program
+         *  \param selectedProgramId = the selected program id
          */
         /****************************************************************************/
         void PrepareSelectedProgramChecking(const QString& selectedProgramId);
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of signal OnSelectEndDateTime
+         *  \param
          */
         /****************************************************************************/
-        void OnSelectEndDateTime(const QDateTime &);
+        void OnSelectEndDateTime(const QDateTime & endDateTime);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of signal OnSelectEndDateTime
+         */
+        /****************************************************************************/
         void RequestAsapDateTime();
-        void SendAsapDateTime(int, bool);
+        /****************************************************************************/
+        /*!
+         *  \brief  emit signal OnSelectEndDateTime
+         *  \param asapDateTime = as soon as possible datetime
+         *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
+         */
+        /****************************************************************************/
+        void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+        /****************************************************************************/
+        /*!
+         *  \brief  Declaration of signal for update the favorite Program
+         */
+        /****************************************************************************/
         void UpdateFavProgram();
     private:
         /****************************************************************************/

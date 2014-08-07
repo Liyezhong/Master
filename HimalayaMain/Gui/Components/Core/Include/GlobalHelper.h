@@ -34,6 +34,12 @@ class CGlobalHelper : public QObject
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \param p_DataConnector = data connector object
+     */
+    /****************************************************************************/
     CGlobalHelper(Core::CDataConnector *p_DataConnector);
     virtual ~CGlobalHelper();
     /****************************************************************************/
@@ -60,12 +66,47 @@ public:
     /****************************************************************************/
     static QString TimeToString(int seconds, bool showSeconds=false) ;
     static void RetranslateUI();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to get program id
+     *  \return the selected prorgam id
+     */
+    /****************************************************************************/
     static QString GetSelectedProgramId();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to get program pause status
+     *  \return the status value
+     */
+    /****************************************************************************/
     static bool GetProgramPaused();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to get program pause status
+     *  \return the status value
+     */
+    /****************************************************************************/
     static void SetProgramPaused(bool pauseFlag);
+    /****************************************************************************/
+    /*!
+     *  \brief unselect the program
+     *
+     */
+    /****************************************************************************/
     static void UnselectProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to set all used station
+     *
+     */
+    /****************************************************************************/
     static void SetStationList(const QStringList& list);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to check whether something could be edit or not
+     *  \return the check value
+     */
+    /****************************************************************************/
     static bool CheckIfCanEdit(const QString& name="", int CheckType=0);  // type 0: No Id 1:Program Name 2: Reagent Name 3: Station 4:ReagentGroup
 public slots:
     /****************************************************************************/

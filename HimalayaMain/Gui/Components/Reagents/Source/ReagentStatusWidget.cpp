@@ -556,6 +556,9 @@ void CReagentStatusWidget::showEvent(QShowEvent *)
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_DataConnector = pointer to DataConnector
+ *  \param p_ReagentList = pointer to reagent list
+ *  \param p_KeyBoard = the keyboard
  */
 /****************************************************************************/
 void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,

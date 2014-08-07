@@ -156,6 +156,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of RMSCleaningChanged
+     *  \param  RMSValue = rms option
      */
     /****************************************************************************/
     void RMSCleaningChanged(const Global::RMSOptions_t RMSValue);

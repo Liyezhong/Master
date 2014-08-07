@@ -136,8 +136,33 @@ public:
     void EmitUpdateModeSignal(QString Mode);
     void OnAck(Global::tRefType Ref, const Global::AckOKNOK &Ack);
     void RequestDayRunLogFileNames();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of function OnUserSettingsAck
+     *
+     *  \param Ref = Ref will not be used
+     *
+     *  \param Ack = Acknowledge to be processed
+     */
+    /****************************************************************************/
     void OnUserSettingsAck(Global::tRefType Ref, const Global::AckOKNOK &Ack);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of function OnProgramAck
+     *
+     *  \param Ref = Ref will not be used
+     *
+     *  \param Ack = Acknowledge to be processed
+     */
+    /****************************************************************************/
     void OnProgramAck(Global::tRefType Ref, const Global::AckOKNOK &Ack);
+    /****************************************************************************/
+    /*!
+     *  \brief Process the acknowledge of adding reagent
+     *  \param Ref = reference to this acknowledge
+     *  \param Ack = ok or no acknowledge
+     */
+    /****************************************************************************/
     void OnReagentAck(Global::tRefType Ref, const Global::AckOKNOK &Ack);
 
 
@@ -169,18 +194,21 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendStationResetData
+     *  \param  StationId = Which station will be reset
      */
     /****************************************************************************/
     void SendStationResetData(const QString& StationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SendStationSetAsEmpty
+     *  \brief  Send the inforamtion about set some station as empty
+     *  \param  StationId for the operated station
      */
     /****************************************************************************/
     void SendStationSetAsEmpty(const QString StationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SendStationSetAsFull
+     *  \brief  Declaration of SendStationSetAsFull
+     *  \param  Station Id to set full
      */
     /****************************************************************************/
     void SendStationSetAsFull(const QString& StationId);
@@ -260,6 +288,9 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramAction
+     *  \param  ProgramID = the selected Program ID
+     *  \param  ActionType = operation type, eg.start/pause/abort
+     *  \param  delayTime = the time to delay
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
@@ -267,12 +298,15 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendKeepCassetteCount
+     *  \param CassetteCount = the input cassette count
      */
     /****************************************************************************/
     void SendKeepCassetteCount(int CassetteCount);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramSelected
+     *  \param ProgramID = the current Program ID
+     *  \param ParaffinStepIndex = the first used paraffin step
      */
     /****************************************************************************/
     void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
@@ -302,7 +336,8 @@ public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SendAppQuitSystemPrepareShutdown
+     *  \brief  Declaration of SendAppQuitSystemPrepareShutdown
+     *  \param  quitAppShutdownActionType = quit application or prepare shutdown;
      */
     /****************************************************************************/
     void SendAppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
@@ -362,20 +397,10 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal ReagentGroupColorUpdated
      */
     /****************************************************************************/
     void ReagentGroupColorUpdated();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramsUpdated
@@ -384,20 +409,10 @@ signals:
     void ProgramsUpdated();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal ProgramsInitialized
      */
     /****************************************************************************/
     void ProgramsInitialized(bool);
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramsDeleted
@@ -406,20 +421,10 @@ signals:
     void ProgramsDeleted();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal ReagentsUpdated
      */
     /****************************************************************************/
     void ReagentsUpdated();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UserSettingsUpdated
@@ -428,31 +433,16 @@ signals:
     void UserSettingsUpdated();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal UpdateMode
      */
     /****************************************************************************/
     void UpdateMode(const QString &);
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal DateTimeAcked
      */
     /****************************************************************************/
     void DateTimeAcked();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RemoveProgram
@@ -468,31 +458,16 @@ signals:
     void UpdateEventStrings(QByteArray EventsStringsData);
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal StopTimers
      */
     /****************************************************************************/
     void StopTimers();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal ReCalculateEndTimes
      */
     /****************************************************************************/
     void ReCalculateEndTimes();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ShowManualProgramDlg
@@ -537,20 +512,10 @@ signals:
     void ShowPrioritizeScreenDlg(bool IsBlgChangesDlg);
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal DeviceConfigurationUpdated
      */
     /****************************************************************************/
     void DeviceConfigurationUpdated();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RevertChangedUserSettings
@@ -559,20 +524,10 @@ signals:
     void RevertChangedUserSettings();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal RevertChangedProgram
      */
     /****************************************************************************/
     void RevertChangedProgram();
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RevertChangedReagent
@@ -581,24 +536,21 @@ signals:
     void RevertChangedReagent();
     /****************************************************************************/
     /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal EndGUIInitialization
      */
     /****************************************************************************/
     void EndGUIInitialization();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal StartProgramAction
+     *  \brief  Declaration of signal StartProgramAction
+     *  \param ActionType = program operation type(start/pause/abort)
      */
     /****************************************************************************/
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal CurrentProgramStepInforUpdated
+     *  \param  Command = update the current program step information
      */
     /****************************************************************************/
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
@@ -608,6 +560,11 @@ signals:
 	 */
 	/****************************************************************************/
 	void ProgramStartReady();
+    /****************************************************************************/
+    /*!
+     *  \brief  signal of Program selfTest failed
+     */
+    /****************************************************************************/
     void ProgramSelfTestFailed();
     /****************************************************************************/
     /*!
@@ -648,18 +605,21 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RetortLockStatusChanged
+     *  \param Command = command for retort lock status
      */
     /****************************************************************************/
     void RetortLockStatusChanged(const MsgClasses::CmdLockStatus& Command);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramSelectedReply
+     *  \param  Command = Program selection reply command
      */
     /****************************************************************************/
     void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal StationSuckDrain
+     *  \brief  Declaration of signal StationSuckDrain, for animation start/stop
+     *  \param  Command = command for suck or drain
      */
     /****************************************************************************/
     void StationSuckDrain(const MsgClasses::CmdStationSuckDrain& Command);

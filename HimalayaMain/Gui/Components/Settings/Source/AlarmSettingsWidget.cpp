@@ -302,12 +302,6 @@ void CAlarmSettingsWidget::RetranslateUI()
                                     QApplication::UnicodeUTF8);
 }
 
-/****************************************************************************/
-/*!
- *  \brief Used to set pointer to mainwindow, used to retreive user role and
- *         process state changed.
- */
-/****************************************************************************/
 void CAlarmSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;

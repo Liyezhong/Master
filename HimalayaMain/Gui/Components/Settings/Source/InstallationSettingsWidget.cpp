@@ -187,11 +187,7 @@ void CInstallationSettingsWidget::SetSWConfig(DataManager::CSWVersionList *p_SWV
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Sets KeyBoard object instance
- */
-/****************************************************************************/
+
 void CInstallationSettingsWidget::SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard)
 {
     mp_KeyBoardWidget = p_KeyBoard;
@@ -260,6 +256,7 @@ void CInstallationSettingsWidget::OnOkClicked(QString EnteredText)
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *   \param p_MainWindow = application's main window
  */
 /****************************************************************************/
 void CInstallationSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

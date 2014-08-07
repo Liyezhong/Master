@@ -139,15 +139,29 @@ public slots:
      */
     /****************************************************************************/
     void OnRequestASAPDateTime();
-    void OnGetASAPDateTime(int, bool);
+    /****************************************************************************/
+    /*!
+     *  \brief  processing slot when Get ASAP DateTime
+     *  \param asapDateTime = as soon as possible datetime
+     *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
+     */
+    /****************************************************************************/
+    void OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation);
 
 signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal OnSelectDateTime
+     *  \param  selDateTime = the selected datetime
      */
     /****************************************************************************/
     void OnSelectDateTime(const QDateTime& selDateTime);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RequestAsapDateTime
+     *
+     */
+    /****************************************************************************/
     void RequestAsapDateTime();
 
 };

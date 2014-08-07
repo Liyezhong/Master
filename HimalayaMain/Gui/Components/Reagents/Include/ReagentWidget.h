@@ -94,6 +94,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when UserSettings are changed.
+     *  \param Settings = the changed user setting
      *
      */
     /****************************************************************************/

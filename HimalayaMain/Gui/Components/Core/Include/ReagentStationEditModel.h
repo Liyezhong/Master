@@ -92,7 +92,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Sets the ModifiedProgramStepDlg flag
-     * \iparam Status
+     * \param reagentType = reagent type
      */
     /****************************************************************************/
     void SetReagentType(SpecialReagentType_t reagentType)

@@ -275,6 +275,7 @@ void CAlarmSettingsDlg::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = application's main window
  */
 /****************************************************************************/
 void CAlarmSettingsDlg::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

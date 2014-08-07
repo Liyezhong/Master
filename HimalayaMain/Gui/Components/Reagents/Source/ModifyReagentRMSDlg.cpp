@@ -224,12 +224,6 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief Sets the content of the dialog for New Reagent
- *
- */
-/****************************************************************************/
 void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
 {
     switch (Option) {

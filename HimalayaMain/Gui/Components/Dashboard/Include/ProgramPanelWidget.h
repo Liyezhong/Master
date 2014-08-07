@@ -133,18 +133,40 @@ public:
     /****************************************************************************/
     bool IsAbortEnabled();
 signals:
-    void ResetFocus(bool reset);
-    void RequestAsapDateTime();
-    void SendAsapDateTime(int, bool bIsFirstStepFixation);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal AddItemsToFavoritePanel
+     *  \brief  refresh the program selection
+     *  \param reset = whether reset the selected program or not
+     */
+    /****************************************************************************/
+    void ResetFocus(bool reset);
+    /****************************************************************************/
+    /*!
+     *  \brief  singnal of RequestAsapDateTime
+     *
+     */
+    /****************************************************************************/
+    void RequestAsapDateTime();
+    /****************************************************************************/
+    /*!
+     *  \brief refresh the program selection
+     *  \param asapDateTime = the as soon as possible end datetime
+     *  \param bIsFirstStepFixation = whether the first step is fixation or not
+     */
+    /****************************************************************************/
+    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+    /****************************************************************************/
+    /*!
+     *  \brief Declaration of signal AddItemsToFavoritePanel
+     *  \param bOnlyAddCleaningProgram = indicate only add cleaning program
      */
     /****************************************************************************/
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal PrepareSelectedProgramChecking
+     *  \brief  send signal PrepareSelectedProgramChecking to master, for checking program
+     *  \param selectedProgramId = the selected program id
+     *  \param bCheckEndDatetimeAgain = whether check end datetime again or not
      */
     /****************************************************************************/
     void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
@@ -156,7 +178,12 @@ signals:
     void OnSelectEndDateTime(const QDateTime &);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramSelected
+     *  \brief when Program select, send this signal
+     *  \param ProgramId = the curent selected program id.
+     *  \param asapEndTime = the as soon as possible end time in seconds
+     *  \param bProgramStartReady = ProgramStart is ready
+     *  \param bIsFirstStepFixation = whether the first step is fixation or not
+     *  \param selectedStationList = store the used station IDs for the current selected program
      */
     /****************************************************************************/
     void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
@@ -169,12 +196,17 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramActionStarted
+     *  \param  programActionType = program operation type
+     *  \param  remainingTimeTotal = the total program remaining time\
+     *  \param  startDateTime = the program start datetime
+     *  \param  IsResume = is first time to press "Start", or resume to run program
      */
     /****************************************************************************/
-    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void ProgramActionStarted(DataManager::ProgramActionType_t programActionType, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal CurrentProgramStepInforUpdated
+     *  \param = the current program updating information passed by this command
      */
     /****************************************************************************/
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);

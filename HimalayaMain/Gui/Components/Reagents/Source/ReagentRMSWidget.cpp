@@ -701,11 +701,7 @@ void CReagentRMSWidget ::UpdateUserSetting()
         }
 }
 
-/****************************************************************************/
-/*!
- *  \brief This event is called whenever widget is shown
- */
-/****************************************************************************/
+
 void CReagentRMSWidget::showEvent(QShowEvent *)
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
@@ -732,6 +728,10 @@ void CReagentRMSWidget::showEvent(QShowEvent *)
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_DataConnector = pointer to DataConnector
+ *  \param p_ReagentList = pointer to reagent list
+ *  \param p_MainWindow = application's main window
+ *  \param p_KeyBoard =  pointer to keyboard instance
  */
 /****************************************************************************/
 void CReagentRMSWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,

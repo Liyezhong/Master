@@ -135,33 +135,45 @@ protected:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramAction
+     *  \brief  emit the signal of program operation action
+     *  \param programID = the selected program id
+     *  \param actionType = program action type:start/pause/abort.
      */
     /****************************************************************************/
     void ProgramAction(const QString& programID, DataManager::ProgramActionType_t actionType);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateDashboardSceneReagentStations
+     *  \param  ProgramID = the Program ID
      */
     /****************************************************************************/
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramSelected
+     *  \param programId = the selected program id
+     *  \param selectedStationList = all used stations for the selected program
      */
     /****************************************************************************/
     void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
+    /****************************************************************************/
+    /*!
+     *  \brief when user has operations in GUI
+     */
+    /****************************************************************************/
     void OnInteractStart();
 public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnRetortLockStatusChanged
+     *  \param  cmd = command for retort lock/unlock
      */
     /****************************************************************************/
     void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnStationSuckDrain
+     *  \param cmd = command information for sucking or draing reagent
      */
     /****************************************************************************/
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);

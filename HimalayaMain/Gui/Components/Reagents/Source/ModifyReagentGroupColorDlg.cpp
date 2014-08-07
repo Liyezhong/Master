@@ -101,11 +101,7 @@ CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
 }
 
 
-/****************************************************************************/
-/*!
- *  \brief Set pointer to CReagentGroupColorList
- */
-/****************************************************************************/
+
 void CModifyReagentGroupColorDlg:: SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList)
 {
     mp_CReagentGroupColorList = p_CReagentGroupColorList;

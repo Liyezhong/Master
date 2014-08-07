@@ -251,12 +251,6 @@ void CReagentStationWidget::showEvent(QShowEvent *)
     ResetButtons();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Used to set pointer to mainwindow, used to retreive user role and
- *         process state changed.
- */
-/****************************************************************************/
 void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
                                          DataManager::CDataReagentList *p_ReagentList,
                                          MainMenu::CMainWindow *p_MainWindow,

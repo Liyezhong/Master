@@ -87,6 +87,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal SettingsChanged
+     *  \param  Settings = the user setting
      */
     /****************************************************************************/
     void SettingsChanged(DataManager::CUserSettings &Settings);
