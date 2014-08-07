@@ -100,16 +100,6 @@ int main(int Argc, char *p_Argv[])
 
     QThread thrMasterThread;
 
-    if(Argc>=2 && p_Argv[1] != "-qws")
-    {
-        Global::ToConsole("Software in Debug Mode");
-        Startup.GuiInit(p_Argv[1]);
-    }
-    else
-    {
-        Startup.GuiInit();
-    }
-
     TheMasterThreadController.moveToThread(&thrMasterThread);
 
 
@@ -120,6 +110,21 @@ int main(int Argc, char *p_Argv[])
     QObject::connect(&thrMasterThread, SIGNAL(finished()), &App, SLOT(quit()));
 
     thrMasterThread.start();
+
+    QString param;
+    if (Argc==2) {
+        param = QString("%1").arg(p_Argv[1]);
+    }
+
+
+    if (Argc==1 || (Argc==2 && param == "-qws")){
+        Global::ToConsole("Software in Debug Mode 111111");
+        Startup.GuiInit();
+    }
+    else {
+        Global::ToConsole("Software in Debug Mode");
+        Startup.GuiInit(param);
+    }
 
     return App.exec();
 }

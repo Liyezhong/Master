@@ -154,8 +154,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
-        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
-        //qDebug()<<"Remote Alarm set high return : " <<mp_DORemoteAlarm->SetHigh();
+        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);        
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
@@ -164,8 +163,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
-        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
-        //qDebug()<<"Local Alarm set high return : "<< mp_DOLocalAlarm->SetHigh();
+        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);        
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";

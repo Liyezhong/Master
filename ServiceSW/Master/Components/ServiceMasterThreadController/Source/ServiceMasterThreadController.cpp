@@ -1573,17 +1573,17 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
-    sendManufacturingTestCommand(Service::SYSTEM_SHUTDOWN);
-
-    QTimer timer;
-    timer.setSingleShot(true);
-    timer.setInterval(4000);
-    timer.start();
-    QEventLoop loop;
-    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    loop.exec();
-
     if (NeedUpdate) {
+        sendManufacturingTestCommand(Service::SYSTEM_SHUTDOWN);
+
+        QTimer timer;
+        timer.setSingleShot(true);
+        timer.setInterval(4000);
+        timer.start();
+        QEventLoop loop;
+        connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+        loop.exec();
+
         QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
         QFile BootConfigFile(RebootPath);
 

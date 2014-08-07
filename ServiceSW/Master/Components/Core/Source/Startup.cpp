@@ -33,6 +33,7 @@
 #include "ServiceDataManager/Include/TestCase.h"
 #include "DiagnosticsManufacturing/Include/UserInputDialog.h"
 #include <QDesktopWidget>
+#include "Core/Include/ServiceUtils.h"
 
 namespace Core {
 
@@ -452,39 +453,28 @@ void CStartup::GuiInit()
 /****************************************************************************/
 void CStartup::GuiInit(QString debugMode)
 {
-    if (debugMode.startsWith("Service"))
+    if (debugMode.startsWith("Service") || debugMode.startsWith("ts_Service"))
     {
+        CServiceUtils::delay(1000);
         ServiceGuiInit();
         (void) FileExistanceCheck();
     }
-    else if (debugMode.startsWith("ts_Service"))
+    else if (debugMode.startsWith("ts_Manufacturing") || debugMode.startsWith("Manufacturing"))
     {
-        ServiceGuiInit();
-        (void) FileExistanceCheck();
-    }
-    else if (debugMode.startsWith("ts_Manufacturing"))
-    {
+        CServiceUtils::delay(1000);
         InitManufacturingDiagnostic();
         (void) FileExistanceCheck();
     }
     else
-    {
-        if (debugMode.startsWith("Manufacturing"))
+    {        
+        if (mp_USBKeyValidator)
         {
-            InitManufacturingDiagnostic();
-            (void) FileExistanceCheck();
+            delete mp_USBKeyValidator;
         }
-        else
-        {
-            if (mp_USBKeyValidator)
-            {
-                delete mp_USBKeyValidator;
-            }
-            mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName);
-            CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
-                               this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
-            CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
-        }
+        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName);
+        CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
+                           this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
+        CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
     }
 }
 
