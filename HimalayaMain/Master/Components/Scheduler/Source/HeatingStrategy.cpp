@@ -489,11 +489,6 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
-    if ( !isEffectiveTemp(HWTemp) )
-    {
-        return true;
-    }
-
     //For Scenarios NON-related sensors(Oven and LA)
     if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
             && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
