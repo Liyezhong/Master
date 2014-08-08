@@ -450,19 +450,19 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
 
 void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter)
 {
-   QPainterPath textPath;
-   QFontMetrics fm(textFont);
-   textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), textFont, text);
-   QPainterPathStroker pps;
-   pps.setWidth(3);
-   pps.setDashPattern(Qt::NoPen);
-   pps.setCurveThreshold(0.001);
-   pps.setCapStyle(Qt::RoundCap);
-   pps.setJoinStyle(Qt::RoundJoin);
-   QPainterPath strokePath = pps.createStroke(textPath);
-   painter.fillPath(strokePath, QBrush(QColor(Qt::white)));
-   painter.setPen(Qt::black);
-   painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), text);
+    QPainterPath textPath;
+    QFontMetrics fm(textFont);
+    textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), textFont, text);
+    QPainterPathStroker pps;
+    pps.setWidth(3);
+    pps.setDashPattern(Qt::NoPen);
+    pps.setCurveThreshold(0.001);
+    pps.setCapStyle(Qt::RoundCap);
+    pps.setJoinStyle(Qt::RoundJoin);
+    QPainterPath strokePath = pps.createStroke(textPath);
+    painter.fillPath(strokePath, QBrush(QColor(Qt::white)));
+    painter.setPen(Qt::black);
+    painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), text);
 }
 
 void CDashboardStationItem::PrepareStationItemLabel()
@@ -481,33 +481,33 @@ void CDashboardStationItem::PrepareStationItemLabel()
     painter.setFont(textFont);
     QRect rect;
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-       textFont.setBold(true);
-       rect.setRect(0,0,67,15);
-     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-       rect.setRect(0,0,67,15);
-     } else {
+        textFont.setBold(true);
+        rect.setRect(0,0,67,15);
+    } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+        rect.setRect(0,0,67,15);
+    } else {
         rect.setRect(0,0,33,16);
-     }
-     DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
-     (void)painter.end();
+    }
+    DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
+    (void)painter.end();
 }
 
 void CDashboardStationItem::DrawStationItemLabel(QPainter& painter)
 {
     QRect rectDest, rectSource;
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-       rectDest.setRect(71, 45, 67, 15);
-       rectSource.setRect(0, 0, 67, 15);
-     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-       rectDest.setRect(33, 22, 67, 15);
-       rectSource.setRect(0, 0, 67, 15);
-     } else {
+        rectDest.setRect(71, 45, 67, 15);
+        rectSource.setRect(0, 0, 67, 15);
+    } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+        rectDest.setRect(33, 22, 67, 15);
+        rectSource.setRect(0, 0, 67, 15);
+    } else {
         painter.drawPixmap(0, 0, m_PixmapBottleHandle);
         rectDest.setRect(23, 9, 33, 16);
         rectSource.setRect(0, 0, 33, 16);
-     }
-	 
-     painter.drawPixmap(rectDest, m_PixmapLabel, rectSource);
+    }
+
+    painter.drawPixmap(rectDest, m_PixmapLabel, rectSource);
 }
 
 void CDashboardStationItem::EnableBlink(bool bEnable)
@@ -693,7 +693,6 @@ void CDashboardStationItem::UpdateDashboardScene(QString StationID)
         }
 
         UpdateDashboardStationItemReagent();
-
     }
 }
 
@@ -821,11 +820,11 @@ void CDashboardStationItem::SuckDrainAnimation()
             int currentLiquidLevel(0);
             if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
             {
-                 currentLiquidLevel = m_BottleBoundingRectHeight - m_BottleCoverHeight;
+                currentLiquidLevel = m_BottleBoundingRectHeight - m_BottleCoverHeight;
             }
             else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
             {
-                 currentLiquidLevel = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;// stop animation when touch to current LiquidLevel
+                currentLiquidLevel = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;// stop animation when touch to current LiquidLevel
             }
 
             if (m_CurrentBoundingRectReagentHeight < currentLiquidLevel)
@@ -847,6 +846,7 @@ const QString& CDashboardStationItem::GetStationItemID() const
 
 bool CDashboardStationItem::IsReagentExpired()
 {
+    UpdateUserSettings();
     return m_ReagentExpiredFlag;
 }
 
@@ -868,8 +868,7 @@ void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_
 
 void CDashboardStationItem::SetContainerRetortLockedStatus(bool locked)
 {
-	m_RetortLocked = locked;
+    m_RetortLocked = locked;
     DrawStationItemImage();
-
 }
 } // end namespace Core
