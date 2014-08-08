@@ -1123,6 +1123,14 @@ protected:
          */
         /****************************************************************************/
         QQueue<ProgramStationInfo_t> GetProgramStationList() const { return m_ProgramStationList; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief	Check if program has paraffin reagent 
+         *  \return bool 
+         *
+         */
+        /****************************************************************************/
         inline bool HasParaffinReagent() const { return m_hasParaffin;  }
 
     public slots:
