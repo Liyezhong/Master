@@ -73,6 +73,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
 	m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
     m_BottleChkFlag = true;
+    m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
 }
 
@@ -377,13 +378,14 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
     case BOTTLES_CHECKING:
         if (true == m_BottleChkFlag)  // Send out IDBottleCheck command
         {
-            if (mp_SchedulerThreadController->BottleCheck())
+            if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
             {
                 m_BottleChkFlag = false;
             }
             else // all the bottle check (for 16 bottles) has been done
             {
                 mp_SchedulerThreadController->LogDebug("Pre-Test: IDBottleCheck passed");
+                m_BottleSeq = 0; //reset
                 emit MoveToTube();
             }
         }
@@ -393,12 +395,14 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
+                    m_BottleSeq = 0; //reset
+                    m_BottleChkFlag = true; //reset
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
                 else
                 {
                     //dequeue the current bottle
-                    mp_SchedulerThreadController->DequeueBottle();
+                    m_BottleSeq++;
                     m_BottleChkFlag = true;
                 }
             }

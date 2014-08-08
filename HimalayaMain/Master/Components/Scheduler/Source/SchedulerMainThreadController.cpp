@@ -2096,7 +2096,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-    m_CurrentScenario = Scenario;
+    //m_CurrentScenario = Scenario;
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     LogDebug(strctHWMonitor.toLogString());
@@ -2153,12 +2153,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV2))
 	{
         m_TempRV2 = strctHWMonitor.TempRV2;
-        if (200 == m_CurrentScenario)
+        if (200 == Scenario)
         {
             if (m_TempRV2 < 40)
             {
-                LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(m_CurrentScenario));
-                RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, m_CurrentScenario, true);
+                LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
+                RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
         }
@@ -2184,18 +2184,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if ( (m_OvenLidStatus == 0) && (strctHWMonitor.OvenLidStatus == 1) )
         {
             //oven is open
-            if ( (m_CurrentScenario >= 2 && m_CurrentScenario <= 205) || (m_CurrentScenario >= 211 && m_CurrentScenario <= 257)
-                 || (m_CurrentScenario >= 281 && m_CurrentScenario <= 297) )
+            if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
+                 || (Scenario >= 281 && Scenario <= 297) )
             {
-                LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(m_CurrentScenario));
-                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, m_CurrentScenario, true);
+                LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(Scenario));
+                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
             }
-            if(m_CurrentScenario >= 271 && m_CurrentScenario <= 277)
+            if(Scenario >= 271 && Scenario <= 277)
             {
                 if ("ERROR" != StepID && "IDLE" != StepID)
                 {
                     ReleasePressure();
-                    RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, m_CurrentScenario, true);
+                    RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -2346,14 +2346,14 @@ void SchedulerMainThreadController::StepStart()
 
 }
 
-bool SchedulerMainThreadController::BottleCheck()
+bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
 {
-    if (m_ProgramStationList.empty())
+    if (bottleSeq >= m_ProgramStationList.size())
     {
         return false;
     }
 
-    ProgramStationInfo_t stationInfo = m_ProgramStationList.head();
+    ProgramStationInfo_t stationInfo = m_ProgramStationList.at(bottleSeq);
     RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
     QString reagentGrpId = stationInfo.ReagentGroupID;
 

@@ -1098,7 +1098,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow()
         m_RsPauseStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RsPauseCount++;
     }
-    scenario = mp_SchedulerThreadController->GetTheCurrentScenario();
+    scenario = mp_SchedulerThreadController->GetCurrentScenario();
     if(273 == scenario)//move seal position
     {
         if( !mp_SchedulerThreadController->IsRVRightPosition(1) )

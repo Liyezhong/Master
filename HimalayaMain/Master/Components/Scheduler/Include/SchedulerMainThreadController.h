@@ -483,26 +483,7 @@ typedef struct
           */
          /****************************************************************************/
          QString GetStationIDFromProgramStep(int ProgramStepIndex);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetRVTubePositionByStationID
-          *
-          *  \param stationID = const QString type parameter
-          *
-          *  \return from GetRVTubePositionByStationID
-          */
-         /****************************************************************************/
-         RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
-          *
-          *  \param stationID = const QString type parameter
-          *
-          *  \return from GetRVSealPositionByStationID
-          */
-         /****************************************************************************/
-         RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function IsLastStep
@@ -982,6 +963,28 @@ protected:
         int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
 
         /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetRVTubePositionByStationID
+         *
+         *  \param stationID = const QString type parameter
+         *
+         *  \return from GetRVTubePositionByStationID
+         */
+        /****************************************************************************/
+        RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
+         *
+         *  \param stationID = const QString type parameter
+         *
+         *  \return from GetRVSealPositionByStationID
+         */
+        /****************************************************************************/
+        RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
+
+        /****************************************************************************/
         /**
          *  \brief Get Scheduler Commnad Processor
          *  \return pointer to SchedulerCommandProcessor
@@ -999,11 +1002,11 @@ protected:
 
         /****************************************************************************/
         /**
-         *  \brief Get Heating Strategy
-         *  \return pointer to quint32
+         *  \brief Get current secenario in Scheduler
+         *  \return quint32 - current scenario
          */
         /****************************************************************************/
-        qint32 GetTheCurrentScenario() const {  return m_CurrentScenario; }
+        quint32 GetCurrentScenario() const {  return m_CurrentScenario; }
 
         /****************************************************************************/
         /*!
@@ -1011,7 +1014,7 @@ protected:
          *  \return qint16, 0 - lose, 1 - open
          */
         /****************************************************************************/
-        inline quint16 GetTheOvenLockStatus() const {    return m_OvenLidStatus; }
+        inline quint16 GetOvenLockStatus() const {    return m_OvenLidStatus; }
 
         /****************************************************************************/
         /**
@@ -1030,19 +1033,11 @@ protected:
         /****************************************************************************/
         /**
          *  \brief  Bottle check for each station
-         *  \param  void
+         *  \param  bottleSeq sequence of the bottle
          *  \return bool, true - continue; false - done;
          */
         /****************************************************************************/
-        bool BottleCheck();
-        /****************************************************************************/
-        /**
-         *  \brief  Dequeue the bottle from station list
-         *  \param  void
-         *  \return void
-         */
-        /****************************************************************************/
-        void DequeueBottle() { m_ProgramStationList.dequeue(); }
+        bool BottleCheck(quint32 bottleSeq);
 
         /****************************************************************************/
         /*!
@@ -1119,6 +1114,15 @@ protected:
          */
         /****************************************************************************/
         inline bool IsCleaningProgram() const { return m_IsCleaningProgram; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Get the program station list
+         *  \return Program station list queue
+         *
+         */
+        /****************************************************************************/
+        QQueue<ProgramStationInfo_t> GetProgramStationList() const { return m_ProgramStationList; }
 
     public slots:
 

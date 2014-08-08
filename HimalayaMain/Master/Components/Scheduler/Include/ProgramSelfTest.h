@@ -201,8 +201,9 @@ private:
     qreal   m_PressureDriftOffset;                                  //!< Pressure calibration offset
     quint8  m_PressureCalibrationCounter;                           //!< Counter of Pressure Calibratoin
     qint64  m_ReleasePressureTime;                                  //!< Time of releasing pressure
-    quint32 m_PressureSealingChkSeq;                                 //!< Sequence of Sealing checking
+    quint32 m_PressureSealingChkSeq;                                //!< Sequence of Sealing checking
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
+    quint32 m_BottleSeq;                                            //!< Sequence of the bottle
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
 private:
     /****************************************************************************/
