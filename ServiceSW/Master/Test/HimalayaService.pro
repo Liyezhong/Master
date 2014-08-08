@@ -24,13 +24,14 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../../../../Platform/Gui/Components/KeyBoard/Build/KeyBoard.pro \
           ../../../../Platform/Gui/Components/MainMenu/Build/MainMenu.pro \
           ../../../../Platform/Gui/Components/kineticscroller/qtscroller.pro \
-          ../../../../Platform/Master/Components/ImportExport/Build/ImportExport.pro \
+          ../../../../Platform/ServiceSW/Components/IENetworkClient/Build/IENetworkClient.pro \
+          ../../../../Platform/ServiceSW/Components/ServiceImportExport/Build/ServiceImportExport.pro \
           ../../../../Platform/ServiceSW/Components/LogViewer/Build/LogViewer.pro \
           ../../../../Platform/ServiceSW/Components/Settings/Build/Settings.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
           ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
           ../Components/Diagnostics/Build/Diagnostics.pro \
-         ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
+          ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
           ../Components/Core/Build/Core.pro \
           ../Components/ServiceDataManager/Build/ServiceDataManager.pro \

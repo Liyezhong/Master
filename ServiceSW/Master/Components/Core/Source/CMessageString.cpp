@@ -14,6 +14,8 @@ QString CMessageString::MSG_TITLE_SEND_REPORT;                             //!<S
 QString CMessageString::MSG_TITLE_USER_INPUT;                              //!<User Input
 QString CMessageString::MSG_TITLE_ENTER_VALVE;                             //!<Enter Value
 QString CMessageString::MSG_TITLE_SEALING_TEST;                            //!<Sealing Test
+QString CMessageString::MSG_TITLE_SPEAKER_TEST;                            //!<System speaker test
+QString CMessageString::MSG_TITLE_MAINS_RELAY_TEST;                        //!<Mains relay test
 QString CMessageString::MSG_TITLE_CONFIRM_WATER_LEVEL;                     //!<Confirm water level
 
 QString CMessageString::MSG_BUTTON_OK;                                     //!<Ok
@@ -69,6 +71,16 @@ QString CMessageString::MSG_DIAGNOSTICS_USER_INPUT_PRESSURE;               //!<T
 QString CMessageString::MSG_DIAGNOSTICS_POSITION;                          //!<Position
 QString CMessageString::MSG_DIAGNOSTICS_POSITION_READY;                    //!<Positon %1# is ready.
 QString CMessageString::MSG_DIAGNOSTICS_IF_TEST_PASS;                      //!<Is the test pass?
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS;            //!<Do you see the retort lid '%1' ?
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS;          //!<Do you see the cover sensor status shows '%1'
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_LOW;                   //!<Did you hear the speaker test sound ?
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH;                  //!<Did you hear a louder speaker test sound this time ?
+QString CMessageString::MSG_DIAGNOSTICS_CONFIRM_AIARM_CONNECT;             //!<Please confirm the alarm light is on and status is 'Connected' ?
+QString CMessageString::MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT;          //!<Please confirm the alarm status is 'DisConnected' ?
+QString CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON;                   //!<relay switch on Spec.0.3A-1.3A
+QString CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;                  //!<relay switch off Spec.&lt;0.15A
+QString CMessageString::MSG_DIAGNOSTICS_ASB3_CURRENT;                      //!<<br>ASB3 current:%1<br>Result:%2
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!<Please check if the exhaust fan is runing and check if the air flow direction is out of device.
 QString CMessageString::MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!<Please check if the ventilation fan is runing and check if the air flow direction is out of device
 QString CMessageString::MSG_DIAGNOSTICS_ADJUST_LID_LOCK;                   //!<Please adjust retort lid lock assembly then re-test...
 QString CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED;          //!<ASB %1 DC output voltage is failed (%2 V). <br>and current is failed (%3 mA).
@@ -76,6 +88,15 @@ QString CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_OK;              //!<A
 QString CMessageString::MSG_DIAGNOSTICS_TEST_COVER_SENSOR;                 //!<Open the retort lid. do you see water cover the level sensor?
 QString CMessageString::MSG_DIAGNOSTICS_RV_SELECT_TEST;                    //!<Rotary valve selecting test in progress...
 QString CMessageString::MSG_DIAGNOSTICS_RV_SEALINT_TEST;                   //!<Rotary valve sealing test in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_RV;                        //!<Heating rotary valve in progress...
+QString CMessageString::MSG_DIAGNOSTICS_INITIALIZING_RV;                   //!<Initializing rotary valve in progress...
+QString CMessageString::MSG_DIAGNOSTICS_DETECTING_LS;                      //!<Detecting level sensor in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_LS;                        //!<Heating level sensor in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_EMPTY;              //!<Heating retort(empty) in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_LIQUID;             //!<Heating retort(liquid) in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_BELT1;                     //!<Heating Belt1 in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_BELT2;                     //!<Heating Belt2 in progress...
+QString CMessageString::MSG_DIAGNOSTICS_HEATING_OVEN;                      //!<Heating Oven(empty) in progress...
 QString CMessageString::MSG_DIAGNOSTICS_VOLTAGE_TEST;                      //!<%1 V test
 QString CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!<(Current Voltage: %1 V)
 QString CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE;                      //!<Close
@@ -136,6 +157,8 @@ void CMessageString::RetranslateUI()
 	MSG_TITLE_USER_INPUT                              = (QApplication::translate("Service", "User Input", 0, QApplication::UnicodeUTF8));
 	MSG_TITLE_ENTER_VALVE                             = (QApplication::translate("Service", "Enter Value", 0, QApplication::UnicodeUTF8));
 	MSG_TITLE_SEALING_TEST                            = (QApplication::translate("Service", "Sealing Test", 0, QApplication::UnicodeUTF8));
+	MSG_TITLE_SPEAKER_TEST                            = (QApplication::translate("Service", "System speaker test", 0, QApplication::UnicodeUTF8));
+	MSG_TITLE_MAINS_RELAY_TEST                        = (QApplication::translate("Service", "Mains relay test", 0, QApplication::UnicodeUTF8));
 	MSG_TITLE_CONFIRM_WATER_LEVEL                     = (QApplication::translate("Service", "Confirm water level", 0, QApplication::UnicodeUTF8));
 	MSG_BUTTON_OK                                     = (QApplication::translate("Service", "Ok", 0, QApplication::UnicodeUTF8));
 	MSG_BUTTON_NO                                     = (QApplication::translate("Service", "No", 0, QApplication::UnicodeUTF8));
@@ -189,6 +212,16 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_POSITION                          = (QApplication::translate("Service", "Position", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_POSITION_READY                    = (QApplication::translate("Service", "Positon %1# is ready.", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_IF_TEST_PASS                      = (QApplication::translate("Service", "Is the test pass?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS            = (QApplication::translate("Service", "Do you see the retort lid '%1' ?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS          = (QApplication::translate("Service", "Do you see the cover sensor status shows '%1'", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CHECK_SPEAK_LOW                   = (QApplication::translate("Service", "Did you hear the speaker test sound ?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH                  = (QApplication::translate("Service", "Did you hear a louder speaker test sound this time ?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CONFIRM_AIARM_CONNECT             = (QApplication::translate("Service", "Please confirm the alarm light is on and status is 'Connected' ?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT          = (QApplication::translate("Service", "Please confirm the alarm status is 'DisConnected' ?", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_RELAY_SWITCH_ON                   = (QApplication::translate("Service", "relay switch on Spec.0.3A-1.3A", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_RELAY_SWITCH_OFF                  = (QApplication::translate("Service", "relay switch off Spec.&lt;0.15A", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_ASB3_CURRENT                      = (QApplication::translate("Service", "<br>ASB3 current:%1<br>Result:%2", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN                 = (QApplication::translate("Service", "Please check if the exhaust fan is runing and check if the air flow direction is out of device.", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN             = (QApplication::translate("Service", "Please check if the ventilation fan is runing and check if the air flow direction is out of device", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ADJUST_LID_LOCK                   = (QApplication::translate("Service", "Please adjust retort lid lock assembly then re-test...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED          = (QApplication::translate("Service", "ASB %1 DC output voltage is failed (%2 V). <br>and current is failed (%3 mA).", 0, QApplication::UnicodeUTF8));
@@ -196,6 +229,15 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_TEST_COVER_SENSOR                 = (QApplication::translate("Service", "Open the retort lid. do you see water cover the level sensor?", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_RV_SELECT_TEST                    = (QApplication::translate("Service", "Rotary valve selecting test in progress...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_RV_SEALINT_TEST                   = (QApplication::translate("Service", "Rotary valve sealing test in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_RV                        = (QApplication::translate("Service", "Heating rotary valve in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_INITIALIZING_RV                   = (QApplication::translate("Service", "Initializing rotary valve in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_DETECTING_LS                      = (QApplication::translate("Service", "Detecting level sensor in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_LS                        = (QApplication::translate("Service", "Heating level sensor in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_RETORT_EMPTY              = (QApplication::translate("Service", "Heating retort(empty) in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_RETORT_LIQUID             = (QApplication::translate("Service", "Heating retort(liquid) in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_BELT1                     = (QApplication::translate("Service", "Heating Belt1 in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_BELT2                     = (QApplication::translate("Service", "Heating Belt2 in progress...", 0, QApplication::UnicodeUTF8));
+	MSG_DIAGNOSTICS_HEATING_OVEN                      = (QApplication::translate("Service", "Heating Oven(empty) in progress...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_VOLTAGE_TEST                      = (QApplication::translate("Service", "%1 V test", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CURRENT_VOLTAGE                   = (QApplication::translate("Service", "(Current Voltage: %1 V)", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_STATUS_CLOSE                      = (QApplication::translate("Service", "Close", 0, QApplication::UnicodeUTF8));

@@ -147,7 +147,7 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
     TestCase->AddResult("CurrentTemp", "40");
 
     //CTestCaseReporter Reporter("Oven", "123456");
-    CTestCaseReporter Reporter("Oven");
+    CTestCaseReporter Reporter("Oven", mp_ServiceConnector, mp_MainWindow);
     Reporter.AddTestCaseId(Service::OVEN_COVER_SENSOR);
     Reporter.AddTestCaseId(Service::OVEN_HEATING_EMPTY);
     Reporter.AddTestCaseId(Service::OVEN_HEATING_WITH_WATER);
@@ -199,6 +199,7 @@ void CTestDiagnosticsManufacturing::utTestManufacturing()
 void CTestDiagnosticsManufacturing::utTestManufacturingHandler()
 {
     Core::CManufacturingDiagnosticsHandler* p_MDH = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
+    p_MDH->OnReturnManufacturingMsg(true);
 }
 
 } // end namespace DiagnosticsManufacturing

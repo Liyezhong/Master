@@ -378,31 +378,31 @@ qint32 CStartup::NetworkInit()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsOne()
 {
-    mp_MainWindow->setWindowTitle("Himalaya Service Software");
+    mp_MainWindow->setWindowTitle(m_strMainWindow);
     mp_MainWindow->setFixedSize(800, 600);
 
     // System Tracking
-    mp_SystemTrackingGroup->AddPanel("Current Config", mp_CurrentConfiguration);
+    mp_SystemTrackingGroup->AddPanel(m_strCurrentConfig, mp_CurrentConfiguration);
 
     //mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
-    mp_AddModifyConfigGroup->AddPanel("Main Control", mp_MainControlConfig);
-    mp_AddModifyConfigGroup->AddPanel("Retort", mp_RetortConfig);
-    mp_AddModifyConfigGroup->AddPanel("Oven", mp_OvenConfig);
-    mp_AddModifyConfigGroup->AddPanel("Rotary Valve", mp_RotaryValveConfig);
-    mp_AddModifyConfigGroup->AddPanel("L&&A System", mp_LaSystemConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControlConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT, mp_RetortConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN, mp_OvenConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV, mp_RotaryValveConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemConfig);
 
-    mp_SystemTrackingGroup->AddPanel("Add/Modify Config", mp_AddModifyConfigGroup);
+    mp_SystemTrackingGroup->AddPanel(m_strModifyConfig, mp_AddModifyConfigGroup);
 
-    mp_SystemTrackingGroup->AddPanel("View History", mp_ViewHistory);
+    mp_SystemTrackingGroup->AddPanel(m_strViewHistory, mp_ViewHistory);
 
-    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, "System Tracking");
+    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, m_strSystemTracking);
 
     // Log Viewer
-    mp_LogViewerGroup->AddPanel("System Log Viewer", mp_SystemLogViewer);
-    mp_LogViewerGroup->AddPanel("Recovery Action", mp_RecoveryAction);
-    mp_LogViewerGroup->AddPanel("Service Log Viewer", mp_ServiceLogViewer);
-    mp_LogViewerGroup->AddPanel("Software Update Log", mp_SoftwareUpdateLogViewer);
-    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, "Log Viewer");
+    mp_LogViewerGroup->AddPanel(m_strSystemLogViewer, mp_SystemLogViewer);
+    mp_LogViewerGroup->AddPanel(m_strRecoveryAction, mp_RecoveryAction);
+    mp_LogViewerGroup->AddPanel(m_strServiceLogViewer, mp_ServiceLogViewer);
+    mp_LogViewerGroup->AddPanel(m_strSoftwareLog, mp_SoftwareUpdateLogViewer);
+    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, m_strLogViewer);
 
 }
 
@@ -416,11 +416,11 @@ void CStartup::LoadCommonComponenetsTwo()
     mp_CalibrationHandler->LoadCalibrationGUIComponenets();
 
     // Service update
-    mp_ServiceUpdateGroup->AddPanel("Firmware Update", mp_FirmwareUpdate);
-    mp_ServiceUpdateGroup->AddPanel("Data Management", mp_DataManagement);
-    mp_ServiceUpdateGroup->AddPanel("System", mp_UpdateSystem);
-    mp_ServiceUpdateGroup->AddSettingsPanel("Settings", mp_Setting);
-    mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, "Service Updates");
+    mp_ServiceUpdateGroup->AddPanel(m_strFirmwareUpdate, mp_FirmwareUpdate);
+    mp_ServiceUpdateGroup->AddPanel(m_strDataManagement, mp_DataManagement);
+    mp_ServiceUpdateGroup->AddPanel(m_strSystem, mp_UpdateSystem);
+    mp_ServiceUpdateGroup->AddSettingsPanel(m_strSettings, mp_Setting);
+    mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, m_strServiceUpdates);
 
 
 #ifdef Q_WS_QWS
@@ -590,13 +590,13 @@ void CStartup::ServiceGuiInit()
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
     //Diagnostics
-    mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, "Diagnostics");
-    mp_DiagnosticsGroup->AddPanel("Display",      mp_Display);
-    mp_DiagnosticsGroup->AddPanel("Retort",       mp_Retort);
-    mp_DiagnosticsGroup->AddPanel("Oven",         mp_Oven);
-    mp_DiagnosticsGroup->AddPanel("Rotary Valve", mp_RotaryValve);
-    mp_DiagnosticsGroup->AddPanel("L&&A System",  mp_LaSystem);
-    mp_DiagnosticsGroup->AddPanel("System",       mp_System);
+    mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, Service::CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_Display);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT,  mp_Retort);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN,    mp_Oven);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV,      mp_RotaryValve);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA,      mp_LaSystem);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_SYSTEM,  mp_System);
 
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
@@ -637,7 +637,7 @@ void CStartup::ManufacturingGuiInit()
     LoadCommonComponenetsTwo();
 
     if (m_SelfTestFinished == false) {
-        mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::Startup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage(m_strInitSystem);
     }
 
     //mp_ServiceConnector->SetLanguage(PlatformService::DEUTSCH);
@@ -700,10 +700,10 @@ int CStartup::FileExistanceCheck()
     if(MissingFileNames.count() > 0)
     {
         mp_MessageBox->setModal(true);
-        mp_MessageBox->SetTitle(tr("Missing Xml files"));
-        mp_MessageBox->SetButtonText(1, "Ok");
+        mp_MessageBox->SetTitle(m_strMissXMLFile);
+        mp_MessageBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageBox->HideButtons();
-        QString Text = QApplication::translate("Core::CStartup", "The following XML files are not present.\n", 0, QApplication::UnicodeUTF8);
+        QString Text = m_strXMLFileError;
         for(int i=0; i<MissingFileNames.count(); i++)
         {
             Text.append(MissingFileNames[i]);
@@ -846,7 +846,7 @@ void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID Id,
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
     dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
-    dlg->SetText(QString("Do you see the retort lid '%1' ?").arg(openFlag ? "Open" : "Close"));
+    dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS.arg(openFlag ? Service::CMessageString::MSG_DIAGNOSTICS_STATUS_OPEN : Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE));
     dlg->UpdateRetortLabel(Status);
 
     int result = dlg->exec();
@@ -908,7 +908,6 @@ void CStartup::RefreshTestStatus4RetortHeatingWithWater(Service::ModuleTestCaseI
             return ;
         }
         else if (CurStatus =="InformDone") {
-
             mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
         }
         else {
@@ -942,12 +941,12 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     if (OpenFlag) {
-        TestStatus ="Open";
+        TestStatus =Service::CMessageString::MSG_DIAGNOSTICS_STATUS_OPEN;
     }
     else {
-        TestStatus = "Close";
+        TestStatus = Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE;
     }
-    dlg->SetText(QString("Do you see the cover sensor status shows '%1' ?").arg(TestStatus));
+    dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS.arg(TestStatus));
 
     dlg->UpdateOvenLabel(Status);
     int result = dlg->exec();
@@ -1129,16 +1128,16 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    mp_MessageBox->SetTitle("System speaker test");
+    mp_MessageBox->SetTitle(Service::CMessageString::MSG_TITLE_SPEAKER_TEST);
 
     if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
-        mp_MessageBox->SetText(QString("Did you hear the speaker test sound ?"));
+        mp_MessageBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_LOW);
     }
     else {
-        mp_MessageBox->SetText(QString("Did you hear a louder speaker test sound this time ?"));
+        mp_MessageBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH);
     }
-    mp_MessageBox->SetButtonText(1, "No");
-    mp_MessageBox->SetButtonText(3, "Yes");
+    mp_MessageBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_NO);
+    mp_MessageBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
     mp_MessageBox->HideCenterButton();
 
     if (!mp_MessageBox->exec()) { // yes
@@ -1164,10 +1163,10 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
     if (ConnectFlag) {
         TestStatus = "Connected";
-        dlg->SetText(QString("Please confirm the alarm light is on and status is 'Connected' ?"));
+        dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CONFIRM_AIARM_CONNECT);
     }
     else {
-        dlg->SetText(QString("Please confirm the alarm status is 'DisConnected' ?"));
+        dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT);
         TestStatus = "DisConnected";
     }
 
@@ -1192,21 +1191,21 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    mp_MessageBox->SetTitle("Mains relay test");
-    mp_MessageBox->SetButtonText(3, "OK");
+    mp_MessageBox->SetTitle(Service::CMessageString::MSG_TITLE_MAINS_RELAY_TEST);
+    mp_MessageBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
     mp_MessageBox->HideButtonsOneAndTwo();
 
     bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
 
     p_TestCase->SetParameter("RelaySwitchStatus", QString::number(!RelaySwitchStatus));
     if (RelaySwitchStatus) {
-        MessagetText = "relay switch on Spec.0.3A-1.3A";
+        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON;
     }
     else {
-        MessagetText = "relay switch off Spec.&lt;0.15A";
+        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;
     }
 
-    MessagetText.append(QString("<br>ASB3 current:%1<br>Result:%2").arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));
+    MessagetText.append(Service::CMessageString::MSG_DIAGNOSTICS_ASB3_CURRENT.arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));
 
     mp_MessageBox->SetText(MessagetText);
     (void)mp_MessageBox->exec();
@@ -1224,12 +1223,12 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
 
-    Text = QString("Please check if the exhaust fan is runing, and check if the air flow direction is out of device.");
+    Text = QString(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN);
 
     dlg->SetText(Text);
     dlg->HideCenterButton();
-    dlg->SetButtonText(3, tr("Pass"));
-    dlg->SetButtonText(1, tr("Fail"));
+    dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_PASS);
+    dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_FAIL);
 
     int ret = dlg->exec();
 
@@ -1530,7 +1529,7 @@ void CStartup::OnGuiAbortTest()
 void CStartup::OnGuiRVHeatingTest()
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Heating rotary valve in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RV, false);
     emit RVHeatingTest(Service::HEATER_ROTARY_VALVE, Service::HEATING_ROTARY_VALVE);
 }
 
@@ -1544,7 +1543,7 @@ void CStartup::OnGuiRVHeatingTest()
 void CStartup::OnGuiRVInitTest()
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Initializing rotary valve in progress...", true);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_INITIALIZING_RV, true);
     emit RotaryValveTest(0, Service::RV_MOVE_TO_INIT_POS);
 }
 
@@ -1558,7 +1557,7 @@ void CStartup::OnGuiRVInitTest()
 void CStartup::OnGuiRVSelectTest(qint32 Position)
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Rotary valve selecting test in progress...", true);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_RV_SELECT_TEST, true);
     emit RotaryValveTest(Position, Service::RV_MOVE_TO_TUBE_POS);
 }
 
@@ -1572,7 +1571,7 @@ void CStartup::OnGuiRVSelectTest(qint32 Position)
 void CStartup::OnGuiRVSealTest(qint32 Position)
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Rotary valve sealing test in progress...", true);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_RV_SEALINT_TEST, true);
     emit RotaryValveTest(Position, Service::RV_MOVE_TO_SEAL_POS);
 }
 
@@ -1597,7 +1596,7 @@ void CStartup::OnBasicColorTest()
 void CStartup::OnGuiLevelSensorDetectingTest(qint32 Position)
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Detecting level sensor in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_DETECTING_LS, false);
     emit LevelSensorDetectingTest(Position);
 }
 
@@ -1611,7 +1610,7 @@ void CStartup::OnGuiLevelSensorDetectingTest(qint32 Position)
 void CStartup::OnGuiLevelSensorHeatingTest()
 {
 
-    mp_ServiceConnector->ShowBusyDialog("Heating level sensor in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LS, false);
     emit LevelSensorHeatingTest(Service::HEATER_LEVEL_SENSOR, Service::HEATING_LEVEL_SENSOR);
 }
 
@@ -1624,7 +1623,7 @@ void CStartup::OnGuiLevelSensorHeatingTest()
 /****************************************************************************/
 void CStartup::OnGuiRetortEmptyHeatingTest()
 {
-    mp_ServiceConnector->ShowBusyDialog("Heating retort(empty) in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_EMPTY, false);
     emit RetortHeatingTest(Service::HEATER_RETORT, Service::HEATING_RETORT_EMMPTY);
 }
 
@@ -1636,7 +1635,7 @@ void CStartup::OnGuiRetortEmptyHeatingTest()
 /****************************************************************************/
 void CStartup::OnGuiRetortLiquidHeatingTest()
 {
-    mp_ServiceConnector->ShowBusyDialog("Heating retort(liquid) in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_LIQUID, false);
     emit RetortHeatingTest(Service::HEATER_RETORT, Service::HEATING_RETORT_LIQUID);
 }
 
@@ -1648,7 +1647,7 @@ void CStartup::OnGuiRetortLiquidHeatingTest()
 /****************************************************************************/
 void CStartup::OnGuiTube1HeatingTest()
 {
-    mp_ServiceConnector->ShowBusyDialog("Heating Belt1 in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_BELT1, false);
     emit TubeHeatingTest(Service::HEATER_TUBE1, Service::HEATING_TUBE1);
 }
 
@@ -1660,7 +1659,7 @@ void CStartup::OnGuiTube1HeatingTest()
 /****************************************************************************/
 void CStartup::OnGuiTube2HeatingTest()
 {
-    mp_ServiceConnector->ShowBusyDialog("Heating Belt2 in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_BELT2, false);
     emit TubeHeatingTest(Service::HEATER_TUBE2, Service::HEATING_TUBE2);
 }
 
@@ -1672,7 +1671,7 @@ void CStartup::OnGuiTube2HeatingTest()
 /****************************************************************************/
 void CStartup::OnGuiOvenEmptyHeatingTest()
 {
-    mp_ServiceConnector->ShowBusyDialog("Heating Oven(empty) in progress...", false);
+    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_OVEN, false);
     emit OvenHeatingTest(Service::HEATER_OVEN, Service::HEATING_OVEN_EMPTY);
 }
 
@@ -1761,11 +1760,25 @@ void CStartup::RetranslateUI()
     m_strTimeStamp = QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8);
     m_strDescription = QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8);
     m_strRecoveryActionText = QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8);
-    /*if (mp_ServiceConnector->GetSoftwareMode() == PlatformService::SERVICE_MODE) {
-        ServiceGuiInit();
-    } else {
-        ManufacturingGuiInit();
-    }*/
+    m_strInitSystem = QApplication::translate("Core::CStartup", "System is initializing ...", 0, QApplication::UnicodeUTF8);
+    m_strMissXMLFile = QApplication::translate("Core::CStartup", "Missing Xml files", 0, QApplication::UnicodeUTF8);
+    m_strXMLFileError = QApplication::translate("Core::CStartup", "The following XML files are not present.<br>", 0, QApplication::UnicodeUTF8);
+    m_strServiceUpdates = QApplication::translate("Core::CStartup", "Service Updates", 0, QApplication::UnicodeUTF8);
+    m_strSettings = QApplication::translate("Core::CStartup", "Settings", 0, QApplication::UnicodeUTF8);
+    m_strSystem = QApplication::translate("Core::CStartup", "System", 0, QApplication::UnicodeUTF8);
+    m_strDataManagement = QApplication::translate("Core::CStartup", "Data Management", 0, QApplication::UnicodeUTF8);
+    m_strFirmwareUpdate = QApplication::translate("Core::CStartup", "Firmware Update", 0, QApplication::UnicodeUTF8);
+    m_strLogViewer = QApplication::translate("Core::CStartup", "Log Viewer", 0, QApplication::UnicodeUTF8);
+    m_strSoftwareLog = QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8);
+    m_strServiceLogViewer = QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8);
+    m_strRecoveryAction = QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8);
+    m_strSystemLogViewer = QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8);
+    m_strViewHistory = QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8);
+    m_strModifyConfig = QApplication::translate("Core::CStartup", "Add/Modify Config", 0, QApplication::UnicodeUTF8);
+    m_strCurrentConfig = QApplication::translate("Core::CStartup", "Current Config", 0, QApplication::UnicodeUTF8);
+    m_strMainWindow = QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8);
+    m_strSystemTracking = QApplication::translate("Core::CStartup", "System Tracking", 0, QApplication::UnicodeUTF8);
+
 }
 
 } // end namespace Core

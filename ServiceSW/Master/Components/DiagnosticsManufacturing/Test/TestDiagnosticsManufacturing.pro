@@ -20,6 +20,7 @@ QT += testcase
 UseLibs(Core ServiceDataManager DiagnosticsManufacturing Diagnostics)
 UsePlatformGUILibs(KeyBoard MainMenu Application)
 UsePlatformLibs(DataManager Global)
+UsePlatformServiceLibs(IENetworkClient)
 UsePlatformScroller(QtScroller)
 
 

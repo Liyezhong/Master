@@ -29,6 +29,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/ModuleDateListAdapter.h"
 
 namespace DataManager {
 
@@ -150,6 +151,7 @@ void CTestServiceDataManager::TestTestCaseFactory()
 void CTestServiceDataManager::TestModuleDataList()
 {
     ServiceDataManager::CModuleDataList* p_ModuleList = new ServiceDataManager::CModuleDataList;
+    //DataManager::CInstrumentHistory* p_In
     QString FilenameModuleList = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistory.xml";
     QVERIFY(p_ModuleList->ReadFile(FilenameModuleList));
 
@@ -157,12 +159,20 @@ void CTestServiceDataManager::TestModuleDataList()
 
     ServiceDataManager::CModule* p_Oven = p_ModuleList->GetModule("Paraffine Oven");
     QVERIFY(p_Oven);
-    //QCOMPARE(p_Oven->GetSerialNumber(), QString("14-HIM-WB-05000"));
 
     ServiceDataManager::CSubModule* p_Oven_Heater = p_Oven->GetSubModuleInfo("Heater");
     QVERIFY(p_Oven_Heater);
     QCOMPARE(p_Oven_Heater->GetSubModuleType(), QString("Heater"));
     QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 6);
+
+    QString OperationTime1 = p_Oven_Heater->GetParameterInfo("OperationTime")->ParameterValue;
+
+    ServiceDataManager::CModuleDateListAdapter* p_ModuleList_Adapter = new ServiceDataManager::CModuleDateListAdapter(p_ModuleList);
+    QVERIFY(p_ModuleList_Adapter->run());
+
+    QString OperationTime2 = p_Oven_Heater->GetParameterInfo("OperationTime")->ParameterValue;
+
+    //QVERIFY(OperationTime1 != OperationTime2);
 }
 
 } // end namespace ImportExport

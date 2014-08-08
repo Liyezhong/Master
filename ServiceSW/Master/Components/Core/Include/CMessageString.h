@@ -19,6 +19,8 @@ public:
 	static QString MSG_TITLE_USER_INPUT;                              //!<User Input
 	static QString MSG_TITLE_ENTER_VALVE;                             //!<Enter Value
 	static QString MSG_TITLE_SEALING_TEST;                            //!<Sealing Test
+	static QString MSG_TITLE_SPEAKER_TEST;                            //!<System speaker test
+	static QString MSG_TITLE_MAINS_RELAY_TEST;                        //!<Mains relay test
 	static QString MSG_TITLE_CONFIRM_WATER_LEVEL;                     //!<Confirm water level
 
 	static QString MSG_BUTTON_OK;                                     //!<Ok
@@ -74,6 +76,16 @@ public:
 	static QString MSG_DIAGNOSTICS_POSITION;                          //!<Position
 	static QString MSG_DIAGNOSTICS_POSITION_READY;                    //!<Positon %1# is ready.
 	static QString MSG_DIAGNOSTICS_IF_TEST_PASS;                      //!<Is the test pass?
+	static QString MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS;            //!<Do you see the retort lid '%1' ?
+	static QString MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS;          //!<Do you see the cover sensor status shows '%1'
+	static QString MSG_DIAGNOSTICS_CHECK_SPEAK_LOW;                   //!<Did you hear the speaker test sound ?
+	static QString MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH;                  //!<Did you hear a louder speaker test sound this time ?
+	static QString MSG_DIAGNOSTICS_CONFIRM_AIARM_CONNECT;             //!<Please confirm the alarm light is on and status is 'Connected' ?
+	static QString MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT;          //!<Please confirm the alarm status is 'DisConnected' ?
+	static QString MSG_DIAGNOSTICS_RELAY_SWITCH_ON;                   //!<relay switch on Spec.0.3A-1.3A
+	static QString MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;                  //!<relay switch off Spec.&lt;0.15A
+	static QString MSG_DIAGNOSTICS_ASB3_CURRENT;                      //!<<br>ASB3 current:%1<br>Result:%2
+	static QString MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!<Please check if the exhaust fan is runing and check if the air flow direction is out of device.
 	static QString MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!<Please check if the ventilation fan is runing and check if the air flow direction is out of device
 	static QString MSG_DIAGNOSTICS_ADJUST_LID_LOCK;                   //!<Please adjust retort lid lock assembly then re-test...
 	static QString MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED;          //!<ASB %1 DC output voltage is failed (%2 V). <br>and current is failed (%3 mA).
@@ -81,6 +93,15 @@ public:
 	static QString MSG_DIAGNOSTICS_TEST_COVER_SENSOR;                 //!<Open the retort lid. do you see water cover the level sensor?
 	static QString MSG_DIAGNOSTICS_RV_SELECT_TEST;                    //!<Rotary valve selecting test in progress...
 	static QString MSG_DIAGNOSTICS_RV_SEALINT_TEST;                   //!<Rotary valve sealing test in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_RV;                        //!<Heating rotary valve in progress...
+	static QString MSG_DIAGNOSTICS_INITIALIZING_RV;                   //!<Initializing rotary valve in progress...
+	static QString MSG_DIAGNOSTICS_DETECTING_LS;                      //!<Detecting level sensor in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_LS;                        //!<Heating level sensor in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_RETORT_EMPTY;              //!<Heating retort(empty) in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_RETORT_LIQUID;             //!<Heating retort(liquid) in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_BELT1;                     //!<Heating Belt1 in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_BELT2;                     //!<Heating Belt2 in progress...
+	static QString MSG_DIAGNOSTICS_HEATING_OVEN;                      //!<Heating Oven(empty) in progress...
 	static QString MSG_DIAGNOSTICS_VOLTAGE_TEST;                      //!<%1 V test
 	static QString MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!<(Current Voltage: %1 V)
 	static QString MSG_DIAGNOSTICS_STATUS_CLOSE;                      //!<Close

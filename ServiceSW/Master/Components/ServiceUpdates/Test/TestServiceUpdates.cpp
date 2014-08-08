@@ -110,7 +110,7 @@ void CTestServiceUpdates::utTestServiceUpdates() {
     p_FirmwareUpdate->UpdateGUI();
 
     p_Settings->UpdateGUIConnector(p_ServiceGUIConnector, p_MainWindow);
-    p_Settings->SaveIPAddress(IpAddress, PROXY_IP);
+    p_Settings->SaveIPAddress(IpAddress);
     p_Settings->ResetButtonStatus();
 }
 
