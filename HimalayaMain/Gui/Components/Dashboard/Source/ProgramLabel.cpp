@@ -33,6 +33,9 @@ void CProgramLabel::setHighlight(bool flag)
     if (flag == false) {
         QLabel::setText(content);
     }
+    else {
+        QLabel::setText("");
+    }
     repaint();
 }
 
@@ -55,7 +58,7 @@ void CProgramLabel::paintEvent(QPaintEvent * e)
         textPath.addText(r.x(), r.y()+ fm.height() -1 - fm.descent() + 20, textFont, content);
 
         QPainterPathStroker pps;
-        pps.setWidth(3);
+        pps.setWidth(5);
         pps.setDashPattern(Qt::SolidLine);
         pps.setCurveThreshold(0.001);
         pps.setCapStyle(Qt::RoundCap);
