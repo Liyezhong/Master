@@ -59,7 +59,7 @@ QMap<int, int> GetTemperatureMap(int MinC, int MaxC, int StepC)
     return MapTemp;
 }
 
-static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of variable s_MapTemperature
+static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of variable s_MapTemperature
         GetTemperatureMap(MIN_CENTIGRADE_TEMP, MAX_CENTIGRADE_TEMP, 1);
 
 
@@ -265,6 +265,7 @@ void CSystemSetupSettingsWidget::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = the application's main window
  */
 /****************************************************************************/
 void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

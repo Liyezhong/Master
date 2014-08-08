@@ -164,7 +164,8 @@ private slots:
 signals:
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of signal SettingsChanged
+      *  \brief  emit network settings changing
+      *  \param  Settings = the user setting
       */
      /****************************************************************************/
      void SettingsChanged(DataManager::CUserSettings &Settings);

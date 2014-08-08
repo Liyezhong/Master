@@ -8,6 +8,8 @@
 #include "Dashboard/Include/CommonString.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
+
 namespace Reagents {
 
 /****************************************************************************/
@@ -82,9 +84,13 @@ void CReagentGroupWidget::SetUserSettings(DataManager::CUserSettings *p_UserSett
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_ReagentGroupColorList = the list of reagent group color
+ *  \param p_ReagentGroupList = the reagent group list
+ *  \param p_MainWindow = pointer to main window
  */
 /****************************************************************************/
-void CReagentGroupWidget::SetPtrToMainWindow(DataManager::CReagentGroupColorList *p_ReagentGroupColorList,DataManager::CDataReagentGroupList *p_ReagentGroupList,
+void CReagentGroupWidget::SetPtrToMainWindow(DataManager::CReagentGroupColorList *p_ReagentGroupColorList,
+                                             DataManager::CDataReagentGroupList *p_ReagentGroupList,
                                     MainMenu::CMainWindow *p_MainWindow)
 {
     Q_UNUSED(p_MainWindow);
@@ -200,7 +206,7 @@ void CReagentGroupWidget::RetranslateUI()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentGroupWidget::OnEdit()

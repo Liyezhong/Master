@@ -316,11 +316,6 @@ void CProgramModel::OnUpdateProgramList()
     endResetModel();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Sets the User Role to Current User Role
- */
-/****************************************************************************/
 void CProgramModel ::SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole)
 {
     m_CurrentUserRole = UserRole;

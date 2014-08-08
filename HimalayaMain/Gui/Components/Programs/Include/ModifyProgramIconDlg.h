@@ -135,7 +135,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when ReagentList is updated.
-     *
+     *  \param Program = the updated program
      */
     /****************************************************************************/
     void UpdateProgram(DataManager::CProgram* Program);

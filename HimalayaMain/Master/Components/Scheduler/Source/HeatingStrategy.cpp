@@ -670,28 +670,30 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
     for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
         QPair<qreal,qreal> meltingRange = heatingSensor.ParaffinTempRangeList[iter->Id];
-        QPair<qreal,qreal> timeRange = heatingSensor.TimeRangeList[iter->Id];
-
-        // Get Time Elapse
-        qint64 now = QDateTime::currentMSecsSinceEpoch();
-        qreal timeElapse = 0.0;
-        if (0 != heatingSensor.heatingStartTime)
+        if (meltingRange.first<=userInputMeltingPoint && meltingRange.second>= userInputMeltingPoint)
         {
-            timeElapse = (now - heatingSensor.heatingStartTime)/1000;
-        }
-
-        if (meltingRange.first<=userInputMeltingPoint && meltingRange.second>=userInputMeltingPoint && timeRange.first<=timeElapse && timeRange.second>=timeElapse)
-        {
-            break;
+            if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
+            {
+                break;
+            }
         }
     }
 
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
+        qreal tmpTemperatureOffset = 0.0;
+        if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
+        {
+            tmpTemperatureOffset = iter->TemperatureOffsetWithParaffin + userInputMeltingPoint;
+        }
+        else
+        {
+            tmpTemperatureOffset = iter->TemperatureOffset + userInputMeltingPoint;
+        }
         CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(OvenType);
-        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputMeltingPoint);
+        pHeatingCmd->SetNominalTemperature(tmpTemperatureOffset);
         pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
         pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
@@ -709,7 +711,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         {
             mp_SchedulerController->LogDebug(
                         QString("start Oven(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
-                        .arg(m_CurScenario).arg(iter->TemperatureOffset+userInputMeltingPoint).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
+                        .arg(m_CurScenario).arg(tmpTemperatureOffset).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
                         .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(OvenType));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
@@ -963,6 +965,13 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         funcKey.sequence = *iter;
         bool ok = false;
 
+        qreal temperatureOffset = mp_DataManager->GetProgramSettings()->GetParameterValue(m_OvenTop.devName, funcKey, "NominalTemperatureWithParaffin", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        m_OvenTop.functionModuleList[*iter].TemperatureOffsetWithParaffin = temperatureOffset;
+
         //OverTimeTempOffset
         qreal OTTempOffset = mp_DataManager->GetProgramSettings()->GetParameterValue(m_OvenTop.devName, funcKey, "OverTimeTempOffset", ok);
         if (false == ok)
@@ -1008,6 +1017,13 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         funcKey.name = m_OvenBottom.sensorName;
         funcKey.sequence = *iter;
         bool ok = false;
+
+        qreal temperatureOffset = mp_DataManager->GetProgramSettings()->GetParameterValue(m_OvenBottom.devName, funcKey, "NominalTemperatureWithParaffin", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        m_OvenBottom.functionModuleList[*iter].TemperatureOffsetWithParaffin = temperatureOffset;
 
         //OverTimeTempOffset
         qreal OTTempOffset = mp_DataManager->GetProgramSettings()->GetParameterValue(m_OvenBottom.devName, funcKey, "OverTimeTempOffset", ok);

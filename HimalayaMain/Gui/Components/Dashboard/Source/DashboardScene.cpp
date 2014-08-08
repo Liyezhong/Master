@@ -76,9 +76,9 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
 
-    m_PixMapFlowFrame1.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow1.png");
-    m_PixMapFlowFrame2.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow2.png");
-    m_PixMapFlowFrame3.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow3.png");
+    (void)m_PixMapFlowFrame1.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow1.png");
+    (void)m_PixMapFlowFrame2.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow2.png");
+    (void)m_PixMapFlowFrame3.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow3.png");
 
     for (int r = 0; r < 3; r++)
     {
@@ -385,7 +385,7 @@ public:
      *  \return from CPipeGraphicsPathItem
      */
     /****************************************************************************/
-    CPipeGraphicsPathItem(const QPainterPath &path, const QPointF& brushOrigin):QGraphicsPathItem(path),
+    CPipeGraphicsPathItem(const QPainterPath &p, const QPointF& brushOrigin):QGraphicsPathItem(p),
         m_BrushOrigin(brushOrigin)
     {}
 
@@ -426,7 +426,7 @@ void CDashboardScene::RepresentUsedPipe(const QList<QString>& selectedStationLis
             continue;
         totalPipeList << *pipeList;
     }
-    totalPipeList.removeDuplicates();
+    (void)totalPipeList.removeDuplicates();
 
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);

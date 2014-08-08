@@ -310,11 +310,11 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirst
             int asapMin= asapTime.minute();
             QDateTime tempSelDatetime, tempAsapDatetime;
             tempSelDatetime.setDate(m_selDateTime.date());
-            selTime.setHMS(selHour, selMin, 0);
+            (void)selTime.setHMS(selHour, selMin, 0);
             tempSelDatetime.setTime(selTime);
 
             tempAsapDatetime.setDate(m_ASAPDateTime.date());
-            asapTime.setHMS(asapHour, asapMin, 0);
+            (void)asapTime.setHMS(asapHour, asapMin, 0);
             tempAsapDatetime.setTime(asapTime);
 
             if(tempSelDatetime < tempAsapDatetime)  {

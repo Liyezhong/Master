@@ -31,6 +31,7 @@
  *
  *  \iparam Argc = Command line argument count
  *  \iparam p_Argv = List of command line arguments
+ *  \return returns the code set to exit() method
  */
 /****************************************************************************/
 int main(int Argc, char *p_Argv[])

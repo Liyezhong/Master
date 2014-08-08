@@ -62,6 +62,16 @@ public:
     explicit CReagentStationWidget(QWidget *p_Parent = 0);
     ~CReagentStationWidget();
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    /****************************************************************************/
+    /*!
+     *  \brief Used to set pointer to DataConnector, ReagentList, mainwindow, KeyBoard used to retreive user role and
+     *         process state changed.
+     *  \param p_DataConnector = pointer to dataConnector
+     *  \param p_ReagentList = pointer to all reagents
+     *  \param p_MainWindow = pointer to main window
+     *  \param p_KeyBoard = pointer to keyboard
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,

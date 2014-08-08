@@ -13,6 +13,7 @@
       <File Path="SW_Version.xml" />
       <File Path="hw_specification.xml" />
       <File Path="DeviceConfiguration.xml" />
+      <File Path="RMS_Status.csv" />
       <Group File="Logfiles" />
     </List>
   </ServiceConfig>
@@ -29,6 +30,7 @@
     <UserReport>
       <List Encryption="inactive" Certified="inactive" Compressed="active" PackageType="nonnative">
         <Group File="DailyRun" />
+        <File Path="RMS_Status.csv" />
       </List>
     </UserReport>
   </UserConfig>

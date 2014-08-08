@@ -47,7 +47,7 @@ public:
      *  \return from setText
      */
     /****************************************************************************/
-    void setText(const QString &text) { Q_UNUSED(text); };
+    void setText(const QString &txt) { Q_UNUSED(txt); }
 private:
     void paintEvent(QPaintEvent *);   
 };

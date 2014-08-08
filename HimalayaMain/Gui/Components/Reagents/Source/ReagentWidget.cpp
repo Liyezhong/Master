@@ -39,11 +39,11 @@ namespace Reagents {
  */
 /****************************************************************************/
 CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
-                                 MainMenu::CMainWindow *p_Parent,
+                                 MainMenu::CMainWindow *p,
                                  KeyBoard::CKeyBoard *p_KeyBoard):
                                  mp_Ui(new Ui::CReagentWidget),
                                  mp_DataConnector(p_DataConnector),                                 
-                                 mp_MainWindow(p_Parent),
+                                 mp_MainWindow(p),
                                  mp_KeyBoardWidget(p_KeyBoard)
 
 

@@ -231,6 +231,7 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
         dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
     }
     if (Index == 1 && Id == Service::OVEN_COVER_SENSOR ||
+            Index == 1 && Id == Service::RETORT_LID_LOCK ||
             Index == 2 && Id == Service::RETORT_HEATING_WITH_WATER ) {
         dlg->EnableButton(1, false);
     }

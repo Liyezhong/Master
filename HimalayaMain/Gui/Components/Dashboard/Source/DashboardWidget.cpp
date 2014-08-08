@@ -28,6 +28,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
+
 using namespace Dashboard;
 
 QString CDashboardWidget::m_SelectedProgramId = "";
@@ -280,7 +282,7 @@ void CDashboardWidget::SetCassetteNumber()
         pCassetteInput->SetDialogTitle(m_strChangeCassetteBoxTitle);
         QRect scr = mp_MainWindow->geometry();
         pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
-        pCassetteInput->exec();
+        (void)pCassetteInput->exec();
 
         int cassetteNumber = pCassetteInput->CassetteNumber();
         if (-1 == cassetteNumber)
@@ -473,7 +475,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
         //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-        int meltingDuration= GetParaffinHeatingDuration();
+        //int meltingDuration= GetParaffinHeatingDuration();
         int RemainingTimeMeltParaffin = 10 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
@@ -657,7 +659,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             pCassetteInput->ShowLabel(false);
             pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
             pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
-            pCassetteInput->exec();
+            (void)pCassetteInput->exec();
 
             int cassetteNumber = pCassetteInput->CassetteNumber();
             if (-1 == cassetteNumber)
@@ -926,12 +928,10 @@ void CDashboardWidget::OnUserRoleChanged()
             ui->programPanelWidget->EnablePauseButton(true);
             ui->programPanelWidget->EnableStartButton(true);
             break;
+
         case 2:
-            ui->programPanelWidget->EnablePauseButton(true);
-            ui->programPanelWidget->EnableStartButton(false);
-            break;
         case 3:
-            ui->programPanelWidget->EnablePauseButton(false);
+            ui->programPanelWidget->EnablePauseButton(true);
             ui->programPanelWidget->EnableStartButton(false);
             break;
         default:

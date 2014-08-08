@@ -143,10 +143,11 @@
                 <Parameter Key="HeatingOverTime" Value="18000"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="50,64"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="003,205"/>
+                <Parameter Key="ScenarioList" Value="003"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="0,28800"/>
             </Function>
@@ -156,10 +157,11 @@
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="3"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="50,64"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="004,200,202,203,204,205,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,200,202,203,204,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="28800,2880000"/>
             </Function>
@@ -169,10 +171,11 @@
                 <Parameter Key="HeatingOverTime" Value="18000"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="64,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="003,205"/>
+                <Parameter Key="ScenarioList" Value="003"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="0,36000"/>
             </Function>
@@ -182,10 +185,11 @@
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="4"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="64,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="004,200,202,203,204,205,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,200,202,203,204,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="36000,2880000"/>
             </Function>
@@ -195,10 +199,11 @@
                 <Parameter Key="HeatingOverTime" Value="18000"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="50,64"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="003,205"/>
+                <Parameter Key="ScenarioList" Value="003"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="0,28800"/>
             </Function>
@@ -208,10 +213,11 @@
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="3"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="50,64"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="004,200,202,203,204,205,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,200,202,203,204,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="28800,2880000"/>
             </Function>
@@ -221,10 +227,11 @@
                 <Parameter Key="HeatingOverTime" Value="18000"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="64,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="003,205"/>
+                <Parameter Key="ScenarioList" Value="003"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="0,36000"/>
             </Function>
@@ -234,10 +241,11 @@
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="4"/>
+                <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
                 <Parameter Key="ParaffinTempRange" Value="64,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="004,200,202,203,204,205,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,200,202,203,204,206,211,212,213,214,215,216,217,221,222,223,224,225,226,227,231,232,233,234,235,236,237,241,242,243,244,245,246,247,251,252,253,254,255,256,257,260,271,272,273,274,275,276,277,281,282,283,284,285,286,287,291,292,293,294,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TimeRange" Value="36000,2880000"/>
             </Function>

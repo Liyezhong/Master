@@ -145,19 +145,24 @@ private slots:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ServiceSettingsChanged
+     *  \brief  Declaration of signal ServiceSettingsChanged, when change in service page
+     *  emit this signal.
+     *
+     *  \param  Settings = the user setting
      */
     /****************************************************************************/
     void ServiceSettingsChanged(DataManager::CUserSettings &Settings);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ResetOperationDays
+     *  \param  resetOperationHoursType =  the type for reset opeartion time
      */
     /****************************************************************************/
     void ResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal AppQuitSystemPrepareShutdown
+     *  \param  quitAppShutdownActionType = quit application or prepare shutdown
      */
     /****************************************************************************/
     void AppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);

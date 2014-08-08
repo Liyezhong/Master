@@ -78,11 +78,6 @@ CModifyReagentStationDlg::~CModifyReagentStationDlg()
     }
 }
 
-/****************************************************************************/
-/*!
-     *  \brief Destructor
-     */
-/****************************************************************************/
 void CModifyReagentStationDlg::SetEditedDashboardStation(DataManager::CDashboardStation* p_Station)
 {
     m_EditedStation = *p_Station;

@@ -57,11 +57,7 @@ CMasterLinkDevice::~CMasterLinkDevice()
     catch (...) {}
 }
 
-/****************************************************************************/
-/*!
- *  \brief Initializes the network layers
- */
-/****************************************************************************/
+
 qint32 CMasterLinkDevice::NetworkInit()
 {
     if (!mp_NetworkObject) {

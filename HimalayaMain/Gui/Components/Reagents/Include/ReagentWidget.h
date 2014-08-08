@@ -53,7 +53,6 @@ class CReagentWidget : public QWidget
 private:
     Ui::CReagentWidget *mp_Ui;                     //!< User interface
     Core::CDataConnector *mp_DataConnector;          //!< Data object
-    Core::CReagentRMSModel m_ReagentRMSModel;             //!< Model for the table
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -94,6 +93,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when UserSettings are changed.
+     *  \param Settings = the changed user setting
      *
      */
     /****************************************************************************/

@@ -94,6 +94,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TemperatureChanged
+     *  \param Settings = the user settings
      */
     /****************************************************************************/
     void TemperatureChanged(DataManager::CUserSettings &Settings);

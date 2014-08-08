@@ -60,6 +60,12 @@ public:
     /****************************************************************************/
     void SetColumnNumber(qint32 value) {  m_Columns = value; }
     void ResetandUpdateModel();
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the User Role to Current User Role
+     *  \param UserRole = the current user role
+     */
+    /****************************************************************************/
     void SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole);
 
     /****************************************************************************/

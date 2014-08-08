@@ -223,6 +223,10 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
             mp_ScrollWheelTemp->AddItem(QString::number(temp).rightJustified(2, '0'), temp);
         }
     }
+    else if (0 == minTemp && 0 == maxTemp)
+    {
+        mp_ScrollWheelTemp->SetCurrentData(-1);
+    }
 
     if (mp_ProgramStep)
     {
@@ -240,6 +244,7 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
         }
     }
     mp_ScrollWheelTemp->SetNonContinuous();
+
 }
 /****************************************************************************/
 /*!

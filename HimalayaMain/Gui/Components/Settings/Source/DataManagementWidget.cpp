@@ -124,7 +124,7 @@ void CDataManagementWidget:: RemoteSWUpdate()
     mp_WaitDialog->SetText(tr("Now downloading update package from remote server, please waiting..."));
     mp_WaitDialog->HideAbort();
     mp_WaitDialog->SetTimeout(15000);
-    mp_WaitDialog->exec();
+    (void)mp_WaitDialog->exec();
     delete mp_WaitDialog;
 }
 
@@ -233,6 +233,7 @@ void CDataManagementWidget::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = the main window
  */
 /****************************************************************************/
 void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

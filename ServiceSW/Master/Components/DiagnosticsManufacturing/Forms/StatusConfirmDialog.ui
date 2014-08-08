@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>434</width>
     <height>148</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>434</width>
     <height>148</height>
    </size>
   </property>
@@ -34,14 +34,20 @@
   <widget class="QLabel" name="labelConfirm">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>10</y>
-     <width>341</width>
-     <height>17</height>
+     <x>10</x>
+     <y>9</y>
+     <width>411</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>Do you see the cover sensor status shows &quot;Open&quot; ?</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::PlainText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">

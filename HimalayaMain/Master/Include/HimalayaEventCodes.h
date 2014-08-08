@@ -319,5 +319,11 @@ const quint32 EVENT_IMPORTEXPORT_IMPORT_NO_USB	= 50331762;	///< No USB devices f
 
 const quint32 EVENT_IMPORTEXPORT_EXPORT_NO_USB	= 50331763;	///< No USB devices found in the system to export files
 
+const quint32 EVENT_SERVICE_OPERATIONTIME_RESET	= 50331764;	///< Reset michine operation time
+
+const quint32 EVENT_SERVICE_ACTIVECARBONTIME_RESET	= 50331765;	///< Reset Active carbon filter operation time
+
+
+
 #endif // HIMALAYAEVENTCODES_H
 

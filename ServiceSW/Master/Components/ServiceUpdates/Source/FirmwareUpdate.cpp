@@ -42,14 +42,14 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
     , m_Result(false)
 {
     mp_Ui->setupUi(this);
-
+    RetranslateUI();
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(380,500);
 
     mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
@@ -102,10 +102,11 @@ void CFirmwareUpdate::UpdateGUI()
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
     }   
     if (mp_Module) {
-        m_Model.clear();
-        RetranslateUI();
-        for (int i = 0; i < mp_Module->GetNumberofSubModules(); ++i) {
-            SlaveModule = mp_Module->GetSubModuleInfo(i);
+        for (int i = 1; i < m_Model.rowCount(); ++i) {
+            m_Model.removeRow(i);
+        }
+        for (int j = 0; j < mp_Module->GetNumberofSubModules(); ++j) {
+            SlaveModule = mp_Module->GetSubModuleInfo(j);
             if (SlaveModule->GetSubModuleName().contains("ASB")) {
                 QString SlaveName = SlaveModule->GetSubModuleName();
                 QString SlaveVersion = SlaveModule->GetParameterInfo("SoftwareVersion")->ParameterValue;

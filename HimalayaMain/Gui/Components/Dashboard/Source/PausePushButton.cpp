@@ -53,13 +53,13 @@ CPausePushButton::~CPausePushButton()
  *  \brief Draw the pause button 
  */
 /****************************************************************************/
-void CPausePushButton::paintEvent(QPaintEvent * event)
+void CPausePushButton::paintEvent(QPaintEvent * e)
 {
-    QPushButton::paintEvent(event);
+    QPushButton::paintEvent(e);
 
     QPainter painter(this);
-    QRect rect = event->rect();
-    int XCenter = rect.width() / 2;
+    QRect r = e->rect();
+    int XCenter = r.width() / 2;
     QColor color(Qt::white);
     if (!this->isEnabled())
     {
@@ -68,7 +68,7 @@ void CPausePushButton::paintEvent(QPaintEvent * event)
     QBrush brush(color);
     int widthVirticalLine = 3;
     int top = 13;
-    int heighVirticalLine = rect.height() - top * 2;
+    int heighVirticalLine = r.height() - top * 2;
 
     painter.fillRect(QRect(XCenter - widthVirticalLine, top, widthVirticalLine, heighVirticalLine), brush);
     painter.fillRect(QRect(XCenter + widthVirticalLine, top, widthVirticalLine, heighVirticalLine), brush);

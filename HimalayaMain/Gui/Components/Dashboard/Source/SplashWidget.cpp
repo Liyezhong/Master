@@ -2,8 +2,8 @@
 #include "ui_SplashWidget.h"
 #include <QPalette>
 
-SplashWidget::SplashWidget(QWidget *parent) :
-    QDialog(parent),
+SplashWidget::SplashWidget(QWidget *p) :
+    QDialog(p),
     ui(new Ui::SplashWidget)
 {
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -31,5 +31,5 @@ void SplashWidget::ShowModel()
         QRect scr = pParent->geometry();
         this->move( scr.center() - this->rect().center());
     }
-    this->exec();
+    (void)this->exec();
 }

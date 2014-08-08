@@ -14,8 +14,8 @@ using namespace Dashboard;
 
 QString CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = tr("");
 
-CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
-    QWidget(parent),
+CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
+    QWidget(p),
     ui(new Ui::CFavoriteProgramsPanelWidget),
     mp_DataConnector(NULL),
     m_ProcessRunning(false),
@@ -58,11 +58,11 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
     m_ButtonGroup.addButton(ui->BtnProgram5, 4);
 
     m_mapLabel.clear();
-    m_mapLabel.insert(0, ui->lblPrg1);
-    m_mapLabel.insert(1, ui->lblPrg2);
-    m_mapLabel.insert(2, ui->lblPrg3);
-    m_mapLabel.insert(3, ui->lblPrg4);
-    m_mapLabel.insert(4, ui->lblPrg5);
+    (void)m_mapLabel.insert(0, ui->lblPrg1);
+    (void)m_mapLabel.insert(1, ui->lblPrg2);
+    (void)m_mapLabel.insert(2, ui->lblPrg3);
+    (void)m_mapLabel.insert(3, ui->lblPrg4);
+    (void)m_mapLabel.insert(4, ui->lblPrg5);
 }
 
 void CFavoriteProgramsPanelWidget::UpdateProgLabel()
@@ -226,9 +226,9 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
     }
 }
 
-void CFavoriteProgramsPanelWidget::OnResetFocus(bool reset)
+void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
 {
-    if (reset) {
+    if (rst) {
         m_ButtonGroup.setExclusive(false);
         int checkedID = m_ButtonGroup.checkedId();
         if (checkedID != -1)

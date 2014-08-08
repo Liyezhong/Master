@@ -13,9 +13,9 @@ CProgramLabel::CProgramLabel(QWidget *p_Parent) :
 
 }
 
-void CProgramLabel::setText(const QString &text, bool highlight)
+void CProgramLabel::setText(const QString &txt, bool highlight)
 {
-    content = text;
+    content = txt;
     textHighlight = highlight;
 
     if (highlight == false) {
@@ -33,12 +33,15 @@ void CProgramLabel::setHighlight(bool flag)
     if (flag == false) {
         QLabel::setText(content);
     }
+    else {
+        QLabel::setText("");
+    }
     repaint();
 }
 
-void CProgramLabel::paintEvent(QPaintEvent * event)
+void CProgramLabel::paintEvent(QPaintEvent * e)
 {
-    QLabel::paintEvent(event);
+    QLabel::paintEvent(e);
 
     if (textHighlight) {
         QPainter painter(this);
@@ -48,14 +51,14 @@ void CProgramLabel::paintEvent(QPaintEvent * event)
         textFont.setPointSize(10);
         textFont.setBold(true);
 
-        QRect rect = event->rect();
+        QRect r = e->rect();
         QPainterPath textPath;
         QFontMetrics fm(textFont);
 
-        textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent() + 20, textFont, content);
+        textPath.addText(r.x(), r.y()+ fm.height() -1 - fm.descent() + 20, textFont, content);
 
         QPainterPathStroker pps;
-        pps.setWidth(3);
+        pps.setWidth(5);
         pps.setDashPattern(Qt::SolidLine);
         pps.setCurveThreshold(0.001);
         pps.setCapStyle(Qt::RoundCap);
@@ -64,7 +67,7 @@ void CProgramLabel::paintEvent(QPaintEvent * event)
 
         painter.fillPath(strokePath, QBrush(QColor(255, 128, 128)));
         painter.setPen(Qt::black);
-        painter.drawText(rect.x(), rect.y() + fm.height() -1 - fm.descent() + 20, content);
+        painter.drawText(r.x(), r.y() + fm.height() -1 - fm.descent() + 20, content);
     }
 }
 

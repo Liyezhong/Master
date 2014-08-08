@@ -51,10 +51,10 @@ struct FunctionModule
     qreal              MaxTemperature;      //!< the max temperature
     qreal              HeatingOverTime;     //!< heating over time
     qreal              SlopTempChange;      //!< slop temperature change
+    qreal              TemperatureOffsetWithParaffin;   //!< the target of temperature with paraffin
     quint32            ControllerGain;      //!< the PID parameter of P
     quint32            ResetTime;           //!< the PID parameter of I
     quint32            DerivativeTime;      //!< the PID parameter of D
-
 };
 
 /****************************************************************************/

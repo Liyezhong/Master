@@ -101,7 +101,7 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsEmpty()
@@ -135,7 +135,7 @@ void CReagentStatusWidget::OnSetAsEmpty()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentStatusWidget::OnResetData()
@@ -166,7 +166,7 @@ void CReagentStatusWidget::OnResetData()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  */
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsFull()
@@ -190,7 +190,7 @@ void CReagentStatusWidget::OnSetAsFull()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Displays a dialog for the modification of a reagent
  *
  *  \param RMSValue =  Global::RMSOptions_t type parameter
  */
@@ -556,6 +556,9 @@ void CReagentStatusWidget::showEvent(QShowEvent *)
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_DataConnector = pointer to DataConnector
+ *  \param p_ReagentList = pointer to reagent list
+ *  \param p_KeyBoard = the keyboard
  */
 /****************************************************************************/
 void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,

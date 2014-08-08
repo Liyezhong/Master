@@ -51,7 +51,8 @@ CStartup::CStartup() : QObject(),
     mp_ManaufacturingDiagnosticsHandler(NULL),
     mp_HeatingStatusDlg(NULL),
     mp_SealingStatusDlg(NULL),
-    m_SelfTestFinished(false)
+    m_SelfTestFinished(false),
+    mp_USBKeyValidator(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -470,8 +471,9 @@ void CStartup::GuiInit(QString debugMode)
         if (mp_USBKeyValidator)
         {
             delete mp_USBKeyValidator;
+            mp_USBKeyValidator = NULL;
         }
-        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName);
+        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Primaris");
         CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                            this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
         CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
@@ -1130,10 +1132,10 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     mp_MessageBox->SetTitle("System speaker test");
 
     if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
-        mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
+        mp_MessageBox->SetText(QString("Did you hear the speaker test sound ?"));
     }
     else {
-        mp_MessageBox->SetText(QString("Do you hear the system speak noice which is higher than the previous ?"));
+        mp_MessageBox->SetText(QString("Did you hear a louder speaker test sound this time ?"));
     }
     mp_MessageBox->SetButtonText(1, "No");
     mp_MessageBox->SetButtonText(3, "Yes");
@@ -1162,11 +1164,12 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
     if (ConnectFlag) {
         TestStatus = "Connected";
+        dlg->SetText(QString("Please confirm the alarm light is on and status is 'Connected' ?"));
     }
     else {
+        dlg->SetText(QString("Please confirm the alarm status is 'DisConnected' ?"));
         TestStatus = "DisConnected";
     }
-    dlg->SetText(QString("Please confirm the alarm status '%1' ?").arg(TestStatus));
 
     dlg->UpdateLabel("Alarm Status", Status.value("AlarmStatus"));
     int result = dlg->exec();

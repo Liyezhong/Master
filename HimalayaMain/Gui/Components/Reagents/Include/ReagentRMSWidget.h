@@ -104,6 +104,12 @@ private:
 
 protected:
     void changeEvent(QEvent *p_Event);
+    /****************************************************************************/
+    /*!
+     *  \brief This event is called whenever widget is shown
+     *  \param p_Event = show event
+     */
+    /****************************************************************************/
     void showEvent(QShowEvent *p_Event);  
 
 signals:

@@ -79,8 +79,7 @@ CStatusConfirmDialog::~CStatusConfirmDialog()
 void CStatusConfirmDialog::SetText(const QString& Text)
 {
     mp_Ui->labelConfirm->setText(Text);
-    mp_Ui->labelConfirm->adjustSize();
-//    mp_Ui->contentLabel->setText(QString("%1").arg(Text));
+    mp_Ui->labelConfirm->setAlignment(Qt::AlignHCenter);
 }
 
 /****************************************************************************/

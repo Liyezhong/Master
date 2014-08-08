@@ -30,6 +30,9 @@
 #include "Application/Include/LeicaStyle.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
+//lint -e613
+//lint -e525
+
 namespace Core {
 
 Global::RMSOptions_t CReagentStatusModel:: RMSPROCESSINGOPTION = Global::RMS_UNDEFINED;

@@ -13,9 +13,11 @@
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
+
 namespace Dashboard {
-CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
-    CPanelFrame(parent),
+CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
+    CPanelFrame(p),
     ui(new Ui::CProgramPanelWidget),
     m_ProgramNextAction(DataManager::PROGRAM_START),
     m_IsResumeRun(false),

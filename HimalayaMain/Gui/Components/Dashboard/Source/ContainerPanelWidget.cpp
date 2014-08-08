@@ -28,7 +28,6 @@
 
 namespace Dashboard {
 
-
 QString CContainerPanelWidget::m_strWarning = CContainerPanelWidget::tr("Warning");
 QString CContainerPanelWidget::m_strYes = CContainerPanelWidget::tr("Yes");
 QString CContainerPanelWidget::m_strCancel = CContainerPanelWidget::tr("Cancel");
@@ -36,6 +35,10 @@ QString CContainerPanelWidget::m_strCancel = CContainerPanelWidget::tr("Cancel")
 CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPanelFrame(p_Parent),
                                    mp_Ui(new Ui::CContainerPanelWidget),mp_MainWindow(NULL),
                                    mp_DataConnector(NULL),
+                                   mp_DashboardScene(NULL),
+                                   mp_ProgramList(NULL),
+                                   mp_MessageDlg(NULL),
+                                   m_pUserSetting(NULL),
                                    m_UserRoleChanged(false),
                                    m_strProgram(tr("Program")),
                                    m_strInformation(tr("Information")),

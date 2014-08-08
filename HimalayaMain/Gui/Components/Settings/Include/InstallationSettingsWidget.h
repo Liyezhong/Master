@@ -64,10 +64,31 @@ private:
 public:
     explicit CInstallationSettingsWidget(QWidget *p_Parent = NULL);
     ~CInstallationSettingsWidget();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of SetUserSettings
+     *
+     *  \param p_UserSettings = current user's setting
+     *
+     */
+    /****************************************************************************/
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetDeviceConfig(DataManager::CDeviceConfiguration *p_DeviceConfig);
     void SetSWConfig(DataManager::CSWVersionList *p_SWVersion);
+    /****************************************************************************/
+    /*!
+     *  \brief Used to set pointer to mainwindow, used to retreive user role and
+     *         process state changed.
+     *   \param p_MainWindow = application's main window
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
+    /****************************************************************************/
+    /*!
+     *  \brief Sets KeyBoard object instance
+     *  \param p_KeyBoard = the current keyboard instance
+     */
+    /****************************************************************************/
     void SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard);
 
 

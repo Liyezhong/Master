@@ -52,6 +52,11 @@ class CMasterLinkDevice : public QObject
 public:
     CMasterLinkDevice();
     virtual ~CMasterLinkDevice();
+    /****************************************************************************/
+    /*!
+     *  \brief Initializes the network layers
+     *  \return failed/successful for Network initialization
+    /****************************************************************************/
     qint32 NetworkInit();
 
     /****************************************************************************/

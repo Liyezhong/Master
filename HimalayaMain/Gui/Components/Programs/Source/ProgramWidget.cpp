@@ -171,7 +171,7 @@ void CProgramWidget::PopulateProgramList()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining program
+ *  \brief Displays a dialog for the modification of a program
  */
 /****************************************************************************/
 void CProgramWidget::OnEdit()
@@ -209,24 +209,21 @@ void CProgramWidget::OnEdit()
 
 /****************************************************************************/
 /*!
- *  \brief Creates a new staining program and opens its edit dialog
+ *  \brief Creates a new program and opens its edit dialog
  */
 /****************************************************************************/
 void CProgramWidget::OnNew()
 {
-
-     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog."));*/
+    ResetButtons();
     mp_ModifyProgramDlg->SetDialogTitle(m_strNewProgram);
     mp_ModifyProgramDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(NULL);
     mp_ModifyProgramDlg->show();
-    ResetButtons();
 }
 
 /****************************************************************************/
 /*!
- *  \brief Copies the currently selected staining program
+ *  \brief Copies the currently selected program
  */
 /****************************************************************************/
 void CProgramWidget::OnCopy()
@@ -241,20 +238,20 @@ void CProgramWidget::OnCopy()
 
 /****************************************************************************/
 /*!
- *  \brief Deletes the currently selected staining program
+ *  \brief Deletes the currently selected program
  */
 /****************************************************************************/
 void CProgramWidget::OnDelete()
 {
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
-    ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
-    ConfirmationMessageDlg.HideCenterButton();
-    ConfirmationMessageDlg.SetText(m_strDelProgram);
+    MainMenu::CMessageDlg dlg;
+    dlg.SetTitle(m_strConfirmMsg);
+    dlg.SetIcon(QMessageBox::Warning);
+    dlg.SetButtonText(1, m_strYes);
+    dlg.SetButtonText(3, m_strCancel);
+    dlg.HideCenterButton();
+    dlg.SetText(m_strDelProgram);
 
-    if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
+    if (dlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
 
         bool bRevertSelectedProgram = false;
@@ -508,15 +505,6 @@ void CProgramWidget::OnCancelClicked()
 /****************************************************************************/
 void CProgramWidget::ResetButtons()
 {
-//    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
-//        //View Mode
-//        mp_Ui->btnEdit->setEnabled(false);
-//        mp_Ui->btnDelete->setEnabled(false);
-//        mp_Ui->btnCopy->setEnabled(false);
-//        mp_Ui->btnNew->setEnabled(false);
-//        return;
-//    }
-
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {
@@ -561,7 +549,7 @@ void CProgramWidget::OnCurrentTabChanged(int CurrentIndex)
 /****************************************************************************/
 /*!
  *  \brief Calculates the number of User Programs
- *
+ *  \return the count of user program
  */
 /****************************************************************************/
 int CProgramWidget::GetNumberOfUserPrograms()

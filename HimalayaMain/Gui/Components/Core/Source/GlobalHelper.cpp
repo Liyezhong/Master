@@ -37,11 +37,7 @@ bool CGlobalHelper::m_programIsPaused = false;
 QStringList CGlobalHelper::m_StationList;
 Core::CDataConnector* CGlobalHelper::p_StaticDataConnector = NULL;
 
-/****************************************************************************/
-/*!
- *  \brief Constructor
- */
-/****************************************************************************/
+
 CGlobalHelper::CGlobalHelper(Core::CDataConnector *p_DataConnector) : QObject(),
     mp_DataConnector(p_DataConnector)
 {
@@ -102,12 +98,10 @@ QString  CGlobalHelper::TimeToString(int seconds, bool showSeconds)
     int hour = seconds/(60*60);
     int minute = (seconds/60)%60;
 
-
-
     if (hour < 100)
-        retStr.sprintf("%02d:%02d", hour, minute);
+        (void)retStr.sprintf("%02d:%02d", hour, minute);
     else
-        retStr.sprintf("%d:%02d", hour, minute);
+        (void)retStr.sprintf("%d:%02d", hour, minute);
 
     if (showSeconds)
     {

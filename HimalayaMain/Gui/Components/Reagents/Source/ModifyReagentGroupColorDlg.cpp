@@ -62,31 +62,31 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 /****************************************************************************/
 void CModifyReagentGroupColorDlg ::SetButtonGroup()
 {
-        m_ButtonGroup.addButton(mp_Ui->pbwhite, 0);
-        m_ButtonGroup.addButton(mp_Ui->pbyellow, 1);
-        m_ButtonGroup.addButton(mp_Ui->pbpink, 2);
-        m_ButtonGroup.addButton(mp_Ui->pbdarkred, 3);
-        m_ButtonGroup.addButton(mp_Ui->pbgreen, 4);
-        m_ButtonGroup.addButton(mp_Ui->pbgray, 5);
-        m_ButtonGroup.addButton(mp_Ui->pbcarmine, 6);
-        m_ButtonGroup.addButton(mp_Ui->pbred, 7);
-        m_ButtonGroup.addButton(mp_Ui->pbdarkgreen, 8);
-        m_ButtonGroup.addButton(mp_Ui->pbrackley,9);
-        m_ButtonGroup.addButton(mp_Ui->pbblue,10);
-        m_ButtonGroup.addButton(mp_Ui->pbdarkblue,11);
+    m_ButtonGroup.addButton(mp_Ui->pbwhite, 0);
+    m_ButtonGroup.addButton(mp_Ui->pbyellow, 1);
+    m_ButtonGroup.addButton(mp_Ui->pbpink, 2);
+    m_ButtonGroup.addButton(mp_Ui->pbdarkred, 3);
+    m_ButtonGroup.addButton(mp_Ui->pbgreen, 4);
+    m_ButtonGroup.addButton(mp_Ui->pbgray, 5);
+    m_ButtonGroup.addButton(mp_Ui->pbcarmine, 6);
+    m_ButtonGroup.addButton(mp_Ui->pbred, 7);
+    m_ButtonGroup.addButton(mp_Ui->pbdarkgreen, 8);
+    m_ButtonGroup.addButton(mp_Ui->pbrackley,9);
+    m_ButtonGroup.addButton(mp_Ui->pbblue,10);
+    m_ButtonGroup.addButton(mp_Ui->pbdarkblue,11);
 
-        m_QPushButtonMap[0] = mp_Ui->pbwhite;
-        m_QPushButtonMap[1] = mp_Ui->pbyellow;
-        m_QPushButtonMap[2] = mp_Ui->pbpink;
-        m_QPushButtonMap[3] = mp_Ui->pbdarkred;
-        m_QPushButtonMap[4] = mp_Ui->pbgreen;
-        m_QPushButtonMap[5] = mp_Ui->pbgray;
-        m_QPushButtonMap[6] = mp_Ui->pbcarmine;
-        m_QPushButtonMap[7] = mp_Ui->pbred;
-        m_QPushButtonMap[8] = mp_Ui->pbdarkgreen;
-        m_QPushButtonMap[9] = mp_Ui->pbrackley;
-        m_QPushButtonMap[10] = mp_Ui->pbblue;
-        m_QPushButtonMap[11] = mp_Ui->pbdarkblue;
+    m_QPushButtonMap[0] = mp_Ui->pbwhite;
+    m_QPushButtonMap[1] = mp_Ui->pbyellow;
+    m_QPushButtonMap[2] = mp_Ui->pbpink;
+    m_QPushButtonMap[3] = mp_Ui->pbdarkred;
+    m_QPushButtonMap[4] = mp_Ui->pbgreen;
+    m_QPushButtonMap[5] = mp_Ui->pbgray;
+    m_QPushButtonMap[6] = mp_Ui->pbcarmine;
+    m_QPushButtonMap[7] = mp_Ui->pbred;
+    m_QPushButtonMap[8] = mp_Ui->pbdarkgreen;
+    m_QPushButtonMap[9] = mp_Ui->pbrackley;
+    m_QPushButtonMap[10] = mp_Ui->pbblue;
+    m_QPushButtonMap[11] = mp_Ui->pbdarkblue;
 
 }
 
@@ -97,15 +97,11 @@ void CModifyReagentGroupColorDlg ::SetButtonGroup()
 /****************************************************************************/
 CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
 {
-       delete mp_Ui;
+    delete mp_Ui;
 }
 
 
-/****************************************************************************/
-/*!
- *  \brief Set pointer to CReagentGroupColorList
- */
-/****************************************************************************/
+
 void CModifyReagentGroupColorDlg:: SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList)
 {
     mp_CReagentGroupColorList = p_CReagentGroupColorList;
@@ -134,13 +130,13 @@ void CModifyReagentGroupColorDlg::changeEvent(QEvent *p_Event)
 void CModifyReagentGroupColorDlg::RetranslateUI()
 {
     m_MessageDlg.SetButtonText(1, QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                                                  "Ok", 0, QApplication::UnicodeUTF8));
+                                                          "Ok", 0, QApplication::UnicodeUTF8));
 
     m_strCancel = QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                      "Cancel", 0, QApplication::UnicodeUTF8);
+                                          "Cancel", 0, QApplication::UnicodeUTF8);
 
     m_strClose =  QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
-                                       "Close", 0, QApplication::UnicodeUTF8);
+                                          "Close", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("Reagents::CModifyReagentGroupColorDlg", "OK", 0, QApplication::UnicodeUTF8);
 
 }
@@ -197,8 +193,8 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 
 void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
 {
-     mp_Ui->btnOk->setEnabled(true);
-     m_ReagentGroup.SetGroupColor(m_ColorNames.value(Id));
+    mp_Ui->btnOk->setEnabled(true);
+    m_ReagentGroup.SetGroupColor(m_ColorNames.value(Id));
 }
 
 /****************************************************************************/
@@ -213,42 +209,42 @@ void CModifyReagentGroupColorDlg:: UpdateReagentGroupColor()
 
     m_ColorNames.clear();
 
-    int index = 0;
+    int idx = 0;
     QAbstractButton *p_Button;
 
     foreach(p_Button, m_ButtonGroup.buttons()) {
-     QPixmap pixmap(28, 28);
-     QString colorName = const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetCReagentGroupColor(index)->GetColorValue();
-     m_ColorNames << colorName;
-     pixmap.fill(QColor(colorName.prepend("#")));
-     p_Button->setIconSize(QSize(50, 50));
-     p_Button->setIcon(QIcon(pixmap));
+        QPixmap pixmap(28, 28);
+        QString colorName = const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetCReagentGroupColor(idx)->GetColorValue();
+        m_ColorNames << colorName;
+        pixmap.fill(QColor(colorName.prepend("#")));
+        p_Button->setIconSize(QSize(50, 50));
+        p_Button->setIcon(QIcon(pixmap));
 
-     index++;
+        idx++;
     }
 }
 
 void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
 {   
     // copy the data to local
-      m_ReagentGroup = ReagentGroup;
-      mp_Ui->btnOk->setEnabled(false);
+    m_ReagentGroup = ReagentGroup;
+    mp_Ui->btnOk->setEnabled(false);
 
-      for(int ButtonIndex = 0; ButtonIndex < m_ColorNames.count();ButtonIndex++ )
-      {
+    for(int ButtonIndex = 0; ButtonIndex < m_ColorNames.count();ButtonIndex++ )
+    {
         m_QPushButtonMap[ButtonIndex]->setEnabled(true);
         m_QPushButtonMap[ButtonIndex]->setChecked(false);
-      }
+    }
 
-       const DataManager::CReagentGroup * Temp_ReagentGroup;
-       for(int Index = 0; Index < ReagentGroupList.GetNumberOfReagentGroups(); Index++){
-           Temp_ReagentGroup = ReagentGroupList.GetReagentGroup(Index);
+    const DataManager::CReagentGroup * Temp_ReagentGroup;
+    for(int Index = 0; Index < ReagentGroupList.GetNumberOfReagentGroups(); Index++){
+        Temp_ReagentGroup = ReagentGroupList.GetReagentGroup(Index);
 
-           if(m_ColorNames.contains(Temp_ReagentGroup->GetGroupColor())){
-               int index = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());
-               m_QPushButtonMap[index]->setEnabled(false);
-           }
-       }
+        if(m_ColorNames.contains(Temp_ReagentGroup->GetGroupColor())){
+            int idx = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());
+            m_QPushButtonMap[idx]->setEnabled(false);
+        }
+    }
 }
 
 }

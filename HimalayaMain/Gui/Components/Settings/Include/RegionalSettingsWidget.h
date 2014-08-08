@@ -68,6 +68,14 @@ public:
     explicit CRegionalSettingsWidget(QWidget *p_Parent = 0);
     ~CRegionalSettingsWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Used to set pointer to mainwindow, used to retreive user role and
+     *         process state changed.
+     *  \param p_MainWindow = the main window
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
 
 protected:
@@ -93,6 +101,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RegionalSettingsChanged
+     *  \param  Settings = the user settings
      */
     /****************************************************************************/
     void RegionalSettingsChanged(DataManager::CUserSettings &Settings);

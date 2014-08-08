@@ -74,7 +74,7 @@ void CNetworkSettingsWidget::showInformation(QString &msg)
     mp_MessageDlg->SetTitle(CommonString::strInforMsg);
     mp_MessageDlg->SetButtonText(2, CommonString::strOK);
     mp_MessageDlg->SetText(msg);
-    mp_MessageDlg->exec();
+    (void)mp_MessageDlg->exec();
     delete mp_MessageDlg;
 }
 
@@ -250,6 +250,7 @@ void CNetworkSettingsWidget::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = the main window
  */
 /****************************************************************************/
 void CNetworkSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
@@ -391,6 +392,7 @@ void CNetworkSettingsWidget::OnProxyPort()
 /****************************************************************************/
 /*!
  *  \brief Sets KeyBoard object instance
+ *  \p_KeyBoard = pointer to keyboard instance
  */
 /****************************************************************************/
 void CNetworkSettingsWidget::SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard)

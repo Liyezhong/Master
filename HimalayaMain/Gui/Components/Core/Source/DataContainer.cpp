@@ -29,6 +29,9 @@
 //lint -sem(DataManager::CDataContainer::InitContainers, initializer)
 //lint -sem(DataManager::CDataContainer::DeinitContainers,cleanup)
 
+//lint -e1566
+//lint -e1579
+
 namespace DataManager {
 CDataContainer::CDataContainer() : m_IsInitialized(false), ProgramList(NULL),
                                     ReagentList(NULL), ReagentGroupList(NULL), DashboardStationList(NULL), SettingsInterface(NULL),
@@ -59,7 +62,7 @@ bool CDataContainer::InitContainers()
 {
     if (m_IsInitialized == true) {
         qDebug() << "CDataContainer::InitContainers was already called";
-        Q_ASSERT(false);
+        //Q_ASSERT(false);
         return false;
     }
 

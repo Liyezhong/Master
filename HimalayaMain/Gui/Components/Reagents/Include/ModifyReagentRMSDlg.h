@@ -91,6 +91,12 @@ public:
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
                     Global::RMSOptions_t Option,
                     bool bShowCleaningReagent = true);
+    /****************************************************************************/
+    /*!
+     *  \brief Update Rms label
+     *  \param Option = rms option
+     */
+    /****************************************************************************/
     void UpdateRmsLabel(Global::RMSOptions_t Option);
     /****************************************************************************/
     /*!
@@ -98,7 +104,6 @@ public:
      *
      *  \param m_Enable = bool type parameter
      *
-     *  \return from EnableElements
      */
     /****************************************************************************/
     void EnableElements(bool m_Enable);

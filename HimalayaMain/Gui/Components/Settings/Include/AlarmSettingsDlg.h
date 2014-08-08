@@ -107,6 +107,7 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnPeriodicChanged
+     *  \param  Position = user's selection in UI.
      */
     /****************************************************************************/
     void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);
@@ -132,11 +133,21 @@ private slots:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal AlarmSettingsChanged
+     *  \brief  signal for alarm setting changing
+     *  \param  settings = the user setting
      */
     /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
-    void PlayTestTone( quint8, quint8, bool );
+    /****************************************************************************/
+    /*!
+     *  \brief  play test tone
+     *  \param  settings = the user setting
+     *  \param  volume = volume value
+     *  \param  sound = which sound number
+     *  \param isAlarmAudio = it is alarm or note audio file
+     */
+    /****************************************************************************/
+    void PlayTestTone(quint8 volume, quint8 sound, bool isAlarmAudio);
 };
 
 } // end namespace Settings

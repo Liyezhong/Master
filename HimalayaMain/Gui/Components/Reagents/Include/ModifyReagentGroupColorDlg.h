@@ -84,6 +84,12 @@ public:
      */
     /****************************************************************************/
     void SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
+    /****************************************************************************/
+    /*!
+     *  \brief Set pointer to CReagentGroupColorList
+     *  \param  p_CReagentGroupColorList = pointer to ReagentGroupColorList
+     */
+    /****************************************************************************/
     void SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList);
 private slots:
     /****************************************************************************/
@@ -132,8 +138,8 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This signal is emitted when ReagentList is updated.
-     *
+     *  \brief This signal is emitted when Reagentgroup is updated.
+     *  \param ReagentGroup = the updated reagent group
      */
     /****************************************************************************/
     void UpdateReagentGroup(DataManager::CReagentGroup& ReagentGroup);

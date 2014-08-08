@@ -179,6 +179,7 @@ void CAlarmSettingsDlg::UpdateDisplay(void)
         }
         else
         {
+            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosLeft);
             mp_Ui->periodictime_scrolltable->SetDisabled(false);
         }
     }
@@ -201,6 +202,7 @@ void CAlarmSettingsDlg::UpdateDisplay(void)
         }
         else
         {
+            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosLeft);
             mp_Ui->periodictime_scrolltable->SetDisabled(false);
         }
     }
@@ -275,6 +277,7 @@ void CAlarmSettingsDlg::RetranslateUI()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
+ *  \param p_MainWindow = application's main window
  */
 /****************************************************************************/
 void CAlarmSettingsDlg::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)

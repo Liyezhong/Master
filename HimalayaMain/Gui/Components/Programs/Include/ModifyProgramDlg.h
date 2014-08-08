@@ -96,6 +96,7 @@ private:
     QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
     QString m_strNameDuplicated;       ///<  Definition/Declaration of variable m_strNameDuplicated
     QString m_strSeclectIcon;       ///<  Definition/Declaration of variable m_strSeclectIcon
+    QString m_strPrevProgName;       ///<  Definition/Declaration of variable m_strPrevProgName
     bool    m_bIconSelected;        ///<  Definition/Declaration of variable m_bIconSelected
 
 protected:

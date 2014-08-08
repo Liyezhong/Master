@@ -25,6 +25,8 @@
 #include "Dashboard/Include/CommonString.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 
+//lint -e613
+
 namespace Reagents {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
@@ -224,12 +226,6 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief Sets the content of the dialog for New Reagent
- *
- */
-/****************************************************************************/
 void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
 {
     switch (Option) {

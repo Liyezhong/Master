@@ -66,7 +66,12 @@ public:
                                MainMenu::CMainWindow *p_MainWindow = NULL,
                                Core::CDataConnector *p_DataConnector= NULL);
     virtual ~CModifyReagentStationDlg();
-
+    /****************************************************************************/
+    /*!
+    *   \brief Set the edited dashboard station
+    *   \param p_Station = the edited station
+    */
+    /****************************************************************************/
     void SetEditedDashboardStation(DataManager::CDashboardStation* p_Station);
 
 private:

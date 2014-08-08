@@ -36,7 +36,9 @@ namespace Settings {
 CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWindow *p_Parent,
                                  KeyBoard::CKeyBoard *p_Keyboard) :QWidget(p_Parent),
                                  mp_Ui(new Ui::CSettingsWidget),mp_Data(p_Data),mp_MainWindow(p_Parent),
-                                 mp_KeyBoardWidget(p_Keyboard)
+                                 mp_KeyBoardWidget(p_Keyboard),
+                                 m_CurrentTab(false),
+                                 m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole())
 {
     mp_Ui->setupUi(this);
     DataManager::CHimalayaUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
@@ -104,6 +106,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageNetwork, SettingsChanged(DataManager::CUserSettings &), mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Data, RevertChangedUserSettings(), this, UserSettingsUpdated());
     CONNECTSIGNALSLOTGUI(mp_Data, EnableRemoteSWButton(bool), mp_Ui->pageDataManagement, SetRemoteSWButtonState(bool));
+    CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 }
 
 /****************************************************************************/
@@ -159,6 +162,22 @@ void CSettingsWidget::RetranslateUI()
 
 /****************************************************************************/
 /*!
+ *  \brief Update the event view panel if user type changed or panel
+ *         selection changed
+ *
+ */
+/****************************************************************************/
+void CSettingsWidget::UpdateEventViewPanel()
+{
+    mp_Ui->pageEventView->DisableButton();
+    if (mp_Data) {
+        // call the daily run log files
+        mp_Data->RequestDayRunLogFileNames();
+    }
+}
+
+/****************************************************************************/
+/*!
  *  \brief Updates the changed user settings
  *  \todo any other widget needs to be informed about settings changed ?
  */
@@ -184,6 +203,31 @@ void CSettingsWidget::UserSettingsUpdated()
 void CSettingsWidget::UpdateLanguages()
 {
     mp_Ui->pageLanguage->SetLanguages(mp_Data->DeviceConfigurationInterface->GetLanguageList());
+}
+
+/****************************************************************************/
+/*!
+ *  \brief This Slot is called when the Ok button on the Message box is clicked.
+ *
+ *  \iparam CurrentTabIndex = Currently selected row/cell
+ */
+/****************************************************************************/
+void CSettingsWidget::OnCurrentTabChanged(int CurrentTabIndex)
+{
+    if (CurrentTabIndex == 4) {
+        m_CurrentTab = true;
+    }
+    else {
+        m_CurrentTab = false;
+    }
+    // check for the whether panel is event view or not
+    int PanelIndex = mp_Ui->settingsStack->indexOf(mp_Ui->pageEventView);
+    // if the panel index matches then update the log files even if the current role is changed
+    if (PanelIndex == mp_Ui->settingsStack->currentIndex() &&
+            m_CurrentUserRole != MainMenu::CMainWindow::GetCurrentUserRole()) {
+        UpdateEventViewPanel();
+        m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    }
 }
 
 /****************************************************************************/

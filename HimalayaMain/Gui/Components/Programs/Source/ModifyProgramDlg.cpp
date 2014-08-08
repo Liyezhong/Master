@@ -35,6 +35,8 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 
+
+
 namespace Programs {
 
 const QString UNLOADER_STEP_ID = "S7";  //!< Unloader step id
@@ -56,26 +58,27 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      KeyBoard::CKeyBoard *p_KeyBoard,
                                      MainMenu::CMainWindow *p_MainWindow,
                                      Core::CDataConnector *p_DataConnector) :
-                                     MainMenu::CDialogFrame(p_Parent, p_MainWindow),
-                                     mp_Ui(new Ui::CModifyProgramDlg),
-                                     mp_DataConnector(p_DataConnector),
-                                     m_ProgNameBtnClicked(false),
-                                     m_ProgShortNameBtnClicked(false),
-                                     m_ProcessRunning(false),
-                                     m_TempColor(" "),
-                                     mp_MessageDlg(NULL),
-                                     mp_NewProgram(NULL),
-                                     m_ColorReplaced(false),
-                                     m_strSelectIcon(tr("Select Icon")),
-                                     m_strConfirmMsg(tr("Confirmation Message")),
-                                     m_strYes(tr("Yes")),
-                                     m_strOK(tr("OK")),
-                                     m_strClose(tr("Close")),
-                                     m_strCancel(tr("Cancel")),
-                                     m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
-                                     m_strEnterValidName(tr("Please enter a valid Program Name")),
-                                     m_strSeclectIcon(tr("Please select a Program Icon")),
-                                     m_bIconSelected(false)
+    MainMenu::CDialogFrame(p_Parent, p_MainWindow),
+    mp_Ui(new Ui::CModifyProgramDlg),
+    mp_DataConnector(p_DataConnector),
+    m_ProgNameBtnClicked(false),
+    m_ProgShortNameBtnClicked(false),
+    m_ProcessRunning(false),
+    m_TempColor(" "),
+    mp_MessageDlg(NULL),
+    mp_NewProgram(NULL),
+    m_ColorReplaced(false),
+    m_strSelectIcon(tr("Select Icon")),
+    m_strConfirmMsg(tr("Confirmation Message")),
+    m_strYes(tr("Yes")),
+    m_strOK(tr("OK")),
+    m_strClose(tr("Close")),
+    m_strCancel(tr("Cancel")),
+    m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
+    m_strEnterValidName(tr("Please enter a valid Program Name")),
+    m_strSeclectIcon(tr("Please select a Program Icon")),
+    m_bIconSelected(false),
+    m_strPrevProgName(tr(""))
 
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -141,7 +144,7 @@ void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
  *
  */
 /****************************************************************************/
- void CModifyProgramDlg::CloseDialogModifyStepDlg() { mp_ModifyProgStepDlg->accept(); }
+void CModifyProgramDlg::CloseDialogModifyStepDlg() { mp_ModifyProgStepDlg->accept(); }
 /****************************************************************************/
 /*!
  *  \brief Event handler for change events
@@ -169,7 +172,7 @@ void CModifyProgramDlg::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CModifyProgramDlg::CloseDialogs()
 {
-//      ResetButtons();
+    //      ResetButtons();
 }
 /****************************************************************************/
 /*!
@@ -225,7 +228,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         mp_Ui->btnPrgName->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         ButtonPrgIconEnable(false);
-    } else {        
+    } else {
         mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/Icons/Program/"+m_Program.GetIcon()+".png")));
     }
 
@@ -241,10 +244,10 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         if (m_Program.IsLeicaProgram())
         {
-            int index = LongName.indexOf("leica", 0, Qt::CaseInsensitive);
-            if (-1 != index)
+            int idx = LongName.indexOf("leica", 0, Qt::CaseInsensitive);
+            if (-1 != idx)
             {
-                (void)LongName.remove(index, 5);
+                (void)LongName.remove(idx, 5);
             }
             m_Program.SetLeicaProgram(false);
             mp_Ui->btnPrgIcon->setIcon(QIcon(""));
@@ -288,12 +291,11 @@ void CModifyProgramDlg::NewProgram()
         delete mp_NewProgram;
 
     mp_NewProgram = new DataManager::CProgram();
-   //Pass a value same as the one passed to SetVisibleRows()
+    //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.SetProgram(NULL,NULL, NULL, NULL, 5);
     mp_TableWidget->setModel(&m_StepModel);
     m_StepModel.SetModifyProgramDlgPtr(this);
-    ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
 }
 
@@ -363,11 +365,11 @@ bool CModifyProgramDlg::CheckProgramNameOK(QString &name)
     bool ret = true;
 
     for (int i = 0; i < progList->GetNumberOfPrograms(); ++ i) {
-            prog = progList->GetProgram(i);
-            if (prog->GetName() == name) {
-                ret = false;
-                break;
-            }
+        prog = progList->GetProgram(i);
+        if (prog->GetName() == name) {
+            ret = false;
+            break;
+        }
     }
     return ret;
 }
@@ -379,7 +381,7 @@ bool CModifyProgramDlg::CheckProgramNameOK(QString &name)
 /****************************************************************************/
 void CModifyProgramDlg::OnEditName()
 {
-//    mp_KeyBoardWidget->Attach(this);
+    //    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Name"));
     mp_KeyBoardWidget->SetPasswordMode(false);
     if (!(m_ButtonType == NEW_BTN_CLICKED)) {
@@ -451,7 +453,7 @@ void CModifyProgramDlg::OnCopy()
         QString Vacuum   = p_ProgramStep->GetVacuum();
         mp_ModifyProgStepDlg->SetRadioButtonStatus(Pressure, Vacuum);
     }
- 
+
     mp_ModifyProgStepDlg->show();
 }
 
@@ -532,7 +534,7 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    if (m_ButtonType == EDIT_BTN_CLICKED || m_ButtonType == COPY_BTN_CLICKED) {
+    if ((m_ButtonType == EDIT_BTN_CLICKED && m_strPrevProgName != mp_Ui->btnPrgName->text()) || m_ButtonType == COPY_BTN_CLICKED) {
         // check if program's name is duplicated!!
         QString newName = mp_Ui->btnPrgName->text();
         if (!CheckProgramNameOK(newName)) {
@@ -599,7 +601,7 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-        (!m_ProcessRunning)) {
+            (!m_ProcessRunning)) {
         if (m_ButtonType == NEW_BTN_CLICKED){
 
             if ((SelectedIndex+1) > mp_NewProgram->GetNumberOfSteps()) {
@@ -611,14 +613,14 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
             }
         }
         else {
-            //Edit Mode            
+            //Edit Mode
             if ((SelectedIndex+1) > m_Program.GetNumberOfSteps()) {
                 if(!m_Program.IsLeicaProgram())
                     ResetButtons(m_Program, false);
                 mp_TableWidget->clearSelection();
             }
             else {
-                 if(!m_Program.IsLeicaProgram())
+                if(!m_Program.IsLeicaProgram())
                     ResetButtons(m_Program, true);
             }
         }
@@ -635,7 +637,7 @@ void CModifyProgramDlg::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-        (!m_ProcessRunning)) {
+            (!m_ProcessRunning)) {
         if (m_ButtonType == EDIT_BTN_CLICKED && Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false) {
             // View Mode
             mp_Ui->btnPrgName->setEnabled(false);
@@ -664,7 +666,7 @@ void CModifyProgramDlg::OnProcessStateChanged()
             //View Mode
             mp_Ui->btnPrgName->setEnabled(false);
             ButtonPrgIconEnable(false);
-            mp_Ui->btnCancel->setEnabled(true);           
+            mp_Ui->btnCancel->setEnabled(true);
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
@@ -714,11 +716,12 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
             mp_MessageDlg->SetText(tr("The Program name shall not be empty!"));
             (void) mp_MessageDlg->exec();
             return;
-        }else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
-                mp_MessageDlg->SetText(tr("The Program name shall not contain \"Leica\""));
-                (void) mp_MessageDlg->exec();
-                return;
+        } else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
+            mp_MessageDlg->SetText(tr("The Program name shall not contain \"Leica\""));
+            (void) mp_MessageDlg->exec();
+            return;
         }
+        m_strPrevProgName = mp_Ui->btnPrgName->text();
         mp_Ui->btnPrgName->setText(tr("%1").arg(EnteredText));
     }
     else if (m_ProgShortNameBtnClicked) {
@@ -941,27 +944,27 @@ void CModifyProgramDlg::OnIconClicked()
 /****************************************************************************/
 void CModifyProgramDlg::RetranslateUI()
 {
-   mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
-   mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
-   mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
-   mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
+    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
+    mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
 
-   // Added void to please lint
-   (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", 0, QApplication::UnicodeUTF8),0);
-   (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Reagent", 0, QApplication::UnicodeUTF8),0);
-   (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", 0, QApplication::UnicodeUTF8),0);
-   (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", 0, QApplication::UnicodeUTF8),0);
-   (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", 0, QApplication::UnicodeUTF8),0);
+    // Added void to please lint
+    (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", 0, QApplication::UnicodeUTF8),0);
+    (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Reagent", 0, QApplication::UnicodeUTF8),0);
+    (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", 0, QApplication::UnicodeUTF8),0);
+    (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", 0, QApplication::UnicodeUTF8),0);
+    (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", 0, QApplication::UnicodeUTF8),0);
 
-   m_strSelectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Select Icon", 0, QApplication::UnicodeUTF8);
-   m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramDlg", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-   m_strYes = QApplication::translate("Programs::CModifyProgramDlg", "Yes", 0, QApplication::UnicodeUTF8);
-   m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
-   m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
-   m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
-   m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program Name duplicated!", 0, QApplication::UnicodeUTF8);
-   m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
-   m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
+    m_strSelectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Select Icon", 0, QApplication::UnicodeUTF8);
+    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramDlg", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strYes = QApplication::translate("Programs::CModifyProgramDlg", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
+    m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
+    m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program Name duplicated!", 0, QApplication::UnicodeUTF8);
+    m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
+    m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 
 }
 
