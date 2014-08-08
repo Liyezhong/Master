@@ -1132,10 +1132,10 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     mp_MessageBox->SetTitle("System speaker test");
 
     if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
-        mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
+        mp_MessageBox->SetText(QString("Did you hear the speaker test sound ?"));
     }
     else {
-        mp_MessageBox->SetText(QString("Do you hear the system speak noice which is higher than the previous ?"));
+        mp_MessageBox->SetText(QString("Did you hear a louder speaker test sound this time ?"));
     }
     mp_MessageBox->SetButtonText(1, "No");
     mp_MessageBox->SetButtonText(3, "Yes");
@@ -1164,11 +1164,12 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
     if (ConnectFlag) {
         TestStatus = "Connected";
+        dlg->SetText(QString("Please confirm the alarm light is on and status is 'Connected' ?"));
     }
     else {
+        dlg->SetText(QString("Please confirm the alarm status is 'DisConnected' ?"));
         TestStatus = "DisConnected";
     }
-    dlg->SetText(QString("Please confirm the alarm status '%1' ?").arg(TestStatus));
 
     dlg->UpdateLabel("Alarm Status", Status.value("AlarmStatus"));
     int result = dlg->exec();
