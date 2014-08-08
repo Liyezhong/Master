@@ -276,6 +276,7 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
     mp_WaitDialog->accept();
     if (Ack.GetStatus() == true) {
         emit DateTimeAcked();
+        ReagentsUpdated();//update for reagent expired
     }
     else {
         if (Ack.GetText().length() > 0) {
@@ -1134,8 +1135,8 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
     }
 
 
-    mp_WaitDialog->SetDialogTitle(tr(DialogTitle.toAscii()));
-    mp_WaitDialog->SetText(tr(DialogText.toAscii()));
+    mp_WaitDialog->SetDialogTitle(DialogTitle);
+    mp_WaitDialog->SetText(DialogText);
 
     mp_WaitDialog->show();
 

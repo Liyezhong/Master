@@ -503,6 +503,12 @@
 		<Event Code="" ErrorID="50331718" ErrorType="Warning" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_OVERDUE">
 			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" LogLevel="High" UserLog="TRUE" StatusBar="Yes"/>
 		</Event>
+		<Event Code="" ErrorID="50331764" ErrorType="" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_RESET">
+			<Step ID="0" Type="MSG" StringID="50331764" ButtonType="" LogLevel="High" UserLog="TRUE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331765" ErrorType="" AlarmType="" Name="EVENT_SERVICE_ACTIVECARBONTIME_RESET">
+			<Step ID="0" Type="MSG" StringID="50331765" ButtonType="" LogLevel="High" UserLog="TRUE" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="33619977" ErrorType="Error" AlarmType="" Name="EVENT_STATIONS_DEFECT">
 			<Step ID="0" Type="MSG" StringID="33619977" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>

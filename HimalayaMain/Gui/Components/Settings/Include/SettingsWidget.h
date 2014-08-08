@@ -55,7 +55,10 @@ private:
     Core::CDataConnector *mp_Data;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;   //!< Used to inform Main window when settings change.
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< Keyboard object
+    bool m_CurrentTab;                      //!< True if Setting is the currently selected tab else False.
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     void RetranslateUI();
+    void UpdateEventViewPanel();
 
 private slots:
     /****************************************************************************/
@@ -82,6 +85,8 @@ private slots:
      */
     /****************************************************************************/
     void UpdateLanguages();
+
+    void OnCurrentTabChanged(int CurrentTabIndex);
 
 signals:
     /****************************************************************************/
