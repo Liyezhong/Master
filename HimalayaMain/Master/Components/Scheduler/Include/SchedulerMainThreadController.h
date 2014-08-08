@@ -266,6 +266,7 @@ typedef struct
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
+        bool m_hasParaffin;                                   ///< the program has paraffin
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1118,6 +1119,15 @@ protected:
          */
         /****************************************************************************/
         inline bool IsCleaningProgram() const { return m_IsCleaningProgram; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check has paraffin progaram
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        inline bool HasParaffinReagent() const { return m_hasParaffin;  }
 
     public slots:
 

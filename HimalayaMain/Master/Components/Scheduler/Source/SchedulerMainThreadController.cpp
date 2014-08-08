@@ -103,6 +103,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
         , m_IsInSoakDelay(false)
+        , m_hasParaffin(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -1768,6 +1769,7 @@ void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, co
 
 void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
 {
+    m_hasParaffin = false;
     this->SendAcknowledgeOK(Ref);
     QString curProgramID;
     QString strProgramID = Cmd.GetProgramID();
@@ -1798,6 +1800,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
         if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
         {
+            m_hasParaffin = true;
             costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
         }
 
