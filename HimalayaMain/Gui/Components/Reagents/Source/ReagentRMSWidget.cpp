@@ -27,6 +27,8 @@
 #include "Dashboard/Include/CommonString.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
+
 namespace Reagents {
 
 Global::RMSOptions_t CReagentRMSWidget :: RMSPROCESSINGOPTION;
@@ -610,7 +612,6 @@ void CReagentRMSWidget::RetranslateUI()
 /****************************************************************************/
 void CReagentRMSWidget ::UpdateUserSetting()
 {
-
     if(mp_DataConnector->SettingsInterface->GetUserSettings()) {
         m_UserSettings = *(mp_DataConnector->SettingsInterface->GetUserSettings());
         m_ReagentRMSModel.SetUserSettings(&m_UserSettings);
@@ -618,87 +619,87 @@ void CReagentRMSWidget ::UpdateUserSetting()
 
         if(RMSPROCESSINGOPTION != m_UserSettings.GetModeRMSProcessing())
             RMSPROCESSINGOPTION = m_UserSettings.GetModeRMSProcessing();
-            switch(RMSPROCESSINGOPTION) {
-                case Global::RMS_CASSETTES:
-                    mp_Ui->radioCassettes->setChecked(true);
-                    if (mp_TableWidget)
-                    {
-                        mp_TableWidget->setColumnHidden(2, false);
-                    }
-                    m_ReagentRMSModel.ResetAndUpdateModel();
-                    ResizeHorizontalSection();
-                    emit RMSChanged(Global::RMS_CASSETTES);
-                    break;
-                case Global::RMS_CYCLES:
-                    mp_Ui->radioCycles->setChecked(true);
-                    if (mp_TableWidget)
-                    {
-                        mp_TableWidget->setColumnHidden(2, false);
-                    }
-                    m_ReagentRMSModel.ResetAndUpdateModel();
-                    ResizeHorizontalSection();
-                    emit RMSChanged(Global::RMS_CYCLES);
-                    break;
-                case Global::RMS_DAYS:
-                    mp_Ui->radioDays->setChecked(true);
-                    if (mp_TableWidget)
-                    {
-                        mp_TableWidget->setColumnHidden(2, false);
-                    }
-                    m_ReagentRMSModel.ResetAndUpdateModel();
-                    ResizeHorizontalSection();
-                    emit RMSChanged(Global::RMS_DAYS);
-                    break;
-                case Global::RMS_OFF:
-                    mp_Ui->radioOff->setChecked(true);
-                    if (mp_TableWidget)
-                    {
-                        mp_TableWidget->setColumnHidden(2, true);
-                    }
-                    m_ReagentRMSModel.ResetAndUpdateModel();
-                    emit RMSChanged(Global::RMS_OFF);
-                    break;
-                default:
-                    break;
-
+        switch(RMSPROCESSINGOPTION) {
+        case Global::RMS_CASSETTES:
+            mp_Ui->radioCassettes->setChecked(true);
+            if (mp_TableWidget)
+            {
+                mp_TableWidget->setColumnHidden(2, false);
             }
+            m_ReagentRMSModel.ResetAndUpdateModel();
+            ResizeHorizontalSection();
+            emit RMSChanged(Global::RMS_CASSETTES);
+            break;
+        case Global::RMS_CYCLES:
+            mp_Ui->radioCycles->setChecked(true);
+            if (mp_TableWidget)
+            {
+                mp_TableWidget->setColumnHidden(2, false);
+            }
+            m_ReagentRMSModel.ResetAndUpdateModel();
+            ResizeHorizontalSection();
+            emit RMSChanged(Global::RMS_CYCLES);
+            break;
+        case Global::RMS_DAYS:
+            mp_Ui->radioDays->setChecked(true);
+            if (mp_TableWidget)
+            {
+                mp_TableWidget->setColumnHidden(2, false);
+            }
+            m_ReagentRMSModel.ResetAndUpdateModel();
+            ResizeHorizontalSection();
+            emit RMSChanged(Global::RMS_DAYS);
+            break;
+        case Global::RMS_OFF:
+            mp_Ui->radioOff->setChecked(true);
+            if (mp_TableWidget)
+            {
+                mp_TableWidget->setColumnHidden(2, true);
+            }
+            m_ReagentRMSModel.ResetAndUpdateModel();
+            emit RMSChanged(Global::RMS_OFF);
+            break;
+        default:
+            break;
 
-            if(RMSCLEANINGOPTIONS != m_UserSettings.GetModeRMSCleaning())
-                RMSCLEANINGOPTIONS = m_UserSettings.GetModeRMSCleaning();
-                switch(RMSCLEANINGOPTIONS) {
-                    case Global::RMS_CYCLES:
-                        mp_Ui->radioCycles_Cleaning->setChecked(true);
-                        if (mp_TableWidgetCleaning)
-                        {
-                            mp_TableWidgetCleaning->setColumnHidden(2, false);
-                        }
-                        m_ReagentCleaningModel.ResetAndUpdateModel();
-                        ResizeHorizontalSection();
-                        emit RMSCleaningChanged(Global::RMS_CYCLES);
-                        break;
-                    case Global::RMS_DAYS:
-                        mp_Ui->radioDays_Cleaning->setChecked(true);
-                        if (mp_TableWidgetCleaning)
-                        {
-                            mp_TableWidgetCleaning->setColumnHidden(2, false);
-                        }
-                        m_ReagentCleaningModel.ResetAndUpdateModel();
-                        ResizeHorizontalSection();
-                        emit RMSCleaningChanged(Global::RMS_DAYS);
-                        break;
-                    case Global::RMS_OFF:
-                        mp_Ui->radioOff_Cleaning->setChecked(true);
-                        if (mp_TableWidgetCleaning)
-                        {
-                            mp_TableWidgetCleaning->setColumnHidden(2, true);
-                        }
-                        m_ReagentCleaningModel.ResetAndUpdateModel();
-                        emit RMSCleaningChanged(Global::RMS_OFF);
-                        break;
-                    default:
-                        break;
-                }
         }
+
+        if(RMSCLEANINGOPTIONS != m_UserSettings.GetModeRMSCleaning())
+            RMSCLEANINGOPTIONS = m_UserSettings.GetModeRMSCleaning();
+        switch(RMSCLEANINGOPTIONS) {
+        case Global::RMS_CYCLES:
+            mp_Ui->radioCycles_Cleaning->setChecked(true);
+            if (mp_TableWidgetCleaning)
+            {
+                mp_TableWidgetCleaning->setColumnHidden(2, false);
+            }
+            m_ReagentCleaningModel.ResetAndUpdateModel();
+            ResizeHorizontalSection();
+            emit RMSCleaningChanged(Global::RMS_CYCLES);
+            break;
+        case Global::RMS_DAYS:
+            mp_Ui->radioDays_Cleaning->setChecked(true);
+            if (mp_TableWidgetCleaning)
+            {
+                mp_TableWidgetCleaning->setColumnHidden(2, false);
+            }
+            m_ReagentCleaningModel.ResetAndUpdateModel();
+            ResizeHorizontalSection();
+            emit RMSCleaningChanged(Global::RMS_DAYS);
+            break;
+        case Global::RMS_OFF:
+            mp_Ui->radioOff_Cleaning->setChecked(true);
+            if (mp_TableWidgetCleaning)
+            {
+                mp_TableWidgetCleaning->setColumnHidden(2, true);
+            }
+            m_ReagentCleaningModel.ResetAndUpdateModel();
+            emit RMSCleaningChanged(Global::RMS_OFF);
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 

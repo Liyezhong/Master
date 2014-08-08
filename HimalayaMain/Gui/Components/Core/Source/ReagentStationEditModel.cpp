@@ -198,19 +198,19 @@ QVariant CReagentStationEditModel::data(const QModelIndex &Index, int Role) cons
                 else
                     return p_Reagent->GetReagentName();
             case 1:
-                 if (mp_ReagentGroupList) {
+                if (mp_ReagentGroupList) {
                     if(p_Reagent){
                         DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
                         if (p_ReagentGroup) {
                             return p_ReagentGroup->GetReagentGroupName();
                         }
-                     }
-                     else {
-                         return QString("");
-                      }
-                  }
-              }
-          }
+                    }
+                    else {
+                        return QString("");
+                    }
+                }
+            }
+        }
 
         if (Role == (int)Qt::UserRole) {
             return m_ReagentID[Index.row()];
@@ -229,28 +229,28 @@ QVariant CReagentStationEditModel::data(const QModelIndex &Index, int Role) cons
                 if (mp_ReagentGroupList) {
                     if(p_Reagent) {
                         DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                          if (p_ReagentGroup) {
-                                QColor Color;
-                                // add '#' to hex value to change to color value
-                                Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
-                                QPalette Palete(Color);
-                                return QVariant(Palete.color(QPalette::Window));
-                           }
-                     }
-                     else {
+                        if (p_ReagentGroup) {
+                            QColor Color;
+                            // add '#' to hex value to change to color value
+                            Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
+                            QPalette Palete(Color);
+                            return QVariant(Palete.color(QPalette::Window));
+                        }
+                    }
+                    else {
                         QPalette Palette;
                         return QVariant(Palette.color(QPalette::Window));
                     }
                 }
             }
         }
-       }
-       else if (Role == (int)Qt::BackgroundRole) {
-            QPalette Palette;
-            return QVariant(Palette.color(QPalette::Window));
-       }
+    }
+    else if (Role == (int)Qt::BackgroundRole) {
+        QPalette Palette;
+        return QVariant(Palette.color(QPalette::Window));
+    }
 
-      return QVariant();
+    return QVariant();
 }
 
 /****************************************************************************/

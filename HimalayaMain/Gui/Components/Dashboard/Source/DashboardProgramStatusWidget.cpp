@@ -9,8 +9,8 @@
 
 using namespace Dashboard;
 
-CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *p) :
+    MainMenu::CDialogFrame(p),
     ui(new Ui::CDashboardProgramStatusWidget)
 {
     ui->setupUi(this);

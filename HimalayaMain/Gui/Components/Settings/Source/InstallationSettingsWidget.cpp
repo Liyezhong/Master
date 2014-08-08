@@ -183,7 +183,7 @@ void CInstallationSettingsWidget::SetSWConfig(DataManager::CSWVersionList *p_SWV
 
     if (mp_SWVersion != NULL) {
         QString FilenameSWVersion = Global::SystemPaths::Instance().GetSettingsPath() + "/SW_Version.xml";
-        mp_SWVersion->Read(FilenameSWVersion);
+        (void)mp_SWVersion->Read(FilenameSWVersion);
     }
 }
 

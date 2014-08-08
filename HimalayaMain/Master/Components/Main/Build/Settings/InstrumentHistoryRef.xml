@@ -75,7 +75,7 @@
             </SubModule>
             <SubModule name="oven_door_status" type="Digital Input" description="">
                 <parameter name="SoftwareVersion" unit="">3</parameter>
-                <parameter name="OperationTime" unit="">18</parameter>
+                <parameter name="OperationTime" unit="">26</parameter>
             </SubModule>
         </Module>
         <Module name="RotaryValveDevice" description="RotaryValveDevice">
@@ -172,16 +172,16 @@
             <TestDate></TestDate>
             <TestResult></TestResult>
             <SubModule name="EBox" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34930</parameter>
+                <parameter name="OperationTime" unit="seconds">39526</parameter>
             </SubModule>
             <SubModule name="Pressure_Sensor" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34930</parameter>
+                <parameter name="OperationTime" unit="seconds">39526</parameter>
             </SubModule>
             <SubModule name="Touch_Screen" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34931</parameter>
+                <parameter name="OperationTime" unit="seconds">39527</parameter>
             </SubModule>
             <SubModule name="Ventilation_Fan" type="Other Module" description="">
-                <parameter name="OperationTime" unit="seconds">34932</parameter>
+                <parameter name="OperationTime" unit="seconds">39528</parameter>
             </SubModule>
         </Module>
     </ModuleList>

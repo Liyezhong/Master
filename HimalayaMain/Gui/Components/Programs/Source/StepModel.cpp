@@ -30,6 +30,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
 
 namespace Programs {
 
@@ -342,9 +343,9 @@ void CStepModel::SetStationNameList(QList<QString>& stationNameList)
     mp_DashboardStationNameList = stationNameList;
 }
 
-void CStepModel::SetCurSelectRowIndex(int index)
+void CStepModel::SetCurSelectRowIndex(int idx)
 {
-    m_CurSelectRowIndex= index;
+    m_CurSelectRowIndex= idx;
 }
 
 

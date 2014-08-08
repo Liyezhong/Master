@@ -243,15 +243,15 @@ void CProgramWidget::OnCopy()
 /****************************************************************************/
 void CProgramWidget::OnDelete()
 {
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
-    ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
-    ConfirmationMessageDlg.HideCenterButton();
-    ConfirmationMessageDlg.SetText(m_strDelProgram);
+    MainMenu::CMessageDlg dlg;
+    dlg.SetTitle(m_strConfirmMsg);
+    dlg.SetIcon(QMessageBox::Warning);
+    dlg.SetButtonText(1, m_strYes);
+    dlg.SetButtonText(3, m_strCancel);
+    dlg.HideCenterButton();
+    dlg.SetText(m_strDelProgram);
 
-    if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
+    if (dlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
 
         bool bRevertSelectedProgram = false;

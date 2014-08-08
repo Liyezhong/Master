@@ -8,6 +8,8 @@
 #include "Dashboard/Include/CommonString.h"
 #include "Core/Include/GlobalHelper.h"
 
+//lint -e613
+
 namespace Reagents {
 
 /****************************************************************************/

@@ -189,8 +189,8 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
     {
         if (m_IconName.contains(pProgramList->GetProgram(j)->GetIcon()))
         {
-            int index = m_IconName.indexOf(pProgramList->GetProgram(j)->GetIcon());
-            m_ButtonGroup.button(index)->setEnabled(false);
+            int idx = m_IconName.indexOf(pProgramList->GetProgram(j)->GetIcon());
+            m_ButtonGroup.button(idx)->setEnabled(false);
         }
     }
 }

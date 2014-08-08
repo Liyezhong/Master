@@ -25,6 +25,8 @@
 #include "Dashboard/Include/CommonString.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 
+//lint -e613
+
 namespace Reagents {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator

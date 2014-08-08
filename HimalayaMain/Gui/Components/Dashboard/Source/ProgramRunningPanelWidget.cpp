@@ -14,8 +14,8 @@
 
 namespace Dashboard
 {
-CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *parent):
-    CIconTitlePanelFrame(parent),
+CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *p):
+    CIconTitlePanelFrame(p),
     ui(new Ui::CProgramRunningPanelWidget),
     m_remainingTimeTotal(0),
     m_curRemainingTimeTotal(0),
@@ -322,9 +322,9 @@ void CProgramRunningPanelWidget::OnProgramDetail()
                                        m_curRemainingTimeTotal,
                                        m_DateTimeStr, bAboutEnable);
 
-    QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
-    pProgramStatusWidget->exec();
-    QObject::disconnect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
+    (void)QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
+    (void)pProgramStatusWidget->exec();
+    (void)QObject::disconnect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
     delete pProgramStatusWidget;
 }
 

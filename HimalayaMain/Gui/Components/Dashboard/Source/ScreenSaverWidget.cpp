@@ -2,8 +2,8 @@
 #include "ui_ScreenSaverWidget.h"
 #include <QTimer>
 
-ScreenSaverWidget::ScreenSaverWidget(QWidget *parent) :
-    MainMenu::CPanelFrame(parent),
+ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
+    MainMenu::CPanelFrame(p),
     ui(new Ui::ScreenSaverWidget),
     m_isFirstShow(true)
 {

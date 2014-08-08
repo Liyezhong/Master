@@ -1831,7 +1831,7 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
                         "Downloading the New SW from remote server successful, now start to update.",
                                                        0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
        return;
     } else {
         return;

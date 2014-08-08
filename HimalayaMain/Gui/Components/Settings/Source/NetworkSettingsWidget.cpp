@@ -74,7 +74,7 @@ void CNetworkSettingsWidget::showInformation(QString &msg)
     mp_MessageDlg->SetTitle(CommonString::strInforMsg);
     mp_MessageDlg->SetButtonText(2, CommonString::strOK);
     mp_MessageDlg->SetText(msg);
-    mp_MessageDlg->exec();
+    (void)mp_MessageDlg->exec();
     delete mp_MessageDlg;
 }
 

@@ -242,9 +242,9 @@ void CAlarmSettingsWidget::OnProcessStateChanged()
  *  \param Settings = DataManager::CUserSettings type parameter
  */
 /****************************************************************************/
-void CAlarmSettingsWidget:: AlarmSettingsChange(DataManager::CUserSettings &Settings)
+void CAlarmSettingsWidget:: AlarmSettingsChange(DataManager::CUserSettings &us)
 {
-    emit AlarmSettingsChanged(Settings);
+    emit AlarmSettingsChanged(us);
 }
 /****************************************************************************/
 /*!

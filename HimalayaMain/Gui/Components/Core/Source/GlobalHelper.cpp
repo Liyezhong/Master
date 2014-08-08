@@ -98,12 +98,10 @@ QString  CGlobalHelper::TimeToString(int seconds, bool showSeconds)
     int hour = seconds/(60*60);
     int minute = (seconds/60)%60;
 
-
-
     if (hour < 100)
-        retStr.sprintf("%02d:%02d", hour, minute);
+        (void)retStr.sprintf("%02d:%02d", hour, minute);
     else
-        retStr.sprintf("%d:%02d", hour, minute);
+        (void)retStr.sprintf("%d:%02d", hour, minute);
 
     if (showSeconds)
     {

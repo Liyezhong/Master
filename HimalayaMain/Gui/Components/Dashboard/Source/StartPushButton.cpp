@@ -50,9 +50,9 @@ CStartPushButton::~CStartPushButton()
 {
 }
 
-void CStartPushButton::setText(const QString &text)
+void CStartPushButton::setText(const QString &txt)
 {
-    m_Text = text;
+    m_Text = txt;
 }
 
 void CStartPushButton::IsStartStatus(bool bSet)
@@ -65,24 +65,23 @@ void CStartPushButton::IsStartStatus(bool bSet)
  *  \brief Draw the pause button 
  */
 /****************************************************************************/
-void CStartPushButton::paintEvent(QPaintEvent * event)
+void CStartPushButton::paintEvent(QPaintEvent * e)
 {
-    QPushButton::paintEvent(event);
+    QPushButton::paintEvent(e);
 
     QPainter painter(this);
-    QRect rect = event->rect();
-    int XCenter = rect.width() / 2;
+    QRect r = e->rect();
+    int XCenter = r.width() / 2;
     int top = 13;
 
     //draw the caption at the left side
-    const QFont& font = painter.font();
-    QFontMetrics fm(font);
+    const QFont& ft = painter.font();
+    QFontMetrics fm(ft);
     painter.drawText(XCenter - 7, top + fm.height() -5 - fm.descent(), m_Text);
 
     //draw the virtical line
-    int offset = 5;
     int lineLeft = XCenter + 33;
-    painter.drawLine(lineLeft, top, lineLeft, rect.bottom() - 4);
+    painter.drawLine(lineLeft, top, lineLeft, r.bottom() - 4);
 
     //draw the solid circle point at the right side
     QRectF rectangle(lineLeft + 8, top + 2, 10.0, 10.0);

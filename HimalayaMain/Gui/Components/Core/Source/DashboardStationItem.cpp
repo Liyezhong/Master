@@ -88,12 +88,12 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 
-    m_PixmapRetortUnlocked.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png");
-    m_PixmapRetortLocked01.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked01.png");
-    m_PixmapRetortLocked02.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked02.png");
-    m_PixmapParaffinbathBackground.load(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png");
-    m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
-    m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
+    (void)m_PixmapRetortUnlocked.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png");
+    (void)m_PixmapRetortLocked01.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked01.png");
+    (void)m_PixmapRetortLocked02.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked02.png");
+    (void)m_PixmapParaffinbathBackground.load(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png");
+    (void)m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
+    (void)m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
@@ -225,20 +225,20 @@ bool CDashboardStationItem::IsEmpty()
 void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 {
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-		if (false == m_RetortLocked)
-		{
+        if (false == m_RetortLocked)
+        {
             Painter.drawPixmap(0, 0, m_PixmapRetortUnlocked);
-		}
-		else
-		{
+        }
+        else
+        {
             Painter.drawPixmap(0, 0, m_PixmapRetortLocked01);
             Painter.drawPixmap(0, 0, m_PixmapRetortLocked02);
-		}
+        }
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-            Painter.drawPixmap(0, 0, m_PixmapParaffinbathBackground);
+        Painter.drawPixmap(0, 0, m_PixmapParaffinbathBackground);
     } else {
-            Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
-            Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
+        Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
+        Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
     }
 }
 
@@ -401,9 +401,9 @@ void CDashboardStationItem::PrepareCleaningReagentStrip()
     {
         painter.drawRect(i, 0, 4, 200);
     }
-    QMatrix matrix;
-    (void)matrix.rotate(45.0);
-    QPixmap img = pix.transformed(matrix);
+    QMatrix m;
+    (void)m.rotate(45.0);
+    QPixmap img = pix.transformed(m);
     img = img.copy(100, 100, 100, 98);
     m_RawImage4Cleaning = img;
 }
@@ -543,35 +543,35 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         m_ReagentDisplayColorValue = reagentColorValue;
 
-		//Check whether the bottle contains cleaning reagnet for later use 
-		if (p_ReagentGroup->IsCleaningReagentGroup())
-		{
-			isCleaningReagent = true;
-		}
+        //Check whether the bottle contains cleaning reagnet for later use
+        if (p_ReagentGroup->IsCleaningReagentGroup())
+        {
+            isCleaningReagent = true;
+        }
     }
     else
     {
         reagentColorValue = m_CurrentReagentColorValue;
     }
 
-        QColor color(reagentColorValue);
-        if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+    QColor color(reagentColorValue);
+    if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+    {
+        if(m_EnableBlink && m_ReagentExpiredFlag && m_StationSelected)
         {
-            if(m_EnableBlink && m_ReagentExpiredFlag && m_StationSelected)
+            if (m_ExpiredColorRed)
             {
-                if (m_ExpiredColorRed)
-                {
-                    m_ExpiredColorRed = false;
-                }
-                else
-                {
-                    color.setRgb(240, 175, 82);
-                    m_ExpiredColorRed = true;
-                }
+                m_ExpiredColorRed = false;
+            }
+            else
+            {
+                color.setRgb(240, 175, 82);
+                m_ExpiredColorRed = true;
             }
         }
-        Painter.setPen(color);
-        Painter.setBrush(color);
+    }
+    Painter.setPen(color);
+    Painter.setBrush(color);
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
@@ -579,7 +579,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         fillBottleWidth = m_BottleBoundingRectWidth - 12;  // Manual Pixel Calculation
         fillBottleHeight = m_BottleBoundingRectHeight - m_BottleCoverHeight;  // Manual Pixel Calculation
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
-        || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
         {
             fillBottleHeight = m_CurrentBoundingRectReagentHeight;
         }
@@ -603,8 +603,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         Painter.drawPath(path);
         if (isCleaningReagent)
         {
-            qreal startx = 4.0;
-            qreal starty = 38.0;
+            int startx = 4;
+            int starty = 38;
             Painter.setClipPath(path);
 
             //draw the final result
@@ -618,7 +618,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         fillParaffinbathWidth = m_ParaffinbathBoundingRectWidth - 9;
         fillParaffinbathHeight = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
-        || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
         {
             fillParaffinbathHeight = m_CurrentBoundingRectReagentHeight;
         }
@@ -657,8 +657,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         if (fillRetortHeight > 0) {
             //path.addRoundedRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, fillRetortWidth - 6, fillRetortHeight - 3), 8, 8);
-            int y = m_RetortBoundingRectHeight - fillRetortHeight - 1;
-            path.addRoundedRect(QRect(4, (y > 0) ? y : 0 , fillRetortWidth - 6, fillRetortHeight -1), 8, 8);
+            int h = m_RetortBoundingRectHeight - fillRetortHeight - 1;
+            path.addRoundedRect(QRect(4, (h > 0) ? h : 0 , fillRetortWidth - 6, fillRetortHeight -1), 8, 8);
         }
 
         //int cornerHeight = 4;
