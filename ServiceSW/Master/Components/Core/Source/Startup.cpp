@@ -51,7 +51,8 @@ CStartup::CStartup() : QObject(),
     mp_ManaufacturingDiagnosticsHandler(NULL),
     mp_HeatingStatusDlg(NULL),
     mp_SealingStatusDlg(NULL),
-    m_SelfTestFinished(false)
+    m_SelfTestFinished(false),
+    mp_USBKeyValidator(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -470,8 +471,9 @@ void CStartup::GuiInit(QString debugMode)
         if (mp_USBKeyValidator)
         {
             delete mp_USBKeyValidator;
+            mp_USBKeyValidator = NULL;
         }
-        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName);
+        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Primaris");
         CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                            this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
         CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
