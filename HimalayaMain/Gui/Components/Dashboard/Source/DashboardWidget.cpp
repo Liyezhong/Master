@@ -928,12 +928,10 @@ void CDashboardWidget::OnUserRoleChanged()
             ui->programPanelWidget->EnablePauseButton(true);
             ui->programPanelWidget->EnableStartButton(true);
             break;
+
         case 2:
-            ui->programPanelWidget->EnablePauseButton(true);
-            ui->programPanelWidget->EnableStartButton(false);
-            break;
         case 3:
-            ui->programPanelWidget->EnablePauseButton(false);
+            ui->programPanelWidget->EnablePauseButton(true);
             ui->programPanelWidget->EnableStartButton(false);
             break;
         default:
