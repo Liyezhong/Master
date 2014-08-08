@@ -846,7 +846,6 @@ const QString& CDashboardStationItem::GetStationItemID() const
 
 bool CDashboardStationItem::IsReagentExpired()
 {
-    UpdateUserSettings();
     return m_ReagentExpiredFlag;
 }
 
