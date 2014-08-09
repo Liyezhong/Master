@@ -44,15 +44,6 @@ private:
     void UpdateProgram(Global::tRefType, const MsgClasses::CmdProgramUpdate &Cmd, Threads::CommandChannel &AckCommandChannel);
     void AddProgram(Global::tRefType, const MsgClasses::CmdNewProgram &Cmd, Threads::CommandChannel &AckCommandChannel);
     void DeleteProgram(Global::tRefType, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel);
-
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal StartableProgramEdited
-     */
-    /****************************************************************************/
-    void StartableProgramEdited(const QString &ProgramID);
-
 };
 
 }// end of namespace DataManager

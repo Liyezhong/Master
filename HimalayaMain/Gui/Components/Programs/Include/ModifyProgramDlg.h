@@ -147,7 +147,6 @@ private:
     void ButtonPrgIconEnable(bool enable);
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
-    bool CheckProgramNameOK(QString &name);
 private slots:
     /****************************************************************************/
     /*!

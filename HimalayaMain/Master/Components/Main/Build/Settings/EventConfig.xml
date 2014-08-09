@@ -353,7 +353,7 @@
 		<Event Code="" ErrorID="33816631" ErrorType="Error" AlarmType="" Name="EVENT_DM_PROG_DEL_FAILED_INTERNAL_ERR">
 			<Step ID="0" Type="MSG" StringID="33816631" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="33816623" ErrorType="info" AlarmType="" Name="EVENT_DM_PROG_ID_NOT_UNIQUE">
+		<Event Code="" ErrorID="33816623" ErrorType="" AlarmType="" Name="EVENT_DM_PROG_ID_NOT_UNIQUE">
 			<Step ID="0" Type="MSG" StringID="33816623" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33816620" ErrorType="info" AlarmType="" Name="EVENT_DM_PROG_INVALID_DURATION_FORMAT">
@@ -365,7 +365,7 @@
 		<Event Code="" ErrorID="33818113" ErrorType="" AlarmType="" Name="EVENT_DM_PROG_NAME_NOT_UNIQUE">
 			<Step ID="0" Type="MSG" StringID="33818113" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="33816596" ErrorType="Info" AlarmType="" Name="EVENT_DM_PROGRAM_INVALID_INDEX">
+		<Event Code="" ErrorID="33816596" ErrorType="" AlarmType="" Name="EVENT_DM_PROGRAM_INVALID_INDEX">
 			<Step ID="0" Type="MSG" StringID="33816596" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33816592" ErrorType="Info" AlarmType="" Name="EVENT_DM_PROGRAM_VERIFICATION_FAILED">
@@ -377,7 +377,7 @@
 		<Event Code="" ErrorID="33816605" ErrorType="info" AlarmType="" Name="EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT">
 			<Step ID="0" Type="MSG" StringID="33816605" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="33818116" ErrorType="" AlarmType="" Name="EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT">
+		<Event Code="" ErrorID="33818116" ErrorType="info" AlarmType="" Name="EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT">
 			<Step ID="0" Type="MSG" StringID="33818116" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33818118" ErrorType="" AlarmType="" Name="EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT">

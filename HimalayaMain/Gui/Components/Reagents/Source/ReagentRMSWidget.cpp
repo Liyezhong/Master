@@ -302,6 +302,7 @@ void CReagentRMSWidget::OnNew()
         mp_Reagent = NULL;
         mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, rmsOption, false);
         mp_ModifiyReagentRMSDlg->show();
+        ResetButtons();
     }
 }
 

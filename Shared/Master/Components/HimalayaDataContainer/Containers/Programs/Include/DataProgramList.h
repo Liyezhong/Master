@@ -184,7 +184,6 @@ public:
     bool GetProgram(const unsigned int Index, CProgram& Program);
 
     bool AddProgram(const CProgram* p_Program);   // p_Program is added directly => don't delete outside!    
-    bool AddLeicaProgram(const CProgram* p_Program);   // p_Program is added directly => don't delete outside! Used for Leica programs Import
     bool UpdateProgram(const CProgram* p_Program);  // content of p_Program will be copied  => delete outside!
     bool DeleteProgram(const QString ProgramID);   // uses unique program ID
     bool DeleteProgram(const unsigned int Index);  // uses order index
@@ -204,7 +203,7 @@ public:
     /****************************************************************************/
     QStringList const & GetReagentIDList() const { return m_ReagentIDList; }
 
-    bool CheckForUniquePropeties(const CProgram* p_Program);
+    bool CheckForUniquePropeties(const CProgram* p_Program, bool excludeSeft = false);
 
 private:
     int m_Version;  //!<  version of the file read
@@ -218,7 +217,6 @@ private:
 
     QReadWriteLock* mp_ReadWriteLock; //!< Lock for thread safety
 
-    QStringList m_ProgramListLongNames;     //!< List of Program long names
     QStringList m_ProgramListNames;         //!< List of Program names
 
     ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator

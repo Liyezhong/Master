@@ -724,51 +724,16 @@ bool CDataReagentList::ReagentExists(const QString ReagentID)
 /****************************************************************************/
 bool CDataReagentList::AddReagent(const CReagent* p_Reagent)
 {
-    try {
-        CHECKPTR(p_Reagent);
-    }
-    catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseEvent(E);
-        m_ErrorHash.insert(EVENT_DM_REAGENT_OPERATION_FAILED,
-                           Global::tTranslatableStringList() << "AddReagent");
-        SetErrorList(&m_ErrorHash);
-        return false;
-    }
 
-    bool Result = true;
-
-    QString ID = p_Reagent->GetReagentID();
-    if (m_ReagentList.contains(ID)) {
-        // there is already a reagent with the given ReagentID
-        // => use UpdateReagent instead
-        //    or call DeleteReagent before AddReagent
-        m_ErrorHash.insert(EVENT_DM_REAGENT_ID_NOT_UNIQUE, Global::tTranslatableStringList() << ID);
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_NOT_UNIQUE,
-                                                   Global::tTranslatableStringList() << ID, true);
-        SetErrorList(&m_ErrorHash);
-        return false;
-    }
-
-//    // check for the Long name existence in the Reagent list
-//    if (m_ReagentListNames.contains(const_cast<CReagent*>(p_Reagent)->GetReagentName().simplified(), Qt::CaseInsensitive)) {
-//     //   qDebug()<<"Reagent Exists = " << p_Reagent->GetReagentName();
-//        qDebug() << "CDataReagentList::AddReagent - Reagent long name already exists";
-//        m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_UNIQUE, Global::tTranslatableStringList() << "");
-//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_UNIQUE,
-//                                                   Global::tTranslatableStringList() << const_cast<CReagent*>(p_Reagent)->GetReagentName(), true);
-//        Result = false;
-//    }
-
-
-    if(!Result) {
-        SetErrorList(&m_ErrorHash);
+    // check for the unique Reagent Name existence
+    if (!CheckForUniquePropeties(p_Reagent)) {
         return false;
     }
 
     CReagent *p_TempReagent = new CReagent();
     *p_TempReagent = *p_Reagent;
 
-
+    bool Result = true;
     if (m_DataVerificationMode) {
         ErrorMap_t ErrorHash;
         CDataReagentList* p_DRL_Verification = new CDataReagentList();
@@ -817,7 +782,7 @@ bool CDataReagentList::AddReagent(const CReagent* p_Reagent)
     }
     else {
         QWriteLocker locker(mp_ReadWriteLock);
-
+        QString ID = p_Reagent->GetReagentID();
         m_ReagentList.insert(ID, p_TempReagent);
         m_OrderedListOfReagentIDs.append(ID);
         // White space at begining , end are removed from names. If continuous
@@ -852,30 +817,13 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
         SetErrorList(&m_ErrorHash);
         return false;
     }
-
     QString ID = p_Reagent->GetReagentID();
-    if (!m_ReagentList.contains(ID)) {
-        // there is no reagent with the given ReagentID
-        m_ErrorHash.insert(EVENT_DM_REAGENT_ID_DOESTNOT_EXISTS,
-                           Global::tTranslatableStringList() << ID);
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_DOESTNOT_EXISTS,
-                                                   Global::tTranslatableStringList() << ID, true);
-        SetErrorList(&m_ErrorHash);
-        return false;
-    }
-
-//    // check for the unique Reagent Name existence
-//    if (!CheckForUniqueName(ID, p_Reagent->GetReagentName().simplified())) {
-//        //store errors.
-//        SetErrorList(&m_ErrorHash);
-//        return false;
-//    }
+    CReagent const *p_UpdatedReagent = GetReagent(ID);
+    QString PreviousName  = p_UpdatedReagent->GetReagentName().simplified();
 
     bool Result = false;
     if (m_DataVerificationMode) {
         ErrorMap_t ErrorHash;
-        CReagent const *p_CurrentReagent = GetReagent(ID);
-        QString PreviousName  = p_CurrentReagent->GetReagentName().simplified();
         CDataReagentList* p_DRL_Verification = new CDataReagentList();
 
         // first lock current state for reading
@@ -914,26 +862,25 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
             *this = *p_DRL_Verification;
             Result = true;
         }
-
-//        //Update reagent short name and long name list
-//        p_CurrentReagent = m_ReagentList.value(ID, NULL);
-//        int Index;
-//        if (PreviousName != p_CurrentReagent->GetReagentName().trimmed() ) {
-//            //Update Reagent Name list
-//            Index = m_ReagentListNames.indexOf(PreviousName);
-//            if (Index != -1) {
-//                m_ReagentListNames.replace(Index, p_CurrentReagent->GetReagentName().simplified());
-//            }
-//            else {
-//                Result = false;
-//            }
-//        }
         // delete clone
         delete p_DRL_Verification;
 
     }
     else {
         QWriteLocker locker(mp_ReadWriteLock);
+
+        int Index;
+        if (PreviousName != p_Reagent->GetReagentName().trimmed() ) {
+            //Update Reagent Name list
+            Index = m_ReagentListNames.indexOf(PreviousName);
+            if (Index != -1) {
+                m_ReagentListNames.replace(Index, p_Reagent->GetReagentName().simplified());
+            }
+            else {
+                Result = false;
+            }
+        }
+
         *m_ReagentList[ID] = *p_Reagent;
         Result = true;
     }
@@ -1040,32 +987,37 @@ bool CDataReagentList::DeleteAllReagents()
 /*!
  *  \brief Verifies the Data with respect to Verifiers
  *
- *  \iparam ID = Name of the Reagent ID
- *  \iparam ReagentName = Name for the Reagent
+ *  \iparam p_Reagent = the reagent to be checked
  *
  *  \return On Successful (True) or not (False)
  */
 /****************************************************************************/
-bool CDataReagentList::CheckForUniqueName(QString ID, QString ReagentName)
+bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent)
 {
     bool Result = true;
-
-    const CReagent *p_Reagent= GetReagent(ID);
-    if (p_Reagent) {
-        if (p_Reagent->GetReagentName() != ReagentName) {
-            // check for the Long name existence in the Program list
-            if (m_ReagentListNames.contains(ReagentName, Qt::CaseInsensitive)) {
-                qDebug() << "CDataReagentList::CheckForUniqueName() - Reagent Name already exists :";
-                m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << "");
-                Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_NOT_UNIQUE,
-                                                           Global::tTranslatableStringList() << ReagentName, true);
-                Result = false;
-            }
-        }
+    QString ID = const_cast<CReagent*>(p_Reagent)->GetReagentID();
+    if (m_ReagentList.contains(ID)) {
+        // there is already a reagent with the given ReagentID
+        // => use UpdateReagent instead
+        //    or call DeleteReagent before AddReagent
+        m_ErrorHash.insert(EVENT_DM_REAGENT_ID_NOT_UNIQUE, Global::tTranslatableStringList() << ID);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_NOT_UNIQUE,
+                                                   Global::tTranslatableStringList() << ID, true);
+        SetErrorList(&m_ErrorHash);
+        Result = false;;
     }
-    else {
+
+    // check for the Long name existence in the Program list
+    QString ReagentName = p_Reagent->GetReagentName();
+    if (m_ReagentListNames.contains(p_Reagent->GetReagentName(), Qt::CaseInsensitive)) {
+        qDebug() << "CDataReagentList::CheckForUniqueName() - Reagent Name already exists :";
+        m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << "");
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_NOT_UNIQUE,
+                                                   Global::tTranslatableStringList() << ReagentName, true);
+        SetErrorList(&m_ErrorHash);
         Result = false;
     }
+
     return Result;
 }
 

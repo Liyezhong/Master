@@ -70,7 +70,7 @@ private:
 
     void SetDefaultAttributes();
     bool DeleteAllReagents();    
-    bool CheckForUniqueName(QString ID, QString ReagentName);
+    bool CheckForUniquePropeties(const CReagent* p_Reagent);
 
     /******************** INLINE FuNCTIONS **************************************/
     /****************************************************************************/

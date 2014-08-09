@@ -358,21 +358,6 @@ void CModifyProgramDlg::DisconnectKeyBoardSignalSlots()
     }
 }
 
-bool CModifyProgramDlg::CheckProgramNameOK(QString &name)
-{
-    DataManager::CDataProgramList* progList = mp_DataConnector->ProgramList;
-    DataManager::CProgram *prog = NULL;
-    bool ret = true;
-
-    for (int i = 0; i < progList->GetNumberOfPrograms(); ++ i) {
-        prog = progList->GetProgram(i);
-        if (prog->GetName() == name) {
-            ret = false;
-            break;
-        }
-    }
-    return ret;
-}
 
 /****************************************************************************/
 /*!
@@ -534,23 +519,12 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    if ((m_ButtonType == EDIT_BTN_CLICKED && m_strPrevProgName != mp_Ui->btnPrgName->text()) || m_ButtonType == COPY_BTN_CLICKED) {
-        // check if program's name is duplicated!!
-        QString newName = mp_Ui->btnPrgName->text();
-        if (!CheckProgramNameOK(newName)) {
-            mp_MessageDlg->SetText(m_strNameDuplicated);
-            (void) mp_MessageDlg->exec();
-            return ;
-        }
-    }
-
     m_Program.SetName(mp_Ui->btnPrgName->text());
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         m_Program.SetFavorite(false);
-        m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
         emit AddProgram(m_Program);
     }
     else {
@@ -561,7 +535,6 @@ void CModifyProgramDlg::OnSave()
         }
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
         mp_NewProgram->SetIcon(m_Icon);
-        mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
         emit AddProgram(*mp_NewProgram);
     }
 }

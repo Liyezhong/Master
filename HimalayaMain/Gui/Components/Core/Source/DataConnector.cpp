@@ -616,7 +616,6 @@ void CDataConnector::AddNewProgramHandler(Global::tRefType Ref, const MsgClasses
 
     Result = ProgramList->AddProgram(&Program);
     if (Result) {
-        (void)ProgramList->GetNextFreeProgID(true);
         emit ProgramsUpdated();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));

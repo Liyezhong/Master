@@ -342,22 +342,6 @@ void CModifyReagentRMSDlg::OnOk()
         return;
      }
 
-     //Check whether or not there is a reagent with the same name to the one just inputed
-     if (Reagents::EDIT_BTN_CLICKED != m_ButtonType)//check same name for copy and new
-     {
-         for(qint32 i = 0; i < m_ReagentCloneList.GetNumberOfReagents(); i++) {
-             DataManager::CReagent *p_Reagent = NULL;
-             p_Reagent = const_cast<DataManager::CReagent*>(m_ReagentCloneList.GetReagent(i));
-             if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
-             {
-                mp_MessageDlg->SetText(m_strInputReagentSameName);
-                mp_MessageDlg->SetButtonText(1, m_strOK);
-                (void) mp_MessageDlg->exec();
-                return;
-             }
-         }
-     }
-
      if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
         mp_MessageDlg->SetText(m_strEnterValidData);
         mp_MessageDlg->SetButtonText(1, m_strOK);
@@ -382,32 +366,17 @@ void CModifyReagentRMSDlg::OnOk()
             default:
                 break;
 		}
-
-        if (m_ReagentCloneList.UpdateReagent(&m_Reagent) == true) {
-            emit UpdateReagent(m_Reagent);
-        }
-        else {
-            ListOfErrors_t &ErrorList = m_ReagentCloneList.GetErrorList();
-            QString ErrorString;
-            DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-            mp_MessageDlg->SetText(ErrorString);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            (void) mp_MessageDlg->exec();
-        }
+        emit UpdateReagent(m_Reagent);
     }
-    // Else New/Copy button is clicked in ReagentWidget
+    // Else New button is clicked in ReagentWidget
     else {
-        // GetNextFreeReagentId for New/Copied Reagent.
-        if(m_SelectionFlag != true)
+        if(!m_SelectionFlag)
         {
             mp_MessageDlg->SetText(m_strSelectReagentGroup);//Please Select reagent group
             mp_MessageDlg->SetButtonText(1, m_strOK);
             (void) mp_MessageDlg->exec();
             return;
         }
-        else
-            m_SelectionFlag = false;
 
         QString Id = m_ReagentCloneList.GetNextFreeReagentID(true);
         m_Reagent.SetReagentID(Id);
@@ -440,23 +409,9 @@ void CModifyReagentRMSDlg::OnOk()
             default:
                 break;
         }
-
-        if (m_ReagentCloneList.AddReagent(&m_Reagent)== true) {
-            emit AddReagent(m_Reagent);
-        }
-        else {
-            if (m_ButtonType == Reagents::NEW_BTN_CLICKED) {
-                mp_MessageDlg->SetText(m_strReagentAddFailed);
-            }
-            else {
-                mp_MessageDlg->SetText(m_strReagentCopyFailed);
-            }
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-           (void) mp_MessageDlg->exec();
-        }
-    }
-    accept();
+        emit AddReagent(m_Reagent);
+      }
+      accept();
 }
 
 /****************************************************************************/

@@ -72,7 +72,7 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
     CProgram Program;
     //Streamout DataStream to program object
     ProgramDataStream >> Program;
-
+    Program.SetID(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetNextFreeProgID(true));
     bool Result = true;
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->ResetLastErrors();
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->AddProgram(&Program);
@@ -101,8 +101,6 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
     }
     else {
         //BroadCast Command
-        //Increment NextFreeProgramId
-        (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetNextFreeProgID(true);
         if(mp_MasterThreadController){
             mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         }
@@ -129,7 +127,6 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
     bool Result = true;
 
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->DeleteProgram(Cmd.GetItemId());
-//    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->DeleteProgramSequenceStep(Cmd.GetItemId());
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetErrorList();
@@ -145,7 +142,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
             DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
         }
         if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel);
+            mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
         }
         qDebug()<<"\n\n Delete Program Failed";
     }
@@ -157,11 +154,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
         }
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
-//    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
 
-//    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
-//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
-//    }
 
 }
 
@@ -229,7 +222,6 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
         if(mp_MasterThreadController){
             mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdProgramUpdate(1000, ProgramDataStream)));
             qDebug()<<"\n\n Update Program Success";
-            emit StartableProgramEdited(Program.GetID());
         }
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
