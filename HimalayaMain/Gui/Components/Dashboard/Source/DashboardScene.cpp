@@ -44,6 +44,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        QObject *p_Parent,
                        MainMenu::CMainWindow *p_MainWindow) :
                        QGraphicsScene(p_Parent),
+                       m_CurTabIndex(0),
                        mp_DataConnector(p_DataConnector),                       
                        mp_MainWindow(p_MainWindow),
                        m_bProcessRunning(false),
@@ -52,8 +53,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        m_pStartBlinkingTimer(NULL),
                        m_UsedPipeGraphicsRectItem(NULL),
                        m_currentTimerOrder(0),
-                       m_SuckDrainStationId(""),
-                       m_CurTabIndex(0)
+                       m_SuckDrainStationId("")
 
 {
     m_pPipeAnimationTimer = new QTimer(this);
@@ -411,6 +411,7 @@ private:
 
 void CDashboardScene::RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning)
 {
+    Q_UNUSED(isRunning);
     if (m_UsedPipeGraphicsRectItem)
     {
         this->removeItem(m_UsedPipeGraphicsRectItem);

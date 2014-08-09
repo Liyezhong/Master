@@ -18,9 +18,9 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
     QWidget(p),
     ui(new Ui::CFavoriteProgramsPanelWidget),
     mp_DataConnector(NULL),
+    m_LastCanBeSelectedButtonId(-1),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1),
-    m_LastCanBeSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1)
 {
     ui->setupUi(this);
     SetButtonGroup();

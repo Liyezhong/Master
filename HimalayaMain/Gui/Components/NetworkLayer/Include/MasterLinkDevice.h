@@ -56,6 +56,7 @@ public:
     /*!
      *  \brief Initializes the network layers
      *  \return failed/successful for Network initialization
+     */
     /****************************************************************************/
     qint32 NetworkInit();
 

@@ -37,13 +37,13 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    mp_DataConnector(NULL),
                                    mp_DashboardScene(NULL),
                                    mp_ProgramList(NULL),
-                                   mp_MessageDlg(NULL),
-                                   m_pUserSetting(NULL),
                                    m_UserRoleChanged(false),
+                                   mp_MessageDlg(NULL),
                                    m_strProgram(tr("Program")),
                                    m_strInformation(tr("Information")),
                                    m_strOK(tr("OK")),
-                                   m_strNo(tr("No"))
+                                   m_strNo(tr("No")),
+                                   m_pUserSetting(NULL)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", 0, QApplication::UnicodeUTF8));

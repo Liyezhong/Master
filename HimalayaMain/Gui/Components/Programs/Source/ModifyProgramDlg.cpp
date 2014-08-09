@@ -77,8 +77,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
     m_strEnterValidName(tr("Please enter a valid Program Name")),
     m_strSeclectIcon(tr("Please select a Program Icon")),
-    m_bIconSelected(false),
-    m_strPrevProgName(tr(""))
+    m_strPrevProgName(tr("")),
+    m_bIconSelected(false)
 
 {
     mp_Ui->setupUi(GetContentFrame());
