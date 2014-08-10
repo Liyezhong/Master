@@ -184,7 +184,7 @@
         </device>
         <device type="AirLiquidDevice" dev_instanceID="0x000080C1" optional="0">
             <functionmodules>
-				<functionmodule key="AL_Base" fct_instanceID="0x0000D"/>
+				<functionmodule key="AL_Base" fct_instanceID="0x0000F"/>
                 <functionmodule key="AL_pressure_ctrl" fct_instanceID="0x1000F"/>
                 <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x2000F"/>
                 <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x3000F"/>
@@ -211,7 +211,7 @@
         </device>
         <device type="PeripheryDevice" dev_instanceID="0x000080C4" optional="0">
             <functionmodules>
-				<functionmodule key="PeripheryDevice_Base" fct_instanceID="0x0000D"/>
+				<functionmodule key="PeripheryDevice_Base" fct_instanceID="0x0000F"/>
                 <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x7000F"/>
                 <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
                 <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x6000F"/>

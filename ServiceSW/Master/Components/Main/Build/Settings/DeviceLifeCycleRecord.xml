@@ -3,34 +3,54 @@
         <Device Key="LA">
             <Functionmodules>
                 <Functionmodule Key="AL_level_sensor_temp_ctrl">
-                    <Parameter Key="temp_lsensor_LifeCycle" Value="502"/>
+                    <Parameter Key="temp_lsensor_LifeCycle" Value="616"/>
                 </Functionmodule>
                 <Functionmodule Key="AL_pressure_ctrl">
+                    <Parameter Key="ActiveCarbonFilter_LifeTime" Value="0"/>
+                    <Parameter Key="Exhaust_Fan_LifeTime" Value="0"/>
+                    <Parameter Key="History_Pump_OperationTime" Value="19"/>
                     <Parameter Key="Valve1_LifeCycle" Value="907"/>
                     <Parameter Key="Valve2_LifeCycle" Value="19"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_tube1">
+                    <Parameter Key="History_OperationTime" Value="616"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_tube2">
+                    <Parameter Key="History_OperationTime" Value="616"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
         <Device Key="OtherDevice">
             <Functionmodules>
+                <Functionmodule Key="ASBBorad">
+                    <Parameter Key="History_ASB15_OperationTime" Value="43007"/>
+                    <Parameter Key="History_ASB3_OperationTime" Value="43007"/>
+                    <Parameter Key="History_ASB5_OperationTime" Value="43007"/>
+                </Functionmodule>
                 <Functionmodule Key="EBox">
-                    <Parameter Key="EBox_LifeTime" Value="0"/>
+                    <Parameter Key="EBox_LifeTime" Value="43618"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Key="Pressure_Sensor_LifeTime" Value="2044"/>
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="43618"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Key="Touch_Screen_LifeTime" Value="2044"/>
+                    <Parameter Key="Touch_Screen_LifeTime" Value="43619"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Key="Ventilation_Fan_LifeTime" Value="0"/>
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="43620"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
         <Device Key="OvenDevice">
             <Functionmodules>
                 <Functionmodule Key="Oven_Cover_Sensor">
-                    <Parameter Key="oven_door_status_LifeCycle" Value="1"/>
+                    <Parameter Key="oven_door_status_LifeCycle" Value="30"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_oven_bottom">
+                    <Parameter Key="History_OperationTime" Value="28"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_oven_top">
+                    <Parameter Key="History_OperationTime" Value="28"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
@@ -38,6 +58,19 @@
             <Functionmodules>
                 <Functionmodule Key="Retort_Lid_Lock">
                     <Parameter Key="Retort_Lid_Lock_LifeCycle" Value="123"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_retort_bottom">
+                    <Parameter Key="History_OperationTime" Value="123"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="RotaryValveDevice">
+            <Functionmodules>
+                <Functionmodule Key="motor_rv">
+                    <Parameter Key="History_OperationTime" Value="123"/>
+                </Functionmodule>
+                <Functionmodule Key="temp_rv">
+                    <Parameter Key="History_OperationTime" Value="123"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
