@@ -175,7 +175,7 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
             mp_MessageDlg->EnableButton(1, true);
         }
 
-        if (Core::CGlobalHelper::GetProgramPaused() && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
+        if ((m_CurProgramStepIndex < 3) && Core::CGlobalHelper::GetProgramPaused() && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
         {
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->SetTitle(CommonString::strInforMsg);
@@ -437,7 +437,7 @@ int CDashboardWidget::GetParaffinHeatingDuration()
         return 0;
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     int paraffinMeltingPoint = userSetting->GetTemperatureParaffinBath();
-    if (paraffinMeltingPoint <= 64)
+    if (paraffinMeltingPoint <= 63)
     {
         return 12;
     } else
