@@ -613,15 +613,15 @@ void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &r
 void HimalayaMasterThreadController::StartExportProcess(QString FileName) {
     // create and connect gui controller
     m_ExportTargetFileName = FileName;
-    Export::ExportController *p_ExportController = new Export::ExportController(THREAD_ID_EXPORT);
+    Export::ExportController *p_ExportController = new Export::ExportController(Threads::THREAD_ID_EXPORT);
     // connect the process exit slot
 
     CONNECTSIGNALSLOT(p_ExportController, ProcessExited(const QString &, int), this, ExportProcessExited(const QString &, int));
 
     // add and connect the controller
-    AddAndConnectController(p_ExportController, &m_CommandChannelExport, static_cast<int>(EXPORT_CONTROLLER_THREAD));
+    AddAndConnectController(p_ExportController, &m_CommandChannelExport, Threads::THREAD_ID_EXPORT);
     // start the controller
-    StartSpecificThreadController(static_cast<int>(EXPORT_CONTROLLER_THREAD));
+    StartSpecificThreadController(Threads::THREAD_ID_EXPORT);
 }
 
 void HimalayaMasterThreadController::OnInitStateCompleted()
@@ -658,9 +658,9 @@ void HimalayaMasterThreadController::SendStateChange(QString state) {
 void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, int ExitCode) {
     Q_UNUSED(Name)
     // first clear the process
-    StopSpecificThreadController(static_cast<int>(EXPORT_CONTROLLER_THREAD));
+    StopSpecificThreadController(Threads::THREAD_ID_EXPORT);
     // second clear the thread
-    StopSpecificThreadController(static_cast<int>(IMPORT_EXPORT_THREAD));
+    StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS) {
         // raise the event code
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
@@ -758,7 +758,7 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
                 break;
         }
         // this raise event code will be informed to GUI, that Export is failed
-        Global::EventObject::Instance().RaiseEvent(EventCode, false);
+        Global::EventObject::Instance().RaiseEvent(EventCode, true);
         // send acknowledgement to GUI
         /*lint -e613 */
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
@@ -767,7 +767,8 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
 
     m_ExportProcessIsFinished = true;
     // enable the timer slot to destroy the objects after one second
-    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
+    RemoveAndDestroyObjects();
+//    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
 
 }
 
@@ -776,9 +777,9 @@ void HimalayaMasterThreadController::RemoveAndDestroyObjects() {
     // this is for safety
     if (m_ExportProcessIsFinished || m_ImportExportThreadIsRunning) {
         // remove and destroy the controller thread
-        RemoveSpecificThreadController(static_cast<int>(EXPORT_CONTROLLER_THREAD));
+        RemoveSpecificThreadController(Threads::THREAD_ID_EXPORT);
         // remove and destroy the controller thread
-        RemoveSpecificThreadController(static_cast<int>(IMPORT_EXPORT_THREAD));
+        RemoveSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
 
         // reset the falgs, so nothing is executing
         m_ExportProcessIsFinished = false;
@@ -872,9 +873,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     // clear the thread
-    StopSpecificThreadController(static_cast<int>(IMPORT_EXPORT_THREAD));
+    StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     // enable the timer slot to destroy the objects after one second
-    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
+    RemoveAndDestroyObjects();
 }
 
 /****************************************************************************/

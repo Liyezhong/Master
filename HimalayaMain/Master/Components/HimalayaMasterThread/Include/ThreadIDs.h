@@ -30,7 +30,5 @@ const quint32 THREAD_ID_DEVICECMDPROC  = 0x0101;  ///< Device command processor
 
 const quint32 THREAD_ID_GUI            = 0x0102;  ///< Gui
 const quint32 THREAD_ID_SCHEDULER      = 0x0103;  ///< Scheduler
-const quint32 THREAD_ID_IMPORTEXPORT   = 0x0104;  ///< ImportExport Thread
-const quint32 THREAD_ID_EXPORT         = 0x0105;  ///< Export
 
 #endif // DATALOGGINGSOURCES_H

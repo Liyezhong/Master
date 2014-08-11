@@ -51,6 +51,7 @@
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
 #include <HimalayaDataManager/Include/DataManager.h>
 #include <HimalayaMasterThread/Include/ThreadIDs.h>
+#include <Threads/Include/PlatformThreadIDs.h>
 #include <ImportExport/Include/ImportExportThreadController.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
@@ -96,9 +97,7 @@ typedef enum  {
     HIMALAYA_GUI_THREAD,
     SCHEDULER_THREAD,
     SCHEDULER_MAIN_THREAD,
-    DEVICE_CMD_PROCESSOR_THREAD,
-    EXPORT_CONTROLLER_THREAD,
-    IMPORT_EXPORT_THREAD
+    DEVICE_CMD_PROCESSOR_THREAD
 } HimalayaThreads_t;
 
 
@@ -229,7 +228,7 @@ private:
 
             // create and connect scheduler controller
             ImportExport::ImportExportThreadController *p_ImportExportThreadController
-                    = new ImportExport::ImportExportThreadController(THREAD_ID_IMPORTEXPORT, *mp_DataManager,
+                    = new ImportExport::ImportExportThreadController(Threads::THREAD_ID_IMPORTEXPORT, *mp_DataManager,
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
             p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
@@ -852,9 +851,9 @@ private slots:
 
         //ImportExportThreadController->setDataContainer(&mp_DataManager);
         AddAndConnectController(p_ImportExportThreadController, &m_CommandChannelImportExport,
-                                THREAD_ID_IMPORTEXPORT);
+                                Threads::THREAD_ID_IMPORTEXPORT);
         // start the export process
-        StartSpecificThreadController(THREAD_ID_IMPORTEXPORT);
+        StartSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     }
 
 }; // end class HimalayaMasterThreadController

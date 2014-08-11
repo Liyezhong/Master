@@ -907,18 +907,6 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
             if (!CheckForFilesUpdateError()) {
                 IsImport = false;
             }
-            // update the Rollback folder with latest files after the Import is successful
-            QStringList fileList;
-            AddFilesForImportType(TYPEOFIMPORT_USER,fileList);
-            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
-                                       + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
-                                       Global::SystemPaths::Instance().GetSettingsPath()
-                                       + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
-                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
-                m_EventRaised = true;
-                IsImport = false;
-            }
         }
         if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             // before updating take a back-up of the configuration files
