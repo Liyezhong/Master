@@ -277,6 +277,10 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        if(userInputTemp < 0)
+        {
+            userInputTemp = 0.0;
+        }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
@@ -292,6 +296,10 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        if(userInputTemp < 0)
+        {
+            userInputTemp = 0.0;
+        }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
@@ -307,6 +315,10 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        if(userInputMeltingPoint < 0)
+        {
+            userInputMeltingPoint = 0.0;
+        }
         qreal tmpTemperatureOffset = 0.0;
         if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
         {
@@ -331,6 +343,10 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        if(userInputMeltingPoint < 0)
+        {
+            userInputMeltingPoint = 0.0;
+        }
         qreal tmpTemperatureOffset = 0.0;
         if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
         {
@@ -355,6 +371,10 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        if(userInputMeltingPoint < 0)
+        {
+            userInputMeltingPoint = 0.0;
+        }
         pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
         if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
         {
@@ -639,9 +659,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
 		{
 			return DCL_ERR_FCT_CALL_SUCCESS;
 		}
-        if (qAbs(userInputTemp) <= 0.000000000001)
+        if (userInputTemp < 0)
         {   
-            return DCL_ERR_FCT_CALL_SUCCESS;
+            userInputTemp = 0.0;
         }  
         CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(RTType);
@@ -683,6 +703,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
     //Firstly, get the Parrifin melting point (user input)
     qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if(userInputMeltingPoint < 0)
+    {
+        userInputMeltingPoint = 0.0;
+    }
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
@@ -749,6 +773,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
 
     //Firstly, get the Parrifin melting point (user input)
     qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if(userInputMeltingPoint < 0)
+    {
+        userInputMeltingPoint = 0.0;
+    }
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for (; iter!=heatingSensor.functionModuleList.end(); ++iter)
