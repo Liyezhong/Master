@@ -903,15 +903,13 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     if (IsImport && ImportTypeList.count() > 0) {
         // if everything goes well then update the files and take a backup of the files
         if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
-            // before updating take a back-up of the configuration files
-            QStringList fileList;
-            fileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_STATIONS
-                     << FILENAME_USERSETTINGS;
             // check for the files updation error
             if (!CheckForFilesUpdateError()) {
                 IsImport = false;
             }
             // update the Rollback folder with latest files after the Import is successful
+            QStringList fileList;
+            AddFilesForImportType(TYPEOFIMPORT_USER,fileList);
             if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
                                        Global::SystemPaths::Instance().GetSettingsPath()
@@ -964,6 +962,17 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
         }
     }
 
+    // update the rollback checksum value
+    QProcess Md5sumProcess;
+    Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                        + QString("/EBox-Utils.sh") , QStringList() <<
+                        QString("update_md5sum_for_settings"));
+    (void)Md5sumProcess.waitForFinished();
+    // update the rollback directory also
+    Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                        + QString("/EBox-Utils.sh") , QStringList() <<
+                        QString("update_settings_to_rollback"));
+    (void)Md5sumProcess.waitForFinished();
     // emit the thread finished flag
     emit ThreadFinished(IsImport, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
 
@@ -1186,16 +1195,14 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             return false;
         }
 
-
-        // before updating take a back-up of the configuration files
-        QStringList FileList;
-        (void)AddFilesForImportType(TypeOfImport,FileList);
-
         // save the data containers before copying to "Rollback" folder
         if (!WriteFilesInSettingsFolder()) {
             return false;
         }
         // updated the rollback folder so that before overwriting we can have a backup
+        // before updating take a back-up of the configuration files
+        QStringList FileList;
+        (void)AddFilesForImportType(TypeOfImport,FileList);
         if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
                                    + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
                                    Global::SystemPaths::Instance().GetSettingsPath()
@@ -1211,24 +1218,15 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         *(m_DataManager.GetReagentGroupColorList()) = ImportReagentGroupColorList;
         *(m_DataManager.GetStationList()) = ImportDashboardDataStationList;
         *(m_DataManager.GetProgramList()) = ImportProgramList;
-        *(m_DataManager.GetUserSettingsInterface()->GetUserSettings()) = *(ImportUSInterface.GetUserSettings());
-        // update the user settings in the Main container
+        //so far disable import user setting
+//        *(m_DataManager.GetUserSettingsInterface()->GetUserSettings()) = *(ImportUSInterface.GetUserSettings());
+//        //update the user settings in the Main container
+//        DataManager::CUserSettings *UserSettings = m_DataManager.GetUserSettingsInterface()->GetUserSettings();
+//        DataManager::CUserSettings *ImportUserSettings = ImportUSInterface.GetUserSettings();
 //        if (!m_DataManager.GetUserSettingsInterface()->UpdateUserSettings(&UserSettings)) {
 //            return false;
 //        }
 
-        // check for the files updation error
-        if (!CheckForFilesUpdateError()) {
-            return false;
-        }
-        // update the Rollback folder with latest files after the Import is successful
-        if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
-                                   + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
-                                   Global::SystemPaths::Instance().GetSettingsPath()
-                                   + QDir::separator())) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED);
-            return false;
-        }
     }
     else {
         // unknown Import is found
@@ -1240,44 +1238,7 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
 
 /****************************************************************************/
 bool ImportExportThreadController::CheckForFilesUpdateError() {
-    bool Rollback = false;
-    // short circuit evaluation - evaluates the first one if false then exits from the if statement
-    if (!(m_DataManager.GetReagentList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                             + QDir::separator() + FILENAME_REAGENTS))) {
-        Rollback = true;
-    }
-
-    //
-    if (!(m_DataManager.GetReagentGroupList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                             + QDir::separator() + FILENAME_REAGENT_GROUPS))) {
-        Rollback = true;
-    }
-
-    //
-    if (!(m_DataManager.GetReagentGroupColorList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                             + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS))) {
-        Rollback = true;
-    }
-
-    // short circuit evaluation - evaluates the first one if false then exits from the if statement
-    if (!Rollback && !(m_DataManager.GetProgramList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                             + QDir::separator() + FILENAME_PROGRAMS))) {
-        Rollback = true;
-    }
-
-    // short circuit evaluation - evaluates the first one if false then exits from the if statement
-    if (!Rollback && !(m_DataManager.GetStationList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                             + QDir::separator() + FILENAME_STATIONS))) {
-        Rollback = true;
-    }
-    // short circuit evaluation - evaluates the first one if false then exits from the if statement
-    if (!Rollback && !(m_DataManager.GetUserSettingsInterface()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                                       + QDir::separator() + FILENAME_USERSETTINGS))) {
-        Rollback = true;
-    }
-
-    // if rollback is true then put back all original files and exit
-    if (Rollback) {
+    if (!WriteFilesInSettingsFolder()) {
         if (!UpdateSettingsWithRollbackFolder()) {
             return false;
         }
@@ -1291,7 +1252,7 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
 
     QStringList FileList;
 
-    (void)AddFilesForImportType(QString("Service"), FileList);
+    (void)AddFilesForImportType(TYPEOFIMPORT_USER, FileList);
 
     // update the settings folder with the rollback folder files
     if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator(),
@@ -1309,18 +1270,21 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
         /// this never happens, but if the xml is having some problem
         return false;
     }
+    if (!m_DataManager.GetReagentGroupList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
+                                              + QDir::separator() + FILENAME_REAGENT_GROUPS)) {
+        /// this never happens, but if the xml is having some problem
+        return false;
+    }
+    if (!m_DataManager.GetReagentGroupColorList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
+                                              + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS)) {
+        /// this never happens, but if the xml is having some problem
+        return false;
+    }
     if (!m_DataManager.GetProgramList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
                                               + QDir::separator() + FILENAME_PROGRAMS)) {
         /// this never happens, but if the xml is having some problem
         return false;
     }
-/*
-    if (!m_DataManager.GetProgramSequenceList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
-                                                      + QDir::separator() + FILENAME_PROGRAMSEQUENCE)) {
-        /// this never happens, but if the xml is having some problem
-        return false;
-    }
-*/
     if (!m_DataManager.GetStationList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
                                               + QDir::separator() + FILENAME_STATIONS)) {
         /// this never happens, but if the xml is having some problem
@@ -1606,20 +1570,24 @@ bool ImportExportThreadController::WriteFilesInSettingsFolder() {
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
+    if (!m_DataManager.GetReagentGroupList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
+                                               + QDir::separator() + FILENAME_REAGENT_GROUPS)) {
+        /// this may happen if the flash does not have more space or flash is having some problem
+        //ErrorString = "Unable to write the file in Settings folder";
+        return false;
+    }
+    if (!m_DataManager.GetReagentGroupColorList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
+                                               + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS)) {
+        /// this may happen if the flash does not have more space or flash is having some problem
+        //ErrorString = "Unable to write the file in Settings folder";
+        return false;
+    }
     if (!m_DataManager.GetProgramList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                + QDir::separator() + FILENAME_PROGRAMS)) {
         /// this may happen if the flash does not have more space or flash is having some problem
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
-/*
-    if (!m_DataManager.GetProgramSequenceList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                       + QDir::separator() + FILENAME_PROGRAMSEQUENCE)) {
-        /// this may happen if the flash does not have more space or flash is having some problem
-        //ErrorString = "Unable to write the file in Settings folder";
-        return false;
-    }
-*/
     if (!m_DataManager.GetStationList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                + QDir::separator() + FILENAME_STATIONS)) {
         /// this may happen if the flash does not have more space or flash is having some problem
