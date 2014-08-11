@@ -128,7 +128,6 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                 }
                 else
                 {
-                    ;
                     emit CheckTempModuleCurrernt();
                 }
             }

@@ -462,7 +462,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (PSSM_PRETEST == stepState)
         {
-            m_CurrentStepState = PSSM_PRETEST;
+           m_CurrentStepState = PSSM_PRETEST;
            m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
         }
         else if (PSSM_FILLING_RVROD_HEATING == stepState)
@@ -708,7 +708,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     LogDebug(QString("Program Step Draining succeed!"));
                     m_SchedulerMachine->NotifyDrainFinished();
                 }
-                else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BULIDPRESSURE == retCode)
+                else
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
                     RaiseError(0, retCode, m_CurrentScenario, true);
@@ -2586,7 +2586,7 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
         break;
     }
 
-    return false;
+    return true;
 }
 
 bool SchedulerMainThreadController::RestartFailedHeaters()
@@ -3124,7 +3124,8 @@ bool SchedulerMainThreadController::SetFunctionModuleStoptime(QList<FunctionModu
 HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
 {
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == m_CurErrEventID
-            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == m_CurErrEventID)
+            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == m_CurErrEventID
+            || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == m_CurErrEventID)
     {
         return LEVELSENSOR;
     }
@@ -3138,7 +3139,7 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
              || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == m_CurErrEventID)
     {
-        return LATUBE1;
+        return LATUBE2;
     }
     else if ("50001" == QString::number(m_CurErrEventID).left(5))
     {

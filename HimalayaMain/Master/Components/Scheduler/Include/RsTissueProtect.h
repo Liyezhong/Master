@@ -135,7 +135,25 @@ signals:
     void TasksDone(bool);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for moving to safe reagent tube position
+     *  \param  void
+     *  \return void
+     *
+     */
+    /****************************************************************************/
+    void OnMoveToTube();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for moving to safe reagent sealing position
+     *  \param  void
+     *  \return void
+     *
+     */
+    /****************************************************************************/
+    void OnMoveToSeal();
 
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
@@ -144,11 +162,15 @@ private:
     QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
     QSharedPointer<QState> mp_Filling;           			//!< Filling state
     QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
-    QQueue<ProgramStationInfo_t> m_ProgramStationList;      //!< Program Station List in Scheduler
+    QString m_StationID;                                    //!< Station ID
+    quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
+    quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
+    quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
     CRsTissueProtect::ReagentType_t GetReagentType() const;
+    QString GetStationID();
 };
 }
 #endif // RS_TISSUE_PROTECT_H
