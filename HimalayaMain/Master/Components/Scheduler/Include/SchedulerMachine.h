@@ -39,7 +39,7 @@ class CRsTSensorErr3MinRetry;
 class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
 class CRcReport;
-class CProgramSelfTest;
+class CProgramPreTest;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 class CRsFillingAfterFlush;
@@ -105,7 +105,7 @@ private:
     QSharedPointer<QState> mp_ErrorRsRVWaitintTempUpState;                              ///<  Error State's sub state: for RS_RV_WaitingTempUp
 
     //State machines for Run handling
-    QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
+    QSharedPointer<CProgramPreTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
 
     // State machines for Error handling
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby

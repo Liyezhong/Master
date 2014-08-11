@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ProgramSelfTest.h
+/*! \file ProgramPreTest.h
  *
- *  \brief CProgramSelfTest class definition.
+ *  \brief CProgramPreTest class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ June 18th, 2014
@@ -17,8 +17,8 @@
  *
  */
 /****************************************************************************/
-#ifndef PROGRAM_SELF_TEST_H
-#define PROGRAM_SELF_TEST_H
+#ifndef PROGRAM_PRE_TEST_H
+#define PROGRAM_PRE_TEST_H
 
 #include <QStateMachine>
 #include <QSharedPointer>
@@ -33,26 +33,26 @@ class SchedulerMainThreadController;
  * \brief Program running State machine for Self Test 
  */
 /****************************************************************************/
-class  CProgramSelfTest : public QObject
+class  CProgramPreTest : public QObject
 {
     Q_OBJECT
 public:
     /****************************************************************************/
     /*!
-     *  \brief Constructor of CProgramSelfTest
+     *  \brief Constructor of CProgramPreTest
      *
      *  \param none
      *
      */
     /****************************************************************************/
-    CProgramSelfTest(SchedulerMainThreadController* SchedController);
+    CProgramPreTest(SchedulerMainThreadController* SchedController);
 
     /****************************************************************************/
     /*!
      *  \brief  desctruction of CProgramSelfTest
      */
     /****************************************************************************/
-    ~CProgramSelfTest();
+    ~CProgramPreTest();
 
 
     /****************************************************************************/
@@ -77,14 +77,6 @@ signals:
      */
     /****************************************************************************/
     void TemperatureSensorsChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal to turn on RT Side and Bottom
-     *
-     */
-    /****************************************************************************/
-    void RTTemperatureControlOn();
 
     /****************************************************************************/
     /*!
@@ -165,7 +157,6 @@ private:
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
     QSharedPointer<QState> mp_Initial;                              //!< Initial state
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
-    QSharedPointer<QState> mp_RTTempCtrlOn;                         //!< Turn on Retort Side and Bottom
     QSharedPointer<QState> mp_Wait3SRTCurrent;                      //!< Wait for 3 seconds to see if current error was raised
     QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Turn off Retort Side and Bottom
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
@@ -181,7 +172,6 @@ private:
         PRETEST_UNDEF,
         PRETEST_INIT,
         TEMPSENSORS_CHECKING,
-        RT_TEMCTRL_ON,
         WAIT3S_RT_CURRENT,
         RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
@@ -192,7 +182,6 @@ private:
     } StateList_t;
 	
     qint64  m_RTTempStartTime;                                      //!< Start time for turning on RT Tempeture control On
-    quint32 m_RTTempOnSeq;                                          //!< Sequence of RT sensors temperature on
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
 	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
     quint32	m_PressureChkSeq;										//!< Sequence of Pressure test and Sealing checking
@@ -218,4 +207,4 @@ private:
     StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 };
 }
-#endif // PROGRAM_SELF_TEST_H
+#endif // PROGRAM_PRE_TEST_H

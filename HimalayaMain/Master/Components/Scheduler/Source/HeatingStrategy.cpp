@@ -307,9 +307,18 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        qreal tmpTemperatureOffset = 0.0;
+        if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
+        {
+            tmpTemperatureOffset = m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffsetWithParaffin + userInputMeltingPoint;
+        }
+        else
+        {
+            tmpTemperatureOffset = m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffset + userInputMeltingPoint;
+        }
         pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_TOP);
-        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(tmpTemperatureOffset);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].SlopTempChange);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].MaxTemperature);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ControllerGain);
@@ -322,9 +331,18 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        qreal tmpTemperatureOffset = 0.0;
+        if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
+        {
+            tmpTemperatureOffset = m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffsetWithParaffin + userInputMeltingPoint;
+        }
+        else
+        {
+            tmpTemperatureOffset = m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffset + userInputMeltingPoint;
+        }
         pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_BOTTOM);
-        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(tmpTemperatureOffset);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].SlopTempChange);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].MaxTemperature);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ControllerGain);

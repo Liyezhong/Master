@@ -31,7 +31,7 @@
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
 #include "Scheduler/Include/RsTSensorErr3MinRetry.h"
-#include "Scheduler/Include/ProgramSelfTest.h"
+#include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/RsFillingAfterFlush.h"
 #include <QDebug>
 #include <QDateTime>
@@ -113,7 +113,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
 
     // Sate machines for Run handling
-    mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
+    mp_ProgramSelfTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
 
     // Run Handling related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());

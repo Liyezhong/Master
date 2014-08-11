@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ProgramSelfTest.cpp
+/*! \file ProgramPreTest.cpp
  *
- *  \brief CPorogramSelfTest class definition.
+ *  \brief CProgramPreTest class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ June 18th, 2014
@@ -17,7 +17,7 @@
  *
  */
 /****************************************************************************/
-#include "Scheduler/Include/ProgramSelfTest.h"
+#include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
@@ -29,14 +29,13 @@
 using namespace DeviceControl;
 namespace Scheduler{
 
-CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedController)
+CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
     mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RTTempCtrlOn = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Wait3SRTCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -49,8 +48,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
 
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOn()), mp_RTTempCtrlOn.data());
-    mp_RTTempCtrlOn->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()),mp_Wait3SRTCurrent.data());
+    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()), mp_Wait3SRTCurrent.data());
     mp_Wait3SRTCurrent->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
 	mp_RVPositionChecking->addTransition(this, SIGNAL(PressureCalibration()), mp_PressureCalibration.data());
@@ -63,7 +61,6 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_StateMachine->start();
 
     m_RTTempStartTime = 0;
-    m_RTTempOnSeq = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;
     m_PressureChkSeq = 0;
@@ -77,12 +74,12 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     m_MoveToTubeSeq = 0;
 }
 
-CProgramSelfTest::~CProgramSelfTest()
+CProgramPreTest::~CProgramPreTest()
 {
     mp_StateMachine->stop();
 }
 
-CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractState*> statesList)
+CProgramPreTest::StateList_t CProgramPreTest::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     StateList_t currentState = PRETEST_UNDEF;
 
@@ -93,10 +90,6 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     else if (statesList.contains(mp_TemperatureSensorsChecking.data()))
     {
         currentState = TEMPSENSORS_CHECKING;
-    }
-    else if (statesList.contains(mp_RTTempCtrlOn.data()))
-    {
-        currentState = RT_TEMCTRL_ON;
     }
     else if (statesList.contains(mp_Wait3SRTCurrent.data()))
     {
@@ -130,7 +123,7 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     return currentState;
 }
 
-void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	qreal currentPressure = 0.0;
@@ -155,45 +148,18 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         else
         {
             emit TemperatureSensorsChecking();
+            m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
         }
         break;
     case TEMPSENSORS_CHECKING:
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
         {
             mp_SchedulerThreadController->LogDebug("Pre-Test: Temperature checking of sensors passed");
-            emit RTTemperatureControlOn();
+            emit Wait3SecondsRTCurrent();
         }
         else
         {
             // Do nothing - Heating Strategy has handled all related error cases.
-        }
-        break;
-    case RT_TEMCTRL_ON:
-        if (0 == m_RTTempOnSeq)
-        {
-            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("RTSide");
-            if (DCL_ERR_FCT_CALL_SUCCESS == ret)
-            {
-                m_RTTempOnSeq = 1;
-            }
-            else
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error message
-            }
-        }
-        else
-        {
-            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("RTBottom");
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_RTTempOnSeq = 0;
-                m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
-                emit Wait3SecondsRTCurrent();
-            }
-            else
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error mesage
-            }
         }
         break;
     case WAIT3S_RT_CURRENT:
