@@ -1036,6 +1036,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
+
+            p_TestCase->SetParameter("VolumeFlag", "0");
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
                 break;

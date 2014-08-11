@@ -842,6 +842,136 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
 
 qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 {
+    const quint16 TargetTemperature = 115;
+    const quint16 ControllerGainHigh = 120;
+    const quint16 ResetTimeHigh = 1212;
+    const quint16 DerivativeTimeHigh = 80;
+
+    const quint16 ControllerGainLow = 200;
+    const quint16 ResetTimeLow = 1000;
+    const quint16 DerivativeTimeLow = 0;
+
+    const quint16 TargetDropRange = 6;
+    const quint16 OverTemperature = 135;
+
+    const quint16 MinTemperature = 110;
+    const quint16 MaxTemperature = 120;
+    const quint16 ExchangeTemperature = 110;
+
+    Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
+
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
+
+    QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+    Service::ModuleTestStatus testStat;
+    testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    testStat.insert("Duration", durTime.toString());
+
+    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    int waitSeconds = 0;
+    qreal curTemp = 0;
+    int totalSeconds = 0;
+
+    int num = 10;
+    while(num) {
+        curTemp = mp_TempLSensor->GetTemperature();
+        if (curTemp == -1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
+
+    SetFailReason(Id, "");
+    if (curTemp <ambLow || curTemp > ambHigh) {
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(curTemp).arg(ambLow).arg(ambHigh);
+        SetFailReason(Id, FailureMsg);
+        p_TestCase->SetStatus(false);
+        goto ERROR_EXIT;
+    }
+
+    p_TestCase->AddResult("UsedTime", "00:00:00");
+    p_TestCase->AddResult("TargetTemp", QString("%1~%2").arg(MaxTemperature));
+    waitSeconds = duration;
+
+    for(int i=0; i<3; i++) {
+        if (i==0) {
+            mp_TempLSensor->StopTemperatureControl();
+            mp_TempLSensor->SetTemperaturePid(TargetTemperature, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
+            mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+        }
+        else if (i==1){
+            mp_TempLSensor->StopTemperatureControl();
+            mp_TempLSensor->SetTemperaturePid(TargetTemperature, ControllerGainLow,ResetTimeLow, DerivativeTimeLow);
+            mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+        }
+        else {
+            waitSeconds = 5;
+        }
+
+        while (!m_UserAbort && waitSeconds) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
+
+            curTemp = mp_TempLSensor->GetTemperature();
+            if (curTemp > OverTemperature) {
+                goto ERROR_EXIT;
+            }
+            else if (i==0 && curTemp >= ExchangeTemperature) {
+                break;
+            }
+            else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
+                goto ERROR_EXIT;
+            }
+
+            if (curTemp != -1) {
+                testStat.insert("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+                testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
+                emit RefreshTestStatustoMain(testCaseName, testStat);
+            }
+
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            mp_Utils->Pause(MSec);
+
+            -- waitSeconds;
+
+            totalSeconds++;
+        }
+        if (m_UserAbort ||
+                (i==0 && waitSeconds==0) ||
+                (i==1 && waitSeconds==0 && curTemp<MinTemperature)) {
+            goto ERROR_EXIT;
+        }
+    }
+    if (m_UserAbort) {
+        p_TestCase->AddResult("FailReason", "Abort");
+    }
+
+    mp_TempLSensor->StopTemperatureControl();
+
+    p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+    return 0;
+
+ERROR_EXIT:
+    mp_TempLSensor->StopTemperatureControl();
+    p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
+    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
+    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
+    return -1;
+}
+
+#if 0
+qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating11()
+{
     const quint16 LSENSOR_PID_MAXTEMP_NORMAL = 120;  //Degrees
     const quint16 LSENSOR_PID_KC_NORMAL = 1212;
     const quint16 LSENSOR_PID_TI_NORMAL = 1000;
@@ -988,6 +1118,7 @@ EXIT:
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
     return ret;
 }
+#endif
 
 qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 {
