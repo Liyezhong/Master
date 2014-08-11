@@ -17,6 +17,7 @@
  *
  */
 /****************************************************************************/
+//lint -esym(1511, QAbstractButton::setText)
 
 #ifndef DASHBOARD_PAUSEPUSHBUTTON_H
 #define DASHBOARD_PAUSEPUSHBUTTON_H

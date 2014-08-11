@@ -17,6 +17,7 @@
  *
  */
 /****************************************************************************/
+//lint -esym(1511, QLabel::setText)
 
 #ifndef DASHBOARD_PROGRAMLABEL_H
 #define DASHBOARD_PROGRAMLABEL_H

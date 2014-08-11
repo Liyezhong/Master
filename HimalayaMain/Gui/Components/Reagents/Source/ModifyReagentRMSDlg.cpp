@@ -369,7 +369,8 @@ void CModifyReagentRMSDlg::OnOk()
         emit UpdateReagent(m_Reagent);
     }
     // Else New button is clicked in ReagentWidget
-    else {
+    else
+    {
         if(!m_SelectionFlag)
         {
             mp_MessageDlg->SetText(m_strSelectReagentGroup);//Please Select reagent group
