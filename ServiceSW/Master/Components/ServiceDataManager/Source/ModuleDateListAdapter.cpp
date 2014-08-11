@@ -215,7 +215,7 @@ void CModuleDateListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
 
     if (Param) {
         LifeCycle = Param->ParameterValue.toInt();
-        if (Type == TIME ) {
+        if (Type == TIME && SubModule->GetSubModuleName() != "Motor") {
             if (Param->ParameterUnit == "seconds") {
                 LifeCycle = LifeCycle/(60*60); //to hours
             }

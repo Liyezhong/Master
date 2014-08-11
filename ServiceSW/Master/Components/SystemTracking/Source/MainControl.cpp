@@ -349,9 +349,110 @@ void CMainControl::ResetSubModuleLifeCycle()
     (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
-        p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
+        QString SubModuleName = m_SubModuleNames.at(i);
+        if (SubModuleName.startsWith("ASB")) {
+            SaveLifeCycle2Device(SubModuleName);
+            //Core::CServiceUtils::delay(1000);
+        }
+        p_TestCase->SetParameter("SubModule", SubModuleName);
         emit PerformManufacturingTest(Id);
     }
+}
+
+void CMainControl::SaveLifeCycle2Device(QString& SlaveName)
+{
+    DeviceControl::DeviceLifeCycleRecord* p_DeviceRecord = new DeviceControl::DeviceLifeCycleRecord;
+    if (p_DeviceRecord == NULL) {
+        qDebug()<<"CMainControl::SaveLifeCycle2Device invalid device record.";
+        return;
+    }
+    p_DeviceRecord->ReadRecord();
+
+    ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+    if (!ModuleList) {
+        qDebug() << "CMainControl::SaveLifeCycle2Device(): Invalid module list!";
+        return;
+    }
+
+    if (SlaveName == "ASB3") {
+        ServiceDataManager::CModule* RVModule = ModuleList->GetModule("Rotary Valve");
+        DeviceControl::ModuleLifeCycleRecord* RVModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("RotaryValveDevice");
+        if (RVModule) {
+            SetDeviceModuleLifeCycle(RVModuleRecord, "motor_rv",
+                                     GetOperationTime2Second(RVModule->GetSubModuleInfo("Motor")));
+            SetDeviceModuleLifeCycle(RVModuleRecord, "temp_rv",
+                                     GetOperationTime2Second(RVModule->GetSubModuleInfo("Heater")));
+        }
+    }
+    else if (SlaveName == "ASB5") {
+        ServiceDataManager::CModule* OvenModule = ModuleList->GetModule("Paraffine Oven");
+        DeviceControl::ModuleLifeCycleRecord* OvenModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("OvenDevice");
+        if (OvenModule) {
+            SetDeviceModuleLifeCycle(OvenModuleRecord, "temp_oven_top",
+                                     GetOperationTime2Second(OvenModule->GetSubModuleInfo("Heater")));
+            SetDeviceModuleLifeCycle(OvenModuleRecord, "temp_oven_bottom",
+                                     GetOperationTime2Second(OvenModule->GetSubModuleInfo("Heater")));
+        }
+
+        ServiceDataManager::CModule* RetortModule = ModuleList->GetModule("Retort");
+        DeviceControl::ModuleLifeCycleRecord* RetortModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("RetortDevice");
+        if (RetortModule) {
+            SetDeviceModuleLifeCycle(RetortModuleRecord, "temp_retort_bottom",
+                                     GetOperationTime2Second(RetortModule->GetSubModuleInfo("Heater")));
+        }
+    }
+    else if (SlaveName == "ASB15") {
+        ServiceDataManager::CModule* LAModule = ModuleList->GetModule("L&A System");
+        DeviceControl::ModuleLifeCycleRecord* LAModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("LA");
+        if (LAModule) {
+            SetDeviceModuleLifeCycle(LAModuleRecord, "temp_tube1",
+                                     GetOperationTime2Second(LAModule->GetSubModuleInfo("Liquid Heating Tube")));
+            SetDeviceModuleLifeCycle(LAModuleRecord, "temp_tube2",
+                                     GetOperationTime2Second(LAModule->GetSubModuleInfo("Air Heating Tube")));
+            SetDeviceModuleLifeCycle(LAModuleRecord, "AL_pressure_ctrl",
+                                     GetOperationTime2Second(LAModule->GetSubModuleInfo("Pump")));
+        }
+    }
+
+    p_DeviceRecord->WriteRecord();
+    delete p_DeviceRecord;
+}
+
+void CMainControl::SetDeviceModuleLifeCycle(DeviceControl::ModuleLifeCycleRecord* p_ModuleRecord, QString SubModuleName, QString CycleValue)
+{
+    if (p_ModuleRecord == NULL) {
+        qDebug()<<"CMainControl::SetDeviceModuleLifeCycle invalid module record.";
+        return;
+    }
+
+    DeviceControl::PartLifeCycleRecord* p_PartRecord = p_ModuleRecord->m_PartLifeCycleMap.value(SubModuleName);
+    if (p_PartRecord == NULL) {
+        qDebug()<<"CMainControl::SetDeviceModuleLifeCycle invalid part record.";
+        return;
+    }
+
+    if (SubModuleName == "AL_pressure_ctrl") {
+        p_PartRecord->m_ParamMap["History_Pump_OperationTime"] = CycleValue;
+    }
+    else {
+        p_PartRecord->m_ParamMap["History_OperationTime"] = CycleValue;
+    }
+}
+
+QString CMainControl::GetOperationTime2Second(ServiceDataManager::CSubModule* SubModule)
+{
+    if (SubModule) {
+        ServiceDataManager::Parameter_t* Param = SubModule->GetParameterInfo("OperationTime");
+        if (Param) {
+            if (Param->ParameterUnit == "hours") {
+                return QString::number(Param->ParameterValue.toInt()*60*60);
+            }
+            else if (Param->ParameterUnit == "minutes") {
+                return QString::number(Param->ParameterValue.toInt()*60);
+            }
+        }
+    }
+    return QString("0");
 }
 
 } // namespace SystemTracking

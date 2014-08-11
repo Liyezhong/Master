@@ -22,22 +22,17 @@
         </Device>
         <Device Key="OtherDevice">
             <Functionmodules>
-                <Functionmodule Key="ASBBorad">
-                    <Parameter Key="History_ASB15_OperationTime" Value="43007"/>
-                    <Parameter Key="History_ASB3_OperationTime" Value="43007"/>
-                    <Parameter Key="History_ASB5_OperationTime" Value="43007"/>
-                </Functionmodule>
                 <Functionmodule Key="EBox">
-                    <Parameter Key="EBox_LifeTime" Value="43618"/>
+                    <Parameter Key="EBox_LifeTime" Value="44215"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Key="Pressure_Sensor_LifeTime" Value="43618"/>
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="44215"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Key="Touch_Screen_LifeTime" Value="43619"/>
+                    <Parameter Key="Touch_Screen_LifeTime" Value="44216"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Key="Ventilation_Fan_LifeTime" Value="43620"/>
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="44217"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>

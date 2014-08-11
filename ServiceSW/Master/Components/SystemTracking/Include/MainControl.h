@@ -25,6 +25,7 @@
 
 #include "Core/Include/ServiceDefines.h"
 #include "Core/Include/ServiceGUIConnector.h"
+#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
 namespace SystemTracking {
 
@@ -198,6 +199,12 @@ private:
      */
     /****************************************************************************/
     void ResetSubModuleLifeCycle();
+
+    void SaveLifeCycle2Device(QString& SlaveName);
+
+    void SetDeviceModuleLifeCycle(DeviceControl::ModuleLifeCycleRecord* p_ModuleRecord, QString SubModuleName, QString CycleValue);
+
+    QString GetOperationTime2Second(ServiceDataManager::CSubModule* SubModule);
 
     Ui::CMainControlConfiguration *mp_Ui;                 //!< User Interface
     MainMenu::CMessageDlg *mp_MessageDlg;                 //!< Information dialog
