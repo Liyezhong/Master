@@ -855,7 +855,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     const quint16 OverTemperature = 135;
 
     const quint16 MinTemperature = 110;
-    const quint16 MaxTemperature = 120;
+    const quint16 MaxTemperature = 130;
     const quint16 ExchangeTemperature = 110;
 
     Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
@@ -902,16 +902,22 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     for(int i=0; i<3; i++) {
         if (i==0) {
+            qDebug()<<"Start heating high, curtemp="<<curTemp;
             mp_TempLSensor->StopTemperatureControl();
-            mp_TempLSensor->SetTemperaturePid(TargetTemperature, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
+            mp_TempLSensor->SetTemperaturePid(132, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
             mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+            mp_Utils->Pause(200);
         }
         else if (i==1){
+            qDebug()<<"Start heating low";
             mp_TempLSensor->StopTemperatureControl();
-            mp_TempLSensor->SetTemperaturePid(TargetTemperature, ControllerGainLow,ResetTimeLow, DerivativeTimeLow);
+            mp_TempLSensor->SetTemperaturePid(132, ControllerGainLow,ResetTimeLow, DerivativeTimeLow);
             mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
+            mp_Utils->Pause(200);
         }
         else {
+            qDebug()<<"keep 5 seconds";
+
             waitSeconds = 5;
         }
 
@@ -919,10 +925,12 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             QTime EndTime = QTime().currentTime().addSecs(1);
 
             curTemp = mp_TempLSensor->GetTemperature();
+            qDebug()<<"curTemp="<<curTemp;
             if (curTemp > OverTemperature) {
                 goto ERROR_EXIT;
             }
             else if (i==0 && curTemp >= ExchangeTemperature) {
+                qDebug()<<"break from high heating ... curTemp="<<curTemp;
                 break;
             }
             else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
@@ -1212,8 +1220,10 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker()
     QString SetVolume;
     QStringList PlayParams;
 
-    SetVolume = "amixer set PCM " + VolumeLevel + " %";
+    SetVolume = "amixer set PCM " + VolumeLevel + "%";
     PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note6.ogg";
+
+    qDebug()<<"SetVolume="<<SetVolume;
 
     mp_SpeakProc->start(SetVolume);
     mp_SpeakProc->waitForFinished();
@@ -2680,12 +2690,12 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     int TEST_LSENSOR_TIMEOUT = 60;        //Sec.
     int TEST_LSENSOR_TEMP_TOLERANCE = 2;
 
-    int LSENSOR_PID_MAXTEMP_NORMAL = 120;  //Degrees
-    int LSENSOR_PID_KC_NORMAL = 1212;
-    int LSENSOR_PID_TI_NORMAL = 1000;
+    int LSENSOR_PID_MAXTEMP_NORMAL = 112;  //Degrees
+    int LSENSOR_PID_KC_NORMAL = 120;
+    int LSENSOR_PID_TI_NORMAL = 1212;
     int LSENSOR_PID_TD_NORMAL = 80;
 
-    int LSENSOR_PID_MAXTEMP_SLOW = 120;  //Degrees
+    int LSENSOR_PID_MAXTEMP_SLOW = 112;  //Degrees
     int LSENSOR_PID_KC_SLOW = 200;
     int LSENSOR_PID_TI_SLOW = 1000;
     int LSENSOR_PID_TD_SLOW = 0;

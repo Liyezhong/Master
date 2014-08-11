@@ -438,7 +438,7 @@ void CStartup::LoadCommonComponenetsTwo()
 /****************************************************************************/
 void CStartup::GuiInit()
 {
-    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Primaris");
+    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                        this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
@@ -473,7 +473,7 @@ void CStartup::GuiInit(QString debugMode)
             delete mp_USBKeyValidator;
             mp_USBKeyValidator = NULL;
         }
-        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Primaris");
+        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
         CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                            this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
         CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
@@ -748,7 +748,7 @@ void CStartup::UpdateParameters()
         //m_WindowStatusResetTimer.setInterval(mp_ServiceConnector->GetServiceParameters()->GetSystemLogOffTime());
         m_WindowStatusResetTimer.setInterval(60000);
         //m_DeviceName = mp_ServiceConnector->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
-        m_DeviceName = "Primaris";
+        m_DeviceName = "HISTOCORE PRIMARIS";
     }
     emit SetDeviceName(m_DeviceName);
 }
