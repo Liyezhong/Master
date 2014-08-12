@@ -44,7 +44,11 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
     , m_Archive(true)
     , mp_ModuleList(0)
     , mp_SettingsInterface(0)
+    , m_CurrentTabIndex(0)
+    , mp_ModuleListArchive(NULL)
+    , mp_DeviceConfigurationInterface(NULL)
     , mp_ServiceParameters(NULL)
+    , m_Language(PlatformService::US_ENGLISH)
 {
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
 
@@ -123,7 +127,11 @@ void CServiceGUIConnector::SetUserSettingInterface(
 /****************************************************************************/
 void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
 {
-    mp_ModuleList->UpdateModule(&Module);
+    if (!mp_ModuleList) {
+        qDebug()<<"CServiceGuiConnector::SendModuleUpdate invalid module list.";
+        return;
+    }
+    (void)mp_ModuleList->UpdateModule(&Module);
     if (!mp_ModuleList->Write()) {
         qDebug()<<"CServiceGUIConnector: SendModuluUpdate to file failed.";
     }
@@ -169,11 +177,11 @@ bool CServiceGUIConnector::UpdateInstrumentHistory(ServiceDataManager::CModuleDa
 void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration)
 {
     if (mp_DeviceConfigurationInterface) {
-        mp_DeviceConfigurationInterface->UpdateDeviceConfiguration(DeviceConfiguration);
+        (void)mp_DeviceConfigurationInterface->UpdateDeviceConfiguration(DeviceConfiguration);
         if (!mp_DeviceConfigurationInterface->Write()) {
             qDebug()<<"CServiceGUIConnector: UpdateDeviceConfigurationSN to file failed.";
         }
-   }
+    }
 }
 
 /****************************************************************************/
@@ -183,9 +191,11 @@ void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceCon
 /****************************************************************************/
 void CServiceGUIConnector::SendAddModule(ServiceDataManager::CModule &Module)
 {
-    mp_ModuleList->AddModule(&Module);
-    qDebug() << Module.GetSerialNumber() << endl;
-    qDebug() << "Module Updated";
+    if (mp_ModuleList) {
+        (void)mp_ModuleList->AddModule(&Module);
+        qDebug() << Module.GetSerialNumber() << endl;
+        qDebug() << "Module Updated";
+    }
 }
 
 /****************************************************************************/
@@ -255,7 +265,7 @@ void CServiceGUIConnector::ShowBusyDialog()
 /****************************************************************************/
 void CServiceGUIConnector::HideBusyDialog()
 {
-     mp_WaitDialog->close();
+     (void)mp_WaitDialog->close();
 }
 
 /****************************************************************************/
@@ -309,8 +319,8 @@ void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType,
 
     if (NeedClickFlag) {
         mp_MessageDlg->setModal(true);
-        mp_MessageDlg->exec();
-        mp_MessageDlg->close();
+        (void)mp_MessageDlg->exec();
+        (void)mp_MessageDlg->close();
         delete mp_MessageDlg;
         mp_MessageDlg = NULL;
 

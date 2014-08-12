@@ -268,7 +268,7 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     dlg->SetDialogTitle(Service::CMessageString::MSG_TITLE_ERROR);
     dlg->SetText(Text);
     dlg->HideAbort(true);
-    dlg->exec();
+    (void)dlg->exec();
     delete dlg;
 }
 
@@ -299,7 +299,7 @@ quint8 CManufacturingDiagnosticsHandler::GetPositionForRVTest(Service::ModuleTes
     }
 
     DiagnosticsManufacturing::CSelectPositionDialog *p_Dlg = new DiagnosticsManufacturing::CSelectPositionDialog(Id, Position, TubeFlag, mp_MainWindow);
-    p_Dlg->exec();
+    (void)p_Dlg->exec();
 
     Position = p_Dlg->GetPosition()+1;
     TubeFlag = p_Dlg->GetTubeFlag();
@@ -380,7 +380,7 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Positio
 {
     DiagnosticsManufacturing::CPressureInputDialog *p_Dlg = new DiagnosticsManufacturing::CPressureInputDialog(Service::ROTARY_VALVE_SEALING_FUNCTION, mp_MainWindow);
 
-    p_Dlg->exec();
+    (void)p_Dlg->exec();
 
     bool Result = p_Dlg->GetResult();
 
@@ -695,9 +695,9 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
                     if (Reason != "Abort" ) {
                         p_TestCase->SetParameter("CurStep", "3");
                         emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
-                        GetTestResponse();
+                        (void)GetTestResponse();
                     }
-                    ShowGuide(id, 2);
+                    (void)ShowGuide(id, 2);
                 }
                 else {
                     emit PerformManufacturingTest(Service::TEST_ABORT, id);
@@ -1109,11 +1109,12 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 p_TestCase->SetParameter("TestMode", "0");
             }
             else {
-                DiagnosticsManufacturing::CSelectPositionDialog *p_Dlg = new DiagnosticsManufacturing::CSelectPositionDialog(Id, 1, true, mp_MainWindow);
-                p_Dlg->exec();
+                DiagnosticsManufacturing::CSelectPositionDialog *p_SelectDlg = new DiagnosticsManufacturing::CSelectPositionDialog(Id, 1, true, mp_MainWindow);
+                (void)p_SelectDlg->exec();
 
                 p_TestCase->SetParameter("TestMode", "1");
-                p_TestCase->SetParameter("Position", QString::number(p_Dlg->GetPosition() + 1));
+                p_TestCase->SetParameter("Position", QString::number(p_SelectDlg->GetPosition() + 1));
+                delete p_SelectDlg;
             }
 
             emit PerformManufacturingTest(Id);
@@ -1298,7 +1299,7 @@ void CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg(bool Result)
 void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
 {
     if (mp_WaitDialog != NULL) {
-        mp_WaitDialog->close();
+        (void)mp_WaitDialog->close();
         delete mp_WaitDialog;
         mp_WaitDialog = NULL;
     }
@@ -1321,7 +1322,7 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
 void CManufacturingDiagnosticsHandler::HideMessage()
 {
     if (mp_WaitDialog != NULL) {
-        mp_WaitDialog->close();
+        (void)mp_WaitDialog->close();
         delete mp_WaitDialog;
         mp_WaitDialog = NULL;
     }

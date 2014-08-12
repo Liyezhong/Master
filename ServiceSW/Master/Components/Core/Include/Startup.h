@@ -214,7 +214,7 @@ private:
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
-    void OnSelectTestOptions(int index);
+    void OnSelectTestOptions(int Index);
 	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
     int FileExistanceCheck();
 private:

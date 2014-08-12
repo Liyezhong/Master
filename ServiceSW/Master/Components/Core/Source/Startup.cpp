@@ -525,9 +525,9 @@ void CStartup::StartTimer()
     m_WindowStatusResetTimer.start();
 }
 
-void CStartup::OnSelectTestOptions(int index)
+void CStartup::OnSelectTestOptions(int Index)
 {
-    CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(index));
+    CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(Index));
 }
 
 /****************************************************************************/
@@ -560,7 +560,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         mp_USBKeyValidator->HideKeyBoard();
         MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, QApplication::desktop()->screen());
         CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
-        pDlgWizardSelectTestOptions->exec();
+        (void)pDlgWizardSelectTestOptions->exec();
         if (QDialog::Rejected == pDlgWizardSelectTestOptions->result())
         {
             delete pDlgWizardSelectTestOptions;
@@ -652,7 +652,7 @@ void CStartup::ManufacturingGuiInit()
 int CStartup::FileExistanceCheck()
 {
     return 1;
-
+#if 0
     int Result = 0;
     QDir Directory(Global::SystemPaths::Instance().GetSettingsPath());
     Directory.setFilter(QDir::AllEntries);
@@ -719,6 +719,7 @@ int CStartup::FileExistanceCheck()
         }
     }
     return 0;
+#endif
 }
 
 /****************************************************************************/
@@ -867,7 +868,7 @@ void CStartup::RefreshTestStatus4RetortHeatingWithWater(Service::ModuleTestCaseI
     QString CurStatus ;
     if (Status.value("CurrentStatus") != NULL) {
         if ( mp_HeatingStatusDlg != NULL ) {
-            mp_HeatingStatusDlg->close();
+            (void)mp_HeatingStatusDlg->close();
             delete mp_HeatingStatusDlg ;
             mp_HeatingStatusDlg = NULL;
         }
@@ -880,12 +881,12 @@ void CStartup::RefreshTestStatus4RetortHeatingWithWater(Service::ModuleTestCaseI
         }
         else if (CurStatus == "WaitConfirm2") {
             if (mp_HeatingStatusDlg) {
-                mp_HeatingStatusDlg->close();
+                (void)mp_HeatingStatusDlg->close();
                 delete mp_HeatingStatusDlg;
                 mp_HeatingStatusDlg = NULL;
             }
             DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(Id, mp_MainWindow);
-            dlg->exec();
+            (void)dlg->exec();
             QString InputValueStr = dlg->GetInputValue(0);
 
             delete dlg;
@@ -1036,12 +1037,12 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
     }
     else if (Status.value("CurrentStatus")=="InformDone") {
         if (mp_HeatingStatusDlg) {
-            mp_HeatingStatusDlg->close();
+            (void)mp_HeatingStatusDlg->close();
             delete mp_HeatingStatusDlg;
             mp_HeatingStatusDlg = NULL;
         }
         DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(Id, mp_MainWindow);
-        dlg->exec();
+        (void)dlg->exec();
         QString LeftInputValueStr = dlg->GetInputValue(0);
         QString MiddleInputValueStr = dlg->GetInputValue(1);
         QString RightInputValueStr = dlg->GetInputValue(2);
@@ -1092,7 +1093,7 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
 {
     if (Status.value("CurrentStatus") != NULL) {
         if ( mp_HeatingStatusDlg != NULL ) {
-            mp_HeatingStatusDlg->close();
+            (void)mp_HeatingStatusDlg->close();
             delete mp_HeatingStatusDlg ;
             mp_HeatingStatusDlg = NULL;
         }
@@ -1214,8 +1215,8 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
 
 void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    //QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    //DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
     QString Text;
 
@@ -1271,7 +1272,7 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
     }
     else if (Status.value("CurrentStatus") != NULL) {
         if (mp_SealingStatusDlg != NULL) {
-            mp_SealingStatusDlg->close();
+            (void)mp_SealingStatusDlg->close();
             delete mp_SealingStatusDlg ;
             mp_SealingStatusDlg = NULL;
         }
@@ -1455,12 +1456,14 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
 void CStartup::OnReturnManufacturingMsg(bool Result)
 {
     if (mp_HeatingStatusDlg) {
-        mp_HeatingStatusDlg->close();
+        (void)mp_HeatingStatusDlg->close();
         delete mp_HeatingStatusDlg;
         mp_HeatingStatusDlg = NULL;
     }
     qDebug()<<"CStartup::OnReturnManufacturingMsg Result="<<Result;
-    mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(Result);
+    if (mp_ManaufacturingDiagnosticsHandler) {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(Result);
+    }
 }
 
 
@@ -1696,7 +1699,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         mp_SystemLogContentDlg->resize(720, 450);
         //mp_SystemLogContentDlg->setGeometry(110, 300, 720, 480);
         mp_SystemLogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
-        mp_SystemLogContentDlg->InitDialog(Path);
+        (void)mp_SystemLogContentDlg->InitDialog(Path);
         mp_SystemLogContentDlg->show();
     }
     else {

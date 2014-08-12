@@ -71,6 +71,7 @@ CCalibrationHanlder::~CCalibrationHanlder()
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
 {
+    QString Msg;
     MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     MsgDlg->HideAllButtons();
     MsgDlg->SetTitle(QApplication::translate("Core::CCalibrationHanlder",
@@ -81,7 +82,6 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
     mp_PressureSensor->SetButtonStatus(false);
 
     for(int i=0; i<3; i++) {
-        QString Msg;
         if (i==0) {
             Msg = QApplication::translate("Core::CCalibrationHanlder",
                                               "Executing the first calibration, please wait...",
@@ -102,12 +102,12 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
 
         emit PerformManufacturingTest(Service::PRESSURE_CALIBRATION);
 
-        GetCalibrationResponse();
+        (void)GetCalibrationResponse();
 
         MsgDlg->hide();
 
         if (m_Result == 0) {
-            QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+            Msg = QApplication::translate("Core::CCalibrationHanlder",
                                                   "Pressure sensor calibration success.",
                                                   0, QApplication::UnicodeUTF8);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Msg, true);
@@ -118,7 +118,7 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
             if (i==3) {
                 break;
             }
-            QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+            Msg = QApplication::translate("Core::CCalibrationHanlder",
                                                   "Please open the retort lid, and then click 'OK' to retry.",
                                                   0, QApplication::UnicodeUTF8);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Msg, true);
@@ -126,7 +126,7 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
     }
 
     if (m_Result != 0) {
-        QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+        Msg = QApplication::translate("Core::CCalibrationHanlder",
                                               "Pressure sensor calibration failed.",
                                               0, QApplication::UnicodeUTF8);
         mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Msg, true);

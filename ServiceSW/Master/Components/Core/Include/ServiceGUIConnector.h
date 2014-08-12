@@ -76,7 +76,7 @@ class CServiceGUIConnector : public QObject
 
     QEventLoop m_LoopSetAction;                         //!< Loop for blocking commands.
 
-    bool m_GuiAllConfigurationReceived;                 //!< True -if all configuration data (XML)from Main is received
+    //bool m_GuiAllConfigurationReceived;                 //!< True -if all configuration data (XML)from Main is received
     bool m_GuiInit;                                     //!< True - if Gui is getting initialized
     int  m_CurrentTabIndex;                             //!< To keep track of current tab selected
     bool m_MessageDlg;                                  //!< True if Message Dialog is displayed.

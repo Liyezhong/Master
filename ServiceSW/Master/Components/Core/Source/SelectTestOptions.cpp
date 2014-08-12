@@ -64,10 +64,12 @@ void CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t testMod)
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestMode.txt";
     QString msg = QString("%1").arg(testMod);
     FILE* pFile = fopen(FileName.toStdString().c_str(), "w+");
-    fprintf(pFile, "%s", msg.toStdString().c_str());
-    fflush(pFile);
-    fclose(pFile);
-    system("sync");
+    if (pFile) {
+        fprintf(pFile, "%s", msg.toStdString().c_str());
+        (void)fflush(pFile);
+        fclose(pFile);
+        (void)system("sync");
+    }
 
     m_TestMod = testMod;
 }
