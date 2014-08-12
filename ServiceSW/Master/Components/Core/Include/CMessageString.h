@@ -143,6 +143,9 @@ public:
 	static QString MSG_SERVER_NO_NEW_FILES;                           //!<The current version is latest one.
 	static QString MSG_SERVER_DOWNLOAD_FILES_SUCCESS;                 //!<Download firmware files success.
 	static QString MSG_SERVER_SEND_REPORT_FALIED;                     //!<Send report file to server failed.
+	static QString MSG_SERVER_CHECK_HOST_REACHABLE;                   //!<Checking host reachable...
+	static QString MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS;               //!<Checking host access rights...
+	static QString MSG_SERVER_CHECK_HOST_FINISHED;                    //!<Check host finished.
 
 	static QString MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
 	static QString MSG_DEVICE_RELEASE_PRESSURE_FAILED;                //!<ERROR: Release pressure failure.

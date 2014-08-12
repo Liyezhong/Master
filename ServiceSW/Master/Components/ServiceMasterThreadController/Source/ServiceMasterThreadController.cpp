@@ -1707,6 +1707,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
 {
     try
     {
+        QString Color = "black";
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString ReportPath = mp_ServiceDataContainer->ServiceParameters->GetTestReportFolderPath();
@@ -1714,6 +1715,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         NetworkClient::IENetworkClient *IEClient(NULL);
         IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
+        emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_REACHABLE, Color);
         if(IEClient->PerformHostReachableTest())
         {
             emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , true);
@@ -1725,6 +1727,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
             qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
         }
 
+        emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS, Color);
         if(IEClient->PerformAccessRightsCheck(ReportPath))
         {
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
@@ -1735,6 +1738,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , false);
             emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
         }
+        emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_FINISHED, Color);
 #if 0
         if(IEClient->PerformServiceAvailableTest())
         {

@@ -111,6 +111,7 @@ bool CTestCaseReporter::SendReportFile()
     bool Result = false;
     QString Msg("");
 
+    mp_WaitDlg->SetDialogTitle(Service::CMessageString::MSG_TITLE_WAIT);
     mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
     mp_WaitDlg->HideAbort();
     mp_WaitDlg->show();

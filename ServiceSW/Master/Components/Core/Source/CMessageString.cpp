@@ -138,6 +138,9 @@ QString CMessageString::MSG_SERVER_DOWNLOAD_FILES_FAILED;                  //!<D
 QString CMessageString::MSG_SERVER_NO_NEW_FILES;                           //!<The current version is latest one.
 QString CMessageString::MSG_SERVER_DOWNLOAD_FILES_SUCCESS;                 //!<Download firmware files success.
 QString CMessageString::MSG_SERVER_SEND_REPORT_FALIED;                     //!<Send report file to server failed.
+QString CMessageString::MSG_SERVER_CHECK_HOST_REACHABLE;                   //!<Checking host reachable...
+QString CMessageString::MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS;               //!<Checking host access rights...
+QString CMessageString::MSG_SERVER_CHECK_HOST_FINISHED;                    //!<Check host finished.
 
 QString CMessageString::MSG_DEVICE_NOTYET_READY;                           //!<Error: Device Layer not yet Initialized. Please retry after some time...
 QString CMessageString::MSG_DEVICE_RELEASE_PRESSURE_FAILED;                //!<ERROR: Release pressure failure.
@@ -276,6 +279,9 @@ void CMessageString::RetranslateUI()
 	MSG_SERVER_NO_NEW_FILES                           = (QApplication::translate("Service", "The current version is latest one.", 0, QApplication::UnicodeUTF8));
 	MSG_SERVER_DOWNLOAD_FILES_SUCCESS                 = (QApplication::translate("Service", "Download firmware files success.", 0, QApplication::UnicodeUTF8));
 	MSG_SERVER_SEND_REPORT_FALIED                     = (QApplication::translate("Service", "Send report file to server failed.", 0, QApplication::UnicodeUTF8));
+	MSG_SERVER_CHECK_HOST_REACHABLE                   = (QApplication::translate("Service", "Checking host reachable...", 0, QApplication::UnicodeUTF8));
+	MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS               = (QApplication::translate("Service", "Checking host access rights...", 0, QApplication::UnicodeUTF8));
+	MSG_SERVER_CHECK_HOST_FINISHED                    = (QApplication::translate("Service", "Check host finished.", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_NOTYET_READY                           = (QApplication::translate("Service", "Error: Device Layer not yet Initialized. Please retry after some time...", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_RELEASE_PRESSURE_FAILED                = (QApplication::translate("Service", "ERROR: Release pressure failure.", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED     = (QApplication::translate("Service", "ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!", 0, QApplication::UnicodeUTF8));
