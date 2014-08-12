@@ -2687,7 +2687,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 {
     int LSENSOR_TEMP_WATER = 95;
     int LSENSOR_SLOPE_TEMPCHANGE_NORMAL = 10;
-    int TEST_LSENSOR_TIMEOUT = 60;        //Sec.
+    int TEST_LSENSOR_TIMEOUT = 120;        //Sec.
     int TEST_LSENSOR_TEMP_TOLERANCE = 2;
 
     int LSENSOR_PID_MAXTEMP_NORMAL = 112;  //Degrees
@@ -2734,9 +2734,8 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
     ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
 
-    mp_Utils->Pause(3000);
+    mp_Utils->Pause(1000);
 
-    WaitSeconds = TEST_LSENSOR_TIMEOUT;
     i = 0;
     while(WaitSeconds){
         qDebug()<<"Level Sensor temp is : "<<mp_TempLSensor->GetTemperature()<<" time:"<<i++;
