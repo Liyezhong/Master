@@ -65,13 +65,6 @@ private:
 
 signals:
     /****************************************************************************/
-    /**
-     * \brief Signal is emitted when current tab is changed
-     */
-    /****************************************************************************/
-    void TabChanged();
-
-    /****************************************************************************/
     /*!
      *  \brief  This signal is emitted for firmware download
      */
@@ -108,7 +101,6 @@ signals:
     /****************************************************************************/
     void RefreshLatestVersion();
 private slots:
-     void TabIndexChanged(int);
      void OnCurrentTabChanged(int CurrentTabIndex);
 
 public slots:

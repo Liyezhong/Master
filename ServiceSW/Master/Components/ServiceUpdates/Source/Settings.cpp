@@ -44,8 +44,10 @@ CSettings::CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMen
 
     mp_Ui->pageLanguageSettings->setContentsMargins(0, 0, 0, 0);
 
-    CONNECTSIGNALSLOTGUI(mp_Ui->parametersPanel, CurrentRowChanged(int), mp_Ui->stackedWidget,
-                         setCurrentIndex(int));
+    //CONNECTSIGNALSLOTGUI(mp_Ui->parametersPanel, CurrentRowChanged(int), mp_Ui->stackedWidget,
+                         //setCurrentIndex(int));
+
+    CONNECTSIGNALSLOTGUI(mp_Ui->parametersPanel, CurrentRowChanged(int), this, OnCurrentTabChanged(int));
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pageDateTimeSettings->GetContent(), ApplyData(QDateTime), mp_ServiceDataConnector,
                          SetDateTime(QDateTime));
@@ -120,27 +122,21 @@ void CSettings::UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, Ma
 
 /****************************************************************************/
 /*!
- *  \brief Slot called when tab index changed
- *  \iparam Index = Index of the current tab
- */
-/****************************************************************************/
-void CSettings::TabIndexChanged(int Index)
-{
-    mp_Ui->stackedWidget->setVisible(true);
-    mp_Ui->parametersPanel->setVisible(false);
-    mp_Ui->stackedWidget->setCurrentIndex(Index);
-}
-
-/****************************************************************************/
-/*!
  *  \brief Slot called when current tab is changed
  *  \iparam CurrentTabIndex = Current tab changed
  */
 /****************************************************************************/
 void CSettings::OnCurrentTabChanged(int CurrentTabIndex)
 {
-    if (CurrentTabIndex == 5 ) {
-        emit TabChanged();
+    mp_Ui->stackedWidget->setCurrentIndex(CurrentTabIndex);
+
+    if (mp_Ui->stackedWidget->currentWidget() == mp_Ui->pageNetworkSettings) {
+        if (mp_ServiceDataConnector->GetServiceParameters()) {
+            mp_Ui->pageNetworkSettings->UpdateIpAddress(mp_ServiceDataConnector->GetServiceParameters()->GetProxyIPAddress());
+        }
+        qDebug()<<"check network...";
+        mp_Ui->pageNetworkSettings->reset();
+        emit PerformNetworkTests();
     }
 }
 
