@@ -84,7 +84,12 @@ CRsHeatingErr30SRetry::~CRsHeatingErr30SRetry()
 CRsHeatingErr30SRetry::StateList_t CRsHeatingErr30SRetry::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     StateList_t currentState = UNDEF;
-    if(statesList.contains(mp_ShutdownFailedHeater.data()))
+
+    if(statesList.contains(mp_ReleasePressure.data()))
+    {
+        currentState = RELEASE_PRESSURE;
+    }
+    else if(statesList.contains(mp_ShutdownFailedHeater.data()))
     {
         currentState = SHUTDOWN_FAILD_HEATER;
     }

@@ -2482,7 +2482,6 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
     else if(1 == type) //seal positon
     {
         //get target position here
-        LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
         LogDebug(QString("Move to RV Seal position: %1").arg(targetPos));
     }
