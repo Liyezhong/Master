@@ -41,6 +41,7 @@ class  CRsHeatingErr30SRetry : public QObject
     typedef enum
     {
         UNDEF,
+        HEATINGERROR_30SRetry_INIT,
         RELEASE_PRESSURE,
         SHUTDOWN_FAILD_HEATER,
         WAIT_FOR_10SECONDS,
@@ -89,6 +90,15 @@ public:
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
+
+    /****************************************************************************/
+    /*!
+     *  \brief	signal release pressure
+     *
+     */
+    /****************************************************************************/
+    void ReleasePressureSig();
+
     /****************************************************************************/
     /*!
      *  \brief	signal to shut down failed heaters
@@ -140,6 +150,7 @@ signals:
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>  mp_StateMachine;         //!< State machine for RS_HeatingErr_30SRetry
+    QSharedPointer<QState> mp_Initialize;                   //!< the initialize state
     QSharedPointer<QState> mp_ReleasePressure;              //!< Rlease pressure state
     QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
     QSharedPointer<QState> mp_WaitFor10Seconds;              //!< Wait for 3 seconds state

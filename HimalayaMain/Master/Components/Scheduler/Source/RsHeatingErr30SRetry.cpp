@@ -36,6 +36,7 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     :mp_SchedulerController(SchedController)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
+    mp_Initialize = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ShutdownFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_WaitFor10Seconds = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -43,14 +44,16 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     mp_CheckTempModuleCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
 
-    mp_StateMachine->setInitialState(mp_ReleasePressure.data());
-    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController,ReleasePressure());
+    mp_StateMachine->setInitialState(mp_Initialize.data());
+    mp_Initialize->addTransition(this, SIGNAL(ReleasePressureSig()), mp_ReleasePressure.data());
     mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeaters()), mp_ShutdownFailedHeater.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(WaitFor10Seconds()), mp_WaitFor10Seconds.data());
     mp_WaitFor10Seconds->addTransition(this, SIGNAL(RestartFailedHeater()), mp_RestartFailedHeater.data());
     mp_RestartFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(Retry()), mp_ShutdownFailedHeater.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+
+    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController, ReleasePressure());
 
     // For error cases
     mp_WaitFor10Seconds->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
@@ -84,8 +87,11 @@ CRsHeatingErr30SRetry::~CRsHeatingErr30SRetry()
 CRsHeatingErr30SRetry::StateList_t CRsHeatingErr30SRetry::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     StateList_t currentState = UNDEF;
-
-    if(statesList.contains(mp_ReleasePressure.data()))
+    if(statesList.contains(mp_Initialize.data()))
+    {
+        currentState = HEATINGERROR_30SRetry_INIT;
+    }
+    else if(statesList.contains(mp_ReleasePressure.data()))
     {
         currentState = RELEASE_PRESSURE;
     }
@@ -115,12 +121,16 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
 
     switch (currentState)
     {
+    case HEATINGERROR_30SRetry_INIT:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state INITIALIZE");
+        emit ReleasePressureSig();
+        break;
     case RELEASE_PRESSURE:
         mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state RELEASE_PRESSURE");
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
             // We always return failure
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 emit TasksDone(false);
             }
