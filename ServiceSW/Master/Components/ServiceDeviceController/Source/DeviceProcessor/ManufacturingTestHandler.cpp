@@ -2599,15 +2599,15 @@ void ManufacturingTestHandler::GetSlaveInformation()
 
     if (SlaveType == Slave_3) {
         p_BaseModule = mp_BaseModule3;
-        Status.insert("SlaveType", "3");
+     //   Status.insert("SlaveType", "3");
     }
     else if (SlaveType == Slave_5) {
         p_BaseModule = mp_BaseModule5;
-        Status.insert("SlaveType", "5");
+     //   Status.insert("SlaveType", "5");
     }
     else if(SlaveType == Slave_15) {
         p_BaseModule = mp_BaseModule15;
-        Status.insert("SlaveType", "15");
+    //    Status.insert("SlaveType", "15");
     }
 
     QString Str = p_BaseModule->GetHWInfo();
@@ -3052,6 +3052,19 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
 
     Status.insert("CurState", "End");
     emit RefreshTestStatustoMain(TestCaseName, Status);
+
+    // Get slave information.
+    Id = Service::FIRMWARE_GET_SLAVE_INFO;
+    TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    p_TestCase->SetParameter("TestType", "Init");
+    p_TestCase->SetParameter("SlaveType", "3");
+    GetSlaveInformation();
+    p_TestCase->SetParameter("SlaveType", "5");
+    GetSlaveInformation();
+    p_TestCase->SetParameter("SlaveType", "15");
+    GetSlaveInformation();
+
     return RetVal;
 }
 

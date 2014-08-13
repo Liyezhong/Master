@@ -1314,18 +1314,26 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
 
     ServiceDataManager::CModule* EboxModule = NULL;
     ServiceDataManager::CSubModule* SlaveModule = NULL;
+    bool InitFlag = false;
+
     if (p_TestCase->GetParameter("TestType") == QString("AutoDetect")) {
         EboxModule = mp_MainControlConfig->GetModule();
     }
     else {
-        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        if (p_TestCase->GetParameter("TestType") == QString("Init")){
+            InitFlag = true;
+        }
+        else {
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        }
+
         if (mp_ServiceConnector->GetModuleListContainer()) {
             EboxModule = mp_ServiceConnector->GetModuleListContainer()->GetModule("Main Control");
         }
     }
 
 
-    int SlaveType = Status.value("SlaveType").toInt();
+    int SlaveType = p_TestCase->GetParameter("SlaveType").toInt();
     QString SlaveName;
     switch (SlaveType) {
     case 3:
@@ -1346,6 +1354,17 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
         SlaveModule = EboxModule->GetSubModuleInfo(SlaveName);
     }
     if (SlaveModule) {
+
+        if (InitFlag) {
+            ServiceDataManager::Parameter_t *param = SlaveModule->GetParameterInfo("HardwareProductionDate");
+            if (param) {
+                if (param->ParameterValue != "DATE") {
+                    return ;
+                }
+            }
+        }
+
+
         QMap<QString, QString>::const_iterator itr = Status.constBegin();
         for (; itr != Status.constEnd(); ++itr) {
             if (itr.key() != "SlaveType" && !SlaveModule->UpdateParameterInfo(itr.key(), itr.value())) {
