@@ -200,10 +200,31 @@ private:
     /****************************************************************************/
     void ResetSubModuleLifeCycle();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Save life cycle to device life cycle config file
+     *  \iparam SlaveName = the name of slave
+     */
+    /****************************************************************************/
     void SaveLifeCycle2Device(QString& SlaveName);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  To set device module life cycle
+     *  \iparam p_ModuleRecord = pointer of module life cycle record.
+     *  \iparam SubModuleName  = the name of sub module.
+     *  \iparam CycleValue     = life cycle value
+     */
+    /****************************************************************************/
     void SetDeviceModuleLifeCycle(DeviceControl::ModuleLifeCycleRecord* p_ModuleRecord, QString SubModuleName, QString CycleValue);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get operation time
+     *  \iparam SubModule = the pointer of sub module
+     *  \return the operation time of second.
+     */
+    /****************************************************************************/
     QString GetOperationTime2Second(ServiceDataManager::CSubModule* SubModule);
 
     Ui::CMainControlConfiguration *mp_Ui;                 //!< User Interface

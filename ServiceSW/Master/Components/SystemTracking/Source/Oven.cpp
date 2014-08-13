@@ -98,9 +98,9 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
     m_SubModuleNames<<SUBMODULE_HEATER;
     ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
     if (p_SubModuleHeater) {
-        p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
-        p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
-        p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+        (void)p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
+        (void)p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
     }
 
     (void)mp_ModuleList->UpdateModule(&Module);
