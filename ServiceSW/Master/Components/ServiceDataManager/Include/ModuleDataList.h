@@ -87,15 +87,56 @@ class CModuleDataList : public DataManager::CDataContainerBase
     void AddModuleWithoutVerification(CModule const* p_Module);
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Default constructor.
+     */
+    /****************************************************************************/
     CModuleDataList();
-    CModuleDataList(QString TimeStamp);
-    CModuleDataList(const CModuleDataList&);    //!< Copy Constructor
-    ~CModuleDataList();
-    void CopyFromOther(const CModuleDataList &ListofModules);
-    CModuleDataList& operator=(const CModuleDataList&); //!< Assignment Operator Overloading
 
-    /********************************************* QReadWriteLock* mp_ReadWriteLock;   ///< Synchronisation for data access
-*******************************/
+    /****************************************************************************/
+    /**
+     * \brief Parameterized Constructor.
+     * \param TimeStamp = Module list time stamp
+     */
+    /****************************************************************************/
+    CModuleDataList(QString TimeStamp);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Constructor
+     *  \iparam ModuleDataList = Instance of the ModuleList class
+     *
+     */
+    /****************************************************************************/
+    CModuleDataList(const CModuleDataList&);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
+    ~CModuleDataList();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Data from another instance.
+     *  \iparam ListofModules = Instance of the CModuleDataList class
+    .*  \note  Method for internal use only
+     *
+     *  \return
+     */
+    /****************************************************************************/
+    void CopyFromOther(const CModuleDataList &ListofModules);
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment Operator Overloading.
+     */
+    /****************************************************************************/
+    CModuleDataList& operator=(const CModuleDataList&);
+
+    /****************************************************************************/
     /*!
      *  \brief returns the  Data container type
      *  \return Data container type

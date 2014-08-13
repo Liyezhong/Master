@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DataManager.h
+/*! \file ServiceDataManager/Include/ServiceDataManager.h
  *
- *  \brief Definition file for class CDataManager.
+ *  \brief Definition file for class CServiceDataManager.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-22-02
@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -30,22 +30,86 @@ namespace DataManager {
 
 class CModuleCommandInterface;
 
+/****************************************************************************/
+/**
+ * \brief CServiceDataManager definition
+ */
+/****************************************************************************/
 class CServiceDataManager: public QObject
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Constructor.
+     * \param p_ServiceMasterThreadController = the pointer of serivice master thread
+     */
+    /****************************************************************************/
     CServiceDataManager(Threads::ServiceMasterThreadController *p_ServiceMasterThreadController);
+
+    /****************************************************************************/
+    /**
+     * \brief Constructor.
+     * \param p_ServiceMasterThreadController = the pointer of serivice master thread
+     * \param Path = unused
+     */
+    /****************************************************************************/
     CServiceDataManager(Threads::ServiceMasterThreadController *p_ServiceMasterThreadController, QString Path);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     virtual ~CServiceDataManager();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the device configuration container pointer
+     *  \return device configuration container pointer
+     */
+    /****************************************************************************/
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the Module command container pointer
+     *  \return Module command configuration container pointer
+     */
+    /****************************************************************************/
     CModuleCommandInterface* GetModuleDataListInterface();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the Service data container pointer
+     *  \return Service data configuration container pointer
+     */
+    /****************************************************************************/
     const ServiceDataContainer* GetDataContainer() { return mp_ServiceDataContainer; }
 
+    /****************************************************************************/
+    /*!
+     *  \brief Initialization of service data container
+     *  \return event ID (Success or Failure)
+     */
+    /****************************************************************************/
     quint32 InitDataContainer();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Checks data container is initialization
+     *  \return Success or Failure
+     */
+    /****************************************************************************/
     bool IsInitialized() const { return mp_ServiceDataContainer; }
 
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the Module data list container pointer
+     *  \return Module data list configuration container pointer
+     */
+    /****************************************************************************/
     ServiceDataManager::CModuleDataList *GetModuleList(void);
 
 private:
@@ -55,10 +119,16 @@ private:
     CDeviceConfigurationInterface *mp_DeviceConfigurationInterface; //!< Handles commands related to device configuration
 
     bool m_UpdateList;
-    bool m_IsInitialized;
+    bool m_IsInitialized;                                  //!< Flag variable is set when container is initialized
 
     Threads::ServiceMasterThreadController *mp_MasterThreadController; //!< This is passed to DataContainer
 
+    /****************************************************************************/
+    /*!
+     *  \brief De initialise the data containers
+     *  \return Success or failure
+     */
+    /****************************************************************************/
     virtual bool DeinitDataContainer();
 
 };

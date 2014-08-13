@@ -28,6 +28,12 @@ namespace DataManager {
 
 class CTestCaseFactory;
 
+/****************************************************************************/
+/*!
+ *  \brief  This class implements TestCase
+ *  Reads Test Case parameter, Write Test case results
+ */
+/****************************************************************************/
 class CTestCase
 {
     friend class CTestCaseFactory;
@@ -45,7 +51,8 @@ public:
     /****************************************************************************/
     /**
      * \brief Add parameter key-value for this test case.
-     * \param ParamName = parameter name , ParamValue = parameter value.
+     * \iparam ParamName = parameter name
+     * \iparam ParamValue = parameter value.
      */
     /****************************************************************************/
     void SetParameter(const QString& ParamName, const QString& ParamValue);
@@ -60,7 +67,8 @@ public:
     /****************************************************************************/
     /**
      * \brief Add result key-value for this test case.
-     * \param Key = result name , Value = result value.
+     * \iparam Key   = result name
+     * \iparam Value = result value.
      */
     /****************************************************************************/
     void AddResult(const QString& Key, const QString& Value);

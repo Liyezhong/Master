@@ -33,6 +33,8 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
+//lint -e593
+
 namespace ServiceDataManager
 {
 
@@ -85,18 +87,7 @@ CModuleDataList::CModuleDataList(const CModuleDataList& ModuleDataList) : CDataC
     mp_ReadWriteLock = new QReadWriteLock(QReadWriteLock::Recursive);
     CopyFromOther(ModuleDataList);
 }
-/****************************************************************************/
-/*!
- *  \brief Copy Data from another instance.
- *         This function should be called from CopyConstructor or
- *         Assignment operator only.
- *
- *  \iparam ListofModules = Instance of the CModuleDataList class
-.*  \note  Method for internal use only
- *
- *  \return
- */
-/****************************************************************************/
+
 void CModuleDataList::CopyFromOther(const CModuleDataList &Other)
 {
     QString InstrumentName = const_cast<CModuleDataList&>(Other).GetInstrumentName();
@@ -113,7 +104,7 @@ void CModuleDataList::CopyFromOther(const CModuleDataList &Other)
     QSet<QString> ModulesToDelete(ModulesInOurList.subtract(ModulesInOtherList));
     QSetIterator<QString> Itr(ModulesToDelete);
     while (Itr.hasNext()) {
-        DeleteModule(Itr.next());
+        (void)DeleteModule(Itr.next());
     }
 
     //Recreate Modules in our list

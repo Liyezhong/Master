@@ -37,19 +37,51 @@ namespace ServiceDataManager
 class CModuleDataListVerifier :public DataManager::IVerifierInterface
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Default Constructor
+     */
+    /****************************************************************************/
     CModuleDataListVerifier();
+
     /****************************************************************************/
     /*!
      *  \brief  Destructor
      */
     /****************************************************************************/
-    virtual ~CModuleDataListVerifier() {}
+    virtual ~CModuleDataListVerifier();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Verifies the data present in the module list against constraints.
+     *  \iparam p_ModuleDataList
+     *  \return true - verify success , false - verify failure
+     */
+    /****************************************************************************/
     bool VerifyData(DataManager::CDataContainerBase* p_ModuleDataList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Gets the last errors which is done by verifier
+     *
+     *  \return QStringList - List of the errors occured
+     */
+    /****************************************************************************/
     ErrorMap_t &GetErrors();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Resets the last error which is done by verifier
+     */
+    /****************************************************************************/
     void ResetErrors();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Resets the last error which is done by verifier
+     *  \return true
+     */
+    /****************************************************************************/
     bool IsLocalVerifier();
 
 private:

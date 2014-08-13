@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ModuleDateListAdapter.cpp
+/*! \file ModuleDataListAdapter.cpp
  *
- *  \brief Implementation file for class CModuleDateListAdapter.
+ *  \brief Implementation file for class CModuleDataListAdapter.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2014-07-31
@@ -20,12 +20,12 @@
 
 #include <QDebug>
 #include "Global/Include/SystemPaths.h"
-#include "ServiceDataManager/Include/ModuleDateListAdapter.h"
+#include "ServiceDataManager/Include/ModuleDataListAdapter.h"
 
 namespace ServiceDataManager
 {
 
-CModuleDateListAdapter::CModuleDateListAdapter(ServiceDataManager::CModuleDataList* ModuleList):
+CModuleDataListAdapter::CModuleDataListAdapter(ServiceDataManager::CModuleDataList* ModuleList):
     mp_ModuleList(ModuleList),
     mp_InstrumentHistoryRef(NULL),
     mp_OvenRef(NULL),
@@ -37,7 +37,7 @@ CModuleDateListAdapter::CModuleDateListAdapter(ServiceDataManager::CModuleDataLi
     mp_InstrumentHistoryRef = new DataManager::CInstrumentHistory;
 }
 
-CModuleDateListAdapter::~CModuleDateListAdapter()
+CModuleDataListAdapter::~CModuleDataListAdapter()
 {
     try {
         delete mp_InstrumentHistoryRef;
@@ -48,7 +48,7 @@ CModuleDateListAdapter::~CModuleDateListAdapter()
 
 }
 
-bool CModuleDateListAdapter::run()
+bool CModuleDataListAdapter::Run()
 {  
     if (!InitContainers()) {
         return false;
@@ -68,7 +68,7 @@ bool CModuleDateListAdapter::run()
     return true;
 }
 
-bool CModuleDateListAdapter::InitContainers()
+bool CModuleDataListAdapter::InitContainers()
 {
     QString FilenameRef = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistoryRef.xml";
     if (!mp_InstrumentHistoryRef->ReadFile(FilenameRef)) {
@@ -96,7 +96,7 @@ bool CModuleDateListAdapter::InitContainers()
     return true;
 }
 
-void CModuleDateListAdapter::SetRVLifeCycle()
+void CModuleDataListAdapter::SetRVLifeCycle()
 {
     ServiceDataManager::CModule* RVModule = mp_ModuleList->GetModule("Rotary Valve");
     if (!RVModule) {
@@ -111,7 +111,7 @@ void CModuleDateListAdapter::SetRVLifeCycle()
                           mp_RVRef->GetSubModuleInfo("motor_rv"), TIME);
 }
 
-void CModuleDateListAdapter::SetMCLifeCycle()
+void CModuleDataListAdapter::SetMCLifeCycle()
 {
     ServiceDataManager::CModule* MCModule = mp_ModuleList->GetModule("Main Control");
     if (!MCModule) {
@@ -134,7 +134,7 @@ void CModuleDateListAdapter::SetMCLifeCycle()
 
 }
 
-void CModuleDateListAdapter::SetOvenLifeCycle()
+void CModuleDataListAdapter::SetOvenLifeCycle()
 {
     ServiceDataManager::CModule* OvenModule = mp_ModuleList->GetModule("Paraffine Oven");
     if (!OvenModule) {
@@ -149,7 +149,7 @@ void CModuleDateListAdapter::SetOvenLifeCycle()
                           mp_OvenRef->GetSubModuleInfo("oven_door_status"), CYCLE);
 }
 
-void CModuleDateListAdapter::SetLaSystemLifeCycle()
+void CModuleDataListAdapter::SetLaSystemLifeCycle()
 {
     ServiceDataManager::CModule* LAModule = mp_ModuleList->GetModule("L&A System");
 
@@ -174,7 +174,7 @@ void CModuleDateListAdapter::SetLaSystemLifeCycle()
     SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Exhaust Fan"), GetLAPressureCycle("ExhaustFanLifeTime", TIME), TIME);
 }
 
-void CModuleDateListAdapter::SetRetortLifeCycle()
+void CModuleDataListAdapter::SetRetortLifeCycle()
 {
     ServiceDataManager::CModule* RetortModule = mp_ModuleList->GetModule("Retort");
 
@@ -193,7 +193,7 @@ void CModuleDateListAdapter::SetRetortLifeCycle()
                           mp_LaRef->GetSubModuleInfo("temp_lsensor"), CYCLE);
 }
 
-void CModuleDateListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule,
+void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule,
                                                    DataManager::CSubModule* SubMouleRef, LifeCycleType Type)
 {
     if (SubModule == NULL || SubMouleRef == NULL) {
@@ -225,24 +225,24 @@ void CModuleDateListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
         }
     }
 
-    SubModule->UpdateParameterInfo(ParameterName, QString::number(LifeCycle));
+    (void)SubModule->UpdateParameterInfo(ParameterName, QString::number(LifeCycle));
 }
 
-void CModuleDateListAdapter::SetSubModuleLifeCycle(CSubModule *SubModule, int LifeCycle, LifeCycleType Type)
+void CModuleDataListAdapter::SetSubModuleLifeCycle(CSubModule *SubModule, int LifeCycle, LifeCycleType Type)
 {
     if (SubModule == NULL) {
         qDebug()<<"CModuleDateListAdapter::SetSubModuleLifeCycle-> invalid submoudle";
         return;
     }
     if (Type == TIME) {
-        SubModule->UpdateParameterInfo("OperationTime", QString::number(LifeCycle));
+        (void)SubModule->UpdateParameterInfo("OperationTime", QString::number(LifeCycle));
     }
     else {
-        SubModule->UpdateParameterInfo("OperationCycles", QString::number(LifeCycle));
+        (void)SubModule->UpdateParameterInfo("OperationCycles", QString::number(LifeCycle));
     }
 }
 
-int CModuleDateListAdapter::GetLAPressureCycle(QString ParamName, LifeCycleType Type)
+int CModuleDataListAdapter::GetLAPressureCycle(QString ParamName, LifeCycleType Type)
 {
     int Cycle = 0;
     DataManager::CSubModule* PressureRef = mp_LaRef->GetSubModuleInfo("pressurectrl");

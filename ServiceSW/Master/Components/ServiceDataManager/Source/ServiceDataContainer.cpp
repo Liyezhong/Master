@@ -24,6 +24,9 @@
 #include "ServiceDataManager/Include/ModuleDataListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 
+//lint -e1579
+//lint -e1566
+
 namespace DataManager {
 
 ServiceDataContainer::ServiceDataContainer(Threads::ServiceMasterThreadController *p_MasterThreadController) :
@@ -43,8 +46,13 @@ ServiceDataContainer::ServiceDataContainer(Threads::ServiceMasterThreadControlle
 
 ServiceDataContainer::~ServiceDataContainer()
 {
-    if (!DeinitContainers()) {
-        qDebug() << "ServiceDataContainer::ServiceDataContainer / DeinitContainers failed";
+    try {
+        if (!DeinitContainers()) {
+            qDebug() << "ServiceDataContainer::ServiceDataContainer / DeinitContainers failed";
+        }
+    }
+    catch (...) {
+
     }
 }
 
@@ -53,7 +61,6 @@ bool ServiceDataContainer::InitContainers()
     if (m_IsInitialized == true) {
         qDebug() << "ServiceDataContainer::InitContainers() was already called";
         Q_ASSERT(false);
-        return false;
     }
 
     SettingsInterface = new CUserSettingsInterface();
@@ -95,7 +102,7 @@ bool ServiceDataContainer::ResetDCUserSettings()
         p_DataUserSettingVerifier = new CUserSettingsVerifier();
     }
     // register this verifier object in the data container (=> dependency injection)
-    SettingsInterface->AddVerifier(p_DataUserSettingVerifier);
+    (void)SettingsInterface->AddVerifier(p_DataUserSettingVerifier);
 
     return true;
 }

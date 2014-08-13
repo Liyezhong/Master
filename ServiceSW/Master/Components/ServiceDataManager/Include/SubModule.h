@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Include/SubModule.h
+/*! \file ServiceDataManager/Include/SubModule.h
  *
  *  \brief Definition file for class CSubSystem.
  *  This class provides functions to read SybSystem and Parameter information
@@ -64,22 +64,150 @@ class CSubModule
     ListOfParameterNames_t m_ParameterNames;    //!< List of Parameter Name;
     ListOfParameters_t m_ListOfParameters;      //!< Parameter Information in QHash
 
+    /****************************************************************************/
+    /*!
+     *
+     *  \brief Writes the CSubModule Data to QIODevice
+     *
+     *  \iparam XmlStreamWriter = Xml stream writer to write the XML contents
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *l
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reads the CSubModule Data from QIODevice
+     *
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
     friend class CModule;
+
+    /****************************************************************************/
+    /*!
+     *  \brief Output Stream Operator which streams data
+     *
+     *  \iparam OutDataStream = Instance of the QDataStream
+     *  \iparam SubModuleInfo = CSubModule class object
+     *
+     *  \return Output Stream
+     */
+    /****************************************************************************/
     friend QDataStream& operator <<(QDataStream& OutDataStream, const CSubModule&  SubModuleInfo);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Input stream Operator which reads the data from Input parameter.
+     *
+     *  \iparam InDataStream = Instance of the DataStream
+     *  \iparam SubModuleInfo = CSubModule class object
+     *
+     *  \return Input Stream
+     */
+    /****************************************************************************/
     friend QDataStream& operator >>(QDataStream& InDataStream, CSubModule& SubModuleInfo);
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Default constructor.
+     */
+    /****************************************************************************/
     CSubModule();
-    CSubModule(const QString&);
-    CSubModule(const QString&, const QString&, const QString&);
-    CSubModule(const CSubModule&);  //!< Copy Constructor
+
+    /****************************************************************************/
+    /*!
+     *  \brief Parameterized Constructor
+     *
+     *  \iparam SubModuleName
+     */
+    /****************************************************************************/
+    CSubModule(const QString& SubModuleName);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Parameterized Constructor
+     *  \iparam SubModuleName = name of the SubModule
+     *  \iparam SubModuleType = type of the SubModule
+     *  \iparam SubModuleDescription = Description of the SubModule
+     */
+    /****************************************************************************/
+    CSubModule(const QString& SubModuleName, const QString& SubModuleType, const QString& SubModuleDescription);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Constructor
+     *
+     *  \iparam SubModuleInfo = Instance of the SubModule class
+     *
+     */
+    /****************************************************************************/
+    CSubModule(const CSubModule& SubModuleInfo);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Data from another instance.
+     *         This function should be called from CopyConstructor or
+     *         Assignment operator only.
+     *
+     *  \note  Method for internal use only
+     *
+     *  \iparam SubModuleInfo = Instance of the CSubModule class
+     *
+     *  \return
+     */
+    /****************************************************************************/
     void CopyFromOther(const CSubModule &SubModuleInfo);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CSubModule();
-    CSubModule& operator=(const CSubModule&);   //!< Assignment Operator Overloading
+
+    /****************************************************************************/
+    /*!
+     *  \brief Assignment Operator which copies from rhs to lhs.
+     *
+     *  \iparam SubModuleInfo = CSubModule class object
+     *
+     *  \return CSubModule Class Object
+     */
+    /****************************************************************************/
+    CSubModule& operator=(const CSubModule&);
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment compare Operator Overloading.
+     * \return true or false
+     */
+    /****************************************************************************/
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment compare Operator Overloading.
+     * \iparam otherSubModule = Instance of the sub Module class
+     * \return true or false
+     */
+    /****************************************************************************/
     bool operator ==(const CSubModule& otherSubModule) const;
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment compare Operator Overloading.
+     * \iparam otherSubModule = Instance of the sub Module class
+     * \return true or false
+     */
+    /****************************************************************************/
     bool operator !=(const CSubModule& otherSubModule) const;
 
     /****************************************************************************/

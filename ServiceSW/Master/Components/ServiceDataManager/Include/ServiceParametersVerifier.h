@@ -37,6 +37,11 @@ namespace DataManager
 class CServiceParametersVerifier :public IVerifierInterface
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Default Constructor
+     */
+    /****************************************************************************/
     CServiceParametersVerifier();
     /****************************************************************************/
     /*!
@@ -45,11 +50,37 @@ public:
     /****************************************************************************/
     virtual ~CServiceParametersVerifier() {}
 
+    /****************************************************************************/
+    /*!
+     *  \brief Verifies the data present in the service parameters against constraints.
+     *  \iparam p_ServiceParameters
+     *  \return true - verify success , false - verify failure
+     */
+    /****************************************************************************/
     bool VerifyData(CDataContainerBase* p_ServiceParameters);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Gets the last errors which is done by verifier
+     *
+     *  \return QStringList - List of the errors occured
+     */
+    /****************************************************************************/
     ErrorMap_t &GetErrors();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Resets the last error which is done by verifier
+     */
+    /****************************************************************************/
     void ResetErrors();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Resets the last error which is done by verifier
+     *  \return true
+     */
+    /****************************************************************************/
     bool IsLocalVerifier();
 
 private:

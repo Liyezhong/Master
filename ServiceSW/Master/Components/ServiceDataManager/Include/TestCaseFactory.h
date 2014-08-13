@@ -32,6 +32,12 @@
 
 namespace DataManager {
 
+/****************************************************************************/
+/*!
+ *  \brief  This class implements TestCase Factory
+ *  Reads All Test Case parameter
+ */
+/****************************************************************************/
 class CTestCaseFactory
 {
 public:
@@ -67,7 +73,8 @@ public:
     /****************************************************************************/
     /**
      * \brief Get parameter by test case name and parameter name.
-     * \param CaseName = test case name, ParamName = parameter name
+     * \iparam CaseName = test case name
+     * \iparam ParamName = parameter name
      * \return Value of parameter.
      */
     /****************************************************************************/
@@ -109,6 +116,15 @@ private:
     /****************************************************************************/
     ~CTestCaseFactory();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Reads the CModule Data from QIODevice
+     *
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool DeserializeContent(QIODevice& IODevice);
 };
 

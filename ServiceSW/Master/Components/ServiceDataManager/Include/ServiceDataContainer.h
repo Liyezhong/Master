@@ -33,23 +33,71 @@
 
 namespace DataManager {
 
+/****************************************************************************/
+/*!
+ *  \brief  This class implements Service Data container
+ *  Reads an write service data container.
+ */
+/****************************************************************************/
 class ServiceDataContainer: public QObject
 {
     Q_OBJECT
 private:
-    bool m_IsDeInitialised;
+    bool m_IsDeInitialised; //!< The flag of deinitialised.
 
+    /****************************************************************************/
+    /*!
+     *  \brief Deinitialised data caontainer
+     *
+     *  \return Success or failure
+     */
+    /****************************************************************************/
     bool DeinitContainers();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reset the User settings data container
+     *
+     *  \return Success or failure
+     */
+    /****************************************************************************/
     bool ResetDCUserSettings();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reset the Adjustment data container
+     *
+     *  \return Success or failure
+     */
+    /****************************************************************************/
     bool ResetDCAdjustment();
 
 protected:
-    bool m_IsInitialized;
+    bool m_IsInitialized;    //!< The flag of initialized
 
+    /****************************************************************************/
+    /*!
+     *  \brief initialized data caontainer
+     *
+     *  \return Success or failure
+     */
+    /****************************************************************************/
     bool InitContainers();
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Constructor.
+     * \param p_ServiceMasterThreadController = the pointer of serivice master thread
+     */
+    /****************************************************************************/
     ServiceDataContainer(Threads::ServiceMasterThreadController *p_ServiceMasterThreadController);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~ServiceDataContainer();
 
     Threads::ServiceMasterThreadController *mp_ServiceMasterThreadController; //!< We use it for  broadcasting command

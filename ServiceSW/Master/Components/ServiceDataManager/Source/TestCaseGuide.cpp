@@ -33,19 +33,24 @@ CTestCaseGuide::CTestCaseGuide()
 
 CTestCaseGuide::~CTestCaseGuide()
 {
-    m_GuideHash.clear();
-    m_TestCaseDescriptionHash.clear();
-    m_TestCaseIDHash.clear();
+    try {
+        m_GuideHash.clear();
+        m_TestCaseDescriptionHash.clear();
+        m_TestCaseIDHash.clear();
+    }
+    catch (...) {
+
+    }
 }
 
-GuideSteps CTestCaseGuide::GetGuideSteps(const QString& CaseName, int index)
+GuideSteps CTestCaseGuide::GetGuideSteps(const QString& CaseName, int Index)
 {
     GuideSteps        Steps;
     QList<GuideSteps> Guides;
     QHash<QString, QList<GuideSteps> >::iterator itr = m_GuideHash.find(CaseName);
 
-    if (itr != m_GuideHash.end() && (Guides = itr.value()).length() > index) {
-        Steps = Guides[index];
+    if (itr != m_GuideHash.end() && (Guides = itr.value()).length() > Index) {
+        Steps = Guides[Index];
     }
     else {
         qDebug()<<"CTestCaseGuide::Get guide string failed.";
@@ -149,7 +154,7 @@ bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
 
 void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
 {
-    Service::ModuleTestCaseID Id;
+    Service::ModuleTestCaseID Id = Service::TEST_CASE_ID_UNUSED;
 
     qDebug()<<"SavetoIdHash name="<<TestCaseName;
     if (TestCaseName == "OvenHeatingEmpty") {
@@ -255,7 +260,7 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
         Id = Service::RESET_OPERATION_TIME;
     }
 
-    m_TestCaseIDHash.insert(Id, TestCaseName);
+    (void)m_TestCaseIDHash.insert(Id, TestCaseName);
 }
 
 } //end of namespace Datamanager

@@ -34,11 +34,16 @@ CTestCaseFactory::CTestCaseFactory()
 
 CTestCaseFactory::~CTestCaseFactory()
 {
-    QHash<QString, CTestCase*>::iterator itr = m_TestCases.begin();
-    for (; itr != m_TestCases.end(); ++itr) {
-        delete itr.value();
+    try {
+        QHash<QString, CTestCase*>::iterator itr = m_TestCases.begin();
+        for (; itr != m_TestCases.end(); ++itr) {
+            delete itr.value();
+        }
+        m_TestCases.clear();
     }
-    m_TestCases.clear();
+    catch (...) {
+
+    }
 }
 
 CTestCase* CTestCaseFactory::GetTestCase(const QString& CaseName)

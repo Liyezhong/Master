@@ -32,8 +32,6 @@
 #include "ServiceDataManager/Include/ModuleDataList.h"
 
 //lint -e429
-//lint -sem(DataManager::CInstrumentHistoryArchive::DeleteAllModuleList,cleanup)
-
 namespace ServiceDataManager
 {
 
@@ -72,11 +70,46 @@ class CInstrumentHistory : public DataManager::CDataContainerBase
     bool ReadModuleLists(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Default constructor.
+     */
+    /****************************************************************************/
     CInstrumentHistory();
-    CInstrumentHistory(const CInstrumentHistory&);            //!< Copy Constructor
+
+    /****************************************************************************/
+    /**
+     * \brief Copy Constructor.
+     */
+    /****************************************************************************/
+    CInstrumentHistory(const CInstrumentHistory&);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CInstrumentHistory();
-    CInstrumentHistory& operator=(const CInstrumentHistory&); //!< Assignment Operator Overloading
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment Operator Overloading.
+     */
+    /****************************************************************************/
+    CInstrumentHistory& operator=(const CInstrumentHistory&);
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment Operator << Overloading.
+     */
+    /****************************************************************************/
     friend QDataStream& operator <<(const QDataStream& OutDataStream, const CInstrumentHistory& ModuleList);
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment Operator >> Overloading.
+     */
+    /****************************************************************************/
     friend QDataStream& operator >>(const QDataStream& InDataStream, const CInstrumentHistory& ModuleList);
 
     /****************************************************************************/

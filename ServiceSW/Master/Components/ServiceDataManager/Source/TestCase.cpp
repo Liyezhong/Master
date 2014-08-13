@@ -32,8 +32,13 @@ CTestCase::CTestCase(QString ModuleName, QString CaseName, bool Status):
 
 CTestCase::~CTestCase()
 {
-    m_Parameters.clear();
-    m_Results.clear();
+    try {
+        m_Parameters.clear();
+        m_Results.clear();
+    }
+    catch(...) {
+
+    }
 }
 
 QString CTestCase::GetParameter(const QString& ParamName)

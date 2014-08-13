@@ -28,8 +28,14 @@
 
 namespace DataManager {
 
-typedef QList<QString> GuideSteps;
+typedef QList<QString> GuideSteps; //!< list of guide steps
 
+/****************************************************************************/
+/*!
+ *  \brief  This class implements TestCaseGuide
+ *  Reads Test Case guides
+ */
+/****************************************************************************/
 class CTestCaseGuide
 {
 public:
@@ -56,11 +62,12 @@ public:
     /****************************************************************************/
     /**
      * \brief Get Guide string list all of steps by test case name.
-     * \param CaseName = test case name, index = index of Guide
+     * \iparam CaseName = test case name
+     * \iparam Index = index of Guide
      * \return GuideSteps.
      */
     /****************************************************************************/
-    GuideSteps GetGuideSteps(const QString& CaseName, int index);
+    GuideSteps GetGuideSteps(const QString& CaseName, int Index);
 
     /****************************************************************************/
     /**
@@ -74,7 +81,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Get test case id by test case name.
-     * \param Id = test case name
+     * \param TestCaseName = test case name
      * \return Test case id.
      */
     /****************************************************************************/
@@ -102,6 +109,11 @@ private:
     /****************************************************************************/
     CTestCaseGuide();
 
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CTestCaseGuide();
 
     /****************************************************************************/
@@ -113,8 +125,25 @@ private:
     Q_DISABLE_COPY(CTestCaseGuide)
     /****************************************************************************/
 
+    /****************************************************************************/
+    /*!
+     *  \brief Reads the CModule Data from QIODevice
+     *
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
+
+    /****************************************************************************/
+    /**
+     * \brief Save test case id
+     * \!param TestCaseName = the name of test case
+     */
+    /****************************************************************************/
     void SavetoIDHash(const QString &TestCaseName);
 };
 

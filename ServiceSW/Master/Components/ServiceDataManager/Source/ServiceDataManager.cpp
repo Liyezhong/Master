@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DataManager.cpp
+/*! \file ServiceDataManager.cpp
  *
- *  \brief Implementation file for class CDataManager.
+ *  \brief Implementation file for class CServiceDataManager.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-02-25
@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -24,7 +24,7 @@
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 
 #include "ServiceDataManager/Include/ServiceDataManager.h"
-#include "ServiceDataManager/Include/ModuleDateListAdapter.h"
+#include "ServiceDataManager/Include/ModuleDataListAdapter.h"
 
 #include "ServiceDataManager/CommandInterface/Include/ModuleCommandInterface.h"
 
@@ -37,6 +37,7 @@ CServiceDataManager::CServiceDataManager(Threads::ServiceMasterThreadController 
     m_IsInitialized(false),
     mp_MasterThreadController(p_ServiceMasterThreadController)
 {
+    //lint -sem(DataManager::CServiceDataManager::InitDataContainer,initializer)
     quint32 ReturnCode  = InitDataContainer();
     if (ReturnCode != 0) {
         qDebug() << "CDataManager::Constructor / InitDataContainer failed";
@@ -59,8 +60,13 @@ CServiceDataManager::CServiceDataManager(Threads::ServiceMasterThreadController 
 
 CServiceDataManager::~CServiceDataManager()
 {
-    if (!DeinitDataContainer()) {
-        qDebug() << "CDataManager::Destructor / DeinitDataContainer failed";
+    try {
+        if (!DeinitDataContainer()) {
+            qDebug() << "CDataManager::Destructor / DeinitDataContainer failed";
+        }
+    }
+    catch(...) {
+
     }
 }
 
@@ -108,8 +114,8 @@ quint32 CServiceDataManager::InitDataContainer()
                 because mp_ServiceDataContainer->ModuleList->VerifyData failed.";
     }
 
-    ServiceDataManager::CModuleDateListAdapter ModuleListAdapter(mp_ServiceDataContainer->ModuleList);
-    if (!ModuleListAdapter.run()) {
+    ServiceDataManager::CModuleDataListAdapter ModuleListAdapter(mp_ServiceDataContainer->ModuleList);
+    if (!ModuleListAdapter.Run()) {
         qDebug()<<"CServiceDataManager::run module list adapter failed.";
     }
 

@@ -115,7 +115,7 @@ void CSubModule::CopyFromOther(const CSubModule &SubModuleInfo)
         StructParameter->ParameterValue = SubModuleInfo.GetParameterInfo(i)->ParameterValue;
 
         m_ParameterNames.append(StructParameter->ParameterName);
-        m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
+        (void)m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
     }
 }
 

@@ -56,27 +56,152 @@ class CModule
     ListofSubModule_t m_SubModuleList; //!< List of SubModules
     SubModuleList_t m_OrderedSubModuleList; //!< List of SubModule Names
 
+    /****************************************************************************/
+    /*!
+     *  \brief Writes the CModule Data to QIODevice
+     *
+     *  \iparam XmlStreamWriter = Xml stream writer to write the XML contents
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reads the CModule Data from QIODevice
+     *
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Searches for the node and returns true if found
+     *
+     *  \iparam XmlStreamReader = Instance of the QXmlStreamReader
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool ReadSubModuleInfo(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
     friend class CModuleDataList;
+
+    /****************************************************************************/
+    /*!
+     *  \brief Output Stream Operator which streams data
+     *
+     *  \iparam OutDataStream = Instance of the QDataStream
+     *  \iparam Moduleinfo = CModule class object
+     *
+     *  \return Output Stream
+     */
+    /****************************************************************************/
     friend QDataStream& operator <<(QDataStream& OutDataStream, const CModule&  Moduleinfo);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Input stream Operator which reads the data from Input parameter.
+     *
+     *  \iparam InDataStream = Instance of the DataStream
+     *  \iparam Moduleinfo = CModule class object
+     *
+     *  \return Input Stream
+     */
+    /****************************************************************************/
     friend QDataStream& operator >>(QDataStream& InDataStream, CModule& Moduleinfo);
 
     QStringList GetSubModuleIdList() const;
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Default constructor.
+     */
+    /****************************************************************************/
     CModule();
-    CModule(const QString& );
-    CModule(const QString&, const QString&, const QString&, const QString&); //!< To Set ModuleName, Description, SerialNumber, Operating hrs
-    CModule(const CModule&);    //!< Copy Constructor
-    void CopyFromOther(const CModule &ModuleInfo);
+
+    /****************************************************************************/
+    /**
+     * \brief Parameterized Constructor.
+     * \param ModuleName = the name of module
+     */
+    /****************************************************************************/
+    CModule(const QString& ModuleName );
+
+    /****************************************************************************/
+    /**
+     * \brief Parameterized Constructor.
+     * \param ModuleName   = the Module name
+     * \param Description  = Module description
+     * \param SerialNumber = moudle serial number
+     * \param OperatingHrs = moudle operation time of hours
+     */
+    /****************************************************************************/
+    CModule(const QString& ModuleName, const QString& Description, const QString& SerialNumber, const QString& OperatingHrs);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Constructor
+     *
+     *  \iparam Module = Instance of the Module class
+     *
+     */
+    /****************************************************************************/
+    CModule(const CModule& Module);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Copy Data from another instance.
+     *  \iparam ModuleInfo = Instance of the CModule class
+    .*  \note  Method for internal use only
+     *
+     *  \return
+     */
+    /****************************************************************************/
+    void CopyFromOther(const CModule& ModuleInfo);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CModule();
 
-    CModule& operator=(const CModule& ModuleInfo);     //!< Assignment Operator Overloading
+    /****************************************************************************/
+    /*!
+     *  \brief Assignment Operator which copies from rhs to lhs.
+     *
+     *  \iparam ModuleInfo = CModule class object
+     *
+     *  \return CModule Class Object
+     */
+    /****************************************************************************/
+    CModule& operator=(const CModule& ModuleInfo);
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment compare Operator Overloading.
+     * \iparam otherModule = Instance of the Module class
+     * \return true or false
+     */
+    /****************************************************************************/
     bool operator ==(const CModule& otherModule) const;
+
+    /****************************************************************************/
+    /**
+     * \brief Assignment compare Operator Overloading.
+     * \iparam otherModule = Instance of the Module class
+     * \return true or false
+     */
+    /****************************************************************************/
     bool operator !=(const CModule& otherModule) const;
 
     /****************************************************************************/

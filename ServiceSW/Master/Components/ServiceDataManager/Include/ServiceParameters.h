@@ -150,8 +150,27 @@ class CServiceParameters : public CDataContainerBase {
 
     friend class CTestServiceDataManager;
 public:
+
+    /****************************************************************************/
+    /**
+     * \brief Default constructor.
+     */
+    /****************************************************************************/
     CServiceParameters();
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CServiceParameters();
+
+    /****************************************************************************/
+    /**
+     * \brief Copy constructor
+     * \iparam ServiceParameters = CServiceParameters object
+     */
+    /****************************************************************************/
     CServiceParameters(const CServiceParameters&);              //!< Copy Constructor
     CServiceParameters& operator=(const CServiceParameters&);   //!< Assignment Operator Overloading
 
@@ -322,11 +341,51 @@ private:
     bool m_DataVerificationMode;                    //!< Store the Date verification mode flag
     QString m_FileName;                             //!< Store the file name
 
+    /****************************************************************************/
+    /*!
+     *  \brief Writes the CModuleDataList Data to QIODevice
+     *  \iparam IODevice = Instance of the IODevice might be Buffer or File
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reads the CModuleDataList Data from QIODevice
+     *  \iparam IODevice = Instance of the IODevice - Buffer or File
+     *  \iparam CompleteData = bool type if true writes Complete data of object
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Reads Network settings from xml
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool ReadNetworkSettings(QXmlStreamReader& XmlStreamReader);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reads Test report folder path from xml
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool ReadTestReportFolderPath(QXmlStreamReader& XmlStreamReader);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Reads firmware folder path from xml
+     *  \iparam XmlStreamReader = Xml reader to read the XML contents
+     *  \return True or False
+     */
+    /****************************************************************************/
     bool ReadFirmwareFolderPath(QXmlStreamReader& XmlStreamReader);
 };
 

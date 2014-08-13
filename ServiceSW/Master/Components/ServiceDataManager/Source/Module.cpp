@@ -85,18 +85,7 @@ CModule::CModule(const CModule& Module)
 {
    CopyFromOther(Module);
 }
-/****************************************************************************/
-/*!
- *  \brief Copy Data from another instance.
- *         This function should be called from CopyConstructor or
- *         Assignment operator only.
- *
- *  \iparam ModuleInfo = Instance of the CModule class
-.*  \note  Method for internal use only
- *
- *  \return
- */
-/****************************************************************************/
+
 void CModule::CopyFromOther(const CModule &Other)
 {
     CModule &OtherModule = const_cast<CModule&>(Other);
@@ -115,7 +104,7 @@ void CModule::CopyFromOther(const CModule &Other)
     QSet<QString> SubModulesToDelete(SubModulesInOurList.subtract(SubModulesInOtherList));
     QSetIterator<QString> Itr(SubModulesToDelete);
     while (Itr.hasNext()) {
-        DeleteSubModule(Itr.next());
+        (void)DeleteSubModule(Itr.next());
     }
 
     //Recreate SubModules in our list
@@ -139,7 +128,7 @@ void CModule::CopyFromOther(const CModule &Other)
     QSetIterator<QString> CreateItr(SubModulesToCreate);
     while (CreateItr.hasNext()) {
         const CSubModule *p_OtherSubModule = Other.GetSubModuleInfo(CreateItr.next());
-        AddSubModuleInfo(p_OtherSubModule);
+        (void)AddSubModuleInfo(p_OtherSubModule);
     }
 
     m_OrderedSubModuleList.clear();
@@ -259,9 +248,8 @@ bool CModule::DeleteSubModule(const unsigned int Index)
 {
     if (Index < (unsigned int)m_OrderedSubModuleList.count()) {
 
-        QString SubModuleName = m_OrderedSubModuleList.value(Index);
-        DeleteSubModule(SubModuleName);
-        return true;
+        QString SubModuleName = m_OrderedSubModuleList.value(Index);   
+        return DeleteSubModule(SubModuleName);
     }
     else {
         return false;
@@ -362,7 +350,6 @@ bool CModule::UpdateSubModule(const CSubModule* p_SubModule)
     return Result;
 #endif
 
-    bool Result = true;
     QString Name = const_cast<CSubModule*>(p_SubModule)->GetSubModuleName();
     CSubModule* p_SubModuleData = new CSubModule();
     if (p_SubModule == NULL || p_SubModuleData == NULL) {
@@ -372,13 +359,12 @@ bool CModule::UpdateSubModule(const CSubModule* p_SubModule)
     *p_SubModuleData = *p_SubModule;
     if (m_SubModuleList.contains(Name)) {
         m_SubModuleList.insert(Name, p_SubModuleData);
-        return Result;
+        return true;
     }
     else {
         return false;
     }
 
-    return Result;
 }
 
 /****************************************************************************/
@@ -530,9 +516,11 @@ bool CModule::operator ==(const CModule& otherModule) const
         else {
             for (int i = 0; i < GetNumberofSubModules(); ++i) {
                 CSubModule* ThisSubModule  = GetSubModuleInfo(i);
-                CSubModule* OtherSubmodule = otherModule.GetSubModuleInfo(ThisSubModule->GetSubModuleName());
-                if (!OtherSubmodule || *ThisSubModule != *OtherSubmodule) {
-                    return false;
+                if (ThisSubModule) {
+                    CSubModule* OtherSubmodule = otherModule.GetSubModuleInfo(ThisSubModule->GetSubModuleName());
+                    if (!OtherSubmodule || *ThisSubModule != *OtherSubmodule) {
+                        return false;
+                    }
                 }
             }
             return true;
