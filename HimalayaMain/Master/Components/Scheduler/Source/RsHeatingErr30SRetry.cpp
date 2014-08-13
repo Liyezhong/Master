@@ -51,13 +51,15 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     mp_WaitFor10Seconds->addTransition(this, SIGNAL(RestartFailedHeater()), mp_RestartFailedHeater.data());
     mp_RestartFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(Retry()), mp_ShutdownFailedHeater.data());
-    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initialize.data());
 
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController, ReleasePressure());
 
     // For error cases
-    mp_WaitFor10Seconds->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
-    mp_RestartFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initialize.data());
+    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initialize.data());
+    mp_WaitFor10Seconds->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initialize.data());
+    mp_RestartFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initialize.data());
     m_ShutdownHeaterTime = 0;
     m_StartTime = 0;
     m_Counter = 0;
@@ -129,9 +131,11 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state RELEASE_PRESSURE");
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
-            // We always return failure
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
+                m_ShutdownHeaterTime = 0;
+                m_StartTime = 0;
+                m_Counter = 0;
                 emit TasksDone(false);
             }
             else
@@ -150,6 +154,9 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         else
         {
             mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, SHUTDOWN_FAILD_HEATER failed");
+            m_ShutdownHeaterTime = 0;
+            m_StartTime = 0;
+            m_Counter = 0;
             emit TasksDone(false);
         }
         break;
@@ -168,6 +175,9 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         else
         {
+            m_ShutdownHeaterTime = 0;
+            m_StartTime = 0;
+            m_Counter = 0;
             emit TasksDone(false);
         }
         break;
@@ -175,6 +185,9 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_StartTime) > 3*1000)
         {
+            m_ShutdownHeaterTime = 0;
+            m_StartTime = 0;
+            m_Counter = 0;
             emit TasksDone(true);
         }
         else
@@ -185,10 +198,15 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
                 m_Counter++;
                 if (3 == m_Counter)
                 {
+                    m_ShutdownHeaterTime = 0;
+                    m_StartTime = 0;
+                    m_Counter = 0;
                     emit TasksDone(false);
                 }
                 else
                 {
+                    m_ShutdownHeaterTime = 0;
+                    m_StartTime = 0;
                     emit Retry();
                 }
             }

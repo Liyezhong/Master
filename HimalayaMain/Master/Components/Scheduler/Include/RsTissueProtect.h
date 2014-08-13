@@ -41,6 +41,7 @@ class  CRsTissueProtect : public QObject
     typedef enum
     {
         UNDEF,
+        INIT,
         MOVE_TO_TUBE,
         LEVELSENSOR_HEATING,
         FILLING,
@@ -103,6 +104,14 @@ public:
 signals:
     /****************************************************************************/
     /*!
+     *  \brief  Signal for moving to tube
+     *
+     */
+    /****************************************************************************/
+    void MoveToTube();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Signal for heating level sensor
      *
      */
@@ -158,6 +167,7 @@ private slots:
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Tissue_Protect
+    QSharedPointer<QState> mp_Init;                         //!< Initial state
     QSharedPointer<QState> mp_MoveToTube;         			//!< Move to Tube position state
     QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
     QSharedPointer<QState> mp_Filling;           			//!< Filling state

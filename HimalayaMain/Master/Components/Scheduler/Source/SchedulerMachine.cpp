@@ -33,6 +33,7 @@
 #include "Scheduler/Include/RsTSensorErr3MinRetry.h"
 #include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/RsFillingAfterFlush.h"
+#include "Scheduler/Include/RsTissueProtect.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -97,6 +98,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsCheckBlockageState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsPauseState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRVWaitintTempUpState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsTissueProtectState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -153,6 +155,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController));
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
     mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController));
+    mp_RsTissueProtect = QSharedPointer<CRsTissueProtect>(new CRsTissueProtect(SchedulerThreadController));
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
@@ -237,6 +240,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //RS_RV_WaitingTempUp
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsRVWaitingTempUp()), mp_ErrorRsRVWaitintTempUpState.data());
     mp_ErrorRsRVWaitintTempUpState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RS_Tissue_Protect
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsTissueProtectState.data(), TasksDone(bool), this, OnTasksDone(bool));
+    mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_LevelSensorWaitTime = 0;
@@ -464,6 +472,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsRVWaitintTempUpState.data()))
         {
             return SM_ERR_RS_RV_WAITINGTEMPUP;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsTissueProtectState.data()))
+        {
+            return SM_ERR_RS_TISSUE_PROTECT;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -793,6 +805,10 @@ void CSchedulerStateMachine::EnterRsRVWaitingTempUp()
 {
     emit SigRsRVWaitingTempUp();
 }
+void CSchedulerStateMachine::EnterRsTissueProtect()
+{
+    emit SigEnterRsTissueProtect();
+}
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
@@ -822,6 +838,11 @@ void CSchedulerStateMachine::HandleRsTSensorErr3MinRetry(const QString& cmdName,
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_RsStandbyWithTissue->HandleWorkFlow(cmdName, retCode);
+}
+
+void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    mp_RsTissueProtect->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()

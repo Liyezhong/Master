@@ -1004,9 +1004,13 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_RV_WaitingTempUp");
             m_SchedulerMachine->EnterRsRVWaitingTempUp();
         }
+        else if (CTRL_CMD_RS_TISSUE_PROTECT == ctrlCmd)
+        {
+            LogDebug("Go to RS_Tissue_Protect");
+            m_SchedulerMachine->EnterRsTissueProtect();
+        }
         else
         {
-            LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
         }
     }
     else if (SM_ERR_RS_STANDBY == currentState)
@@ -1094,6 +1098,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RS_RV_WaitingTempUp");
         m_SchedulerMachine->HandleRsRVWaitingTempUpWorkFlow(cmdName, retCode);
+    }
+    else if (SM_ERR_RS_TISSUE_PROTECT == currentState)
+    {
+        LogDebug("In RS_Tissue_Protect");
+        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode);
     }
     else
     {
@@ -1223,6 +1232,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_rv_waitingtempup")
         {
             return CTRL_CMD_RS_RV_WAITINGTEMPUP;
+        }
+        if (cmd == "rs_tissue_protect")
+        {
+            return CTRL_CMD_RS_TISSUE_PROTECT;
         }
     }
     return CTRL_CMD_UNKNOWN;
@@ -2162,6 +2175,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
+
         }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))

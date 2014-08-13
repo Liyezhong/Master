@@ -29,32 +29,34 @@ using namespace DeviceControl;
 namespace Scheduler{
 
 CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController)
-    :mp_SchedulerController(SchedController)
+    :mp_SchedulerController(SchedController),m_StationID("")
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
+    mp_Init = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_LevelSensorHeating = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
-    mp_StateMachine->setInitialState(mp_MoveToTube.data());
+    mp_StateMachine->setInitialState(mp_Init.data());
 
+    mp_Init->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
     mp_LevelSensorHeating->addTransition(this, SIGNAL(Filling()), mp_Filling.data());
     mp_Filling->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
     mp_MoveToSealing->addTransition(this,SIGNAL(TasksDone(bool)), mp_MoveToTube.data());
 
 	//For error cases
-    mp_LevelSensorHeating->addTransition(this, SIGNAL(TasksDone(bool)), mp_MoveToTube.data());
-    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_MoveToTube.data());
+    mp_MoveToTube->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
+    mp_LevelSensorHeating->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
+    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
     CONNECTSIGNALSLOT(mp_MoveToTube.data(), entered(), this, OnMoveToTube());
     CONNECTSIGNALSLOT(mp_Filling.data(), entered(), mp_SchedulerController, Fill());
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
 
     mp_StateMachine->start();
-    m_StationID = this->GetStationID();
     m_MoveToTubeSeq = 0;
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
@@ -70,7 +72,11 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
 {
     StateList_t currentState = UNDEF;
 
-    if(statesList.contains(mp_MoveToTube.data()))
+    if (statesList.contains(mp_Init.data()))
+    {
+        currentState = INIT;
+    }
+    else if(statesList.contains(mp_MoveToTube.data()))
     {
            currentState = MOVE_TO_TUBE;
     }
@@ -100,11 +106,13 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	switch (currentState)
     {
-    case MOVE_TO_TUBE:
+    case INIT:
+        m_StationID = this->GetStationID();
         if ("" == m_StationID)
         {
             TasksDone(false);
         }
+    case MOVE_TO_TUBE:
         if (0 == m_MoveToTubeSeq)
         {
             if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
@@ -115,6 +123,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
                 else
                 {
+                    m_MoveToTubeSeq = 0;
+                    m_LevelSensorSeq = 0;
+                    m_MoveToSealSeq = 0;
                     TasksDone(false);
                 }
             }
@@ -137,6 +148,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
             {
+                m_MoveToTubeSeq = 0;
+                m_LevelSensorSeq = 0;
+                m_MoveToSealSeq = 0;
                 TasksDone(false);
             }
             else
@@ -154,6 +168,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
             else if (1 == retValue)
             {
+                m_MoveToTubeSeq = 0;
+                m_LevelSensorSeq = 0;
+                m_MoveToSealSeq = 0;
                 TasksDone(false);
             }
             else if (2 == retValue)
@@ -174,6 +191,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             else
             {
                 mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
+                m_MoveToTubeSeq = 0;
+                m_LevelSensorSeq = 0;
+                m_MoveToSealSeq = 0;
                 TasksDone(false);
             }
         }
@@ -189,6 +209,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
                 else
                 {
+                    m_MoveToTubeSeq = 0;
+                    m_LevelSensorSeq = 0;
+                    m_MoveToSealSeq = 0;
                     TasksDone(false);
                 }
             }
@@ -197,6 +220,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if (sealPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
+                m_MoveToTubeSeq = 0;
+                m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
                 TasksDone(true);
             }

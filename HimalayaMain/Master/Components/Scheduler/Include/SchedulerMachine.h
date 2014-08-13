@@ -43,6 +43,7 @@ class CProgramPreTest;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 class CRsFillingAfterFlush;
+class CRsTissueProtect;
 
 /****************************************************************************/
 /*!
@@ -103,6 +104,7 @@ private:
     QSharedPointer<QState> mp_ErrorRsCheckBlockageState;                                ///<  Error State's sub state: for RS_Check_Blockage
     QSharedPointer<QState> mp_ErrorRsPauseState;                                        ///<  Error State's sub state: for RS_Pause
     QSharedPointer<QState> mp_ErrorRsRVWaitintTempUpState;                              ///<  Error State's sub state: for RS_RV_WaitingTempUp
+    QSharedPointer<QState> mp_ErrorRsTissueProtectState;                                ///<  Error State's sub state: for RS_Tissue_Protect
 
     //State machines for Run handling
     QSharedPointer<CProgramPreTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -114,6 +116,7 @@ private:
     QSharedPointer<CRsPressureOverRange3SRetry> mp_RsPressureOverRange3SRetry;          ///<  State machine for RS_PressureOverRange_3SRetry
     QSharedPointer<CRsTSensorErr3MinRetry> mp_RsTSensorErr3MinRetry;                    ///<  State machine for Rs_TSensorErr3MinRetry
     QSharedPointer<CRsFillingAfterFlush> mp_RsFillingAfterFlush;                        ///<  State machine for Rs_FillingAfterFlush
+    QSharedPointer<CRsTissueProtect> mp_RsTissueProtect;                                ///<  State machine for Rs_Tissue_Protect
 
     typedef enum
     {
@@ -773,6 +776,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsTissueProtect
+     *
+     *  \return from EnterRsTissueProtect
+     */
+    /****************************************************************************/
+    void EnterRsTissueProtect();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -841,6 +853,18 @@ public:
      */
     /****************************************************************************/
     void HandleRsStandByWithTissueWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_Tissue_Protect
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1721,6 +1745,13 @@ signals:
      */
     /****************************************************************************/
     void SigRsFillingAfterFlush();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigEnterRsTissueProtect
+     */
+    /****************************************************************************/
+    void SigEnterRsTissueProtect();
 
     /****************************************************************************/
     /*!

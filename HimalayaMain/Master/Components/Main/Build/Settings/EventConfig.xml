@@ -209,6 +209,12 @@
 			<Step ID="1" Type="MSG" StringID="103045203" RDStringID="113045203" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="MSG" StringID="103045203" RDStringID="113045203" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
 		</Event>
+		<Event Code="" ErrorID="513020022" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_TSensorErr3minRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
+			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="10" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
+		</Event>
 		<Event Code="" ErrorID="513020023" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_TSensorErr3minRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="103045203" RDStringID="113045203" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
