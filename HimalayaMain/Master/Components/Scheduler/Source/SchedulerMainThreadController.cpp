@@ -2169,6 +2169,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_TempRV2 = strctHWMonitor.TempRV2;
         if (200 == Scenario)
         {
+
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));

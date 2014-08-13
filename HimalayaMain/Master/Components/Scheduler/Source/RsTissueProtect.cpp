@@ -113,6 +113,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             TasksDone(false);
         }
     case MOVE_TO_TUBE:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
         {
             if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
@@ -144,6 +145,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case LEVELSENSOR_HEATING:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in LevelSensor Heating state");
         if (0 == m_LevelSensorSeq)
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
@@ -181,6 +183,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case FILLING:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Filling state");
         if( "Scheduler::ALFilling" == cmdName)
         {
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -199,6 +202,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
 		break;
     case MOVE_TO_SEALING:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
         {
             if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
@@ -350,6 +354,7 @@ QString CRsTissueProtect::GetStationID()
 
     if (pos == -1)
     {
+        mp_SchedulerController->LogDebug("In RS_Tissue_Protect, we can't find the safe reagent");
         return ""; // We can't find the safe reagent
     }
     return ProgramStationList[pos].StationID;

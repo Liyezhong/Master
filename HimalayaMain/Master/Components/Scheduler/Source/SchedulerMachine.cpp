@@ -243,7 +243,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Tissue_Protect
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
-    CONNECTSIGNALSLOT(mp_ErrorRsTissueProtectState.data(), TasksDone(bool), this, OnTasksDone(bool));
+    CONNECTSIGNALSLOT(mp_RsTissueProtect.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
