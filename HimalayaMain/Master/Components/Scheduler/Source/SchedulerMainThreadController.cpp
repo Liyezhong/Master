@@ -112,6 +112,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
+    m_IsReleasePressureOfSoakFinish = false;
+    m_ReleasePressureSucessOfSoakFinish = false;
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
     m_IsCleaningProgram = false;
     QFile ProgramStatusFile(ProgramStatusFilePath);
@@ -571,6 +573,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
                 {
+                    if(!m_IsReleasePressureOfSoakFinish)
+                    {
+                        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+                        m_IsReleasePressureOfSoakFinish = true;
+                        m_ReleasePressureSucessOfSoakFinish = false;
+                    }
+                    else if("Scheduler::ALReleasePressure" == cmdName)
+                    {
+                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                        {
+                            m_ReleasePressureSucessOfSoakFinish = true;
+                        }
+                        else
+                        {
+                            RaiseError(0, retCode, m_CurrentScenario, true);
+                            m_SchedulerMachine->SendErrorSignal();
+                        }
+                    }
                     //if it is Cleaning program, need not notify user
                     if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
                     {
@@ -585,17 +605,27 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                          }
                          if(CTRL_CMD_DRAIN == ctrlCmd)
                          {
-                             LogDebug(QString("Program Processing(Soak) Process finished"));
-                             m_SchedulerMachine->NotifyProcessingFinished();
-                             m_TimeStamps.CurStepSoakStartTime = 0;
-                             m_completionNotifierSent = false;
+                              if(m_ReleasePressureSucessOfSoakFinish)
+                              {
+                                  LogDebug(QString("last Program Processing(Soak) Process finished"));
+                                  m_SchedulerMachine->NotifyProcessingFinished();
+                                  m_TimeStamps.CurStepSoakStartTime = 0;
+                                  m_completionNotifierSent = false;
+                                  m_IsReleasePressureOfSoakFinish = false;
+                                  m_ReleasePressureSucessOfSoakFinish = false;
+                              }
                          }
                     }
                     else
                     {
-                        LogDebug(QString("Program Processing(Soak) Process finished"));
-                        m_SchedulerMachine->NotifyProcessingFinished();
-                        m_TimeStamps.CurStepSoakStartTime = 0;
+                        if(m_ReleasePressureSucessOfSoakFinish)
+                        {
+                            LogDebug(QString("Program Processing(Soak) Process finished"));
+                            m_SchedulerMachine->NotifyProcessingFinished();
+                            m_TimeStamps.CurStepSoakStartTime = 0;
+                            m_IsReleasePressureOfSoakFinish = false;
+                            m_ReleasePressureSucessOfSoakFinish = false;
+                        }
                     }
                 }
                 else
@@ -632,6 +662,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 m_lastPVTime = now;
                             }
                         }
+                    }
+                    else
+                    {
+                        LogDebug("shufa shufa shufa");
                     }
                 }
             }
@@ -2430,6 +2464,7 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
 
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
+    m_IsReleasePressureOfSoakFinish = false;
 
     if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
     {

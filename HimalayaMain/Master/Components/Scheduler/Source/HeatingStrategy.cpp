@@ -515,6 +515,7 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {
     return  m_RTLevelSensor.OTCheckPassed;
 }
+
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
     if (true == heatingSensor.curModuleId.isEmpty())
@@ -527,28 +528,14 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
-    //For Scenarios NON-related sensors(Oven and LA)
-    if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
-            && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
-    {
-        if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
-        {
-            mp_SchedulerController->LogDebug(QString("For Scenarios NON-related sensor,The hope maxtemp:%1, but the actual temp:%2")
-                                                      .arg(heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature)
-                                                      .arg(HWTemp));
-            return false;
-        }
-    }
-    //For Scenarios related Sensors (Retort and Rotary valve)
-    if (-1 != heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.indexOf(m_CurScenario))
-    {
-        if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
-        {
-            mp_SchedulerController->LogDebug(QString("For Scenarios related sensors,The hope maxtemp:%1, but the actual temp:%2")
-                                             .arg(heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature)
-                                             .arg(HWTemp));
-            return false;
-        }
+    if ( heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature < HWTemp )
+     {
+        mp_SchedulerController->LogDebug(QString("The %1 temperature overage in secnario:%2, The maxtemp:%3, but the actual temp:%4")
+                                                  .arg(heatingSensor.sensorName)
+                                                  .arg(m_CurScenario)
+                                                  .arg(heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature)
+                                                  .arg(HWTemp));
+        return false;
     }
 
     return true;

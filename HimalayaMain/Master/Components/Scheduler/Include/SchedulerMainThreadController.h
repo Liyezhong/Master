@@ -268,6 +268,8 @@ typedef struct
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
         bool m_hasParaffin;                                   ///< the program has paraffin
+        bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
+        bool m_ReleasePressureSucessOfSoakFinish;             ///< release pressure sucess
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
