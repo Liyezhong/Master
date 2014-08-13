@@ -2210,7 +2210,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
-
         }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
@@ -2632,10 +2631,10 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
         }
         break;
     default:
-        break;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 bool SchedulerMainThreadController::RestartFailedHeaters()
@@ -2682,7 +2681,7 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
         }
         break;
     default:
-        break;
+        return true;
     }
 
     return false;

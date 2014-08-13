@@ -65,6 +65,14 @@ public:
 signals:
     /****************************************************************************/
     /*!
+     *  \brief	signal to release pressure
+     *
+     */
+    /****************************************************************************/
+    void ReleasePressure();
+
+    /****************************************************************************/
+    /*!
      *  \brief	signal to stop temperature control
      *
      */
@@ -108,6 +116,7 @@ private:
     typedef enum{
         RS_TSENSORERR3MINRETRY_UNDEF,
         RS_TSENSORERR3MINRETRY_INIT,
+        RS_TSENSORERR3MINRETRY_RELEASEPRESSURE,
         RS_TSENSORERR3MINRETRY_STOPTEMPCTRL,
         RS_TSENSORERR3MINRETRY_WAIT3MIN,
         RS_TSENSORERR3MINRETRY_STARTTEMPCTRL,
@@ -138,6 +147,7 @@ private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
     QSharedPointer<QStateMachine>   mp_SchedulerMachine;    //!< stateMechine of RS_TSensorErr_3Min_Rety
     QSharedPointer<QState>          mp_Initial;             //!< Initial state
+    QSharedPointer<QState>          mp_ReleasePressure;     //!< Release Pressure state
     QSharedPointer<QState>          mp_StopTempCtrl;        //!< Stop tempature control state
     QSharedPointer<QState>          mp_Wait3Min;            //!< wait 3min
     QSharedPointer<QState>          mp_CheckTemp;           //!< Check Device temp
