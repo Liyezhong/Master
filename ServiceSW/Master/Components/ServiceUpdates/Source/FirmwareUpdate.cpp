@@ -102,9 +102,12 @@ void CFirmwareUpdate::UpdateGUI()
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
     }   
     if (mp_Module) {
+        m_Model.clear();
+        RetranslateUI();
+        /*
         for (int i = 1; i < m_Model.rowCount(); ++i) {
             m_Model.removeRow(i);
-        }
+        }*/
         for (int j = 0; j < mp_Module->GetNumberofSubModules(); ++j) {
             SlaveModule = mp_Module->GetSubModuleInfo(j);
             if (SlaveModule->GetSubModuleName().contains("ASB")) {
@@ -200,8 +203,15 @@ void CFirmwareUpdate::UpdateFirmware(void)
 
     QString TestCaseName1 = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::FIRMWARE_GET_SLAVE_INFO);
     DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName1);
+    p_TestCase1->SetParameter("TestType", "UpdateFirmware");
 
+    int num = 0;
     for(int i=0; i<m_Model.rowCount(); i++) {
+        if (m_Model.item(i, 1)->text() == m_Model.item(i, 2)->text()) {
+            num++;
+            continue;
+        }
+
         QString FirmWarePath = Global::SystemPaths::Instance().GetFirmwarePath() + QDir::separator() + m_Model.item(i, 0)->text() + ".bin";
 
         qDebug()<<"Firmware Path = "<< FirmWarePath;
@@ -219,6 +229,23 @@ void CFirmwareUpdate::UpdateFirmware(void)
         }
 
         emit UpdateModule(*mp_Module);
+    }
+
+    if (num == 3) {
+
+        MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
+        dlg->SetTitle(QApplication::translate("ServiceUpdates::CFirmwareUpdate", "Information Message",
+                                                        0, QApplication::UnicodeUTF8));
+        dlg->SetIcon(QMessageBox::Information);
+        dlg->SetButtonText(1, QApplication::translate("ServiceUpdates::CFirmwareUpdate", "Ok",
+                                                                0, QApplication::UnicodeUTF8));
+
+        dlg->SetText(QApplication::translate("ServiceUpdates::CFirmwareUpdate", "The current firmware version has been latest",
+                                             0, QApplication::UnicodeUTF8));
+        dlg->setModal(true);
+        dlg->HideButtons();
+        dlg->exec();
+        delete dlg;
     }
 
     mp_Ui->updateBtn->setEnabled(true);

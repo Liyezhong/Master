@@ -1333,7 +1333,8 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
     }
 
 
-    int SlaveType = p_TestCase->GetParameter("SlaveType").toInt();
+    //int SlaveType = p_TestCase->GetParameter("SlaveType").toInt();
+    int SlaveType = Status.value("SlaveType").toInt();
     QString SlaveName;
     switch (SlaveType) {
     case 3:
@@ -1371,6 +1372,10 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
                 qDebug()<<"Update "<<SlaveName<<" info "<<itr.key()
                        <<"to "<<itr.value()<<" failed.";
             }
+        }
+        if (InitFlag && EboxModule) {
+            mp_ServiceConnector->SendModuleUpdate(*EboxModule);
+            mp_FirmwareUpdate->UpdateGUI();
         }
     }
 }
