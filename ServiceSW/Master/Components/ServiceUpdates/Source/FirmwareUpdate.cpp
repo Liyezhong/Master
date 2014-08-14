@@ -42,13 +42,14 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
     , m_Result(false)
 {
     mp_Ui->setupUi(this);
-    RetranslateUI();
+    //RetranslateUI();
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(380,500);
 
     mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->setModel(&m_Model);
+    /*
     mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
@@ -56,13 +57,11 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
 
     mp_TableWidget->verticalHeader()->resizeSection(0,55);
     mp_TableWidget->verticalHeader()->resizeSection(1,55);
-
+    */
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mp_Ui->widget->SetContent(mp_TableWidget);
-
-    //InitData();
 
     CONNECTSIGNALSLOT(mp_Ui->updateBtn, clicked(), this, UpdateFirmware());
     CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
@@ -104,10 +103,6 @@ void CFirmwareUpdate::UpdateGUI()
     if (mp_Module) {
         m_Model.clear();
         RetranslateUI();
-        /*
-        for (int i = 1; i < m_Model.rowCount(); ++i) {
-            m_Model.removeRow(i);
-        }*/
         for (int j = 0; j < mp_Module->GetNumberofSubModules(); ++j) {
             SlaveModule = mp_Module->GetSubModuleInfo(j);
             if (SlaveModule->GetSubModuleName().contains("ASB")) {
@@ -117,6 +112,16 @@ void CFirmwareUpdate::UpdateGUI()
             }
         }
     }
+
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+
+    mp_TableWidget->verticalHeader()->resizeSection(0,45);
+    mp_TableWidget->verticalHeader()->resizeSection(1,45);
+    mp_TableWidget->verticalHeader()->resizeSection(2,45);
+    mp_TableWidget->verticalHeader()->resizeSection(3,45);
 
     RefreshLatestVersion();
 }
