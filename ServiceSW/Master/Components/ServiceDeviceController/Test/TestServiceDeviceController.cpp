@@ -244,7 +244,17 @@ private slots:
 
 void CTestServiceDeviceController::initTestCase()
 {
-    Global::SystemPaths::Instance().SetSettingsPath("../Components/Main/Build/Settings");
+    QString BuildPath;
+    QString RunPath = QCoreApplication::applicationDirPath();
+
+    if (RunPath.contains("ServiceDeviceController")) {
+        BuildPath = "../../../Main/Build/";
+    }
+    else {
+        BuildPath = "../Components/Main/Build/";
+    }
+
+    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
     QString ConfigFile = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     QString GuideFile  = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
     qDebug()<<"config file :"<<ConfigFile;

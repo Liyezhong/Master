@@ -106,13 +106,23 @@ private:
 
 /****************************************************************************/
 void CTestDiagnosticsManufacturing::initTestCase() {
-    Global::SystemPaths::Instance().SetSettingsPath("../Components/Main/Build/Settings");
-    Global::SystemPaths::Instance().SetTempPath("../Components/Main/Build/Temporary");
+    QString BuildPath;
+    QString RunPath = QCoreApplication::applicationDirPath();
+
+    if (RunPath.contains("DiagnosticsManufacturing")) {
+        BuildPath = "../../../Main/Build/";
+    }
+    else {
+        BuildPath = "../Components/Main/Build/";
+    }
+    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
+    Global::SystemPaths::Instance().SetTempPath(BuildPath + "Temporary");
 
     mp_ModuleList = new ServiceDataManager::CModuleDataList;
     mp_ModuleListArchive = new ServiceDataManager::CInstrumentHistory;
     mp_DeviceConfig = new DataManager::CDeviceConfigurationInterface;
 
+    qDebug()<<"get setting path :"<<Global::SystemPaths::Instance().GetSettingsPath();
     QVERIFY(mp_ModuleList->ReadFile(Global::SystemPaths::Instance().GetSettingsPath()+"/InstrumentHistory.xml"));
     QVERIFY(mp_ModuleListArchive->ReadFile(Global::SystemPaths::Instance().GetSettingsPath()+"/InstrumentHistoryArchive.xml"));
     QVERIFY(mp_DeviceConfig->Read(Global::SystemPaths::Instance().GetSettingsPath()+"/DeviceConfiguration.xml"));

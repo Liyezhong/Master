@@ -98,7 +98,16 @@ private slots:
 
 /****************************************************************************/
 void CTestServiceDataManager::initTestCase() {
-    Global::SystemPaths::Instance().SetSettingsPath("../Components/Main/Build/Settings");
+    QString BuildPath;
+    QString RunPath = QCoreApplication::applicationDirPath();
+
+    if (RunPath.contains("ServiceDataManager")) {
+        BuildPath = "../../../Main/Build/";
+    }
+    else {
+        BuildPath = "../Components/Main/Build/";
+    }
+    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
 }
 
 /****************************************************************************/
