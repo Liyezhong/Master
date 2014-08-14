@@ -4,7 +4,7 @@
  *  \brief RsTSensorErr3MinRetry class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ June 19, 2014
+ *   $Date:    $ June 19th, 2014
  *   $Author:  $ Shufa Li
  *
  *  \b Company:
@@ -31,7 +31,7 @@ class SchedulerMainThreadController;
 
 /****************************************************************************/
 /*!
- * \brief Error Handling State machine for RS_HTSensorErr_3Min_Retry
+ * \brief Error Handling State machine for RS_TSensorErr_3Min_Retry
  */
 /****************************************************************************/
 class  CRsTSensorErr3MinRetry : public QObject

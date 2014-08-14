@@ -4,7 +4,7 @@
  *  \brief CRsTSensorErr3MinRetry class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ June 19, 2014
+ *   $Date:    $ June 19th, 2014
  *   $Author:  $ Shufa Li
  *
  *  \b Company:
@@ -96,9 +96,6 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
 {
     StateList_t currentState = this->GetCurrentState(mp_SchedulerMachine->configuration());
     qint64 nowTime = 0;
-    qreal temp = 0;
-    bool ret = 0;
-
     switch (currentState)
     {
     case RS_TSENSORERR3MINRETRY_INIT:
