@@ -111,7 +111,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if ("" == m_StationID)
         {
             TasksDone(false);
+            break;
         }
+        emit MoveToTube();
+        break;
     case MOVE_TO_TUBE:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
