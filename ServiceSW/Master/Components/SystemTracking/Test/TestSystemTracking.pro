@@ -17,7 +17,7 @@ DEPENDPATH += ../../../../
 
 UseLibs(Core ServiceDataManager SystemTracking)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
-UsePlatformLibs(DataManager Global)
+UsePlatformLibs(DataManager Global DeviceControl)
 # UseSharedLibs(HimalayaDataContainer)
 UsePlatformScroller(QtScroller)
 
