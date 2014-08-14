@@ -38,6 +38,7 @@
 		<string id="19398662" text1="ConnectionManager: Client %1. outgoing QByteArray is empty." text2=""/>
 		<string id="19398663" text1="ConnectionManager: Client %1. writing outgoing data to Socket failed !." text2=""/>
 		<string id="17039371" text1="Event %1 is not properly configured in column %2" text2=""/>
+		<string id="17039372" text1="Event Code: %1,  Scenario: %2,  Action: %3,  Action Result: %4." text2=""/>
 		<string id="17825795" text1="Switch off not allowed. Wait until transportation is completed." text2=""/>
 		<string id="16973834" text1="Data logging is disabled. Please contact yor service specialist." text2=""/>
 		<string id="16973828" text1="Event Id %1 does not exist in the event string xml file" text2=""/>
