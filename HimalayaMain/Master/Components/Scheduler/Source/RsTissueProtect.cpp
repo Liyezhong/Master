@@ -23,6 +23,8 @@
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 
 using namespace DeviceControl;
 
@@ -53,7 +55,8 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
     CONNECTSIGNALSLOT(mp_MoveToTube.data(), entered(), this, OnMoveToTube());
-    CONNECTSIGNALSLOT(mp_Filling.data(), entered(), mp_SchedulerController, Fill());
+    CONNECTSIGNALSLOT(mp_Filling.data(), entered(), this, OnFill());
+    CONNECTSIGNALSLOT(mp_Filling.data(), exited(), this, OnStopFill());
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
 
     mp_StateMachine->start();
@@ -324,7 +327,7 @@ QString CRsTissueProtect::GetStationID()
     {
         if (Fixation == reagentType || Fixation_Overflow == reagentType)
         {
-            if ("RG1" == ProgramStationList[pos].ReagentGroupID)
+            if ("RG1" == ProgramStationList[i].ReagentGroupID)
             {
                 pos = i;
                 break;
@@ -332,7 +335,7 @@ QString CRsTissueProtect::GetStationID()
         }
         else if (Concentration_Dehydration == reagentType || Concentration_Dehydration_Overflow == reagentType)
         {
-            if ("RG3" == ProgramStationList[pos].ReagentGroupID)
+            if ("RG3" == ProgramStationList[i].ReagentGroupID)
             {
                 pos = i;
                 break;
@@ -340,14 +343,14 @@ QString CRsTissueProtect::GetStationID()
         }
         else if (Clearing == reagentType || Clearing_Overflow == reagentType)
         {
-            if ("RG5" == ProgramStationList[pos].ReagentGroupID)
+            if ("RG5" == ProgramStationList[i].ReagentGroupID)
             {
                 pos = i;// For Clearing, we use the last one.
             }
         }
         else if (Paraffin == reagentType || Paraffin_Overflow == reagentType)
         {
-            if ("RG6" == ProgramStationList[pos].ReagentGroupID)
+            if ("RG6" == ProgramStationList[i].ReagentGroupID)
             {
                 pos = i;
                 break;
@@ -373,6 +376,40 @@ void CRsTissueProtect::OnMoveToTube()
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+}
+
+void CRsTissueProtect::OnFill()
+{
+    quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
+    mp_SchedulerController->LogDebug("Send cmd to DCL to Fill");
+    CmdALFilling* cmd  = new CmdALFilling(500, mp_SchedulerController);
+    cmd->SetDelayTime(0);
+
+    // For paraffin, Insufficient Check is NOT needed.
+    if (272 == Scenario)
+    {
+        cmd->SetEnableInsufficientCheck(false);
+    }
+    else
+    {
+        cmd->SetEnableInsufficientCheck(true);
+    }
+    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, m_StationID, true, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerController->GetNewCommandRef();
+    mp_SchedulerController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void CRsTissueProtect::OnStopFill()
+{
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, m_StationID, false, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = mp_SchedulerController->GetNewCommandRef();
+    mp_SchedulerController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void CRsTissueProtect::OnMoveToSeal()
