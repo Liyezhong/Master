@@ -29,6 +29,8 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Core/Include/ServiceUtils.h"
 
+//lint -e578
+
 namespace DiagnosticsManufacturing {
 
 CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUIConnector *p_DataConnector,
@@ -164,7 +166,7 @@ Send_Finished:
     else {
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
     }
-    mp_WaitDlg->close();
+    (void)mp_WaitDlg->close();
     mp_MessageDlg->open();
 
     return Result;

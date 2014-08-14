@@ -29,6 +29,8 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
+//lint -e578
+
 namespace DiagnosticsManufacturing {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator

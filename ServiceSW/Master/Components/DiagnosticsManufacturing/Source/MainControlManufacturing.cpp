@@ -28,6 +28,8 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Core/Include/CMessageString.h"
 
+//lint -e578
+
 namespace DiagnosticsManufacturing {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator
@@ -239,7 +241,7 @@ void CMainControl::OnOkClicked(const QString& EnteredString)
     DisconnectKeyBoardSignalSlots();
 
     if (mp_EboxModule && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_EboxModule->UpdateParameterInfo(QString("SerialNumber"), m_EboxSNString);
+        (void)mp_EboxModule->UpdateParameterInfo(QString("SerialNumber"), m_EboxSNString);
         emit UpdateModule(*mp_Module);
     }
 }

@@ -30,6 +30,9 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Core/Include/CMessageString.h"
 
+//lint -e578
+//lint -e641
+
 namespace DiagnosticsManufacturing {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
@@ -139,7 +142,6 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QList<QStandardItem *> itemList;
 
     QStandardItem *itemCheckFlag = new QStandardItem;
-    //itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
     itemCheckFlag->setData(QVariant(Qt::Checked), (int)Qt::CheckStateRole); //PC-lint
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);

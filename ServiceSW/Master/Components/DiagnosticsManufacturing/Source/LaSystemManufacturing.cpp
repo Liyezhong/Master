@@ -30,6 +30,8 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Core/Include/CMessageString.h"
 
+//lint -e578
+
 namespace DiagnosticsManufacturing {
 
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
@@ -182,7 +184,7 @@ void CLaSystem::BeginTest()
         QModelIndex ModelIndex = m_Model.index(i, 0);
         QStandardItem* item = m_Model.itemFromIndex(ModelIndex);
         Qt::CheckState State = item->checkState();
-        qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
+        //qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
 
         if (State == Qt::Checked) {
 

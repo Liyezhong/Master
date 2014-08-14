@@ -30,6 +30,8 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Core/Include/CMessageString.h"
 
+//lint -e578
+
 namespace DiagnosticsManufacturing {
 
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator
