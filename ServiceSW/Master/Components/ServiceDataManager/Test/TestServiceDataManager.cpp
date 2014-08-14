@@ -98,7 +98,7 @@ private slots:
 
 /****************************************************************************/
 void CTestServiceDataManager::initTestCase() {
-    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
+    Global::SystemPaths::Instance().SetSettingsPath("../Components/Main/Build/Settings");
 }
 
 /****************************************************************************/

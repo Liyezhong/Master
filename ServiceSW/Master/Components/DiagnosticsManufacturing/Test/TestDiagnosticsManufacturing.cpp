@@ -106,8 +106,8 @@ private:
 
 /****************************************************************************/
 void CTestDiagnosticsManufacturing::initTestCase() {
-    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
-    Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
+    Global::SystemPaths::Instance().SetSettingsPath("../Components/Main/Build/Settings");
+    Global::SystemPaths::Instance().SetTempPath("../Components/Main/Build/Temporary");
 
     mp_ModuleList = new ServiceDataManager::CModuleDataList;
     mp_ModuleListArchive = new ServiceDataManager::CInstrumentHistory;
