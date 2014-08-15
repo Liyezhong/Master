@@ -102,6 +102,7 @@ public:
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
+
     /****************************************************************************/
     /*!
      *  \brief  Signal for moving to tube

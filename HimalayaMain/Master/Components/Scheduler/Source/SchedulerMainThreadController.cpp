@@ -383,7 +383,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     QString cmdName = "";
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
 
-    m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if(cmd != NULL)
     {
         if(!(cmd->GetResult(retCode)))
@@ -2144,14 +2143,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
-    //m_CurrentScenario = Scenario;
-       // if(StepID == "IDLE")
+
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     LogDebug(strctHWMonitor.toLogString());
 
     // Run Heating Strategy
     if ("ERROR" != StepID)
     {
+        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {      
@@ -2203,13 +2202,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_TempRV2 = strctHWMonitor.TempRV2;
         if (200 == Scenario)
         {
-
+#if 0
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
                 RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
+#endif
         }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))

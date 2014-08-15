@@ -116,8 +116,19 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             TasksDone(false);
             break;
         }
-        emit MoveToTube();
-        break;
+        else
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
+            {
+                emit MoveToTube();
+            }
+            else
+            {
+                TasksDone(false);
+                break;
+            }
+        }
+         break;
     case MOVE_TO_TUBE:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
@@ -251,7 +262,6 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType() const
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
     bool IsLevelSensorRelated = false;
     bool IsRTRVOVenError = false;
-
     //Firstly, check if the event id is related with Level Sensor or not
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == EventId
             || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == EventId
@@ -324,6 +334,7 @@ QString CRsTissueProtect::GetStationID()
 {
     // Get reagent type
     ReagentType_t reagentType = this->GetReagentType();
+
     qint8 pos = -1;
     QQueue<ProgramStationInfo_t> ProgramStationList = mp_SchedulerController->GetProgramStationList();
     for (int i=0; i<ProgramStationList.size();++i)
