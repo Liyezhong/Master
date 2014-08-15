@@ -63,15 +63,20 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         return DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE;
     }
-    //For Retort Top Sensor
-    if (false == this->CheckSensorCurrentTemperature(m_RTTop, strctHWMonitor.TempRTSide))
+    //For Retort Bottom1 Sensor
+    if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom1))
     {
         return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE;
     }
-    //For Retort Bottom Sensor
-    if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom1))
+    //For Retort Bottom2 Sensor
+    if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom2))
     {
         return DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE;
+    }
+    //For Retort Top Sensor
+    if (false == this->CheckSensorCurrentTemperature(m_RTTop, strctHWMonitor.TempRTSide))
+    {
+        return DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE;
     }
     //For Oven Top
     if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
