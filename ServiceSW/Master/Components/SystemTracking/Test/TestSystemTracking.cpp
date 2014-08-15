@@ -284,8 +284,7 @@ void CTestSystemTracking::utTestViewHistory()
 
     p_HistoryDlg->UpdateGUI();
 
-    ServiceDataManager::CModuleDataList ModuleListOne, ModuleListTwo;
-    SystemTracking::CViewHistoryDiffDlg::Instance(p_History).Show(ModuleListOne, ModuleListTwo);
+    SystemTracking::CViewHistoryDiffDlg::Instance(p_History);
 }
 
 } // end namespace SystemTracking
