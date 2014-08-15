@@ -53,6 +53,7 @@ public:
 
     void ShowMessage(const QString &Message);
     void HideMessage();
+    void ShowCurrentPressure(const QString &Message);
 
 private:
     Core::CServiceGUIConnector                  *mp_ServiceConnector;       //!< Service GUI connector object

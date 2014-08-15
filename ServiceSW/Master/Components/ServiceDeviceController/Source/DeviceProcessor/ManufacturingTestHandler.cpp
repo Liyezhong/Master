@@ -1457,7 +1457,8 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
         mp_PressPump->ReleasePressure();
         mp_PressPump->SetFan(1);
-        bool result = CreatePressure(WaitSec, TargetPressure, 0);
+
+        bool result = CreatePressure(WaitSec, TargetPressure, 0, TestCaseName);
         if (result == false) {
             mp_PressPump->StopCompressor();
             RetValue = -1;
@@ -1529,7 +1530,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
             int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
-            bool result = CreatePressure(WaitSec, TargetPressure, 3);
+            bool result = CreatePressure(WaitSec, TargetPressure, 3, TestCaseName);
             qreal CurrentPressure = mp_PressPump->GetPressure();
             if (result == false) {
                 Status.clear();
@@ -1631,7 +1632,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 
     qDebug()<<"Blow time ==== "<<blowSec;
 
-    if (!CreatePressure(waitSec, targetPressure, departure)) {
+    if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
         RetValue = -1;
         goto CLEANING_EXIT;
@@ -1658,7 +1659,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
-        if (!CreatePressure(waitSec, targetPressure, departure)) {
+        if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
             p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
             RetValue = -1;
             goto CLEANING_EXIT;
@@ -1671,7 +1672,7 @@ CLEANING_EXIT:
     return RetValue;
 }
 
-bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressure, qreal departure)
+bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressure, qreal departure, const QString& TestCaseName)
 {
     qDebug()<<"Create target pressure:"<<targetPressure;
     bool result = false;
@@ -1681,6 +1682,9 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
     else if (targetPressure < 0) {
         mp_PressPump->SetTargetPressure(25, targetPressure);
     }
+
+    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
     waitSecond += 1;
     while (waitSecond) {
         if (m_UserAbort) {
@@ -1706,6 +1710,8 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
             result = true;
             break;
         }
+
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, pressure);
 
         mp_Utils->Pause(1000);
         --waitSecond;
@@ -1841,6 +1847,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     p_TempCtrl->StopTemperatureControl();
     p_TempCtrl->StartTemperatureControl(TargetTemp);
 
+    SetFailReason(Id, "");
     while (!m_UserAbort && WaitSec)
     {
         QTime EndTime = QTime().currentTime().addSecs(1);
@@ -2082,7 +2089,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-        if (CurrentTempSensor1 == -1 || CurrentTempSensor1 == -1 ) {
+        if (CurrentTempSensor1 == -1 || CurrentTempSensor2 == -1 ) {
             mp_Utils->Pause(1000);
             WaitSec--;
             continue;
@@ -2320,7 +2327,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-        if (CurrentTempSensor1 == -1 || CurrentTempSensor1 == -1 ) {
+        if (CurrentTempSensor1 == -1 || CurrentTempSensor2 == -1 ) {
             mp_Utils->Pause(1000);
             WaitSec--;
             continue;
@@ -2391,7 +2398,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
          CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-         if (CurrentTempSensor1 == -1 || CurrentTempSensor1 == -1 ) {
+         if (CurrentTempSensor1 == -1 || CurrentTempSensor2 == -1 ) {
              mp_Utils->Pause(1000);
              WaitSec--;
              continue;
@@ -2767,7 +2774,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     int Position = 0;
     int Ret = 0;
     Service::ModuleTestStatus Status;
-    bool NeedAC(false);
 
     Position = p_TestCase->GetParameter("Position").toInt();
 
@@ -2786,9 +2792,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         return -1;
     }
 
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetHigh();
-    }
+    mp_DigitalOutputMainRelay->SetHigh();
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = mp_PressPump->Sucking();
@@ -2843,6 +2847,9 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             goto EXIT_TEST_RETORT_HEATING_WATER;
         }
 
+        mp_TempRetortBottom->StopTemperatureControl();
+        mp_TempRetortSide->StopTemperatureControl();
+
         mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
         mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
 
@@ -2867,13 +2874,13 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             CurrentTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
 
             if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
-                    CurrentTempBottom1 == -1) {
+                    CurrentTempBottom2 == -1) {
                 mp_Utils->Pause(1000);
                 WaitSec--;
+                qDebug()<<CurrentTempBottom1<<" "<<CurrentTempBottom2<<" "<<CurrentTempSide;
                 continue;
             }
 
-            mp_Utils->Pause(1000);
             CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
             CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
             CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
@@ -2898,9 +2905,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         mp_TempRetortSide->StopTemperatureControl();
         mp_TempRetortBottom->StopTemperatureControl();
 
-        if (NeedAC) {
-           mp_DigitalOutputMainRelay->SetLow();
-        }
+        mp_DigitalOutputMainRelay->SetLow();
+
 
         p_TestCase->AddResult("UsedTime", UsedTime);
         p_TestCase->AddResult("CurrentTempSide", CurrentTempSideValue);
@@ -3240,6 +3246,10 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
     case PUMP_RELEASE_PRESSURE:
         Msg = Service::CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;
         break;
+    case PUMP_CURRENT_PRESSURE:
+        Status.insert("CurrentPressure", "1");
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_PRESSURE.arg(Param);
+        break;
     case SYSTEM_FLUSH:
         Msg = Service::CMessageString::MSG_DIAGNOSTICS_AIR_BLOWING;
         break;
@@ -3261,7 +3271,9 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
 
     Status.insert("CurrentStatus", Msg);
     emit RefreshTestStatustoMain(TestCaseName, Status);
-    mp_Utils->Pause(1000);
+    if (CurStatus != PUMP_CURRENT_PRESSURE) {
+        mp_Utils->Pause(1000);
+    }
 }
 
 void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID_t TestId, Service::ModuleTestCaseID_t AbortTestCaseId)

@@ -1304,14 +1304,38 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
         mp_WaitDialog = NULL;
     }
     mp_WaitDialog = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDialog->setMinimumWidth(300);
+    mp_WaitDialog->setMinimumHeight(150);
     mp_WaitDialog->SetDialogTitle(Service::CMessageString::MSG_TITLE_WAIT);
     mp_WaitDialog->SetText(Message);
     mp_WaitDialog->HideAllButtons();
-    mp_WaitDialog->setMinimumWidth(200);
-    mp_WaitDialog->setMinimumHeight(150);
 
     mp_WaitDialog->setModal(true);
     mp_WaitDialog->show();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Throws open a Pop Up Message with current pressure
+ *  \iparam Message = Current pressure value
+ */
+/****************************************************************************/
+void CManufacturingDiagnosticsHandler::ShowCurrentPressure(const QString &Message)
+{
+    if (mp_WaitDialog == NULL) {
+        mp_WaitDialog = new MainMenu::CMessageDlg(mp_MainWindow);
+        mp_WaitDialog->setMinimumWidth(300);
+        mp_WaitDialog->setMinimumHeight(150);
+        mp_WaitDialog->SetDialogTitle(Service::CMessageString::MSG_TITLE_WAIT);
+        mp_WaitDialog->SetText(Message);
+        mp_WaitDialog->HideAllButtons();
+
+        mp_WaitDialog->setModal(true);
+        mp_WaitDialog->show();
+    }
+    else {
+        mp_WaitDialog->SetText(Message);
+    }
 }
 
 /****************************************************************************/

@@ -110,6 +110,7 @@ QString CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALINT;              //!<R
 QString CMessageString::MSG_DIAGNOSTICS_CREATING_PRESSURE;                 //!<Creating pressure to %1Kpa...
 QString CMessageString::MSG_DIAGNOSTICS_KEEP_PRESSURE;                     //!<Keep pressure for %1 seconds
 QString CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;                //!<Releasing pressure...
+QString CMessageString::MSG_DIAGNOSTICS_CURRENT_PRESSURE;                  //!<Current pressure
 QString CMessageString::MSG_DIAGNOSTICS_INIT_RV;                           //!<Rotary valve is initializing...
 QString CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR;              //!<Heating level sensor...
 QString CMessageString::MSG_DIAGNOSTICS_FILLING;                           //!<Filling...
@@ -254,7 +255,8 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_CREATING_PRESSURE                 = (QApplication::translate("Service", "Creating pressure to %1Kpa...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_KEEP_PRESSURE                     = (QApplication::translate("Service", "Keep pressure for %1 seconds", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_RELEASING_PRESSURE                = (QApplication::translate("Service", "Releasing pressure...", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_INIT_RV                           = (QApplication::translate("Service", "Rotary valve is initializing...", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_CURRENT_PRESSURE                  = (QApplication::translate("Service", "Creating pressure, current pressure is %1Kpa", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_INIT_RV                           = (QApplication::translate("Service", "Rotary valve is initializing...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR              = (QApplication::translate("Service", "Heating level sensor...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_FILLING                           = (QApplication::translate("Service", "Filling...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_DRAINING                          = (QApplication::translate("Service", "Draining...", 0, QApplication::UnicodeUTF8));

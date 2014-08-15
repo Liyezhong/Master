@@ -1281,7 +1281,12 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
             mp_ManaufacturingDiagnosticsHandler->HideMessage();
         }
         else {
-            mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
+            if (Status.value("CurrentPressure") != NULL) {
+                mp_ManaufacturingDiagnosticsHandler->ShowCurrentPressure(Status.value("CurrentStatus"));
+            }
+            else {
+                mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
+            }
         }
     }
 }

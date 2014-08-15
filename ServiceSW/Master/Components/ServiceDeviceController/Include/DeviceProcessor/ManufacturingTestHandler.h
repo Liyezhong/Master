@@ -63,11 +63,12 @@ typedef enum {
     PUMP_CREATE_PRESSURE,
     PUMP_KEEP_PRESSURE,
     PUMP_RELEASE_PRESSURE,
+    PUMP_CURRENT_PRESSURE,
     SYSTEM_FLUSH,
     WAIT_CONFIRM,
     WAIT_CONFIRM2,
     HIDE_MESSAGE,
-    INFORM_DONE,
+    INFORM_DONE
 } TestCurStatus_t;
 
 /****************************************************************************/
@@ -370,7 +371,7 @@ private:
      * \brief Create Pressure
      */
     /****************************************************************************/
-    bool CreatePressure(int waitSecond, qreal targetPressure, qreal departure);
+    bool CreatePressure(int waitSecond, qreal targetPressure, qreal departure, const QString& TestCaseName);
 
     /****************************************************************************/
     /**
