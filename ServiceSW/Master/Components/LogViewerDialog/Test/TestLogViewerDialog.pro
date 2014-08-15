@@ -5,7 +5,7 @@
 #-------------------------------------------------
 !include("TestLogViewerDialog.pri"):error("TestLogViewerDialog.pri not found")
 
-TARGET 	 = TestLogViewerDialog
+TARGET 	 = utTestLogViewerDialog
 CONFIG   += console
 SOURCES  += TestLogViewerDialog.cpp
 TEMPLATE  = app
