@@ -106,17 +106,9 @@ private:
 
 /****************************************************************************/
 void CTestDiagnosticsManufacturing::initTestCase() {
-    QString BuildPath;
-    QString RunPath = QCoreApplication::applicationDirPath();
 
-    if (RunPath.contains("DiagnosticsManufacturing")) {
-        BuildPath = "../../../Main/Build/";
-    }
-    else {
-        BuildPath = "../Components/Main/Build/";
-    }
-    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
-    Global::SystemPaths::Instance().SetTempPath(BuildPath + "Temporary");
+    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
+    Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
 
     mp_ModuleList = new ServiceDataManager::CModuleDataList;
     mp_ModuleListArchive = new ServiceDataManager::CInstrumentHistory;
@@ -163,7 +155,7 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
     Reporter.AddTestCaseId(Service::OVEN_HEATING_WITH_WATER);
 
     Reporter.SetSerialNumber("12121212");
-    QVERIFY(Reporter.GenReportFile());
+    //QVERIFY(Reporter.GenReportFile());
     //Reporter.GenReportFile();
 }
 

@@ -98,16 +98,7 @@ private slots:
 
 /****************************************************************************/
 void CTestServiceDataManager::initTestCase() {
-    QString BuildPath;
-    QString RunPath = QCoreApplication::applicationDirPath();
-
-    if (RunPath.contains("ServiceDataManager")) {
-        BuildPath = "../../../Main/Build/";
-    }
-    else {
-        BuildPath = "../Components/Main/Build/";
-    }
-    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
+    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
 }
 
 /****************************************************************************/
@@ -160,7 +151,7 @@ void CTestServiceDataManager::TestTestCaseFactory()
 void CTestServiceDataManager::TestModuleDataList()
 {
     ServiceDataManager::CModuleDataList* p_ModuleList = new ServiceDataManager::CModuleDataList;
-    //DataManager::CInstrumentHistory* p_In
+
     QString FilenameModuleList = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistory.xml";
     QVERIFY(p_ModuleList->ReadFile(FilenameModuleList));
 

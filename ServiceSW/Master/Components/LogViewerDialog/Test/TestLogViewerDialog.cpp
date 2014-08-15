@@ -89,18 +89,8 @@ void CTestLogViewerDialog::cleanupTestCase() {
 /****************************************************************************/
 void CTestLogViewerDialog::utTestLogViewerDialog()
 {
-    QString BuildPath;
-    QString RunPath = QCoreApplication::applicationDirPath();
-
-    if (RunPath.contains("LogViewerDialog")) {
-        BuildPath = "../../../Main/Build/";
-    }
-    else {
-        BuildPath = "../Components/Main/Build/";
-    }
-
-    Global::SystemPaths::Instance().SetLogfilesPath(BuildPath + "Logfiles");
-    Global::SystemPaths::Instance().SetSettingsPath(BuildPath + "Settings");
+    Global::SystemPaths::Instance().SetLogfilesPath("../../../Main/Build/Logfiles");
+    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
 
     QString RecActionPath = Global::SystemPaths::Instance().GetSettingsPath() + "/RecoveryActionText.txt";
     //QString LogFileNamePath = Global::SystemPaths::Instance().GetLogfilesPath() + "/HimalayaEvents_12345678_20140416.log";
