@@ -208,7 +208,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
 		break;
     case MOVE_TO_SEALING:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
+        mp_SchedulerController->LogDebug(QString("RS_Safe_Reagent, in Move_To_Seal state, target seal position is %1").arg(sealPos));
         if (0 == m_MoveToSealSeq)
         {
             if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
@@ -222,17 +222,20 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     m_MoveToTubeSeq = 0;
                     m_LevelSensorSeq = 0;
                     m_MoveToSealSeq = 0;
+                    mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal failed");
                     TasksDone(false);
                 }
             }
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("Actual seal position is %1").arg(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV));
             if (sealPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
                 m_MoveToTubeSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
+                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal success");
                 TasksDone(true);
             }
         }
