@@ -1031,9 +1031,6 @@
 			<Step ID="0" Type="MSG" StringID="19464201" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
 		</Event>
 
-		<Event Code="" ErrorID="19333634" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_WEB_ACCESS">
-			<Step ID="0" Type="MSG" StringID="19333634" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19333713" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_DEVICE_REGISTERED">
 			<Step ID="0" Type="MSG" StringID="19333713" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
@@ -1064,5 +1061,86 @@
 		<Event Code="" ErrorID="19333891" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_READ_SETTINGS_RC">
 			<Step ID="0" Type="MSG" StringID="19333891" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="19333892" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTING_AE_INIT">
+			<Step ID="0" Type="MSG" StringID="19333892" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333893" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_MODELNR_EMPTY">
+			<Step ID="0" Type="MSG" StringID="19333893" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333894" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_ADD_DEVICE">
+			<Step ID="0" Type="MSG" StringID="19333894" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333895" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_ADD_SERVER">
+			<Step ID="0" Type="MSG" StringID="19333895" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333896" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_SSL">
+			<Step ID="0" Type="MSG" StringID="19333896" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333897" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_REMOTE_SESSION">
+			<Step ID="0" Type="MSG" StringID="19333897" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333898" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_PROXY">
+			<Step ID="0" Type="MSG" StringID="19333898" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333899" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_POSTITEM_DA_CONVERSION">
+			<Step ID="0" Type="MSG" StringID="19333899" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333900" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_POSTITEM_DD_CONVERSION">
+			<Step ID="0" Type="MSG" StringID="19333900" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333901" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_POSTITEM_NOT_KNOWN">
+			<Step ID="0" Type="MSG" StringID="19333901" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333902" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_POSTITEM">
+			<Step ID="0" Type="MSG" StringID="19333902" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333903" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS_WEB_PERSIST">
+			<Step ID="0" Type="MSG" StringID="19333903" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+
+		<Event Code="" ErrorID="19333121" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_CONNECTION_TO_MASTER">
+			<Step ID="0" Type="MSG" StringID="19333121" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333377" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_INFO_CONNECTED_TO_MASTER">
+			<Step ID="0" Type="MSG" StringID="19333377" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+
+		<Event Code="" ErrorID="19333633" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_CONFIGURATION_READ">
+			<Step ID="0" Type="MSG" StringID="19333633" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333634" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_WEB_ACCESS">
+			<Step ID="0" Type="MSG" StringID="19333634" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333635" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_READ_SETTINGS">
+			<Step ID="0" Type="MSG" StringID="19333635" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333636" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS">
+			<Step ID="0" Type="MSG" StringID="19333636" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333637" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_SETTINGS">
+			<Step ID="0" Type="MSG" StringID="19333637" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333638" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_BAD_ALLOC">
+			<Step ID="0" Type="MSG" StringID="19333638" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333639" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_NOT_INITIALIZED">
+			<Step ID="0" Type="MSG" StringID="19333639" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333640" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SERVER_STATUS">
+			<Step ID="0" Type="MSG" StringID="19333640" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333641" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_UPLOAD_FILE">
+			<Step ID="0" Type="MSG" StringID="19333641" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333642" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SET_TAG">
+			<Step ID="0" Type="MSG" StringID="19333642" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333643" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SUBMITEVENT_POST">
+			<Step ID="0" Type="MSG" StringID="19333643" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+
+
+
+
 	</Source>
 </EventConfigure>

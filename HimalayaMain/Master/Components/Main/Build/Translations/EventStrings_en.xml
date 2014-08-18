@@ -536,9 +536,8 @@
 		<string id="50331680" text1="Scheduler receive action command from GUI: %1" text2=""/>
 		<string id="50331682" text1="Start program %1" text2=""/>
 		<string id="50331679" text1="unexpected state" text2=""/>
-        <string id="19333634" text1="Web access error" text2=""/>
-        <string id="19333713" text1="Device was successfully registered" text2=""/>
 
+        <string id="19333713" text1="Device was successfully registered" text2=""/>
         <string id="19333714" text1="Received command for setting a tag" text2=""/>
         <string id="19333715" text1="Conversion of severity was OK" text2=""/>
         <string id="19333716" text1="Start of RemoteSession" text2=""/>
@@ -560,5 +559,24 @@
         <string id="19333901" text1="Dataitem was not found" text2=""/>
         <string id="19333902" text1="Not able to post the item" text2=""/>
         <string id="19333903" text1="Not able to set persistent HTTP connection" text2=""/>
+
+        <string id="19333121" text1="Error on Master connection" text2=""/>
+        <string id="19333377" text1="Connected to Master successfully" text2=""/>
+        <string id="19333633" text1="Configuration could not be read" text2=""/>
+        <string id="19333634" text1="Web access error" text2=""/>
+        <string id="19333635" text1="Settings could not be read" text2=""/>
+        <string id="19333636" text1="Settings for AgentEmbedded could not be set" text2=""/>
+        <string id="19333637" text1="Posting dataitems failed" text2=""/>
+        <string id="19333638" text1="Bad allocation error" text2=""/>
+        <string id="19333639" text1="RemoteCareAgent was not proper initialized" text2=""/>
+        <string id="19333640" text1="Remote Enterprise server is not available" text2=""/>
+        <string id="19333641" text1="Upload of the file failed" text2=""/>
+        <string id="19333642" text1="Setting the tag failed" text2=""/>
+        <string id="19333643" text1="Reporting event failed" text2=""/>
+        <string id="19333635" text1="" text2=""/>
+        <string id="19333635" text1="" text2=""/>
+        <string id="19333635" text1="" text2=""/>
+        <string id="19333635" text1="" text2=""/>
+        <string id="19333635" text1="" text2=""/>
 	</language>
 </strings>
