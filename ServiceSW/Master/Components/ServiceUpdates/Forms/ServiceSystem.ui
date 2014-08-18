@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ServiceUpdates::CSystem</class>
- <widget class="QWidget" name="ServiceUpdates::CSystem">
+ <class>ServiceUpdates::CServiceSystem</class>
+ <widget class="QWidget" name="ServiceUpdates::CServiceSystem">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -29,7 +29,7 @@
 namespace ServiceUpdates {
 
 namespace Ui {
-    class CSystem;
+    class CServiceSystem;
 }
 /****************************************************************************/
 /**
@@ -74,7 +74,7 @@ signals:
     void ShutdownSystem(bool NeedUpdate=true);
 
 private:
-    Ui::CSystem   *mp_Ui;                   //!< User Interface
+    Ui::CServiceSystem   *mp_Ui;            //!< User Interface
 
     MainMenu::CMessageDlg *mp_MessageDlg;   //!< Information dialog
 };

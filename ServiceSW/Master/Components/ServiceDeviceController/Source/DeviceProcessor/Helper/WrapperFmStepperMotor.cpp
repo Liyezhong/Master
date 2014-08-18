@@ -1794,9 +1794,9 @@ bool WrapperFmStepperMotor::ApplyNewParameterSet()
     {
         m_LoopApplyNewParameter.exec();
     }
+    delete timer;
 #endif
 
-    delete timer;
     if (!SetState(true)) {
         return false;
     }

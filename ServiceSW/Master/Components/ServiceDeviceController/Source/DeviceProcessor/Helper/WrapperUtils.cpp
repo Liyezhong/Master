@@ -27,7 +27,7 @@
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>
 
-
+//lint -e1039
 
 /****************************************************************************/
 /*!
@@ -146,7 +146,7 @@ void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName
         }
         else
         {
-            Log(tr("You input empty folder name, please re-enter"));
+            this->Log(tr("You input empty folder name, please re-enter"));
         }
     }
 }

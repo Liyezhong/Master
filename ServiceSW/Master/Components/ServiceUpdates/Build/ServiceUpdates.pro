@@ -15,4 +15,4 @@ SOURCES *= ../Source/*.cpp \    # source file location
 
 FORMS   *= ../Forms/*.ui \       # form file location
     ../Forms/NetworkWidget.ui \
-    ../Forms/System.ui
+    ../Forms/ServiceSystem.ui

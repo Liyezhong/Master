@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QEventLoop>
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 #include "DeviceControl/Include/SlaveModules/PressureControl.h"
 #include "DeviceControl/Include/SlaveModules/TemperatureControl.h"
 #ifdef PRE_ALFA_TEST
@@ -176,7 +176,8 @@ signals:
     qint32 m_WorkingPressurePositive;
     qint32 m_WorkingPressureNegative;
     float m_PressureDrift;
-#endif
 };
+
+#endif //PRE_ALFA_TEST
 
 #endif // WRAPPERFMPRESSURECONTROL_H

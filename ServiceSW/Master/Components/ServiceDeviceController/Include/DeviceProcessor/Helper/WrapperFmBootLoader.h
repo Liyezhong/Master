@@ -27,7 +27,7 @@
 #include <QFile>
 #include <QObject>
 #include <QEventLoop>
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 #include "DeviceControl/Include/SlaveModules/BootLoader.h"
 
 using namespace DeviceControl;

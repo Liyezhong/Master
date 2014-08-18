@@ -284,7 +284,7 @@ void CNetworkWidget::OnOkClicked(QString EnteredText)
             }
             mp_Ui->proxyIpAddressButton->setText(m_ProxyIp);
         }
-        else if (m_IpType = SERVER_IP) {
+        else if (m_IpType == SERVER_IP) {
             if (m_ServerIp.length() == 0) {
                 m_ServerIp = EnteredText;
             }

@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QEventLoop>
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 #include "DeviceControl/Include/SlaveModules/TemperatureControl.h"
 
 using namespace DeviceControl;

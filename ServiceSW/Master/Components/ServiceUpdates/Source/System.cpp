@@ -22,13 +22,13 @@
 
 #include "Global/Include/Utils.h"
 
-#include "ui_System.h"
+#include "ui_ServiceSystem.h"
 
 namespace ServiceUpdates {
 
 CSystem::CSystem(QWidget *p_Parent)
     : QWidget(p_Parent)
-    , mp_Ui(new Ui::CSystem)
+    , mp_Ui(new Ui::CServiceSystem)
     , mp_MessageDlg(new MainMenu::CMessageDlg(p_Parent))
 {
     mp_Ui->setupUi(this);
