@@ -22,9 +22,9 @@
 /****************************************************************************/
 
 #include <QTimer>
-#include "ResetData.h"
-#include "WrapperFmStepperMotor.h"
-#include "WrapperUtils.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/ResetData.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmStepperMotor.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
 #include <unistd.h>
 
 const QString WrapperFmStepperMotor::ROTATION = QString("rotation");

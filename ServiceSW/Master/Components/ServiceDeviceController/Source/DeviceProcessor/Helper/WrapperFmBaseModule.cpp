@@ -21,8 +21,8 @@
  */
 /****************************************************************************/
 
-#include "ResetData.h"
-#include "WrapperFmBaseModule.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/ResetData.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBaseModule.h"
 #include "Global/Include/Utils.h"
 #include <QTextStream>
 

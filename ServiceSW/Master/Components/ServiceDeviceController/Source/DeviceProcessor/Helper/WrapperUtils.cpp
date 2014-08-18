@@ -22,7 +22,7 @@
 /****************************************************************************/
 #include <QTimer>
 #include <QEventLoop>
-#include "WrapperUtils.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
 #include <QProcess>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>

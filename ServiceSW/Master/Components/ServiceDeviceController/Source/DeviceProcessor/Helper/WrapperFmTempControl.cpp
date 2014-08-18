@@ -20,7 +20,7 @@
  *  does not evidence any actual or intended publication.
  */
 /****************************************************************************/
-#include "WrapperFmTempControl.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h"
 
 const qint32 UNDEFINED = -1; //!< undefined value for temperature and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range

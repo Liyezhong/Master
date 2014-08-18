@@ -21,7 +21,7 @@
  */
 /****************************************************************************/
 
-#include "WrapperFmBootLoader.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h"
 
 /****************************************************************************/
 
