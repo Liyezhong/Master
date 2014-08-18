@@ -703,10 +703,27 @@ private slots:
          /****************************************************************************/
          void ShutdownRetortHeater();
 
-
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot DevProcDestroyed
+          */
+         /****************************************************************************/
          void DevProcDestroyed();
-
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot ReportGetServiceInfo
+          *  \param ReturnCode = Return Code
+          *  \param ModuleInfo = module information
+          *  \param deviceName = which device got the service information
+          */
+         /****************************************************************************/
          void ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& deviceName);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot ShutdownRetortHeater
+          */
+         /****************************************************************************/
+         void ResetActiveCarbonFilterLifetime();
 protected:
 
         /****************************************************************************/

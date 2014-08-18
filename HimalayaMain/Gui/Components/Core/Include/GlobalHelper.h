@@ -97,7 +97,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  by global helper to set all used station
-     *
+     *  \param  list = store the used station Ids.
      */
     /****************************************************************************/
     static void SetStationList(const QStringList& list);

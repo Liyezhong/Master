@@ -187,8 +187,8 @@ void CServiceSettingsWidget::showEvent(QShowEvent *p_Event)
     }
     else
     {
-        mp_Ui->labelWarningThreshold->setText("150");
-        mp_Ui->labelAlarmThreshold->setText("240");
+        mp_Ui->labelWarningThreshold->setText("45");
+        mp_Ui->labelAlarmThreshold->setText("60");
     }
 
     if ("" == mp_UserSettings->GetActiveCarbonLastResetDate())
@@ -245,8 +245,8 @@ void CServiceSettingsWidget::OnCheckBoxUseExhaustSystem(bool checked)
     else
     {
         m_UserSettingsTemp.SetUseExhaustSystem(0);
-        mp_Ui->labelWarningThreshold->setText("150");
-        mp_Ui->labelAlarmThreshold->setText("240");
+        mp_Ui->labelWarningThreshold->setText("45");
+        mp_Ui->labelAlarmThreshold->setText("60");
     }
 }
 

@@ -29,6 +29,7 @@
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
+#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
 namespace DataManager {
 
@@ -79,9 +80,34 @@ quint32 CDataManager::InitializeDataContainer()
     //Create DataContainer - Inturn creates individual containers
     mp_DataContainer = new CDataContainer(mp_MasterThreadController);
     mp_DataContainerCollectionBase = mp_DataContainer;
+
+    //Update activeCarbonFilter LifeTime according to DeviceLifeCycleRecord.xml
+    DeviceControl::DeviceLifeCycleRecord deviceLifeCycleRecord;
+    deviceLifeCycleRecord.ReadRecord();
+
+    quint32 activeCarbonFilterLifeTime = -1;
+    DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
+    if (pModuleLifeCycleRecord)
+    {
+        DeviceControl::PartLifeCycleRecord* pPartLifeCycleRecord = pModuleLifeCycleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
+        if (pPartLifeCycleRecord)
+            activeCarbonFilterLifeTime = pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toUInt();
+    }
+
     ReturnCode = CDataManagerBase::InitDataContainer();
     if ( ReturnCode != INIT_OK) {
         return ReturnCode;
+    }
+
+    if (0 == activeCarbonFilterLifeTime)
+    {
+        CHimalayaUserSettings tempSettings(*mp_DataContainer->SettingsInterface->GetUserSettings());
+        tempSettings.SetActiveCarbonHours(0);
+        QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
+        tempSettings.SetActiveCarbonLastResetDate(strDate);
+        bool Result = true;
+        Result = mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);
+        mp_DataContainer->SettingsInterface->Write();
     }
 
     mp_DataContainer->ReagentGroupList->SetDataVerificationMode(false);

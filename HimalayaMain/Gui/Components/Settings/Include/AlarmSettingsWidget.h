@@ -52,7 +52,7 @@ public:
     /*!
      *  \brief Used to set pointer to mainwindow, used to retreive user role and
      *         process state changed.
-     *  \point to the main window
+     *  \iparam p_MainWindow = pointers to the main window
      */
     /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
@@ -60,7 +60,7 @@ public:
     /*!
      *  \brief Sets pointer to DataConnector object
      *
-     *  \iparam p_DataConnector
+     *  \iparam p_DataConnector = the data connector
      */
     /****************************************************************************/
     void SetDataConnector(Core::CDataConnector *p_DataConnector)

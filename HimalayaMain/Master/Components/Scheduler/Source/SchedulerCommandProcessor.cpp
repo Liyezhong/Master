@@ -159,6 +159,8 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
     CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
+    CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(), this, OnResetActiveCarbonFilterLifetime());
+
 }
 
 template <class DP>
@@ -558,6 +560,12 @@ void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& devic
 }
 
 template <class DP>
+void SchedulerCommandProcessor<DP>::ResetActiveCarbonFilterLifetime()
+{
+    emit SigResetActiveCarbonFilterLifetime();
+}
+
+template <class DP>
 ReportError_t SchedulerCommandProcessor<DP>::GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName)
 {
     return mp_IDeviceProcessing->GetSlaveModuleReportError(CANErrCode, devName, sensorName);
@@ -593,6 +601,12 @@ template <class DP>
 void SchedulerCommandProcessor<DP>::OnNotifySavedServiceInfor4Slot(const QString& deviceType)
 {
     mp_IDeviceProcessing->NotifySavedServiceInfor(deviceType);
+}
+
+template <class DP>
+void SchedulerCommandProcessor<DP>::OnResetActiveCarbonFilterLifetime4Slot()
+{
+    mp_IDeviceProcessing->ResetActiveCarbonFilterLifeTime();
 }
 
 }// end of namespace Scheduler

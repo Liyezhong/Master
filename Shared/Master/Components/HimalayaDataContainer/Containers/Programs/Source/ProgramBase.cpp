@@ -174,7 +174,7 @@ bool CProgramBase::AddProgramStep(quint8 RowIndex, CProgramStep* p_ProgramStep)
     } else {
         m_StepList.insert(p_ProgramStep->GetStepID(), p_ProgramStep);
         //m_OrderedListOfStepIDs.append(p_ProgramStep->GetStepID());
-        m_OrderedListOfStepIDs.insert(RowIndex, p_ProgramStep->GetStepID());
+        m_OrderedListOfStepIDs.insert(RowIndex + 1, p_ProgramStep->GetStepID());
         return true;
     }
 }
