@@ -321,7 +321,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
 
-            //wether cleaning program
+            //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )
             {
                 m_AllProgramCount = true;
@@ -391,7 +391,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
-    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
 
     if(cmd != NULL)
     {
@@ -414,7 +413,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         LogDebug(QString("Scheduler received command: ABORT"));
         m_SchedulerMachine->NotifyAbort();
-        //DequeueNonDeviceCommand();
         //tell main controller scheduler is starting to abort
         MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
         Q_ASSERT(commandPtrAbortBegin);
@@ -431,7 +429,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 AllStop();
                 m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                //DequeueNonDeviceCommand();
             }
             else
             {
@@ -573,7 +570,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_lastPVTime = 0;
                 }
                 m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
-                //DequeueNonDeviceCommand();
             }
             else
             {
@@ -863,7 +859,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 // resume the program
                 emit NotifyResume();
-                //DequeueNonDeviceCommand();
+
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
                 Q_ASSERT(commandPtrFinish);
@@ -893,7 +889,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::ALDraining" == cmdName))
             {
                 this->OnStopDrain();
-                m_SchedulerMachine->NotifyAbort();
+                m_SchedulerMachine->NotifyAbort();//Aborting --->Aborted
             }
         }
         else if(PSSM_ABORTED == stepState)
@@ -908,6 +904,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
 
+            //update station/reagent using times
             UpdateStationReagentStatus();
 
             //send command to main controller to tell the left time
@@ -919,16 +916,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
     }
-#if 0
-    //work around to avoid continus START cmd
-    if(CTRL_CMD_START == ctrlCmd)
-    {
-        if((PSSM_PAUSE != stepState)&&(PSSM_PAUSE_DRAIN != stepState))
-        {
-            //DequeueNonDeviceCommand();
-        }
-    }
-#endif
+
 }
 
 void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState)
@@ -2970,7 +2958,7 @@ void SchedulerMainThreadController::Abort()
     {
         if((m_PositionRV != targetPos))
         {
-            LogDebug(QString("Abouting program, send cmd to DCL to move RV to %1").arg(targetPos));
+            LogDebug(QString("Aborting program, send cmd to DCL to move RV to %1").arg(targetPos));
             CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
             cmd->SetRVPosition(targetPos);
             m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -3443,5 +3431,29 @@ QString SchedulerMainThreadController::getTheProgramStatus(const QString& key)
     }
 }
 
+void SchedulerMainThreadController::EnablePauseButton()
+{
+    if (!m_IsCleaningProgram)
+        EnablePauseButton(true);
+}
+
+void SchedulerMainThreadController::DisablePauseButton()
+{
+    if (!m_IsCleaningProgram)
+        EnablePauseButton(false);
+}
+
+void SchedulerMainThreadController::EnablePauseButton(bool bEnable)
+{
+    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PAUSE_ENABLE;
+    if (!bEnable)
+    {
+        type =  DataManager::PROGRAM_PAUSE_DISABLE;
+    }
+    MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type));
+    Q_ASSERT(commandPtrPauseEnable);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+}
 
 }

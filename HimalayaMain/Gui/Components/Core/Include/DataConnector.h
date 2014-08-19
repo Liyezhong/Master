@@ -652,6 +652,13 @@ signals:
      */
     /****************************************************************************/
     void LanguageChanged(const QString& CurrentLanguage);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal EnablePauseButton
+     * \iparam  bEnable enabled/disabled
+     */
+    /****************************************************************************/
+    void EnablePauseButton(bool bEnable);
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);

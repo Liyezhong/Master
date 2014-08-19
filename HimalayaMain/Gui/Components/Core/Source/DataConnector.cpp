@@ -1727,7 +1727,16 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
-
+        case DataManager::PROGRAM_PAUSE_ENABLE:
+        {
+            emit EnablePauseButton(true);
+        }
+        break;
+        case DataManager::PROGRAM_PAUSE_DISABLE:
+        {
+            emit EnablePauseButton(false);
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

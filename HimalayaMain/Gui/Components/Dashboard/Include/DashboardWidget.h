@@ -247,6 +247,12 @@ private slots:
     void OnProgramPaused();
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of OnPauseButtonEnble
+     */
+    /****************************************************************************/
+      void OnPauseButtonEnable(bool bEnable);
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of OnStationSuckDrain
      */
     /****************************************************************************/

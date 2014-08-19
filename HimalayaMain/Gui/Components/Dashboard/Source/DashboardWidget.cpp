@@ -121,6 +121,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
                               this, OnProgramPaused());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, EnablePauseButton(bool),
+                              this, OnPauseButtonEnable(bool));
+
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
@@ -376,7 +379,7 @@ void CDashboardWidget::OnProgramRunBegin()
     }
     else
     {
-        ui->programPanelWidget->EnablePauseButton(true);//enable pause button
+        ui->programPanelWidget->EnablePauseButton(false);//enable pause button
 
         if (m_CurProgramStepIndex>0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
             ui->programPanelWidget->EnableStartButton(false);
@@ -389,8 +392,13 @@ void CDashboardWidget::OnProgramRunBegin()
 
 void CDashboardWidget::OnProgramPaused()
 {
-    ui->programPanelWidget->EnableStartButton(true);//enable stop button
+    ui->programPanelWidget->EnableStartButton(true);//enable Abort button
     ui->programPanelWidget->ChangeStartButtonToStartState();
+}
+
+void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
+{
+    ui->programPanelWidget->EnablePauseButton(bEnable);
 }
 
 void CDashboardWidget::OnUnselectProgram()
