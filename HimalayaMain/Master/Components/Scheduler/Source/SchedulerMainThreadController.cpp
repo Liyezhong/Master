@@ -574,7 +574,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
-                //todo: 1/10 the time
                 qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
                 {
@@ -667,10 +666,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 m_lastPVTime = now;
                             }
                         }
-                    }
-                    else
-                    {
-                        LogDebug("shufa shufa shufa");
                     }
                 }
             }
@@ -2454,10 +2449,11 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
         m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-        m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
         m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
         LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
     }
+
+    m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
@@ -2936,6 +2932,7 @@ void SchedulerMainThreadController::AllStop()
 
 void SchedulerMainThreadController::Pause()
 {
+    m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     //send command to main controller to tell program is actually pasued
     LogDebug("Notice GUI program paused");
     MsgClasses::CmdProgramAcknowledge* commandPtrPauseFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_FINISHED));
