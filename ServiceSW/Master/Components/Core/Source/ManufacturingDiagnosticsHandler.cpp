@@ -521,7 +521,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
             QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (Id != Service::OVEN_COVER_SENSOR) {
+            if (Id != Service::OVEN_COVER_SENSOR && p_TestCase->GetResult().value("OutOfRange")!= "1") {
                 ShowHeatingFailedResult(Id);
             }
 
@@ -824,8 +824,10 @@ Sealing_Test_Twice:
             Text = QString("%1 - %2<br>%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (Id == Service::ROTARY_VALVE_HEATING_END ||
-                    Id == Service::ROTARY_VALVE_HEATING_STATION ) {
+            if (Id == Service::ROTARY_VALVE_HEATING_STATION) {
+                ShowHeatingFailedResult(Id);
+            }
+            else if (Id == Service::ROTARY_VALVE_HEATING_END  ) {
                 QString TestStatus = p_TestCase->GetResult().value("CurStatus");
                 if (TestStatus == "IN-HEATING")
                     ShowHeatingFailedResult(Id);
