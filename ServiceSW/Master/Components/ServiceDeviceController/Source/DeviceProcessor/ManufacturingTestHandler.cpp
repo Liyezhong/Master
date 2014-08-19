@@ -854,7 +854,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     const quint16 TargetDropRange = 6;
     const quint16 OverTemperature = 135;
 
-    const quint16 MinTemperature = 110;
+    const quint16 MinTemperature = 105;
     const quint16 MaxTemperature = 130;
     const quint16 ExchangeTemperature = 110;
 
@@ -977,157 +977,6 @@ ERROR_EXIT:
     return -1;
 }
 
-#if 0
-qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating11()
-{
-    const quint16 LSENSOR_PID_MAXTEMP_NORMAL = 120;  //Degrees
-    const quint16 LSENSOR_PID_KC_NORMAL = 1212;
-    const quint16 LSENSOR_PID_TI_NORMAL = 1000;
-    const quint16 LSENSOR_PID_TD_NORMAL = 80;
-
-    const quint16 LSENSOR_PID_MAXTEMP_SLOW = 120;  //Degrees
-    const quint16 LSENSOR_PID_KC_SLOW = 200;
-    const quint16 LSENSOR_PID_TI_SLOW = 1000;
-    const quint16 LSENSOR_PID_TD_SLOW = 0;
-
-//    const int TEST_LSENSOR_TIMEOUT = 60;
-//    const qreal TEST_LSENSOR_TEMP_TOLERANCE = 2;
-//    const qreal LSensorTemp = 95;  // target temperture
-//    const qreal LSensorTempHigh = LSensorTemp + 10;
-//    const quint8 LSensorTempChange = 10;   // Slope temp
-
-    int remainHeatCount = 2;
-    int totalTime = 0;
-    int ret = 0;
-    Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
-
-    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
-
-    QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
-    qreal tgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble();
-    //qreal deptLow = p_TestCase->GetParameter("DepartureLow").toDouble();
-    //qreal deptHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
-    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
-    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
-
-
-    Service::ModuleTestStatus testStat;
-//    testStat.insert("TargetTemp", QString("%1").arg(LSensorTemp));
-//    testStat.insert("Duration", QTime().addSecs(TEST_LSENSOR_TIMEOUT).toString("hh:mm:ss"));
-    testStat.insert("TargetTemp", QString("%1").arg(tgtTemp));
-    testStat.insert("Duration", durTime.toString());
-
-    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second()+1;
-    int waitSeconds = 0;
-    int readyStatus = -1;
-    qreal curTemp = 0;
-    qreal prevTemp = 0;
-
-    qreal temp = 0;
-    int num = 10;
-    while(num) {
-        temp = mp_TempLSensor->GetTemperature();
-        if (temp == -1) {
-            mp_Utils->Pause(100);
-            num--;
-        }
-        else {
-            break;
-        }
-    }
-
-    SetFailReason(Id, "");
-    if (temp <ambLow || temp > ambHigh) {
-        ret = -1;
-        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(temp).arg(ambLow).arg(ambHigh);
-        SetFailReason(Id, FailureMsg);
-        p_TestCase->SetStatus(false);
-        goto EXIT;
-    }
-
-    p_TestCase->AddResult("UsedTime", "00:00:00");
-    p_TestCase->AddResult("TargetTemp", QString("%1").arg(tgtTemp));
-
-HEATING_START:
-    mp_TempLSensor->StopTemperatureControl();
-    if (remainHeatCount == 2) {
-        mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
-                                      LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
-        mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
-    }
-    else {
-        mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
-                                      LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
-        mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
-        mp_Utils->Pause(1000);
-    }
-    //mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-
-
-    waitSeconds = duration;
-    readyStatus = -1;
-    curTemp  = 0;
-    prevTemp = 0;
-
-    if (remainHeatCount == 1) {
-        waitSeconds -= totalTime;
-    }
-
-    while (!m_UserAbort && waitSeconds) {
-        QTime EndTime = QTime().currentTime().addSecs(1);
-
-        ++ totalTime;
-        curTemp = mp_TempLSensor->GetTemperature();
-        if (curTemp > tgtTemp) {
-            readyStatus = 1;
-            break;
-        }
-
-        if (curTemp != -1) {
-            prevTemp = curTemp;
-            testStat.insert("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
-            testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
-            emit RefreshTestStatustoMain(testCaseName, testStat);
-        }
-
-
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        mp_Utils->Pause(MSec);
-
-        -- waitSeconds;
-    }
-    if (readyStatus == -1) {
-        mp_TempLSensor->StopTemperatureControl();
-        if (m_UserAbort) {
-            p_TestCase->AddResult("FailReason", "Abort");
-            m_UserAbort = false;
-            remainHeatCount = 0;
-        }
-        else {
-            QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curTemp).arg(tgtTemp).arg(duration);
-            SetFailReason(Id, failMsg);
-            p_TestCase->SetStatus(false);
-            qDebug() << "Level Sensor heating error!";
-        }
-        ret = -1;
-        goto EXIT;
-    }
-
-    -- remainHeatCount;
-    if (remainHeatCount == 1) {
-        goto HEATING_START;
-    }
-
-EXIT:
-    p_TestCase->AddResult("TargetTemp", QString("%1").arg(tgtTemp));
-    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp == -1 ? prevTemp : curTemp));
-    p_TestCase->AddResult("Duration", durTime.toString());
-    p_TestCase->AddResult("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
-    return ret;
-}
-#endif
-
 qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 {
 
@@ -1201,6 +1050,190 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     // Tell the operator to close the retort lid
     return result;
 }
+
+qint32 ManufacturingTestHandler::TestRetortHeatingWater()
+{
+    Service::ModuleTestCaseID Id = Service::RETORT_HEATING_WITH_WATER;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    int Position = 0;
+    int Ret = 0;
+    Service::ModuleTestStatus Status;
+
+    Position = p_TestCase->GetParameter("Position").toInt();
+
+    EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
+    mp_MotorRV->MoveToInitialPosition();
+
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
+    mp_MotorRV->MoveToTubePosition(Position);
+
+    EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
+    Ret = HeatingLevelSensor();
+    if (Ret == -1) {
+        qDebug()<<"Fail to heat level sensor";
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR_FAILED);
+        return -1;
+    }
+
+    mp_DigitalOutputMainRelay->SetHigh();
+
+    EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
+    Ret = mp_PressPump->Sucking();
+
+    mp_TempLSensor->StopTemperatureControl();
+
+    if (Ret != SUCKING_RET_OK) {
+        // if failed, then draining
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
+        mp_PressPump->Draining();
+
+        p_TestCase->SetStatus(false);
+        return -1;
+    }
+    else {
+        QString CurrentTempSideValue;
+        QString CurrentTempBottomValue1;
+        QString CurrentTempBottomValue2;
+        QString UsedTime;
+
+        // move to sealing positioin
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
+        mp_MotorRV->MoveToSealPosition(Position);
+        mp_PressPump->ReleasePressure();
+
+        // tell operator to put the external sensor to retort.
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM);
+        // wait for the confirm of operator
+        while(!m_Continue && !m_UserAbort) {
+            mp_Utils->Pause(100);
+        }
+        if (m_Continue == true) {
+            m_Continue = false;
+        }
+
+        // begin heating.
+        qreal TargetTempSide = p_TestCase->GetParameter("SideTargetTemp").toFloat();
+        qreal TargetTempBottom = p_TestCase->GetParameter("BottomTargetTemp").toFloat();
+        qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toFloat();
+        qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toFloat();
+        QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+        qreal CurrentTempSide(0);
+        qreal CurrentTempBottom1(0);
+        qreal CurrentTempBottom2(0);
+
+        int WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
+
+        int SumSec = WaitSec;
+        qDebug()<<"UserAbort="<<m_UserAbort<<" WaitSec="<<WaitSec;
+        if (m_UserAbort == true) {
+            goto EXIT_TEST_RETORT_HEATING_WATER;
+        }
+
+        mp_TempRetortBottom->StopTemperatureControl();
+        mp_TempRetortSide->StopTemperatureControl();
+
+        mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
+        mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
+
+        while(!m_UserAbort && WaitSec) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
+
+            if (WaitSec == SumSec) {
+                Status.clear();
+                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
+                Status.insert("TargetTemp", TargetTempStr);
+
+                qDebug()<<"TargetTemp="<<TargetTempStr;
+
+                QString Duration = p_TestCase->GetParameter("DurationTime");
+                Status.insert("Duration", Duration);
+                p_TestCase->AddResult("Duration", Duration);
+                p_TestCase->AddResult("TargetTemp", TargetTempStr);
+            }
+
+            CurrentTempSide = mp_TempRetortSide->GetTemperature(0);
+            CurrentTempBottom1 = mp_TempRetortBottom->GetTemperature(0);
+            CurrentTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
+
+            if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
+                    CurrentTempBottom2 == -1) {
+                mp_Utils->Pause(1000);
+                WaitSec--;
+                qDebug()<<CurrentTempBottom1<<" "<<CurrentTempBottom2<<" "<<CurrentTempSide;
+                continue;
+            }
+
+            CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
+            CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
+            CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
+            UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
+
+            Status.insert("UsedTime", UsedTime);
+            Status.insert("CurrentTempSide", CurrentTempSideValue);
+            Status.insert("CurrentTempBottom1", CurrentTempBottomValue1);
+            Status.insert("CurrentTempBottom2", CurrentTempBottomValue2);
+
+            emit RefreshTestStatustoMain(TestCaseName, Status);
+
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            mp_Utils->Pause(MSec);
+
+            WaitSec--;
+        }
+
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+        mp_TempRetortSide->StopTemperatureControl();
+        mp_TempRetortBottom->StopTemperatureControl();
+
+        mp_DigitalOutputMainRelay->SetLow();
+
+
+        p_TestCase->AddResult("UsedTime", UsedTime);
+        p_TestCase->AddResult("CurrentTempSide", CurrentTempSideValue);
+        p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottomValue1);
+        p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottomValue2);
+
+        if (!m_UserAbort) {
+            // wait operator input value of external sensor
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM2);
+            while( !m_Continue && !m_UserAbort) {
+                mp_Utils->Pause(1000);
+            }
+            if (m_Continue == true) {
+                m_Continue = false;
+            }
+        }
+
+
+EXIT_TEST_RETORT_HEATING_WATER:
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
+        mp_MotorRV->MoveToTubePosition(Position);
+
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
+        mp_PressPump->Draining();
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+        if (m_UserAbort) {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
+            p_TestCase->SetStatus(false);
+            return 1;
+        }
+
+        EmitRefreshTestStatustoMain(TestCaseName, INFORM_DONE);
+
+        return 0;
+    }
+}
+
 
 qint32 ManufacturingTestHandler::TestSystemSpeaker()
 {
@@ -2762,189 +2795,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
     return 1;
 
-}
-
-qint32 ManufacturingTestHandler::TestRetortHeatingWater()
-{
-    Service::ModuleTestCaseID Id = Service::RETORT_HEATING_WITH_WATER;
-
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-
-    int Position = 0;
-    int Ret = 0;
-    Service::ModuleTestStatus Status;
-
-    Position = p_TestCase->GetParameter("Position").toInt();
-
-    EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    mp_MotorRV->MoveToInitialPosition();
-
-    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
-    mp_MotorRV->MoveToTubePosition(Position);
-
-    EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
-    Ret = HeatingLevelSensor();
-    if (Ret == -1) {
-        qDebug()<<"Fail to heat level sensor";
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR_FAILED);
-        return -1;
-    }
-
-    mp_DigitalOutputMainRelay->SetHigh();
-
-    EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
-    Ret = mp_PressPump->Sucking();
-
-    mp_TempLSensor->StopTemperatureControl();
-
-    if (Ret != SUCKING_RET_OK) {
-        // if failed, then draining
-        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-        mp_PressPump->Draining();
-
-        p_TestCase->SetStatus(false);
-        return -1;
-    }
-    else {
-        QString CurrentTempSideValue;
-        QString CurrentTempBottomValue1;
-        QString CurrentTempBottomValue2;
-        QString UsedTime;
-
-        // move to sealing positioin
-        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
-        mp_MotorRV->MoveToSealPosition(Position);
-        mp_PressPump->ReleasePressure();
-
-        // tell operator to put the external sensor to retort.
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM);
-        // wait for the confirm of operator
-        while(!m_Continue && !m_UserAbort) {
-            mp_Utils->Pause(100);
-        }
-        if (m_Continue == true) {
-            m_Continue = false;
-        }
-
-        // begin heating.
-        qreal TargetTempSide = p_TestCase->GetParameter("SideTargetTemp").toFloat();
-        qreal TargetTempBottom = p_TestCase->GetParameter("BottomTargetTemp").toFloat();
-        qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toFloat();
-        qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toFloat();
-        QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
-        qreal CurrentTempSide(0);
-        qreal CurrentTempBottom1(0);
-        qreal CurrentTempBottom2(0);
-
-        int WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
-
-        int SumSec = WaitSec;
-        qDebug()<<"UserAbort="<<m_UserAbort<<" WaitSec="<<WaitSec;
-        if (m_UserAbort == true) {
-            goto EXIT_TEST_RETORT_HEATING_WATER;
-        }
-
-        mp_TempRetortBottom->StopTemperatureControl();
-        mp_TempRetortSide->StopTemperatureControl();
-
-        mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
-        mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
-
-        while(!m_UserAbort && WaitSec) {
-            QTime EndTime = QTime().currentTime().addSecs(1);
-
-            if (WaitSec == SumSec) {
-                Status.clear();
-                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
-                Status.insert("TargetTemp", TargetTempStr);
-
-                qDebug()<<"TargetTemp="<<TargetTempStr;
-
-                QString Duration = p_TestCase->GetParameter("DurationTime");
-                Status.insert("Duration", Duration);
-                p_TestCase->AddResult("Duration", Duration);
-                p_TestCase->AddResult("TargetTemp", TargetTempStr);
-            }
-
-            CurrentTempSide = mp_TempRetortSide->GetTemperature(0);
-            CurrentTempBottom1 = mp_TempRetortBottom->GetTemperature(0);
-            CurrentTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
-
-            if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
-                    CurrentTempBottom2 == -1) {
-                mp_Utils->Pause(1000);
-                WaitSec--;
-                qDebug()<<CurrentTempBottom1<<" "<<CurrentTempBottom2<<" "<<CurrentTempSide;
-                continue;
-            }
-
-            CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
-            CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
-            CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
-            UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
-
-
-            Status.insert("UsedTime", UsedTime);
-            Status.insert("CurrentTempSide", CurrentTempSideValue);
-            Status.insert("CurrentTempBottom1", CurrentTempBottomValue1);
-            Status.insert("CurrentTempBottom2", CurrentTempBottomValue2);
-
-            emit RefreshTestStatustoMain(TestCaseName, Status);
-
-            int MSec = QTime().currentTime().msecsTo(EndTime);
-            mp_Utils->Pause(MSec);
-
-            WaitSec--;
-        }
-
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-
-        mp_TempRetortSide->StopTemperatureControl();
-        mp_TempRetortBottom->StopTemperatureControl();
-
-        mp_DigitalOutputMainRelay->SetLow();
-
-
-        p_TestCase->AddResult("UsedTime", UsedTime);
-        p_TestCase->AddResult("CurrentTempSide", CurrentTempSideValue);
-        p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottomValue1);
-        p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottomValue2);
-
-        if (!m_UserAbort) {
-            // wait operator input value of external sensor
-            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-            EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM2);
-            while( !m_Continue && !m_UserAbort) {
-                mp_Utils->Pause(1000);
-            }
-            if (m_Continue == true) {
-                m_Continue = false;
-            }
-        }
-
-
-EXIT_TEST_RETORT_HEATING_WATER:
-        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
-        mp_MotorRV->MoveToTubePosition(Position);
-
-        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-        mp_PressPump->Draining();
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-
-        if (m_UserAbort) {
-            m_UserAbort = false;
-            p_TestCase->AddResult("FailReason", "Abort");
-            p_TestCase->SetStatus(false);
-            return 1;
-        }
-
-        EmitRefreshTestStatustoMain(TestCaseName, INFORM_DONE);
-
-        return 0;
-    }
 }
 
 qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
