@@ -2752,6 +2752,39 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
 
 }
 
+void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID)
+{
+    LogDebug("Send cmd to DCL to Fill in Rs_Tissue_Protect");
+    CmdALFilling* cmd  = new CmdALFilling(500, this);
+    cmd->SetDelayTime(0);
+
+    // For paraffin, Insufficient Check is NOT needed.
+    if (272 == m_CurrentScenario)
+    {
+        cmd->SetEnableInsufficientCheck(false);
+    }
+    else
+    {
+        cmd->SetEnableInsufficientCheck(true);
+    }
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, StationID, true, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::StopFillRsTissueProtect(const QString& StationID)
+{
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,StationID, false, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
 bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 interval)
 {
     ReportError_t reportError1;

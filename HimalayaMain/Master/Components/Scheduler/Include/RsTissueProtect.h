@@ -155,27 +155,6 @@ private slots:
     /****************************************************************************/
     void OnMoveToTube();
 
-
-    /****************************************************************************/
-    /*!
-     *  \brief  slot for Filling the safe reagent
-     *  \param  void
-     *  \return void
-     *
-     */
-    /****************************************************************************/
-    void OnFill();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  slot for stop Filling the safe reagent
-     *  \param  void
-     *  \return void
-     *
-     */
-    /****************************************************************************/
-    void OnStopFill();
-
     /****************************************************************************/
     /*!
      *  \brief  slot for moving to safe reagent sealing position
@@ -196,6 +175,7 @@ private:
     QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
     QString m_StationID;                                    //!< Station ID
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
+    quint8 m_FillSeq;                                       //!< Sequence of Filling
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
 private:

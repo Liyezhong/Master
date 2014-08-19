@@ -733,7 +733,7 @@ protected:
          *  \param  PowerFailStage
          */
         /****************************************************************************/
-    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
+        virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 
         /****************************************************************************/
         /**
@@ -1135,6 +1135,33 @@ protected:
          */
         /****************************************************************************/
         inline bool HasParaffinReagent() const { return m_hasParaffin;  }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Filling for Rs_Tissue_Protect
+         *  \param  QString StationID
+         *  \return void
+         */
+        /****************************************************************************/
+        void FillRsTissueProtect(const QString& StationID);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Send Stop Filling for Rs_Tissue_Protect to GUI
+         *  \param  QString StationID
+         *  \return void
+         */
+        /****************************************************************************/
+        void StopFillRsTissueProtect(const QString& StationID);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Get the command list from Device Control
+         *  \param  void
+         *  \return Reference of received command list
+         */
+        /****************************************************************************/
+        QVector<RecvCommand_t>& GetRecvCommandList() { return m_RecvCommandList; }
 
     public slots:
 

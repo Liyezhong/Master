@@ -55,12 +55,13 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
     CONNECTSIGNALSLOT(mp_MoveToTube.data(), entered(), this, OnMoveToTube());
-    CONNECTSIGNALSLOT(mp_Filling.data(), entered(), this, OnFill());
-    CONNECTSIGNALSLOT(mp_Filling.data(), exited(), this, OnStopFill());
+    //CONNECTSIGNALSLOT(mp_Filling.data(), entered(), this, OnFill());
+    //CONNECTSIGNALSLOT(mp_Filling.data(), exited(), mp_SchedulerController, OnStopFill());
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
 
     mp_StateMachine->start();
     m_MoveToTubeSeq = 0;
+    m_FillSeq = 0;
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
     }
@@ -102,10 +103,6 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
 
 void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    qreal tempLevelSensor = 0.0;
-    quint16 retValue = 0;
-    RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
-    RVPosition_t sealPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	switch (currentState)
     {
@@ -118,6 +115,32 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
+            quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
+            QVector<RecvCommand_t>& RecvCommandList = mp_SchedulerController->GetRecvCommandList();
+            bool  cmdFound = false;
+            // Check if Filling command has completed or not
+            if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
+            {
+                for (int i=0; i< RecvCommandList.size(); ++i)
+                {
+                    if ("Scheduler::ALFilling" == RecvCommandList[i].cmdName)
+                    {
+                        QVector<RecvCommand_t> emptyVector;
+                        RecvCommandList.swap(emptyVector); // empty the list
+                        cmdFound = true;
+                        break;
+                    }
+                }
+            }
+            if (false == cmdFound)
+            {
+                break; //just wait
+            }
+            else
+            {
+                // continue to stop Level Sensor
+            }
+
             if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
             {
                 emit MoveToTube();
@@ -142,6 +165,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 else
                 {
                     m_MoveToTubeSeq = 0;
+                    m_FillSeq = 0;
                     m_LevelSensorSeq = 0;
                     m_MoveToSealSeq = 0;
                     TasksDone(false);
@@ -150,6 +174,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
+            RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
             if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
                 m_MoveToTubeSeq = 0;
@@ -168,6 +193,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
             {
                 m_MoveToTubeSeq = 0;
+                m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
                 TasksDone(false);
@@ -179,8 +205,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
-            tempLevelSensor = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
-            retValue = mp_SchedulerController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
+            qreal tempLevelSensor = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+            quint16 retValue = mp_SchedulerController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
             if (0 == retValue)
             {
                 // Do nothing
@@ -188,6 +214,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             else if (1 == retValue)
             {
                 m_MoveToTubeSeq = 0;
+                m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
                 TasksDone(false);
@@ -201,25 +228,36 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         break;
     case FILLING:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Filling state");
-        if( "Scheduler::ALFilling" == cmdName)
+        if (0 == m_FillSeq)
         {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            mp_SchedulerController->FillRsTissueProtect(m_StationID);
+            m_FillSeq++;
+        }
+        else
+        {
+            if( "Scheduler::ALFilling" == cmdName)
             {
-                mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
-                emit MoveToSealing();
-            }
-            else
-            {
-                mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
-                m_MoveToTubeSeq = 0;
-                m_LevelSensorSeq = 0;
-                m_MoveToSealSeq = 0;
-                TasksDone(false);
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
+                    mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
+                    m_FillSeq = 0;
+                    emit MoveToSealing();
+                }
+                else
+                {
+                    mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
+                    m_MoveToTubeSeq = 0;
+                    m_FillSeq = 0;
+                    m_LevelSensorSeq = 0;
+                    m_MoveToSealSeq = 0;
+                    TasksDone(false);
+                }
             }
         }
 		break;
     case MOVE_TO_SEALING:
-        mp_SchedulerController->LogDebug(QString("RS_Safe_Reagent, in Move_To_Seal state, target seal position is %1").arg(sealPos));
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
         {
             if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
@@ -231,6 +269,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 else
                 {
                     m_MoveToTubeSeq = 0;
+                    m_FillSeq = 0;
                     m_LevelSensorSeq = 0;
                     m_MoveToSealSeq = 0;
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal failed");
@@ -240,10 +279,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("Actual seal position is %1").arg(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV));
+            RVPosition_t sealPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
             if (sealPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
                 m_MoveToTubeSeq = 0;
+                m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal success");
@@ -390,40 +430,6 @@ void CRsTissueProtect::OnMoveToTube()
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
-}
-
-void CRsTissueProtect::OnFill()
-{
-    quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
-    mp_SchedulerController->LogDebug("Send cmd to DCL to Fill");
-    CmdALFilling* cmd  = new CmdALFilling(500, mp_SchedulerController);
-    cmd->SetDelayTime(0);
-
-    // For paraffin, Insufficient Check is NOT needed.
-    if (272 == Scenario)
-    {
-        cmd->SetEnableInsufficientCheck(false);
-    }
-    else
-    {
-        cmd->SetEnableInsufficientCheck(true);
-    }
-    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
-
-    // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, m_StationID, true, true));
-    Q_ASSERT(commandPtr);
-    Global::tRefType Ref = mp_SchedulerController->GetNewCommandRef();
-    mp_SchedulerController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-}
-
-void CRsTissueProtect::OnStopFill()
-{
-    // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, m_StationID, false, true));
-    Q_ASSERT(commandPtr);
-    Global::tRefType Ref = mp_SchedulerController->GetNewCommandRef();
-    mp_SchedulerController->SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void CRsTissueProtect::OnMoveToSeal()
