@@ -97,7 +97,7 @@ public:
     void LoadCommonComponenetsOne();    // System Tracking and Log Viewer Tab
     void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
     void ServiceGuiInit();
-    void ManufacturingGuiInit();
+    void ManufacturingGuiInit(bool bReInit = false);
     void InitManufacturingDiagnostic();
   /****************************************************************************/
     /**
@@ -178,32 +178,6 @@ private:
     MainMenu::CMessageDlg *mp_MessageBox;
     Core::CCalibrationHanlder *mp_CalibrationHandler;
     QString m_CurrentUserMode;                                              //!< Stores current user mode
-
-    QString m_strDate;
-    QString m_strTimeStamp;
-    QString m_strDescription;
-    QString m_strError;
-    QString m_strRecoveryActionText;
-    QString m_strType;
-    QString m_strInitSystem;
-    QString m_strMissXMLFile;
-    QString m_strXMLFileError;
-
-    QString m_strServiceUpdates;
-    QString m_strSettings;
-    QString m_strSystem;
-    QString m_strDataManagement;
-    QString m_strFirmwareUpdate;
-    QString m_strLogViewer;
-    QString m_strSoftwareLog;
-    QString m_strServiceLogViewer;
-    QString m_strRecoveryAction;
-    QString m_strSystemLogViewer;
-    QString m_strSystemTracking;
-    QString m_strViewHistory;
-    QString m_strModifyConfig;
-    QString m_strCurrentConfig;
-    QString m_strMainWindow;
 
     QString m_DeviceName;                                                  //!< Name of the device
     QTimer m_WindowStatusResetTimer;                                        //!< Timer for Window status reset

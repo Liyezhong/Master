@@ -115,7 +115,7 @@ CManufacturingDiagnosticsHandler::~CManufacturingDiagnosticsHandler()
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
 {
-//    mp_DiagnosticsManufGroup->Clear();
+    mp_DiagnosticsManufGroup->Clear();
     //Diagnostics
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_DisplayManuf);
