@@ -70,6 +70,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include <unistd.h>
 #include <Global/Include/SystemPaths.h>
+#include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
 
 
 using namespace DataManager;
@@ -171,6 +172,10 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
                       this, DevProcDestroyed())
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
+
+    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
+                     this, ResetActiveCarbonFilterLifetime());
+
     m_TickTimer.setInterval(500);
 
     //command queue reset
@@ -198,6 +203,11 @@ void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode
 {
     //send command
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(3000, ModuleInfo, DeviceType, false)));
+}
+
+void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime()
+{
+    m_SchedulerCommandProcessor->ResetActiveCarbonFilterLifetime();
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -1764,7 +1774,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     }
     else
     {
-        warningthreshold = 5 * 30 * 24;
+        warningthreshold = 45 * 24;
     }
 
     if (activeCarbonHours >= warningthreshold)

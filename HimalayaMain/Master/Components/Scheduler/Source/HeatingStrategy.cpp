@@ -503,12 +503,17 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     if ("LevelSensor" == HeaterName)
     {
+        if(HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
+        {
+            return 1;
+        }
         if ((now-m_RTLevelSensor.heatingStartTime) >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
         {
             return 1; //failed
         }
 
-        if (HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature)
+        if (HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature
+                && HWTemp < m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
         {
             return 2; //pass
         }

@@ -35,8 +35,8 @@
 
 namespace Programs {
 
-#define MAX_PROGRAMS    12 //!< Maximum number of programs
-#define MAX_USER_PROGRAMS 9 //!< Maximum number of User Programs
+#define MAX_PROGRAMS    13 //!< Maximum number of programs
+#define MAX_USER_PROGRAMS 10 //!< Maximum number of User Programs
 
 /****************************************************************************/
 /*!
@@ -470,7 +470,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
             }
         }
         m_UserProgramCount = GetNumberOfUserPrograms();
-        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() >= MAX_PROGRAMS || m_UserProgramCount>=MAX_USER_PROGRAMS) {
+        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() >= MAX_PROGRAMS || m_UserProgramCount>= MAX_USER_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
         }

@@ -24,7 +24,7 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QMetaProperty>
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 
 /****************************************************************************/
 /*!

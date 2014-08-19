@@ -20,8 +20,8 @@
 
 
 #ifdef PRE_ALFA_TEST
-#include "WrapperFmPressureControl.h"
-#include "WrapperUtils.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
 #include <QTimer>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>

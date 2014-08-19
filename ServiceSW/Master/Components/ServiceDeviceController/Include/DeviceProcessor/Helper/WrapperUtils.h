@@ -25,7 +25,7 @@
 #define WRAPPERUTILS_H
 
 #include <QObject>
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 
 
 /****************************************************************************/
@@ -45,7 +45,7 @@ public:
      *
      */
     /****************************************************************************/
-    inline WrapperUtils(QObject *Parent): WrapperBase("Script", Parent) {};
+    inline WrapperUtils(QObject *Parent): WrapperBase("Script", Parent) {}
 
 public slots:
     void Pause(quint32 MilliSeconds);

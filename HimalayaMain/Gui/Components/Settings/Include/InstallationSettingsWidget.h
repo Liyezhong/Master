@@ -73,7 +73,23 @@ public:
      */
     /****************************************************************************/
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of SetDeviceConfig
+     *
+     *  \param p_DeviceConfig = the device config
+     *
+     */
+    /****************************************************************************/
     void SetDeviceConfig(DataManager::CDeviceConfiguration *p_DeviceConfig);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of SetSWConfig, set version information
+     *
+     *  \param p_SWVersion = the software version
+     *
+     */
+    /****************************************************************************/
     void SetSWConfig(DataManager::CSWVersionList *p_SWVersion);
     /****************************************************************************/
     /*!

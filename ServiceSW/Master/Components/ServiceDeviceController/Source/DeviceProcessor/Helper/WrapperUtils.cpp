@@ -22,12 +22,12 @@
 /****************************************************************************/
 #include <QTimer>
 #include <QEventLoop>
-#include "WrapperUtils.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
 #include <QProcess>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>
 
-
+//lint -e1039
 
 /****************************************************************************/
 /*!
@@ -146,7 +146,7 @@ void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName
         }
         else
         {
-            Log(tr("You input empty folder name, please re-enter"));
+            this->Log(tr("You input empty folder name, please re-enter"));
         }
     }
 }

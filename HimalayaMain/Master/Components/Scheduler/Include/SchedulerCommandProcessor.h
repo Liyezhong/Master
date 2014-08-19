@@ -160,7 +160,23 @@ public:
      */
     /****************************************************************************/
     virtual void ShutDownDevice() = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifySavedServiceInfor
+     *
+     *  \param deviceType =  device type
+     *
+     *  \return from void
+     */
+    /****************************************************************************/
     virtual void NotifySavedServiceInfor(const QString& deviceType) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetActiveCarbonFilterLifetime
+     *
+     */
+    /****************************************************************************/
+    virtual void ResetActiveCarbonFilterLifetime() = 0;
     /****************************************************************************/
     /*!
      *  \brief  Get report error from salve module
@@ -199,6 +215,8 @@ signals:
     void SigShutDownDevice();
 
     void SigNotifySavedServiceInfor(const QString& deviceType);
+
+    void SigResetActiveCarbonFilterLifetime();
     /************************************************************************************/
     /*!
      *  \brief  Forward AirLiquid's 'level sensor status change to 1' to Heating strategy
@@ -305,6 +323,10 @@ public slots:
         this->OnNotifySavedServiceInfor4Slot(deviceType);
     }
 
+    virtual void OnResetActiveCarbonFilterLifetime()
+    {
+        this ->OnResetActiveCarbonFilterLifetime4Slot();
+    }
 
 private:
 
@@ -391,6 +413,8 @@ private:
     virtual void OnNewCmdAdded4Slot() = 0;
     virtual void OnShutDownDevice4Slot()= 0 ;
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
+    virtual void OnResetActiveCarbonFilterLifetime4Slot() = 0;
+
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
 };
@@ -463,7 +487,23 @@ public:
      */
     /****************************************************************************/
     virtual void ShutDownDevice();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifySavedServiceInfor
+     *
+     *  \param deviceType = device type
+     *
+     */
+    /****************************************************************************/
     virtual void NotifySavedServiceInfor(const QString& deviceType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetActiveCarbonFilterLifetime
+     *
+     */
+    /****************************************************************************/
+    virtual void ResetActiveCarbonFilterLifetime();
+
     /****************************************************************************/
     /*!
      *  \brief  Get report error from salve module
@@ -560,6 +600,7 @@ private:
     virtual void OnNewCmdAdded4Slot();
     virtual void OnShutDownDevice4Slot();
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
+    virtual void OnResetActiveCarbonFilterLifetime4Slot();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ExecuteCmd

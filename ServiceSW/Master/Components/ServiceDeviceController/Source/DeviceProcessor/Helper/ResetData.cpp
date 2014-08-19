@@ -21,8 +21,8 @@
  */
 /****************************************************************************/
 
-#include "ResetData.h"
-#include "WrapperBase.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/ResetData.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include <QDebug>

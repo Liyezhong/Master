@@ -135,6 +135,7 @@ void CCurrentConfiguration::changeEvent(QEvent *p_Event)
     QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
     case QEvent::LanguageChange:
+        mp_Ui->retranslateUi(this);
         RetranslateUI();
         break;
     default:

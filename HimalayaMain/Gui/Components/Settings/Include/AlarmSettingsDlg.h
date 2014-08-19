@@ -134,14 +134,13 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  signal for alarm setting changing
-     *  \param  settings = the user setting
+     *  \param  Settings = the user setting
      */
     /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
     /****************************************************************************/
     /*!
      *  \brief  play test tone
-     *  \param  settings = the user setting
      *  \param  volume = volume value
      *  \param  sound = which sound number
      *  \param isAlarmAudio = it is alarm or note audio file

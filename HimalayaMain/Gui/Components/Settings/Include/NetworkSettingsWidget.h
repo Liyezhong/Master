@@ -44,8 +44,8 @@ typedef enum {
 
 //!< Setting type
 typedef enum {
-    IP_ADDRESS = 1,
-    NETWORK_PORT
+    IP_ADDRESS = 1, //!< ip address
+    NETWORK_PORT    //!< network port
 } SettingType_t;
 
 

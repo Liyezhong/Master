@@ -101,5 +101,10 @@ QMap<QString, QString>& CTestCase::GetResult()
     return m_Results;
 }
 
+void CTestCase::ResetResult()
+{
+    m_Results.clear();
+}
+
 } //end of namespace Datamanager
 

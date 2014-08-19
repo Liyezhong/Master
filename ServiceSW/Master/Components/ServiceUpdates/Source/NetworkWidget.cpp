@@ -153,7 +153,7 @@ void CNetworkWidget::changeEvent(QEvent *p_Event)
     case QEvent::LanguageChange:
         //Commented below line because it calls retranslateUi of ui_NetworkSettingsWidget.h
         // which sets the buttons(UserNameButton, Password, IPAddress and IP Port) text to default values.
-       // mp_Ui->retranslateUi(this);
+        mp_Ui->retranslateUi(this);
         RetranslateUI();
         break;
     default:
@@ -284,7 +284,7 @@ void CNetworkWidget::OnOkClicked(QString EnteredText)
             }
             mp_Ui->proxyIpAddressButton->setText(m_ProxyIp);
         }
-        else if (m_IpType = SERVER_IP) {
+        else if (m_IpType == SERVER_IP) {
             if (m_ServerIp.length() == 0) {
                 m_ServerIp = EnteredText;
             }

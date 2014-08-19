@@ -67,7 +67,8 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(this, LogOnSystem(), mp_MainWindow, show());
 
     // Initialize Strings
-    RetranslateUI();
+    //RetranslateUI();
+    Service::CMessageString::RetranslateUI();
 
     m_CurrentUserMode = QString("");
 
@@ -174,6 +175,11 @@ CStartup::CStartup() : QObject(),
     mp_DataManagement = new ServiceUpdates::CDataManagement;
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
     mp_UpdateSystem = new ServiceUpdates::CSystem(mp_MainWindow);
+
+    (void)connect(mp_Setting,
+                  SIGNAL(SetLanguage(PlatformService::Languages_t)),
+                  mp_ServiceConnector,
+                  SLOT(SetLanguage(PlatformService::Languages_t)));
 
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
@@ -378,11 +384,17 @@ qint32 CStartup::NetworkInit()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsOne()
 {
-    mp_MainWindow->setWindowTitle(m_strMainWindow);
+    // Clear All items
+    mp_MainWindow->Clear();
+    mp_SystemTrackingGroup->Clear();
+    mp_LogViewerGroup->Clear();
+
+    mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8));
     mp_MainWindow->setFixedSize(800, 600);
 
     // System Tracking
-    mp_SystemTrackingGroup->AddPanel(m_strCurrentConfig, mp_CurrentConfiguration);
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Current Config", 0, QApplication::UnicodeUTF8)
+                                     , mp_CurrentConfiguration);
 
     //mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
     mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControlConfig);
@@ -391,18 +403,26 @@ void CStartup::LoadCommonComponenetsOne()
     mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV, mp_RotaryValveConfig);
     mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemConfig);
 
-    mp_SystemTrackingGroup->AddPanel(m_strModifyConfig, mp_AddModifyConfigGroup);
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Add/Modify Config", 0, QApplication::UnicodeUTF8)
+                                     , mp_AddModifyConfigGroup);
 
-    mp_SystemTrackingGroup->AddPanel(m_strViewHistory, mp_ViewHistory);
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8)
+                                     , mp_ViewHistory);
 
-    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, m_strSystemTracking);
+    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
+                                                                                0, QApplication::UnicodeUTF8));
 
     // Log Viewer
-    mp_LogViewerGroup->AddPanel(m_strSystemLogViewer, mp_SystemLogViewer);
-    mp_LogViewerGroup->AddPanel(m_strRecoveryAction, mp_RecoveryAction);
-    mp_LogViewerGroup->AddPanel(m_strServiceLogViewer, mp_ServiceLogViewer);
-    mp_LogViewerGroup->AddPanel(m_strSoftwareLog, mp_SoftwareUpdateLogViewer);
-    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, m_strLogViewer);
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
+                                , mp_SystemLogViewer);
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8)
+                                , mp_RecoveryAction);
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8)
+                                , mp_ServiceLogViewer);
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8)
+                                , mp_SoftwareUpdateLogViewer);
+    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
+                                                                           0, QApplication::UnicodeUTF8));
 
 }
 
@@ -413,14 +433,21 @@ void CStartup::LoadCommonComponenetsOne()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsTwo()
 {
+
     mp_CalibrationHandler->LoadCalibrationGUIComponenets();
 
     // Service update
-    mp_ServiceUpdateGroup->AddPanel(m_strFirmwareUpdate, mp_FirmwareUpdate);
-    mp_ServiceUpdateGroup->AddPanel(m_strDataManagement, mp_DataManagement);
-    mp_ServiceUpdateGroup->AddPanel(m_strSystem, mp_UpdateSystem);
-    mp_ServiceUpdateGroup->AddSettingsPanel(m_strSettings, mp_Setting);
-    mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, m_strServiceUpdates);
+    mp_ServiceUpdateGroup->Clear();
+    mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "Firmware Update", 0, QApplication::UnicodeUTF8)
+                                    , mp_FirmwareUpdate);
+    mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "Data Management", 0, QApplication::UnicodeUTF8)
+                                    , mp_DataManagement);
+    mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "System", 0, QApplication::UnicodeUTF8)
+                                    , mp_UpdateSystem);
+    mp_ServiceUpdateGroup->AddSettingsPanel( QApplication::translate("Core::CStartup", "Settings", 0, QApplication::UnicodeUTF8)
+                                             , mp_Setting);
+    mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, QApplication::translate("Core::CStartup", "Service Updates",
+                                                                               0, QApplication::UnicodeUTF8));
 
 
 #ifdef Q_WS_QWS
@@ -561,6 +588,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, QApplication::desktop()->screen());
         CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
         (void)pDlgWizardSelectTestOptions->exec();
+
         if (QDialog::Rejected == pDlgWizardSelectTestOptions->result())
         {
             delete pDlgWizardSelectTestOptions;
@@ -622,7 +650,7 @@ void CStartup::InitManufacturingDiagnostic()
  *  \brief Initializes the Manufacturing interface
  */
 /****************************************************************************/
-void CStartup::ManufacturingGuiInit()
+void CStartup::ManufacturingGuiInit(bool bReInit)
 {
     qDebug()<<"CStartup::ManufacturingGuiInit";
 
@@ -637,10 +665,12 @@ void CStartup::ManufacturingGuiInit()
     LoadCommonComponenetsTwo();
 
     if (m_SelfTestFinished == false) {
-        mp_ManaufacturingDiagnosticsHandler->ShowMessage(m_strInitSystem);
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::CStartup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
     }
 
-    //mp_ServiceConnector->SetLanguage(PlatformService::DEUTSCH);
+    if (!bReInit) {
+        mp_ServiceConnector->SetLanguage(PlatformService::CHINESE);
+    }
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 
@@ -700,10 +730,10 @@ int CStartup::FileExistanceCheck()
     if(MissingFileNames.count() > 0)
     {
         mp_MessageBox->setModal(true);
-        mp_MessageBox->SetTitle(m_strMissXMLFile);
+        mp_MessageBox->SetTitle(QApplication::translate("Core::CStartup", "Missing Xml files", 0, QApplication::UnicodeUTF8));
         mp_MessageBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageBox->HideButtons();
-        QString Text = m_strXMLFileError;
+        QString Text = QApplication::translate("Core::CStartup", "The following XML files are not present.<br>", 0, QApplication::UnicodeUTF8);
         for(int i=0; i<MissingFileNames.count(); i++)
         {
             Text.append(MissingFileNames[i]);
@@ -1737,27 +1767,27 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 
         if (FileName.startsWith("Himalaya_Service")) {  // Service log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
-            HeaderLabels.append(m_strDate);
-            HeaderLabels.append(m_strTimeStamp);
-            HeaderLabels.append(m_strDescription);
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
             Columns.append(0);
             Columns.append(3);
         }
         else if (FileName.startsWith("RecoveryActionText")) { // Recovery Action
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO);
-            HeaderLabels.append(m_strError);
-            HeaderLabels.append(m_strDescription);
-            HeaderLabels.append(m_strRecoveryActionText);
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8));
             Columns.append(0);
             Columns.append(1);
             Columns.append(2);
         }
         else if (FileName.startsWith("Himalaya_SW_Update_Events"))  {// SW Update log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO);
-            HeaderLabels.append(m_strDate);
-            HeaderLabels.append(m_strTimeStamp);
-            HeaderLabels.append(m_strType);
-            HeaderLabels.append(m_strDescription);
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
             Columns.append(0);
             Columns.append(3);
             Columns.append(5);
@@ -1786,31 +1816,14 @@ void CStartup::RetranslateUI()
 {
     Service::CMessageString::RetranslateUI();
 
-    m_strDate = QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8);
-    m_strError = QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8);
-    m_strType = QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8);
-    m_strTimeStamp = QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8);
-    m_strDescription = QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8);
-    m_strRecoveryActionText = QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8);
-    m_strInitSystem = QApplication::translate("Core::CStartup", "System is initializing ...", 0, QApplication::UnicodeUTF8);
-    m_strMissXMLFile = QApplication::translate("Core::CStartup", "Missing Xml files", 0, QApplication::UnicodeUTF8);
-    m_strXMLFileError = QApplication::translate("Core::CStartup", "The following XML files are not present.<br>", 0, QApplication::UnicodeUTF8);
-    m_strServiceUpdates = QApplication::translate("Core::CStartup", "Service Updates", 0, QApplication::UnicodeUTF8);
-    m_strSettings = QApplication::translate("Core::CStartup", "Settings", 0, QApplication::UnicodeUTF8);
-    m_strSystem = QApplication::translate("Core::CStartup", "System", 0, QApplication::UnicodeUTF8);
-    m_strDataManagement = QApplication::translate("Core::CStartup", "Data Management", 0, QApplication::UnicodeUTF8);
-    m_strFirmwareUpdate = QApplication::translate("Core::CStartup", "Firmware Update", 0, QApplication::UnicodeUTF8);
-    m_strLogViewer = QApplication::translate("Core::CStartup", "Log Viewer", 0, QApplication::UnicodeUTF8);
-    m_strSoftwareLog = QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8);
-    m_strServiceLogViewer = QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8);
-    m_strRecoveryAction = QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8);
-    m_strSystemLogViewer = QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8);
-    m_strViewHistory = QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8);
-    m_strModifyConfig = QApplication::translate("Core::CStartup", "Add/Modify Config", 0, QApplication::UnicodeUTF8);
-    m_strCurrentConfig = QApplication::translate("Core::CStartup", "Current Config", 0, QApplication::UnicodeUTF8);
-    m_strMainWindow = QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8);
-    m_strSystemTracking = QApplication::translate("Core::CStartup", "System Tracking", 0, QApplication::UnicodeUTF8);
-
+    if (mp_MainWindow->GetSaMUserMode() == "Service")
+    {
+        ServiceGuiInit();
+    }
+    else
+    {
+        ManufacturingGuiInit(true);
+    }
 }
 
 } // end namespace Core

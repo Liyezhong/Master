@@ -32,6 +32,10 @@
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
+//lint -e1013
+//lint -e115
+//lint -e1055
+
 namespace DeviceControl {
 
 /****************************************************************************/

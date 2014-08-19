@@ -20,8 +20,8 @@
  *  does not evidence any actual or intended publication.
  */
 /****************************************************************************/
-#include "ResetData.h"
-#include "WrapperFmDigitalOutput.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/ResetData.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalOutput.h"
 
 /****************************************************************************/
 /*!

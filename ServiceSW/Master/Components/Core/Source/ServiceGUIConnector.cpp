@@ -48,7 +48,7 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
     , mp_ModuleListArchive(NULL)
     , mp_DeviceConfigurationInterface(NULL)
     , mp_ServiceParameters(NULL)
-    , m_Language(PlatformService::US_ENGLISH)
+    //, m_Language(PlatformService::US_ENGLISH)
 {
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
 

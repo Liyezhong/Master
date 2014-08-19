@@ -271,7 +271,7 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_OVEN_TEMP_NO_MATCH                = (QApplication::translate("Service", "Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_RV_TEMP_NO_MATCH                  = (QApplication::translate("Service", "Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH        = (QApplication::translate("Service", "Level Sensor Current Temperature is (%1) which is not in (%2~%3)", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH              = (QApplication::translate("Service", "Retort level sensor current temperature is (%1) which is less than target (%2) in %3 seconds", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH              = (QApplication::translate("Service", "Retort current temperature is (%1 %2 %3) which is not in (%4~%5)", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_TUBE_TEMP_NO_MATCH                = (QApplication::translate("Service", "Tube Current Temperature is (%1) which is not in (%2~%3)", 0, QApplication::UnicodeUTF8));
 	MSG_DEVICECOMMAND_TIMEOUT                         = (QApplication::translate("Service", "ERROR: Device is not responding restart the system!", 0, QApplication::UnicodeUTF8));
 	MSG_MANUFACTURINGTEST_RESULT                      = (QApplication::translate("Service", "Manufacturing Test Result", 0, QApplication::UnicodeUTF8));

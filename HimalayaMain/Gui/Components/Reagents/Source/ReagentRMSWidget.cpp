@@ -47,8 +47,9 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     mp_DataConnector(NULL),
     mp_ReagentList(NULL),
     mp_ModifiyReagentRMSDlg(NULL),
-    mp_Reagent(NULL)
-
+    mp_Reagent(NULL),
+    m_lastSelectRMSMoldeID(-1),
+    m_lastSelectCleaningRMSMoldeID(-1)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("RMS"));
@@ -71,13 +72,27 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
     CONNECTSIGNALSLOT(mp_Ui->btnDelete, clicked(), this, OnDelete());
+
     CONNECTSIGNALSLOT(mp_Ui->radioOff, clicked(), this, OnRMSOFF());
     CONNECTSIGNALSLOT(mp_Ui->radioCassettes, clicked(), this, OnRMSCassettes());
     CONNECTSIGNALSLOT(mp_Ui->radioCycles, clicked(), this, OnRMSCycles());
     CONNECTSIGNALSLOT(mp_Ui->radioDays, clicked(), this, OnRMSDays());
+
+    m_ButtonGroupRMSMode.addButton(mp_Ui->radioOff, 0);
+    m_ButtonGroupRMSMode.addButton(mp_Ui->radioCassettes, 1);
+    m_ButtonGroupRMSMode.addButton(mp_Ui->radioCycles, 2);
+    m_ButtonGroupRMSMode.addButton(mp_Ui->radioDays, 3);
+
+
     CONNECTSIGNALSLOT(mp_Ui->radioOff_Cleaning, clicked(), this, OnCleaningRMSOFF());
     CONNECTSIGNALSLOT(mp_Ui->radioCycles_Cleaning, clicked(), this, OnCleaningRMSCycles());
     CONNECTSIGNALSLOT(mp_Ui->radioDays_Cleaning, clicked(), this, OnCleaningRMSDays());
+
+    m_ButtonGroupCleaningRMSMode.addButton(mp_Ui->radioOff_Cleaning, 0);
+    m_ButtonGroupCleaningRMSMode.addButton(mp_Ui->radioCycles_Cleaning, 1);
+    m_ButtonGroupCleaningRMSMode.addButton(mp_Ui->radioDays_Cleaning, 2);
+
+
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_TableWidgetCleaning, pressed(QModelIndex), this, SelectionChangedCleaningTable(QModelIndex));
     CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentRMSModel, UpdateReagentList());
@@ -189,8 +204,26 @@ void CReagentRMSWidget::CloseDialogs()
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSOFF()
 {
-    m_UserSettings.SetModeRMSProcessing(Global::RMS_OFF);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSProcessing(Global::RMS_OFF);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectRMSMoldeID = m_ButtonGroupRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectCleaningRMSMoldeID != -1)
+        {
+            m_ButtonGroupRMSMode.button(m_lastSelectRMSMoldeID)->setChecked(true);
+        }
+    }
+
 }
 
 /****************************************************************************/
@@ -200,8 +233,25 @@ void CReagentRMSWidget::OnRMSOFF()
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSCassettes()
 {
-    m_UserSettings.SetModeRMSProcessing(Global::RMS_CASSETTES);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSProcessing(Global::RMS_CASSETTES);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectRMSMoldeID = m_ButtonGroupRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectRMSMoldeID != -1)
+        {
+            m_ButtonGroupRMSMode.button(m_lastSelectRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 
 /****************************************************************************/
@@ -211,8 +261,25 @@ void CReagentRMSWidget::OnRMSCassettes()
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSCycles()
 {
-    m_UserSettings.SetModeRMSProcessing(Global::RMS_CYCLES);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSProcessing(Global::RMS_CYCLES);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectRMSMoldeID = m_ButtonGroupRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectRMSMoldeID != -1)
+        {
+            m_ButtonGroupRMSMode.button(m_lastSelectRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 
 /****************************************************************************/
@@ -222,8 +289,25 @@ void CReagentRMSWidget::OnRMSCycles()
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSDays()
 {
-    m_UserSettings.SetModeRMSProcessing(Global::RMS_DAYS);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSProcessing(Global::RMS_DAYS);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectRMSMoldeID = m_ButtonGroupRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectRMSMoldeID != -1)
+        {
+            m_ButtonGroupRMSMode.button(m_lastSelectRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 
 /****************************************************************************/
@@ -233,8 +317,25 @@ void CReagentRMSWidget::OnRMSDays()
 /****************************************************************************/
 void CReagentRMSWidget::OnCleaningRMSOFF()
 {
-    m_UserSettings.SetModeRMSCleaning(Global::RMS_OFF);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSCleaning(Global::RMS_OFF);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectCleaningRMSMoldeID = m_ButtonGroupCleaningRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectCleaningRMSMoldeID != -1)
+        {
+            m_ButtonGroupCleaningRMSMode.button(m_lastSelectCleaningRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 /****************************************************************************/
 /*!
@@ -243,8 +344,25 @@ void CReagentRMSWidget::OnCleaningRMSOFF()
 /****************************************************************************/
 void CReagentRMSWidget::OnCleaningRMSCycles()
 {
-    m_UserSettings.SetModeRMSCleaning(Global::RMS_CYCLES);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSCleaning(Global::RMS_CYCLES);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectCleaningRMSMoldeID = m_ButtonGroupCleaningRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectCleaningRMSMoldeID != -1)
+        {
+            m_ButtonGroupCleaningRMSMode.button(m_lastSelectCleaningRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 
 /****************************************************************************/
@@ -254,8 +372,25 @@ void CReagentRMSWidget::OnCleaningRMSCycles()
 /****************************************************************************/
 void CReagentRMSWidget::OnCleaningRMSDays()
 {
-    m_UserSettings.SetModeRMSCleaning(Global::RMS_DAYS);
-    emit RMSSettingChanged(m_UserSettings);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
+    m_MessageDlg.HideCenterButton();
+    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+
+    if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        m_UserSettings.SetModeRMSCleaning(Global::RMS_DAYS);
+        emit RMSSettingChanged(m_UserSettings);
+        m_lastSelectCleaningRMSMoldeID = m_ButtonGroupCleaningRMSMode.checkedId();
+    }
+    else
+    {
+        if (m_lastSelectCleaningRMSMoldeID != -1)
+        {
+            m_ButtonGroupCleaningRMSMode.button(m_lastSelectCleaningRMSMoldeID)->setChecked(true);
+        }
+    }
 }
 
 /****************************************************************************/
@@ -563,6 +698,8 @@ void CReagentRMSWidget::RetranslateUI()
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentRMSWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strConfirmChangeRMSMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                                       "Do you really want to change RMS mode? If fresh reagents are replaced, please reset data for them in the ‘Status’ page!", 0, QApplication::UnicodeUTF8);
 
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
@@ -664,6 +801,7 @@ void CReagentRMSWidget ::UpdateUserSetting()
             break;
 
         }
+        m_lastSelectRMSMoldeID = m_ButtonGroupRMSMode.checkedId();
 
         if(RMSCLEANINGOPTIONS != m_UserSettings.GetModeRMSCleaning())
             RMSCLEANINGOPTIONS = m_UserSettings.GetModeRMSCleaning();
@@ -700,6 +838,7 @@ void CReagentRMSWidget ::UpdateUserSetting()
         default:
             break;
         }
+        m_lastSelectCleaningRMSMoldeID = m_ButtonGroupCleaningRMSMode.checkedId();
     }
 }
 

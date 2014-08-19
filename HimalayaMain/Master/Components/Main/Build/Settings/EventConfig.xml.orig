@@ -220,12 +220,12 @@
 		<Event Code="" ErrorID="513020022" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_TSensorErr3minRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 <<<<<<< HEAD
-			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnClickOK="3" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 ||||||| merged common ancestors
 			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="10" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 =======
-			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
->>>>>>> Update for RS_Tissue_Protect
+			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnClickOK="3" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+>>>>>>> d2392a3494248f5af24fc30cf5e84593fe0a12fb
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
