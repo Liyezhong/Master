@@ -3,7 +3,9 @@
 	<Source Name="Himalaya">
 		<Event Code="" ErrorID="513020091" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE" ButtonEnableCondition="RT_LID_OPEN_CLOSE" NextStepOnClickOK="1"/>
-			<Step ID="1" Type="ACT" Action="RS_Pause"/>
+			<Step ID="1" Type="ACT" Action="RS_Pause" NextStepOnFail="2" NextStepOnSuccess="3"/>
+			<Step ID="2" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513050021" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
@@ -50,6 +52,11 @@
 			<Step ID="1" Type="MSG" StringID="102040401" RDStringID="112040401" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 		</Event>
+		<Event Code="" ErrorID="512040523" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
+			<Step ID="1" Type="MSG" StringID="102040523" RDStringID="112040523" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+		</Event>
 		<Event Code="" ErrorID="513010213" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="103010213" RDStringID="113010213" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
@@ -78,9 +85,10 @@
 		<Event Code="" ErrorID="513010332" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="2" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="ACT" Action="RC_Restart"/>
-			<Step ID="2" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="3" NextStepOnSuccess="4"/>
-			<Step ID="3" Type="MSG" StringID="103010332" RDStringID="113010332" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="4" Type="ACT" Action="RC_Restart"/>
+			<Step ID="2" Type="MSG" StringID="103010332" RDStringID="113010332" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" NextStepOnClickOK="3" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="3" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="5"/>
+			<Step ID="4" Type="MSG" StringID="103010332" RDStringID="113010332" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513030043" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
@@ -211,7 +219,7 @@
 		</Event>
 		<Event Code="" ErrorID="513020022" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_TSensorErr3minRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="10" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103045202" RDStringID="113045202" ButtonType="OK" NextStepOnClickOK="3" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
