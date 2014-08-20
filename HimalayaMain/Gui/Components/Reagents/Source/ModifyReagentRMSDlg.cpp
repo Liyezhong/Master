@@ -110,10 +110,13 @@ void CModifyReagentRMSDlg::ResizeHorizontalSection()
 /****************************************************************************/
 void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
 {
+     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
+     if (Id.isEmpty())
+         return;
+
      if (m_ButtonType == Reagents::NEW_BTN_CLICKED)
         m_SelectionFlag = true;
 
-    QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
     mp_Ui->buttonValue->setEnabled(true);
     m_Reagent.SetGroupID(Id);
 

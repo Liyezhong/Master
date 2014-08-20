@@ -279,8 +279,17 @@ Qt::ItemFlags CReagentGroupModel::flags(const QModelIndex &Index) const
         return Qt::NoItemFlags;
     }
     if (mp_ReagentGroupList) {
-        if (Index.row() >= mp_ReagentGroupList->GetNumberOfReagentGroups()) {
-            return Qt::NoItemFlags;
+        if (m_ShowCleaningReagent)
+        {
+            if (Index.row() >= mp_ReagentGroupList->GetNumberOfReagentGroups()) {
+                return Qt::NoItemFlags;
+            }
+        }
+        else
+        {
+            if (Index.row() >= mp_ReagentGroupList->GetNumberOfReagentGroups() - 2) {
+                return Qt::NoItemFlags;
+            }
         }
     }
 
