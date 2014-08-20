@@ -193,6 +193,12 @@
 			<Step ID="1" Type="MSG" StringID="103040020" RDStringID="113040020" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Pressure"/>
 		</Event>
+		<Event Code="" ErrorID="513040122" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_FillingAfterFlush" NextStepOnFail="1" NextStepOnSuccess="2"/>
+			<Step ID="1" Type="MSG" StringID="103040122" RDStringID="113040122" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
+		</Event>
 		<Event Code="" ErrorID="513040163" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103040163" RDStringID="113040163" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
