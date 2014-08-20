@@ -222,8 +222,8 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH                  = (QApplication::translate("Service", "Did you hear a louder speaker test sound this time ?", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CONFIRM_AIARM_CONNECT             = (QApplication::translate("Service", "Please confirm the alarm light is on and status is 'Connected' ?", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT          = (QApplication::translate("Service", "Please confirm the alarm status is 'DisConnected' ?", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_RELAY_SWITCH_ON                   = (QApplication::translate("Service", "relay switch on Spec.0.3A-1.3A", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_RELAY_SWITCH_OFF                  = (QApplication::translate("Service", "relay switch off Spec.&lt;0.15A", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_RELAY_SWITCH_ON                   = (QApplication::translate("Service", "relay switch on Spec.%1mA-%2mA", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_RELAY_SWITCH_OFF                  = (QApplication::translate("Service", "relay switch off Spec.&lt;%1mA", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ASB3_CURRENT                      = (QApplication::translate("Service", "<br>ASB3 current:%1<br>Result:%2", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN                 = (QApplication::translate("Service", "Please check if the exhaust fan is runing and check if the air flow direction is out of device.", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN             = (QApplication::translate("Service", "Please check if the ventilation fan is runing and check if the air flow direction is out of device", 0, QApplication::UnicodeUTF8));

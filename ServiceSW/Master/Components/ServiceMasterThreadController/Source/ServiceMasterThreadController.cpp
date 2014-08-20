@@ -1597,7 +1597,7 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
         UpdateRebootFile(m_BootConfigFileContent);
 
         const QString MD5sumGenerator = QString("%1%2").arg(Global::SystemPaths::Instance().GetScriptsPath()).
-                                        arg(QString("/EBox-Utils.sh update_md5sum_for_settings"));
+                                        arg(QString("/EBox-Utils.sh update_md5sum_for_settings Service"));
         (void)system(MD5sumGenerator.toStdString().c_str());
 
 

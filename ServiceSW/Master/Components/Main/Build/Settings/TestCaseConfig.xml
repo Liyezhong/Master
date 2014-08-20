@@ -32,7 +32,7 @@
 		<SystemExhaustFan Position="1"/>
 		<SystemVentilationFan Parameter="N/A"/>
 		<SystemRemoteLocalAlarm AlarmFlag="1" ConnectFlag="1"/>
-		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="0.3" SwitchOnCurrentHigh="1.3" SwitchOffCurrentLow="0.15"/>
+		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="316" SwitchOnCurrentHigh="1358" SwitchOffCurrentLow="150"/>
 	</System>
 	<Cleaning>
 		<CleaningSystem TargetPressure="30" Departure="8" Time="00:02:00" BlowTime="00:01:00"/>

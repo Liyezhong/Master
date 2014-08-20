@@ -1230,10 +1230,13 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
 
     p_TestCase->SetParameter("RelaySwitchStatus", QString::number(!RelaySwitchStatus));
     if (RelaySwitchStatus) {
-        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON;
+        int LowCurrent = p_TestCase->GetParameter("SwitchOnCurrentLow").toInt();
+        int HighCurrent = p_TestCase->GetParameter("SwitchOnCurrentHigh").toInt();
+        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON.arg(LowCurrent).arg(HighCurrent);
     }
     else {
-        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;
+        int Current = p_TestCase->GetParameter("SwitchOffCurrentLow").toInt();
+        MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF.arg(Current);
     }
 
     MessagetText.append(Service::CMessageString::MSG_DIAGNOSTICS_ASB3_CURRENT.arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));

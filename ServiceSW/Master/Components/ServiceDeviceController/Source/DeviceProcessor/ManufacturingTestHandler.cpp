@@ -1374,14 +1374,14 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
         mp_TempRV->StartTemperatureControl(80);
         mp_Utils->Pause(1000);
 
-        ASB3Current = mp_TempRV->GetCurrent()/1000.0;
+        ASB3Current = mp_TempRV->GetCurrent();
 
         qDebug()<<"ASB3 current :"<<ASB3Current;
         Result = (ASB3Current > SwitchOnCurrentLow && ASB3Current < SwitchOnCurrentHigh);
         mp_TempRV->StopTemperatureControl();
         mp_DigitalOutputMainRelay->SetLow();
 
-        p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
+        p_TestCase->AddResult("ASB3Current", QString("%1mA").arg(ASB3Current));
     }
     else {
          // switch off
@@ -1390,9 +1390,9 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
         qDebug()<<"ASB3 current :"<<ASB3Current;
 
         qDebug()<<"System mains relay switch off";
-        ASB3Current = mp_TempRV->GetCurrent()/1000.0;
+        ASB3Current = mp_TempRV->GetCurrent();
         Result = (ASB3Current < SWitchOffCurrentLow);
-        p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
+        p_TestCase->AddResult("ASB3Current", QString("%1mA").arg(ASB3Current));
     }
     p_TestCase->SetStatus(Result);
     if (Result) {
