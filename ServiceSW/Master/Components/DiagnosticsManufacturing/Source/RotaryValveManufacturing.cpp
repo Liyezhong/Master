@@ -77,29 +77,13 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_TableWidget->horizontalHeader()->show();
 
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_STATIONTEST ) {
-        AddItem(1, Service::ROTARY_VALVE_INITIALIZING);
-        AddItem(2, Service::ROTARY_VALVE_SELECTION_FUNCTION);
-        AddItem(3, Service::ROTARY_VALVE_SEALING_FUNCTION);
-        AddItem(4, Service::ROTARY_VALVE_HEATING_STATION);
-    }
-    else {
-        AddItem(1, Service::ROTARY_VALVE_HEATING_END);
-        if (mp_Module) {
-            m_RVSNString = mp_Module->GetSerialNumber();
-        }
-    }
-
     mp_Ui->rvSNEdit->setText(m_RVSNString);
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -218,10 +202,6 @@ void CRotaryValve::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     ItemList << item;
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
-                                                    << "");
     m_Model.appendRow(ItemList);
     mp_TestReporter->AddTestCaseId(Id);
 }
@@ -465,42 +445,29 @@ void CRotaryValve::ResetTestStatus()
 /****************************************************************************/
 void CRotaryValve::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
+    m_Model.clear();
+    m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
                                                     << "");
 
-    m_Model.clear();
-
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_STATIONTEST ) {
+        AddItem(1, Service::ROTARY_VALVE_INITIALIZING);
+        AddItem(2, Service::ROTARY_VALVE_SELECTION_FUNCTION);
+        AddItem(3, Service::ROTARY_VALVE_SEALING_FUNCTION);
+        AddItem(4, Service::ROTARY_VALVE_HEATING_STATION);
+    }
+    else {
+        AddItem(1, Service::ROTARY_VALVE_HEATING_END);
+        if (mp_Module) {
+            m_RVSNString = mp_Module->GetSerialNumber();
+        }
+    }
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
-
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 }
 
 }  // end namespace DiagnosticsManufacturing

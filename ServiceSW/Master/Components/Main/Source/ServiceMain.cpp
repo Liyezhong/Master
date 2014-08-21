@@ -91,7 +91,7 @@ int main(int Argc, char *p_Argv[])
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     DataManager::CTestCaseFactory::Instance().InitData(FileName);
 
-    FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
+    FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml";
     DataManager::CTestCaseGuide::Instance().InitData(FileName);
 
     // catch unexpected signals

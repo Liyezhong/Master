@@ -68,14 +68,9 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem(1, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
-    AddItem(2, Service::LA_SYSTEM_HEATING_AIR_TUBE);
-
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -161,10 +156,6 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     ItemList << item;
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
-                                                    << "");
     m_Model.appendRow(ItemList);
     mp_TestReporter->AddTestCaseId(Id);
 }
@@ -324,42 +315,20 @@ void CLaSystem::ResetTestStatus()
 /****************************************************************************/
 void CLaSystem::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
-                                                    << "");
-
     m_Model.clear();
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
+    m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
+                                                    << "");
+
+    AddItem(1, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
+    AddItem(2, Service::LA_SYSTEM_HEATING_AIR_TUBE);
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
-
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 }
 
 }  // end namespace DiagnosticsManufacturing

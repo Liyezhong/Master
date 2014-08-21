@@ -293,6 +293,7 @@ void CCalibrationHanlder::EnableCalibrationGroup(bool Status)
 /****************************************************************************/
 void CCalibrationHanlder::LoadCalibrationGUIComponenets()
 {
+    mp_CalibrationGroup->Clear();
     mp_CalibrationGroup->AddPanel(QApplication::translate("Core::CCalibrationHanlder", "Pressure Sensor",
                                                           0, QApplication::UnicodeUTF8), mp_PressureSensor);
     mp_CalibrationGroup->AddPanel(QApplication::translate("Core::CCalibrationHanlder", "Touchscreen",

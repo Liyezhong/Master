@@ -34,9 +34,7 @@ CTestCaseGuide::CTestCaseGuide()
 CTestCaseGuide::~CTestCaseGuide()
 {
     try {
-        m_GuideHash.clear();
-        m_TestCaseDescriptionHash.clear();
-        m_TestCaseIDHash.clear();
+        this->Clear();
     }
     catch (...) {
 
@@ -95,6 +93,13 @@ bool CTestCaseGuide::InitData(QString FileName)
     File.close();
 
     return Result;
+}
+
+void CTestCaseGuide::Clear()
+{
+    m_GuideHash.clear();
+    m_TestCaseDescriptionHash.clear();
+    m_TestCaseIDHash.clear();
 }
 
 bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)

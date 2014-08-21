@@ -79,23 +79,10 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_TableWidget->horizontalHeader()->show();
 
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        AddItem(1, Service::OVEN_COVER_SENSOR);
-        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
-        if (mp_Module) {
-            m_OvenSNString = mp_Module->GetSerialNumber();
-        }
-    }
-    else {
-        AddItem(1, Service::OVEN_HEATING_EMPTY);
-    }
     mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -217,10 +204,6 @@ void COven::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     ItemList << item;
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
-                                                    << "");
     m_Model.appendRow(ItemList);
     mp_TestReporter->AddTestCaseId(Id);
 }
@@ -466,42 +449,27 @@ void COven::ResetTestStatus()
 /****************************************************************************/
 void COven::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::COven",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::COven",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
+    m_Model.clear();
+    m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
                                                     << "");
 
-    m_Model.clear();
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        AddItem(1, Service::OVEN_COVER_SENSOR);
+        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
+        if (mp_Module) {
+            m_OvenSNString = mp_Module->GetSerialNumber();
+        }
+    }
+    else {
+        AddItem(1, Service::OVEN_HEATING_EMPTY);
+    }
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::COven",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
-tr("Ok")
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
-
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::COven",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 }
 
 }  // end namespace DiagnosticsManufacturing

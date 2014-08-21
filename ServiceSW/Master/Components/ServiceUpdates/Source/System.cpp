@@ -33,7 +33,7 @@ CSystem::CSystem(QWidget *p_Parent)
 {
     mp_Ui->setupUi(this);
 
-    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("ServiceUpdates::CSystem", "Ok", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->setModal(true);
     mp_MessageDlg->HideButtons();
 
@@ -52,6 +52,19 @@ CSystem::~CSystem(void)
 
 }
 
+void CSystem::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        mp_Ui->retranslateUi(this);
+        RetranslateUI();
+        break;
+    default:
+        break;
+    }
+}
+
 void CSystem::OnShutDown(void)
 {
     mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CSystem", "System is shutting down ...\n", 0, QApplication::UnicodeUTF8));
@@ -61,6 +74,11 @@ void CSystem::OnShutDown(void)
     emit ShutdownSystem(true);
 }
 
+void CSystem::RetranslateUI()
+{
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("ServiceUpdates::CSystem", "Ok", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CSystem", "System is shutting down ...\n", 0, QApplication::UnicodeUTF8));
+}
 
 } // end namespace ServiceUpdates
 

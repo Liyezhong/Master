@@ -48,10 +48,14 @@ CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataC
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
+    //mp_Ui->widget->setFixedWidth(540);
+    //mp_Ui->widget->setFixedHeight(380);
     mp_Ui->widget->SetContent(mp_TableWidget);
 
     mp_ConfigDialog = new SystemTracking::CCurrentConfigurationDlg(this);
+    mp_ConfigDialog->setModal(true);
     mp_MessageDialog = new MainMenu::CMessageDlg(this);
+    mp_MessageDialog->setModal(true);
 
     CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOTGUI(mp_Ui->showDetailsBtn, clicked(), this, ExecDialog());
@@ -83,9 +87,9 @@ CCurrentConfiguration::~CCurrentConfiguration()
 void CCurrentConfiguration::UpdateGUI(void)
 {
     mp_ModuleList = mp_DataConnector->GetModuleListContainer();
-    m_Model.clear();
     if(mp_ModuleList)
     {
+        m_Model.clear();
         for (int i = 0; i<mp_ModuleList->GetNumberofModules(); i++)
         {
             mp_Module = mp_ModuleList->GetModule(i);
@@ -178,9 +182,9 @@ void CCurrentConfiguration::ExecDialog(void)
 
 void CCurrentConfiguration::RetranslateUI()
 {
-     m_strOk                = QApplication::translate("SystemTracking::CCurrentConfiguration", "OK", 0, QApplication::UnicodeUTF8);
-     m_strSelectModuleTitle = QApplication::translate("SystemTracking::CCurrentConfiguration", "Select Module", 0, QApplication::UnicodeUTF8);
-     m_strSelectModuleText  = QApplication::translate("SystemTracking::CCurrentConfiguration", "Please select a Module..", 0, QApplication::UnicodeUTF8);
+    m_strOk                = QApplication::translate("SystemTracking::CCurrentConfiguration", "OK", 0, QApplication::UnicodeUTF8);
+    m_strSelectModuleTitle = QApplication::translate("SystemTracking::CCurrentConfiguration", "Select Module", 0, QApplication::UnicodeUTF8);
+    m_strSelectModuleText  = QApplication::translate("SystemTracking::CCurrentConfiguration", "Please select a Module..", 0, QApplication::UnicodeUTF8);
 }
 
 

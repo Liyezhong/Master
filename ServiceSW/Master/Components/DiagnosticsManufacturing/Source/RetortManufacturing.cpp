@@ -77,26 +77,10 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_TableWidget->horizontalHeader()->show();
 
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        AddItem(1, Service::RETORT_LID_LOCK);
-        AddItem(2, Service::RETORT_LEVEL_SENSOR_HEATING);
-        AddItem(3, Service::RETORT_LEVEL_SENSOR_DETECTING);
-        AddItem(4, Service::RETORT_HEATING_WITH_WATER);
-        if (mp_Module) {
-            m_RetortSNString = mp_Module->GetSerialNumber();
-        }
-    }
-    else {
-        AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
-        AddItem(2, Service::RETORT_HEATING_EMPTY);
-    }
     mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -469,42 +453,30 @@ void CRetort::ResetTestStatus()
 /****************************************************************************/
 void CRetort::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
+    m_Model.clear();
+    m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
                                                     << "");
 
-    m_Model.clear();
-
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        AddItem(1, Service::RETORT_LID_LOCK);
+        AddItem(2, Service::RETORT_LEVEL_SENSOR_HEATING);
+        AddItem(3, Service::RETORT_LEVEL_SENSOR_DETECTING);
+        AddItem(4, Service::RETORT_HEATING_WITH_WATER);
+        if (mp_Module) {
+            m_RetortSNString = mp_Module->GetSerialNumber();
+        }
+    }
+    else {
+        AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
+        AddItem(2, Service::RETORT_HEATING_EMPTY);
+    }
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
-
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 }
 
 }  // end namespace DiagnosticsManufacturing

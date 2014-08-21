@@ -70,13 +70,9 @@ CCleaning::CCleaning(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem(1, Service::CLEANING_SYSTEM_TEST);
-
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -162,10 +158,6 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     itemList << item;
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
-                                                    << "");
     m_Model.appendRow(itemList);
     mp_TestReporter->AddTestCaseId(Id);
 }
@@ -326,42 +318,19 @@ void CCleaning::ResetTestStatus()
 /****************************************************************************/
 void CCleaning::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
-                                                    << "");
+   m_Model.clear();
 
-    m_Model.clear();
+   m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                   << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                   << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
+                                                   << "");
+   AddItem(1, Service::CLEANING_SYSTEM_TEST);
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
+   mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
+   mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+   mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+   mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
-
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CCleanSystem",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 }  // end namespace DiagnosticsManufacturing

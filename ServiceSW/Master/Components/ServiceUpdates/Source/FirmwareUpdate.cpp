@@ -44,23 +44,16 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
     mp_Ui->setupUi(this);
     //RetranslateUI();
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_TableWidget->resize(380,500);
+    mp_TableWidget->resize(380,380);
 
     mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->setModel(&m_Model);
-    /*
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
 
-    mp_TableWidget->verticalHeader()->resizeSection(0,55);
-    mp_TableWidget->verticalHeader()->resizeSection(1,55);
-    */
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
     CONNECTSIGNALSLOT(mp_Ui->updateBtn, clicked(), this, UpdateFirmware());
@@ -293,6 +286,16 @@ void CFirmwareUpdate::RetranslateUI()
                                                     << QApplication::translate("ServiceUpdates::CFirmwareUpdate",
                                                        "Latest Version", 0, QApplication::UnicodeUTF8)
                                                     << "");
+
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+
+    mp_TableWidget->verticalHeader()->resizeSection(0,45);
+    mp_TableWidget->verticalHeader()->resizeSection(1,45);
+    mp_TableWidget->verticalHeader()->resizeSection(2,45);
+    mp_TableWidget->verticalHeader()->resizeSection(3,45);
 }
 
 } // end namespace ServiceUpdates

@@ -61,6 +61,14 @@ public:
 
     /****************************************************************************/
     /**
+     * \brief To clear all test guide.
+     *
+     */
+    /****************************************************************************/
+    void Clear();
+
+    /****************************************************************************/
+    /**
      * \brief Get Guide string list all of steps by test case name.
      * \iparam CaseName = test case name
      * \iparam Index = index of Guide

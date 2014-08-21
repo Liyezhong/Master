@@ -23,6 +23,7 @@
 #include <QHash>
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 #include <Global/Include/SystemPaths.h>
 #include <Core/Include/CMessageString.h>
 
@@ -366,6 +367,9 @@ void CServiceGUIConnector::SetLanguage(PlatformService::Languages_t SelectedLang
     if (m_Language != SelectedLanguage) {
         if (SelectedLanguage == PlatformService::US_ENGLISH) {
             if (FileNames.contains("HimalayaService_en.qm")) {
+                DataManager::CTestCaseGuide::Instance().Clear();
+                (void)DataManager::CTestCaseGuide::Instance().InitData(Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml");
+
                 QString FilePath = Global::SystemPaths::Instance().GetTranslationsPath() + "/HimalayaService_en.qm";
                 (void) m_Translator.load(FilePath);
                 qApp->installTranslator(&m_Translator);
@@ -382,6 +386,9 @@ void CServiceGUIConnector::SetLanguage(PlatformService::Languages_t SelectedLang
             }
         } else {
             if (FileNames.contains("HimalayaService_zh.qm")) {
+                DataManager::CTestCaseGuide::Instance().Clear();
+                (void)DataManager::CTestCaseGuide::Instance().InitData(Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_zh.xml");
+
                 QString FilePath = Global::SystemPaths::Instance().GetTranslationsPath() + "/HimalayaService_zh.qm";
                 (void) m_Translator.load(FilePath);
                 qApp->installTranslator(&m_Translator);
@@ -395,7 +402,7 @@ void CServiceGUIConnector::SetLanguage(PlatformService::Languages_t SelectedLang
                 mp_MessageDlg->HideButtons();
                 mp_MessageDlg->SetIcon(QMessageBox::Critical);
                 mp_MessageDlg->Show();
-            }
+            }           
         }
         m_Language = SelectedLanguage;
     }

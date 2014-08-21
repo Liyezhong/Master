@@ -387,6 +387,7 @@ void CStartup::LoadCommonComponenetsOne()
     // Clear All items
     mp_MainWindow->Clear();
     mp_SystemTrackingGroup->Clear();
+    mp_AddModifyConfigGroup->Clear();
     mp_LogViewerGroup->Clear();
 
     mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8));
@@ -735,11 +736,11 @@ int CStartup::FileExistanceCheck()
         mp_MessageBox->SetTitle(QApplication::translate("Core::CStartup", "Missing Xml files", 0, QApplication::UnicodeUTF8));
         mp_MessageBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageBox->HideButtons();
-        QString Text = QApplication::translate("Core::CStartup", "The following XML files are not present.<br>", 0, QApplication::UnicodeUTF8);
+        QString Text = QApplication::translate("Core::CStartup", "The following XML files are not present.", 0, QApplication::UnicodeUTF8);
         for(int i=0; i<MissingFileNames.count(); i++)
         {
             Text.append(MissingFileNames[i]);
-            Text.append("\n");
+            Text.append("<br>");
         }
         mp_MessageBox->SetText(Text);
         mp_MessageBox->show();

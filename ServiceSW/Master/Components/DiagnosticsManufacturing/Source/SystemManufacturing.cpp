@@ -82,26 +82,12 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem(1, Service::SYSTEM_110V_220V_SWITCH);
-    AddItem(2, Service::SYSTEM_SEALING_TEST);
-    AddItem(3, Service::SYSTEM_OVERFLOW);
-    AddItem(4, Service::SYSTEM_SPEARKER);
-    AddItem(5, Service::SYSTEM_EXHAUST_FAN);
-    AddItem(6, Service::SYSTEM_VENTILATION_FAN);
-    AddItem(7, Service::SYSTEM_REMOTE_LOCAL_ALARM);
-    AddItem(8, Service::SYSTEM_MAINS_RELAY);
-
     mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+
+    RetranslateUI();
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    for (int i = 0; i < 8; i++) {
-        mp_TableWidget->setRowHeight(i, 30);
-    }
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
@@ -221,10 +207,6 @@ void CSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     ItemList << item;
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
-                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
-                                                    << "");
     m_Model.appendRow(ItemList);
     mp_TestReporter->AddTestCaseId(Id);
 }
@@ -439,42 +421,30 @@ void CSystem::ResetTestStatus()
 /****************************************************************************/
 void CSystem::RetranslateUI()
 {
-#if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                                               "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                                               "Tests", 0, QApplication::UnicodeUTF8)
-                                                    << "");
-
     m_Model.clear();
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                         "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                         "X2 Reference Run", 0, QApplication::UnicodeUTF8));
+    m_Model.setHorizontalHeaderLabels(QStringList() << ""
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
+                                                    << "");
+    AddItem(1, Service::SYSTEM_110V_220V_SWITCH);
+    AddItem(2, Service::SYSTEM_SEALING_TEST);
+    AddItem(3, Service::SYSTEM_OVERFLOW);
+    AddItem(4, Service::SYSTEM_SPEARKER);
+    AddItem(5, Service::SYSTEM_EXHAUST_FAN);
+    AddItem(6, Service::SYSTEM_VENTILATION_FAN);
+    AddItem(7, Service::SYSTEM_REMOTE_LOCAL_ALARM);
+    AddItem(8, Service::SYSTEM_MAINS_RELAY);
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                             "Enter Serial Number", 0, QApplication::UnicodeUTF8));
+    for (int i = 0; i < 8; i++) {
+        mp_TableWidget->setRowHeight(i, 30);
+    }
 
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                    "Serial Number", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                           "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                  "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                   "Test report save failed.", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 }  // end namespace DiagnosticsManufacturing
