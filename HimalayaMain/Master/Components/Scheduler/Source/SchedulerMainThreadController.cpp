@@ -881,19 +881,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 qint64 now = QDateTime::currentMSecsSinceEpoch();
-                if(!m_Is5MinPause && (now - m_TimeStamps.PauseStartTime) >= 1 * 60* 1000 &&
+                if(!m_Is5MinPause && (now - m_TimeStamps.PauseStartTime) >= 5 * 60* 1000 &&
                         (now - m_TimeStamps.PauseStartTime) < 10 * 60* 1000)
                 {
                     m_Is5MinPause = true;
                     Global::EventObject::Instance().RaiseEvent(EVENT_DEVICE_ALARM_PAUSE_5MINTUES);
                 }
-                else if(!m_Is10MinPause && (now - m_TimeStamps.PauseStartTime) >= 2 * 60* 1000 &&
+                else if(!m_Is10MinPause && (now - m_TimeStamps.PauseStartTime) >= 10 * 60* 1000 &&
                          (now - m_TimeStamps.PauseStartTime) < 15 * 60* 1000)
                 {
                     m_Is10MinPause = true;
                     Global::EventObject::Instance().RaiseEvent(EVENT_LOCAL_ALARM_PAUSE_10MINTUES);
                 }
-                else if(!m_Is15MinPause && (now - m_TimeStamps.PauseStartTime) >= 3 * 60* 1000)
+                else if(!m_Is15MinPause && (now - m_TimeStamps.PauseStartTime) >= 15 * 60* 1000)
                 {
                     m_Is15MinPause = true;
 
