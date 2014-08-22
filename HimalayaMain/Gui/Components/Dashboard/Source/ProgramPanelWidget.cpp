@@ -82,7 +82,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
 
     m_Timer = new QTimer(this);
     m_Timer->setInterval(2*60*1000);
-    (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(OnResumeProgramReminder()));
+    //(void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(OnResumeProgramReminder()));
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
