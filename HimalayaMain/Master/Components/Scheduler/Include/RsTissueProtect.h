@@ -45,7 +45,8 @@ class  CRsTissueProtect : public QObject
         MOVE_TO_TUBE,
         LEVELSENSOR_HEATING,
         FILLING,
-        MOVE_TO_SEALING
+        MOVE_TO_SEALING,
+        RELEASE_PRESSURE
     } StateList_t;
 
     typedef enum
@@ -137,6 +138,14 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief  Signal for releasing pressure
+     *
+     */
+    /****************************************************************************/
+    void ReleasePressure();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Signal for Tasks done
      *  \param  bool ture- tasks done successfully, false - tasks failed
      *
@@ -165,6 +174,16 @@ private slots:
     /****************************************************************************/
     void OnMoveToSeal();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for releasing pressure
+     *  \param  void
+     *  \return void
+     *
+     */
+    /****************************************************************************/
+    void OnReleasePressure();
+
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Tissue_Protect
@@ -173,6 +192,7 @@ private:
     QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
     QSharedPointer<QState> mp_Filling;           			//!< Filling state
     QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
+    QSharedPointer<QState> mp_ReleasePressure;       		//!< Release pressure
     QString m_StationID;                                    //!< Station ID
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
     quint8 m_FillSeq;                                       //!< Sequence of Filling

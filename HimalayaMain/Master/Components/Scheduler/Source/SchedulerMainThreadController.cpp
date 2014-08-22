@@ -165,14 +165,12 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //timer setting
     CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t),
-                      this,OnDCLConfigurationFinished(ReturnCode_t))
-
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),
-                      this, DevProcDestroyed())
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor,DCLConfigurationFinished(ReturnCode_t),this,OnDCLConfigurationFinished(ReturnCode_t));
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),this, DevProcDestroyed());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
-
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportFillingTimeOut2Min(),this, OnReportFillingTimeOut2Min());
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportDrainingTimeOut2Min(),this, OnReportDrainingTimeOut2Min());
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
                      this, ResetActiveCarbonFilterLifetime());
 
@@ -208,6 +206,14 @@ void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode
 void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime()
 {
     m_SchedulerCommandProcessor->ResetActiveCarbonFilterLifetime();
+}
+void SchedulerMainThreadController::OnReportFillingTimeOut2Min()
+{
+    RaiseError(0, DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, m_CurrentScenario, true);
+}
+void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
+{
+    RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()

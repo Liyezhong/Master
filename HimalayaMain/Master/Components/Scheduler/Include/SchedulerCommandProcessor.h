@@ -223,6 +223,23 @@ signals:
      */
     /************************************************************************************/
     void ReportLevelSensorStatus1();
+
+    /************************************************************************************/
+    /*!
+     *  \brief  Forward AirLiquid Filling Warning DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN
+     *          to SchedulerMainThreadController
+     */
+    /************************************************************************************/
+    void ReportFillingTimeOut2Min();
+
+    /************************************************************************************/
+    /*!
+     *  \brief  Forward AirLiquid Filling Warning DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN
+     *          to SchedulerMainThreadController
+     */
+    /************************************************************************************/
+    void ReportDrainingTimeOut2Min();
+
     /************************************************************************************/
     /*!
      *  \brief  report device process has been shutdown

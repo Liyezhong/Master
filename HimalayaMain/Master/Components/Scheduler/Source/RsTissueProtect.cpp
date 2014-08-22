@@ -24,6 +24,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 
 using namespace DeviceControl;
@@ -40,6 +41,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_LevelSensorHeating = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Init.data());
 
@@ -47,17 +49,18 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
     mp_LevelSensorHeating->addTransition(this, SIGNAL(Filling()), mp_Filling.data());
     mp_Filling->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
-    mp_MoveToSealing->addTransition(this,SIGNAL(TasksDone(bool)), mp_MoveToTube.data());
+    mp_MoveToSealing->addTransition(this,SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
+    mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
 	//For error cases
     mp_MoveToTube->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
     mp_LevelSensorHeating->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
     mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
+    mp_MoveToSealing->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
     CONNECTSIGNALSLOT(mp_MoveToTube.data(), entered(), this, OnMoveToTube());
-    //CONNECTSIGNALSLOT(mp_Filling.data(), entered(), this, OnFill());
-    //CONNECTSIGNALSLOT(mp_Filling.data(), exited(), mp_SchedulerController, OnStopFill());
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
+    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
     mp_StateMachine->start();
     m_MoveToTubeSeq = 0;
@@ -95,6 +98,10 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
     else if (statesList.contains(mp_MoveToSealing.data()))
     {
         currentState = MOVE_TO_SEALING;
+    }
+    else if (statesList.contains(mp_ReleasePressure.data()))
+    {
+        currentState = RELEASE_PRESSURE;
     }
 
     return currentState;
@@ -178,6 +185,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
                 m_MoveToTubeSeq = 0;
+                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Tube state, move to tube success");
                 emit LevelSensorHeating();
             }
             else
@@ -286,11 +294,39 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
-                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal success");
-                TasksDone(true);
+                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal passed");
+                emit ReleasePressure();
             }
         }
 		break;
+    case RELEASE_PRESSURE:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in state RELEASE_PRESSURE");
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_MoveToTubeSeq = 0;
+                m_FillSeq = 0;
+                m_LevelSensorSeq = 0;
+                m_MoveToSealSeq = 0;
+                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release passed");
+                emit TasksDone(true);
+            }
+            else
+            {
+                m_MoveToTubeSeq = 0;
+                m_FillSeq = 0;
+                m_LevelSensorSeq = 0;
+                m_MoveToSealSeq = 0;
+                mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
+                emit TasksDone(false);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait for the command response
+        }
+        break;
     default:
         break;
 	}
@@ -311,9 +347,41 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType() const
     }
 
     //Secondly, check if the event id is relatd with Retort, heating tube, RV and Oven failed error
-    if ("50001" == QString::number(EventId).left(5)
-            || "50002" == QString::number(EventId).left(5)
-            || "50003" == QString::number(EventId).left(5))
+    if (DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED == EventId
+            || DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == EventId
+            || DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED == EventId
+            || DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_ABNORMAL == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE == EventId
+            || DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE == EventId
+            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET == EventId
+            || DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP == EventId
+            || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == EventId
+            || DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == EventId
+            || DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE == EventId)
     {
         IsRTRVOVenError = true;
     }
@@ -427,6 +495,7 @@ void CRsTissueProtect::OnMoveToTube()
         return;
     }
     RVPosition_t RVPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
+    mp_SchedulerController->LogDebug(QString("In OnMoveToTube, tube position is %1").arg(RVPos));
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -435,9 +504,16 @@ void CRsTissueProtect::OnMoveToTube()
 void CRsTissueProtect::OnMoveToSeal()
 {
     RVPosition_t RVPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
+    mp_SchedulerController->LogDebug(QString("In OnMoveToSeal, seal position is %1").arg(RVPos));
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);
     cmd->SetRVPosition(RVPos);
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+}
+
+void CRsTissueProtect::OnReleasePressure()
+{
+    mp_SchedulerController->LogDebug("In RS_Tissue_Protect, begin to run CmdALReleasePressure");
+    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
 }
 
 }

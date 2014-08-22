@@ -154,6 +154,8 @@ void SchedulerCommandProcessor<DP>::run4Slot()
                       this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDestroyFinished(), this, DeviceProcessDestroyed());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportFillingTimeOut2Min(), this, ReportFillingTimeOut2Min());
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDrainingTimeOut2Min(), this, ReportDrainingTimeOut2Min());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
