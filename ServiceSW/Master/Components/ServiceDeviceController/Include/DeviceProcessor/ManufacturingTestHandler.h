@@ -188,22 +188,7 @@ private:
      * \iparam   Id = Test case id
      */
     /****************************************************************************/
-    qint32 TestRVSelectingAndSealing( Service::ModuleTestCaseID Id );
-
-
-    /****************************************************************************/
-    /**
-     * \brief To move Rotary Valve to tube position.
-     */
-    /****************************************************************************/
-    qint32 MoveRVToTubePos(qint32 Pos);
-
-    /****************************************************************************/
-    /**
-     * \brief To move Rotary Valve to sealing position.
-     */
-    /****************************************************************************/
-    qint32 MoveRVToSealPos(qint32 Pos);
+    qint32 TestRVSelectingAndSealing( Service::ModuleTestCaseID Id );   
 
     /****************************************************************************/
     /**

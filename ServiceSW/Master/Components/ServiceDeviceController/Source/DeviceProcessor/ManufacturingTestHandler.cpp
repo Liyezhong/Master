@@ -39,6 +39,7 @@
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
+#define RV_MOVE_OK              1
 namespace DeviceControl {
 
 /****************************************************************************/
@@ -984,10 +985,18 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     //int bottlePos = p_TestCase->GetParameter("Position").toInt();
     const int bottlePos = 1;
     EmitRefreshTestStatustoMain(testCaseName, RV_INITIALIZING);
-    mp_MotorRV->MoveToInitialPosition();
+    if(mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
+        return -1;
+    }
 
     EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_TUBE_POSITION, bottlePos);
-    mp_MotorRV->MoveToTubePosition(bottlePos);
+    if(mp_MotorRV->MoveToTubePosition(bottlePos)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(bottlePos));
+        return -1;
+    }
 
     EmitRefreshTestStatustoMain(testCaseName, LS_HEATING);
     if (-1 == HeatingLevelSensor()) {
@@ -1013,21 +1022,25 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 
     if (result == 0) {
         EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_SEALING_POSITION, bottlePos);
-        mp_MotorRV->MoveToSealPosition(bottlePos);
-
-        //Tell the operator to comfirm the water level;
-        mp_PressPump->ReleasePressure();
-        EmitRefreshTestStatustoMain(testCaseName, WAIT_CONFIRM);
-        while(!m_Continue && !m_UserAbort) {
-            mp_Utils->Pause(100);
+        if (mp_MotorRV->MoveToSealPosition(bottlePos)!=RV_MOVE_OK) {
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(bottlePos));
+            result = -1;
         }
-        if (m_Continue == true) {
-            m_Continue = false;
+        else {
+            //Tell the operator to comfirm the water level;
+            mp_PressPump->ReleasePressure();
+            EmitRefreshTestStatustoMain(testCaseName, WAIT_CONFIRM);
+            while(!m_Continue && !m_UserAbort) {
+                mp_Utils->Pause(100);
+            }
+            if (m_Continue == true) {
+                m_Continue = false;
+            }
+            if (m_UserAbort == true) {
+                m_UserAbort = false;
+            }
+            p_TestCase->AddResult("TestResult", "Level sensor self-test is OK.");
         }
-        if (m_UserAbort == true) {
-            m_UserAbort = false;
-        }
-        p_TestCase->AddResult("TestResult", "Level sensor self-test is OK.");
     }
     else {
         p_TestCase->AddResult("TestResult", "Level sensor self-test is failed.");
@@ -1062,10 +1075,18 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     Position = p_TestCase->GetParameter("Position").toInt();
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    mp_MotorRV->MoveToInitialPosition();
+    if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
+        return -1;
+    }
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
-    mp_MotorRV->MoveToTubePosition(Position);
+    if (mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
+        return -1;
+    }
 
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
@@ -1076,7 +1097,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         return -1;
     }
 
-    mp_DigitalOutputMainRelay->SetHigh();
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = mp_PressPump->Sucking();
@@ -1099,7 +1119,21 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
         // move to sealing positioin
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
-        mp_MotorRV->MoveToSealPosition(Position);
+        if (mp_MotorRV->MoveToSealPosition(Position)!=RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(Position));
+
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
+            mp_MotorRV->MoveToTubePosition(Position);
+
+            EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
+            mp_PressPump->Draining();
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+            EmitRefreshTestStatustoMain(TestCaseName, INFORM_DONE);
+            return -1;
+        }
+
         mp_PressPump->ReleasePressure();
 
         // tell operator to put the external sensor to retort.
@@ -1134,6 +1168,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         mp_TempRetortBottom->StopTemperatureControl();
         mp_TempRetortSide->StopTemperatureControl();
 
+        mp_DigitalOutputMainRelay->SetHigh();
         mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
         mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
 
@@ -1188,7 +1223,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
         mp_TempRetortSide->StopTemperatureControl();
         mp_TempRetortBottom->StopTemperatureControl();
-
         mp_DigitalOutputMainRelay->SetLow();
 
 
@@ -1327,7 +1361,6 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
 
 qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
 {
-    bool Result = false;
     qint32 CurrentVoltage = 110;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
@@ -1345,11 +1378,16 @@ qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
         CurrentVoltage = 0;
     }
 
-    Result = (CurrentVoltage == ConnectedVoltage.toInt());
-    p_TestCase->SetStatus(Result);
     p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
 
-    return Result;
+    if (CurrentVoltage == ConnectedVoltage.toInt()) {
+        p_TestCase->SetStatus(true);
+        return 0;
+    }
+    else {
+        p_TestCase->SetStatus(false);
+        return -1;
+    }
 }
 
 qint32 ManufacturingTestHandler::TestSystemMainsRelay()
@@ -1404,8 +1442,12 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
-    return Result;
-
+    if (Result) {
+        return 0;
+    }
+    else {
+        return -1;
+    }
 }
 
 qint32 ManufacturingTestHandler::TestSystemExhaustFan()
@@ -1421,32 +1463,42 @@ qint32 ManufacturingTestHandler::TestSystemExhaustFan()
 qint32 ManufacturingTestHandler::TestSystemOverflow()
 {
     int ret = 0;
-    bool result = false;
-    Service::ModuleTestStatus Status;
+    int result(-1);
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_OVERFLOW);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QTime delayTime = QTime::fromString(p_TestCase->GetParameter("DelayTime"), "hh:mm:ss");
     int delay = delayTime.hour() * 60 * 60 + delayTime.minute() * 60 + delayTime.second();
+
+    p_TestCase->ResetResult();
+
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    mp_MotorRV->MoveToInitialPosition();
+    if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
+        return -1;
+    }
+
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 1);
-    if (mp_MotorRV->MoveToTubePosition(1)) {
+
+    if (mp_MotorRV->MoveToTubePosition(1)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg("1"));
+        return -1;
+    }
+    else {
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
 
         ret = mp_PressPump->Sucking(delay, 1);
 
         qDebug()<<"Sucking ------ return :"<<ret;
         if (ret == SUCKING_RET_OVERFLOW) {
-            result = true;
+            result = 0;
         }
         else {
+            result = -1;
             qDebug()<<"Overflow test failed, fill function return code:"<<ret;
         }
     }
-    else {
-        qDebug()<<"Overflow test: rotating RV to tube position 1 failed.";
-        return result;
-     }
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     ret = mp_PressPump->Draining();
@@ -1462,16 +1514,25 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
     qint32 RetValue(0);
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SEALING_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
     if (CurStep == 1 || CurStep == 2) {
         qreal TargetPressure(0);
         if (CurStep == 1 ){
             TargetPressure = p_TestCase->GetParameter("SealTargetPressure1").toFloat();
             if (p_TestCase->GetParameter("RVMove") == "1") {
                 EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-                mp_MotorRV->MoveToInitialPosition();
+                if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+                    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                    p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
+                    return -1;
+                }
 
                 EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
-                mp_MotorRV->MoveToSealPosition(1);
+                if (mp_MotorRV->MoveToSealPosition(1)!=RV_MOVE_OK) {
+                    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                    p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(1));
+                    return -1;
+                }
                 p_TestCase->SetParameter("RVMove", "0");
             }
         }
@@ -1504,7 +1565,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 RetValue = -1;
             }
             else if (CurStep==2 && CurrentPressure>(TargetPressure+Departure)) {
-                RetValue == -1;
+                RetValue = -1;
             }
         }
 
@@ -1552,7 +1613,11 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             Status.clear();
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
-            mp_MotorRV->MoveToTubePosition(Position);
+            if (mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
+                return -1;
+            }
 
             mp_PressPump->SetFan(1);
             Status.clear();
@@ -1641,10 +1706,15 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    mp_MotorRV->MoveToInitialPosition();
+    if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
+        return -1;
+    }
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
-    if (!mp_MotorRV->MoveToSealPosition(1)) {
+    if (mp_MotorRV->MoveToSealPosition(1)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
         return -1;
     }
@@ -1669,7 +1739,8 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     }
     for (int i = 1; i <= 16; ++i) {
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
-        if (!mp_MotorRV->MoveToTubePosition(i)) {
+        if (mp_MotorRV->MoveToTubePosition(i)!=RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
             p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
             RetValue = -1;
             goto CLEANING_EXIT;
@@ -1682,7 +1753,8 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
-        if (!mp_MotorRV->MoveToSealPosition(i)) {
+        if (mp_MotorRV->MoveToSealPosition(i)!=RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
             p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
             RetValue = -1;
             goto CLEANING_EXIT;
@@ -1964,11 +2036,9 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
 qint32 ManufacturingTestHandler::TestRVInitialization( )
 {
-    if ( !mp_MotorRV->MoveToInitialPosition() )
-    {
+    if(mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK){
         return -1;
     }
-
     return 0;
 }
 
@@ -1991,27 +2061,7 @@ qint32 ManufacturingTestHandler::TestRVSelectingAndSealing(Service::ModuleTestCa
     else {
         Result = mp_MotorRV->MoveToSealPosition(Position);
     }
-    if (Result == 0) {
-        return -1;
-    }
-
-    return 0;
-}
-
-qint32 ManufacturingTestHandler::MoveRVToTubePos(qint32 Pos)
-{
-    if ( !mp_MotorRV->MoveToTubePosition(Pos) )
-    {
-        return -1;
-    }
-
-    return 0;
-}
-
-qint32 ManufacturingTestHandler::MoveRVToSealPos(qint32 Pos)
-{
-    if ( !mp_MotorRV->MoveToSealPosition(Pos) )
-    {
+    if (Result != RV_MOVE_OK) {
         return -1;
     }
 
@@ -2213,7 +2263,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
-    bool NeedAC = false;
     int Ret(0);
     quint8 Position(0);
 
@@ -2237,10 +2286,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     int KeepSeconds = 0;
 
-    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
-        NeedAC = true;
-    }
-
     Service::ModuleTestStatus Status;
 
     WaitSecSensor1 = DurationTimeSensor1.hour()*60*60 + DurationTimeSensor1.minute()*60 + DurationTimeSensor1.second();
@@ -2249,15 +2294,11 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     SumSec = WaitSec;
 
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetHigh();
-    }
-
+    p_TestCase->ResetResult();
 
     CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
     CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-    SetFailReason(Id, "");
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_RV_TEMP_NO_MATCH.arg(CurrentTempSensor1).arg(CurrentTempSensor2)
@@ -2279,11 +2320,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         p_TestCase->AddResult("CurrentTempSensor1", Sensor1Value);
         p_TestCase->AddResult("CurrentTempSensor2", Sensor2Value);
 
-        mp_TempRV->StopTemperatureControl();
-        if (NeedAC) {
-            mp_DigitalOutputMainRelay->SetLow();
-        }
-
         return -1;
     }
 
@@ -2302,7 +2338,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     // set rotary valve to initial position.
     emit RefreshTestStatustoMain(TestCaseName, Status);
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    if ( TestRVInitialization() == -1 ) {
+    if ( mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK ) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
@@ -2312,7 +2349,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     Position =  p_TestCase->GetParameter("Position").toInt();
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
 
-    if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
+    if ( mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK ) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
@@ -2336,16 +2374,17 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     // set rotary valve to sealing position
     qDebug()<<"Rotary Valve is turning to Sealing #"<<Position;
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
-    if (!mp_MotorRV->MoveToSealPosition(Position)) {
+    if (mp_MotorRV->MoveToSealPosition(Position)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(Position));
+        p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
 
     qDebug()<<"Begin heating ( at first stage ) .....";
-    // heating at first stage.
- //   Status.insert("CurrentStatus", "Heating rotary valve at first stage ...");
- //   emit RefreshTestStatustoMain(TestCaseName, Status);
 
     mp_TempRV->StopTemperatureControl();
+    mp_DigitalOutputMainRelay->SetHigh();
     mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     while (!m_UserAbort && WaitSec)
@@ -2354,12 +2393,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
-
-        if (CurrentTempSensor1 == -1 || CurrentTempSensor2 == -1 ) {
-            mp_Utils->Pause(1000);
-            WaitSec--;
-            continue;
-        }
 
         qDebug()<<"Target="<<TargetTempSensor1<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 
@@ -2395,7 +2428,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     qDebug()<<"Rotary Valve is turning to Tube #"<<Position;
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
-    if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
+    if (mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK) {
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
         goto RV_HEATING_END_EXIT;
     }
 
@@ -2482,14 +2517,11 @@ RV_HEATING_END_EXIT:
      mp_TempLSensor->StopTemperatureControl();
 
     mp_TempRV->StopTemperatureControl();
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetLow();
-    }
+    mp_DigitalOutputMainRelay->SetLow();
 
     p_TestCase->AddResult("UsedTime", UsedTime);
     p_TestCase->AddResult("CurrentTempSensor1", Sensor1Value);
     p_TestCase->AddResult("CurrentTempSensor2", Sensor2Value);
-
 
     if ( RVStatus == -1 )  // failed.
     {
@@ -3188,11 +3220,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
             emit ReturnManufacturingTestMsg(false);
         }
         break;
-
     case Service::RETORT_LID_LOCK:
         TestLidLocker();
         break;
-
     case Service::RETORT_LEVEL_SENSOR_HEATING:
         if (NULL == mp_TempLSensor) {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
@@ -3229,7 +3259,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     }
-
     case Service::RETORT_HEATING_WITH_WATER:
     {
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(TestId);
@@ -3254,7 +3283,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     }
-
     case Service::RETORT_HEATING_EMPTY:
         if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBottom) {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
@@ -3268,7 +3296,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
             emit ReturnManufacturingTestMsg(false);
         }
         break;
-
     case Service::ROTARY_VALVE_INITIALIZING:
         if (NULL == mp_MotorRV) {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
@@ -3326,19 +3353,34 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         TestSystemSpeaker();
         break;
     case Service::SYSTEM_110V_220V_SWITCH:
-        emit ReturnManufacturingTestMsg(TestSystem110v220vSwitch());
+        if ( 0 == TestSystem110v220vSwitch()) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         TestSystemAlarm();
         break;
     case Service::SYSTEM_MAINS_RELAY:
-        emit ReturnManufacturingTestMsg(TestSystemMainsRelay());
+        if ( 0 == TestSystemMainsRelay() ) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     case Service::SYSTEM_EXHAUST_FAN:
         TestSystemExhaustFan();
         break;
     case Service::SYSTEM_OVERFLOW:
-        emit ReturnManufacturingTestMsg(TestSystemOverflow());
+        if ( 0 == TestSystemOverflow() ) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     case Service::SYSTEM_SEALING_TEST:
     {

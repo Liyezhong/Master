@@ -288,6 +288,8 @@ void CRotaryValve::BeginTest()
         return;
     }
 
+    bool Flags[4] = {false, false, false, false};
+
     qDebug()<<"CRotaryValve::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -297,7 +299,7 @@ void CRotaryValve::BeginTest()
         qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
 
         if (State == Qt::Checked) {
-
+            Flags[i] = true;
             Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(item->toolTip());
             TestCaseList.append(Id);
         }
@@ -311,6 +313,19 @@ void CRotaryValve::BeginTest()
         mp_MessageDlg->show();
     }
     else {
+        if (Flags[0] == false && (Flags[1]==true||Flags[2]==true)) {
+            QStandardItem *item = m_Model.item(0, 3);
+            if (item->toolTip() != "PASS") {
+                mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_ERROR);
+                mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetText("You can't do these tests until 'Get the initial position' test is passed. ");
+                mp_MessageDlg->SetIcon(QMessageBox::Critical);
+                mp_MessageDlg->show();
+                return;
+            }
+        }
+
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
@@ -350,6 +365,11 @@ void CRotaryValve::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
                     SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
             }
             (void) m_Model.setData(m_Model.index(i, 3), SetPixMap, (int) Qt::DecorationRole);
+
+            item = m_Model.item(i, 3);
+            if (Result == true) {
+                item->setToolTip("PASS");
+            }
             break;
         }
     }
