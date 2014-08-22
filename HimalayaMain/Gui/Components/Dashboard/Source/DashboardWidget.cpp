@@ -124,6 +124,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, EnablePauseButton(bool),
                               this, OnPauseButtonEnable(bool));
 
+    CONNECTSIGNALSLOT(mp_DataConnector, PauseTimeout15Mintues(),
+                              this, OnPauseTimeout15Mintues());
+
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
@@ -399,6 +402,11 @@ void CDashboardWidget::OnProgramPaused()
 void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
 {
     ui->programPanelWidget->EnablePauseButton(bEnable);
+}
+
+void CDashboardWidget::OnPauseTimeout15Mintues()
+{
+    ui->programPanelWidget->ChangeStartButtonToStopState();
 }
 
 void CDashboardWidget::OnUnselectProgram()
@@ -949,7 +957,7 @@ void CDashboardWidget::OnUserRoleChanged()
         }
 
     }
-    else if (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service) {
+    else if ((m_ProcessRunning || m_IsDraining) && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)) {
         ui->programPanelWidget->EnablePauseButton(true);
         ui->programPanelWidget->EnableStartButton(true);
     }

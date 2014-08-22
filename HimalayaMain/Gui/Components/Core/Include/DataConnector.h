@@ -659,6 +659,13 @@ signals:
      */
     /****************************************************************************/
     void EnablePauseButton(bool bEnable);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal PauseTimeout15Mintues
+     */
+    /****************************************************************************/
+    void PauseTimeout15Mintues();
+
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);

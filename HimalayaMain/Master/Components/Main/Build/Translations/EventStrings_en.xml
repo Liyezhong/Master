@@ -467,6 +467,9 @@
 		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
 		<string id="50331765" text1="Active carbon filter operationtime was reset." text2=""/>
 		<string id="50331764" text1="Machine operationtime was reset." text2=""/>
+		<string id="50331766" text1="Pause overtime 5 mintues. Please resume program as soon as possible!" text2=""/>
+		<string id="50331767" text1="Pause overtime 10 mintues. Please resume program as soon as possible!" text2=""/>
+		<string id="50331768" text1="Program can not resume as pausing overtime 15 mintues." text2=""/>
 		<string id="33619977" text1="The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable." text2=""/>
 		<string id="50331683" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
 		<string id="50331651" text1="LeicaBiopsie" text2=""/>

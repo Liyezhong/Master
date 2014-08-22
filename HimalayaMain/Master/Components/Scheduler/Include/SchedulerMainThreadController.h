@@ -107,6 +107,7 @@ typedef enum
     CTRL_CMD_RS_PAUSE,
     CTRL_CMD_RS_RV_WAITINGTEMPUP,
     CTRL_CMD_RS_TISSUE_PROTECT,
+    CTRL_CMD_USER_RESPONSE_PAUSE_ALARM,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -270,6 +271,9 @@ typedef struct
         bool m_hasParaffin;                                   ///< the program has paraffin
         bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
         bool m_ReleasePressureSucessOfSoakFinish;             ///< release pressure sucess
+        bool m_Is5MinPause;                                   ///< Instrument alarm when pausing exceed 5 minutes
+        bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
+        bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

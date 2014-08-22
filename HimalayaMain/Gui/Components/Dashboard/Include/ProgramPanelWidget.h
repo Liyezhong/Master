@@ -108,6 +108,15 @@ public:
     void EnablePauseButton(bool bEnable);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function PauseTimeout15Mintues
+     *
+     *
+     *  \return from PauseTimeout15Mintues
+     */
+    /****************************************************************************/
+    void PauseTimeout15Mintues();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function IsResumeRun
      *
      *  \param bSet = bool type parameter

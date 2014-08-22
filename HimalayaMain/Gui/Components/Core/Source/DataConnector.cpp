@@ -1737,6 +1737,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit EnablePauseButton(false);
         }
         break;
+        case DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES:
+        {
+            emit PauseTimeout15Mintues();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

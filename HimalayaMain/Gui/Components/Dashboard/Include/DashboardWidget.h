@@ -250,7 +250,13 @@ private slots:
      *  \brief  Definition/Declaration of OnPauseButtonEnble
      */
     /****************************************************************************/
-      void OnPauseButtonEnable(bool bEnable);
+    void OnPauseButtonEnable(bool bEnable);
+    /****************************************************************************/
+    /*!
+    *  \brief  Definition/Declaration of OnPauseTimeout15Mintues
+    */
+    /****************************************************************************/
+    void OnPauseTimeout15Mintues();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnStationSuckDrain

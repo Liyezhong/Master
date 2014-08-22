@@ -323,6 +323,12 @@ const quint32 EVENT_SERVICE_OPERATIONTIME_RESET	= 50331764;	///< Reset michine o
 
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_RESET	= 50331765;	///< Reset Active carbon filter operation time
 
+const quint32 EVENT_DEVICE_ALARM_PAUSE_5MINTUES = 50331766;	   ///< instrument alarm when pausing exceed 5 minutes
+
+const quint32 EVENT_LOCAL_ALARM_PAUSE_10MINTUES = 50331767;	   ///< local alarm when pausing exceed 10 minustes
+
+const quint32 EVENT_REMOTE_ALARM_PAUSE_15MINTUES = 50331768;   ///< remote alarm when pausing exceed 15 minutes
+
 
 
 #endif // HIMALAYAEVENTCODES_H

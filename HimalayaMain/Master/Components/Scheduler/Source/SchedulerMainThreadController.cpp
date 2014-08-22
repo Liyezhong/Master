@@ -105,6 +105,9 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_delayTime(0)
         , m_IsInSoakDelay(false)
         , m_hasParaffin(false)
+        , m_Is5MinPause(false)
+        , m_Is10MinPause(false)
+        , m_Is15MinPause(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -866,7 +869,45 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 Q_ASSERT(commandPtrFinish);
                 Global::tRefType fRef = GetNewCommandRef();
                 SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                m_TimeStamps.PauseStartTime = 0;
             }
+            else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)
+            {
+                m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_Is5MinPause = false;
+                m_Is10MinPause = false;
+                m_Is15MinPause = false;
+            }
+            else
+            {
+                qint64 now = QDateTime::currentMSecsSinceEpoch();
+                if(!m_Is5MinPause && (now - m_TimeStamps.PauseStartTime) >= 1 * 60* 1000 &&
+                        (now - m_TimeStamps.PauseStartTime) < 10 * 60* 1000)
+                {
+                    m_Is5MinPause = true;
+                    Global::EventObject::Instance().RaiseEvent(EVENT_DEVICE_ALARM_PAUSE_5MINTUES);
+                }
+                else if(!m_Is10MinPause && (now - m_TimeStamps.PauseStartTime) >= 2 * 60* 1000 &&
+                         (now - m_TimeStamps.PauseStartTime) < 15 * 60* 1000)
+                {
+                    m_Is10MinPause = true;
+                    Global::EventObject::Instance().RaiseEvent(EVENT_LOCAL_ALARM_PAUSE_10MINTUES);
+                }
+                else if(!m_Is15MinPause && (now - m_TimeStamps.PauseStartTime) >= 3 * 60* 1000)
+                {
+                    m_Is15MinPause = true;
+
+                    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES;
+                    MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type));
+                    Q_ASSERT(commandPtrPauseEnable);
+                    Global::tRefType fRef = GetNewCommandRef();
+                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+
+                    Global::EventObject::Instance().RaiseEvent(EVENT_REMOTE_ALARM_PAUSE_15MINTUES);
+                }
+
+            }
+
         }
         else if(PSSM_PAUSE_DRAIN == stepState)
         {
@@ -1269,6 +1310,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RS_TISSUE_PROTECT;
         }
+        if (cmd == "user_response_pause_alarm")
+        {
+            return CTRL_CMD_USER_RESPONSE_PAUSE_ALARM;
+        }
+
     }
     return CTRL_CMD_UNKNOWN;
 
@@ -2939,6 +2985,8 @@ void SchedulerMainThreadController::AllStop()
 void SchedulerMainThreadController::Pause()
 {
     m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
+    m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+
     //send command to main controller to tell program is actually pasued
     LogDebug("Notice GUI program paused");
     MsgClasses::CmdProgramAcknowledge* commandPtrPauseFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_FINISHED));
