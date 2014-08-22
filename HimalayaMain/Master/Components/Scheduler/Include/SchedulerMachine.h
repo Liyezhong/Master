@@ -1013,30 +1013,21 @@ private slots:
 
     /****************************************************************************/
     /*!
-     *  \brief	Slot to start all the temperature control for the specific device
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnStartDeviceTempCtrl();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to check the status of the specific device
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnCheckDeviceStatus();
-
-    /****************************************************************************/
-    /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
      *  \param	bool flag to indicate if the whole execution succeeds or not
      *  \return	void
      */
     /****************************************************************************/
     void OnTasksDone(bool flag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to handle the actions when RS_Tissue_Protect is done.
+     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnTasksDoneRSTissueProtect(bool flag);
 
     /****************************************************************************/
     /*!
@@ -1789,6 +1780,14 @@ signals:
      */
     /****************************************************************************/
     void sigStateChange();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for entering idle state
+     */
+    /****************************************************************************/
+    void sigEnterIdleState();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigResumeToProcessing
