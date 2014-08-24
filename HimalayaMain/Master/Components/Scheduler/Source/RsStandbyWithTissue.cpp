@@ -179,11 +179,11 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                 {
                     reportError1 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"Retort", RT_BOTTOM);
                     reportError2 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"Retort", RT_SIDE);
-                    if (reportError1.instanceID != 0 && (now - reportError1.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+                    if (reportError1.instanceID != 0 && (now - reportError1.errorTime) <= 3*1000)
                     {
                         emit TasksDone(false);
                     }
-                    if (reportError2.instanceID != 0 && (now - reportError2.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+                    if (reportError2.instanceID != 0 && (now - reportError2.errorTime) <= 3*1000)
                     {
                         emit TasksDone(false);
                     }

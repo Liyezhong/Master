@@ -174,19 +174,19 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             reportError2 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
             reportError3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
             reportError4 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
-            if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= 3*1000)
             {
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED);
             }
-            if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            if (reportError2.instanceID != 0 && (now-reportError2.errorTime) <= 3*1000)
             {
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED);
             }
-            if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            if (reportError3.instanceID != 0 && (now-reportError3.errorTime) <= 3*1000)
             {
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE);
             }
-            if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= 3*1000)
             {
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
             }

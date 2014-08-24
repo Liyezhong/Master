@@ -2849,28 +2849,28 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
     {
     case LEVELSENSOR:
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"LA", AL_LEVELSENSOR);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
             return false;
         }
         break;
     case LATUBE1:
          reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
-         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+         if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
          {
              return false;
          }
          break;
     case LATUBE2:
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
             return false;
         }
         break;
     case RV:
         reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV");
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
             return false;
         }
@@ -2882,19 +2882,19 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
         reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
         reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
             return false;
         }
-        if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError2.instanceID != 0 && (now-reportError2.errorTime) <= interval*1000)
         {
             return false;
         }
-        if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError3.instanceID != 0 && (now-reportError3.errorTime) <= interval*1000)
         {
             return false;
         }
-        if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) <= interval*1000)
+        if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= interval*1000)
         {
             return false;
         }
@@ -2984,11 +2984,11 @@ void SchedulerMainThreadController::AllStop()
 
 void SchedulerMainThreadController::Pause()
 {
+    LogDebug("Notice GUI program paused");
     m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
 
     //send command to main controller to tell program is actually pasued
-    LogDebug("Notice GUI program paused");
     MsgClasses::CmdProgramAcknowledge* commandPtrPauseFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_FINISHED));
     Q_ASSERT(commandPtrPauseFinish);
     Global::tRefType fRef = GetNewCommandRef();
@@ -3505,6 +3505,16 @@ void SchedulerMainThreadController::EnablePauseButton(bool bEnable)
     Q_ASSERT(commandPtrPauseEnable);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+}
+
+void SchedulerMainThreadController::OnSystemError()
+{
+
+}
+
+void SchedulerMainThreadController::OnEnterRcRestart()
+{
+
 }
 
 }

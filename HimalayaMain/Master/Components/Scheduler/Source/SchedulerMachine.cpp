@@ -113,7 +113,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
-    mp_ErrorState->addTransition(this, SIGNAL(sigEnterIdleState()), mp_IdleState.data());
+	mp_ErrorState->addTransition(this, SIGNAL(sigEnterIdleState()), mp_IdleState.data());
+    CONNECTSIGNALSLOT(this, SigEnterRcRestart(), mp_SchedulerThreadController, OnEnterRcRestart());
+    CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
+
 
     // Sate machines for Run handling
     mp_ProgramSelfTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
