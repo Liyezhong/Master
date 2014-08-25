@@ -47,8 +47,6 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     : m_IsConfigured(false)
     , m_rIdevProc(iDevProc)
 {
-    qDebug()<<"----------------- ManufacturingTestHandler::ManufacturingTestHandler ----------------";
-
     m_UserAbort = false;
     mp_Utils = NULL;
 
@@ -86,8 +84,6 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 /****************************************************************************/
 void ManufacturingTestHandler::CreateWrappers()
 {
-    qDebug()<<"---------------- ManufacturingTestHandler::CreateWrappers ----------------" ;
-
     // Temperature control
     CTemperatureControl *pTemperature;
 
@@ -148,26 +144,17 @@ void ManufacturingTestHandler::CreateWrappers()
     if ( NULL != pDigitalOutput ) {
         mp_DigitalOutputMainRelay = new WrapperFmDigitalOutput("heater_relay", pDigitalOutput, this);
     }
-    else {
-        qDebug()<<"new WrapperFmDigitalOutput for MainRelay failed !!!!";
-    }
 
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);        
     }
-    else {
-        qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
-    }
 
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);        
-    }
-    else {
-        qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
     }
 
     pTemperature = NULL;
@@ -250,9 +237,7 @@ bool ManufacturingTestHandler::IsInitialized()
 
 /****************************************************************************/
 void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseId)
-{
-    qDebug()<<"ManufacturingTestHandler::OnAbortTest";
-
+{   
     if(!IsInitialized()) {
         Initialize();
     }
@@ -262,7 +247,6 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     }
     switch (AbortTestCaseId) {
     case Service::SYSTEM_SPEARKER:
-        qDebug()<<"abort the system speaker test";
         if (mp_SpeakProc) {
             mp_SpeakProc->terminate();
         }
@@ -274,14 +258,11 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
         break;
     }
     case Service::OVEN_COVER_SENSOR:
-        qDebug()<<"abort the oven cover sensor test";
         break;
     case Service::RETORT_LID_LOCK:
-        qDebug()<<"abort the retort lid test";
         break;
     case Service::SYSTEM_EXHAUST_FAN:
         AbortExhaustFanOperation();
-        qDebug()<<"abort exhaust fan test";
         break;
     default:
         mp_Utils->AbortPause();
@@ -384,7 +365,6 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     while (!m_UserAbort && WaitSec)
     {
         if ((WaitSec+DurSec1) == SumSec) {
-            qDebug()<<"switch to " << HeatTargetTemp2;
 
             mp_TempOvenTop->StopTemperatureControl();
             mp_TempOvenBottom->StopTemperatureControl();
@@ -548,8 +528,6 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
-        qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
-
         if ( CurrentTempTop >= MinTargetTemp &&
              CurrentTempBottom1 >= MinTargetTemp &&
              CurrentTempBottom2 >= MinTargetTemp )
@@ -581,8 +559,6 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
             QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
 
             Status.insert("TargetTemp", TargetTempStr);
-
-            qDebug()<<"TargetTemp="<<TargetTempStr;
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
@@ -692,19 +668,6 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
-    bool needAC = false;
-    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
-        needAC = true;
-        bool acRet = mp_DigitalOutputMainRelay->SetHigh();
-        qDebug() << "MainRelay SetHigh return :"<< acRet << "\n";
-    }
-
-    mp_TempRetortSide->StopTemperatureControl();
-    mp_TempRetortBottom->StopTemperatureControl();
-    bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp+7);
-    bool btmCtrlRet  = mp_TempRetortBottom->StartTemperatureControl(btmTgtTemp+2);
-    qDebug() << "Start top return : "<< sideCtrlRet << "\n";
-    qDebug() << "Start bottom return :"<< btmCtrlRet << "\n";
 
     qreal curSideTemp   = 0;
     qreal curBottomTemp1 = 0;
@@ -750,18 +713,18 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         p_TestCase->AddResult("CurrentTempBottom1", btmTemp1);
         p_TestCase->AddResult("CurrentTempBottom2", btmTemp2);
 
-        mp_TempRetortSide->StopTemperatureControl();
-        mp_TempRetortBottom->StopTemperatureControl();
-        if (needAC) {
-            mp_DigitalOutputMainRelay->SetLow();
-        }
         return -1;
     }
+
+    mp_DigitalOutputMainRelay->SetHigh();
+    mp_TempRetortSide->StopTemperatureControl();
+    mp_TempRetortBottom->StopTemperatureControl();
+    mp_TempRetortSide->StartTemperatureControl(sideTgtTemp+7);
+    mp_TempRetortBottom->StartTemperatureControl(btmTgtTemp+2);
 
     Service::ModuleTestStatus testStat;
     QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
     testStat.insert("TargetTemp", target);
-    qDebug() << "TargetTemp=" << target;
 
     QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
     testStat.insert("Duration", duration);
@@ -777,12 +740,10 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
         curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
         if (curSideTemp == -1 || curBottomTemp1 == -1) {
-            qDebug() << "Side=" << curSideTemp << " Bottom1=" << curBottomTemp1 << " Bottom2=" << curBottomTemp2 << "\n";
             mp_Utils->Pause(1000);
             -- waitSec;
             continue;
         }
-        qDebug() << "Target=" << tgtTemp << " Side=" << curSideTemp << " Bottom1=" << curBottomTemp1 << " Bottom2=" << curBottomTemp2 << "\n";
 
         if (curSideTemp >= minTgtTemp && curBottomTemp1 >= minTgtTemp) {
             if (keepSec > 60) {
@@ -814,9 +775,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
 
     mp_TempRetortSide->StopTemperatureControl();
     mp_TempRetortBottom->StopTemperatureControl();
-    if (needAC) {
-        mp_DigitalOutputMainRelay->SetLow();
-    }
+    mp_DigitalOutputMainRelay->SetLow();
 
     p_TestCase->AddResult("UsedTime", usedTime);
     p_TestCase->AddResult("CurrentTempSide", sideTemp);
@@ -900,22 +859,18 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     for(int i=0; i<3; i++) {
         if (i==0) {
-            qDebug()<<"Start heating high, curtemp="<<curTemp;
             mp_TempLSensor->StopTemperatureControl();
             mp_TempLSensor->SetTemperaturePid(132, ControllerGainHigh,ResetTimeHigh, DerivativeTimeHigh);
             mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
             mp_Utils->Pause(200);
         }
         else if (i==1){
-            qDebug()<<"Start heating low";
             mp_TempLSensor->StopTemperatureControl();
             mp_TempLSensor->SetTemperaturePid(132, ControllerGainLow,ResetTimeLow, DerivativeTimeLow);
             mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
             mp_Utils->Pause(200);
         }
-        else {
-            qDebug()<<"keep 5 seconds";
-
+        else {            
             waitSeconds = 5;
         }
 
@@ -923,12 +878,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             QTime EndTime = QTime().currentTime().addSecs(1);
 
             curTemp = mp_TempLSensor->GetTemperature();
-            qDebug()<<"curTemp="<<curTemp;
+
             if (curTemp > OverTemperature) {
                 goto ERROR_EXIT;
             }
             else if (i==0 && curTemp >= ExchangeTemperature) {
-                qDebug()<<"break from high heating ... curTemp="<<curTemp;
                 break;
             }
             else if (i==2 && (curTemp<MinTemperature||curTemp>MaxTemperature)) {
@@ -1005,13 +959,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 
     EmitRefreshTestStatustoMain(testCaseName, LS_HEATING);
     if (-1 == HeatingLevelSensor()) {
-        qDebug() << "Fail to heat level sensor";
          p_TestCase->AddResult("TestResult", "Level sensor self-test is failed.");
          EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
          return -1;
-    }
-    else {
-        qDebug() << "Level sensor heating OK!";
     }
 
     EmitRefreshTestStatustoMain(testCaseName, RETORT_FILLING);
@@ -1096,7 +1046,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
-        qDebug()<<"Fail to heat level sensor";
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR_FAILED);
         return -1;
@@ -1165,7 +1114,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         int WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
         int SumSec = WaitSec;
-        qDebug()<<"UserAbort="<<m_UserAbort<<" WaitSec="<<WaitSec;
         if (m_UserAbort == true) {
             goto EXIT_TEST_RETORT_HEATING_WATER;
         }
@@ -1185,8 +1133,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
                 QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
                 Status.insert("TargetTemp", TargetTempStr);
 
-                qDebug()<<"TargetTemp="<<TargetTempStr;
-
                 QString Duration = p_TestCase->GetParameter("DurationTime");
                 Status.insert("Duration", Duration);
                 p_TestCase->AddResult("Duration", Duration);
@@ -1201,7 +1147,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
                     CurrentTempBottom2 == -1) {
                 mp_Utils->Pause(1000);
                 WaitSec--;
-                qDebug()<<CurrentTempBottom1<<" "<<CurrentTempBottom2<<" "<<CurrentTempSide;
                 continue;
             }
 
@@ -1285,14 +1230,12 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker()
     QString VolumeLevel = VolumeFlag ? QString("HighVolume") : QString("LowVolume");
     VolumeLevel = p_TestCase->GetParameter(VolumeLevel);
 
-    qDebug()<<"System Speaker test Volume Level : "<<VolumeLevel;
     QString SetVolume;
     QStringList PlayParams;
 
     SetVolume = "amixer set PCM " + VolumeLevel + "%";
     PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note6.ogg";
 
-    qDebug()<<"SetVolume="<<SetVolume;
 
     mp_SpeakProc->start(SetVolume);
     mp_SpeakProc->waitForFinished();
@@ -1314,10 +1257,6 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     bool AlarmFlag = p_TestCase->GetParameter("AlarmFlag").toInt();
     bool ConnectFlag  = p_TestCase->GetParameter("ConnectFlag").toInt();
 
-    qDebug()<<"Remote alarm value = "<<mp_DIRemoteAlarm->GetValue();
-    qDebug()<<"Local alarm value = "<<mp_DILocalAlarm->GetValue();
-
-
     qint32 RetValue(0);
     if (AlarmFlag) {
         RetValue = mp_DIRemoteAlarm->GetValue();
@@ -1327,14 +1266,12 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     }
 
     if (ConnectFlag) {
-        qDebug()<<"Remote Set low .....";
         if (AlarmFlag) {
             // remote connect test
             mp_DORemoteAlarm->SetLow();
 
         }
         else {
-            qDebug()<<"Local Set low .....";
             // local connect test
             mp_DOLocalAlarm->SetLow();
         }
@@ -1412,14 +1349,12 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
     if (RelaySwitchStatus) {
          // switch on
-        qDebug()<<"System mains relay switch on";
         mp_DigitalOutputMainRelay->SetHigh();
         mp_TempRV->StartTemperatureControl(80);
         mp_Utils->Pause(1000);
 
         ASB3Current = mp_TempRV->GetCurrent();
 
-        qDebug()<<"ASB3 current :"<<ASB3Current;
         Result = (ASB3Current > SwitchOnCurrentLow && ASB3Current < SwitchOnCurrentHigh);
         mp_TempRV->StopTemperatureControl();
         mp_DigitalOutputMainRelay->SetLow();
@@ -1430,9 +1365,6 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
          // switch off
         mp_DigitalOutputMainRelay->SetLow();
 
-        qDebug()<<"ASB3 current :"<<ASB3Current;
-
-        qDebug()<<"System mains relay switch off";
         ASB3Current = mp_TempRV->GetCurrent();
         Result = (ASB3Current < SWitchOffCurrentLow);
         p_TestCase->AddResult("ASB3Current", QString("%1mA").arg(ASB3Current));
@@ -1495,20 +1427,18 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
 
         ret = mp_PressPump->Sucking(delay, 1);
 
-        qDebug()<<"Sucking ------ return :"<<ret;
         if (ret == SUCKING_RET_OVERFLOW) {
             result = 0;
         }
         else {
             result = -1;
-            qDebug()<<"Overflow test failed, fill function return code:"<<ret;
         }
     }
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     ret = mp_PressPump->Draining();
     if (ret != DRAINGING_RET_OK) {
-        qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
+        ;
     }
 
     return result;
@@ -1575,12 +1505,10 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
-        qDebug()<<"before release pressure : "<<mp_PressPump->GetPressure();
         mp_PressPump->SetFan(0);
         mp_PressPump->SetValve(0, 0);
         mp_PressPump->SetValve(1, 0);
         mp_Utils->Pause(20*1000);
-        qDebug()<<"after release pressure : "<<mp_PressPump->GetPressure();
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return RetValue ;
     }
@@ -1735,7 +1663,6 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     mp_PressPump->SetFan(1);
     EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
 
-    qDebug()<<"Blow time ==== "<<blowSec;
 
     if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
@@ -1781,7 +1708,6 @@ CLEANING_EXIT:
 
 bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressure, qreal departure, const QString& TestCaseName)
 {
-    qDebug()<<"Create target pressure:"<<targetPressure;
     bool result = false;
     if (targetPressure > 0) {
         mp_PressPump->SetTargetPressure(17, targetPressure);
@@ -1799,7 +1725,6 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
             break;
         }
         qreal pressure = mp_PressPump->GetPressure();
-        qDebug()<<"current pressure :"<<pressure;
 
         if (departure == 0) {
             if (targetPressure > 0 && pressure >= targetPressure) {
@@ -1832,29 +1757,19 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
 
     if (Id == Service::MAINCONTROL_ASB3) {
        Slave = DeviceControl::Slave_3;
-      qDebug()<<"Get SN for BaseModule 3:"<<mp_BaseModule3->ReqSerialNumber();
     }
     else if (Id == Service::MAINCONTROL_ASB5) {
-       qDebug()<<"Get SN for BaseModule 5:"<<mp_BaseModule5->ReqSerialNumber();
        Slave = DeviceControl::Slave_5;
     }
     else if (Id == Service::MAINCONTROL_ASB15) {
-        qDebug()<<"Get SN for BaseModule 15:"<<mp_BaseModule15->ReqSerialNumber();
        Slave = DeviceControl::Slave_15;
     }
     else {
-       qDebug()<<"Error : Wrong Parameter !";
        return -1;
     }
 
-
-
-
-
     qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave)/1000.0;
     qreal ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
-
-    qDebug()<<"voltage = "<<ActualVoltage <<" current = "<<ActualCurrent;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -1915,7 +1830,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         NeedAC = true;
     }
 
-    qDebug()<<"DurationTime="<<DurationTime<<" TargetTemp="<<TargetTemp<<" Min="<<MinTargetTemp<<" Max="<<MaxTargetTemp<<" AmbLow="<<AmbTempLow<<" AmbHigh="<<AmbTempHigh<<" NeedAc="<<NeedAC;
     Service::ModuleTestStatus Status;
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
@@ -1923,8 +1837,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     SumSec = WaitSec;
 #if 1
     CurrentTemp = p_TempCtrl->GetTemperature(0);
-
-    qDebug()<<"Current temp = "<<CurrentTemp;
 
     SetFailReason(Id, "");
     if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
@@ -1961,8 +1873,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
         CurrentTemp = p_TempCtrl->GetTemperature(0);
 
-        qDebug()<<"Current temp = "<<CurrentTemp <<" Target=" << MinTargetTemp;
-
         if (CurrentTemp == -1) {
             mp_Utils->Pause(1000);
             WaitSec--;
@@ -1992,8 +1902,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         if (WaitSec == SumSec) {
             QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
             Status.insert("TargetTemp", TargetTempStr);
-
-            qDebug()<<"TargetTemp="<<TargetTempStr;
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
@@ -2058,8 +1966,6 @@ qint32 ManufacturingTestHandler::TestRVSelectingAndSealing(Service::ModuleTestCa
 
     quint32 Result(-1);
 
-    qDebug()<<"Position = "<<Position;
-
     if (TubeFlag == 1) {
         Result = mp_MotorRV->MoveToTubePosition(Position);
     }
@@ -2119,7 +2025,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     while(num) {
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
-        qDebug()<<"Sensor1 = "<<CurrentTempSensor1<<"  Sensor2="<<CurrentTempSensor2;
 
         if (CurrentTempSensor1==-1 || CurrentTempSensor2==-1 ||
                 CurrentTempSensor1==0 || CurrentTempSensor2==0) {
@@ -2166,7 +2071,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-        qDebug()<<"Target="<<TargetTempSensor1<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 #if 0
         if ( (SumSec-WaitSec) >= WaitSecSensor1 ) {
 
@@ -2215,7 +2119,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
             QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);
             Status.insert("TargetTemp", TargetTempStr);
 
-            qDebug()<<"TargetTemp="<<TargetTempStr;
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
@@ -2276,9 +2179,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    qDebug()<<"Get Parameter:";
-    qDebug()<<"Duration1 = "<<p_TestCase->GetParameter("Sensor1Duration");
-
     QTime DurationTimeSensor1 = QTime::fromString(p_TestCase->GetParameter("Sensor1Duration"), "hh:mm:ss");
     QTime DurationTimeSensor2 = QTime::fromString(p_TestCase->GetParameter("Sensor2Duration"), "hh:mm:ss");
 
@@ -2330,8 +2230,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
 
     // heating level sensor
-    qDebug()<<"Heating level sensor....";
-
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
@@ -2362,14 +2260,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     }
 
     // sucking
-    qDebug()<<"Begin sucking....";
-
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = mp_PressPump->Sucking();
     if ( Ret != SUCKING_RET_OK ) {
-        qDebug()<<"Sucking failed......... Ret = "<<Ret;
         Ret = mp_PressPump->Draining();
-        qDebug()<<"Draining return : "<<Ret;
 
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_FILLING_FAILED);
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
@@ -2377,7 +2271,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     }
 
     // set rotary valve to sealing position
-    qDebug()<<"Rotary Valve is turning to Sealing #"<<Position;
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
     if (mp_MotorRV->MoveToSealPosition(Position)!=RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
@@ -2385,8 +2278,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
-
-    qDebug()<<"Begin heating ( at first stage ) .....";
 
     mp_TempRV->StopTemperatureControl();
     mp_DigitalOutputMainRelay->SetHigh();
@@ -2399,7 +2290,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-        qDebug()<<"Target="<<TargetTempSensor1<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
@@ -2412,8 +2302,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         if (WaitSec == SumSec) {
             QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
             Status.insert("TargetTemp", TargetTempStr);
-
-            qDebug()<<"TargetTemp="<<TargetTempStr;
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
@@ -2430,7 +2318,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     }
 
     // set rotary valve to tube position
-    qDebug()<<"Rotary Valve is turning to Tube #"<<Position;
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
     if (mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK) {
@@ -2440,19 +2327,16 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     }
 
     // draining
-    qDebug()<<"Begin draining.........";
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     Ret = mp_PressPump->Draining();
      if ( Ret != DRAINGING_RET_OK || m_UserAbort ) {
-         qDebug()<<"Draining return : "<< Ret;
     //     goto RV_HEATING_END_EXIT;
      }
 
      EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
      p_TestCase->AddResult("CurStatus", "IN-HEATING");
-     qDebug()<<"Begin heating (at second stage).....";
-     // heating at second stage.
+      // heating at second stage.
      TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp2").toFloat();
      mp_TempRV->StopTemperatureControl();
      mp_TempRV->StartTemperatureControl(TargetTempSensor1);
@@ -2471,7 +2355,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
              WaitSec--;
              continue;
          }
-         qDebug()<<"Target="<<TargetTempSensor2<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 
          if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
              if ( KeepSeconds > 60 ) {
@@ -2498,8 +2381,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
              QString TargetTempStr = QString("%1").arg(TargetTempSensor2);//.arg(DepartureLow).arg(DepartureHigh);
              Status.insert("TargetTemp", TargetTempStr);
 
-             qDebug()<<"TargetTemp="<<TargetTempStr;
-
              QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
              Status.insert("Duration", Duration);
              p_TestCase->AddResult("Duration", Duration);
@@ -2518,7 +2399,6 @@ RV_HEATING_END_EXIT:
 
      EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
-     qDebug()<<"RV heating test exit......";
      mp_TempLSensor->StopTemperatureControl();
 
     mp_TempRV->StopTemperatureControl();
@@ -2583,12 +2463,9 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         p_WrapperBaseModule = mp_BaseModule15;
     }
 
-    qDebug()<<"WaitForUpdate....................";
     p_WrapperBaseModule->WaitForUpdate(true);
-    qDebug()<<"ResetNode ------------------------";
     ret = p_WrapperBaseModule->ResetNode();
 
-    qDebug()<<"RestNode return ---------"<<ret;
 
     if (ret == false ){
         goto ERROR_EXIT;
@@ -2604,27 +2481,17 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
     p_WrapperBootLoader = new WrapperFmBootLoader("asb_bootloader", pBootLoader, this);
 
-    qDebug()<<"Path = " << BinPath;
-
     if (p_WrapperBootLoader == NULL) {
         goto ERROR_EXIT;
     }
 
-
-    qDebug()<<"UpdateFirmware ........................";
-
     RetValue = p_WrapperBootLoader->UpdateFirmware(BinPath);
-
-    qDebug()<<"Update Firmware return "<<RetValue;
-
 
     if (RetValue == true) {
         mp_Utils->Pause(2000);
 
         RetValue = p_WrapperBootLoader->BootFirmware();
 
-        qDebug()<<"BootFirmware return : " << RetValue;
-        qDebug()<<"Wait firmware boot for 5 seconds..............";
         mp_Utils->Pause(5000);
 
         Service::ModuleTestStatus Status;
@@ -2640,7 +2507,6 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
         RetValue = p_WrapperBootLoader->BootFirmware();
 
-        qDebug()<<"BootFirmware return : " << RetValue;
         mp_Utils->Pause(5000);
     }
 ERROR_EXIT:
@@ -2741,8 +2607,6 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     }
     Drift =  mp_PressPump->ReadPressureDrift();
 
-    qDebug()<<"CalibratePressureSensor ----Drift="<<Drift<<"----Pressure="<<Pressure<<"---------"<<Status;
-
     emit RefreshTestStatustoMain(TestCaseName, Status);
 }
 
@@ -2786,7 +2650,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     int ReadyStatus(-1);
     int i = 0;
     while(WaitSeconds){
-        qDebug()<<"Level Sensor temp is : "<<mp_TempLSensor->GetTemperature()<<" time:"<<i++;
         if (mp_TempLSensor->GetTemperature() > (LSensorTemp-TEST_LSENSOR_TEMP_TOLERANCE)) {
             ReadyStatus = 1;
             break;
@@ -2796,8 +2659,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     }
     if (ReadyStatus == -1) {
         mp_TempLSensor->StopTemperatureControl();
-
-        qDebug()<<"Level Sensor heating error !";
         return -1;
     }
 
@@ -2810,7 +2671,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
     i = 0;
     while(WaitSeconds){
-        qDebug()<<"Level Sensor temp is : "<<mp_TempLSensor->GetTemperature()<<" time:"<<i++;
         if (mp_TempLSensor->GetTemperature() > (LSensorTemp-TEST_LSENSOR_TEMP_TOLERANCE)) {
             ReadyStatus = 1;
             break;
@@ -2820,8 +2680,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     }
     if (ReadyStatus == -1) {
         mp_TempLSensor->StopTemperatureControl();
-
-        qDebug()<<"Level Sensor heating error 2 !";
         return -1;
     }
 
@@ -2837,18 +2695,11 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
         return -1;
     }
 
-
     mp_TempRV->SetTemperatureSwitchState(-1, 1);
 
     mp_TempRetortSide->SetTemperatureSwitchState(-1, 1);
 
     mp_DigitalOutputMainRelay->SetHigh();
-
-    qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
-    qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
-    qDebug()<<"Oven Temp:"<<mp_TempOvenBottom->GetTemperature();
-
-    qDebug()<<"heat for 3 seconds...";
 
     mp_TempRV->StartTemperatureControl(70);
     mp_TempRetortBottom->StartTemperatureControl(70);
@@ -2859,25 +2710,9 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     int i=0;
     while(i<6)
     {
-        qDebug()<<i/2.0<<"  RV Current:"<<mp_TempRV->GetCurrent() <<"   Retort Current:"<<mp_TempRetortBottom->GetCurrent();
-#if 0
-        qDebug()<<"RV="<<mp_TempRV->GetTemperature()
-               <<" RetortB="<<mp_TempRetortBottom->GetTemperature(0)
-              <<" RetortS="<<mp_TempRetortSide->GetTemperature()
-             <<" OvenB="<<mp_TempOvenBottom->GetTemperature(0)
-            <<" OvenT="<<mp_TempOvenTop->GetTemperature();
-#endif
         i++;
         mp_Utils->Pause(500);
     }
-
-    qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
-    qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
-    qDebug()<<"Oven Temp:"<<mp_TempOvenBottom->GetTemperature();
-
-    qDebug()<<"RV current:" <<mp_TempRV->GetCurrent();
-    qDebug()<<"Retort current:"<<mp_TempRetortBottom->GetCurrent();
-    qDebug()<<"Oven current:"<<mp_TempOvenBottom->GetCurrent();
 
     mp_TempRV->StopTemperatureControl();
     mp_TempRetortBottom->StopTemperatureControl();
@@ -2889,17 +2724,11 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     quint8 ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
     quint8 ASB5SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
-    qDebug()<<"Oven switch type:"<<mp_TempOvenBottom->GetHeaterSwitchType();
-
-
-    qDebug()<<"ASB3SwitchType=" << ASB3SwitchType<< "   ASB5SwitchType="<<ASB5SwitchType;
 
     if (ASB3SwitchType != ASB5SwitchType && ASB5SwitchType != 0) {
         mp_TempRV->SetTemperatureSwitchState(ASB5SwitchType, -1);
 
         ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
-
-        qDebug()<<"ASB3SwitchType=" << ASB3SwitchType;
 
         if (ASB3SwitchType != ASB5SwitchType) {
             RetVal = -1;
@@ -2926,14 +2755,9 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
     if (mp_DORemoteAlarm) {
         mp_DORemoteAlarm->SetHigh();
     }
-    else {
-        qDebug()<<"Fail to init remote alarm";
-    }
+
     if (mp_DOLocalAlarm) {
         mp_DOLocalAlarm->SetHigh();
-    }
-    else {
-        qDebug()<<"Fail to init local alarm";
     }
 
     qint32 RetVal = AutoSetASB3HeaterSwitchType();
@@ -3160,8 +2984,6 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
 
 void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID_t TestId, Service::ModuleTestCaseID_t AbortTestCaseId)
 {
-    qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId;
-
     if(!IsInitialized()){
         Initialize();
     }
@@ -3437,8 +3259,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     default:
         break;
     }
-
-    qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId<<"  End !!";
 }
 
 } // end namespace DeviceControl
