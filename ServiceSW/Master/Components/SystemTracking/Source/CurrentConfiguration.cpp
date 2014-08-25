@@ -48,8 +48,6 @@ CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataC
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
-    //mp_Ui->widget->setFixedWidth(540);
-    //mp_Ui->widget->setFixedHeight(380);
     mp_Ui->widget->SetContent(mp_TableWidget);
 
     mp_ConfigDialog = new SystemTracking::CCurrentConfigurationDlg(this);

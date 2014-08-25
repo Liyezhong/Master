@@ -424,7 +424,6 @@ void CStartup::LoadCommonComponenetsOne()
                                 , mp_SoftwareUpdateLogViewer);
     mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
                                                                            0, QApplication::UnicodeUTF8));
-
 }
 
 /****************************************************************************/
@@ -434,7 +433,6 @@ void CStartup::LoadCommonComponenetsOne()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsTwo()
 {
-
     mp_CalibrationHandler->LoadCalibrationGUIComponenets();
 
     // Service update
@@ -629,6 +627,8 @@ void CStartup::ServiceGuiInit()
 
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
+
+    mp_MainWindow->SetTabWidgetIndex(4);
 }
 
 void CStartup::InitManufacturingDiagnostic()
@@ -674,6 +674,7 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
         mp_ServiceConnector->SetLanguage(PlatformService::CHINESE);
     }
 #endif
+    mp_MainWindow->SetTabWidgetIndex(4);
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 
@@ -1405,7 +1406,6 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
                 }
             }
         }
-
 
         QMap<QString, QString>::const_iterator itr = Status.constBegin();
         for (; itr != Status.constEnd(); ++itr) {
