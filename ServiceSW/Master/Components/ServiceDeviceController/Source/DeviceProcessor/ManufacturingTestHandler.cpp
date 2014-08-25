@@ -874,6 +874,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     qreal curTemp = 0;
     int totalSeconds = 0;
 
+    p_TestCase->ResetResult();
     int num = 10;
     while(num) {
         curTemp = mp_TempLSensor->GetTemperature();
@@ -886,7 +887,6 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
         }
     }
 
-    SetFailReason(Id, "");
     if (curTemp <ambLow || curTemp > ambHigh) {
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(curTemp).arg(ambLow).arg(ambHigh);
         SetFailReason(Id, FailureMsg);
@@ -951,10 +951,15 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
         if (m_UserAbort ||
                 (i==0 && waitSeconds==0) ||
                 (i==1 && waitSeconds==0 && curTemp<MinTemperature)) {
+            if (m_UserAbort) {
+                m_UserAbort = false;
+                p_TestCase->AddResult("FailReason", "Abort");
+            }
             goto ERROR_EXIT;
         }
     }
     if (m_UserAbort) {
+        m_UserAbort = false;
         p_TestCase->AddResult("FailReason", "Abort");
     }
 

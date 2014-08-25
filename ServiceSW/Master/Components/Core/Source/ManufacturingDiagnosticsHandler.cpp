@@ -720,7 +720,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             QString text = QString("%1 - %2<br>%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
-            if (id == Service::RETORT_HEATING_EMPTY) {
+            if (id == Service::RETORT_HEATING_EMPTY || id == Service::RETORT_LEVEL_SENSOR_HEATING) {
                 ShowHeatingFailedResult(id);
             }
 
