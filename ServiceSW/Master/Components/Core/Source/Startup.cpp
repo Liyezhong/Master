@@ -382,8 +382,9 @@ qint32 CStartup::NetworkInit()
  *  \brief System Tracking and LogViewer Tab
  */
 /****************************************************************************/
-void CStartup::LoadCommonComponenetsOne()
+void CStartup::LoadCommonComponenetsOne(bool flag)
 {
+    if (!flag) {
     // Clear All items
     mp_MainWindow->Clear();
     mp_SystemTrackingGroup->Clear();
@@ -424,6 +425,8 @@ void CStartup::LoadCommonComponenetsOne()
                                 , mp_SoftwareUpdateLogViewer);
     mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
                                                                            0, QApplication::UnicodeUTF8));
+
+    }
 }
 
 /****************************************************************************/
@@ -656,7 +659,7 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
     qDebug()<<"CStartup::ManufacturingGuiInit";
 
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
-    LoadCommonComponenetsOne();
+    LoadCommonComponenetsOne(bReInit);
     mp_MainWindow->SetUserMode("MANUFACTURING");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
