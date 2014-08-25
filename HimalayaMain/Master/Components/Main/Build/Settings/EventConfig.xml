@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
-	<Event Code="" ErrorID="511040101" ErrorType="WARNING" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="101040101" RDStringID="111040101" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-	</Event>
-	<Event Code="" ErrorID="511040221" ErrorType="WARNING" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="101040221" RDStringID="111040221" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-	</Event>
 	<Source Name="Himalaya">
+		<Event Code="" ErrorID="511040101" ErrorType="WARNING" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="101040101" RDStringID="111040101" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+		</Event>
+		<Event Code="" ErrorID="511040221" ErrorType="WARNING" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="101040221" RDStringID="111040221" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+		</Event>
 		<Event Code="" ErrorID="513020091" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE" ButtonEnableCondition="RT_LID_OPEN_CLOSE" NextStepOnClickOK="1"/>
 			<Step ID="1" Type="ACT" Action="RS_Pause" NextStepOnFail="2" NextStepOnSuccess="3"/>
