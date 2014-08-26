@@ -1331,7 +1331,6 @@ void HimalayaMasterThreadController::SendRCCmdToGuiChannel(const Global::Command
 
 void HimalayaMasterThreadController::OnSetRmtLocAlarm(int opcode)
 {
-    qDebug() << "[Jeff-debug] " << "function: " << __FUNCTION__ << "line: " << __LINE__;
     // remote & local alarm triger;
     if (schedulerMainController != NULL) {
         Scheduler::CmdRmtLocAlarm *cmd = new Scheduler::CmdRmtLocAlarm(500, schedulerMainController);
