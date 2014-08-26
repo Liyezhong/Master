@@ -1052,7 +1052,7 @@ protected:
          *  \return pointer to SchedulerCommandProcessor
          */
         /****************************************************************************/
-        SchedulerCommandProcessorBase* GetSchedCommandProcessor() const { return m_SchedulerCommandProcessor; }
+        SchedulerCommandProcessorBase* GetSchedCommandProcessor() const { return m_SchedulerCommandProcessor;}
 
         /****************************************************************************/
         /**

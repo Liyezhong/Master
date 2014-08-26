@@ -1,4 +1,4 @@
-/****************************************************************************/
+﻿/****************************************************************************/
 /*! \file HimalayaMasterThread/Source/HimalayaMasterThreadController.cpp
  *
  *  \brief Implementation file for class HimalayaMasterThreadController.
@@ -85,6 +85,10 @@
 #include <SWUpdateManager/Include/SWUpdateManager.h>
 #include <Global/Include/Commands/CmdShutDown.h>
 #include <Global/Include/Commands/Command.h>
+
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
+#include "EventHandler/Include/HimalayaEventHandlerThreadController.h"
 
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;       ///<  Definition/Declaration of variable ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED
@@ -224,23 +228,18 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     CHECKPTR(p_DeviceConfiguration);
 
     // create and connect scheduler main controller
-    Scheduler::SchedulerMainThreadController *schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
+    schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
     AddAndConnectController(schedulerMainController, &m_CommandChannelSchedulerMain, static_cast<int>(SCHEDULER_MAIN_THREAD));
     schedulerMainController->DataManager(mp_DataManager);
+    pSchedCmdProcessor = schedulerMainController->GetSchedCommandProcessor();
     // register all commands for processing and routing
     RegisterCommands();
-
-
 
     // read password file
     DataManager::XmlConfigFilePasswords PwdFile(GetSerialNumber());
     PwdFile.ReadPasswords(Global::SystemPaths::Instance().GetSettingsPath() + "/Password.xml", m_PasswordManager);
-
-
-
     (void)connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
-
-
+    (void)connect(mp_EventThreadController, SIGNAL(SetRmtLocAlarm(int)), this, SLOT(OnSetRmtLocAlarm(int)));
 }
 
 
@@ -1328,6 +1327,17 @@ void HimalayaMasterThreadController::ShowWaitDialog(bool Display, Global::WaitDi
 void HimalayaMasterThreadController::SendRCCmdToGuiChannel(const Global::CommandShPtr_t &Cmd)
 {
     (void)SendCommand(Cmd, m_CommandChannelGui);
+}
+
+void HimalayaMasterThreadController::OnSetRmtLocAlarm(int opcode)
+{
+    qDebug() << "[Jeff-debug] " << "function: " << __FUNCTION__ << "line: " << __LINE__;
+    // remote & local alarm triger;
+    if (schedulerMainController != NULL) {
+        Scheduler::CmdRmtLocAlarm *cmd = new Scheduler::CmdRmtLocAlarm(500, schedulerMainController);
+        cmd->SetRmtLocOpcode(opcode);
+        pSchedCmdProcessor->pushCmd(cmd);
+    }
 }
 
 } // end namespace Himalaya

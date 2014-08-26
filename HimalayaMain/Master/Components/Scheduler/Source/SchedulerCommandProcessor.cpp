@@ -73,6 +73,8 @@
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
+#include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
+
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
@@ -546,6 +548,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
     else if ("Scheduler::IDSealingCheck" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure()));
+    }
+    else if ("Scheduler::RmtLocAlarm" == cmdName)
+    {
+        scmd->SetResult( mp_IDeviceProcessing->IDSetAlarm(qSharedPointerDynamicCast<CmdRmtLocAlarm>(scmd)->GetRmtLocOpcode()));
     }
 }
 

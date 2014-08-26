@@ -56,6 +56,7 @@
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
+#include "Scheduler/Include/SchedulerMainThreadController.h"
 //lint -e1536
 
 namespace EventHandler {
@@ -145,6 +146,8 @@ private:
     QString                          m_ExportTargetFileName;                 ///< Target file name of the export
     Global::tRefType                m_ExpectedShutDownRef;                  //!< Expected Shutdown acknowledge reference.
     bool                            m_bQuitApp;
+    Scheduler::SchedulerMainThreadController * schedulerMainController;
+    Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor;
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.
@@ -747,6 +750,7 @@ private slots:
        */
       /****************************************************************************/
       void OnFireAlarmLocalRemote(bool isLocalAlarm);
+
 signals:
       /****************************************************************************/
       /**
@@ -855,6 +859,8 @@ private slots:
         // start the export process
         StartSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     }
+
+   void OnSetRmtLocAlarm(int opcode);
 
 }; // end class HimalayaMasterThreadController
 
