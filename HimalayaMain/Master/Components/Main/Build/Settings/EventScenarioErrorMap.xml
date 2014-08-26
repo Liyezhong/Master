@@ -723,13 +723,7 @@
         <error errorid="513010461">
             <scenario type="range" startid="200" endid="277"/>
         </error>
-        <error errorid="513015461">
-            <scenario type="range" startid="200" endid="277"/>
-        </error>
         <error errorid="513010462">
-            <scenario type="range" startid="281" endid="297"/>
-        </error>
-        <error errorid="513015462">
             <scenario type="range" startid="281" endid="297"/>
         </error>
     </event>

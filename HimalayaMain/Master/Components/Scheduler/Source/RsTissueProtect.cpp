@@ -245,22 +245,18 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if( "Scheduler::ALFilling" == cmdName)
             {
+                // Both in success and failire, we always move it to sealing position
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
                     mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
-                    m_FillSeq = 0;
-                    emit MoveToSealing();
                 }
                 else
                 {
                     mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
-                    m_MoveToTubeSeq = 0;
-                    m_FillSeq = 0;
-                    m_LevelSensorSeq = 0;
-                    m_MoveToSealSeq = 0;
-                    TasksDone(false);
                 }
+                mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
+                m_FillSeq = 0;
+                emit MoveToSealing();
             }
         }
 		break;
@@ -274,14 +270,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 {
                     m_MoveToSealSeq++;
                 }
-                else
+                else // In this case, we just release pressure
                 {
-                    m_MoveToTubeSeq = 0;
-                    m_FillSeq = 0;
-                    m_LevelSensorSeq = 0;
-                    m_MoveToSealSeq = 0;
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal failed");
-                    TasksDone(false);
+                    emit ReleasePressure();
                 }
             }
         }
@@ -290,10 +282,6 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             RVPosition_t sealPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
             if (sealPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
             {
-                m_MoveToTubeSeq = 0;
-                m_FillSeq = 0;
-                m_LevelSensorSeq = 0;
-                m_MoveToSealSeq = 0;
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal passed");
                 emit ReleasePressure();
             }

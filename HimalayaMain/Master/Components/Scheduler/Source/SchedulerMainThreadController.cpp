@@ -2851,6 +2851,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"LA", AL_LEVELSENSOR);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
+            LogDebug("Level Sensor current out of range");
             return false;
         }
         break;
@@ -2858,6 +2859,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
          reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
          if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
          {
+             LogDebug("LA Tube1 current out of range");
              return false;
          }
          break;
@@ -2865,6 +2867,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
+            LogDebug("LA Tube2 current out of range");
             return false;
         }
         break;
@@ -2872,6 +2875,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV");
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
+            LogDebug("RV current out of range");
             return false;
         }
         break;
@@ -2884,18 +2888,22 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
         {
+            LogDebug("Retort Bottom out of range");
             return false;
         }
         if (reportError2.instanceID != 0 && (now-reportError2.errorTime) <= interval*1000)
         {
+            LogDebug("Retort Top out of range");
             return false;
         }
         if (reportError3.instanceID != 0 && (now-reportError3.errorTime) <= interval*1000)
         {
+            LogDebug("Oven Top out of range");
             return false;
         }
         if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= interval*1000)
         {
+            LogDebug("Oven Bottom out of range");
             return false;
         }
         break;

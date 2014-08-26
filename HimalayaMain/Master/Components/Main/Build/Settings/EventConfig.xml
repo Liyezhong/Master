@@ -156,11 +156,6 @@
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103015337" RDStringID="113015337" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" LogLevel="High" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="513015462" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103015462" RDStringID="113015462" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="2" Type="MSG" StringID="103015462" RDStringID="113015462" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
-		</Event>
 		<Event Code="" ErrorID="513020050" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103020050" RDStringID="113020050" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
