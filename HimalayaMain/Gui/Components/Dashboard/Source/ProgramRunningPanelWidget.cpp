@@ -176,6 +176,12 @@ void CProgramRunningPanelWidget::OnUserSettingsUpdated()
    }
 }
 
+void CProgramRunningPanelWidget::UpdateEndDateTime(int endTimeDiff)
+{
+    m_ProgramEndDateTime = m_ProgramEndDateTime.addSecs(endTimeDiff);
+    UpdateDateTime();
+}
+
 void CProgramRunningPanelWidget::OnUserSetEndDateTime(const QDateTime& dateTime)
 {
     m_ProgramEndDateTime = dateTime;
@@ -279,6 +285,18 @@ void CProgramRunningPanelWidget::OnProcessStateChanged()
    bool bProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
    if (!bProcessRunning)
     mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
+}
+
+void CProgramRunningPanelWidget::UpdateProgramTimerStatus(bool enable)
+{
+    if (enable)
+    {
+        mp_ProgressTimer->start();
+    }
+    else
+    {
+        mp_ProgressTimer->stop();
+    }
 }
 
 void CProgramRunningPanelWidget::GetStationNameList(QList<QString>& stationNameList)

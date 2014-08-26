@@ -73,6 +73,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h>
@@ -216,6 +217,9 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterCommandForProcessing<MsgClasses::CmdLockStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdLockStatus>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdUpdateProgramEndTime, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdUpdateProgramEndTime>, this);
 
     //  Staions
     RegisterExternalMessage<MsgClasses::CmdStationChangeReagent, HimalayaGui::HimalayaGuiController>

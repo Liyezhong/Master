@@ -148,6 +148,17 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot UpdateEndDateTime
+         */
+        /****************************************************************************/
+        void UpdateEndDateTime(int endTimeDiff);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnUserSetEndDateTime
+         */
+        /****************************************************************************/
         void OnUserSetEndDateTime(const QDateTime& dateTime);
         /****************************************************************************/
         /*!
@@ -167,6 +178,12 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void OnProgramDetail();
+        /****************************************************************************/
+        /*!
+         *  \brief Update Program Timer's Status
+         */
+        /****************************************************************************/
+        void UpdateProgramTimerStatus(bool enable);
     private:
         void UpdateDateTime();
         /****************************************************************************/

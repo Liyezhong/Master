@@ -134,7 +134,8 @@ typedef struct
     qint64 DelayProgramStartTime;       ///<  Definition/Declaration of variable DelayProgramStartTime
     qint64 PauseStartTime;       ///<  Definition/Declaration of variable PauseStartTime
     qint64 CurStepSoakStartTime;       ///<  Definition/Declaration of variable CurStepSoakStartTime
-    qint64 ProposeSoakStartTime;       ///<  Definition/Declaration of variable ProposeSoakStartTime
+    qint64 ProposeSoakStartTime;       ///<  SoakStartTime, exclude the delay time
+    qint64 SystemErrorStartTime;       ///<  Time point when system error occurring
 }SchedulerTimeStamps_t;
 
 /****************************************************************************/

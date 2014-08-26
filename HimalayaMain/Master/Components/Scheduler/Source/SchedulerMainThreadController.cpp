@@ -56,8 +56,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
@@ -573,6 +573,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_PROCESSING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
+                LogDebug(QString("Program Step Beginning Pause"));
                 if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
                 {
                     AllStop();
@@ -584,7 +585,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
                 qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-                if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
+                if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
                 {
                     if(!m_IsReleasePressureOfSoakFinish)
                     {
@@ -641,7 +642,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         }
                     }
                 }
-                else
+                else // Begin to Soak
                 {
                     if (now > m_TimeStamps.ProposeSoakStartTime)
                     {
@@ -2502,10 +2503,10 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     {
         m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
-        LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
     }
 
     m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
 
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
@@ -2993,6 +2994,7 @@ void SchedulerMainThreadController::AllStop()
 void SchedulerMainThreadController::Pause()
 {
     LogDebug("Notice GUI program paused");
+    //update the remaining time for the current step
     m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
 
@@ -3517,12 +3519,31 @@ void SchedulerMainThreadController::EnablePauseButton(bool bEnable)
 
 void SchedulerMainThreadController::OnSystemError()
 {
+    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_EEEOR;
+    MsgClasses::CmdProgramAcknowledge* commandPtrSystemError(new MsgClasses::CmdProgramAcknowledge(5000, type));
+    Q_ASSERT(commandPtrSystemError);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrSystemError));
 
+    m_TimeStamps.SystemErrorStartTime = QDateTime::currentMSecsSinceEpoch();
 }
 
 void SchedulerMainThreadController::OnEnterRcRestart()
 {
+    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_RC_RESTART;
+    MsgClasses::CmdProgramAcknowledge* commandPtrRcRestart(new MsgClasses::CmdProgramAcknowledge(5000, type));
+    Q_ASSERT(commandPtrRcRestart);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrRcRestart));
 
+    if ((PSSM_PROCESSING != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
+    {
+        qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
+        MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));
+        Q_ASSERT(commandUpdateProgramEndTime);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
+    }
 }
 
 }

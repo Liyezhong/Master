@@ -139,6 +139,8 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     ui->programRunningPanel->SetUserSettings(m_pUserSetting);
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), ui->programRunningPanel, OnUserSettingsUpdated());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), ui->programRunningPanel, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramEndTime(int), ui->programRunningPanel, UpdateEndDateTime(int));
+    CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramTimerStatus(bool), ui->programRunningPanel, UpdateProgramTimerStatus(bool));
 }
 
 void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList)

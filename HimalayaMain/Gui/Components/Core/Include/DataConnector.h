@@ -41,6 +41,7 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h"
 
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
@@ -665,7 +666,18 @@ signals:
      */
     /****************************************************************************/
     void PauseTimeout15Mintues();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateProgramEndTime
+     */
+    /****************************************************************************/
+    void UpdateProgramEndTime(int EndTimeDiff);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateProgramTimerStatus
+     */
+    /****************************************************************************/
+    void UpdateProgramTimerStatus(bool enabled);
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
@@ -679,6 +691,7 @@ private:
     void AddNewReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentAdd &Command);
     void UpdateReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Command);
     void UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command);
+    void UpdateEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdUpdateProgramEndTime &Command);
     void UpdateStationChangeReagentHandler(Global::tRefType Ref, const MsgClasses::CmdStationChangeReagent &Command);
     /****************************************************************************/
     /*!

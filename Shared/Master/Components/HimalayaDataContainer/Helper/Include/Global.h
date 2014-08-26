@@ -77,10 +77,12 @@ typedef enum  {
         PROGRAM_PAUSE_DISABLE,
         PROGRAM_PAUSE_TIMEOUT_15MINTUES,
 
+        PROGRAM_SYSTEM_EEEOR,
+        PROGRAM_SYSTEM_RC_RESTART,
+
         PROGRAM_ABORT_BEGIN,
         PROGRAM_ABORT_FINISHED,
         PROGRAM_SELFTEST_FAILED
-
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

@@ -97,6 +97,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentRemove>(&CDataConnector::ReagentRemoveHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentGroupUpdate>(&CDataConnector::UpdateReagentGroupHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdUpdateProgramEndTime>(&CDataConnector::UpdateEndTimeHandler, this);
 
     //Reagent Station Commands
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationChangeReagent>(&CDataConnector::UpdateStationChangeReagentHandler, this);
@@ -759,6 +760,19 @@ void CDataConnector::UpdateReagentGroupHandler(Global::tRefType Ref, const MsgCl
     return;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Handles incoming update end time commands
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = The command
+ */
+/****************************************************************************/
+void CDataConnector::UpdateEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdUpdateProgramEndTime &Command)
+{
+    emit UpdateProgramEndTime(Command.GetEndTimeDiff());
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+}
 
 /****************************************************************************/
 /*!
@@ -1742,6 +1756,17 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit PauseTimeout15Mintues();
         }
         break;
+        case DataManager::PROGRAM_SYSTEM_EEEOR:
+        {
+            emit UpdateProgramTimerStatus(false);
+        }
+        break;
+        case DataManager::PROGRAM_SYSTEM_RC_RESTART:
+        {
+            emit UpdateProgramTimerStatus(true);
+        }
+        break;
+
         default:
         {
             qDebug() << "Do Nothing";
