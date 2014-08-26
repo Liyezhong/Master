@@ -456,14 +456,12 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
-    QTime KeepTime = QTime::fromString(p_TestCase->GetParameter("KeepTime"), "hh:mm:ss");
-    int KeepTimeSum = KeepTime.hour()*60*60 + KeepTime.minute()*60 + KeepTime.second();
+    int KeepTimeSum = 60;
 
     int KeepSeconds = 0;
+    Service::ModuleTestStatus Status;
 
     p_TestCase->ResetResult();
-
-    Service::ModuleTestStatus Status;
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second() + KeepTimeSum;
 
@@ -688,17 +686,20 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         }
     }
 
-    const quint32 sumSec = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    p_TestCase->ResetResult();
+
+    const quint32 sumSec = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second() + 60;
     quint32 waitSec = sumSec;
 
     QString sideTemp, btmTemp1, btmTemp2;
-    SetFailReason(Id, "");
+
     if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh\
             || curBottomTemp2 < ambLow || curBottomTemp2 > ambHigh) {
         QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curSideTemp)
                 .arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
         SetFailReason(Id, failMsg);
         p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
 
         QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
         QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
@@ -850,6 +851,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(curTemp).arg(ambLow).arg(ambHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
         goto ERROR_EXIT;
     }
 
@@ -1802,7 +1804,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     qreal   CurrentTemp(0);
     QString CurrentValue;
     QString UsedTime;
-    bool NeedAC = false;
     WrapperFmTempControl *p_TempCtrl = NULL;
     int KeepSeconds = 0;
 
@@ -1826,23 +1827,30 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
-    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
-        NeedAC = true;
-    }
-
     Service::ModuleTestStatus Status;
 
-    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
+    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second()+60;
 
     SumSec = WaitSec;
-#if 1
-    CurrentTemp = p_TempCtrl->GetTemperature(0);
 
-    SetFailReason(Id, "");
+    int num = 10;
+    while(num) {
+        CurrentTemp = p_TempCtrl->GetTemperature(0);
+        if (CurrentTemp==-1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
+
+    p_TestCase->ResetResult();
     if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_TUBE_TEMP_NO_MATCH.arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
 
@@ -1857,11 +1865,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         p_TestCase->AddResult("CurrentTemp", CurrentValue);
         return -1;
     }
-#endif
-
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetHigh();
-    }
 
     p_TempCtrl->StopTemperatureControl();
     p_TempCtrl->StartTemperatureControl(TargetTemp);
@@ -1873,17 +1876,10 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
         CurrentTemp = p_TempCtrl->GetTemperature(0);
 
-        if (CurrentTemp == -1) {
-            mp_Utils->Pause(1000);
-            WaitSec--;
-            continue;
-        }
-
         if ( CurrentTemp >= MinTargetTemp )
         {
             if ( KeepSeconds > 60 ) {
                 LAStatus = 1;
-
                 break;
             }
             else {
@@ -1918,9 +1914,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     }
 
     p_TempCtrl->StopTemperatureControl();
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetLow();
-    }
 
     p_TestCase->AddResult("UsedTime", UsedTime);
     p_TestCase->AddResult("CurrentTemp", CurrentValue);
@@ -2016,10 +2009,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     p_TestCase->ResetResult();
 
-    mp_DigitalOutputMainRelay->SetHigh();
-
-    mp_TempRV->StopTemperatureControl();
-    mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     int num=10;
     while(num) {
@@ -2040,6 +2029,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_RV_TEMP_NO_MATCH.arg(CurrentTempSensor1).arg(CurrentTempSensor2)
                 .arg(AmbTempLow).arg(AmbTempHigh);
+        p_TestCase->AddResult("OutOfRange", "1");
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
@@ -2057,12 +2047,13 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         p_TestCase->AddResult("CurrentTempSensor1", Sensor1Value);
         p_TestCase->AddResult("CurrentTempSensor2", Sensor2Value);
 
-        mp_TempRV->StopTemperatureControl();
-        mp_DigitalOutputMainRelay->SetLow();
-
         return -1;
     }
 
+    mp_DigitalOutputMainRelay->SetHigh();
+
+    mp_TempRV->StopTemperatureControl();
+    mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -2210,6 +2201,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
                 .arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
 
@@ -2341,7 +2333,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
      mp_TempRV->StopTemperatureControl();
      mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
-     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second();
+     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second()+60;
      SumSec = WaitSec;
      while (!m_UserAbort && WaitSec)
      {

@@ -188,7 +188,7 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
 //    mp_ServiceConnector->ShowBusyDialog();
     QTimer timer;
     qint32 ret;
-    quint32 interval = 1000 * 3 * 60 * 60; // 3 hours.
+    quint32 interval = 1000 * 5 * 60 * 60; // 5 hours.
     timer.setSingleShot(true);
     timer.setInterval(interval);
     timer.start();
@@ -720,7 +720,8 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             QString text = QString("%1 - %2<br>%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
-            if (id == Service::RETORT_HEATING_EMPTY || id == Service::RETORT_LEVEL_SENSOR_HEATING) {
+            if ((id == Service::RETORT_HEATING_EMPTY || id == Service::RETORT_LEVEL_SENSOR_HEATING)
+                    &&p_TestCase->GetResult().value("OutOfRange")!="1") {
                 ShowHeatingFailedResult(id);
             }
 
@@ -824,7 +825,7 @@ Sealing_Test_Twice:
             Text = QString("%1 - %2<br>%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (Id == Service::ROTARY_VALVE_HEATING_STATION) {
+            if (Id == Service::ROTARY_VALVE_HEATING_STATION && p_TestCase->GetResult().value("OutOfRange") != "1") {
                 ShowHeatingFailedResult(Id);
             }
             else if (Id == Service::ROTARY_VALVE_HEATING_END  ) {
@@ -947,8 +948,8 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
             QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-
-            ShowHeatingFailedResult(Id);
+            if (p_TestCase->GetResult().value("OutOfRange")!="1")
+                ShowHeatingFailedResult(Id);
 
         }
         else {
