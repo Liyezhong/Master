@@ -41,8 +41,6 @@
 #include <QSharedMemory>
 #include <QDebug>
 
-#include "ImportExport/Include/ImportExportThreadController.h"
-
 #include "ExportController/Include/ExportController.h"
 
 #include "IENetworkClient/Include/IENetworkClient.h"
@@ -65,6 +63,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     , m_EventLoggerMaxFileSize(0)
     , m_DayEventLoggerMaxFileCount(0)
     , m_MaxAdjustedTimeOffset(0)
+    , m_ExportTargetFileName("")
     , m_RebootCount(0)
     , m_CommandChannelDataLogging(this,
                                   "DataLogging",
@@ -75,11 +74,12 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     , m_CommandChannelDeviceThread(this,
                                    "DeviceController",
                                    Global::EVENTSOURCE_NONE)
+    , m_CommandChannelExport(this, "Export", Global::EVENTSOURCE_EXPORT)
     , mp_EventThreadController(NULL)
     , mp_DeviceThreadController(NULL)
     , mp_ServiceDataManager(NULL)
+    , mp_ImportExportHandler(NULL)
     , mp_GUIStartup(startUp)
-    , mp_ImportExportController(0)
     , mp_ImportExportThread(0)
     , mp_ExportController(0)
     , mp_ExportThread(0)
@@ -246,6 +246,22 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'DownloadFirmware' signal";
     }
 
+    if(!connect(mp_GUIStartup, SIGNAL(ImportExportProcess(QString,QString)), this, SLOT(StartImportExportProcess(QString,QString)))) {
+        qDebug() << "CStartup: cannot connect 'ImportExportProcess' signal";
+    }
+
+    if(!connect(this, SIGNAL(ImportExportCompleted(int, bool)), mp_GUIStartup, SLOT(ImportExportCompleted(int, bool)))) {
+        qDebug() << "ServiceMasterThreadController: cannot connect 'ImportExportCompleted' signal";
+    }
+
+    if(!connect(this, SIGNAL(SendFilesToGUI(QStringList)), mp_GUIStartup, SLOT(SendFileSelectionToGUI(QStringList)))) {
+        qDebug() << "ServiceMasterThreadController: cannot connect 'SendFilesToGUI' signal";
+    }
+
+    if(!connect(mp_GUIStartup, SIGNAL(SendSignalToMaster(QStringList)), this, SLOT(StartImportProcess(QStringList)))) {
+        qDebug() << "CStartup: cannot connect 'SendSignalToMaster' signal";
+    }
+
     //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
    /* mp_DataManager = new DataManager::CDataManager(this);
@@ -287,12 +303,6 @@ ServiceMasterThreadController::~ServiceMasterThreadController() {
             mp_ExportThread = 0;
         }
         // remove and destroy the controller thread
-        if (0 != mp_ImportExportController)
-        {
-            delete mp_ImportExportController;
-            mp_ImportExportController = 0;
-        }
-
         if (0 != mp_ImportExportThread)
         {
             delete mp_ImportExportThread;
@@ -1136,60 +1146,7 @@ void ServiceMasterThreadController::StartStatemachine(){
     // Implementation of StartStateMachine
 }
 
-void ServiceMasterThreadController::ImportExportDataFile(
-        const QString &CommandName, const QByteArray &CommandData)
-{
-    qDebug() << "ServiceMasterThreadController::ImportExportDataFile, command: "
-             << CommandName
-             << " data: "
-             << CommandData;
-
-    if (!m_ImportExportThreadIsRunning)
-    {
-        // create and connect scheduler controller
-        /*mp_ImportExportController =
-                new ImportExport::ImportExportThreadController(
-                    HEARTBEAT_SOURCE_IMPORTEXPORT,
-                    *mp_DataManager,
-                    CommandName,
-                    CommandData);
-*/
-        // connect the siganl slot mechanism to create the process.
-        CONNECTSIGNALSLOT(mp_ImportExportController,
-                          StartExportProcess(),
-                          this,
-                          StartExportProcess());
-
-        CONNECTSIGNALSLOT(mp_ImportExportController,
-                        ThreadFinished(const bool, const QString &, bool, bool),
-                          this,
-           ImportExportThreadFinished(const bool, const QString &, bool, bool));
-
-        CONNECTSIGNALSLOT(this,
-                          DayRunLogDirectoryName(const QString &),
-                          mp_ImportExportController,
-                          SetDayRunLogFilesDirectoryName(const QString &));
-
-        // start import/export thread
-        mp_ImportExportController->CreateAndInitializeObjects();
-
-        mp_ImportExportThread = new QThread();
-        mp_ImportExportController->moveToThread(mp_ImportExportThread);
-
-        CONNECTSIGNALSLOT(mp_ImportExportThread,
-                          started(),
-                          mp_ImportExportController,
-                          Go());
-
-        mp_ImportExportThread->start();
-
-        m_ImportExportThreadIsRunning = true;
-    }
-    else
-    {
-    }
-}
-
+#if 0
 void ServiceMasterThreadController::StartExportProcess(void)
 {
     mp_ExportController = new Export::ExportController(THREAD_ID_EXPORT);
@@ -1209,182 +1166,141 @@ void ServiceMasterThreadController::StartExportProcess(void)
 
     mp_ExportThread->start();
 }
-
+#endif
 /****************************************************************************/
 void ServiceMasterThreadController::ExportProcessExited(const QString &Name, int ExitCode)
 {
-    // first clear the export thread
-    mp_ExportController->CleanupAndDestroyObjects();
-    // block all the signals
-    mp_ExportThread->blockSignals(true);
-    mp_ExportThread->quit();
+    Q_UNUSED(Name);
+    // first clear the process
+    StopSpecificThreadController(THREAD_ID_EXPORT);
 
-    // second clear the import export thread
-    mp_ImportExportController->CleanupAndDestroyObjects();
-    // block all the signals
-    mp_ImportExportThread->blockSignals(true);
-    mp_ImportExportThread->quit();
-
-    bool ExportFailed = true;
+    // second clear the thread
+    StopSpecificThreadController(THREAD_ID_IMPORTEXPORT);
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS)
     {
         // raise the event code
-        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_SUCCESS);
-
-        ExportFailed = false;
+        Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
+        emit ImportExportCompleted(/*ExitCode*/Global::EVENT_EXPORT_SUCCESS, false);
     }
     else
     {
-        quint32 EventCode = EVENT_EXPORT_FAILED;
-
+        quint32 EventCode = Global::EVENT_EXPORT_FAILED;
         // map the exit codes with the event code
-        switch(ExitCode)
-        {
+        switch(ExitCode) {
         case Global::EXIT_CODE_EXPORT_FAILED:
-            EventCode = EVENT_EXPORT_FAILED;
+            EventCode = Global::EVENT_EXPORT_FAILED;
             break;
         case Global::EXIT_CODE_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION:
-            EventCode = EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION;
+            EventCode = Global::EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION;
             break;
         case Global::EXIT_CODE_EXPORT_INIT_CONTAINER_FAILED:
-            EventCode = EVENT_EXPORT_INIT_CONTAINER_FAILED;
+            EventCode = Global::EVENT_EXPORT_INIT_CONTAINER_FAILED;
             break;
         case Global::EXIT_CODE_EXPORT_VERIFICATION_CONTAINER_FAILED:
-            EventCode = EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED;
+            EventCode = Global::EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED;
             break;
         case Global::EXIT_CODE_EXPORT_UNABLE_ARCHIVE_FILES:
-            EventCode = EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES ;
+            EventCode = Global::EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES ;
             break;
         case Global::EXIT_CODE_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS:
-            EventCode = EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS;
+            EventCode = Global::EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS;
             break;
         case Global::EXIT_CODE_EXPORT_TARGET_DIRECTORY_NOT_EXISTS:
-            EventCode = EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS;
+            EventCode = Global::EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS;
             break;
         case Global::EXIT_CODE_EXPORT_LOG_DIRECTORY_NOT_EXISTS:
-            EventCode = EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS;
+            EventCode = Global::EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS;
             break;
         case Global::EXIT_CODE_EXPORT_TARGET_FILE_FORMAT_IS_WRONG:
-            EventCode = EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG;
+            EventCode = Global::EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG;
             break;
         case Global::EXIT_CODE_EXPORT_INVALID_EXPORT:
-            EventCode = EVENT_EXPORT_INVALID_EXPORT;
+            EventCode = Global::EVENT_EXPORT_INVALID_EXPORT;
             break;
         case Global::EXIT_CODE_EXPORT_CRYTOSERVICE_RUNNING:
-            EventCode = EVENT_EXPORT_CRYTOSERVICE_RUNNING;
+            EventCode = Global::EVENT_EXPORT_CRYTOSERVICE_RUNNING;
             break;
         case Global::EXIT_CODE_EXPORT_CANNOT_OPEN_FILE_FOR_READ:
-            EventCode = EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ;
+            EventCode = Global::EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ;
             break;
         case Global::EXIT_CODE_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE:
-            EventCode = EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE;
+            EventCode = Global::EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE;
             break;
         case Global::EXIT_CODE_EXPORT_ERROR_TO_READ:
-            EventCode = EVENT_EXPORT_ERROR_TO_READ;
+            EventCode = Global::EVENT_EXPORT_ERROR_TO_READ;
             break;
         case Global::EXIT_CODE_EXPORT_ERROR_TO_WRITE:
-            EventCode = EVENT_EXPORT_ERROR_TO_WRITE;
+            EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
             break;
         case Global::EXIT_CODE_EXPORT_INDEX_IS_MATCHING:
-            EventCode = EVENT_EXPORT_INDEX_IS_MATCHING;
+            EventCode = Global::EVENT_EXPORT_INDEX_IS_MATCHING;
             break;
         case Global::EXIT_CODE_EXPORT_KEY_SIZE_LESS:
-            EventCode = EVENT_EXPORT_KEY_SIZE_LESS;
+            EventCode = Global::EVENT_EXPORT_KEY_SIZE_LESS;
             break;
         case Global::EXIT_CODE_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING:
-            EventCode = EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING;
+            EventCode = Global::EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING;
             break;
         case Global::EXIT_CODE_EXPORT_HMAC_NOT_INITIALIZED:
-            EventCode = EVENT_EXPORT_HMAC_NOT_INITIALIZED;
+            EventCode = Global::EVENT_EXPORT_HMAC_NOT_INITIALIZED;
             break;
         case Global::EXIT_CODE_EXPORT_AES_NOT_INITIALIZED:
-            EventCode = EVENT_EXPORT_AES_NOT_INITIALIZED;
+            EventCode = Global::EVENT_EXPORT_AES_NOT_INITIALIZED;
             break;
         case Global::EXIT_CODE_EXPORT_INTEGER_SIZE_IS_MORE:
-            EventCode = EVENT_EXPORT_INTEGER_SIZE_IS_MORE;
+            EventCode = Global::EVENT_EXPORT_INTEGER_SIZE_IS_MORE;
             break;
         case Global::EXIT_CODE_EXPORT_MSB_BIT_IS_NOT_SET:
-            EventCode = EVENT_EXPORT_MSB_BIT_IS_NOT_SET;
+            EventCode = Global::EVENT_EXPORT_MSB_BIT_IS_NOT_SET;
             break;
         case Global::EXIT_CODE_EXPORT_INVALID_FILE_MODE:
-            EventCode = EVENT_EXPORT_INVALID_FILE_MODE;
+            EventCode = Global::EVENT_EXPORT_INVALID_FILE_MODE;
             break;
         case Global::EXIT_CODE_EXPORT_HMAC_COMPUTATION_STARTED:
-            EventCode = EVENT_EXPORT_HMAC_COMPUTATION_STARTED;
+            EventCode = Global::EVENT_EXPORT_HMAC_COMPUTATION_STARTED;
             break;
         case Global::EXIT_CODE_EXPORT_ZIP_ERROR:
-            EventCode = EVENT_EXPORT_ZIP_ERROR;
+            EventCode = Global::EVENT_EXPORT_ZIP_ERROR;
             break;
         case Global::EXIT_CODE_EXPORT_ZIP_COMMAND_NOT_FOUND:
-            EventCode = EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND;
+            EventCode = Global::EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND;
             break;
         case Global::EXIT_CODE_EXPORT_ZIP_IS_TAKING_LONGTIME:
-            EventCode = EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
+            EventCode = Global::EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
             break;
         }
-
         // this raise event code will be informed to GUI, that Export is failed
-        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
-
-        if (EventCode != EVENT_EXPORT_FAILED)
-        {
-            // raise the event code
-            Global::EventObject::Instance().RaiseEvent(EventCode);
-        }
+        Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        emit ImportExportCompleted(EventCode, false);
     }
-
-    emit ExportFinish(ExportFailed);
-
-    m_ExportProcessIsFinished = true;
-
-    // enable the timer slot to destroy the objects after one second
-    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
+    QTimer::singleShot(500, this, SLOT(RemoveAndDestroyObjects()));
+    emit CleanUpObjects();
+    if (mp_ImportExportHandler) {
+        delete mp_ImportExportHandler;
+        mp_ImportExportHandler = NULL;
+    }
 }
 
-void ServiceMasterThreadController::ImportExportThreadFinished(
-        const bool IsImport,
-        const QString &TypeOfImport,
-        bool UpdatedCurrentLanguage,
-        bool NewLanguageAdded)
+void ServiceMasterThreadController::RemoveAndDestroyObjects()
 {
-    if (IsImport)
-    {
-        bool ImportFail = true;
-
-        // check the type of Import
-        if (TypeOfImport.compare("Service") == 0)
-        {
-            // inform the event handler
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SUCCESS);
-
-            ImportFail = false;
-        }
-        else if(TypeOfImport == "Language")
-        {
-            // inform the event handler
-            Global::EventObject::Instance().RaiseEvent(
-                        EVENT_IMPORT_SUCCESS_LANGUAGE);
-
-            ImportFail = false;
-        }
-
-        emit ImportFinish(ImportFail);
-    }
-    else
-    {
-        emit ExportFinish(true);
-    }
-
-    // clear the thread
-    mp_ImportExportController->CleanupAndDestroyObjects();
-    // block all the signals
-    mp_ImportExportThread->blockSignals(true);
-    mp_ImportExportThread->quit();
-
-    // enable the timer slot to destroy the objects after one second
-    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
+    // remove and destroy the controller thread
+    RemoveSpecificThreadController(THREAD_ID_EXPORT, false);
 }
 
+void ServiceMasterThreadController::ImportExportThreadFinished(quint32 EventCode, bool TypeOfOperation,bool IsAborted)
+{
+    if (!IsAborted) {
+        Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        emit ImportExportCompleted(EventCode, TypeOfOperation);
+    }
+    emit CleanUpObjects();
+    if (mp_ImportExportHandler) {
+        delete mp_ImportExportHandler;
+        mp_ImportExportHandler = NULL;
+    }
+}
+
+#if 0
 void ServiceMasterThreadController::RemoveAndDestroyObjects(void)
 {
     // this is for safety
@@ -1421,7 +1337,7 @@ void ServiceMasterThreadController::RemoveAndDestroyObjects(void)
 
     }
 }
-
+#endif
 #if 0
 /****************************************************************************/
 void ServiceMasterThreadController::OnGetDataContainersCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdGetDataContainers &Cmd, Threads::CommandChannel &AckCommandChannel) {
@@ -1846,6 +1762,52 @@ void ServiceMasterThreadController::OnDownloadFirmware()
 {
     Core::CServiceUtils::delay(500);
     DownloadFirmware();
+}
+
+bool ServiceMasterThreadController::ImportExportDataFileHandler(QString Name, QString Type) {
+
+    bool Result = true;
+    DataManager::CDeviceConfigurationInterface *p_DeviceConfigInterface = mp_ServiceDataManager->GetDeviceConfigurationInterface();
+    // create and connect scheduler controller
+    mp_ImportExportHandler = new ImportExport::CServiceImportExportHandler(p_DeviceConfigInterface, Name, Type);
+
+    RegisterImportExportSignalAndSlots(Name);
+
+    mp_ImportExportHandler->CreateAndInitializeObjects();
+
+    return Result;
+}
+
+void ServiceMasterThreadController::SendFileSelectionToGUI(QStringList FileList)
+{
+    emit SendFilesToGUI(FileList);
+}
+
+void ServiceMasterThreadController::StartImportExportProcess(QString Name, QString Type)
+{
+    (void)ImportExportDataFileHandler(Name, Type);
+}
+
+void ServiceMasterThreadController::StartImportProcess(QStringList FileList)
+{
+    emit StartImportingFiles(FileList);
+}
+
+void ServiceMasterThreadController::StartExportProcess(QString FileName) {
+
+    m_ExportTargetFileName = FileName;
+
+    // create and connect gui controller
+    Export::ExportController *p_ExportController = new Export::ExportController(THREAD_ID_EXPORT);
+    // connect the process exit slot
+
+    CONNECTSIGNALSLOT(p_ExportController, ProcessExited(const QString &, int), this, ExportProcessExited(const QString &, int));
+
+    // add and connect the controller
+    AddAndConnectController(p_ExportController, &m_CommandChannelExport, THREAD_ID_EXPORT);
+    // start the controller
+    StartSpecificThreadController(THREAD_ID_EXPORT);
+
 }
 
 } // end namespace Threads

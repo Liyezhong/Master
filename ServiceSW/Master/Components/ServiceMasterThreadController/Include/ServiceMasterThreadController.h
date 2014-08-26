@@ -28,6 +28,7 @@
 #include <Global/Include/AlarmHandler.h>
 
 #include <Global/Include/Commands/AckOKNOK.h>
+#include <ServiceImportExport/Include/ServiceImportExportHandler.h>
 
 #include <ServiceDeviceController/Include/Commands/CmdReturnMessage.h>
 #if 0
@@ -41,6 +42,7 @@
 
 #include <EventHandler/Include/HimalayaEventHandlerThreadController.h>
 
+const quint32 THREAD_ID_IMPORTEXPORT   = 0x0104;  ///< ImportExport Thread
 const quint32 THREAD_ID_EXPORT         = 0x0105;  ///< Export
 
 
@@ -67,9 +69,9 @@ namespace Core{
     class CStartup;
 }
 
-namespace ImportExport {
-    class ImportExportThreadController;
-}
+//namespace ImportExport {
+    //class ImportExportThreadController;
+//}
 
 namespace Export {
     class ExportController;
@@ -116,6 +118,7 @@ private:
     int                                         m_DayEventLoggerMaxFileCount;       ///< Max number of files for day operation logger.
     int                                         m_MaxAdjustedTimeOffset;            ///< Max alowed offset to system time [seconds]. 0 means no check has to be done.
     quint32                                     m_RebootCount;                      ///< Number of times the system has rebooted
+    QString                                     m_ExportTargetFileName;             ///< Target file name of the export
 
     // Handlers for Thread Controllers.
     DataLogging::DataLoggingThreadController    *mp_DataLoggingThreadController;    ///< Pointer to the DataLoggingComponent
@@ -151,6 +154,7 @@ private:
     CommandChannel                              m_CommandChannelDataLogging;        ///< Command channel for DataLogging.
     CommandChannel                              m_CommandChannelEventThread;        ///< Command channel for EventHandler.
     CommandChannel                              m_CommandChannelDeviceThread;       ///< Command channel for EventHandler.
+    CommandChannel                              m_CommandChannelExport;             //!< Command channel for Export
 
     QHash<QString, Threads::CommandChannel*>    m_channelList;                  ///< Hash of command channels connected related to its name
     Global::AlarmHandler                        *mp_alarmHandler;               ///< The Alarm handler
@@ -163,7 +167,7 @@ private:
 
     Global::tRefType                             m_ExpectedDCRef;               ///< Expected DC acknowledge reference.
 
-    ImportExport::ImportExportThreadController  *mp_ImportExportController;
+    //ImportExport::ImportExportThreadController  *mp_ImportExportController;
     QThread                                     *mp_ImportExportThread;
 
     Export::ExportController                    *mp_ExportController;
@@ -172,6 +176,8 @@ private:
     bool                                         m_ImportExportThreadIsRunning;
     bool                                         m_ExportProcessIsFinished;
     QMap<QString, QString>                      m_BootConfigFileContent;            //!< Map containing reboot file content.
+
+    ImportExport::CServiceImportExportHandler   *mp_ImportExportHandler; //!< ImportExportHandler object
 
     /****************************************************************************/
 
@@ -277,6 +283,55 @@ private:
     /****************************************************************************/
     void UpdateRebootFile(const QMap<QString, QString> RebootFileContent);
 
+    /****************************************************************************/
+    /**
+     * \brief Start the import export.
+     * \iparam Name - Name (Import/Export)
+     * \iparam Type - Type of Import/Export (Service)
+     * \return True or false
+     */
+    /****************************************************************************/
+    bool ImportExportDataFileHandler(QString Name, QString Type);
+
+    /****************************************************************************/
+    /**
+     * \brief Registers Signals and slots for ImportExport
+     * \iparam OperationType - Import/Export
+     */
+    /****************************************************************************/
+    void RegisterImportExportSignalAndSlots(QString OperationType) {
+
+        if (mp_ImportExportHandler) {
+            // connect the signal slots which are belongs to import
+            if (OperationType == "Import") {
+                // connect the siganl slot mechanism to create the containers for the Import.
+                CONNECTSIGNALSLOT(mp_ImportExportHandler,
+                                  RequestFileSelectionToImport(QStringList), this,
+                                  SendFileSelectionToGUI(QStringList));
+
+                // connect the siganl slot mechanism to set directory name.
+                CONNECTSIGNALSLOT(this,
+                                  ImportSelectedFiles(QStringList), mp_ImportExportHandler,
+                                  StartImportingFiles(QStringList));
+
+                CONNECTSIGNALSLOT(this, StartImportingFiles(QStringList), mp_ImportExportHandler,
+                                  StartImportingFiles(QStringList));
+
+            }
+            else {
+                // connect the siganl slot mechanism to create the process.
+                CONNECTSIGNALSLOT(mp_ImportExportHandler, StartExportProcess(QString), this, StartExportProcess(QString));
+            }
+
+            // connect the siganl slot mechanism to create the containers for the Import.
+            CONNECTSIGNALSLOT(mp_ImportExportHandler,
+                              ThreadFinished(quint32, bool, bool), this,
+                              ImportExportThreadFinished(quint32, bool, bool));
+
+            CONNECTSIGNALSLOT(this, CleanUpObjects(), mp_ImportExportHandler, CleanupDestroyObjects());
+        }
+    }
+
 signals:
     /****************************************************************************/
     /**
@@ -334,6 +389,43 @@ signals:
       void ImportFinish(bool Failed);
 
       void ExportFinish(bool Failed);
+
+      /****************************************************************************/
+      /**
+       * \brief Signal to import the selected files.
+       *
+       * \iparam FileList - List of files
+       */
+      /****************************************************************************/
+      void ImportSelectedFiles(QStringList FileList);
+
+      /****************************************************************************/
+      /**
+       * \brief Signal to ImportExport completed.
+       */
+      /****************************************************************************/
+      void ImportExportCompleted(int, bool);
+
+      /****************************************************************************/
+      /**
+       * \brief Signal emitted to send import files to GUI
+       */
+      /****************************************************************************/
+      void SendFilesToGUI(QStringList);
+
+      /****************************************************************************/
+      /**
+       * \brief Signal emitted to start importing files
+       */
+      /****************************************************************************/
+      void StartImportingFiles(QStringList);
+
+      /****************************************************************************/
+      /**
+       * \brief Cleans up the objects.
+       */
+      /****************************************************************************/
+      void CleanUpObjects();
 
       /****************************************************************************/
       /**
@@ -416,10 +508,22 @@ private slots:
     /****************************************************************************/
     void sendDeviceInitCommand(void);
 
-    void ImportExportDataFile(const QString &CommandName,
-                              const QByteArray &CommandData);
+    /****************************************************************************/
+    /**
+     * \brief Send file selection to GUI to import the files.
+     *
+     * \iparam FileList     List of file names
+     */
+    /****************************************************************************/
+    void SendFileSelectionToGUI(QStringList FileList);
 
-    void StartExportProcess(void);
+    /****************************************************************************/
+    /**
+     * \brief Starts the export process.
+     * \iparam FileName = File name
+     */
+    /****************************************************************************/
+    void StartExportProcess(QString FileName);
 
     /****************************************************************************/
     /**
@@ -431,12 +535,26 @@ private slots:
     /****************************************************************************/
     void ExportProcessExited(const QString &Name, int ExitCode);
 
-    void ImportExportThreadFinished(const bool IsImport,
-                                    const QString &TypeOfImport,
-                                    bool UpdatedCurrentLanguage = false,
-                                    bool NewLanguageAdded = false);
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted when ImportExport thread is finished
+     *
+     * \iparam   EventCode    Event code
+     * \iparam       TypeofOperation           True for Import,False for Export
+     * \iparam       IsAborted                 When ImportedFile is null,It is made true
 
-    void RemoveAndDestroyObjects(void);
+     *
+     */
+    /****************************************************************************/
+    void ImportExportThreadFinished(quint32 EventCode, bool TypeOfOperation,bool IsAborted);
+
+    /****************************************************************************/
+    /**
+     * \brief Slot for the removing the on demand threads from service master thread.
+     *
+     */
+    /****************************************************************************/
+    void RemoveAndDestroyObjects();
 
     /****************************************************************************/
     /**
@@ -522,9 +640,6 @@ private slots:
      */
     /****************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);
-
-
-
 
 protected:
 
@@ -1074,6 +1189,25 @@ public slots:
      */
     /****************************************************************************/
     void OnDownloadFirmware();
+
+    /****************************************************************************/
+    /**
+     * \brief Starts a Import/Export process
+     *
+     * \iparam   Name    Command name
+     * \iparam   Type    Type of Import/Export
+     */
+    /****************************************************************************/
+    void StartImportExportProcess(QString Name, QString Type);
+
+    /****************************************************************************/
+    /**
+     * \brief Starts Import process
+     *
+     * \iparam   FileList    File to import
+     */
+    /****************************************************************************/
+    void StartImportProcess(QStringList FileList);
 
 }; // end class ServiceMasterThreadController
 

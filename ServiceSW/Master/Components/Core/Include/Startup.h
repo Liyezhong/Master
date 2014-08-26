@@ -56,6 +56,8 @@
 #include "ServiceUpdates/Include/Settings.h"
 #include "ServiceUpdates/Include/System.h"
 
+#include "Settings/Include/DataManagement.h"
+
 #include "Diagnostics/Include/Display.h"
 #include "Diagnostics/Include/Retort.h"
 #include "Diagnostics/Include/Oven.h"
@@ -141,6 +143,7 @@ private:
     SystemTracking::COven                   *mp_OvenConfig;                 //!< Configuration screen for Oven
     SystemTracking::CRotaryValve            *mp_RotaryValveConfig;          //!< Configuration screen for Rotary Valve
     SystemTracking::CLaSystem               *mp_LaSystemConfig;             //!< Configuration screen for L&A System
+    Settings::CDataManagement               *mp_DataMgmt;                   //!< Data Management - import and export
 
     // Log Viewer
     MainMenu::CMenuGroup                    *mp_LogViewerGroup;             //!< Log information of module data
@@ -267,6 +270,11 @@ public slots:
     void UpdateParameters();
     void StartTimer();
 
+    void StartImportExportProcess(QString Name, QString Type);
+    void ImportExportCompleted(int ExitCode, bool IsImport);
+    void SendFileSelectionToGUI(QStringList FileList);
+    void SendFilesToMaster(QStringList FileList);
+
 signals:
     void DeviceInitRequest(void);
 
@@ -276,6 +284,40 @@ signals:
     void ImportFinish(bool Failed);
 
     void ExportFinish(bool Failed);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to Master from GUI
+     * \iparam Name = Import/Export
+     * \iparam Type = Type of Import/Export
+     */
+    /****************************************************************************/
+    void ImportExportProcess(QString Name, QString Type);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to GUI
+     * \iparam EventCode = Event code
+     * \iparam IsImport = True for Import and False for Export
+     */
+    /****************************************************************************/
+    void SendSignaltoGUI(int EventCode, bool IsImport);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to send import files to GUI
+     * \iparam FileNames = File names
+     */
+    /****************************************************************************/
+    void SendFilesToGUI(QStringList FileNames);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to Master from GUI
+     * \iparam SelectedFileName = Selected filenames
+     */
+    /****************************************************************************/
+    void SendSignalToMaster(QStringList SelectedFileName);
 
     /* General signals */
     void AbortTest();

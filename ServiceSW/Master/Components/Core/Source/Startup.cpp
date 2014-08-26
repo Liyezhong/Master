@@ -173,6 +173,7 @@ CStartup::CStartup() : QObject(),
     mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
     mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(mp_ServiceConnector);
     mp_DataManagement = new ServiceUpdates::CDataManagement;
+    mp_DataMgmt = new Settings::CDataManagement(mp_MainWindow);
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
     mp_UpdateSystem = new ServiceUpdates::CSystem(mp_MainWindow);
 
@@ -292,6 +293,11 @@ CStartup::CStartup() : QObject(),
 
     CONNECTSIGNALSIGNAL(mp_UpdateSystem, ShutdownSystem(bool), this, ShutdownSystem(bool));
 
+    CONNECTSIGNALSLOT(mp_DataMgmt, ExecSending(QString,QString), this, StartImportExportProcess(QString, QString));
+    CONNECTSIGNALSLOT(this, SendSignaltoGUI(int, bool), mp_DataMgmt, ImportExportFinished(int, bool));
+    CONNECTSIGNALSLOT(this, SendFilesToGUI(QStringList), mp_DataMgmt, FileSelectionForImport(QStringList));
+    CONNECTSIGNALSLOT(mp_DataMgmt, SelectedImportFileList(QStringList), this, SendFilesToMaster(QStringList));
+
     /* Network Settings */
     CONNECTSIGNALSLOT(this, SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool), mp_Setting , SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool));
     CONNECTSIGNALSLOT(this, SetInformationToNetworkSettings(QString, QString), mp_Setting, SetInformationText(QString, QString));
@@ -318,6 +324,7 @@ CStartup::~CStartup()
         delete mp_Setting;
         delete mp_UpdateSystem;
         delete mp_DataManagement;
+        delete mp_DataMgmt;
         delete mp_FirmwareUpdate;
         delete mp_ServiceUpdateGroup;
 
@@ -442,8 +449,10 @@ void CStartup::LoadCommonComponenetsTwo()
     mp_ServiceUpdateGroup->Clear();
     mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "Firmware Update", 0, QApplication::UnicodeUTF8)
                                     , mp_FirmwareUpdate);
+    //mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "Data Management", 0, QApplication::UnicodeUTF8)
+                                    //, mp_DataManagement);
     mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "Data Management", 0, QApplication::UnicodeUTF8)
-                                    , mp_DataManagement);
+                                        , mp_DataMgmt);
     mp_ServiceUpdateGroup->AddPanel(QApplication::translate("Core::CStartup", "System", 0, QApplication::UnicodeUTF8)
                                     , mp_UpdateSystem);
     mp_ServiceUpdateGroup->AddSettingsPanel( QApplication::translate("Core::CStartup", "Settings", 0, QApplication::UnicodeUTF8)
@@ -1833,6 +1842,55 @@ void CStartup::RetranslateUI()
     {
         ManufacturingGuiInit(true);
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot for initializing the ImportExport process
+ *  \iparam Name = Name (Import/Export)
+ *  \iparam Type = Type of Import/Export
+ */
+/****************************************************************************/
+void CStartup::StartImportExportProcess(QString Name, QString Type)
+{
+    emit ImportExportProcess(Name, Type);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called when Import/Export is completed
+ *  \iparam ExitCode = Exit code
+ *  \iparam IsImport = True for Import and False for Export
+ */
+/****************************************************************************/
+void CStartup::ImportExportCompleted(int ExitCode, bool IsImport)
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_IMPORT_EXPORT_COMPLETED);
+    emit SendSignaltoGUI(ExitCode, IsImport);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called for Import file selection
+ *  \iparam FileList = File list
+ */
+/****************************************************************************/
+void CStartup::SendFileSelectionToGUI(QStringList FileList)
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_FILE_SELECTION_IMPORT);
+    emit SendFilesToGUI(FileList);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called when GUI emits a signal for import
+ *  \iparam FileList = File list
+ */
+/****************************************************************************/
+void CStartup::SendFilesToMaster(QStringList FileList)
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_FILE_SELECTION_IMPORT);
+    emit SendSignalToMaster(FileList);
 }
 
 } // end namespace Core
