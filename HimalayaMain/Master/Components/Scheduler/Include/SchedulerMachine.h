@@ -105,6 +105,7 @@ private:
     QSharedPointer<QState> mp_ErrorRsPauseState;                                        ///<  Error State's sub state: for RS_Pause
     QSharedPointer<QState> mp_ErrorRsRVWaitintTempUpState;                              ///<  Error State's sub state: for RS_RV_WaitingTempUp
     QSharedPointer<QState> mp_ErrorRsTissueProtectState;                                ///<  Error State's sub state: for RS_Tissue_Protect
+    QSharedPointer<QState> mp_ErrorRcCheckRTLockState;                                  ///<  Error State's sub state: for RC_Check_RTLock
 
     //State machines for Run handling
     QSharedPointer<CProgramPreTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -785,6 +786,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRcCheckRTLock
+     *
+     *  \return from EnterRcCheckRTLock
+     */
+    /****************************************************************************/
+    void EnterRcCheckRTLock();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -865,6 +875,17 @@ public:
      */
     /****************************************************************************/
     void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rc_Check_RTLock
+     *
+     *  \param void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcCheckRTLockWorkFlow();
 
     /****************************************************************************/
     /*!
@@ -1752,6 +1773,13 @@ signals:
      */
     /****************************************************************************/
     void SigEnterRsTissueProtect();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigEnterRcCheckRTLock
+     */
+    /****************************************************************************/
+    void SigEnterRcCheckRTLock();
 
     /****************************************************************************/
     /*!

@@ -140,6 +140,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 
 	switch (currentState)
 	{
+    mp_SchedulerThreadController->LogDebug(QString("Pre-Check status is: %1").arg(currentState));
     case PRETEST_INIT:
         if(mp_SchedulerThreadController->IsCleaningProgram())
         {

@@ -141,7 +141,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
             if (false == cmdFound)
             {
-                break; //just wait
+                {break}; //just wait
             }
             else
             {

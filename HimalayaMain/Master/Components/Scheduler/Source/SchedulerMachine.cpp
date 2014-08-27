@@ -99,6 +99,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsPauseState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRVWaitintTempUpState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsTissueProtectState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRcCheckRTLockState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -276,6 +277,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
     CONNECTSIGNALSLOT(mp_RsTissueProtect.data(), TasksDone(bool), this, OnTasksDoneRSTissueProtect(bool));
     //mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RC_Check_RTLock
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcCheckRTLock()), mp_ErrorRcCheckRTLockState.data());
+    mp_ErrorRcCheckRTLockState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_LevelSensorWaitTime = 0;
@@ -501,6 +506,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsTissueProtectState.data()))
         {
             return SM_ERR_RS_TISSUE_PROTECT;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRcCheckRTLockState.data()))
+        {
+            return SM_ERR_RC_CHECK_RTLOCK;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -830,9 +839,15 @@ void CSchedulerStateMachine::EnterRsRVWaitingTempUp()
 {
     emit SigRsRVWaitingTempUp();
 }
+
 void CSchedulerStateMachine::EnterRsTissueProtect()
 {
     emit SigEnterRsTissueProtect();
+}
+
+void CSchedulerStateMachine::EnterRcCheckRTLock()
+{
+    emit SigEnterRcCheckRTLock();
 }
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
@@ -873,6 +888,18 @@ void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdNam
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 {
     emit SigEnterRcLevelsensorHeatingOvertime();
+}
+
+void CSchedulerStateMachine::HandleRcCheckRTLockWorkFlow()
+{
+    if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().RetortLockStatus == 1)
+    {
+        this->OnTasksDone(false);
+    }
+    else
+    {
+        this->OnTasksDone(true);
+    }
 }
 
 void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()

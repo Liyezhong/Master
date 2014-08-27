@@ -1083,6 +1083,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_Tissue_Protect");
             m_SchedulerMachine->EnterRsTissueProtect();
         }
+        else if (CTRL_CMD_RC_CHECK_RTLOCK == ctrlCmd)
+        {
+            LogDebug("Go to RC_Check_RTLock");
+            m_SchedulerMachine->EnterRcCheckRTLock();
+        }
         else
         {
         }
@@ -1177,6 +1182,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RS_Tissue_Protect");
         m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode);
+    }
+    else if (SM_ERR_RC_CHECK_RTLOCK == currentState)
+    {
+        LogDebug("In Rc_Check_RTLock");
+        m_SchedulerMachine->HandleRcCheckRTLockWorkFlow();
+
     }
     else
     {
@@ -1314,6 +1325,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "user_response_pause_alarm")
         {
             return CTRL_CMD_USER_RESPONSE_PAUSE_ALARM;
+        }
+        if (cmd == "rc_check_rtlock")
+        {
+            return CTRL_CMD_RC_CHECK_RTLOCK;
         }
 
     }
