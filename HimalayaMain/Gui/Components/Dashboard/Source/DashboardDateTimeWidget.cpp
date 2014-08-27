@@ -291,7 +291,7 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirst
         else
         {
             allowDiff = m_ASAPDateTime.secsTo(m_selDateTime);
-            if (allowDiff > 100)
+            if (allowDiff > 0)
             {
                 bTooLater = true;
                 strEndTime = m_strCannotDelay;
