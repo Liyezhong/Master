@@ -50,6 +50,7 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     Ui::CDataManagementWidget *mp_Ui;       ///<  Definition/Declaration of variable mp_Ui
     bool m_ProcessRunning;                          //!< Process running state
+    bool remoteCareSoftwareAvailable;               //!< Process remote care software update status
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
     void RetranslateUI();

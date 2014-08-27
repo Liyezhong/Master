@@ -40,6 +40,7 @@ CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) :
     mp_MainWindow(NULL),
     mp_Ui(new Ui::CDataManagementWidget),
     m_ProcessRunning(false),
+    remoteCareSoftwareAvailable(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -183,7 +184,7 @@ void CDataManagementWidget::ResetButtons()
     else {
         mp_Ui->saveusbButton->setEnabled(false);
     }
-    if (( m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
         mp_Ui->serviceExportButton->setEnabled(true);
     }
     else {
@@ -199,7 +200,7 @@ void CDataManagementWidget::ResetButtons()
 
     if ((m_CurrentUserRole >= MainMenu::CMainWindow::Service && (!m_ProcessRunning))) {
         mp_Ui->SWUpdateButton->setEnabled(true);
-        mp_Ui->RemoteSWUpdateButton->setEnabled(true);
+        mp_Ui->RemoteSWUpdateButton->setEnabled(remoteCareSoftwareAvailable);
     }
     else {
         mp_Ui->SWUpdateButton->setEnabled(false);
@@ -251,6 +252,20 @@ void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWind
 /****************************************************************************/
 void CDataManagementWidget::SetRemoteSWButtonState(bool State)
 {
+    remoteCareSoftwareAvailable = State;
+
+    /* if State == false */
+    if (!State) {
+        mp_Ui->RemoteSWUpdateButton->setEnabled(State);
+        return;
+    }
+
+    /* if state == true
+     * just when role of user is service and progam hasn't running, can set remoteCare button enable.
+    */
+    if (m_CurrentUserRole != MainMenu::CMainWindow::Service || m_ProcessRunning)
+        return;
+
     mp_Ui->RemoteSWUpdateButton->setEnabled(State);
 }
 
