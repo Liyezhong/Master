@@ -2262,6 +2262,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         goto RV_HEATING_END_EXIT;
     }
 
+    mp_TempLSensor->StopTemperatureControl();
+
     // set rotary valve to sealing position
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
     if (mp_MotorRV->MoveToSealPosition(Position)!=RV_MOVE_OK) {
