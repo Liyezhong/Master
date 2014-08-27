@@ -172,7 +172,6 @@ private:
     //Service Updates
     MainMenu::CMenuGroup                    *mp_ServiceUpdateGroup;         //!< Menu group containing Service Update dialogs
     ServiceUpdates::CFirmwareUpdate         *mp_FirmwareUpdate;             //!< Firmware update page
-    ServiceUpdates::CDataManagement         *mp_DataManagement;             //!< Data management page
     ServiceUpdates::CSettings               *mp_Setting;                    //!< User settings sub menu
     ServiceUpdates::CSystem                 *mp_UpdateSystem;                   //!< Shut down page
 
@@ -223,8 +222,6 @@ public slots:
 
     void OnDeviceInitRequest();
 
-    void OnServiceImportExportRequest(bool IsImport);
-
     /* Return Message Slots */
     void ShowMessage(const QString &Message);
     void ShowErrorMessage(const QString &Message);
@@ -233,11 +230,6 @@ public slots:
     /* Refresh heating status */
     void RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status);
     void OnReturnManufacturingMsg(bool Result);
-
-
-    void ImportFinished(bool Failed);
-
-    void ExportFinished(bool Failed);
 
     /* General slots */
     void OnGuiAbortTest();
@@ -280,10 +272,6 @@ signals:
 
     void ImportExportDataFileRequest(const QString &CommandName,
                                      const QByteArray &CommandData);
-
-    void ImportFinish(bool Failed);
-
-    void ExportFinish(bool Failed);
 
     /****************************************************************************/
     /**

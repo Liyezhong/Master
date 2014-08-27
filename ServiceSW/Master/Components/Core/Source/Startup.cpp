@@ -156,6 +156,10 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
     CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
 
+    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
+    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_RecoveryAction, UpdateLogFileTableEntries());
+    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
+    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
     //Diagnostics
     mp_DiagnosticsGroup = new MainMenu::CMenuGroup;
@@ -172,7 +176,6 @@ CStartup::CStartup() : QObject(),
     // Software upate
     mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
     mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(mp_ServiceConnector);
-    mp_DataManagement = new ServiceUpdates::CDataManagement;
     mp_DataMgmt = new Settings::CDataManagement(mp_MainWindow);
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
     mp_UpdateSystem = new ServiceUpdates::CSystem(mp_MainWindow);
@@ -186,21 +189,6 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(ModuleListChanged()),
                   mp_FirmwareUpdate,
                   SLOT(UpdateGUI()));
-
-    (void)connect(mp_DataManagement,
-                  SIGNAL(ServiceImportExportRequested(bool)),
-                  this,
-                  SLOT(OnServiceImportExportRequest(bool)));
-
-    (void)connect(this,
-                  SIGNAL(ImportFinish(bool)),
-                  mp_DataManagement,
-                  SLOT(ImportFinished(bool)));
-
-    (void)connect(this,
-                  SIGNAL(ExportFinish(bool)),
-                  mp_DataManagement,
-                  SLOT(ExportFinished(bool)));
 
     (void)connect(mp_Setting,
                   SIGNAL(RefreshLatestVersion()),
@@ -323,7 +311,6 @@ CStartup::~CStartup()
         // Service Update
         delete mp_Setting;
         delete mp_UpdateSystem;
-        delete mp_DataManagement;
         delete mp_DataMgmt;
         delete mp_FirmwareUpdate;
         delete mp_ServiceUpdateGroup;
@@ -1555,34 +1542,6 @@ void CStartup::ShowCalibrationInitMessagetoMain(const QString &Message, bool OkS
     qDebug()<<"CStartup::ShowCalibrationInitMessagetoMain";
     mp_CalibrationHandler->ShowCalibrationInitMessagetoMain(Message, OkStatus);
 }
-
-void CStartup::OnServiceImportExportRequest(bool IsImport)
-{
-    if (IsImport)
-    {
-        emit ImportExportDataFileRequest("Import", "Service");
-    }
-    else
-    {
-        emit ImportExportDataFileRequest("Export", "Service");
-    }
-}
-
-void CStartup::ImportFinished(bool Failed)
-{
-    qDebug() << "CStartup::ImportFinished";
-
-    emit ImportFinish(Failed);
-}
-
-void CStartup::ExportFinished(bool Failed)
-{
-    qDebug() << "CStartup::ExportFinished";
-
-    emit ExportFinish(Failed);
-}
-
-
 
 /****************************************************************************/
 /*!

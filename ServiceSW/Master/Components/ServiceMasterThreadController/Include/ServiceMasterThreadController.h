@@ -69,14 +69,6 @@ namespace Core{
     class CStartup;
 }
 
-//namespace ImportExport {
-    //class ImportExportThreadController;
-//}
-
-namespace Export {
-    class ExportController;
-}
-
 namespace Threads
 {
 
@@ -167,14 +159,6 @@ private:
 
     Global::tRefType                             m_ExpectedDCRef;               ///< Expected DC acknowledge reference.
 
-    //ImportExport::ImportExportThreadController  *mp_ImportExportController;
-    QThread                                     *mp_ImportExportThread;
-
-    Export::ExportController                    *mp_ExportController;
-    QThread                                     *mp_ExportThread;
-
-    bool                                         m_ImportExportThreadIsRunning;
-    bool                                         m_ExportProcessIsFinished;
     QMap<QString, QString>                      m_BootConfigFileContent;            //!< Map containing reboot file content.
 
     ImportExport::CServiceImportExportHandler   *mp_ImportExportHandler; //!< ImportExportHandler object
@@ -385,10 +369,6 @@ signals:
        */
       /****************************************************************************/
       void DayRunLogDirectoryName(const QString &Name);
-
-      void ImportFinish(bool Failed);
-
-      void ExportFinish(bool Failed);
 
       /****************************************************************************/
       /**

@@ -80,11 +80,6 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     , mp_ServiceDataManager(NULL)
     , mp_ImportExportHandler(NULL)
     , mp_GUIStartup(startUp)
-    , mp_ImportExportThread(0)
-    , mp_ExportController(0)
-    , mp_ExportThread(0)
-    , m_ImportExportThreadIsRunning(false)
-    , m_ExportProcessIsFinished(false)
 {
     // register the metytype for gSourceType
     qRegisterMetaType<Global::gSourceType>("Global::gSourceType");
@@ -124,22 +119,6 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
                  SLOT(ImportExportDataFile(const QString &, const QByteArray &))))
     {
         qDebug() << "CStartup: cannot connect 'ImportExportDataFileRequest' signal";
-    }
-
-    if (!connect(this,
-                 SIGNAL(ImportFinish(bool)),
-                 mp_GUIStartup,
-                 SLOT(ImportFinished(bool))))
-    {
-        qDebug() << "CStartup: cannot connect 'ImportFinished' signal";
-    }
-
-    if (!connect(this,
-                 SIGNAL(ExportFinish(bool)),
-                 mp_GUIStartup,
-                 SLOT(ExportFinished(bool))))
-    {
-        qDebug() << "CStartup: cannot connect 'ExportFinished' signal";
     }
 
     if (!connect(mp_GUIStartup, SIGNAL(AbortTest()),
@@ -289,25 +268,6 @@ ServiceMasterThreadController::~ServiceMasterThreadController() {
     try {
         mp_EventThreadController = NULL;
         m_TCCommandRoutes.clear();
-
-        // remove and destroy the controller thread
-        if (0 != mp_ExportController)
-        {
-            delete mp_ExportController;
-            mp_ExportController = 0;
-        }
-
-        if (0 != mp_ExportThread)
-        {
-            delete mp_ExportThread;
-            mp_ExportThread = 0;
-        }
-        // remove and destroy the controller thread
-        if (0 != mp_ImportExportThread)
-        {
-            delete mp_ImportExportThread;
-            mp_ImportExportThread = 0;
-        }
 
         if (0 != mp_ServiceDataManager)
         {
@@ -1807,7 +1767,6 @@ void ServiceMasterThreadController::StartExportProcess(QString FileName) {
     AddAndConnectController(p_ExportController, &m_CommandChannelExport, THREAD_ID_EXPORT);
     // start the controller
     StartSpecificThreadController(THREAD_ID_EXPORT);
-
 }
 
 } // end namespace Threads
