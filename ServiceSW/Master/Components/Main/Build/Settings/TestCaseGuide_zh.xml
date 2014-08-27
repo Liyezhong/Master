@@ -70,7 +70,7 @@
 	</RVHeatingStationTest>
 	<RVHeatingEndTest Description="加热功能测试">
 		<Guide>
-			<Step>请将填充块放入到反应罐（Retort）中,关上反应罐（Retort）盖子,然后将装满水的瓶子放到位置1</Step>
+			<Step>请将填充块放入到反应罐（Retort）中,关上反应罐（Retort）盖子,然后将装满水的瓶子放到位置11,并确保石蜡缸里没有水</Step>
 		</Guide>
 	</RVHeatingEndTest>
 

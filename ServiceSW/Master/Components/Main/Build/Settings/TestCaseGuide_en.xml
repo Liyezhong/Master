@@ -70,7 +70,7 @@
 	</RVHeatingStationTest>
 	<RVHeatingEndTest Description="Heating property function test">
 		<Guide>
-			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
+			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#. And, make sure there is no water in paraffin bath.</Step>
 		</Guide>
 	</RVHeatingEndTest>
 
