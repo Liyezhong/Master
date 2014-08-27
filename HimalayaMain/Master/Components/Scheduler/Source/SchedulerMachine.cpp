@@ -27,6 +27,7 @@
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
@@ -293,6 +294,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RsPauseCount = 0;
     m_RsRVWaitingTempUp = STOP_HEATING;
     m_RsRVWaitingTempUpTime = 0;
+    m_RcPressureSeq = 0;
+    m_RcPressureDelayTime = 0;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -998,15 +1001,56 @@ void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QS
 
 void CSchedulerStateMachine::HandleRcPressureWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    if( "Scheduler::ALPressure" == cmdName)
+    if (0 == m_RcPressureSeq)
     {
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        if( "Scheduler::ALPressure" == cmdName)
         {
-            OnTasksDone(false);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                OnTasksDone(false);
+            }
+            else
+            {
+                m_RcPressureDelayTime = QDateTime::currentMSecsSinceEpoch();
+                m_RcPressureSeq++;
+            }
+        }
+    }
+    else if (1 == m_RcPressureSeq)
+    {
+        if ((QDateTime::currentMSecsSinceEpoch()- m_RcPressureDelayTime) <= 30*1000)
+        {
+            qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
+            if (qAbs(currentPressure-30.0) > 5.0)
+            {
+                m_RcPressureSeq = 0;
+                OnTasksDone(false);
+            }
         }
         else
         {
-            OnTasksDone(true);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            m_RcPressureSeq++;
+        }
+    }
+    else
+    {
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+               m_RcPressureSeq = 0;
+               OnTasksDone(true);
+            }
+            else
+            {
+                m_RcPressureSeq = 0;
+                OnTasksDone(false);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
         }
     }
 }

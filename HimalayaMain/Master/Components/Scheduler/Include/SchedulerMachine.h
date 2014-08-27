@@ -167,6 +167,8 @@ private:
     }RS_RV_WAITINGTEMPUP_t;
     RS_RV_WAITINGTEMPUP_t m_RsRVWaitingTempUp;                                          ///< The RS_RV_WaitingTempUp sub state
     qint64                m_RsRVWaitingTempUpTime;                                      ///< The RS_RV_WaitingTempUp begin time
+    qint8                 m_RcPressureSeq;                                              ///< Sequence of RC_Pressure
+    qint64                m_RcPressureDelayTime;                                        ///< Delay time for RC_Pressure
 
 private:
     /****************************************************************************/

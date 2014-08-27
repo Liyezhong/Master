@@ -2209,7 +2209,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     LogDebug(strctHWMonitor.toLogString());
 
     // Run Heating Strategy
-    if ("ERROR" != StepID)
+    if ("ERROR" != StepID && 0 != Scenario)
     {
         m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
@@ -2222,7 +2222,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor the sensors' current
-    if ("ERROR" != StepID)
+    if ("ERROR" != StepID && 0 != Scenario)
     {
         this->CheckTempSensorCurrentOverRange(Scenario);
     }
@@ -2230,7 +2230,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
-        if ("ERROR" != StepID && "IDLE" != StepID)
+        if ("ERROR" != StepID && "IDLE" != StepID && 0 != Scenario)
         {
             if(qAbs(m_PressureAL) >40.0 )
             {

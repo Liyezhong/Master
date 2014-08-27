@@ -20,7 +20,6 @@
 
 #include "Scheduler/Include/RsFillingAfterFlush.h"
 #include "Global/Include/Utils.h"
-#include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 
 namespace Scheduler{
@@ -36,6 +35,7 @@ CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedC
     mp_HeatLevelSensor = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_CheckLevelSensorTemp = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Initial.data());
 
@@ -47,14 +47,19 @@ CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedC
     mp_CheckLevelSensorTemp->addTransition(this, SIGNAL(SigFilling()), mp_Filling.data());
     CONNECTSIGNALSLOT(mp_Filling.data(), entered(), mp_SchedulerThreadController, Fill());
     CONNECTSIGNALSLOT(mp_Filling.data(), exited(), mp_SchedulerThreadController, OnStopFill());
-    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
+    mp_Filling->addTransition(this, SIGNAL(SigMoveToSealing()), mp_MoveToSealing.data());
+    CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSealing());
+    mp_MoveToSealing->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
 
     //for error case
     mp_BuildPressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
     mp_Wait30s->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
     mp_HeatLevelSensor->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
     mp_CheckLevelSensorTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
+    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
 
+    m_StartTime = 0;
+    m_MoveToSealingSeq = 0;
     mp_StateMachine->start();
 }
 
@@ -90,6 +95,10 @@ CRsFillingAfterFlush::StateList_t CRsFillingAfterFlush::GetCurrentState(QSet<QAb
      else if (statesList.contains(mp_Filling.data()))
      {
          currentState = RSFILLINGAFTERFLUSH_FILLING;
+     }
+     else if (statesList.contains(mp_MoveToSealing.data()))
+     {
+         currentState = RSFILLINGAFTERFLUSH_MOVETOSEALING;
      }
 
      return currentState;
@@ -163,8 +172,40 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
             }
             else
             {
+                emit SigMoveToSealing();
+            }
+        }
+        break;
+    case RSFILLINGAFTERFLUSH_MOVETOSEALING:
+        if (0 == m_MoveToSealingSeq)
+        {
+            if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    emit TasksDone(false);
+                }
+                else
+                {
+                    m_MoveToSealingSeq++;
+                }
+            }
+        }
+        else
+        {
+            QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
+            RVPosition_t sealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(stationID);
+            if (sealPos == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING);
+                m_MoveToSealingSeq = 0;
                 emit TasksDone(true);
             }
+            else
+            {
+                // Do nothing, just wait
+            }
+
         }
         break;
     default:

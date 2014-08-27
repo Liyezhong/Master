@@ -1223,6 +1223,24 @@ protected:
         /****************************************************************************/
         QVector<RecvCommand_t>& GetRecvCommandList() { return m_RecvCommandList; }
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Get current station ID
+         *  \param  void
+         *  \return QString current station ID
+         */
+        /****************************************************************************/
+        QString GetCurrentStationID() { return m_CurProgramStepInfo.stationID; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Set current step state
+         *  \param  SchedulerStateMachine_t current step state
+         *  \return void
+         */
+        /****************************************************************************/
+        void SetCurrentStepState(SchedulerStateMachine_t stepState) { m_CurrentStepState = stepState; }
+
     public slots:
 
         /****************************************************************************/

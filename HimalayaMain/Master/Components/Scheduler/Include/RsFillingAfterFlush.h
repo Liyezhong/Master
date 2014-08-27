@@ -24,11 +24,10 @@
 #include <QStateMachine>
 #include <QSharedPointer>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
 
 namespace Scheduler
 {
-
-class SchedulerMainThreadController;
 
 /****************************************************************************/
 /*!
@@ -110,6 +109,14 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief Signal for moving to sealing position
+     *
+     */
+    /****************************************************************************/
+    void SigMoveToSealing();
+
+    /****************************************************************************/
+    /*!
      *  \brief Signal for tasks done
      *
      */
@@ -125,7 +132,8 @@ private:
         RSFILLINGAFTERFLUSH_WAIT,
         RSFILLINGAFTERFLUSH_HEATINGLEVELSENSOR,
         RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP,
-        RSFILLINGAFTERFLUSH_FILLING
+        RSFILLINGAFTERFLUSH_FILLING,
+        RSFILLINGAFTERFLUSH_MOVETOSEALING
     } StateList_t;
 
 
@@ -137,6 +145,15 @@ private:
      */
     /****************************************************************************/
     StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
+private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to enter RV_Move_To_Seal state.
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnMoveToSealing() { mp_SchedulerThreadController->MoveRV(1);}
 
 private:
     SchedulerMainThreadController*   mp_SchedulerThreadController;  //!< Pointer to Scheduler Thread Controller
@@ -145,9 +162,11 @@ private:
     QSharedPointer<QState>          mp_BuildPressure;               //!< Build Pressure state
     QSharedPointer<QState>          mp_Wait30s;                     //!< wait 30s state
     QSharedPointer<QState>          mp_HeatLevelSensor;             //!< heating level sensor
-    QSharedPointer<QState>          mp_Filling;                     //!< filling again state
     QSharedPointer<QState>          mp_CheckLevelSensorTemp;        //!< check the level sensor temperature
+    QSharedPointer<QState>          mp_Filling;                     //!< filling again state
+    QSharedPointer<QState>          mp_MoveToSealing;               //!< move to Sealing state
     qint64                          m_StartTime;                    //!< The begin time
+    quint8                          m_MoveToSealingSeq;             //!< Sequence of moving to seaing position
 };
 
 }

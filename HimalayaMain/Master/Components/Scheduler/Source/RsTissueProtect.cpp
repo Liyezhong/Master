@@ -124,10 +124,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
             QVector<RecvCommand_t>& RecvCommandList = mp_SchedulerController->GetRecvCommandList();
-            bool  cmdFound = false;
             // Check if Filling command has completed or not
             if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
             {
+                bool  cmdFound = false;
                 for (int i=0; i< RecvCommandList.size(); ++i)
                 {
                     if ("Scheduler::ALFilling" == RecvCommandList[i].cmdName)
@@ -138,16 +138,15 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                         break;
                     }
                 }
+                if (false == cmdFound)
+                {
+                    break; //just wait
+                }
+                else
+                {
+                    // continue to stop Level Sensor
+                }
             }
-            if (false == cmdFound)
-            {
-                break; //just wait
-            }
-            else
-            {
-                // continue to stop Level Sensor
-            }
-
             if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
             {
                 emit MoveToTube();
