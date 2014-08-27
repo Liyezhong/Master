@@ -1231,8 +1231,8 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+            (void)ShowGuide(Id, 1, false);
         }
-        (void)ShowGuide(Id, 1, false);
         mp_CleaningManuf->SetTestResult(Id, Result);
     }
     mp_CleaningManuf->EnableButton(true);
