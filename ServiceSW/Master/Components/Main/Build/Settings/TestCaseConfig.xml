@@ -20,8 +20,8 @@
 		<MCTouchScreen Parameter="N/A"/>
 	</MainControl>
 	<LaSystem>
-		<LAHeatingBeltLiquid PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
-		<LAHeatingBeltAir PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
+		<LAHeatingBeltLiquid PowerSupply="DC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
+		<LAHeatingBeltAir PowerSupply="DC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
 		<LAAirSystem Parameter="N/A"/>
 	</LaSystem>
 	<System>
@@ -39,10 +39,10 @@
 	</Cleaning>
 	<Retort>
 		<RetortLidLock Parameter="N/A" />
-		<RetortLevelSensorHeating PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:01:00" TargetTemp="95" DepartureLow="0" DepartureHigh="10"/>
+		<RetortLevelSensorHeating PowerSupply="DC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:01:00" TargetTemp="95" DepartureLow="0" DepartureHigh="10"/>
 		<RetortLevelSensorDetecting  Position="1"/>
-		<RetortHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:15:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="10"/>
-		<RetortHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Position="1" DurationTime="03:00:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="6"/>
+		<RetortHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:15:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="10"/>
+		<RetortHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" Position="1" DurationTime="03:00:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="6"/>
 	</Retort>
 	<Firmware>
 		<FirmwareUpdate SlaveType="3" Path="" />
