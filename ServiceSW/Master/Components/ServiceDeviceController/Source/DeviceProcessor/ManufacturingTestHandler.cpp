@@ -364,6 +364,8 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
 
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         if ((WaitSec+DurSec1) == SumSec) {
 
             mp_TempOvenTop->StopTemperatureControl();
@@ -371,8 +373,6 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
             mp_TempOvenTop->StartTemperatureControl(HeatTargetTemp2);
             mp_TempOvenBottom->StartTemperatureControl(HeatTargetTemp2);
         }
-
-        QTime EndTime = QTime().currentTime().addSecs(1);
 
         CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
         CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
@@ -400,10 +400,13 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        mp_Utils->Pause(MSec);
-
         WaitSec--;
+        int offset = 0;
+        if (WaitSec%10 == 0) {
+            offset = 8;
+        }
+        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+        mp_Utils->Pause(MSec);
     }
 
     mp_TempOvenTop->StopTemperatureControl();
@@ -693,7 +696,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
 
     QString sideTemp, btmTemp1, btmTemp2;
 
-    if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh\
+    if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh
             || curBottomTemp2 < ambLow || curBottomTemp2 > ambHigh) {
         QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curSideTemp)
                 .arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
@@ -945,6 +948,8 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     int result = 0;
     //int bottlePos = p_TestCase->GetParameter("Position").toInt();
     const int bottlePos = 1;
+    p_TestCase->ResetResult();
+
     EmitRefreshTestStatustoMain(testCaseName, RV_INITIALIZING);
     if(mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
@@ -1028,6 +1033,39 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     int Position = 0;
     int Ret = 0;
     Service::ModuleTestStatus Status;
+
+    int num = 10;
+    qreal curSideTemp, curBottomTemp1, curBottomTemp2;
+    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+    p_TestCase->ResetResult();
+
+    while(num) {
+        curSideTemp   = mp_TempRetortSide->GetTemperature(0);
+        curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
+        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
+
+        if (curSideTemp==-1 || curBottomTemp1==-1 || curBottomTemp2==-1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh
+            || curBottomTemp2 < ambLow || curBottomTemp2 > ambHigh) {
+        QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curSideTemp)
+                .arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
+
+        SetFailReason(Id, failMsg);
+        p_TestCase->SetStatus(false);
+        p_TestCase->AddResult("OutOfRange", "1");
+
+        return -1;
+    }
 
     Position = p_TestCase->GetParameter("Position").toInt();
 
@@ -1145,13 +1183,6 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             CurrentTempBottom1 = mp_TempRetortBottom->GetTemperature(0);
             CurrentTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
 
-            if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
-                    CurrentTempBottom2 == -1) {
-                mp_Utils->Pause(1000);
-                WaitSec--;
-                continue;
-            }
-
             CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
             CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
             CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
@@ -1164,11 +1195,14 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             Status.insert("CurrentTempBottom2", CurrentTempBottomValue2);
 
             emit RefreshTestStatustoMain(TestCaseName, Status);
-
-            int MSec = QTime().currentTime().msecsTo(EndTime);
-            mp_Utils->Pause(MSec);
-
             WaitSec--;
+
+            int offset = 0;
+            if (WaitSec%10 == 0) {
+                offset = 8;
+            }
+            int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+            mp_Utils->Pause(MSec);
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
@@ -1640,6 +1674,8 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::CLEANING_SYSTEM_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    p_TestCase->ResetResult();
+
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
@@ -1717,8 +1753,6 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
     else if (targetPressure < 0) {
         mp_PressPump->SetTargetPressure(25, targetPressure);
     }
-
-    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
     waitSecond += 1;
     while (waitSecond) {
@@ -2118,10 +2152,14 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
-
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        mp_Utils->Pause(MSec);
         WaitSec--;
+
+        int offset = 0;
+        if (WaitSec%10 == 0) {
+            offset = 8;
+        }
+        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+        mp_Utils->Pause(MSec);
     }
 
     mp_TempRV->StopTemperatureControl();
@@ -2304,11 +2342,14 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
-
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        mp_Utils->Pause(MSec);
-
         WaitSec--;
+
+        int offset = 0;
+        if (WaitSec%10 == 0) {
+            offset = 8;
+        }
+        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+        mp_Utils->Pause(MSec);
     }
 
     // set rotary valve to tube position
