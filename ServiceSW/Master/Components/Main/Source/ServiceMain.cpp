@@ -65,7 +65,7 @@ int main(int Argc, char *p_Argv[])
     Application::CApplication App(Argc, p_Argv, Application::DEVICE_HIMALAYA);
     QFont Font;
     Font.setPointSize(11);
-    Font.setFamily("FreeSans"); //"FreeSans","Arial");
+    Font.setFamily("WenQuanYi Zen Hei"); //"FreeSans","Arial");
     App.setFont(Font);
 
     // set global directories.
