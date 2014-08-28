@@ -265,6 +265,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 }
                 else
                 {
+                    m_PressureCalibrationSeq = 0;
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
@@ -291,6 +292,8 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 if (3 == m_PressureCalibrationCounter)
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration failed");
+                    m_PressureCalibrationSeq = 0;
+                    m_PressureCalibrationCounter = 0;
                     mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
                 }
                 else
@@ -302,6 +305,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration passed");
                 m_PressureCalibrationSeq = 0;
+                m_PressureCalibrationCounter = 0;
                 emit PressureSealingChecking();
             }
             else //offset the calibration

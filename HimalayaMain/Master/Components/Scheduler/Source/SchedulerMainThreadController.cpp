@@ -212,11 +212,21 @@ void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime()
 }
 void SchedulerMainThreadController::OnReportFillingTimeOut2Min()
 {
-    RaiseError(0, DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, m_CurrentScenario, true);
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    if (0 != Scenario)
+    {
+        RaiseError(0, DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, m_CurrentScenario, true);
+    }
 }
 void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 {
-    RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    if (0 != Scenario)
+    {
+        RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
+    }
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
