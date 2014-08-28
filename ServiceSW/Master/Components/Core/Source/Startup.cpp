@@ -669,7 +669,7 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
         mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::CStartup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
     }
 
-#if 0 // disabled by Sunny
+#if 1 // disabled by Sunny
     if (!bReInit) {
         mp_ServiceConnector->SetLanguage(PlatformService::CHINESE);
     }
