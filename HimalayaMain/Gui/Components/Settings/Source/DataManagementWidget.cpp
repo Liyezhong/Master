@@ -190,19 +190,15 @@ void CDataManagementWidget::ResetButtons()
     else {
         mp_Ui->serviceExportButton->setEnabled(false);
     }
+
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
         mp_Ui->importButton->setEnabled(true);
-    }
-    else {
-        mp_Ui->importButton->setEnabled(false);
-    }
-
-    if ((m_CurrentUserRole >= MainMenu::CMainWindow::Service && (!m_ProcessRunning))) {
         mp_Ui->SWUpdateButton->setEnabled(true);
         mp_Ui->RemoteSWUpdateButton->setEnabled(remoteCareSoftwareAvailable);
     }
     else {
+        mp_Ui->importButton->setEnabled(false);
         mp_Ui->SWUpdateButton->setEnabled(false);
         mp_Ui->RemoteSWUpdateButton->setEnabled(false);
     }
@@ -263,7 +259,7 @@ void CDataManagementWidget::SetRemoteSWButtonState(bool State)
     /* if state == true
      * just when role of user is service and progam hasn't running, can set remoteCare button enable.
     */
-    if (m_CurrentUserRole != MainMenu::CMainWindow::Service || m_ProcessRunning)
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator || m_ProcessRunning)
         return;
 
     mp_Ui->RemoteSWUpdateButton->setEnabled(State);
