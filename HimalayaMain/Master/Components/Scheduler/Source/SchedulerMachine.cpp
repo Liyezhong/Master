@@ -1018,19 +1018,19 @@ void CSchedulerStateMachine::HandleRcPressureWorkFlow(const QString& cmdName, De
     }
     else if (1 == m_RcPressureSeq)
     {
-        if ((QDateTime::currentMSecsSinceEpoch()- m_RcPressureDelayTime) <= 30*1000)
+        if ((QDateTime::currentMSecsSinceEpoch()- m_RcPressureDelayTime) <= 30 * 1000)
         {
             qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
-            if (qAbs(currentPressure-30.0) > 5.0)
+            if (qAbs(currentPressure-30.0) < 5.0)
             {
-                m_RcPressureSeq = 0;
-                OnTasksDone(false);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                m_RcPressureSeq++;
             }
         }
         else
         {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-            m_RcPressureSeq++;
+            m_RcPressureSeq = 0;
+            OnTasksDone(false);
         }
     }
     else

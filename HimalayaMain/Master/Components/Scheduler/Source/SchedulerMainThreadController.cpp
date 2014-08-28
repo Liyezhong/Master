@@ -2389,6 +2389,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
     {
+        LogDebug("The RT bottom2 no signal");
         RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
@@ -2764,6 +2765,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
     HeaterType_t heaterType = GetFailerHeaterType();
     qreal temp1 = 0;
     qreal temp2 = 0;
+    qreal temp3 = 0;
 
     switch (heaterType)
     {
@@ -2802,6 +2804,11 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         {
             return false;
         }
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2))
+        {
+            return false;
+        }
         break;
     case OVEN:
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
@@ -2810,13 +2817,16 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
             return false;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2))
+            return false;
         break;
     default:
         break;
     }
-
+    LogDebug(QString("The temp1:%1, the temp2:%2, The temp3:%3").arg(temp1).arg(temp2).arg(temp3));
     //Check No-Signal error
-    if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001)
+    if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
     {
         return false;
     }
