@@ -72,6 +72,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmDrainingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVPosChangeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmStepFinish = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmCleaningDryStep = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProgramFinish = QSharedPointer<QFinalState>(new QFinalState(mp_BusyState.data()));
     mp_PssmError = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -155,6 +156,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigStepProgramFinished()),mp_PssmFillingHeatingRVState.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
+    mp_PssmStepFinish->addTransition(this, SIGNAL(sigEnterDryStep()), mp_PssmCleaningDryStep.data());
+    mp_PssmCleaningDryStep->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     mp_PssmProcessingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
@@ -561,6 +564,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return PSSM_STEP_PROGRAM_FINISH;
         }
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmCleaningDryStep.data()))
+        {
+            return PSSM_CLEANING_DRY_STEP;
+        }
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmProgramFinish.data()))
         {
             return PSSM_PROGRAM_FINISH;
@@ -707,6 +714,11 @@ void CSchedulerStateMachine::NotifyStepFinished()
 void CSchedulerStateMachine::NotifyProgramFinished()
 {
     emit sigProgramFinished();
+}
+
+void CSchedulerStateMachine::NotifyEnterCleaningDryStep()
+{
+    emit sigEnterDryStep();
 }
 
 void CSchedulerStateMachine::NotifyStepProgramFinished()

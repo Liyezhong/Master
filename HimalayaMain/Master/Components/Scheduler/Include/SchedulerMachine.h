@@ -82,6 +82,7 @@ private:
     QSharedPointer<QState> mp_PssmAborting;                                             ///<  Busy State's sub state: Aborting state
     QSharedPointer<QState> mp_PssmAborted;                                              ///<  Busy State's sub state: Aborted state
     QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: step finish state
+    QSharedPointer<QState> mp_PssmCleaningDryStep;                                      ///<  Busy State's sub state: cleaning dry step
     QSharedPointer<QFinalState> mp_PssmProgramFinish;                                   ///<  Busy State's sub state: Program Finished state
 
 	// Layer two states (for Error State)
@@ -523,6 +524,16 @@ public:
      */
     /****************************************************************************/
     void NotifyProgramFinished();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  notify to enter cleaning dry step
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void NotifyEnterCleaningDryStep();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStepProgramFinished
@@ -1078,6 +1089,7 @@ private slots:
      */
     /****************************************************************************/
     void OnRVMoveToNextTube();
+
     /****************************************************************************/
     /*!
      *  \brief  Slot to react for program resuming
@@ -1405,6 +1417,13 @@ signals:
      */
     /****************************************************************************/
     void sigProgramFinished();
+    /****************************************************************************/
+    /*!
+     *  \brief  signal for enter cleaning dry step
+     */
+    /****************************************************************************/
+    void sigEnterDryStep();
+
 
     /****************************************************************************/
     /*!

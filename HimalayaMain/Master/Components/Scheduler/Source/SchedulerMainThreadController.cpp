@@ -813,7 +813,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
             LogDebug(QString("Program Step Finished"));
             this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
@@ -832,10 +831,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                LogDebug(QString("All Steps finished."));
-                m_SchedulerMachine->NotifyProgramFinished();
+                if(m_IsCleaningProgram)
+                { // need run cleaning dry step
+                    m_SchedulerMachine->NotifyEnterCleaningDryStep();
+                }
+                else
+                {
+                    LogDebug(QString("All Steps finished."));
+                    m_SchedulerMachine->NotifyProgramFinished();
+                }
 
             }
+        }
+        else if(PSSM_CLEANING_DRY_STEP == stepState)
+        {
+            m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
+            DoCleaningDryStep(ctrlCmd, cmd);
         }
         else if(PSSM_PROGRAM_FINISH == stepState)
         {
@@ -1766,6 +1777,10 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
             leftTime += m_delayTime;
         }
     }
+    if(pProgram && pProgram->IsCleaningProgram()) // if cleaning program, add time for dry step
+    {
+        leftTime += TIME_FOR_CLEANING_DRY_STEP;
+    }
     return leftTime;
 }
 
@@ -2110,6 +2125,8 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         break;
     case PSSM_PROGRAM_FINISH:
         break;
+    case PSSM_CLEANING_DRY_STEP:
+        scenario = 203;
     default:
         break;
     }
@@ -2602,6 +2619,136 @@ bool SchedulerMainThreadController::IsRVRightPosition(qint16 type)
     }
     return ret;
 }
+
+void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
+{
+    Q_UNUSED(ctrlCmd)
+    typedef enum
+    {
+        CDS_READY,
+        CDS_MOVE_TO_SEALING_13,
+        CDS_WAIT_HIT_POSITION,
+        CDS_WAIT_HIT_TEMPERATURE,
+        CDS_VACUUM,
+        CDS_WAIT_HIT_PPRESSURE,
+        CDS_WAITING_DRY,
+        CDS_STOP_HEATING_VACUUM,
+        CDS_SUCCESS,
+        CDS_ERROR
+    }DryStepsStateMachine;
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    static DryStepsStateMachine CurrentState = CDS_READY;
+    static quint64 StepStartTime = 0;
+    CmdRVReqMoveToRVPosition* CmdMvRV = NULL;
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr = NULL;
+    Global::tRefType Ref;
+    switch (CurrentState)
+    {
+    case CDS_READY:
+        LogDebug(QString("Start the cleaning dry step"));
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Step", m_CurProgramStepIndex, 900);
+        Q_ASSERT(commandPtr);
+        Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        CurrentState = CDS_MOVE_TO_SEALING_13;
+    case CDS_MOVE_TO_SEALING_13:
+        qDebug() << "CDS_MOVE_TO_SEALING_13";
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+        CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
+        m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
+        CurrentState = CDS_WAIT_HIT_POSITION;
+        break;
+    case CDS_WAIT_HIT_POSITION:
+        qDebug() << "CDS_WAIT_HIT_POSITION";
+        if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
+        {
+            cmd->GetResult(retCode);
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                CurrentState = CDS_WAIT_HIT_TEMPERATURE;
+                StepStartTime = QDateTime::currentMSecsSinceEpoch();
+            }
+            else
+            {
+//                RaiseError(0, retCode, m_CurrentScenario, true);
+                m_SchedulerMachine->SendErrorSignal();
+                CurrentState = CDS_ERROR;
+            }
+        }
+        break;
+    case CDS_WAIT_HIT_TEMPERATURE:
+        qDebug() << "CDS_WAIT_HIT_TEMPERATURE";
+        if(m_TempRTBottom >= 70)// heating timeout should be done in heating strategy
+        {
+            CurrentState = CDS_VACUUM;
+            StepStartTime = 0;
+        }
+        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 300000) // 3 minutes timeout
+        {
+            //raise error
+            m_SchedulerMachine->SendErrorSignal();
+            CurrentState = CDS_ERROR;
+            break;
+        }
+        break;
+    case CDS_VACUUM:
+        qDebug() << "CDS_VACUUM";
+        Vaccum();
+        StepStartTime = QDateTime::currentMSecsSinceEpoch();
+        CurrentState = CDS_WAIT_HIT_PPRESSURE;
+        break;
+    case CDS_WAIT_HIT_PPRESSURE:
+        qDebug() << "CDS_WAIT_HIT_PPRESSURE";
+        if(cmd != NULL && ("Scheduler::ALVaccum" == cmd->GetName()))
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                //raise error
+                m_SchedulerMachine->SendErrorSignal();
+                CurrentState = CDS_ERROR;
+                break;
+            }
+        }
+        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 300000) // 3 minutes timeout
+        {
+            //raise error
+            m_SchedulerMachine->SendErrorSignal();
+            CurrentState = CDS_ERROR;
+            break;
+        }
+        if(m_PressureAL <= -20)
+        {
+            CurrentState = CDS_WAITING_DRY;
+            StepStartTime = QDateTime::currentMSecsSinceEpoch();
+        }
+        break;
+    case CDS_WAITING_DRY:
+        qDebug() << "CDS_WAITING_DRY";
+        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 600000) // drying 10 minutes
+        {
+            CurrentState = CDS_STOP_HEATING_VACUUM;
+        }
+        break;
+    case CDS_STOP_HEATING_VACUUM:
+        qDebug() << "CDS_STOP_HEATING_VACUUM";
+        ReleasePressure();
+        CurrentState = CDS_SUCCESS;
+        break;
+    case CDS_SUCCESS:
+        qDebug() << "CDS_EXIT";
+        m_SchedulerMachine->NotifyProgramFinished();
+        CurrentState = CDS_READY;
+        StepStartTime = 0;
+        break;
+    case CDS_ERROR:
+        CurrentState = CDS_READY;
+        m_SchedulerMachine->NotifyProgramFinished();
+        StepStartTime = 0;
+        break;
+
+    }
+}
+
 
 void SchedulerMainThreadController::MoveRV(qint16 type)
 {

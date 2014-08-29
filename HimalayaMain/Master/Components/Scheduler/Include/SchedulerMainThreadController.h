@@ -72,6 +72,8 @@ typedef struct {
     bool isVacuum;       ///<  Definition/Declaration of variable isVacuum
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
+
+#define TIME_FOR_CLEANING_DRY_STEP   900    ///< seconds spending in dry step
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of enum ControlCommandType_t
@@ -1125,6 +1127,15 @@ protected:
          */
         /****************************************************************************/
         void MoveRV(qint16 type);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  do cleaning dry step
+         *  \param  void
+         *  \return void
+         */
+        /****************************************************************************/
+        void DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
 
         /****************************************************************************/
         /*!

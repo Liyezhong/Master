@@ -280,8 +280,12 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     }
     if ("RTSide" == HeaterName)
     {
-        qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+        qreal userInputTemp = 0;
+        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+        {
+            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }
         if(userInputTemp < 0)
         {
             userInputTemp = 0.0;
@@ -299,8 +303,12 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     }
     if ("RTBottom" == HeaterName)
     {
-        qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+        qreal userInputTemp = 0;
+        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+        {
+            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }
         if(userInputTemp < 0)
         {
             userInputTemp = 0.0;
@@ -651,7 +659,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
                 ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        }   
+        }
+        // cleaning dry step
+        else if(mp_SchedulerController->GetCurProgramStepIndex() == -1
+                && false == mp_SchedulerController->GetCurProgramID().isEmpty()
+                && mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())->IsCleaningProgram())
+        {
+            userInputTemp = 80;
+        }
 		else
 		{
 			return DCL_ERR_FCT_CALL_SUCCESS;

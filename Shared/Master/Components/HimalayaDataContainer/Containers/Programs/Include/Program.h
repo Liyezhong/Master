@@ -74,6 +74,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Checks if program is a Cleaning program
+     *
+     *  \return True - yes , else no
+     */
+    /****************************************************************************/
+    bool IsCleaningProgram() const { return m_ID.at(0) == QChar('C');}
+
+    /****************************************************************************/
+    /*!
      *  \brief  enable or disable a program to be Favorite
      *  \iparam value = true enable,
      */
