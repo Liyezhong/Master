@@ -76,8 +76,8 @@ private:
     MainMenu::CMessageDlg                       *mp_WaitDialog;             //!< Displayed when busy
 
 
-    QString                                      m_FailStr;                  //!< - Fail
-    QString                                      m_SuccessStr;              //!< - Success
+    //QString                                      m_FailStr;                  //!< - Fail
+    //QString                                      m_SuccessStr;              //!< - Success
 
     bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0, bool haveNext = true);
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);

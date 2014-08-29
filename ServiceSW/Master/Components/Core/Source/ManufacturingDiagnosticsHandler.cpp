@@ -50,8 +50,8 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_MainWindow(p_MainWindow),
     mp_WaitDialog(NULL)
 {
-    m_FailStr = Service::CMessageString::MSG_DIAGNOSTICS_FAILED;
-    m_SuccessStr = Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS;
+    //m_FailStr = Service::CMessageString::MSG_DIAGNOSTICS_FAILED;
+    //m_SuccessStr = Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS;
     //Diagnostics Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_DisplayManuf          = new Diagnostics::CDisplay;//(mp_MainWindow);//issue: Never add parent window here!
@@ -518,7 +518,8 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
                 return ;
             }
 
-            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED,
+                                                        p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id != Service::OVEN_COVER_SENSOR && p_TestCase->GetResult().value("OutOfRange")!= "1") {
@@ -529,7 +530,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
         mp_OvenManuf->SetTestResult(Id, Result);
@@ -717,7 +718,8 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
                 return ;
             }
 
-            QString text = QString("%1 - %2<br>%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString text = QString("%1 - %2<br>%3").arg(testCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED,
+                                                        p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
             if ((id == Service::RETORT_HEATING_EMPTY || id == Service::RETORT_LEVEL_SENSOR_HEATING)
@@ -729,7 +731,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
         else {
             Global::EventObject::Instance().RaiseEvent(okId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(id);
-            QString text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            QString text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, text, true);
         }
         mp_RetortManuf->SetTestResult(id, result);
@@ -822,7 +824,7 @@ Sealing_Test_Twice:
             }
 
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            Text = QString("%1 - %2<br>%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
+            Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED, Reason);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id == Service::ROTARY_VALVE_HEATING_STATION && p_TestCase->GetResult().value("OutOfRange") != "1") {
@@ -842,7 +844,7 @@ Sealing_Test_Twice:
                  Id == Service::ROTARY_VALVE_HEATING_STATION ||
                  Id == Service::ROTARY_VALVE_HEATING_END ) {
                 QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-                Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
+                Text = QString("%1 - %2").arg(TestCaseDescription).arg(Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
                 mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
             }
             else if ( Id == Service::ROTARY_VALVE_SELECTION_FUNCTION ) {
@@ -867,7 +869,7 @@ Sealing_Test_Twice:
                     p_TestCase->SetStatus(Result);
 
                     QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-                    Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
+                    Text = QString("%1 - %2").arg(TestCaseDescription).arg(Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
                     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
 
@@ -883,7 +885,7 @@ Sealing_Test_Twice:
                     else {
                         Global::EventObject::Instance().RaiseEvent(OkId);
                         QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-                        Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
+                        Text = QString("%1 - %2").arg(TestCaseDescription).arg(Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
                         mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
                     }
                 }
@@ -945,7 +947,8 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
                 return ;
             }
 
-            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED,
+                                                        p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (p_TestCase->GetResult().value("OutOfRange")!="1")
@@ -955,7 +958,7 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
         mp_LaSystemManuf->SetTestResult(Id, Result);
@@ -1159,14 +1162,15 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 return ;
             }
 
-            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED,
+                                                        p_TestCase->GetResult().value("FailReason"));
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
@@ -1223,13 +1227,14 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
                 return ;
             }
 
-            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_FAILED,
+                                                        p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
             (void)ShowGuide(Id, 1, false);
         }
