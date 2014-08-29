@@ -2666,7 +2666,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 CurrentState = CDS_WAIT_HIT_TEMPERATURE;
-                StepStartTime = QDateTime::currentMSecsSinceEpoch();
             }
             else
             {
@@ -2681,14 +2680,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         if(m_TempRTBottom >= 70)// heating timeout should be done in heating strategy
         {
             CurrentState = CDS_VACUUM;
-            StepStartTime = 0;
-        }
-        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 300000) // 3 minutes timeout
-        {
-            //raise error
-            m_SchedulerMachine->SendErrorSignal();
-            CurrentState = CDS_ERROR;
-            break;
         }
         break;
     case CDS_VACUUM:
