@@ -126,7 +126,7 @@ void CTestServiceDataManager::TestTestCase()
 
 void CTestServiceDataManager::TestTestCaseGuide()
 {
-    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
+    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml";
     CTestCaseGuide::Instance().InitData(FileName);
 
     GuideSteps OvenEmptyGuideSteps =  CTestCaseGuide::Instance().GetGuideSteps("OvenHeatingEmpty", 0);
@@ -142,10 +142,10 @@ void CTestServiceDataManager::TestTestCaseFactory()
 
     CTestCase* p_OvenTestEmpty = CTestCaseFactory::Instance().GetTestCase("OvenHeatingEmpty");
     QCOMPARE(p_OvenTestEmpty->GetParameter(QString("AmbTempLow")), QString("10"));
-    QCOMPARE(p_OvenTestEmpty->GetParameter(QString("AmbTempHigh")), QString("40"));
+    QCOMPARE(p_OvenTestEmpty->GetParameter(QString("AmbTempHigh")), QString("35"));
 
-    QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "TargetTemp"), QString("55"));
-
+    QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "HeatTargetTemp1"), QString("85"));
+    QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "HeatTargetTemp2"), QString("52"));
 }
 
 void CTestServiceDataManager::TestModuleDataList()
@@ -163,7 +163,7 @@ void CTestServiceDataManager::TestModuleDataList()
     ServiceDataManager::CSubModule* p_Oven_Heater = p_Oven->GetSubModuleInfo("Heater");
     QVERIFY(p_Oven_Heater);
     QCOMPARE(p_Oven_Heater->GetSubModuleType(), QString("Heater"));
-    //QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 6);
+    QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 4);
 
     QString OperationTime1 = p_Oven_Heater->GetParameterInfo("OperationTime")->ParameterValue;
 

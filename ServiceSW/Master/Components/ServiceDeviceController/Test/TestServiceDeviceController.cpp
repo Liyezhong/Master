@@ -246,7 +246,7 @@ void CTestServiceDeviceController::initTestCase()
 {
     Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
     QString ConfigFile = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
-    QString GuideFile  = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
+    QString GuideFile  = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml";
     qDebug()<<"config file :"<<ConfigFile;
     qDebug()<<"guide file :"<<GuideFile;
     ASSERT_TRUE(DataManager::CTestCaseFactory::Instance().InitData(ConfigFile));
