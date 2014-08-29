@@ -266,7 +266,6 @@ typedef struct
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
-        bool m_AllProgramCount;                            ///< count the all program
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.

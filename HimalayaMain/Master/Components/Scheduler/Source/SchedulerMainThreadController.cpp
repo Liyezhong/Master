@@ -111,7 +111,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
-    m_AllProgramCount = false;
     m_IsPrecheckMoveRV = false;
 
     m_lastPVTime = 0;
@@ -347,7 +346,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )
             {
-                m_AllProgramCount = true;
                 QString LastPosition = getTheProgramStatus("LastRVPosition");
                 CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
                 cmdSet->SetRVPosition( (RVPosition_t)LastPosition.toUInt() );
@@ -851,12 +849,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(m_IsCleaningProgram)
             {
                 m_IsCleaningProgram = false;
-                UpdateProgramStatusFile("ProgramFinished", "Yes");
-            }
-
-            if(m_AllProgramCount)
-            {
-                m_AllProgramCount = false;
                 UpdateProgramStatusFile("ProgramFinished", "Yes");
             }
             //send command to main controller to tell the left time
