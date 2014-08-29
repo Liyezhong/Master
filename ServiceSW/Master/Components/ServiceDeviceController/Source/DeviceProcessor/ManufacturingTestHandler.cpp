@@ -1707,34 +1707,36 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         RetValue = -1;
         goto CLEANING_EXIT;
     }
-    for (int i = 1; i <= 16; ++i) {
-        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
-        if (mp_MotorRV->MoveToTubePosition(i)!=RV_MOVE_OK) {
-            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
-            RetValue = -1;
-            goto CLEANING_EXIT;
-        }
-        EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
-        mp_Utils->Pause(blowSec*1000);
+    for(int k=0; k<3; k++) {
+        for (int i = 1; i <= 16; ++i) {
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
+            if (mp_MotorRV->MoveToTubePosition(i)!=RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
+            EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
+            mp_Utils->Pause(blowSec*1000);
 
-        if (i == 16) {
-            break;
-        }
+            if (i == 16 && k==2) {
+                break;
+            }
 
-        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
-        if (mp_MotorRV->MoveToSealPosition(i)!=RV_MOVE_OK) {
-            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
-            RetValue = -1;
-            goto CLEANING_EXIT;
-        }
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
+            if (mp_MotorRV->MoveToSealPosition(i)!=RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
 
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
-        if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
-            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
-            RetValue = -1;
-            goto CLEANING_EXIT;
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
+            if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
         }
     }
 CLEANING_EXIT:

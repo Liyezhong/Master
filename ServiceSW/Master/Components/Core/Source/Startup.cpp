@@ -1330,9 +1330,17 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
 
 void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
-    mp_ManaufacturingDiagnosticsHandler->HideMessage();
-    QString CleaningStatus = Status.value("CurrentStatus");
-    mp_ManaufacturingDiagnosticsHandler->ShowMessage(CleaningStatus);
+    if (Status.value("CurrentStatus") == "HideMessage") {
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+    }
+    else {
+        if (Status.value("CurrentPressure") != NULL) {
+            mp_ManaufacturingDiagnosticsHandler->ShowCurrentPressure(Status.value("CurrentStatus"));
+        }
+        else {
+            mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
+        }
+    }
 }
 
 void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)

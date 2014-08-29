@@ -35,7 +35,7 @@
 		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="316" SwitchOnCurrentHigh="1358" SwitchOffCurrentLow="150"/>
 	</System>
 	<Cleaning>
-		<CleaningSystem TargetPressure="30" Departure="8" Time="00:02:00" BlowTime="00:01:00"/>
+		<CleaningSystem TargetPressure="30" Departure="3" Time="00:02:00" BlowTime="00:00:10"/>
 	</Cleaning>
 	<Retort>
 		<RetortLidLock Parameter="N/A" />
