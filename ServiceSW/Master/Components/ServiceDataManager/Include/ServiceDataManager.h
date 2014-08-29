@@ -129,7 +129,7 @@ private:
      *  \return Success or failure
      */
     /****************************************************************************/
-    virtual bool DeinitDataContainer();
+    bool DeinitDataContainer();
 
 };
 }// namespace DataManager

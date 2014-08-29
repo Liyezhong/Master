@@ -39,38 +39,38 @@ WrapperFmTempControl::WrapperFmTempControl(QString Name, CTemperatureControl *pT
     WrapperBase(Name, pParent), m_pTempControl(pTempControl)
 {
     Reset();
-    connect(m_pTempControl, SIGNAL(ReportActTemperature(quint32, ReturnCode_t, quint8, qreal)),
+    (void)connect(m_pTempControl, SIGNAL(ReportActTemperature(quint32, ReturnCode_t, quint8, qreal)),
             this, SLOT(OnGetTemp(quint32, ReturnCode_t, quint8, qreal)));
-    connect(m_pTempControl, SIGNAL(ReportRefTemperature(quint32, ReturnCode_t, qreal)),
+    (void)connect(m_pTempControl, SIGNAL(ReportRefTemperature(quint32, ReturnCode_t, qreal)),
             this, SLOT(OnSetTemp(quint32, ReturnCode_t, qreal)));
-    connect(m_pTempControl, SIGNAL(ReportActStatus(quint32, ReturnCode_t, TempCtrlStatus_t, TempCtrlMainsVoltage_t)),
+    (void)connect(m_pTempControl, SIGNAL(ReportActStatus(quint32, ReturnCode_t, TempCtrlStatus_t, TempCtrlMainsVoltage_t)),
             this, SLOT(OnTempControlStatus(quint32, ReturnCode_t, TempCtrlStatus_t, TempCtrlMainsVoltage_t)));
-    connect(m_pTempControl, SIGNAL(ReportActOperatingMode(quint32, ReturnCode_t, TempCtrlOperatingMode_t)),
+    (void)connect(m_pTempControl, SIGNAL(ReportActOperatingMode(quint32, ReturnCode_t, TempCtrlOperatingMode_t)),
             this, SLOT(OnSetTempCtrlOpMode(quint32, ReturnCode_t, TempCtrlOperatingMode_t)));
-    connect(m_pTempControl, SIGNAL(ReportResetHeaterOperatingTime(quint32, ReturnCode_t, quint8)),
+    (void)connect(m_pTempControl, SIGNAL(ReportResetHeaterOperatingTime(quint32, ReturnCode_t, quint8)),
             this, SLOT(OnResetHeaterOperatingTime(quint32, ReturnCode_t, quint8)));
-    connect(m_pTempControl, SIGNAL(ReportHeaterOperatingTime(quint32, ReturnCode_t, quint8, quint32)),
+    (void)connect(m_pTempControl, SIGNAL(ReportHeaterOperatingTime(quint32, ReturnCode_t, quint8, quint32)),
             this, SLOT(OnGetHeaterOperatingTime(quint32, ReturnCode_t, quint8, quint32)));
-    connect(m_pTempControl, SIGNAL(ReportFanSpeed(quint32, ReturnCode_t, quint8, quint16)),
+    (void)connect(m_pTempControl, SIGNAL(ReportFanSpeed(quint32, ReturnCode_t, quint8, quint16)),
             this, SLOT(OnGetFanSpeed(quint32, ReturnCode_t, quint8, quint16)));
     //connect(m_pTempControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)),
     //        this, SLOT(OnGetHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)));
-    connect(m_pTempControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16, quint8)),
+    (void)connect(m_pTempControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16, quint8)),
             this, SLOT(OnGetHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16, quint8)));
-    connect(m_pTempControl, SIGNAL(ReportTemperatureRange(quint32, ReturnCode_t, bool, qreal)),
+    (void)connect(m_pTempControl, SIGNAL(ReportTemperatureRange(quint32, ReturnCode_t, bool, qreal)),
             this, SLOT(OnTemperatureRange(quint32, ReturnCode_t, bool, qreal)));
 
 #ifdef PRE_ALFA_TEST
 #if 0
 
-    connect(m_pTempControl, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)),
+    (void)connect(m_pTempControl, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)),
                     this, SLOT(OnLevelSensorState(quint32, ReturnCode_t, quint8)));
 #endif
-    connect(m_pTempControl, SIGNAL(ReportSetPidAckn(quint32, ReturnCode_t, quint16, quint16, quint16, quint16)),
+    (void)connect(m_pTempControl, SIGNAL(ReportSetPidAckn(quint32, ReturnCode_t, quint16, quint16, quint16, quint16)),
             this, SLOT(OnSetTempPid(quint32, ReturnCode_t, quint16, quint16, quint16, quint16)));
-    connect(m_pTempControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
+    (void)connect(m_pTempControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32,quint16,quint16,quint16,QDateTime)));
-    connect(m_pTempControl, SIGNAL(ReportSetSwitchState(quint32, ReturnCode_t, qint8, qint8)),
+    (void)connect(m_pTempControl, SIGNAL(ReportSetSwitchState(quint32, ReturnCode_t, qint8, qint8)),
             this, SLOT(OnSetSwitchState(quint32,ReturnCode_t,qint8,qint8)));
 
 
@@ -130,11 +130,11 @@ bool WrapperFmTempControl::StartTemperatureControl(qreal NominalTemperature, qui
         Log(tr("Not able to read the temperature control status"));
         return false;
     }
-            //Set the nominal temperature
-            if (!SetTemperature(NominalTemperature, SlopeTempChange)) {
-            Log(tr("Not able to set temperature"));
-            return false;
-            }
+    //Set the nominal temperature
+    if (!SetTemperature(NominalTemperature, SlopeTempChange)) {
+        Log(tr("Not able to set temperature"));
+        return false;
+    }
     return true;
 #endif
 }

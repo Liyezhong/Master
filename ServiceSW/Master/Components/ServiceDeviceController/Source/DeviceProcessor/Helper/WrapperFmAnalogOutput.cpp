@@ -39,9 +39,9 @@ WrapperFmAnalogOutput::WrapperFmAnalogOutput(QString Name, CAnalogOutput *pAnalo
 {
     Reset();
 
-    connect( m_pAnalogOutput, SIGNAL(ReportOutputValueAckn(quint32, ReturnCode_t, quint16)),
+    (void)connect( m_pAnalogOutput, SIGNAL(ReportOutputValueAckn(quint32, ReturnCode_t, quint16)),
              this, SLOT(OnSetValue(quint32, ReturnCode_t, quint16)));
-    connect( m_pAnalogOutput, SIGNAL(ReportActOutputValue(quint32, ReturnCode_t, quint16)),
+    (void)connect( m_pAnalogOutput, SIGNAL(ReportActOutputValue(quint32, ReturnCode_t, quint16)),
              this, SLOT(OnGetValue(quint32, ReturnCode_t, quint16)));
 }
 

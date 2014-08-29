@@ -41,10 +41,10 @@ int main(int Argc, char *p_Argv[])
 
     //************Create all the singleton objects.********************//
     //! \warning changing order of below function call an cause ugly bugs & deadlocks!!
-    Global::EventObject::Instance();
-    Global::AdjustedTime::Instance();
-    Global::AlarmPlayer::Instance();
-    EventHandler::StateHandler::Instance();
+    (void)Global::EventObject::Instance();
+    (void)Global::AdjustedTime::Instance();
+    (void)Global::AlarmPlayer::Instance();
+    (void)EventHandler::StateHandler::Instance();
     //**************End of singleton object creation*******************//
     if(Argc>3)
     {
@@ -65,7 +65,7 @@ int main(int Argc, char *p_Argv[])
     Application::CApplication App(Argc, p_Argv, Application::DEVICE_HIMALAYA);
     QFont Font;
     Font.setPointSize(11);
-    Font.setFamily("WenQuanYi Zen Hei"); //"FreeSans","Arial");
+    Font.setFamily("WenQuanYi Zen Hei"); //("Wenquanyi Bitmap Song","FreeSans","Arial");
     App.setFont(Font);
 
     // set global directories.
@@ -89,10 +89,10 @@ int main(int Argc, char *p_Argv[])
     TheMasterThreadController.SetEventLoggerBaseFileName("Himalaya_Service");
 
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
-    DataManager::CTestCaseFactory::Instance().InitData(FileName);
+    (void)DataManager::CTestCaseFactory::Instance().InitData(FileName);
 
     FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml";
-    DataManager::CTestCaseGuide::Instance().InitData(FileName);
+    (void)DataManager::CTestCaseGuide::Instance().InitData(FileName);
 
     // catch unexpected signals
     Global::SignalHandler signalHandler;
@@ -107,7 +107,7 @@ int main(int Argc, char *p_Argv[])
         Global::ToConsole("Connecting thrMasterThread::started() and TheMasterThreadController::Go() failed");
     }
 
-    QObject::connect(&thrMasterThread, SIGNAL(finished()), &App, SLOT(quit()));
+    (void)QObject::connect(&thrMasterThread, SIGNAL(finished()), &App, SLOT(quit()));
 
     thrMasterThread.start();
 

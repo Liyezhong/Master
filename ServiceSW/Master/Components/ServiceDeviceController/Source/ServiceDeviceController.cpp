@@ -400,14 +400,14 @@ void ServiceDeviceController::OnSDC_AbortTest(Global::tRefType Ref, const Device
 {
     SendAcknowledgeOK(Ref);
     //if(m_DeviceDataContainers)
-    if(true)
-    {
+    //if(true)
+    //{
         emit SDC_AbortTest(Ref, Cmd.m_DevInstanceID);
-    }
-    else
-    {
-        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    }
+    //}
+    //else
+    //{
+        //ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    //}
 }
 
 /****************************************************************************/
@@ -415,14 +415,14 @@ void ServiceDeviceController::OnSDC_HeatingTest(Global::tRefType Ref, const Devi
 {
     SendAcknowledgeOK(Ref);
     //if(m_DeviceDataContainers)
-    if(true)
-    {
+    //if(true)
+    //{
         emit SDC_HeatingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_HeaterIndex, Cmd.m_CmdType);
-    }
-    else
-    {
-        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    }
+    //}
+    //else
+    //{
+        //ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    //}
 }
 
 /****************************************************************************/
@@ -430,14 +430,14 @@ void ServiceDeviceController::OnSDC_RotaryValveTest(Global::tRefType Ref, const 
 {
     SendAcknowledgeOK(Ref);
     //if(m_DeviceDataContainers)
-    if(true)
-    {
+    //if(true)
+    //{
         emit SDC_RotaryValveTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position, Cmd.m_CmdType);
-    }
-    else
-    {
-        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    }
+    //}
+    //else
+    //{
+        //ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    //}
 }
 
 /****************************************************************************/
@@ -445,14 +445,14 @@ void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, c
 {
     SendAcknowledgeOK(Ref);
     //if(m_DeviceDataContainers)
-    if(true)
-    {
+    //if(true)
+    //{
         emit SDC_LSensorDetectingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position);
-    }
-    else
-    {
+    //}
+    //else
+    //{
         ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    }
+    //}
 }
 
 /****************************************************************************/

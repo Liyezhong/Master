@@ -52,8 +52,8 @@ void WrapperUtils::Pause(quint32 MilliSeconds)
     timer.setInterval(MilliSeconds);
     timer.start();
     QEventLoop loop;
-    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    loop.exec();
+    (void)connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    (void)loop.exec();
 }
 
 void WrapperUtils::AbortPause()
@@ -117,7 +117,7 @@ void WrapperUtils::PlaySound(quint8 SoundType)
 
     Proc.start(ProcName, arguments );
 
-    Proc.waitForFinished();
+    (void)Proc.waitForFinished();
 }
 
 void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName, bool Clear)
@@ -134,7 +134,7 @@ void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName
             //Log(tr("current path...:%1").arg(Path));
             Path += "/"+FolderName;
             QString BashCmd="mkdir "+ Path;
-            system(BashCmd.toStdString().c_str());
+            (void)system(BashCmd.toStdString().c_str());
 
             //QString FileName = FolderName + "/Log_" + QDateTime::currentDateTime().toString("MM_dd_hh_mm_ss");
             QString FullName = Path + "/" + FileName;
@@ -146,7 +146,7 @@ void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName
         }
         else
         {
-            this->Log(tr("You input empty folder name, please re-enter"));
+            Log(tr("You input empty folder name, please re-enter"));
         }
     }
 }
@@ -208,10 +208,12 @@ void WrapperUtils::WriteLoop(quint32 loopIndex, quint32 loopCounter)
     }
     QString msg = tr("%1;%2;\n").arg(succeedCounter).arg(failedCounter);
     FILE* pFile = fopen(FileName.toStdString().c_str(), "w+");
-    fprintf(pFile, "%s", msg.toStdString().c_str());
-    fflush(pFile);
-    fclose(pFile);
-    system("sync");
+    if (pFile) {
+        fprintf(pFile, "%s", msg.toStdString().c_str());
+        (void)fflush(pFile);
+        fclose(pFile);
+    }
+    (void)system("sync");
 }
 
 

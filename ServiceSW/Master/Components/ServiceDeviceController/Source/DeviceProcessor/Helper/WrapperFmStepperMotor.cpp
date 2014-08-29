@@ -49,49 +49,49 @@ WrapperFmStepperMotor::WrapperFmStepperMotor(QString Name,
 
     mp_ResetData = new CResetData(*pStepperMotor, this);
 
-    connect(
+    (void)connect(
         m_pStepperMotor, 
         SIGNAL(ReportReferenceMovementAckn(quint32, ReturnCode_t, qint32)),
         this, 
         SLOT(OnReferenceRun(quint32, ReturnCode_t, qint32))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor, 
         SIGNAL(ReportMovementAckn(quint32, ReturnCode_t, qint32, qint16)), 
         this, 
         SLOT(OnSetPosition(quint32, ReturnCode_t, qint32, qint16))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor, 
         SIGNAL(ReportPosition(quint32, ReturnCode_t, qint32, qint8)),
         this, 
         SLOT(OnGetPosition(quint32, ReturnCode_t, qint32, qint8))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor,
         SIGNAL(ReportSetStateAckn(quint32, ReturnCode_t)),
         this,
         SLOT(OnSetState(quint32, ReturnCode_t))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor,
         SIGNAL(ReportConfigureDone(quint32, ReturnCode_t)),
         this,
         SLOT(OnSetConfiguration(quint32, ReturnCode_t))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor,
         SIGNAL(ReportSpeed(quint32,ReturnCode_t,qint16)),
         this,
         SLOT(OnGetSpeed(quint32,ReturnCode_t,qint16))
     );
-    connect(
+    (void)connect(
         m_pStepperMotor,
         SIGNAL(ReportLifeCycleData(quint32, ReturnCode_t, quint32, quint32, quint32)),
         this,
         SLOT(OnGetLifeCycleData(quint32, ReturnCode_t, quint32, quint32, quint32))
     );
-    connect(m_pStepperMotor, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
+    (void)connect(m_pStepperMotor, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32,quint16,quint16,quint16,QDateTime)));
 #ifdef PRE_ALFA_TEST
     InitEDPosition();
@@ -1204,7 +1204,7 @@ bool WrapperFmStepperMotor::SetPosition(qint32 Position, qint32 Timeout)
         timer.setInterval(Timeout);
         timer.start();
         // quit via timer is the same as exit(0)
-        connect(&timer, SIGNAL(timeout()), &m_LoopSetPosition, SLOT(quit()));
+        (void)connect(&timer, SIGNAL(timeout()), &m_LoopSetPosition, SLOT(quit()));
     }
 
     qint32 ret = m_LoopSetPosition.exec();
@@ -1316,7 +1316,7 @@ bool WrapperFmStepperMotor::Wait(qint32 Timeout)
         timer.setInterval(Timeout);
         timer.start();
         // quit via timer is the same as exit(0)
-        connect(&timer, SIGNAL(timeout()), &m_LoopWait, SLOT(quit()));
+        (void)connect(&timer, SIGNAL(timeout()), &m_LoopWait, SLOT(quit()));
     }
 
     qint32 ret = m_LoopWait.exec();
@@ -1354,7 +1354,7 @@ QString WrapperFmStepperMotor::GetPosition()
 
     QString position = "error";
     if (ret == 1) {
-        position.setNum(m_CurrentPosition);
+        (void)position.setNum(m_CurrentPosition);
     }
     return position;
 }
@@ -1383,7 +1383,7 @@ QString WrapperFmStepperMotor::GetLimitSwitchCode()
 
     QString code = "error";
     if (ret == 1) {
-        code.setNum(m_CurrentLimitSwitchCode);
+        (void)code.setNum(m_CurrentLimitSwitchCode);
     }
     return code;
 }
@@ -1803,6 +1803,7 @@ bool WrapperFmStepperMotor::ApplyNewParameterSet()
 
     return (ret == 1);
 }
+#ifdef PRE_ALFA_TEST
 void WrapperFmStepperMotor::ApplyNewParameterSetTimerCB()
 {
     if(m_LoopApplyNewParameter.isRunning())
@@ -1810,6 +1811,8 @@ void WrapperFmStepperMotor::ApplyNewParameterSetTimerCB()
         m_LoopApplyNewParameter.exit();
     }
 }
+#endif
+
 /****************************************************************************/
 /*!
  *  \brief   slot for SetConfiguration

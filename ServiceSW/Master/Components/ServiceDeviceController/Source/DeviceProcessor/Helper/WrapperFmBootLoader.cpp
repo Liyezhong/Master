@@ -43,9 +43,9 @@ WrapperFmBootLoader::WrapperFmBootLoader(QString Name, CBootLoader *pBootLoader,
 {
     Reset();
 
-    connect(m_pBootLoader, SIGNAL(ReportUpdateFirmware(quint32, ReturnCode_t)),
+    (void)connect(m_pBootLoader, SIGNAL(ReportUpdateFirmware(quint32, ReturnCode_t)),
             this, SLOT(OnUpdateFirmware(quint32, ReturnCode_t)));
-    connect(m_pBootLoader, SIGNAL(ReportUpdateInfo(quint32, ReturnCode_t)),
+    (void)connect(m_pBootLoader, SIGNAL(ReportUpdateInfo(quint32, ReturnCode_t)),
             this, SLOT(OnUpdateInfo(quint32, ReturnCode_t)));
 }
 

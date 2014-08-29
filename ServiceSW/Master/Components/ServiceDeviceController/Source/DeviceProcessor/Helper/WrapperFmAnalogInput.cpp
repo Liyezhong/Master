@@ -39,10 +39,10 @@ WrapperFmAnalogInput::WrapperFmAnalogInput(QString Name, CAnalogInput *pAnalogIn
 {
     Reset();
 
-    connect(m_pAnalogInput, SIGNAL(ReportSetState(quint32, ReturnCode_t)),
+    (void)connect(m_pAnalogInput, SIGNAL(ReportSetState(quint32, ReturnCode_t)),
             this, SLOT(OnSetState(quint32, ReturnCode_t)));
 
-    connect(m_pAnalogInput, SIGNAL(ReportActInputValue(quint32, ReturnCode_t, quint16)),
+    (void)connect(m_pAnalogInput, SIGNAL(ReportActInputValue(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnGetValue(quint32, ReturnCode_t, quint16)));
 }
 

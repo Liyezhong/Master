@@ -43,7 +43,7 @@ WrapperFmDigitalInput::WrapperFmDigitalInput(QString Name, CDigitalInput *pDigit
 {
     Reset();
 
-    connect(m_pDigitalInput, SIGNAL(ReportActInputValue(quint32, ReturnCode_t, quint16)),
+    (void)connect(m_pDigitalInput, SIGNAL(ReportActInputValue(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnGetValue(quint32, ReturnCode_t, quint16)));
 }
 

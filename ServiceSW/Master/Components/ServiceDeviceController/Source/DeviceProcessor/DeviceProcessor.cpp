@@ -330,8 +330,8 @@ void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, quint32 id,
         Initialize();
     }
 
-    qint32  Ret(0);
-    QString ReturnMsg("");
+    //qint32  Ret(0);
+    //QString ReturnMsg("");
 
     qDebug("Device ID:%X, Index:%d, CmdType:%d", id, HeaterIndex, CmdType);
 
@@ -538,7 +538,7 @@ qint32 DeviceProcessor::TestRVHeating(quint32 DeviceId)
 
     WaitSec = Service::TEST_RV_HEATING_TIME;
 
-    mp_TempRV->StartTemperatureControl(Service::TEST_RV_HEATING_TEMP);
+    (void)mp_TempRV->StartTemperatureControl(Service::TEST_RV_HEATING_TEMP);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -556,7 +556,7 @@ qint32 DeviceProcessor::TestRVHeating(quint32 DeviceId)
         WaitSec--;
     }
 
-    mp_TempRV->StopTemperatureControl();
+    (void)mp_TempRV->StopTemperatureControl();
 
     if ( RVStatus == -1 )
     {
@@ -584,7 +584,7 @@ qint32 DeviceProcessor::TestLSensorHeating(quint32 DeviceId)
 
     WaitSec = Service::TEST_LS_HEATING_TIME;
 
-    mp_TempLSensor->StartTemperatureControl(Service::TEST_LS_HEATING_TEMP);
+    (void)mp_TempLSensor->StartTemperatureControl(Service::TEST_LS_HEATING_TEMP);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -602,7 +602,7 @@ qint32 DeviceProcessor::TestLSensorHeating(quint32 DeviceId)
         WaitSec--;
     }
 
-    mp_TempLSensor->StopTemperatureControl();
+    (void)mp_TempLSensor->StopTemperatureControl();
 
     if ( LSensorStatus == -1 )
     {
@@ -631,8 +631,8 @@ qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
 
     WaitSec = Service::TEST_OVEN_HEATING_TIME_EMPTY;
 
-    mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
-    mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
+    (void)mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
+    (void)mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -654,8 +654,8 @@ qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
         WaitSec--;
     }
 
-    mp_TempOvenTop->StopTemperatureControl();
-    mp_TempOvenBottom->StopTemperatureControl();
+    (void)mp_TempOvenTop->StopTemperatureControl();
+    (void)mp_TempOvenBottom->StopTemperatureControl();
 
     if ( OvenStatus == -1 )
     {
@@ -696,7 +696,7 @@ qint32 DeviceProcessor::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
         break;
     }
 
-    p_TempCtrl->StartTemperatureControl(Service::TEST_TUBE_HEATING_TEMP);
+    (void)p_TempCtrl->StartTemperatureControl(Service::TEST_TUBE_HEATING_TEMP);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -714,7 +714,7 @@ qint32 DeviceProcessor::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
         WaitSec--;
     }
 
-    p_TempCtrl->StopTemperatureControl();
+    (void)p_TempCtrl->StopTemperatureControl();
 
     if ( TubeStatus == -1 )
     {
@@ -751,11 +751,11 @@ qint32 DeviceProcessor::MoveRVToTubePos(quint32 DeviceId, qint32 Pos)
         return -1;
     }
 
-    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_TUBEPOS_PRESS);
+    (void)mp_PressPump->SetTargetPressure(1, Service::TEST_RV_TUBEPOS_PRESS);
 
     mp_Utils->Pause(Service::TEST_RV_TUBEPOS_PRESS_DURATION);
 
-    mp_PressPump->ReleasePressure();
+    (void)mp_PressPump->ReleasePressure();
 
     return 0;
 }
@@ -767,18 +767,18 @@ qint32 DeviceProcessor::MoveRVToSealPos(quint32 DeviceId, qint32 Pos)
         return -1;
     }
 
-    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_SEALPOS_PRESS);
+    (void)mp_PressPump->SetTargetPressure(1, Service::TEST_RV_SEALPOS_PRESS);
 
     mp_Utils->Pause(Service::TEST_RV_SEALPOS_PRESS_DURATION);
 
     if ( mp_PressPump->GetPressure(0) > Service::TEST_RV_SEALPOS_PRESS - Service::TEST_RV_SEALPOS_PRESS_DROP )
     {
-        mp_PressPump->ReleasePressure();
+        (void)mp_PressPump->ReleasePressure();
         return 0;
     }
     else
     {
-        mp_PressPump->ReleasePressure();
+        (void)mp_PressPump->ReleasePressure();
         return -1;
     }
 
@@ -804,7 +804,7 @@ qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
             break;
         case -3:
             qDebug() << "Sucking return: [Overflow]";
-            mp_PressPump->Draining(1000, Pos);
+            (void)mp_PressPump->Draining(1000, Pos);
             break;
         case -4:
             qDebug() << "Sucking return: [Insufficient]";
@@ -844,7 +844,7 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
     if (CurrentPressure < 2 && CurrentPressure > -2)
     {
         //Calibration to 0 (+/-0.2Kpa) and save to the config file;
-        mp_PressPump->WritePressureDrift(CurrentPressure);
+        (void)mp_PressPump->WritePressureDrift(CurrentPressure);
         QString strDriftTip = QString("%1").arg(CurrentPressure);
         emit ReturnMessagetoMain(Service::CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS + strDriftTip);
         return;

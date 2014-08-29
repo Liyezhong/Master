@@ -242,7 +242,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
                                              0, QApplication::UnicodeUTF8));
         dlg->setModal(true);
         dlg->HideButtons();
-        dlg->exec();
+        (void)dlg->exec();
         delete dlg;
     }
 

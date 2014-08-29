@@ -35,6 +35,8 @@
 #include <QDesktopWidget>
 #include "Core/Include/ServiceUtils.h"
 
+//lint -e613
+
 namespace Core {
 
 /****************************************************************************/

@@ -352,15 +352,15 @@ void ServiceMasterThreadController::AddAndConnectController(ThreadController *pC
     if (!BasicThreadController) {
         // add the pair to m_Controllers to ensure it will be destroyed if connecting the signals fails
         // set thread to NULL to ensure everything works in direct calls untill threads have to be started.
-        m_ControllerMap.insert(ControllerNumber, tControllerPair(pController, NULL));
+        (void)m_ControllerMap.insert(ControllerNumber, tControllerPair(pController, NULL));
         CONNECTSIGNALSLOT(this, SendGo(), pController, Go());
     }
     else {
-        m_BasicControllersMap.insert(ControllerNumber, tControllerPair(pController, NULL));
+        (void)m_BasicControllersMap.insert(ControllerNumber, tControllerPair(pController, NULL));
         CONNECTSIGNALSLOT(this, SendGoToBasicThreads(), pController, Go());
     }
 
-    m_channelList.insert(pCommandChannel->m_channelName.simplified().toUpper(), pCommandChannel);
+    (void)m_channelList.insert(pCommandChannel->m_channelName.simplified().toUpper(), pCommandChannel);
     // connect some signals
     CONNECTSIGNALSLOT(this, SendStop(), pController, Stop());
 
@@ -624,7 +624,7 @@ CommandChannel *ServiceMasterThreadController::GetComponentRouteChannel(Global::
     QHashIterator<QString, Threads::CommandChannel*> i(m_channelList);
     while (i.hasNext())
     {
-        i.next();
+        (void)i.next();
         if (i.value()->m_componentType == component)
         {
             return i.value();
@@ -959,7 +959,7 @@ void ServiceMasterThreadController::StopSpecificThreadController(const int Contr
     if (ThreadFound) {
         ControllerPair.first->DoCleanupAndDestroyObjects();
         // block all the signals
-        ControllerPair.second->blockSignals(true);
+        (void)ControllerPair.second->blockSignals(true);
         ControllerPair.second->quit();
     }
 }
@@ -971,14 +971,14 @@ void ServiceMasterThreadController::RemoveSpecificThreadController(const int Con
     if (!BasicThreadController) {
         if (m_ControllerMap.contains(ControllerNumber)) {
             ControllerPair = m_ControllerMap.value(ControllerNumber);
-            m_ControllerMap.remove(ControllerNumber);
+            (void)m_ControllerMap.remove(ControllerNumber);
             ThreadFound = true;
         }
     }
     else  {
         if (m_BasicControllersMap.contains(ControllerNumber)) {
             ControllerPair = m_BasicControllersMap.value(ControllerNumber);
-            m_BasicControllersMap.remove(ControllerNumber);
+            (void)m_BasicControllersMap.remove(ControllerNumber);
             ThreadFound = true;
         }
     }
@@ -1009,7 +1009,7 @@ void ServiceMasterThreadController::StartSpecificThreadController(const int Cont
     if (ThreadFound) {
         ControllerPair.first->CreateAndInitializeObjects();
         ControllerPair.second = new QThread();
-        m_ControllerMap.insert(ControllerNumber, ControllerPair);
+        (void)m_ControllerMap.insert(ControllerNumber, ControllerPair);
         ControllerPair.first->moveToThread(ControllerPair.second);
         CONNECTSIGNALSLOT(ControllerPair.second, started(), ControllerPair.first, Go());
         ControllerPair.second->start();
@@ -1361,7 +1361,7 @@ void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref,
 void ServiceMasterThreadController::sendAbortTestCommand()
 {
     qDebug()<<"ServiceMasterThreadController::sendAbortTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdAbortTest(DEVICE_INSTANCE_ID_DEVPROC)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdAbortTest(DEVICE_INSTANCE_ID_DEVPROC)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1369,7 +1369,7 @@ void ServiceMasterThreadController::sendAbortTestCommand()
 void ServiceMasterThreadController::sendRVHeatingTestCommand(quint8 HeaterIndex, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendRVHeatingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_ROTARY_VALVE, HeaterIndex, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_ROTARY_VALVE, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1377,7 +1377,7 @@ void ServiceMasterThreadController::sendRVHeatingTestCommand(quint8 HeaterIndex,
 void ServiceMasterThreadController::sendRotaryValveTestCommand(qint32 Position, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendRVInitTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdRotaryValveTest(DEVICE_INSTANCE_ID_ROTARY_VALVE, Position, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdRotaryValveTest(DEVICE_INSTANCE_ID_ROTARY_VALVE, Position, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1385,7 +1385,7 @@ void ServiceMasterThreadController::sendRotaryValveTestCommand(qint32 Position, 
 void ServiceMasterThreadController::sendLevelSensorDetectingTestCommand(qint32 Position)
 {
     qDebug()<<"ServiceMasterThreadController::sendLevelSensorDetectingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdLSensorDetectingTest(DEVICE_INSTANCE_ID_RETORT, Position)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdLSensorDetectingTest(DEVICE_INSTANCE_ID_RETORT, Position)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1394,7 +1394,7 @@ void ServiceMasterThreadController::sendLevelSensorDetectingTestCommand(qint32 P
 void ServiceMasterThreadController::sendLevelSensorHeatingTestCommand(quint8 HeaterIndex, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendLevelSensorHeatingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_AIR_LIQUID, HeaterIndex, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_AIR_LIQUID, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1402,7 +1402,7 @@ void ServiceMasterThreadController::sendLevelSensorHeatingTestCommand(quint8 Hea
 void ServiceMasterThreadController::sendRetortHeatingTestCommand(quint8 HeaterIndex, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendRetortHeatingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_RETORT, HeaterIndex, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_RETORT, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1410,7 +1410,7 @@ void ServiceMasterThreadController::sendRetortHeatingTestCommand(quint8 HeaterIn
 void ServiceMasterThreadController::sendTubeHeatingTestCommand(quint8 HeaterIndex, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendTubeHeatingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_AIR_LIQUID, HeaterIndex, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_AIR_LIQUID, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1418,7 +1418,7 @@ void ServiceMasterThreadController::sendTubeHeatingTestCommand(quint8 HeaterInde
 void ServiceMasterThreadController::sendOvenHeatingTestCommand(quint8 HeaterIndex, quint8 CmdType)
 {
     qDebug()<<"ServiceMasterThreadController::sendOvenHeatingTestCommand";
-    SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_OVEN, HeaterIndex, CmdType)),
+    (void)SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_OVEN, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
 }
 
@@ -1457,8 +1457,8 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
         timer.setInterval(4000);
         timer.start();
         QEventLoop loop;
-        connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-        loop.exec();
+        (void)connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+        (void)loop.exec();
 
         QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
         QFile BootConfigFile(RebootPath);
@@ -1468,7 +1468,7 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
             ReadBootConfigFile(&BootConfigFile);
         }
 
-        m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
+        (void)m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
 
         UpdateRebootFile(m_BootConfigFileContent);
 
@@ -1528,28 +1528,25 @@ void ServiceMasterThreadController::ReadBootConfigFile(QFile *p_BootConfigFile) 
             if (Line.contains("Main_Rebooted", Qt::CaseInsensitive)) {
                 QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
 
-                m_BootConfigFileContent.insert("Main_Rebooted", LineFields[1]);
+                (void)m_BootConfigFileContent.insert("Main_Rebooted", LineFields[1]);
             }
             else if (Line.contains("Reboot_Count", Qt::CaseInsensitive)) {
                 QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
                 if (LineFields.count() == 2) {
                     RebootCount = LineFields[1];
                     m_RebootCount = RebootCount.toUInt();
-                    m_BootConfigFileContent.insert("Reboot_Count", QString::number(m_RebootCount));
+                    (void)m_BootConfigFileContent.insert("Reboot_Count", QString::number(m_RebootCount));
                 }
 
             }
             else if (Line.contains("Software_Update_Status", Qt::CaseInsensitive)) {
-                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
-
-
-                m_BootConfigFileContent.insert("Software_Update_Status", "NA");
-
+                //QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                (void)m_BootConfigFileContent.insert("Software_Update_Status", "NA");
             }
             else if (Line.contains("PowerFailed", Qt::CaseInsensitive)) {
                 QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
 
-                m_BootConfigFileContent.insert("PowerFailed", LineFields[1]);
+                (void)m_BootConfigFileContent.insert("PowerFailed", LineFields[1]);
             }
         } while (!Line.isNull());
 
@@ -1569,13 +1566,13 @@ void ServiceMasterThreadController::UpdateRebootFile(const QMap<QString, QString
     RebootFileStream.setFieldAlignment(QTextStream::AlignLeft);
     QMapIterator<QString, QString> RebootfileItr(RebootFileContent);
     while (RebootfileItr.hasNext()) {
-        RebootfileItr.next();
+        (void)RebootfileItr.next();
         QString Key = RebootfileItr.key();
         QString Value = RebootFileContent.value(Key);
         RebootFileStream << Key << ":" << Value << "\n" << left;
     }
-    RebootFile.flush();
-    fsync(RebootFile.handle());
+    (void)RebootFile.flush();
+    (void)fsync(RebootFile.handle());
     RebootFile.close();
 }
 

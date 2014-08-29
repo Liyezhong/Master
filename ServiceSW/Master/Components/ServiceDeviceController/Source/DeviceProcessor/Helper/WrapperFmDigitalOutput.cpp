@@ -39,13 +39,13 @@ WrapperFmDigitalOutput::WrapperFmDigitalOutput(QString Name, CDigitalOutput *pDi
     Reset();
 
     mp_ResetData = new CResetData(*pDigitalOutput, this);
-    connect(m_pDigitalOutput, SIGNAL(ReportOutputValueAckn(quint32, ReturnCode_t, quint16)),
+    (void)connect(m_pDigitalOutput, SIGNAL(ReportOutputValueAckn(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnSetOutputValue(quint32, ReturnCode_t, quint16)));
-    connect(m_pDigitalOutput, SIGNAL(ReportActOutputValue(quint32, ReturnCode_t, quint16)),
+    (void)connect(m_pDigitalOutput, SIGNAL(ReportActOutputValue(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnGetOutputValue(quint32, ReturnCode_t, quint16)) );
-    connect(m_pDigitalOutput, SIGNAL(ReportLifeTimeData(quint32, ReturnCode_t, quint32, quint32)),
+    (void)connect(m_pDigitalOutput, SIGNAL(ReportLifeTimeData(quint32, ReturnCode_t, quint32, quint32)),
             this, SLOT(OnGetLifetimeData(quint32, ReturnCode_t, quint32, quint32)));
-    connect(m_pDigitalOutput, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
+    (void)connect(m_pDigitalOutput, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32, quint16, QDateTime)));
 }
 

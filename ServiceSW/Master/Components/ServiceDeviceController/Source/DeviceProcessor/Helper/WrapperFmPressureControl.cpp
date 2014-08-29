@@ -44,30 +44,30 @@ WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureContro
     WrapperBase(Name, pParent), m_pPressureControl(pPressureControl)
 {
     Reset();
-    connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, float)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, float)),
             this, SLOT(OnGetPressure(quint32, ReturnCode_t, quint8, float)));
-    connect(m_pPressureControl, SIGNAL(ReportRefPressure(quint32, ReturnCode_t, float)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportRefPressure(quint32, ReturnCode_t, float)),
             this, SLOT(OnSetPressure(quint32, ReturnCode_t, float)));
-    connect(m_pPressureControl, SIGNAL(ReportActStatus(quint32, ReturnCode_t, PressureCtrlStatus_t, PressureCtrlMainsVoltage_t)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportActStatus(quint32, ReturnCode_t, PressureCtrlStatus_t, PressureCtrlMainsVoltage_t)),
             this, SLOT(OnPressureControlStatus(quint32, ReturnCode_t, PressureCtrlStatus_t, PressureCtrlMainsVoltage_t)));
-    connect(m_pPressureControl, SIGNAL(ReportActOperatingMode(quint32, ReturnCode_t, PressureCtrlOperatingMode_t)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportActOperatingMode(quint32, ReturnCode_t, PressureCtrlOperatingMode_t)),
             this, SLOT(OnSetPressureCtrlOpMode(quint32, ReturnCode_t, PressureCtrlOperatingMode_t)));
-    connect(m_pPressureControl, SIGNAL(ReportResetPumpOperatingTime(quint32, ReturnCode_t, quint8)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportResetPumpOperatingTime(quint32, ReturnCode_t, quint8)),
             this, SLOT(OnResetPumpOperatingTime(quint32, ReturnCode_t, quint8)));
-    connect(m_pPressureControl, SIGNAL(ReportPumpOperatingTime(quint32, ReturnCode_t, quint8, quint32)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportPumpOperatingTime(quint32, ReturnCode_t, quint8, quint32)),
             this, SLOT(OnGetPumpOperatingTime(quint32, ReturnCode_t, quint8, quint32)));
-    connect(m_pPressureControl, SIGNAL(ReportFanSpeed(quint32, ReturnCode_t, quint8, quint16)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportFanSpeed(quint32, ReturnCode_t, quint8, quint16)),
             this, SLOT(OnGetFanSpeed(quint32, ReturnCode_t, quint8, quint16)));
-    connect(m_pPressureControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)),
             this, SLOT(OnGetHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)));
-    connect(m_pPressureControl, SIGNAL(ReportPressureRange(quint32, ReturnCode_t, bool, float)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportPressureRange(quint32, ReturnCode_t, bool, float)),
             this, SLOT(OnPressureRange(quint32, ReturnCode_t, bool, float)));
 
-    connect(m_pPressureControl, SIGNAL(ReportRefValveState(quint32,ReturnCode_t,quint8,quint8)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportRefValveState(quint32,ReturnCode_t,quint8,quint8)),
             this, SLOT(OnSetValve(quint32,ReturnCode_t,quint8,quint8)));
-    connect(m_pPressureControl, SIGNAL(ReportRefFanState(quint32,ReturnCode_t,quint8)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportRefFanState(quint32,ReturnCode_t,quint8)),
             this, SLOT(OnSetFan(quint32,ReturnCode_t,quint8)));
-    connect(m_pPressureControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
+    (void)connect(m_pPressureControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32,quint16,quint16,quint16,QDateTime)));
 
     m_DrainingCfgData.DariningPressure = 30;
