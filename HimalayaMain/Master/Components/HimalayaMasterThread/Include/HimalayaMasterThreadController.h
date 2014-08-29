@@ -860,8 +860,6 @@ private slots:
         StartSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     }
 
-   void OnSetRmtLocAlarm(int opcode);
-
 }; // end class HimalayaMasterThreadController
 
 } // end namespace Himalaya

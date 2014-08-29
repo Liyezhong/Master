@@ -239,7 +239,6 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     DataManager::XmlConfigFilePasswords PwdFile(GetSerialNumber());
     PwdFile.ReadPasswords(Global::SystemPaths::Instance().GetSettingsPath() + "/Password.xml", m_PasswordManager);
     (void)connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
-    (void)connect(mp_EventThreadController, SIGNAL(SetRmtLocAlarm(int)), this, SLOT(OnSetRmtLocAlarm(int)));
 }
 
 
@@ -1327,16 +1326,6 @@ void HimalayaMasterThreadController::ShowWaitDialog(bool Display, Global::WaitDi
 void HimalayaMasterThreadController::SendRCCmdToGuiChannel(const Global::CommandShPtr_t &Cmd)
 {
     (void)SendCommand(Cmd, m_CommandChannelGui);
-}
-
-void HimalayaMasterThreadController::OnSetRmtLocAlarm(int opcode)
-{
-    // remote & local alarm triger;
-    if (schedulerMainController != NULL) {
-        Scheduler::CmdRmtLocAlarm *cmd = new Scheduler::CmdRmtLocAlarm(500, schedulerMainController);
-        cmd->SetRmtLocOpcode(opcode);
-        pSchedCmdProcessor->pushCmd(cmd);
-    }
 }
 
 } // end namespace Himalaya

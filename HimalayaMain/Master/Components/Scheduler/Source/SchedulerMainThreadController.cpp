@@ -43,6 +43,7 @@
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
@@ -71,7 +72,6 @@
 #include <unistd.h>
 #include <Global/Include/SystemPaths.h>
 #include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
-
 
 using namespace DataManager;
 
@@ -277,15 +277,19 @@ void SchedulerMainThreadController::OnTickTimer()
     case SM_IDLE:
         //qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor( "IDLE" );
+        HandleRmtLocAlarm(newControllerCmd);
         HandleIdleState(newControllerCmd,cmd);
         break;
     case SM_BUSY:
         //qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor( m_CurProgramID );
+        HandleRmtLocAlarm(newControllerCmd);
         HandleRunState(newControllerCmd, cmd);
         break;
     case SM_ERROR:
+        //qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
         HardwareMonitor( "ERROR" );
+        HandleRmtLocAlarm(newControllerCmd);
         HandleErrorState(newControllerCmd, cmd, currentState);
         break;
     default:
@@ -1341,6 +1345,23 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             return CTRL_CMD_RC_CHECK_RTLOCK;
         }
 
+        if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
+        {
+            QString str = cmd;
+            int opcode = str.remove("ALARM_", Qt::CaseInsensitive).toInt();
+            switch (opcode) {
+            case 5:
+                return  CTRL_CMD_ALARM_RMT_ON;
+            case 4:
+                return  CTRL_CMD_ALARM_RMT_OFF;
+            case 3:
+                return  CTRL_CMD_ALARM_LOC_ON;
+            case 2:
+                return  CTRL_CMD_ALARM_LOC_OFF;
+            case -1:
+                return  CTRL_CMD_ALARM_ALL_OFF;
+            }
+        }
     }
     return CTRL_CMD_UNKNOWN;
 
@@ -3550,6 +3571,34 @@ void SchedulerMainThreadController::EnablePauseButton(bool bEnable)
     Q_ASSERT(commandPtrPauseEnable);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+}
+
+void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
+{
+    int opcode = -1;
+    switch (ctrlcmd) {
+    case CTRL_CMD_ALARM_RMT_ON:
+        opcode = 5;
+        break;
+    case CTRL_CMD_ALARM_RMT_OFF:
+        opcode = 4;
+        break;
+    case CTRL_CMD_ALARM_LOC_ON:
+        opcode = 3;
+        break;
+    case CTRL_CMD_ALARM_LOC_OFF:
+        opcode = 2;
+        break;
+    case CTRL_CMD_ALARM_ALL_OFF:
+        opcode = -1;
+        break;
+    default:
+        return ;
+    }
+
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+    cmd->SetRmtLocOpcode(opcode);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 
 void SchedulerMainThreadController::OnSystemError()
