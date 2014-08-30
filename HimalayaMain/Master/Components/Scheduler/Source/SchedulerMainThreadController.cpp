@@ -528,9 +528,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_FILLING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                LogDebug(QString("Scheduler step: READY_TO_FILL is abort to PAUSE"));
-                AllStop();
-                m_SchedulerMachine->NotifyPause(PSSM_FILLING);
+                EnablePauseButton();
+                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
             }
 
             if( "Scheduler::ALFilling" == cmdName)
@@ -726,34 +725,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_DRAINING == stepState)
         {
             m_CurrentStepState = PSSM_DRAINING;
-            if(m_PauseToBeProcessed)
-            {
-                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-                if(m_PositionRV == sealPos)
-                {
-                    //release pressure
-                    AllStop();
-                    m_PauseToBeProcessed = false;
-                    m_SchedulerMachine->NotifyPause(PSSM_DRAINING);
-                    //DequeueNonDeviceCommand();
-                 }
-             }
 
              if (CTRL_CMD_PAUSE == ctrlCmd)
              {
-                 m_PauseToBeProcessed = true;
-                 RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-                 if(RV_UNDEF != sealPos)
-                 {
-                     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
-                     cmd->SetRVPosition(sealPos);
-                     m_SchedulerCommandProcessor->pushCmd(cmd);
-                  }
-                  else
-                  {
-                     //todo: error handling
-                     LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-                 }
+                EnablePauseButton();
+                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
              }
 
              //In case that Scheduler was recovered from Error
@@ -800,11 +776,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         // Do nothing, just wait
                     }
-                }
-
-                if(CTRL_CMD_PAUSE == ctrlCmd)
-                {
-                    m_PauseToBeProcessed = true;
                 }
             }
         }
@@ -3688,6 +3659,15 @@ void SchedulerMainThreadController::DisablePauseButton()
 {
     if (!m_IsCleaningProgram)
         EnablePauseButton(false);
+}
+
+void SchedulerMainThreadController::EnablePause()
+{
+
+}
+
+void SchedulerMainThreadController::DisablePause()
+{
 }
 
 void SchedulerMainThreadController::EnablePauseButton(bool bEnable)

@@ -470,6 +470,8 @@
 		<string id="50331766" text1="Pause overtime 5 mintues. Please resume program as soon as possible!" text2=""/>
 		<string id="50331767" text1="Pause overtime 10 mintues. Please resume program as soon as possible!" text2=""/>
 		<string id="50331768" text1="Program can not resume as pausing overtime 15 mintues." text2=""/>
+		<string id="50331769" text1="Please wait for filling to be completed, and then try a again!" text2=""/>
+		<string id="50331770" text1="Please wait for draining to be completed, and then try a again!" text2=""/>
 		<string id="33619977" text1="The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable." text2=""/>
 		<string id="50331683" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
 		<string id="50331651" text1="LeicaBiopsie" text2=""/>

@@ -329,6 +329,9 @@ const quint32 EVENT_LOCAL_ALARM_PAUSE_10MINTUES = 50331767;	   ///< local alarm 
 
 const quint32 EVENT_REMOTE_ALARM_PAUSE_15MINTUES = 50331768;   ///< remote alarm when pausing exceed 15 minutes
 
+const quint32 EVENT_WAIT_FILLING_FINISH = 50331769;   ///< when press "Pause", message "Please wait for filling to be completed, then try a again!"
+
+const quint32 EVENT_WAIT_DRAINING_FINISH = 50331770;   ///< when press "Pause", message "Please wait for draining to be completed, then try a again!"
 
 
 #endif // HIMALAYAEVENTCODES_H

@@ -227,7 +227,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     {
         Core::CGlobalHelper::SetProgramPaused(true);
         ui->pauseButton->setEnabled(false);//protect to click twice in a short time
-        ui->startButton->setEnabled(false);
+        //ui->startButton->setEnabled(false);
         if(CheckPreConditionsToPauseProgram())
         {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);

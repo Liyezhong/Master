@@ -1479,6 +1479,12 @@
 		<Event Code="" ErrorID="50331768" ErrorType="Error" AlarmType="AL_REMOTE" Name="EVENT_REMOTE_ALARM_PAUSE_15MINTUES" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="50331768" ButtonType="OK" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="50331769" ErrorType="info" AlarmType="" Name="EVENT_WAIT_FILLING_FINISH" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="50331769" ButtonType="OK" LogLevel="" UserLog="TRUE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331770" ErrorType="info" AlarmType="" Name="EVENT_WAIT_DRAINING_FINISH" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="50331770" ButtonType="OK" LogLevel="" UserLog="TRUE" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="33619977" ErrorType="Error" AlarmType="" Name="EVENT_STATIONS_DEFECT">
 			<Step ID="0" Type="MSG" StringID="33619977" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
