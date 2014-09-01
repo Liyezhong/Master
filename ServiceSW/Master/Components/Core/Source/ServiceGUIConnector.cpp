@@ -254,7 +254,7 @@ void CServiceGUIConnector::ShowBusyDialog()
     timer.setInterval(10000);
     timer.start();
     CONNECTSIGNALSLOT(&timer, timeout(), this, HandleTimeout());
-    mp_WaitDialog->SetText(QApplication::translate("Core::CServiceGUIConnector", "Requested operation is in progress...", 0, QApplication::UnicodeUTF8));
+    mp_WaitDialog->SetText(Service::CMessageString::MSG_DIAGNOSTICS_REQUESTED_OPERATION);
     mp_WaitDialog->show();
     mp_WaitDialog->HideAbort();
 }
@@ -297,25 +297,25 @@ void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType,
         switch (MessageType) {
         case Global::GUIMSGTYPE_ERROR:
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->SetTitle(tr("Error"));
+            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_ERROR);
             break;
         case Global::GUIMSGTYPE_INFO:
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(tr("Information"));
+            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_INFO);
             break;
         case Global::GUIMSGTYPE_WARNING:
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_WARN);
             break;
         }
         mp_MessageDlg->SetText(MessageText);
     }
     else {
-        mp_MessageDlg->SetTitle(tr("Communication Error"));
-        mp_MessageDlg->SetText(tr("Communication Error"));
+        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_COMMUNCATION_ERROR);
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_TITLE_COMMUNCATION_ERROR);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
     }
-    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
     //mp_MessageDlg->setModal(false);
 
     if (NeedClickFlag) {
@@ -326,7 +326,7 @@ void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType,
         mp_MessageDlg = NULL;
 
         mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-        mp_MessageDlg->SetButtonText(1, tr("Ok"));
+        mp_MessageDlg->SetButtonText(1,Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->setModal(true);
         mp_MessageDlg->HideButtons();
     }
