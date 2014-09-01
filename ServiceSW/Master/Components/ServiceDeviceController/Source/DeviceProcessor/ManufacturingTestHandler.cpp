@@ -1784,13 +1784,13 @@ qDebug()<<"CreatePressure : currentPressure = "<<mp_PressPump->GetPressure();
             }
 
         }
-        else if (pressure == 45) {
+        else if (targetPressure == 45) {
             if (pressure > (targetPressure-departure)) {
                 result = true;
                 break;
             }
         }
-        else if (pressure == -45) {
+        else if (targetPressure == -45) {
             if (pressure < (targetPressure-departure)) {
                 result = true;
                 break;
@@ -1809,6 +1809,8 @@ qDebug()<<"CreatePressure : currentPressure = "<<mp_PressPump->GetPressure();
         mp_Utils->Pause(MSec);
     }
     if (result == true) {
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+        mp_Utils->Pause(1000);
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
         mp_Utils->Pause(1000);
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
