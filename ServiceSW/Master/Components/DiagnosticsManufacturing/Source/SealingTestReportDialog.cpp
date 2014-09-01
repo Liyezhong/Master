@@ -60,7 +60,12 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
     Position = Status.value("Position");
     Pressure = Status.value("Pressure");
     Result   = Status.value("Result");
-    StatusText = Status.value("Label");
+    if (Status.value("CurrentPressure") == "1") {
+        StatusText = Status.value("CurrentStatus");
+    }
+    else {
+        StatusText = Status.value("Label");
+    }
     FinishFlag = Status.value("Finish");
 
     if (!Position.isEmpty()) {

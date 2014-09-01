@@ -356,7 +356,7 @@ private:
      * \brief Create Pressure
      */
     /****************************************************************************/
-    bool CreatePressure(int waitSecond, qreal targetPressure, qreal departure, const QString& TestCaseName);
+    bool CreatePressure(int waitSecond, float targetPressure, float departure, const QString& TestCaseName);
 
     /****************************************************************************/
     /**
