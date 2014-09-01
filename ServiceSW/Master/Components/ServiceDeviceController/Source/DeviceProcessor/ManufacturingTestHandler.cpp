@@ -1707,6 +1707,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         RetValue = -1;
         goto CLEANING_EXIT;
     }
+    mp_PressPump->StopCompressor();
     for(int k=0; k<3; k++) {
         for (int i = 1; i <= 16; ++i) {
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
@@ -1737,6 +1738,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
                 RetValue = -1;
                 goto CLEANING_EXIT;
             }
+            mp_PressPump->StopCompressor();
         }
     }
 CLEANING_EXIT:
@@ -1758,6 +1760,8 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
 
     waitSecond += 1;
     while (waitSecond) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         if (m_UserAbort) {
             result = false;
             break;
@@ -1783,9 +1787,12 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, pressure);
 
-        mp_Utils->Pause(1000);
         --waitSecond;
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
     }
+    mp_Utils->Pause(1000);
     return result;
 }
 
