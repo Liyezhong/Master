@@ -202,6 +202,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             }
             else
             {
+                m_RTTempOffSeq = 0;
                 mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error message
             }
         }
@@ -215,6 +216,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             }
             else
             {
+                m_RTTempOffSeq = 0;
                 mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error mesage
             }
         }
