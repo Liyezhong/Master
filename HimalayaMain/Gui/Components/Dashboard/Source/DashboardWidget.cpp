@@ -664,6 +664,19 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             return false;
         }
     }
+    else if (m_bIsFirstStepFixation && bCanNotRun)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+        mp_MessageDlg->SetText(m_strPromptProgramDelay);
+        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+        mp_MessageDlg->HideCenterButton();
+        if (!mp_MessageDlg->exec())
+        {
+            return false;
+        }
+    }
 
     if ( mp_DataConnector)
     {
@@ -859,6 +872,7 @@ void CDashboardWidget::RetranslateUI()
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
     m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.", 0, QApplication::UnicodeUTF8);
+    m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Porgam will be delayed for some mintues in the first step as the paraffin is not melted completly. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);

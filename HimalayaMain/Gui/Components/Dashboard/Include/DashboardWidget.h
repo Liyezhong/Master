@@ -157,6 +157,7 @@ private:
     QDateTime m_ParaffinStartHeatingTime;
     QString m_strResetEndTime;
     QString m_strCannotStartParaffinMelt;
+    QString m_strPromptProgramDelay;
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
     QString m_strProgramComplete;
