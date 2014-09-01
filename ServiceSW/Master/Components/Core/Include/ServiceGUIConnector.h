@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DataConnector.h
+/*! \file ServiceGUIConnector.h
  *
- *  \brief DataConnector definition.
+ *  \brief ServiceGUIConnector definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-02-26
@@ -146,17 +146,40 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  To update the Instrument History xml file
+     *  \iparam ModuleList = Module list date container
      */
     /****************************************************************************/
     bool UpdateInstrumentHistory(ServiceDataManager::CModuleDataList& ModuleList);
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted when ModuleList data container is
+     *  initialized
+     */
+    /****************************************************************************/
     void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted when ModuleList data container is changed
+     */
+    /****************************************************************************/
     void ModuleListChanged(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted when DeviceConfiguration data container is changed
+     */
+    /****************************************************************************/
     void DeviceConfigurationInterfaceChanged(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted when UserSettings data container is changed
+     */
+    /****************************************************************************/
     void UserSettingInterfaceChanged(void);
+
     /****************************************************************************/
     /*!
      *  \brief Signal is emitted when ServiceParameters data container is
@@ -164,6 +187,7 @@ signals:
      */
     /****************************************************************************/
     void ServiceParametersChanged();
+
     /*******************************************************************************/
     /*!
      *  \brief Signal is emitted to update ServiceParameters container

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ServiceDeviceController/Include/DeviceProcessor/ServiceUtils.h
+/*! \file ServiceUtils.h
  *
  *  \brief Definition file for class ServiceUtils.
  *
@@ -27,6 +27,10 @@
 
 namespace Core {
 
+/****************************************************************************/
+/*!
+ *  \brief This class implements service utils functionality
+ */
 /****************************************************************************/
 class CServiceUtils : public QObject
 {

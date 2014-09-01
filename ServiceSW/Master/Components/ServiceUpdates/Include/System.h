@@ -33,7 +33,7 @@ namespace Ui {
 }
 /****************************************************************************/
 /**
- * \brief
+ * \brief This widget displays history shutdown system
  */
 /****************************************************************************/
 class CSystem : public QWidget

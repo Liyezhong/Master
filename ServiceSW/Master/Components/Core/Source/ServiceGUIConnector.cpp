@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DataConnector.cpp
+/*! \file ServiceGUIConnector.cpp
  *
- *  \brief DataConnector implementation.
+ *  \brief ServiceGUIConnector implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-02-27
@@ -124,6 +124,7 @@ void CServiceGUIConnector::SetUserSettingInterface(
 /****************************************************************************/
 /*!
  *  \brief This slot updates the Modulelist
+ *  \iparam Module = Module date container
  */
 /****************************************************************************/
 void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
@@ -175,6 +176,12 @@ bool CServiceGUIConnector::UpdateInstrumentHistory(ServiceDataManager::CModuleDa
     return Result;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This slot updates the Device configuration
+ *  \iparam DeviceConfiguration = pointer of device configuration
+ */
+/****************************************************************************/
 void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration)
 {
     if (mp_DeviceConfigurationInterface) {
@@ -188,6 +195,7 @@ void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceCon
 /****************************************************************************/
 /*!
  *  \brief This slot updates the Modulelist
+ *  \iparam Module = Module date container
  */
 /****************************************************************************/
 void CServiceGUIConnector::SendAddModule(ServiceDataManager::CModule &Module)
@@ -211,6 +219,7 @@ void CServiceGUIConnector::onMessageDialogClosed()
 /****************************************************************************/
 /*!
  *  \brief OnCurrentTabChanged
+ *  \iparam CurrentTabIndex = Index of current tab
  */
 /****************************************************************************/
 void CServiceGUIConnector::OnCurrentTabChanged(int CurrentTabIndex)
@@ -221,6 +230,8 @@ void CServiceGUIConnector::OnCurrentTabChanged(int CurrentTabIndex)
 /****************************************************************************/
 /*!
  *  \brief Show Busy Dialog
+ *  \iparam MessageText = message string
+ *  \iparam HideAbort = flag of hide dialog
  */
 /****************************************************************************/
 void CServiceGUIConnector::ShowBusyDialog(QString MessageText, bool HideAbort)
@@ -272,6 +283,7 @@ void CServiceGUIConnector::HideBusyDialog()
 /****************************************************************************/
 /*!
  *  \brief Slot to Get PopUp Response
+ *  \iparam button = index of button
  */
 /****************************************************************************/
 void CServiceGUIConnector::onPopUpButtonClicked(qint32 button)
@@ -284,6 +296,9 @@ void CServiceGUIConnector::onPopUpButtonClicked(qint32 button)
 /****************************************************************************/
 /*!
  *  \brief ShowMessageDialog
+ *  \iparam MessageType = The message type
+ *  \iparam MessageText = The message string
+ *  \iparam NeedClickFlag = The flag of need click
  */
 /****************************************************************************/
 void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText, bool NeedClickFlag)

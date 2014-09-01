@@ -376,6 +376,7 @@ qint32 CStartup::NetworkInit()
 /****************************************************************************/
 /*!
  *  \brief System Tracking and LogViewer Tab
+ *  \iparam bReInit = flag of is reinit
  */
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsOne(bool bReInit)
@@ -649,6 +650,7 @@ void CStartup::InitManufacturingDiagnostic()
 /****************************************************************************/
 /*!
  *  \brief Initializes the Manufacturing interface
+ *  \iparam bReInit = flag of is reinit
  */
 /****************************************************************************/
 void CStartup::ManufacturingGuiInit(bool bReInit)
@@ -854,7 +856,7 @@ void CStartup::OnDeviceInitRequest()
 /****************************************************************************/
 /*!
  *  \brief Throws open a Pop Up Message with Custom Messages
- *
+ *  \iparam Message = message string
  */
 /****************************************************************************/
 void CStartup::ShowMessage(const QString &Message)
@@ -866,7 +868,7 @@ void CStartup::ShowMessage(const QString &Message)
 /****************************************************************************/
 /*!
  *  \brief Throws open a Pop Up Message with Custom Messages
- *
+ *  \iparam Message = error message string
  */
 /****************************************************************************/
 void CStartup::ShowErrorMessage(const QString &Message)

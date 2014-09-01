@@ -268,8 +268,20 @@ public slots:
     void SendFilesToMaster(QStringList FileList);
 
 signals:
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to Device Init request
+     */
+    /****************************************************************************/
     void DeviceInitRequest(void);
 
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to Import&Export data file Request
+     * \iparam CommandName = Import/Export
+     * \iparam CommandData = data of Import/Export
+     */
+    /****************************************************************************/
     void ImportExportDataFileRequest(const QString &CommandName,
                                      const QByteArray &CommandData);
 
@@ -307,23 +319,74 @@ signals:
     /****************************************************************************/
     void SendSignalToMaster(QStringList SelectedFileName);
 
-    /* General signals */
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to abort test
+     */
+    /****************************************************************************/
     void AbortTest();
 
-    /* Rotary Valve signals */
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to rotary valve heating test
+     * \iparam HeaterType = heating type
+     * \iparam HeatingTestType = heating test type
+     */
+    /****************************************************************************/
     void RVHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
-    void RotaryValveTest(qint32 Postion, quint8 RVTestType);
 
-    /* Retort signals */
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to rotary valve test
+     * \iparam Position = the rotary valve position
+     * \iparam RVTestType = Rotary valve test type
+     */
+    /****************************************************************************/
+    void RotaryValveTest(qint32 Position, quint8 RVTestType);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to retort level sensor detecting test
+     * \iparam Position = the level sensor postion
+     */
+    /****************************************************************************/
     void LevelSensorDetectingTest(qint32 Position);
-    void LevelSensorHeatingTest(quint8, quint8);
-    void RetortHeatingTest(quint8, quint8);
 
-    /* Air and Liquid signals */
-    void TubeHeatingTest(quint8, quint8);
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to retort level sensor heating test
+     * \iparam HeaterType = heating type
+     * \iparam HeatingTestType = heating test type
+     */
+    /****************************************************************************/
+    void LevelSensorHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
 
-    /* Oven signals */
-    void OvenHeatingTest(quint8, quint8);
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to retort heating test
+     * \iparam HeaterType = heating type
+     * \iparam HeatingTestType = heating test type
+     */
+    /****************************************************************************/
+    void RetortHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to LA System tube heating test
+     * \iparam TubeType = tube type
+     * \iparam TubeTestType = tube test type
+     */
+    /****************************************************************************/
+    void TubeHeatingTest(quint8 TubeType, quint8 TubeTestType);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to oven heating test
+     * \iparam HeaterType = heating type
+     * \iparam HeatingTestType = heating test type
+     */
+    /****************************************************************************/
+    void OvenHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
 
     /****************************************************************************/
     /**
@@ -376,7 +439,8 @@ signals:
     /****************************************************************************/
     /**
        * \brief Signal emitted to perform manufacturing tests
-       * \iparam Test = Test name
+       * \iparam Test = Test ID
+       * \iparam AbortTestID = Test abort ID
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);

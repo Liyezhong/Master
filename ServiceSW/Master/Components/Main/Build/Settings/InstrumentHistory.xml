@@ -22,7 +22,7 @@
             <SubModule name="ASB5" type="Board" description="ASB5">
                 <parameter name="SoftwareVersion" unit="quint16">SW_VER</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">DATE</parameter>
-                <parameter name="SerialNumber" unit="QString"/>
+                <parameter name="SerialNumber" unit="QString"></parameter>
                 <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
@@ -36,7 +36,7 @@
             <SubModule name="ASB15" type="Board" description="ASB15">
                 <parameter name="SoftwareVersion" unit="quint16">SW_VER</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">DATE</parameter>
-                <parameter name="SerialNumber" unit="QString"/>
+                <parameter name="SerialNumber" unit="QString"></parameter>
                 <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
@@ -86,7 +86,7 @@
             </SubModule>
             <SubModule name="Lid Lock" type="Lock" description="Lid Lock">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationCycles" unit="cycles"/>
+                <parameter name="OperationCycles" unit="cycles"></parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>

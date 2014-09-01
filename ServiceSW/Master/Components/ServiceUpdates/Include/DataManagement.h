@@ -34,7 +34,7 @@ namespace Ui {
 }
 /****************************************************************************/
 /**
- * \brief
+ * \brief This widget displays Import&Export
  */
 /****************************************************************************/
 class CDataManagement : public QWidget

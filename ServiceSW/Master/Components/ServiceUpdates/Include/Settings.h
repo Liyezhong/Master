@@ -122,7 +122,7 @@ public slots:
      /****************************************************************************/
      /*!
       *  \brief Slot for update GUi by user model
-      *  \DataConnector = service Gui connector, MainWindow = this Ui Main window
+      *  \param DataConnector = service Gui connector, MainWindow = this Ui Main window
       */
      /****************************************************************************/
      void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);

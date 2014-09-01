@@ -8,7 +8,7 @@ namespace Service {
 class CMessageString
 {
 public:
-	static QString MSG_TITLE_ERROR;                                   //!<Error
+    static QString MSG_TITLE_ERROR;                                   //!<Error
 	static QString MSG_TITLE_INFO;                                    //!<Information
 	static QString MSG_TITLE_WARN;                                    //!<Warning
 	static QString MSG_TITLE_WAIT;                                    //!<Please Wait

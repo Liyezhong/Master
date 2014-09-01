@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Core/Service/ServiceUtils.cpp
+/*! \file ServiceUtils.cpp
  *
  *  \brief Implementation file for class ServiceUtils.
  *

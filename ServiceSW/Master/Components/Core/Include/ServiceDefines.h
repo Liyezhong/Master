@@ -429,7 +429,6 @@ const QString MSG_TUBE1_HEATING_SUCCESS("Belt1 Heating Test successful");
 const QString MSG_TUBE2_HEATING_FAILURE("ERROR: Belt2 Heating Test Failed!!!");
 const QString MSG_TUBE2_HEATING_SUCCESS("Belt2 Heating Test successful");
 /****************************************************************************/
-
 } // end namespace Service
 
 #endif // GLOBAL_SERVICEDEFINES_H
