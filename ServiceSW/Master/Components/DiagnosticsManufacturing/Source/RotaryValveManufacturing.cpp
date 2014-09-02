@@ -89,6 +89,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mp_Ui->sendTestReportBtn->setEnabled(false);
+    mp_Ui->groupBox->setFixedWidth(551);
 
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);

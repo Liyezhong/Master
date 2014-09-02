@@ -92,6 +92,8 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
+    mp_Ui->groupBox->setFixedWidth(551);
+
     mp_Ui->sendTestReportBtn->setEnabled(false);
 
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
@@ -454,6 +456,7 @@ void CMainControl::RetranslateUI()
     mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+
 }
 
 }  // end namespace DiagnosticsManufacturing
