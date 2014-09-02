@@ -69,14 +69,17 @@ typedef struct
 	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
 	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus
 	quint16			RetortLockStatus;       ///<  Definition/Declaration of variable RetortLockStatus
-    quint16           CurrentRTSide;          ///< Current of Retort Side
-    quint16           CurrentRTBottom;        ///< Current of Retort Bottom
-    quint16           CurrentOvenTop;         ///< Current of Oven Top
-    quint16           CurrentOvenBottom;      ///< Current of Oven Bottom
-    quint16           CurrentLALevelSensor;   ///< Current of LA Level Sensor
-    quint16           CurrentLATube1;         ///< Current of LA Tube1
-    quint16           CurrentLATube2;         ///< Current of LA Tube2
-    quint16           CurrentRVTemp;          ///< Current of Rotary Valve temperautre module
+    quint16         CurrentRTSide;          ///< Current of Retort Side
+    quint16         CurrentRTBottom;        ///< Current of Retort Bottom
+    quint16         CurrentOvenTop;         ///< Current of Oven Top
+    quint16         CurrentOvenBottom;      ///< Current of Oven Bottom
+    quint16         CurrentLALevelSensor;   ///< Current of LA Level Sensor
+    quint16         CurrentLATube1;         ///< Current of LA Tube1
+    quint16         CurrentLATube2;         ///< Current of LA Tube2
+    quint16         CurrentRVTemp;          ///< Current of Rotary Valve temperautre module
+    quint16         Slave3Voltage;          ///< Slave3 Voltage
+    quint16         Slave5Voltage;          ///< Slave5 Voltage
+    quint16         Slave15Voltage;         ///< Slave15 Voltage
 
     /****************************************************************************/
     /*!
@@ -90,8 +93,9 @@ typedef struct
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
                 QString("RV1(%1)RV2(%2)RVp(%3)").arg(TempRV1).arg(TempRV2).arg(PositionRV) +
                 QString("ALp(%1)ALls(%2-%3)ALt1(%4)ALt2(%5)").arg(PressureAL).arg(TempALLevelSensor).arg(TempLevelSensorStatus ? "on" : "off").arg(TempALTube1).arg(TempALTube2)+
-                QString("RTSideCurrent(%1)RTBottomCurrent(%2)OvenTop(%3)OvenBottom(%4)ALLSCurrent(%5)ALTube1Current(%6)ALTube2Current(%7)RVTempCurrent(%8)").arg(CurrentRTSide).arg(CurrentRTBottom)
-                .arg(CurrentOvenTop).arg(CurrentOvenBottom).arg(CurrentLALevelSensor).arg(CurrentLATube1).arg(CurrentLATube2).arg(CurrentRVTemp);
+                QString("RTSideCurrent(%1)RTBottomCurrent(%2)OvenTop(%3)OvenBottom(%4)ALLSCurrent(%5)ALTube1Current(%6)ALTube2Current(%7)RVTempCurrent(%8)Slave3Voltage(%9)Slave5Voltage(%10)Slave15Voltage(%11)")
+                .arg(CurrentRTSide).arg(CurrentRTBottom).arg(CurrentOvenTop).arg(CurrentOvenBottom).arg(CurrentLALevelSensor).arg(CurrentLATube1).arg(CurrentLATube2).arg(CurrentRVTemp)
+                .arg(Slave3Voltage).arg(Slave5Voltage).arg(Slave15Voltage);
     }
 } HardwareMonitor_t;
 

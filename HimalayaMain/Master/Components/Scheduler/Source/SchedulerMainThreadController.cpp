@@ -1225,97 +1225,119 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     if(pCmdSystemAction)
     {
         QString cmd = pCmdSystemAction->GetActionString();
-        m_EventKey = pCmdSystemAction->GetEventKey();
+        //m_EventKey = pCmdSystemAction->GetEventKey();
 
         LogDebug(QString("Get action: %1").arg(cmd));
         cmd = cmd.toLower();
 
         if(cmd == "rs_rv_getoriginalpositionagain")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN;
         }
         if(cmd == "rc_restart")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_RESTART;
         }
         if (cmd == "rc_report")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_REPORT;
         }
         if(cmd == "rs_standby")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_STANDBY;
         }
         if(cmd == "rs_standby_withtissue")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_STANDBY_WITHTISSUE;
         }
         if (cmd == "rs_heatingerr30sretry")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_HEATINGERR30SRETRY;
         }
         if (cmd == "rs_pressureoverrange_3sretry")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY;
         }
         if (cmd == "rs_tsensorerr3minretry")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_TSENSORERR3MINRETRY;
         }
         if (cmd == "rc_levelsensor_heating_overtime")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
         if (cmd == "rc_pressure")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_PRESSURE;
         }
         if (cmd == "rc_vacuum")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_VACUUM;
         }
         if (cmd == "rc_filling")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_FILLING;
         }
         if (cmd == "rc_draining")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_DRAINING;
         }
         if (cmd == "rs_drainatonce")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_DRAINATONCE;
         }
         if (cmd == "rc_bottlecheck_i")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_BOTTLECHECK_I;
         }
         if (cmd == "rs_fillingafterflush")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_FILLINGAFTERFLUSH;
         }
         if (cmd == "rs_check_blockage")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECK_BLOCKAGE;
         }
         if (cmd == "rs_pause")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_PAUSE;
         }
         if (cmd == "rs_rv_waitingtempup")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_RV_WAITINGTEMPUP;
         }
         if (cmd == "rs_tissue_protect")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_TISSUE_PROTECT;
         }
         if (cmd == "user_response_pause_alarm")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_USER_RESPONSE_PAUSE_ALARM;
         }
         if (cmd == "rc_check_rtlock")
         {
+            m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_CHECK_RTLOCK;
         }
 
@@ -2271,14 +2293,13 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_TempRV2 = strctHWMonitor.TempRV2;
         if (200 == Scenario)
         {
-#if 0
+
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
                 RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
-#endif
         }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))

@@ -1246,6 +1246,9 @@
 		<Event Code="" ErrorID="511040221" ErrorType="INFO" AuthorityType="Auth_SERV" AlarmType="" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="101040221" RDStringID="111040221" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="FALSE"/>
 		</Event>
+		<Event Code="" ErrorID="500070001" ErrorType="INFO" AuthorityType="Auth_SERV" AlarmType="" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="100070001" RDStringID="110070001" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="FALSE"/>
+		</Event>
 		<Event Code="" ErrorID="33619990" ErrorType="Error" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS">
 			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>

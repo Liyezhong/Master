@@ -42,9 +42,12 @@ class  CRsTissueProtect : public QObject
     {
         UNDEF,
         INIT,
+        STOP_FILLING,
+        STOP_DRAINING,
         MOVE_TO_TUBE,
         LEVELSENSOR_HEATING,
         FILLING,
+        WAIT_8S,
         MOVE_TO_SEALING,
         RELEASE_PRESSURE
     } StateList_t;
@@ -103,6 +106,21 @@ public:
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for stopping filling
+     *
+     */
+    /****************************************************************************/
+    void StopFilling();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for stopping draining
+     *
+     */
+    /****************************************************************************/
+    void StopDraining();
 
     /****************************************************************************/
     /*!
@@ -127,6 +145,14 @@ signals:
      */
     /****************************************************************************/
     void Filling();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for wait for 8 seconds;
+     *
+     */
+    /****************************************************************************/
+    void Wait8Seconds();
 
     /****************************************************************************/
     /*!
@@ -189,19 +215,26 @@ private:
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Tissue_Protect
     QSharedPointer<QState> mp_Init;                         //!< Initial state
     QSharedPointer<QState> mp_MoveToTube;         			//!< Move to Tube position state
+    QSharedPointer<QState> mp_StopFilling;         			//!< Stop Filling state
+    QSharedPointer<QState> mp_StopDraining;                 //!< Stop Draining state
     QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
     QSharedPointer<QState> mp_Filling;           			//!< Filling state
+    QSharedPointer<QState> mp_Wait8S;           			//!< Wait for 8 seconds state
     QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
     QSharedPointer<QState> mp_ReleasePressure;       		//!< Release pressure
+    bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
     quint8 m_FillSeq;                                       //!< Sequence of Filling
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
+    quint8 m_StopFillingSeq;                                //!< Sequnece of Stopping Filling
+    quint8 m_StopDrainingSeq;                               //!< Sequnece of Stopping Filling
+    qint64 m_StartWaitTime;                                 //!< Start up time for waiting for 8 seconds
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
-    CRsTissueProtect::ReagentType_t GetReagentType() const;
+    CRsTissueProtect::ReagentType_t GetReagentType();
     QString GetStationID();
 };
 }

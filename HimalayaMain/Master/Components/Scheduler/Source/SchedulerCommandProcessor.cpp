@@ -32,6 +32,7 @@
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALGetRecentPressure.h"
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlON.h"
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
@@ -104,7 +105,7 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 template <class DP>
 HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 {
-    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0, 0,0,0,0,0,0,0,0,0};
+    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0, 0,0,0,0,0,0,0,0,0,0,0,0};
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
@@ -130,6 +131,9 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.CurrentLATube1       = mp_IDeviceProcessing->GetSensorCurrent("LA",1);
     strctHWMonitor.CurrentLATube2       = mp_IDeviceProcessing->GetSensorCurrent("LA",2);
     strctHWMonitor.CurrentRVTemp        = mp_IDeviceProcessing->GetSensorCurrent("RV",0);
+    strctHWMonitor.Slave3Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_3);
+    strctHWMonitor.Slave5Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_5);
+    strctHWMonitor.Slave15Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_15);
     return strctHWMonitor;
 }
 
@@ -322,6 +326,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),
                                                                 qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()));
 	}
+    else if ("Scheduler::ALStopCmdExec" == cmdName)
+    {
+        scmd->SetResult(mp_IDeviceProcessing->ALStopCmdExec(qSharedPointerDynamicCast<CmdALStopCmdExec>(scmd)->GetCmdType()));
+    }
 	else if  ("Scheduler::ALGetRecentPressure" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALGetRecentPressure());

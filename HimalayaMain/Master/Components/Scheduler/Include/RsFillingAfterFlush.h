@@ -117,6 +117,14 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief Signal for releasing pressure
+     *
+     */
+    /****************************************************************************/
+    void ReleasePressure();
+
+    /****************************************************************************/
+    /*!
      *  \brief Signal for tasks done
      *
      */
@@ -133,7 +141,8 @@ private:
         RSFILLINGAFTERFLUSH_HEATINGLEVELSENSOR,
         RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP,
         RSFILLINGAFTERFLUSH_FILLING,
-        RSFILLINGAFTERFLUSH_MOVETOSEALING
+        RSFILLINGAFTERFLUSH_MOVETOSEALING,
+        RSFILLINGAFTERFLUSH_RELEASEPRESSURE
     } StateList_t;
 
 
@@ -165,6 +174,7 @@ private:
     QSharedPointer<QState>          mp_CheckLevelSensorTemp;        //!< check the level sensor temperature
     QSharedPointer<QState>          mp_Filling;                     //!< filling again state
     QSharedPointer<QState>          mp_MoveToSealing;               //!< move to Sealing state
+    QSharedPointer<QState>          mp_ReleasePressure;             //!< Release Pressure state
     qint64                          m_StartTime;                    //!< The begin time
     quint8                          m_MoveToSealingSeq;             //!< Sequence of moving to seaing position
 };

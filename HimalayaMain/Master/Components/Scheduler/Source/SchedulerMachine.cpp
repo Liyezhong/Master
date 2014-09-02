@@ -95,7 +95,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RcFilling = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RsDrainAtOnce = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_RcBottleCheckI.data()));
+    mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsCheckBlockageState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsPauseState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -313,7 +313,7 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 }
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
-    Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
+    Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_TISSUE_PROTECT_REPORT, 0, true);
     emit sigEnterIdleState();
 }
 
@@ -1112,8 +1112,8 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
         }
         else if (1 == retValue)
         {
-            m_RcFilling = CHECK_FILLINGTEMP;
-            this->OnTasksDone(false);
+            m_RcFilling = HEATING_LEVELSENSOR;
+            OnTasksDone(false);
         }
         else if (2 == retValue)
         {
@@ -1126,13 +1126,35 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                OnTasksDone(false);
                 m_RcFilling = HEATING_LEVELSENSOR;
+                OnTasksDone(false);
             }
             else
             {
-                OnTasksDone(true);
+                mp_SchedulerThreadController->MoveRV(1);
+                m_RcFilling = CHECK_SEALING_POS;
+            }
+        }
+    case CHECK_SEALING_POS:
+        if (true == mp_SchedulerThreadController->IsRVRightPosition(1))
+        {
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            m_RcFilling = RELEASE_PRESSURE;
+        }
+        break;
+    case RELEASE_PRESSURE:
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
                 m_RcFilling = HEATING_LEVELSENSOR;
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING);
+                OnTasksDone(true);
+            }
+            else
+            {
+                m_RcFilling = HEATING_LEVELSENSOR;
+                OnTasksDone(false);
             }
         }
     default:

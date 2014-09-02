@@ -158,9 +158,17 @@
        <event id="500060020"    name="EVENT_ASB5_Voltage_Value_Unknown"/>
        <event id="500060100"    name="EVENT_PowerFailure"/>
   </group>
+ <group name="Internal">
+       <event id="500070001"    name="EVENT_TISSUE_PROTECT_REPORT"/>
+  </group>
 </eventlist>
 
 <correspondinglist>
+    <event eventid="500070001">
+        <error errorid="500070001">
+            <scenario type="all"/>
+        </error>
+    </event>
     <event eventid="500010001">
         <error errorid="513010000">
             <scenario type="single" id="200"/>

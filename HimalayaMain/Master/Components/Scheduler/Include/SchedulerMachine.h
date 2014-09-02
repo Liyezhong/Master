@@ -144,7 +144,9 @@ private:
     {
         HEATING_LEVELSENSOR,
         CHECK_FILLINGTEMP,
-        RC_FILLING
+        RC_FILLING,
+        CHECK_SEALING_POS,
+        RELEASE_PRESSURE
     }RC_FILLING_t;
     RC_FILLING_t m_RcFilling;                                                        ///< RC_Filling sub state
 

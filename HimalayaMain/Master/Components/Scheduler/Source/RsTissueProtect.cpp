@@ -23,7 +23,8 @@
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
-#include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 
@@ -37,18 +38,26 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
     mp_Init = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_StopFilling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_StopDraining = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_LevelSensorHeating = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_Wait8S = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Init.data());
 
     mp_Init->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
+    mp_Init->addTransition(this, SIGNAL(StopFilling()), mp_StopFilling.data());
+    mp_Init->addTransition(this, SIGNAL(StopDraining()), mp_StopDraining.data());
     mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
+    mp_MoveToTube->addTransition(this,SIGNAL(Filling()), mp_Filling.data());
     mp_LevelSensorHeating->addTransition(this, SIGNAL(Filling()), mp_Filling.data());
     mp_Filling->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
+    mp_Filling->addTransition(this, SIGNAL(Wait8Seconds()), mp_Wait8S.data());
+    mp_Wait8S->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
     mp_MoveToSealing->addTransition(this,SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
     mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
@@ -63,10 +72,14 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
     mp_StateMachine->start();
+    m_IsLevelSensorRelated = false;
     m_MoveToTubeSeq = 0;
     m_FillSeq = 0;
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
+    m_StopFillingSeq = 0;
+    m_StopDrainingSeq = 0;
+    m_StartWaitTime = 0;
     }
 
 CRsTissueProtect::~CRsTissueProtect()
@@ -83,7 +96,15 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
     {
         currentState = INIT;
     }
-    else if(statesList.contains(mp_MoveToTube.data()))
+    else if (statesList.contains(mp_StopFilling.data()))
+    {
+        currentState = STOP_FILLING;
+    }
+    else if (statesList.contains(mp_StopDraining.data()))
+    {
+        currentState = STOP_DRAINING;
+    }
+    else if (statesList.contains(mp_MoveToTube.data()))
     {
            currentState = MOVE_TO_TUBE;
     }
@@ -94,6 +115,10 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
     else if (statesList.contains(mp_Filling.data()))
     {
         currentState = FILLING;
+    }
+    else if (statesList.contains(mp_Wait8S.data()))
+    {
+        currentState = WAIT_8S;
     }
     else if (statesList.contains(mp_MoveToSealing.data()))
     {
@@ -122,42 +147,63 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
+            // Stop level sensor heating at first
+            if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
+            {
+                TasksDone(false);
+            }
+
             quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
-            QVector<RecvCommand_t>& RecvCommandList = mp_SchedulerController->GetRecvCommandList();
-            // Check if Filling command has completed or not
+            // For filling
             if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
             {
-                bool  cmdFound = false;
-                for (int i=0; i< RecvCommandList.size(); ++i)
-                {
-                    if ("Scheduler::ALFilling" == RecvCommandList[i].cmdName)
-                    {
-                        QVector<RecvCommand_t> emptyVector;
-                        RecvCommandList.swap(emptyVector); // empty the list
-                        cmdFound = true;
-                        break;
-                    }
-                }
-                if (false == cmdFound)
-                {
-                    break; //just wait
-                }
-                else
-                {
-                    // continue to stop Level Sensor
-                }
+                emit StopFilling();
             }
-            if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
+            else if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="6") // For Draining
             {
-                emit MoveToTube();
+                emit StopDraining();
             }
             else
             {
-                TasksDone(false);
-                break;
+                emit MoveToTube();
             }
+
         }
          break;
+    case STOP_FILLING:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Stop_Filling state");
+        if (0 == m_StopFillingSeq)
+        {
+            CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
+            ALStopCmd->SetCmdType(0);
+            mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+        }
+        else
+        {
+            if ("Scheduler::ALStopCmdExec" == cmdName)
+            {
+                m_StopFillingSeq = 0;
+                emit MoveToTube();
+            }
+        }
+        break;
+    case STOP_DRAINING:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Stop_Draining state");
+        if (0 == m_StopDrainingSeq)
+        {
+            CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
+            ALStopCmd->SetCmdType(1);
+            mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+        }
+        else
+        {
+            if ("Scheduler::ALStopCmdExec" == cmdName)
+            {
+                m_StopDrainingSeq = 0;
+                emit MoveToTube();
+            }
+        }
+        break;
     case MOVE_TO_TUBE:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
@@ -185,7 +231,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 m_MoveToTubeSeq = 0;
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Tube state, move to tube success");
-                emit LevelSensorHeating();
+                if (false == m_IsLevelSensorRelated)
+                {
+                    emit LevelSensorHeating();
+                }
+                else
+                {
+                    emit Filling();
+                }
             }
             else
             {
@@ -244,21 +297,49 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if( "Scheduler::ALFilling" == cmdName)
             {
-                // Both in success and failire, we always move it to sealing position
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
+                m_FillSeq = 0;
+                // Both in success and failire, we always move it to sealing position                    
+                if (true == m_IsLevelSensorRelated)
                 {
-                    mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
+                    if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALDraining(500, mp_SchedulerController));
+                    m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
+                    emit Wait8Seconds();
                 }
                 else
                 {
-                    mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
+                    }
+                    else
+                    {
+                        mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
+                    }
+                        emit MoveToSealing();
+                    }
                 }
-                mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
-                m_FillSeq = 0;
-                emit MoveToSealing();
-            }
         }
 		break;
+    case WAIT_8S:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in wait 8 seconds state");
+        if ((QDateTime::currentMSecsSinceEpoch() - m_StartWaitTime) >= 8*1000)
+        {
+            m_StartWaitTime = 0;
+            emit MoveToSealing();
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
     case MOVE_TO_SEALING:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
@@ -319,18 +400,21 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 	}
 }
 
-CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType() const
+CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
-    bool IsLevelSensorRelated = false;
     bool IsRTRVOVenError = false;
     //Firstly, check if the event id is related with Level Sensor or not
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == EventId
             || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == EventId
             || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == EventId)
     {
-        IsLevelSensorRelated = true;
+        m_IsLevelSensorRelated = true;
+    }
+    else
+    {
+        m_IsLevelSensorRelated = false;
     }
 
     //Secondly, check if the event id is relatd with Retort, heating tube, RV and Oven failed error
@@ -374,19 +458,19 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType() const
     }
 
     ReagentType_t ret = UNKNOWN;
-    if (false == IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
+    if (false == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
     {
         ret = Fixation;
     }
-    if (false == IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
+    if (false == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
     {
         ret = Concentration_Dehydration;
     }
-    if (false == IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
+    if (false == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
     {
         ret = Clearing;
     }
-    if (false == IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
+    if (false == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
     {
         if (false == IsRTRVOVenError)
         {
@@ -398,19 +482,19 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType() const
         }
     }
 
-    if (true == IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
+    if (true == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
     {
         ret = Fixation_Overflow;
     }
-    if (true == IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
+    if (true == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
     {
         ret = Concentration_Dehydration_Overflow;
     }
-    if (true == IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
+    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
     {
         ret = Clearing_Overflow;
     }
-    if (true == IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
+    if (true == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
     {
         if (false == IsRTRVOVenError)
         {
