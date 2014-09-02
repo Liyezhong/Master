@@ -1817,29 +1817,38 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 
     //Check for Service
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
-
-    int operationHours = pUserSetting->GetOperationHours();
-    if (operationHours >= 365 * 24)
+    QString strLastOperateResetDate = pUserSetting->GetOperationLastResetDate();
+    QDateTime lastOperateResetDate = QDateTime::fromString(strLastOperateResetDate);
+    int diffDays = lastOperateResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+    if (diffDays >= 365)
     {
        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
     }
 
 
-    int activeCarbonHours = pUserSetting->GetActiveCarbonHours();
+    QString strLastActiveCarbonResetDate = pUserSetting->GetActiveCarbonLastResetDate();
+    QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
+    int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+
     int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
-    int warningthreshold = 0;
+    /*to do...
+     *int warningthreshold = 0;
     if (1 == usedExhaustSystem)
     {
-        warningthreshold = 10 * 30 * 24;
+        warningthreshold = 30;
     }
     else
     {
-        warningthreshold = 45 * 24;
-    }
+        warningthreshold = 45;
+    }*/
 
-    if (activeCarbonHours >= warningthreshold)
+    if ((diffDaysActiveCarbon >= 45) && (diffDaysActiveCarbon < 60))
     {
-       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE);
+       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING);
+    }
+    else if (diffDaysActiveCarbon >= 60)
+    {
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM);
     }
 
     //log

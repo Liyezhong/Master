@@ -318,15 +318,6 @@ void CDashboardWidget::OnProgramAborted()
 
     ui->programPanelWidget->EnableStartButton(false);
 
-    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    if (m_StartDateTime.isValid())
-    {
-        int days = m_StartDateTime.daysTo(endDateTime);
-        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
-        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
-        emit UpdateUserSetting(*m_pUserSetting);
-    }
-
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(CommonString::strWarning);
     QString strTemp;
@@ -356,15 +347,6 @@ void CDashboardWidget::OnProgramCompleted()
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
-
-    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    if (m_StartDateTime.isValid())
-    {
-        int days = m_StartDateTime.daysTo(endDateTime);
-        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
-        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
-        emit UpdateUserSetting(*m_pUserSetting);
-    }
 }
 
 void CDashboardWidget::OnProgramRunBegin()

@@ -464,6 +464,7 @@
 		<string id="33619978" text1="Coverslipper Device Connected" text2=""/>
 		<string id="33619975" text1="Stainer GUI process has stopped" text2=""/>
 		<string id="50331719" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
+		<string id="50331771" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
 		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
 		<string id="50331765" text1="Active carbon filter operationtime was reset." text2=""/>
 		<string id="50331764" text1="Machine operationtime was reset." text2=""/>

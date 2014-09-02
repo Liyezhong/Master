@@ -302,7 +302,7 @@ const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331717;	///< drain
 
 const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331718;	///< Please call the service engineer for maintenance!
 
-const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE	= 50331719;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
+const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING	= 50331719;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
 const quint32 STR_EXECUTE_COMMAND	= 50331720;	///< Scheduler execute command %1
 
@@ -333,6 +333,7 @@ const quint32 EVENT_WAIT_FILLING_FINISH = 50331769;   ///< when press "Pause", m
 
 const quint32 EVENT_WAIT_DRAINING_FINISH = 50331770;   ///< when press "Pause", message "Please wait for draining to be completed, then try a again!"
 
+const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM	= 50331771;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
 #endif // HIMALAYAEVENTCODES_H
 
