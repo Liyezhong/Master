@@ -409,8 +409,8 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
         mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8)
                                         , mp_ViewHistory);
 
-        mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
-                                                                                0, QApplication::UnicodeUTF8));
+        //mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
+                                                                                //0, QApplication::UnicodeUTF8));
 
         // Log Viewer
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
@@ -421,9 +421,14 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
                                     , mp_ServiceLogViewer);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8)
                                     , mp_SoftwareUpdateLogViewer);
-        mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
-                                                                           0, QApplication::UnicodeUTF8));
+        //mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
+                                                                           //0, QApplication::UnicodeUTF8));
     }
+
+    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
+                                                                            0, QApplication::UnicodeUTF8));
+    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
+                                                                       0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/
