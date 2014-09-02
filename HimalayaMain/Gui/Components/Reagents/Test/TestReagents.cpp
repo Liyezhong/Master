@@ -207,16 +207,16 @@ void CTestReagents::utTestReagentWidget() {
     ragtRmsWgt->RMSChanged(Global::RMS_OFF);
     ragtRmsWgt->RMSCleaningChanged(Global::RMS_OFF);
     ragtRmsWgt->OnUserRoleChanged();
-    ragtRmsWgt->OnProcessStateChanged();
-    ragtRmsWgt->CloseDialogs();
-    ragtRmsWgt->OnRMSOFF();
-    ragtRmsWgt->OnRMSCassettes();
-    ragtRmsWgt->OnRMSCycles();
-    ragtRmsWgt->OnRMSDays();
-    ragtRmsWgt->OnCancelPressed();
-    ragtRmsWgt->OnCleaningRMSOFF();
-    ragtRmsWgt->OnCleaningRMSCycles();
-    ragtRmsWgt->OnCleaningRMSDays();
+    //ragtRmsWgt->OnProcessStateChanged();
+    //ragtRmsWgt->CloseDialogs();
+    //ragtRmsWgt->OnRMSOFF();
+    //ragtRmsWgt->OnRMSCassettes();
+    //ragtRmsWgt->OnRMSCycles();
+    //ragtRmsWgt->OnRMSDays();
+    //ragtRmsWgt->OnCancelPressed();
+    //ragtRmsWgt->OnCleaningRMSOFF();
+    //ragtRmsWgt->OnCleaningRMSCycles();
+    //ragtRmsWgt->OnCleaningRMSDays();
     ragtRmsWgt->UpdateUserSetting();
     delete ragtRmsWgt;
 
