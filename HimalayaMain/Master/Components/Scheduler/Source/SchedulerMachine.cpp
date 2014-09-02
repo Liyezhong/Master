@@ -1212,12 +1212,12 @@ void CSchedulerStateMachine::HandleRsCheckBlockageWorkFlow(const QString& cmdNam
         if(currentPressure < 8)
         {
             m_RsCheckBlockage = BUILD_HIGHPRESSURE;
-            OnTasksDone(false);
+            OnTasksDone(true);
         }
         else
         {
             m_RsCheckBlockage = BUILD_HIGHPRESSURE;
-            OnTasksDone(true);
+            OnTasksDone(false);
         }
         break;
     default:
