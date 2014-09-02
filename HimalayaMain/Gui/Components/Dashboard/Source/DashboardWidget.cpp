@@ -373,7 +373,6 @@ void CDashboardWidget::OnProgramRunBegin()
     QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     int remainingTime = curDateTime.secsTo(m_EndDateTime);
     emit ProgramActionStarted(DataManager::PROGRAM_START, remainingTime, curDateTime, isResumeRun);
-    ui->programPanelWidget->IsResumeRun(true);
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
@@ -382,7 +381,10 @@ void CDashboardWidget::OnProgramRunBegin()
     }
     else
     {
-        ui->programPanelWidget->EnablePauseButton(false);//enable pause button
+        if (isResumeRun)
+        {
+            ui->programPanelWidget->EnablePauseButton(true);//enable pause button
+        }
 
         if (m_CurProgramStepIndex>0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
             ui->programPanelWidget->EnableStartButton(false);
@@ -390,6 +392,7 @@ void CDashboardWidget::OnProgramRunBegin()
             ui->programPanelWidget->EnableStartButton(true);//enable stop button
     }
 
+    ui->programPanelWidget->IsResumeRun(true);
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
 }
 
