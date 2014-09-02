@@ -1162,10 +1162,12 @@ void CSchedulerStateMachine::HandleRcBottleCheckIWorkFlow(const QString& cmdName
     {
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
+            mp_SchedulerThreadController->LogDebug("RC Bottle Check I failed");
             OnTasksDone(false);
         }
         else
         {
+            mp_SchedulerThreadController->LogDebug("RC Bottle Check I sucess");
             OnTasksDone(true);
         }
     }

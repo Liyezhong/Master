@@ -35,6 +35,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
     mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_RTTempCtrlOn = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_Wait3SRTCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -47,7 +48,8 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     mp_StateMachine->setInitialState(mp_Initial.data());
     mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
 
-    mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
+    mp_Initial->addTransition(this, SIGNAL(RTTemperatureControlOn()), mp_RTTempCtrlOn.data());
+    mp_RTTempCtrlOn->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
     mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()), mp_Wait3SRTCurrent.data());
     mp_Wait3SRTCurrent->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
@@ -86,6 +88,10 @@ CProgramPreTest::StateList_t CProgramPreTest::GetCurrentState(QSet<QAbstractStat
     if (statesList.contains(mp_Initial.data()))
     {
         currentState = PRETEST_INIT;
+    }
+    else if (statesList.contains(mp_RTTempCtrlOn.data()))
+    {
+        currentState = RT_TEMCTRL_ON;
     }
     else if (statesList.contains(mp_TemperatureSensorsChecking.data()))
     {
@@ -127,6 +133,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	qreal currentPressure = 0.0;
+    ReturnCode_t ret = DCL_ERR_FCT_CALL_SUCCESS;
 
     qint64 now = 0;
     ReportError_t reportError1;
@@ -148,8 +155,27 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else
         {
-            emit TemperatureSensorsChecking();
-            m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
+            emit RTTemperatureControlOn();
+        }
+        break;
+    case RT_TEMCTRL_ON:
+        ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTSide");
+        if (DCL_ERR_FCT_CALL_SUCCESS == ret)
+        {
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTBottom");
+            if(DCL_ERR_FCT_CALL_SUCCESS == ret)
+            {
+                emit TemperatureSensorsChecking();
+                m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(ret);
+            }
+        }
+        else
+        {
+            mp_SchedulerThreadController->SendOutErrMsg(ret);
         }
         break;
     case TEMPSENSORS_CHECKING:

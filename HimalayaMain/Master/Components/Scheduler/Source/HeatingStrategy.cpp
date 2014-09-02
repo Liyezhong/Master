@@ -262,6 +262,83 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
+ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& HeaterName)
+{
+    CmdSchedulerCommandBase* pHeatingCmd = NULL;
+
+    if ("RTSide" == HeaterName)
+    {
+        m_RTTop.curModuleId = "1";
+        qreal userInputTemp = 0;
+        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+        {
+            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }
+        if(userInputTemp < 0)
+        {
+            userInputTemp = 0.0;
+        }
+        pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        m_RTTop.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTTop.OTCheckPassed = false;
+        mp_SchedulerController->LogDebug(
+                    QString("start Retort(1) heating, scenario:200, tmpoffset %1, slop %2, maxtemp %3, gain %4,resettime %5, derivativetime %6")
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp)
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange)
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature)
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain)
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime)
+                    .arg(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime));
+    }
+    if ("RTBottom" == HeaterName)
+    {
+        m_RTBottom.curModuleId = "1";
+        qreal userInputTemp = 0;
+        if(mp_SchedulerController->GetCurProgramStepIndex() >= 0 )
+        {
+            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }
+        if(userInputTemp < 0)
+        {
+            userInputTemp = 0.0;
+        }
+        pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TemperatureOffset+userInputTemp);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ControllerGain);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ResetTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].DerivativeTime);
+        m_RTBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTBottom.OTCheckPassed = false;
+        mp_SchedulerController->LogDebug(
+                    QString("start Retort(0) heating, scenario:200, tmpoffset %1, slop %2, maxtemp %3, gain %4, resettime %5, derivativetime %6")
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TemperatureOffset+userInputTemp)
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].SlopTempChange)
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature)
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ControllerGain)
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ResetTime)
+                    .arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].DerivativeTime));
+    }
+
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    SchedulerCommandShPtr_t pResHeatingCmd;
+    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    pResHeatingCmd->GetResult(retCode);
+    return retCode;
+}
+
 ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
 {
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
@@ -315,12 +392,12 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TemperatureOffset+userInputTemp);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ControllerGain);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ResetTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].DerivativeTime);
         m_RTBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RTBottom.OTCheckPassed = false;
     }

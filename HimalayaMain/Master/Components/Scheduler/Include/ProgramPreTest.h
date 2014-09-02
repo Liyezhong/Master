@@ -72,6 +72,14 @@ signals:
 
     /****************************************************************************/
     /*!
+    *  \brief Signal for start the RT temperature sensors
+    *
+    */
+   /****************************************************************************/
+   void RTTemperatureControlOn();
+
+    /****************************************************************************/
+    /*!
      *  \brief Signal for checking the status of all temperature sensors
      *
      */
@@ -156,6 +164,7 @@ private:
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
     QSharedPointer<QState> mp_Initial;                              //!< Initial state
+    QSharedPointer<QState> mp_RTTempCtrlOn;                         //!< start RT temperature
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
     QSharedPointer<QState> mp_Wait3SRTCurrent;                      //!< Wait for 3 seconds to see if current error was raised
     QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Turn off Retort Side and Bottom
@@ -171,6 +180,7 @@ private:
     {
         PRETEST_UNDEF,
         PRETEST_INIT,
+        RT_TEMCTRL_ON,
         TEMPSENSORS_CHECKING,
         WAIT3S_RT_CURRENT,
         RT_TEMCTRL_OFF,

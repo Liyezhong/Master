@@ -185,6 +185,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Start the specific sensor's temperature control of Precheck
+     *  \param 	HeaterName - sensor's name
+     *  \return ReturnCode_t
+     */
+    /****************************************************************************/
+    ReturnCode_t StartTemperatureControlForPreTest(const QString& HeaterName);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name 
      *  \return ReturnCode_t
