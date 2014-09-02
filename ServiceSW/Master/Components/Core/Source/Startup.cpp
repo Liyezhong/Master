@@ -379,7 +379,7 @@ qint32 CStartup::NetworkInit()
  *  \iparam bReInit = flag of is reinit
  */
 /****************************************************************************/
-void CStartup::LoadCommonComponenetsOne(bool bReInit)
+void CStartup::LoadCommonComponenetsOne()
 {
     mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8));
     // Clear All items
@@ -656,7 +656,7 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
     qDebug()<<"CStartup::ManufacturingGuiInit";
 
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
-    LoadCommonComponenetsOne(bReInit);
+    LoadCommonComponenetsOne();
     mp_MainWindow->SetUserMode("MANUFACTURING");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
