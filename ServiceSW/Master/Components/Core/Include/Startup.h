@@ -96,7 +96,7 @@ public:
     Core::CManufacturingDiagnosticsHandler *mp_ManaufacturingDiagnosticsHandler;    //!< Manufacturing diagnostics handler object
 
 
-    void LoadCommonComponenetsOne();    // System Tracking and Log Viewer Tab
+    void LoadCommonComponenetsOne(bool bReInit = false);    // System Tracking and Log Viewer Tab
     void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
     void ServiceGuiInit();
     void ManufacturingGuiInit(bool bReInit = false);
