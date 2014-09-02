@@ -1815,62 +1815,50 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
+    if (Cmd.ProgramActionType() != DataManager::PROGRAM_START)
+        return;
+
     //Check for Service
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
     QString strLastOperateResetDate = pUserSetting->GetOperationLastResetDate();
-    QDateTime lastOperateResetDate = QDateTime::fromString(strLastOperateResetDate);
-    int diffDays = lastOperateResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
-    if (diffDays >= 365)
+    if (!strLastOperateResetDate.isEmpty())
     {
-       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
+        QDateTime lastOperateResetDate = QDateTime::fromString(strLastOperateResetDate);
+        int diffDays = lastOperateResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+        if (diffDays >= 365)
+        {
+           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
+        }
     }
 
 
     QString strLastActiveCarbonResetDate = pUserSetting->GetActiveCarbonLastResetDate();
-    QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
-    int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+    if (!strLastActiveCarbonResetDate.isEmpty())
+    {
+        QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
+        int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
 
-    int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
-    /*to do...
-     *int warningthreshold = 0;
-    if (1 == usedExhaustSystem)
-    {
-        warningthreshold = 30;
-    }
-    else
-    {
-        warningthreshold = 45;
-    }*/
+        int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
+        /*to do...
+         *int warningthreshold = 0;
+        if (1 == usedExhaustSystem)
+        {
+            warningthreshold = 30;
+        }
+        else
+        {
+            warningthreshold = 45;
+        }*/
 
-    if ((diffDaysActiveCarbon >= 45) && (diffDaysActiveCarbon < 60))
-    {
-       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING);
+        if ((diffDaysActiveCarbon >= 45) && (diffDaysActiveCarbon < 60))
+        {
+           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING);
+        }
+        else if (diffDaysActiveCarbon >= 60)
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM);
+        }
     }
-    else if (diffDaysActiveCarbon >= 60)
-    {
-        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM);
-    }
-
-    //log
-    quint32 cmdid = 0;
-    Q_UNUSED(cmdid);
-    if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
-    {
-        cmdid = STR_PROGRAM_COMMAND_START_PROGRAM;
-    }
-    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
-    {
-        cmdid = STR_PROGRAM_COMMAND_PAUSE_PROGRAM;
-    }
-    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_ABORT)
-    {
-        cmdid = STR_PROGRAM_COMMAND_ABORT_PROGRAM;
-    }
-    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_DRAIN)
-    {
-        cmdid = STR_PROGRAM_COMMAND_DRAIN;
-    }
-    //LOG_STR_ARG(STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND, Global::tTranslatableStringList()<<Global::TranslatableString(cmdid));
 }
 
 //response or recovery

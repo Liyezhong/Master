@@ -169,7 +169,7 @@ private:
     int m_CurProgramStepIndex;
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_ProcessRunning;                      //!< Process running state
-    bool m_IsDraining;
+    bool m_IsDrainingWhenPrgrmCompleted;
     bool m_bRetortLocked;
     QString m_strRetortNotLock;
     QString m_strNotStartRMSOFF;
