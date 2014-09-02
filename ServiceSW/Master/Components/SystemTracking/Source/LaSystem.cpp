@@ -63,15 +63,15 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
                   this,
                   SLOT(ModifyPump()) );
 
-    (void)connect(mp_Ui->modifyValve1,
+    (void)connect(mp_Ui->modifyValve,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(ModifyValve1()) );
+                  SLOT(ModifyValve()) );
 
-    (void)connect(mp_Ui->modifyValve2,
-                  SIGNAL(clicked()),
-                  this,
-                  SLOT(ModifyValve2()) );
+    //(void)connect(mp_Ui->modifyValve2,
+                  //SIGNAL(clicked()),
+                  //this,
+                  //SLOT(ModifyValve2()) );
 
     (void)connect(mp_Ui->modifyHeatingBelt1,
                   SIGNAL(clicked()),
@@ -140,8 +140,13 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     }
 
     (void)pModule->UpdateSubModule(&SubModule);
-
     m_SubModuleNames<<SubModule.GetSubModuleName();
+
+    if (SubModule.GetSubModuleName() == "Valve 1") {
+        SubModule.SetSubModuleName("Valve 2");
+        (void)pModule->UpdateSubModule(&SubModule);
+        m_SubModuleNames<<SubModule.GetSubModuleName();
+    }
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -154,7 +159,7 @@ void CLaSystem::ModifyPump(void)
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_PUMP);
 }
 
-void CLaSystem::ModifyValve1(void)
+void CLaSystem::ModifyValve(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_VALVE1_MODULE);
     qDebug() << "CLaSystem::ModifyValve1 !";

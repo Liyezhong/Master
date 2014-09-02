@@ -58,6 +58,8 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                                                     "Finalize Configuration", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->setModal(true);
 
+    mp_Ui->modifyASB3->hide();
+
     (void)connect(mp_Ui->modifyEBox,
                   SIGNAL(clicked()),
                   this,

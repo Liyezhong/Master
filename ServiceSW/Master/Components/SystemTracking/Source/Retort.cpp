@@ -49,6 +49,7 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
     mp_Ui->setupUi(this);
 
     mp_Ui->finalizeConfigBtn->setEnabled(false);
+    mp_Ui->modifyHeater->hide();
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
     mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CRetort",
@@ -112,14 +113,14 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
     ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
     if (p_SubModuleHeater) {
         (void)p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
-        (void)p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "DATE");
         (void)p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
     }
 
     ServiceDataManager::CSubModule* p_SubModuleLSensor = Module.GetSubModuleInfo(SUBMODULE_LEVELSENSOR);
     if (p_SubModuleLSensor) {
         (void)p_SubModuleLSensor->UpdateParameterInfo("OperationCycles", "0");
-        (void)p_SubModuleLSensor->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)p_SubModuleLSensor->UpdateParameterInfo("EndTestDate", "DATE");
         (void)p_SubModuleLSensor->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
     }
 

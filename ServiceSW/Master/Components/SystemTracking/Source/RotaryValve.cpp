@@ -48,6 +48,9 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
     mp_Ui->setupUi(this);
 
     mp_Ui->finalizeConfigBtn->setEnabled(false);
+    mp_Ui->groupBox->hide();
+    mp_Ui->modifyHeater->hide();
+    mp_Ui->modifyMotor->hide();
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
     mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CRotaryValve",
@@ -102,20 +105,32 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
         *mp_ModuleList = *ModuleList;
     }
 
-    m_SubModuleNames<<SUBMODULE_HEATER<<SUBMODULE_MOTOR;
+    m_SubModuleNames<<SUBMODULE_HEATER<<SUBMODULE_MOTOR<<"ASB3";
 
     ServiceDataManager::CSubModule* p_SubModuleHeater = Module.GetSubModuleInfo(SUBMODULE_HEATER);
     if (p_SubModuleHeater) {
         (void)p_SubModuleHeater->UpdateParameterInfo("OperationTime", "0");
-        (void)p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)p_SubModuleHeater->UpdateParameterInfo("EndTestDate", "DATE");
         (void)p_SubModuleHeater->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
     }
 
     ServiceDataManager::CSubModule* p_SubModuleMotor = Module.GetSubModuleInfo(SUBMODULE_MOTOR);
     if (p_SubModuleMotor) {
         (void)p_SubModuleMotor->UpdateParameterInfo("OperationTime", "0");
-        (void)p_SubModuleMotor->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)p_SubModuleMotor->UpdateParameterInfo("EndTestDate", "DATE");
         (void)p_SubModuleMotor->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+    }
+
+    ServiceDataManager::CModule* p_MainControl = mp_ModuleList->GetModule("Main Control");
+    if (p_MainControl) {
+        ServiceDataManager::CSubModule* p_ASB3 = p_MainControl->GetSubModuleInfo("ASB3");
+        if (p_ASB3) {
+            (void)p_ASB3->UpdateParameterInfo("OperationTime", "0");
+            (void)p_ASB3->UpdateParameterInfo("EndTestDate", "DATE");
+            (void)p_ASB3->UpdateParameterInfo("DateOfExchange", Module.GetDateOfProduction());
+
+            (void)mp_ModuleList->UpdateModule(p_MainControl);
+        }
     }
 
     (void)mp_ModuleList->UpdateModule(&Module);
@@ -354,11 +369,19 @@ void CRotaryValve::ResetSubModuleLifeCycle()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    p_TestCase->SetParameter("Module", MODULE_ROTARYVALVE);
     (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        QString SubModuleName = m_SubModuleNames.at(i);
+        if (SubModuleName == QString("ASB3")) {
+            p_TestCase->SetParameter("Module", "Main Control");
+        }
+        else {
+            p_TestCase->SetParameter("Module", MODULE_ROTARYVALVE);
+        }
+
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
+
         emit PerformManufacturingTest(Id);
     }
 }

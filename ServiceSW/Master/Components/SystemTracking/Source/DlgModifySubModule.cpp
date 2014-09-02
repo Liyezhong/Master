@@ -160,7 +160,14 @@ void CDlgModifySubModule::UpdateGUI(void)
 
     this->UpdateGUI(ParamSN->ParameterValue, Date);
 
-    this->SetDialogTitle(ModuleName);
+    if (ModuleName == "Valve 1")
+    {
+        this->SetDialogTitle(tr("Valve 1&2"));
+    }
+    else
+    {
+        this->SetDialogTitle(ModuleName);
+    }
 }
 
 void CDlgModifySubModule::UpdateGUI(const QString &SerialNumber,
@@ -245,10 +252,10 @@ void CDlgModifySubModule::OnSave(void)
     }
 
     if (mp_SubModule->GetSubModuleName() == QString("Pressure Sensor")) {
-        (void)mp_SubModule->UpdateParameterInfo("CalibrationDate", "N/A");
+        (void)mp_SubModule->UpdateParameterInfo("CalibrationDate", "DATE");
     }
     else {
-        (void)mp_SubModule->UpdateParameterInfo("EndTestDate", "N/A");
+        (void)mp_SubModule->UpdateParameterInfo("EndTestDate", "DATE");
     }
 
     emit UpdateSubModule(*mp_SubModule);

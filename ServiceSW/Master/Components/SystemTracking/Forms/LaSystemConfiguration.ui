@@ -20,35 +20,55 @@
       <string>Sub modules</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="1">
-       <widget class="QPushButton" name="modifyPump">
+      <item row="1" column="3">
+       <widget class="QPushButton" name="modifyHeatingBelt2">
         <property name="text">
-         <string>Pump</string>
+         <string>Air Heating Tube</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="modifyValve">
+        <property name="text">
+         <string>Vavle 1&amp;&amp;2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="modifyFan">
+        <property name="text">
+         <string>Exhaust Fan</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
        <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="3">
-       <widget class="QPushButton" name="modifyPressureSensor">
-        <property name="text">
-         <string>Pressure Sensor</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -73,22 +93,8 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="modifyValve1">
-        <property name="text">
-         <string>Vavle 1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <widget class="QPushButton" name="modifyCarbonFilter">
-        <property name="text">
-         <string>Carbon Filter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <spacer name="horizontalSpacer_2">
+      <item row="1" column="4">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -96,60 +102,6 @@
          <size>
           <width>40</width>
           <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="7" column="1">
-       <widget class="QPushButton" name="modifyHeatingBelt1">
-        <property name="text">
-         <string>Liquid Heating Tube</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="modifyValve2">
-        <property name="text">
-         <string>Valve 2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="7" column="3">
-       <widget class="QPushButton" name="modifyFan">
-        <property name="text">
-         <string>Exhaust Fan</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QPushButton" name="modifyHeatingBelt2">
-        <property name="text">
-         <string>Air Heating Tube</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1">
-       <spacer name="verticalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
          </size>
         </property>
        </spacer>
@@ -167,8 +119,21 @@
         </property>
        </spacer>
       </item>
-      <item row="6" column="1">
-       <spacer name="verticalSpacer_4">
+      <item row="1" column="0">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="8" column="1">
+       <spacer name="verticalSpacer_5">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -179,6 +144,34 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="modifyPressureSensor">
+        <property name="text">
+         <string>Pressure Sensor</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QPushButton" name="modifyCarbonFilter">
+        <property name="text">
+         <string>Carbon Filter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="modifyPump">
+        <property name="text">
+         <string>Pump</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" colspan="3">
+       <widget class="QPushButton" name="modifyHeatingBelt1">
+        <property name="text">
+         <string>Liquid Heating Tube</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
