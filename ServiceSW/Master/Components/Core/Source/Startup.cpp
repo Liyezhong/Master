@@ -382,47 +382,45 @@ qint32 CStartup::NetworkInit()
 void CStartup::LoadCommonComponenetsOne(bool bReInit)
 {
     mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8));
-    if (!bReInit) {
-        // Clear All items
-        //mp_MainWindow->Clear();
-        //mp_SystemTrackingGroup->Clear();
-        //mp_AddModifyConfigGroup->Clear();
-        //mp_LogViewerGroup->Clear();
+    // Clear All items
+    //mp_MainWindow->Clear();
+    mp_SystemTrackingGroup->Clear();
+    mp_AddModifyConfigGroup->Clear();
+    mp_LogViewerGroup->Clear();
 
-        mp_MainWindow->setFixedSize(800, 600);
+    mp_MainWindow->setFixedSize(800, 600);
 
-        // System Tracking
-        mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Current Config", 0, QApplication::UnicodeUTF8)
+    // System Tracking
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Current Config", 0, QApplication::UnicodeUTF8)
                                         , mp_CurrentConfiguration);
 
-        //mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
-        mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControlConfig);
-        mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT, mp_RetortConfig);
-        mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN, mp_OvenConfig);
-        mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV, mp_RotaryValveConfig);
-        mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemConfig);
+    //mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControlConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT, mp_RetortConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN, mp_OvenConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV, mp_RotaryValveConfig);
+    mp_AddModifyConfigGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemConfig);
 
-        mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Add/Modify Config", 0, QApplication::UnicodeUTF8)
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "Add/Modify Config", 0, QApplication::UnicodeUTF8)
                                         , mp_AddModifyConfigGroup);
 
-        mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8)
+    mp_SystemTrackingGroup->AddPanel(QApplication::translate("Core::CStartup", "View History", 0, QApplication::UnicodeUTF8)
                                         , mp_ViewHistory);
 
-        mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
+    mp_MainWindow->AddMenuGroup(mp_SystemTrackingGroup, QApplication::translate("Core::CStartup", "System Tracking",
                                                                                 0, QApplication::UnicodeUTF8));
 
-        // Log Viewer
-        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
+    // Log Viewer
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_SystemLogViewer);
-        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8)
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8)
                                     , mp_RecoveryAction);
-        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8)
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_ServiceLogViewer);
-        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8)
+    mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8)
                                     , mp_SoftwareUpdateLogViewer);
-        mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
+    mp_MainWindow->AddMenuGroup(mp_LogViewerGroup, QApplication::translate("Core::CStartup", "Log Viewer",
                                                                            0, QApplication::UnicodeUTF8));
-    }
 }
 
 /****************************************************************************/
