@@ -122,7 +122,7 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of signal OnSelectEndDateTime
-         *  \param
+         *  \param  endDateTime = end date time for selected program
          */
         /****************************************************************************/
         void OnSelectEndDateTime(const QDateTime & endDateTime);

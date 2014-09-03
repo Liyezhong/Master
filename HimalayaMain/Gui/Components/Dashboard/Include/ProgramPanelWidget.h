@@ -215,7 +215,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal CurrentProgramStepInforUpdated
-     *  \param = the current program updating information passed by this command
+     *  \param  Command = the current program updating information passed by this command
      */
     /****************************************************************************/
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);

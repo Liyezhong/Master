@@ -42,7 +42,22 @@ namespace Dashboard {
          */
         /****************************************************************************/
         int CassetteNumber();
+        /****************************************************************************/
+        /*!
+         *  \brief  whether show total cassette number label
+         *  and the label of "add more cassette number" or not.
+         *  \param on = show  or  not
+         *
+         */
+        /****************************************************************************/
         void ShowLabel(bool on = true);
+        /****************************************************************************/
+        /*!
+         *  \brief set current cassette number to show
+         *  \param count = the current cassette number
+         *
+         */
+        /****************************************************************************/
         void SetCurrentCassette(int count);
     private:
         Ui::CCassetteNumberInputWidget *ui;       ///<  Definition/Declaration of variable ui

@@ -298,14 +298,14 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  refresh the program selection
-     *  \param whether reset the selected program or not
+     *  \param reset = whether reset the selected program or not
      */
     /****************************************************************************/
     void ResetFocus(bool reset);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal AddItemsToFavoritePanel
-     *  \Param  bOnlyAddCleaningProgram = whether only show cleaning program or not
+     *  \param  bOnlyAddCleaningProgram = whether only show cleaning program or not
      */
     /****************************************************************************/
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);

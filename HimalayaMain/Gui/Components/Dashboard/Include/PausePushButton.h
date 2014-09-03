@@ -43,7 +43,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function setText
      *
-     *  \param text =  QString type parameter
+     *  \param txt =  QString type parameter
      *
      *  \return from setText
      */

@@ -25,7 +25,11 @@
 #include <QLabel>
 
 namespace Dashboard {
-
+/****************************************************************************/
+/**
+ * \brief This is a customized Label for glow program name.
+ */
+/****************************************************************************/
 class CProgramLabel : public QLabel
 {
     Q_OBJECT
@@ -50,11 +54,13 @@ public:
     /*!
      *  \brief  Definition/Declaration of function setText
      *
-     *  \param text =  QString type parameter
+     *  \param text =  text to show in this label
+     *  \param highlight =  highlight or not
      *
      */
     /****************************************************************************/
     void setText(const QString &text, bool highlight = false);
+
 public slots:
     /****************************************************************************/
     /*!
@@ -76,7 +82,7 @@ protected:
     /****************************************************************************/
     void paintEvent(QPaintEvent * event);
     QString content;       ///<  Definition/Declaration of variable m_Text
-    bool textHighlight;
+    bool textHighlight;    ///<  whether the text shall be highlighted or not
 };
 
 } // end namespace Dashboard

@@ -329,28 +329,28 @@ void CModifyReagentRMSDlg::OnCancel()
 void CModifyReagentRMSDlg::OnOk()
 {
     // Clone the DataManager ReagentList
-     m_ReagentCloneList = *(mp_DataConnector->ReagentList);
+    m_ReagentCloneList = *(mp_DataConnector->ReagentList);
 
-     if (mp_Ui->buttonReagentName->text() == "--") {//as "--" is initialized when dialog is showing
-         mp_MessageDlg->SetText(m_strEnterValidName);
-         mp_MessageDlg->SetButtonText(1, m_strOK);
-         (void) mp_MessageDlg->exec();
-         return;
-     }
+    if (mp_Ui->buttonReagentName->text() == "--") {//as "--" is initialized when dialog is showing
+        mp_MessageDlg->SetText(m_strEnterValidName);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
+        (void) mp_MessageDlg->exec();
+        return;
+    }
 
-     if (mp_Ui->buttonReagentName->text().contains("LEICA",Qt::CaseInsensitive)) {
+    if (mp_Ui->buttonReagentName->text().contains("LEICA",Qt::CaseInsensitive)) {
         mp_MessageDlg->SetText(m_strReagentNameHasLaicaString);
         mp_MessageDlg->SetButtonText(1, m_strOK);
         (void) mp_MessageDlg->exec();
         return;
-     }
+    }
 
-     if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
+    if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
         mp_MessageDlg->SetText(m_strEnterValidData);
         mp_MessageDlg->SetButtonText(1, m_strOK);
         (void) mp_MessageDlg->exec();
         return;
-     }
+    }
 
     // Check if Edit button was clicked in ReagentWidget
     if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
@@ -364,11 +364,11 @@ void CModifyReagentRMSDlg::OnOk()
                 m_Reagent.SetMaxCycles(mp_Ui->buttonValue->text().toInt());
                 break;
             case Global::RMS_DAYS:
-			    m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
-				break;
+                m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
+                break;
             default:
                 break;
-		}
+        }
         emit UpdateReagent(m_Reagent);
     }
     // Else New button is clicked in ReagentWidget
@@ -414,8 +414,8 @@ void CModifyReagentRMSDlg::OnOk()
                 break;
         }
         emit AddReagent(m_Reagent);
-      }
-      accept();
+    }
+    accept();
 }
 
 /****************************************************************************/
