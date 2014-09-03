@@ -2977,7 +2977,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
             return false;
         }
         temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
-        if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2))
+        if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp3))
         {
             return false;
         }
@@ -2990,7 +2990,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
             return false;
         temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom2;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2))
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp3))
             return false;
         break;
     default:
