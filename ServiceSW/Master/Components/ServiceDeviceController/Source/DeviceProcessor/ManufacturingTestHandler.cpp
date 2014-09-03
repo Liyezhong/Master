@@ -662,7 +662,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     qreal deptLow = p_TestCase->GetParameter("DepartureLow").toDouble();
     qreal deptHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal minTgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
-    //qreal maxTgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
+    qreal maxTgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
 
     qreal sideTgtTemp = p_TestCase->GetParameter("SideTargetTemp").toDouble();
     qreal btmTgtTemp  = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
@@ -742,19 +742,31 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
 
         curSideTemp   = mp_TempRetortSide->GetTemperature(0);
         curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
-        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
-        if (curSideTemp == -1 || curBottomTemp1 == -1) {
-            mp_Utils->Pause(1000);
-            -- waitSec;
-            continue;
-        }
+        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);       
 
-        if (curSideTemp >= minTgtTemp && curBottomTemp1 >= minTgtTemp) {
+        if (curSideTemp >= minTgtTemp &&
+                curBottomTemp1 >= minTgtTemp &&
+                curBottomTemp2 >= minTgtTemp) {
             if (keepSec > 60) {
                 progStat = 1;
                 break;
             }
             ++ keepSec;
+            if (curSideTemp>maxTgtTemp || curBottomTemp1>maxTgtTemp || curBottomTemp2>maxTgtTemp) {
+                progStat = -1;
+
+                sideTemp = QString("%1").arg(curSideTemp);
+                btmTemp1  = QString("%1").arg(curBottomTemp1);
+                btmTemp2  = QString("%1").arg(curBottomTemp2);
+                usedTime = QTime().addSecs(sumSec - waitSec).toString("hh:mm:ss");
+
+                (void)testStat.insert("UsedTime", usedTime);
+                (void)testStat.insert("CurrentTempSide", sideTemp);
+                (void)testStat.insert("CurrentTempBottom1", btmTemp1);
+                (void)testStat.insert("CurrentTempBottom2", btmTemp2);
+
+                break;
+            }
         }
         else {
             keepSec = 0;
@@ -830,7 +842,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     Service::ModuleTestStatus testStat;
     (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
-    (void)testStat.insert("Duration", durTime.toString());
+    (void)testStat.insert("Duration", durTime.addSecs(5).toString());
 
     int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
     int waitSeconds = 0;
