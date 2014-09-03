@@ -42,7 +42,8 @@ CSelect110v220vDialog::CSelect110v220vDialog(int DefaultVoltage, QWidget *p_Pare
 
     mp_Ui->radioButton110->setChecked(m_SelectedVoltage == 110);
     mp_Ui->radioButton220->setChecked(m_SelectedVoltage == 220);
-    this->SetDialogTitle("110V/220V switch test");
+    this->SetDialogTitle(QApplication::translate("DiagnosticsManufacturing::CSelect110v220vDialog",
+                                                 "110V/220V switch test", 0, QApplication::UnicodeUTF8));
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
     CONNECTSIGNALSLOTGUI(mp_Ui->okButton, clicked(), this, close());
 }

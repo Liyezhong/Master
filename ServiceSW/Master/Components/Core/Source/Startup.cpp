@@ -1213,7 +1213,7 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
         TestStatus = "DisConnected";
     }
 
-    dlg->UpdateLabel("Alarm Status", Status.value("AlarmStatus"));
+    dlg->UpdateLabel(QApplication::translate("Core::CStartup", "Alarm Status:", 0, QApplication::UnicodeUTF8), Status.value("AlarmStatus"));
     int result = dlg->exec();
     qDebug()<<"StatusconfirmDlg return : "<<result;
     delete dlg;

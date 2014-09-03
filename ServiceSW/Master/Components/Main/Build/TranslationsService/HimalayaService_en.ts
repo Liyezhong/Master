@@ -1707,6 +1707,11 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="1216"/>
+        <source>Alarm Status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../Core/Source/Startup.cpp" line="1764"/>
         <location filename="../../../Core/Source/Startup.cpp" line="1781"/>
         <source>Date</source>
@@ -2473,6 +2478,11 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../DiagnosticsManufacturing/Forms/Select110v220vDialog.ui" line="90"/>
         <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../DiagnosticsManufacturing/Source/Select110v220vDialog.cpp" line="45"/>
+        <source>110V/220V switch test</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
