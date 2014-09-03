@@ -87,7 +87,8 @@ private:
      */
     /****************************************************************************/
     QString GetFormattedDateString(const QDateTime& dateTime);
-    QString m_strShutdownConfirm;       ///<  Definition/Declaration of variable m_strShutdownConfirm
+    QString m_strShutdownConfirm12Hrs;       ///<  Definition/Declaration of variable m_strShutdownConfirm12Hrs
+    QString m_strShutdownConfirm15Hrs;       ///<  Definition/Declaration of variable m_strShutdownConfirm15Hrs
 
 protected:
     void changeEvent(QEvent *p_Event);
