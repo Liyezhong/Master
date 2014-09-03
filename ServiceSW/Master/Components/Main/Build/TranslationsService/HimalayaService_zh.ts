@@ -355,35 +355,40 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="196"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="210"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="165"/>
+        <source>Valve 1&amp;2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="203"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="217"/>
         <source>Date of Production</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="197"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="211"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="225"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="204"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="218"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="232"/>
         <source>OK</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="199"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="206"/>
         <source>Date is invalid.Please select a valid date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="213"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="220"/>
         <source>Date of Production shall not be later than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="224"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="231"/>
         <source>Serial Number</source>
         <translation type="unfinished">序列号</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="227"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="234"/>
         <source>SerialNumber is Empty.Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1001,6 +1006,7 @@ Then manually Open the Retort!</source>
     <name>CMenuGroup</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
         <source>Menu</source>
         <translation type="unfinished">菜单</translation>
     </message>
@@ -1011,34 +1017,34 @@ Then manually Open the Retort!</source>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="211"/>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="219"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="500"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="508"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="504"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="512"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="490"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="494"/>
         <source>Yes</source>
         <translation type="unfinished">是</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="491"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="495"/>
         <source>No</source>
         <translation type="unfinished">否</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="495"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="499"/>
         <source>Continue</source>
         <translation type="unfinished">继续</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="496"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="500"/>
         <source>Stop</source>
         <translation type="unfinished">停止</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="501"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="505"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -1229,7 +1235,6 @@ Then manually Open the Retort!</source>
     <name>CServiceGUIConnector</name>
     <message>
         <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="57"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="329"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
@@ -1242,32 +1247,6 @@ Then manually Open the Retort!</source>
         <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="63"/>
         <source>Requested Operation in Progress ...</source>
         <translation type="unfinished">请求的操作正在进行中…</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="300"/>
-        <source>Error</source>
-        <translation type="unfinished">错误</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="304"/>
-        <source>Information</source>
-        <translation type="unfinished">信息</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="308"/>
-        <source>Warning</source>
-        <translation type="unfinished">警告</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="314"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="315"/>
-        <source>Communication Error</source>
-        <translation type="unfinished">通讯错误</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="318"/>
-        <source>OK</source>
-        <translation type="unfinished">确认</translation>
     </message>
 </context>
 <context>
@@ -1590,182 +1569,174 @@ Then manually Open the Retort!</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="345"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="360"/>
         <source>Device Communication</source>
         <translation type="unfinished">设备通讯</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="346"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="361"/>
         <source>Saving Settings ...</source>
         <translation type="unfinished">保存设置…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="347"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="362"/>
         <source>Disconnect</source>
         <translation type="unfinished">未连接</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="348"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="363"/>
         <source>Startup</source>
         <translation type="unfinished">启动</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="349"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="364"/>
         <source>Initializing device communication ...</source>
         <translation type="unfinished">初始化设备通讯…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="350"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="365"/>
         <source>Reinitializing device communication ...</source>
         <translation type="unfinished">重新初始化设备通讯…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="351"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="366"/>
         <source>Communication Error</source>
         <translation type="unfinished">通讯错误</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="352"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="367"/>
         <source>The changes could not be saved.</source>
         <translation type="unfinished">改动未保存。</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="353"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="368"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
 </context>
 <context>
-    <name>Core::CServiceGUIConnector</name>
-    <message>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="257"/>
-        <source>Requested operation is in progress...</source>
-        <translation type="unfinished">请求的操作正在进行中…</translation>
-    </message>
-</context>
-<context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1747"/>
         <location filename="../../../Core/Source/Startup.cpp" line="1764"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1781"/>
         <source>Date</source>
         <translation type="unfinished">日期</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1755"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1772"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1766"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1783"/>
         <source>Type</source>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1748"/>
         <location filename="../../../Core/Source/Startup.cpp" line="1765"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1782"/>
         <source>TimeStamp</source>
         <translation type="unfinished">时间戳</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="736"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="745"/>
         <source>Missing Xml files</source>
         <translation type="unfinished">xml文件丢失</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="739"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="748"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1749"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1756"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1767"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1766"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1773"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1784"/>
         <source>Description</source>
         <translation type="unfinished">描述</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1757"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1774"/>
         <source>Recovery Action Text</source>
         <translation type="unfinished">恢复操作文本</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="668"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="677"/>
         <source>System is initializing ...</source>
         <translation type="unfinished">系统正在初始化…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="447"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
         <source>Service Updates</source>
         <translation type="unfinished">服务更新</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="453"/>
         <source>Settings</source>
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="443"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
         <source>System</source>
         <translation type="unfinished">系统</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="441"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="449"/>
         <source>Data Management</source>
         <translation type="unfinished">数据管理</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="437"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
         <source>Firmware Update</source>
         <translation type="unfinished">固件更新</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="420"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="430"/>
         <source>Log Viewer</source>
         <translation type="unfinished">日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
         <source>Software Update Log</source>
         <translation type="unfinished">软件更新日志</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="420"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished">服务日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="414"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
         <source>Recovery Action</source>
         <translation type="unfinished">恢复</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="412"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
         <source>System Log Viewer</source>
         <translation type="unfinished">系统日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="405"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="409"/>
         <source>View History</source>
         <translation type="unfinished">查看历史记录</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="402"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="406"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished">增加/修改 配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="392"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="396"/>
         <source>Current Config</source>
         <translation type="unfinished">当前配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="388"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="384"/>
         <source>Himalaya Service Software</source>
         <translation type="unfinished">Himalaya售后服务软件</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="408"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
         <source>System Tracking</source>
         <translation type="unfinished">系统跟踪信息</translation>
     </message>
@@ -2449,30 +2420,30 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">形式</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="32"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="38"/>
         <source>Abort</source>
         <translation type="unfinished">放弃</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="45"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="51"/>
         <source>TextLabel</source>
         <translation type="unfinished">文本标签</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="89"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="269"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="95"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="275"/>
         <source>Pressure</source>
         <translation type="unfinished">压力</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="201"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="276"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="207"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="282"/>
         <source>Result</source>
         <translation type="unfinished">结果</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="215"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="262"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="221"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="268"/>
         <source>Position</source>
         <translation type="unfinished">位置 </translation>
     </message>
@@ -3411,11 +3382,6 @@ Then manually Open the Retort!</source>
         <source>Form</source>
         <translation type="unfinished">形式</translation>
     </message>
-    <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="189"/>
-        <source>Menu</source>
-        <translation type="unfinished">菜单</translation>
-    </message>
 </context>
 <context>
     <name>MainMenu::CMessageDlg</name>
@@ -3864,11 +3830,6 @@ Then manually Open the Retort!</source>
         <location filename="../../../Core/Source/CMessageString.cpp" line="181"/>
         <source>Rotary Valve</source>
         <translation type="unfinished">旋转阀</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="182"/>
-        <source>LA System</source>
-        <translation type="unfinished">液体/气体系统</translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="183"/>
@@ -4331,6 +4292,11 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">主电源继电器测试</translation>
     </message>
     <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="182"/>
+        <source>L&amp;&amp;A System</source>
+        <translation type="unfinished">液体/气体系统</translation>
+    </message>
+    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="219"/>
         <source>Do you see the retort lid &apos;%1&apos; ?</source>
         <translation type="unfinished">你是否看到反应罐（Retort）盖子显示为&apos;%1&apos;</translation>
@@ -4591,28 +4557,28 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">语言</translation>
     </message>
     <message utf8="true">
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="61"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="62"/>
         <source>中文</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="265"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="377"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="396"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="266"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="392"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="411"/>
         <source>Language files</source>
         <translation type="unfinished">语言文件</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="267"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="379"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="398"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="268"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="394"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="413"/>
         <source>Translation files are missing.</source>
         <translation type="unfinished">翻译文件丢失</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="269"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="381"/>
-        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="400"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="270"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="396"/>
+        <location filename="../../../Core/Source/ServiceGUIConnector.cpp" line="415"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
@@ -4898,7 +4864,7 @@ Then manually Open the Retort!</source>
 <context>
     <name>Settings::CLanguageModel</name>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="263"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="264"/>
         <source>Language</source>
         <translation type="unfinished">语言</translation>
     </message>
@@ -4916,7 +4882,7 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">保存</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="261"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/LanguageWidget.cpp" line="262"/>
         <source>Language</source>
         <translation type="unfinished">语言</translation>
     </message>
@@ -5109,40 +5075,40 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="215"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="220"/>
         <source>Do you want to finalize the configuration for the L&amp;A System?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="230"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="235"/>
         <source>L&amp;A System Module has been modified. Do you want to finalize the configuration?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="241"/>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="260"/>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="270"/>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="282"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="246"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="265"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="275"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="287"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="243"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="248"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="263"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="268"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="273"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="278"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="285"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="290"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5160,47 +5126,42 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="26"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="72"/>
+        <source>Valve 1&amp;&amp;2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="165"/>
         <source>Pump</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="46"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="151"/>
         <source>Pressure Sensor</source>
         <translation type="unfinished">压力传感器</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="79"/>
-        <source>Vavle 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="86"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="158"/>
         <source>Carbon Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="106"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="172"/>
         <source>Liquid Heating Tube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="113"/>
-        <source>Valve 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="133"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="79"/>
         <source>Exhaust Fan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="140"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="26"/>
         <source>Air Heating Tube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="189"/>
+        <location filename="../../../SystemTracking/Forms/LaSystemConfiguration.ui" line="182"/>
         <source>Save and Overwrite the Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5213,40 +5174,40 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="197"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="199"/>
         <source>Do you want to finalize the configuration for the Main Control?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="212"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="214"/>
         <source>Main Control Module has been modified. Do you want to finalize the configuration?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="223"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="242"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="252"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="264"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="225"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="244"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="254"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="266"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="225"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="227"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="245"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="247"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="255"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="257"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="267"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="269"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5264,32 +5225,32 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="39"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="104"/>
         <source>Touch Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="59"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="152"/>
         <source>Ventilation Fan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="79"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="131"/>
         <source>ASB3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="99"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="111"/>
         <source>ASB5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="145"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="138"/>
         <source>ASB15</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="165"/>
+        <location filename="../../../SystemTracking/Forms/MainControlConfiguration.ui" line="145"/>
         <source>E Box</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5302,45 +5263,45 @@ Then manually Open the Retort!</source>
 <context>
     <name>SystemTracking::COven</name>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="53"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="54"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="195"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="196"/>
         <source>Do you want to finalize the configuration for the Oven?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="210"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="211"/>
         <source>Oven Module has been modified. Do you want to finalize the configuration?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="221"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="240"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="250"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="262"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="222"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="241"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="251"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="263"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="223"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="224"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="243"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="244"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="253"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="254"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="265"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="266"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5363,17 +5324,17 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="72"/>
+        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="46"/>
         <source>Heater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="92"/>
+        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="66"/>
         <source>Cover Sensor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="180"/>
+        <location filename="../../../SystemTracking/Forms/OvenConfiguration.ui" line="167"/>
         <source>Save and Overwrite the Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5381,45 +5342,45 @@ Then manually Open the Retort!</source>
 <context>
     <name>SystemTracking::CRetort</name>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="54"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="55"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="228"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="229"/>
         <source>Do you want to finalize the configuration for the Retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="243"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="244"/>
         <source>Retort Module has been modified. Do you want to finalize the configuration?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="254"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="273"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="283"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="295"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="255"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="274"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="284"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="296"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="256"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="257"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="276"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="277"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="286"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="287"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="298"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="299"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5442,17 +5403,17 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="111"/>
+        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="190"/>
         <source>Lid Lock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="144"/>
+        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="183"/>
         <source>Heater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="151"/>
+        <location filename="../../../SystemTracking/Forms/RetortConfiguration.ui" line="150"/>
         <source>Level Sensor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5465,45 +5426,45 @@ Then manually Open the Retort!</source>
 <context>
     <name>SystemTracking::CRotaryValve</name>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="53"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="56"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="216"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="231"/>
         <source>Do you want to finalize the configuration for the Rotary valve?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="231"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="246"/>
         <source>Rotary valve Module has been modified. Do you want to finalize the configuration?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="242"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="261"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="271"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="283"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="257"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="276"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="286"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="298"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="244"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="259"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="264"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="279"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="274"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="289"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="286"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="301"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6530,12 +6491,12 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1832"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1835"/>
         <source>NOTICE: Unexpected action acknowledgement for SetConfiguration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3713"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3716"/>
         <source>Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1812,7 +1812,7 @@ void CStartup::RetranslateUI()
 
     if (mp_MainWindow->GetSaMUserMode() == "Service")
     {
-        ServiceGuiInit();
+        //ServiceGuiInit();
     }
     else
     {

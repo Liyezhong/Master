@@ -34,7 +34,7 @@ QString CMessageString::MSG_DIAGNOSTICS_MC;                                //!<M
 QString CMessageString::MSG_DIAGNOSTICS_RETORT;                            //!<Retort
 QString CMessageString::MSG_DIAGNOSTICS_OVEN;                              //!<Paraffin Oven
 QString CMessageString::MSG_DIAGNOSTICS_RV;                                //!<Rotary Valve
-QString CMessageString::MSG_DIAGNOSTICS_LA;                                //!<LA System
+QString CMessageString::MSG_DIAGNOSTICS_LA;                                //!<L&A System
 QString CMessageString::MSG_DIAGNOSTICS_SYSTEM;                            //!<System
 QString CMessageString::MSG_DIAGNOSTICS_CLEANING;                          //!<Cleaning
 QString CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN;                    //!<Begin cleaning...
@@ -179,7 +179,7 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_RETORT                            = (QApplication::translate("Service", "Retort", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_OVEN                              = (QApplication::translate("Service", "Paraffin Oven", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_RV                                = (QApplication::translate("Service", "Rotary Valve", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_LA                                = (QApplication::translate("Service", "LA System", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_LA                                = (QApplication::translate("Service", "L&&A System", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_SYSTEM                            = (QApplication::translate("Service", "System", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CLEANING                          = (QApplication::translate("Service", "Cleaning", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CLEANING_BEGIN                    = (QApplication::translate("Service", "Begin cleaning...", 0, QApplication::UnicodeUTF8));

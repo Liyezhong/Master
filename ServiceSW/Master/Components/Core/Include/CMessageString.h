@@ -39,7 +39,7 @@ public:
 	static QString MSG_DIAGNOSTICS_RETORT;                            //!<Retort
 	static QString MSG_DIAGNOSTICS_OVEN;                              //!<Paraffin Oven
 	static QString MSG_DIAGNOSTICS_RV;                                //!<Rotary Valve
-	static QString MSG_DIAGNOSTICS_LA;                                //!<LA System
+    static QString MSG_DIAGNOSTICS_LA;                                //!<L&A System
 	static QString MSG_DIAGNOSTICS_SYSTEM;                            //!<System
 	static QString MSG_DIAGNOSTICS_CLEANING;                          //!<Cleaning
 	static QString MSG_DIAGNOSTICS_CLEANING_BEGIN;                    //!<Begin cleaning...

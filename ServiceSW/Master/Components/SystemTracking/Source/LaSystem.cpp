@@ -142,8 +142,8 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     (void)pModule->UpdateSubModule(&SubModule);
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
-    if (SubModule.GetSubModuleName() == "Valve 1") {
-        SubModule.SetSubModuleName("Valve 2");
+    if (SubModule.GetSubModuleName() == SUBMODULE_VALVE1) {
+        SubModule.SetSubModuleName(SUBMODULE_VALVE2);
         (void)pModule->UpdateSubModule(&SubModule);
         m_SubModuleNames<<SubModule.GetSubModuleName();
     }
