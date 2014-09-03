@@ -32,7 +32,7 @@ namespace DataManager {
 class CDataContainer;
 
 // constraints
-const int PROGRAMS_MAX = 12;                //!< Max program allowed
+const int PROGRAMS_MAX = 13;                //!< Max program allowed
 const int NEXT_STEP_ID_MIN = 1;             //!< Minimum value of step Id
 const int NAME_LENGTH_MIN = 1;        //!< name length Min
 const int NAME_LENGTH_MAX = 20;        //!< name length Max
