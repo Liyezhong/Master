@@ -270,8 +270,9 @@ void SchedulerMainThreadController::OnTickTimer()
     switch(currentState & 0xFF)
     {
     case SM_INIT:
-        //refuse any main controller request if there is any
-        //qDebug()<<"DBG"<<"Scheduler main controller state: INIT";
+        //In INIT state will do self test
+        //HardwareMonitor("INIT");
+        HandleInitState(newControllerCmd, cmd);
         break;
     case SM_IDLE:
         //qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
@@ -293,6 +294,43 @@ void SchedulerMainThreadController::OnTickTimer()
         break;
     default:
         LogDebug(QString("Scheduler main controller gets unexpected state: %1").arg(currentState));
+    }
+}
+
+void SchedulerMainThreadController::OnSelfTestDone()
+{
+
+    m_SchedulerMachine->SendSchedulerInitComplete();
+    //for debug
+    LogDebug("Self test is done");
+
+    //send command to main controller to tell self test OK
+    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+}
+
+void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
+{
+    m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    QString cmdName = "";
+
+    if(cmd != NULL)
+    {
+        if(!(cmd->GetResult(retCode)))
+        {
+            retCode = DCL_ERR_UNDEFINED;
+        }
+        cmdName = cmd->GetName();
+    }
+
+    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
+    if(SM_INIT_SELFTEST == stepState)
+    {
+        m_SchedulerMachine->HandleSelfTestWorkFlow(cmdName, retCode);
     }
 }
 
@@ -2031,6 +2069,9 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case SM_INIT:
         scenario = 002;
         break;
+    case SM_INIT_SELFTEST:
+        scenario = 002;
+        break;
     case SM_IDLE:
         scenario = 004;
         break;
@@ -2192,16 +2233,6 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
         CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
-
-        // set state machine "init" to "idle" (David)
-        m_SchedulerMachine->SendSchedulerInitComplete();
-        //for debug
-        LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
-        //send command to main controller to tell init complete
-        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
-        Q_ASSERT(commandPtr);
-        Global::tRefType Ref = GetNewCommandRef();
-        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     }
     else
     {

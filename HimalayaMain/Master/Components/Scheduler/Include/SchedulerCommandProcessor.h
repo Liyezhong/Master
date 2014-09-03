@@ -193,6 +193,17 @@ public:
     /****************************************************************************/
     virtual ReportError_t GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName=0) = 0;
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get heater switch type from salve module
+     *
+     *  \param  Qstring devname - device name
+     *
+     *  \return quint8
+     */
+    /****************************************************************************/
+    virtual quint8 GetHeaterSwitchType(const QString& devName) = 0;
+
 signals:
     /****************************************************************************/
     /**
@@ -536,6 +547,17 @@ public:
      */
     /****************************************************************************/
     virtual ReportError_t GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName=0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Get heater switch type from salve module
+     *
+     *  \param  Qstring devname - device name
+     *
+     *  \return quint8
+     */
+    /****************************************************************************/
+    virtual quint8 GetHeaterSwitchType(const QString& devName) {return mp_IDeviceProcessing->GetHeaterSwitchType(devName); }
 private:
 
     /****************************************************************************/

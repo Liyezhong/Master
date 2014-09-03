@@ -666,7 +666,13 @@ signals:
          /****************************************************************************/
          void NotifyResume();
 
-private slots:
+private slots:         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HandleInitState
+          */
+         /****************************************************************************/
+         void HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot HandleIdleState
@@ -1364,6 +1370,14 @@ protected:
          */
         /****************************************************************************/
         void ReleasePressure();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnSelfTestDone
+         */
+        /****************************************************************************/
+        void OnSelfTestDone();
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot EnablePauseButton

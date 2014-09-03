@@ -30,7 +30,7 @@ class SchedulerMainThreadController;
 
 /****************************************************************************/
 /*!
- * \brief Program running State machine for Self Test 
+ * \brief Program running State machine for Pre Test
  */
 /****************************************************************************/
 class  CProgramPreTest : public QObject
@@ -49,7 +49,7 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  desctruction of CProgramSelfTest
+     *  \brief  desctruction of CProgramPreTest
      */
     /****************************************************************************/
     ~CProgramPreTest();
@@ -57,7 +57,7 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Handle the sub steps for Self Test 
+     *  \brief  Handle the sub steps for Pre Test
      *
      *  \param  cmdName - command name
      *  \param  retCode - return code

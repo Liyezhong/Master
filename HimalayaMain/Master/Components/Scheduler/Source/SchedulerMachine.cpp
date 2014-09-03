@@ -33,6 +33,7 @@
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
 #include "Scheduler/Include/RsTSensorErr3MinRetry.h"
 #include "Scheduler/Include/ProgramPreTest.h"
+#include "Scheduler/Include/ProgramSelfTest.h"
 #include "Scheduler/Include/RsFillingAfterFlush.h"
 #include "Scheduler/Include/RsTissueProtect.h"
 #include <QDebug>
@@ -59,6 +60,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_IdleState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_BusyState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
+
+    // Layer two states (for Init state)
+    mp_SelfTestState = QSharedPointer<QState>(new QState(mp_InitState.data()));
 
     // Layer two states (for Busy state)
     mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -105,6 +109,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
+    mp_InitState->setInitialState(mp_SelfTestState.data());
     mp_BusyState->setInitialState(mp_PssmInitState.data());
     mp_ErrorState->setInitialState(mp_ErrorWaitState.data());
 
@@ -122,7 +127,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
 
     // Sate machines for Run handling
-    mp_ProgramSelfTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
+    mp_ProgramPreTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
+    mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
 
     // Run Handling related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
@@ -135,7 +141,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
 
-    mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
+    mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), entered(), mp_SchedulerThreadController, Fill());
@@ -430,7 +436,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
     SchedulerStateMachine_t currentState = SM_UNDEF;
     if(mp_SchedulerMachine->configuration().contains(mp_InitState.data()))
     {
-        currentState = SM_INIT;
+        if(mp_SchedulerMachine->configuration().contains(mp_SelfTestState.data()))
+        {
+            currentState = SM_INIT_SELFTEST;
+        }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
     {
@@ -871,6 +880,11 @@ void CSchedulerStateMachine::EnterRcCheckRTLock()
 }
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    mp_ProgramPreTest->HandleWorkFlow(cmdName, retCode);
+}
+
+void CSchedulerStateMachine::HandleSelfTestWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 {
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
 }

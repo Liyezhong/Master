@@ -40,6 +40,7 @@ class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
 class CRcReport;
 class CProgramPreTest;
+class CProgramSelfTest;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 class CRsFillingAfterFlush;
@@ -64,6 +65,9 @@ private:
     QSharedPointer<QState> mp_IdleState;                                                ///<  Idle state
     QSharedPointer<QState> mp_BusyState;                                                ///<  Busy state
     QSharedPointer<QState> mp_ErrorState;                                               ///<  Error state
+
+    // Layer two states (for Init state)
+    QSharedPointer<QState> mp_SelfTestState;                                            ///<  Self Test state
 
 	// Layer two states (for Busy state)
     QSharedPointer<QState> mp_PssmInitState;                                            ///<  Busy State's sub state: Init state
@@ -109,7 +113,8 @@ private:
     QSharedPointer<QState> mp_ErrorRcCheckRTLockState;                                  ///<  Error State's sub state: for RC_Check_RTLock
 
     //State machines for Run handling
-    QSharedPointer<CProgramPreTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
+    QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for self-test
+    QSharedPointer<CProgramPreTest> mp_ProgramPreTest;                                  ///< state machine for Pre-test
 
     // State machines for Error handling
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby
@@ -819,6 +824,16 @@ public:
      */
     /****************************************************************************/
     void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode); 
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Program Self-Test
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleSelfTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!

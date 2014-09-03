@@ -7,6 +7,8 @@ namespace Scheduler{
 #define L1_BUSY                             (0x3)
 #define L1_ERROR                            (0x4)
 
+#define L2_INIT_SELFTEST                    (0x1)
+
 #define L2_PRO_INIT                           (0x1)
 #define L2_PRO_PRETEST                        (0x2)
 #define L2_PRO_FILLING_RVROD_HEATING          (0x3)
@@ -55,6 +57,9 @@ typedef enum
     SM_IDLE = (L1_IDLE),
     SM_BUSY = (L1_BUSY),
     SM_ERROR = (L1_ERROR),
+
+    //Layer two states (for init)
+    SM_INIT_SELFTEST = ((L2_INIT_SELFTEST << 8) | L1_INIT),
 
     // Layer two states (for SM_BUSY)
     PSSM_INIT = ((L2_PRO_INIT << 8) | L1_BUSY),

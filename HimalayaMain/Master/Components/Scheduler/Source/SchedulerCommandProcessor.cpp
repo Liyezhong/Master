@@ -75,6 +75,9 @@
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
+#include "Scheduler/Commands/Include/CmdALControlValve.h"
+#include "Scheduler/Commands/Include/CmdRVSetTemperatureSwitchState.h"
+#include "Scheduler/Commands/Include/CmdRTSetTemperatureSwitchState.h"
 
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
@@ -560,6 +563,22 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
     else if ("Scheduler::RmtLocAlarm" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->IDSetAlarm(qSharedPointerDynamicCast<CmdRmtLocAlarm>(scmd)->GetRmtLocOpcode()));
+    }
+    else if ("Scheduler::ALControlValve" == cmdName)
+    {
+        scmd->SetResult( mp_IDeviceProcessing->ALControlValve(qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveIndex(),
+                         qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveState()) );
+    }
+    else if ("Scheduler::RVSetTemperatureSwitchState" == cmdName)
+    {
+        scmd->SetResult( mp_IDeviceProcessing->RVSetTemperatureSwitchState(qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetHeaterVoltage(),
+                                                                           qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetAutoType()) );
+    }
+    else if ("Scheduler::RTSetTemperatureSwitchState" == cmdName)
+    {
+        scmd->SetResult( mp_IDeviceProcessing->RTSetTemperatureSwitchState( qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetType(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetHeaterVoltage(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetAutoType()) );
     }
 }
 
