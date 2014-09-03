@@ -742,8 +742,27 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
 
         curSideTemp   = mp_TempRetortSide->GetTemperature(0);
         curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
-        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);       
+        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
+        if (waitSec <= 60) {
+            if (curSideTemp>maxTgtTemp||curSideTemp<minTgtTemp ||
+                    curBottomTemp1>maxTgtTemp||curBottomTemp1<minTgtTemp ||
+                    curBottomTemp2>maxTgtTemp||curBottomTemp2<minTgtTemp)
+            {
+                progStat = -1;
 
+                sideTemp = QString("%1").arg(curSideTemp);
+                btmTemp1  = QString("%1").arg(curBottomTemp1);
+                btmTemp2  = QString("%1").arg(curBottomTemp2);
+                usedTime = QTime().addSecs(sumSec - waitSec).toString("hh:mm:ss");
+                (void)testStat.insert("UsedTime", usedTime);
+                (void)testStat.insert("CurrentTempSide", sideTemp);
+                (void)testStat.insert("CurrentTempBottom1", btmTemp1);
+                (void)testStat.insert("CurrentTempBottom2", btmTemp2);
+
+                break;
+            }
+        }
+#if 0
         if (curSideTemp >= minTgtTemp &&
                 curBottomTemp1 >= minTgtTemp &&
                 curBottomTemp2 >= minTgtTemp) {
@@ -771,7 +790,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         else {
             keepSec = 0;
         }
-
+#endif
         sideTemp = QString("%1").arg(curSideTemp);
         btmTemp1  = QString("%1").arg(curBottomTemp1);
         btmTemp2  = QString("%1").arg(curBottomTemp2);
@@ -1982,12 +2001,14 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
             }
             else {
                 KeepSeconds++;
+#if 0 // need not check
                 if (CurrentTemp > MaxTargetTemp)
                 {
                     LAStatus = -1;
                     CurrentValue = QString("%1").arg(CurrentTemp);
                     break;
                 }
+#endif
             }
         }
         else {
