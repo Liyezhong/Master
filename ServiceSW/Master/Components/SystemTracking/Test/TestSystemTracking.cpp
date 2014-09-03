@@ -248,8 +248,7 @@ void CTestSystemTracking::utTestModifyConfiguration()
 
     p_ModifyLaSystem->ModifyPump();
     p_ModifyLaSystem->ModifyFan();
-    p_ModifyLaSystem->ModifyValve1();
-    p_ModifyLaSystem->ModifyValve2();
+    p_ModifyLaSystem->ModifyValve();
     p_ModifyLaSystem->ModifyHeatingBelt1();
     p_ModifyLaSystem->ModifyHeatingBelt2();
     p_ModifyLaSystem->ModifyCarbonFilter();
