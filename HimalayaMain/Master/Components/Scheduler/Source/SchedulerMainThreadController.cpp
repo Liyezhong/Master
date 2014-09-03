@@ -2293,13 +2293,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_TempRV2 = strctHWMonitor.TempRV2;
         if (200 == Scenario)
         {
-
+#if 0
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
                 RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
+#endif
         }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
