@@ -209,7 +209,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Declaration of SendStationSetAsFull
-     *  \param  Station Id to set full
+     *  \param  StationId = Station Id to set full
      */
     /****************************************************************************/
     void SendStationSetAsFull(const QString& StationId);

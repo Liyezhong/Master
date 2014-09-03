@@ -54,6 +54,7 @@ CReagentGroupModel::CReagentGroupModel(QObject *p_Parent) : QAbstractTableModel(
  *
  *  \iparam p_ReagentGroupList = Reagent data
  *  \param Columns =  qint32 type parameter
+ *  \param bShowCleaningReagent = whether show cleaning reagent or not
  */
  /****************************************************************************/
 void CReagentGroupModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList,

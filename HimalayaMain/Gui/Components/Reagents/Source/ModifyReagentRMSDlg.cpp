@@ -169,9 +169,10 @@ void CModifyReagentRMSDlg::changeEvent(QEvent *p_Event)
 /*!
  *  \brief Sets the content of the dialog
  *
- *  \iparam p_Reagent = Reference of the reagent to be edited
- *  \param p_ReagentGroupList
- *  \param Option
+ *  \param p_Reagent = Reference of the reagent to be edited
+ *  \param p_ReagentGroupList = all reagent groups
+ *  \param Option = RMS option
+ *  \param bShowCleaningReagent = whether show CleaningReagent in the table or not
  */
 /****************************************************************************/
 void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,

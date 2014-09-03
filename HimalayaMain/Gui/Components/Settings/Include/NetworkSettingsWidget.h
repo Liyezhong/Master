@@ -34,7 +34,11 @@ namespace Ui {
     class CNetworkSettingsWidget;
 }
 
-//!< Button Type -UserName, Password, IP Address or Port
+/****************************************************************************/
+/**
+ * \brief Enum for Button Type -UserName, Password, IP Address or Port.
+ */
+/****************************************************************************/
 typedef enum {
     USERNAME_BTN_CLICKED = 1,
     PASSWORD_BTN_CLICKED,
@@ -42,7 +46,11 @@ typedef enum {
     PORT_BTN_CLICKED
 } ButtonType_t;
 
-//!< Setting type
+/****************************************************************************/
+/**
+ * \brief Enum for network setting.
+ */
+/****************************************************************************/
 typedef enum {
     IP_ADDRESS = 1, //!< ip address
     NETWORK_PORT    //!< network port
@@ -104,6 +112,12 @@ protected:
 
 public:
      void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+     /****************************************************************************/
+     /*!
+      *  \brief  show the specified message
+      *  \param msg = the message to be shown
+      */
+     /****************************************************************************/
      void showInformation(QString &msg);
 private slots:    
      /****************************************************************************/

@@ -83,6 +83,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  by global helper to get program pause status
+     *  \param  pauseFlag = flag for whether pause or not
      *  \return the status value
      */
     /****************************************************************************/
@@ -104,10 +105,12 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  by global helper to check whether something could be edit or not
+     *  \param  name = program ID
+     *  \param  CheckType = 0: No Id 1:Program Name 2: Reagent Name 3: Station 4:ReagentGroup
      *  \return the check value
      */
     /****************************************************************************/
-    static bool CheckIfCanEdit(const QString& name="", int CheckType=0);  // type 0: No Id 1:Program Name 2: Reagent Name 3: Station 4:ReagentGroup
+    static bool CheckIfCanEdit(const QString& name = "", int CheckType = 0);
 public slots:
     /****************************************************************************/
     /*!

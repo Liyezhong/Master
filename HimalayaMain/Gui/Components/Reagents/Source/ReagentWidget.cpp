@@ -31,7 +31,7 @@ namespace Reagents {
 /*!
  *  \brief Constructor
  *
- *  \iparam p_Parent = Reference to Parent object
+ *  \iparam p = pointer to the main window
  *  \iparam p_KeyBoard = Reference to Keyboard widget
  *  \iparam p_DataConnector = Reference to DataConnector
  *

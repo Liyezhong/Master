@@ -392,7 +392,7 @@ void CNetworkSettingsWidget::OnProxyPort()
 /****************************************************************************/
 /*!
  *  \brief Sets KeyBoard object instance
- *  \p_KeyBoard = pointer to keyboard instance
+ *  \param p_KeyBoard = pointer to keyboard instance
  */
 /****************************************************************************/
 void CNetworkSettingsWidget::SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard)

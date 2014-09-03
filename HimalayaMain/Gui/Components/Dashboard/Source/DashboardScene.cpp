@@ -379,7 +379,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CPipeGraphicsPathItem
      *
-     *  \param path =  QPainterPath type parameter
+     *  \param p =  QPainterPath type parameter
      *  \param brushOrigin =  QPointF type parameter
      *
      *  \return from CPipeGraphicsPathItem
