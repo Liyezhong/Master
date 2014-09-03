@@ -923,7 +923,7 @@ void CDashboardWidget::OnUserRoleChanged()
     }
 #endif
 
-    if (m_NewSelectedProgramId.at(0) == 'C')
+    if (!m_NewSelectedProgramId.isEmpty() && m_NewSelectedProgramId.at(0) == 'C')
         return;
 
     // the matrix:
