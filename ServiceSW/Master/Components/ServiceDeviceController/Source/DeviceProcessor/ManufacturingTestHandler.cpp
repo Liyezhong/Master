@@ -827,8 +827,8 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     const quint16 TargetDropRange = 6;
     const quint16 OverTemperature = 135;
 
-    const quint16 MinTemperature = 105;
-    const quint16 MaxTemperature = 130;
+    const quint16 MinTemperature = 110;
+    const quint16 MaxTemperature = 120;
     const quint16 ExchangeTemperature = 110;
 
     Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
