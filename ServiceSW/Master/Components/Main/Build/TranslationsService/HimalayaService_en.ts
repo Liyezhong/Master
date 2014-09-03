@@ -1006,7 +1006,6 @@ Then manually Open the Retort!</source>
     <name>CMenuGroup</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
         <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3390,6 +3389,11 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Forms/MenuGroup.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
+        <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
