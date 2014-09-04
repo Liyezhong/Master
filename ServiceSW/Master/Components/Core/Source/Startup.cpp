@@ -1105,7 +1105,10 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
         int result = false;
         if (LeftInputValue >= MinValue && LeftInputValue <= MaxValue &&
             MiddleInputValue >= MinValue && MiddleInputValue <= MaxValue &&
-            RightInputValue >= MinValue && RightInputValue <= MaxValue) {
+            RightInputValue >= MinValue && RightInputValue <= MaxValue &&
+                qAbs(LeftInputValue-MiddleInputValue)<=6 &&
+                qAbs(LeftInputValue-RightInputValue)<=6 &&
+                qAbs(MiddleInputValue-RightInputValue)<=6) {
             result = true;
         }
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(result);
