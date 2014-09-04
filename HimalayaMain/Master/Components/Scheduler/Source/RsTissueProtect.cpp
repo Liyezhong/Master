@@ -26,6 +26,7 @@
 #include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 
 using namespace DeviceControl;
@@ -216,6 +217,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 {
                     m_MoveToTubeSeq++;
                 }
+                else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
+                {
+                    m_MoveToTubeSeq = 2;
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerController));
+                }
                 else
                 {
                     m_MoveToTubeSeq = 0;
@@ -226,7 +232,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
             }
         }
-        else
+        else if (1 == m_MoveToTubeSeq)
         {
             RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
             if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
@@ -245,6 +251,16 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             else
             {
                 // Do nothing, just wait
+            }
+        }
+        else if (2 == m_MoveToTubeSeq)
+        {
+            RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
+            if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            {
+                this->OnMoveToTube();
+                m_MoveToTubeSeq = 0; //rollback to move to tube
+
             }
         }
         break;
@@ -342,6 +358,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             // Do nothing, just wait
         }
+        break;
     case MOVE_TO_SEALING:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
@@ -516,49 +533,36 @@ QString CRsTissueProtect::GetStationID()
     // Get reagent type
     ReagentType_t reagentType = this->GetReagentType();
 
-    qint8 pos = -1;
-    QQueue<ProgramStationInfo_t> ProgramStationList = mp_SchedulerController->GetProgramStationList();
-    for (int i=0; i<ProgramStationList.size();++i)
+    QList<QString> stationList;
+    bool ret = false;
+    switch (reagentType)
     {
-        if (Fixation == reagentType || Fixation_Overflow == reagentType)
-        {
-            if ("RG1" == ProgramStationList[i].ReagentGroupID)
-            {
-                pos = i;
-                break;
-            }
-        }
-        else if (Concentration_Dehydration == reagentType || Concentration_Dehydration_Overflow == reagentType)
-        {
-            if ("RG3" == ProgramStationList[i].ReagentGroupID)
-            {
-                pos = i;
-                break;
-            }
-        }
-        else if (Clearing == reagentType || Clearing_Overflow == reagentType)
-        {
-            if ("RG5" == ProgramStationList[i].ReagentGroupID)
-            {
-                pos = i;// For Clearing, we use the last one.
-            }
-        }
-        else if (Paraffin == reagentType || Paraffin_Overflow == reagentType)
-        {
-            if ("RG6" == ProgramStationList[i].ReagentGroupID)
-            {
-                pos = i;
-                break;
-            }
-        }
+    case Fixation:
+    case Fixation_Overflow:
+        ret = mp_SchedulerController->GetSafeReagentStationList("RG1", stationList);
+        break;
+    case Concentration_Dehydration:
+    case Concentration_Dehydration_Overflow:
+        ret = mp_SchedulerController->GetSafeReagentStationList("RG3", stationList);
+        break;
+    case Clearing:
+    case Clearing_Overflow:
+        ret = mp_SchedulerController->GetSafeReagentStationList("RG5", stationList);
+        break;
+    case Paraffin:
+    case Paraffin_Overflow:
+        ret = mp_SchedulerController->GetSafeReagentStationList("RG6", stationList);
+        break;
+    default:
+        break;
     }
 
-    if (pos == -1)
+    if (false == ret || stationList.empty())
     {
         mp_SchedulerController->LogDebug("In RS_Tissue_Protect, we can't find the safe reagent");
         return ""; // We can't find the safe reagent
     }
-    return ProgramStationList[pos].StationID;
+    return stationList.at(0);
 }
 
 void CRsTissueProtect::OnMoveToTube()

@@ -522,14 +522,7 @@ typedef struct
           */
          /****************************************************************************/
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetSafeReagentStationList
-          *
-          *  \return from IsLastStep
-          */
-         /****************************************************************************/
-         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function WhichStepHasNoSafeReagent
@@ -1301,6 +1294,14 @@ protected:
         /****************************************************************************/
         void SetCurrentStepState(SchedulerStateMachine_t stepState) { m_CurrentStepState = stepState; }
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetSafeReagentStationList
+         *
+         *  \return from IsLastStep
+         */
+        /****************************************************************************/
+        bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
     public slots:
 
         /****************************************************************************/
