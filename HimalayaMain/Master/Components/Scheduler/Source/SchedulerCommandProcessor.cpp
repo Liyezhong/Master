@@ -108,7 +108,8 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 template <class DP>
 HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 {
-    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0, 0,0,0,0,0,0,0,0,0,0,0,0};
+    HardwareMonitor_t strctHWMonitor;
+    memset(&strctHWMonitor, 0, sizeof(strctHWMonitor));
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
@@ -136,7 +137,10 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.CurrentRVTemp        = mp_IDeviceProcessing->GetSensorCurrent("RV",0);
     strctHWMonitor.Slave3Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_3);
     strctHWMonitor.Slave5Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_5);
-    strctHWMonitor.Slave15Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_15);
+    strctHWMonitor.Slave15Voltage       = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_15);
+    strctHWMonitor.Slave3Current        = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_3);
+    strctHWMonitor.Slave5Current        = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_5);
+    strctHWMonitor.Slave15Current       = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_15);
     return strctHWMonitor;
 }
 

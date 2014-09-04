@@ -2253,6 +2253,21 @@ ERROR:
         //for debug
         LogDebug(QString("Error while init, Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     }
+
+    // Get the slave module attribute list
+    if (false == this->ConstructSlaveModuleAttrList("ASB3"))
+    {
+        return;
+    }
+    if (false == this->ConstructSlaveModuleAttrList("ASB5"))
+    {
+        return;
+    }
+    if (false == this->ConstructSlaveModuleAttrList("ASB15"))
+    {
+        return;
+    }
+
     m_TickTimer.start();
 
 	// Create HeatingStrategy
@@ -2286,6 +2301,51 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if ("ERROR" != StepID && 0 != Scenario)
     {
         this->CheckTempSensorCurrentOverRange(Scenario);
+    }
+
+    // Monitor Slave module's voltage
+    if ("ERROR" != StepID && 0 != Scenario)
+    {
+        // For voltage related
+        if (strctHWMonitor.Slave3Voltage < (m_SlaveAttrList[0].Voltagerated24VDC - m_SlaveAttrList[0].VoltageTolerance24VDC)*1000)
+        {
+            LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
+            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+        if (strctHWMonitor.Slave5Voltage < (m_SlaveAttrList[1].Voltagerated24VDC - m_SlaveAttrList[1].VoltageTolerance24VDC)*1000)
+        {
+            LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
+            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+        if (strctHWMonitor.Slave15Voltage < (m_SlaveAttrList[2].Voltagerated24VDC - m_SlaveAttrList[2].VoltageTolerance24VDC)*1000)
+        {
+            LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
+            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+
+        // For current related
+        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
+        {
+            LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
+            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[1].CurrentMax5VDC)
+        {
+            LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
+            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[2].CurrentMax5VDC)
+        {
+            LogDebug(QString("slave 15 5V current is: %1").arg(strctHWMonitor.Slave15Current));
+            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+
     }
 
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
@@ -3759,6 +3819,37 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
     cmd->SetRmtLocOpcode(opcode);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+}
+
+bool SchedulerMainThreadController::ConstructSlaveModuleAttrList(QString moduleName)
+{
+    bool ok = false;
+    DataManager::FunctionKey_t funcKey;
+    funcKey.key = moduleName;
+    funcKey.name = "";
+    funcKey.sequence = "";
+    qreal maxCurrent = mp_DataManager->GetProgramSettings()->GetParameterValue("MainControl", funcKey, "CurrentMax5DC", ok);
+    if (false == ok)
+    {
+        return false;
+    }
+    qreal voltage = mp_DataManager->GetProgramSettings()->GetParameterValue("MainControl", funcKey, "VoltageRated24VDC", ok);
+    if (false == ok)
+    {
+        return false;
+    }
+    qreal voltageTolerance = mp_DataManager->GetProgramSettings()->GetParameterValue("MainControl", funcKey, "VoltageTolerance24VDC", ok);
+    if (false == ok)
+    {
+        return false;
+    }
+
+    SlaveAttr_t attrList;
+    attrList.CurrentMax5VDC = maxCurrent;
+    attrList.Voltagerated24VDC = voltage;
+    attrList.VoltageTolerance24VDC = voltageTolerance;
+    m_SlaveAttrList.push_back(attrList);
+    return true;
 }
 
 void SchedulerMainThreadController::OnSystemError()

@@ -52,6 +52,8 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     mp_Init->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_Init->addTransition(this, SIGNAL(StopFilling()), mp_StopFilling.data());
     mp_Init->addTransition(this, SIGNAL(StopDraining()), mp_StopDraining.data());
+    mp_StopFilling->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
+    mp_StopDraining->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
     mp_MoveToTube->addTransition(this,SIGNAL(Filling()), mp_Filling.data());
     mp_LevelSensorHeating->addTransition(this, SIGNAL(Filling()), mp_Filling.data());

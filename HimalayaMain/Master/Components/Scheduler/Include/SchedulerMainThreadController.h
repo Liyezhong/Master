@@ -211,6 +211,17 @@ typedef struct
     QString                     cmdName;
 } RecvCommand_t;
 
+/****************************************************************************/
+/*!
+ *  \brief struct for Slave module attributes
+ */
+/****************************************************************************/
+typedef struct
+{
+    qreal CurrentMax5VDC;
+    qreal Voltagerated24VDC;
+    qreal VoltageTolerance24VDC;
+} SlaveAttr_t;
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -282,6 +293,7 @@ typedef struct
         bool m_Is5MinPause;                                   ///< Instrument alarm when pausing exceed 5 minutes
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
+        QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -638,6 +650,17 @@ typedef struct
           */
          /****************************************************************************/
          void HandleRmtLocAlarm(quint32 cmd);
+
+         /****************************************************************************/
+         /*!
+          *  \brief Construct slave module attribute list
+          *
+          *  \param QString moduleName - name of the specific slave module
+          *
+          *  \return bool, true - success, false - failure
+          */
+         /****************************************************************************/
+         bool ConstructSlaveModuleAttrList(QString moduleName);
 signals:
          /****************************************************************************/
          /*!
