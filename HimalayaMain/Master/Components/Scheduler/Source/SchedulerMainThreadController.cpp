@@ -1743,7 +1743,7 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
         if (!pProgramStep)
             continue;
-         bool ret = GetSafeReagentStationList(GetReagentGroupID(pProgramStep->GetReagentID()), stationList);
+        bool ret = GetSafeReagentStationList(GetReagentGroupID(pProgramStep->GetReagentID()), stationList);
         if (ret && stationList.isEmpty())
         {
             return i;
