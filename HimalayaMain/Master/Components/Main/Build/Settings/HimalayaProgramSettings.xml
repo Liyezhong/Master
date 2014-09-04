@@ -423,5 +423,22 @@
                 <Parameter Key="ThresholdTimeOfStable" Value="5s"/>
             </Function>
         </Device>
+		<Device Key="MainControl">
+		    <Function Key="ASB3" name="" sequence="">
+                <Parameter Key="CurrentMax5DC" Value="200"/>
+                <Parameter Key="VoltageRated24VDC" Value="24"/>
+                <Parameter Key="VoltageTolerance24VDC" Value="2.4"/>
+            </Function>
+			<Function Key="ASB5" name="" sequence="">
+                <Parameter Key="CurrentMax5DC" Value="200"/>
+                <Parameter Key="VoltageRated24VDC" Value="24"/>
+                <Parameter Key="VoltageTolerance24VDC" Value="2.4"/>
+            </Function>
+			<Function Key="ASB15" name="" sequence="">
+                <Parameter Key="CurrentMax5DC" Value="800"/>
+                <Parameter Key="VoltageRated24VDC" Value="24"/>
+                <Parameter Key="VoltageTolerance24VDC" Value="2.4"/>
+            </Function>
+		</Device>
     </DeviceList>
 </ProgramSettings>
