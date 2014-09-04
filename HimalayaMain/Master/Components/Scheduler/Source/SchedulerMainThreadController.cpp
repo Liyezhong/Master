@@ -371,9 +371,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-            QTime leftTime(0,0,0);
-            leftTime = leftTime.addSecs(leftSeconds);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "Precheck...", m_CurProgramStepIndex, leftSeconds));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3879,6 +3877,15 @@ void SchedulerMainThreadController::OnEnterRcRestart()
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
     }
+}
+
+void SchedulerMainThreadController::OnFillingHeatingRV()
+{
+    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 }

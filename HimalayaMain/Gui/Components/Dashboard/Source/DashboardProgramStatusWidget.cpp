@@ -86,6 +86,7 @@ void CDashboardProgramStatusWidget::OnClose()
 void CDashboardProgramStatusWidget::OnAbort()
 {
     emit AbortClicked(1);
+    (void)this->close();
 }
 
 void CDashboardProgramStatusWidget::changeEvent(QEvent *p_Event)

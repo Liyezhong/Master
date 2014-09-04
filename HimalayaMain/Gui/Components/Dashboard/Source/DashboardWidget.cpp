@@ -48,7 +48,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_ProcessRunning(false),
     m_IsDrainingWhenPrgrmCompleted(false),
     m_bIsFirstStepFixation(false),
-    m_TotalCassette(0)
+    m_TotalCassette(0),
+    m_HaveSucked(false)
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -254,25 +255,32 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
-        //represent the retort as contaminated status
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
-
-        mp_MessageDlg->SetText(m_strRetortContaminated);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
-        mp_MessageDlg->EnableButton(1, true);//6.6 for test
-
-        m_IsWaitingCleaningProgram = true;
-        if (mp_MessageDlg->exec())
+        if (m_HaveSucked)
         {
-            ui->programPanelWidget->ChangeStartButtonToStartState();
-            //only show Cleaning program in the favorite panel
-            emit AddItemsToFavoritePanel(true);
-            //switch to the dashboard page
-            mp_MainWindow->SetTabWidgetIndex();
-            emit SwitchToFavoritePanel();
+            //represent the retort as contaminated status
+            ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
+
+            mp_MessageDlg->SetText(m_strRetortContaminated);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
+            mp_MessageDlg->EnableButton(1, true);//6.6 for test
+
+            m_IsWaitingCleaningProgram = true;
+            if (mp_MessageDlg->exec())
+            {
+                //only show Cleaning program in the favorite panel
+                emit AddItemsToFavoritePanel(true);
+            }
         }
+
+        ui->programPanelWidget->ChangeStartButtonToStartState();
+		if (!m_HaveSucked) {
+        	ui->programPanelWidget->EnableStartButton(true);
+		}
+        //switch to the dashboard page
+        mp_MainWindow->SetTabWidgetIndex();
+        emit SwitchToFavoritePanel();
     }
 }
 
@@ -306,10 +314,13 @@ void CDashboardWidget::OnProgramAborted()
     //aborting time countdown is hidden.
 
     //save the ReagentIdOfLastStep in case of: user restarts machine at this time
-    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
-    QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
-    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
-    emit UpdateUserSetting(*m_pUserSetting);
+    if (m_HaveSucked)
+    {
+        const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+        QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
+        m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
+        emit UpdateUserSetting(*m_pUserSetting);
+    }
 
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
@@ -351,6 +362,7 @@ void CDashboardWidget::OnProgramCompleted()
 
 void CDashboardWidget::OnProgramRunBegin()
 {
+    m_HaveSucked = false;
     bool isResumeRun = ui->programPanelWidget->IsResumeRun();
     QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     int remainingTime = curDateTime.secsTo(m_EndDateTime);
@@ -368,7 +380,7 @@ void CDashboardWidget::OnProgramRunBegin()
             ui->programPanelWidget->EnablePauseButton(true);//enable pause button
         }
 
-        if (m_CurProgramStepIndex>0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
+        if (m_CurProgramStepIndex > 0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
             ui->programPanelWidget->EnableStartButton(false);
         else
             ui->programPanelWidget->EnableStartButton(true);//enable stop button
@@ -896,7 +908,12 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
     {
         emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
         this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
-        m_IsDrainingWhenPrgrmCompleted = false;//when abort or pause, set this too?
+        m_IsDrainingWhenPrgrmCompleted = false;
+    }
+
+    if (cmd.IsSuck() && cmd.IsStart())
+    {
+        m_HaveSucked = true;
     }
 }
 

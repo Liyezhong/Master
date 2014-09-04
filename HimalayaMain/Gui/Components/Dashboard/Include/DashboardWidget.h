@@ -180,6 +180,7 @@ private:
     QString m_strAddCassete;
     bool m_bIsFirstStepFixation;
     quint32 m_TotalCassette;
+    bool m_HaveSucked;
 public slots:
     /****************************************************************************/
     /*!
