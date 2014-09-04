@@ -16,6 +16,7 @@
 	  <File Path="InstrumentHistory.xml" />
 	  <File Path="InstrumentHistoryArchive.xml" />
 	  <File Path="ServiceParameters.xml" />
+	  <File Path="ServiceHelpText.txt" />
       <Group File="Logfiles" />
     </List>
   </ServiceConfig>
