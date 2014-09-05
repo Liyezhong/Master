@@ -115,6 +115,10 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(), mp_SplashWidget, accept());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestFailed(), mp_SplashWidget, accept());
 
+    mp_StatusBarManager = MainMenu::CStatusBarManager::GetInstance();
+    CONNECTSIGNALSLOTGUI(mp_DataConnector,SetProcessStateIcon(bool &),mp_StatusBarManager,SetProcessState(bool &));
+    CONNECTSIGNALSLOTGUI(mp_DataConnector,SetRemoteCareIcon(bool &),mp_StatusBarManager,SetRemoteCareState(bool &));
+
     m_MainWindow.AddMenuGroup(mp_Dashboard, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Dashboard.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
     m_MainWindow.AddMenuGroup(mp_Programs, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Programs.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
     m_MainWindow.AddMenuGroup(mp_Reagents, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Reagents.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));

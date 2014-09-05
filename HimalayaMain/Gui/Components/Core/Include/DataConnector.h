@@ -56,6 +56,7 @@
 /********************** Net Commands ************************************************/
 #include "NetCommands/Include/CmdConfigurationFile.h"
 #include "NetCommands/Include/CmdProcessState.h"
+#include "NetCommands/Include/CmdRemoteCareState.h"
 #include "NetCommands/Include/CmdEventStrings.h"
 #include "NetCommands/Include/CmdExecutionStateChanged.h"
 #include "NetCommands/Include/CmdLanguageFile.h"
@@ -70,6 +71,8 @@
 #include <NetCommands/Include/CmdDayRunLogRequest.h>
 #include <NetCommands/Include/CmdDayRunLogRequestFile.h>
 #include <NetCommands/Include/CmdGuiInit.h>
+#include <NetCommands/Include/CmdDataUpdate.h>
+#include <NetCommands/Include/CmdSWUpdate.h>
 #include "NetCommands/Include/CmdRCSoftwareUpdate.h"
 #include "NetCommands/Include/CmdRCRequestRemoteSession.h"
 
@@ -610,6 +613,24 @@ signals:
      */
     /****************************************************************************/
     void RetortLockStatusChanged(const MsgClasses::CmdLockStatus& Command);
+	
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted Remote care is started
+     *
+     *  \iparam ProcessState = True or False
+     *
+     */
+    /****************************************************************************/
+    void SetRemoteCareIcon(bool &ProcessState);
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted Process is started.
+     *
+     *  \iparam RemoteCareState = True or False
+     */
+    /****************************************************************************/
+    void SetProcessStateIcon(bool &RemoteCareState);	
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramSelectedReply
@@ -693,6 +714,7 @@ private:
     void UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command);
     void UpdateEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdUpdateProgramEndTime &Command);
     void UpdateStationChangeReagentHandler(Global::tRefType Ref, const MsgClasses::CmdStationChangeReagent &Command);
+    void RemoteCareStateHandler(Global::tRefType ref, const NetCommands::CmdRemoteCareState &Command);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateStationResetDataHandler

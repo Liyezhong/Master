@@ -123,6 +123,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdChangeUserSettings>(&CDataConnector::SettingsUpdateHandler, this);
 
     // RemoteCare commands
+    m_NetworkObject.RegisterNetMessage<NetCommands::CmdRemoteCareState>(&CDataConnector::RemoteCareStateHandler, this);
     m_NetworkObject.RegisterNetMessage<RemoteCare::CmdRCSoftwareUpdate>(&CDataConnector::OnRCSoftwareUpdateHandler, this);
     m_NetworkObject.RegisterNetMessage<RemoteCare::CmdRCRequestRemoteSession>(&CDataConnector::OnRCRequestRemoteSessionHandler, this);
 
@@ -1044,15 +1045,26 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
 /****************************************************************************/
 void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
 {
+    if (mp_WaitDialog == NULL) {
+        //If wait dialog object is NULL return immediately
+        return;
+    }
+
     QByteArray ByteArray;
     QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
     SettingsDataStream << settings;
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-    /*mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
-    mp_WaitDialog->SetText(m_strSavingSettings);
-    mp_WaitDialog->show();*/
+//    if (!m_IsWaitDlgOpen) {
+        mp_WaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Device Communication",
+                                                              0, QApplication::UnicodeUTF8));
+        mp_WaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Saving settings ...",
+                                                       0, QApplication::UnicodeUTF8));
+        mp_WaitDialog->SetTimeout(100000);
+        mp_WaitDialog->show();
+//    }
+//    m_IsWaitDlgOpen = false;
 }
 /****************************************************************************/
 /*!
@@ -1889,6 +1901,18 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
 /****************************************************************************/
 void CDataConnector::SendRCSWUpdate()
 {
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+    }
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+                    "Now downloading update package from remote server, please waiting...",
+                                                   0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideButtons();
+    (void)mp_MessageDlg->show();
+
     RemoteCare::CmdRCSoftwareUpdate Command(COMMAND_TIME_OUT, RemoteCare::SWUpdate_StartDownload);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
@@ -1945,6 +1969,24 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
                                                         0, QApplication::UnicodeUTF8));
         (void)mp_MessageDlg->exec();
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Handles incoming Remote care state commands
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = RemoteCare State command
+ */
+/****************************************************************************/
+void CDataConnector::RemoteCareStateHandler(Global::tRefType Ref, const NetCommands::CmdRemoteCareState &Command)
+{
+    bool Result = false;
+
+    Result = Command.GetRemoteCareState();
+    emit SetRemoteCareIcon(Result);
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    return;
 }
 
 

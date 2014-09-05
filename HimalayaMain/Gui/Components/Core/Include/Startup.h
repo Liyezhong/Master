@@ -116,6 +116,7 @@ private:
     QString m_Mode;							//!< GUI mode
     static CStartup *self;       ///<  Definition/Declaration of variable self
     SplashWidget    *mp_SplashWidget;       ///<  Definition/Declaration of variable mp_SplashWidget
+    MainMenu::CStatusBarManager *mp_StatusBarManager; //!< Statusbar Manager instance
 
 };
 
