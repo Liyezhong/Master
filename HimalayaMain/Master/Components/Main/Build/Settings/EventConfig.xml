@@ -1202,7 +1202,7 @@
 			<Step ID="6" Type="MSG" StringID="103040014" RDStringID="113040014" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="513020091" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE" ButtonEnableCondition="RT_LID_OPEN_CLOSE" NextStepOnClickOK="1"/>
+			<Step ID="0" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE" NextStepOnClickOK="1"/>
 			<Step ID="1" Type="ACT" Action="RS_Pause" NextStepOnFail="2" NextStepOnSuccess="3"/>
 			<Step ID="2" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
