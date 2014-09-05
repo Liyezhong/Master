@@ -123,7 +123,7 @@
        <event id="500040005"    name="EVENT_LA_PressureSensor_OutofRange"/>
        <event id="500040011"    name="EVENT_LA_BottleCheck_PressureBuild_Failed"/>
        <event id="500040012"    name="EVENT_LA_BottleCheck_Failed_Empty"/>
-       <event id="500040013"    name="EVENT_LA_BottleCheck_Failed_Insufficient"/>
+       <event id="500040013"    name="EVENT_LA_BottleCheck_Failed_Leakage"/>
        <event id="500040014"    name="EVENT_LA_BottleCheck_Failed_Blockage"/>
        <event id="500040021"    name="EVENT_LA_Sealing_Failed_Pressure"/>
        <event id="500040051"    name="EVENT_LA_Sealing_Failed_Vacuum"/>
