@@ -2282,6 +2282,10 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     LogDebug(strctHWMonitor.toLogString());
 
+    if("ERROR" == StepID)
+    {
+        mp_HeatingStrategy->ResetTheHeatingScenario();
+    }
     // Run Heating Strategy
     if ("ERROR" != StepID && 0 != Scenario)
     {
@@ -2569,11 +2573,6 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
     m_DeviceControlCmdQueue.push_back(CmdPtr);
     m_WaitCondition.wakeAll();
     m_MutexDeviceControlCmdQueue.unlock();
-}
-
-void SchedulerMainThreadController::StepStart()
-{
-
 }
 
 bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
