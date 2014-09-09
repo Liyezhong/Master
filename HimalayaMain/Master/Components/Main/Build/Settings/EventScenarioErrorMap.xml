@@ -160,13 +160,25 @@
   </group>
  <group name="Internal">
        <event id="500070001"    name="EVENT_TISSUE_PROTECT_REPORT"/>
+       <event id="500070002"    name="EVENT_POWER_FAILURE"/>
   </group>
 </eventlist>
 
 <correspondinglist>
     <event eventid="500070001">
-        <error errorid="500070001">
+        <error errorid="520070001">
             <scenario type="all"/>
+        </error>
+    </event>
+    <event eventid="500070002">
+        <error errorid="520070002">
+            <scenario type="range" startid="001" endid="004"/>
+	    <scenario type="single" id="203"/>
+	    <scenario type="range" startid="281" endid="297"/>
+        </error>
+        <error errorid="520070003">
+            <scenario type="range" startid="211" endid="277"/>
+	    <scenario type="single" id="200"/>
         </error>
     </event>
     <event eventid="500010001">

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
 	<Source Name="Himalaya">
+		<Event Code="" ErrorID="520070002" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RC_Restart"/>
+		</Event>
+		<Event Code="" ErrorID="520070003" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="100000000" ButtonType="OK" NextStepOnTimeOut="1" TimeOut="5m" NextStepOnClickOK="2" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="ACT" Action="RC_ReHeating" NextStepOnFail="3" NextStepOnSuccess="3"/>
+			<Step ID="2" Type="ACT" Action="RC_ReHeating" NextStepOnFail="4" NextStepOnSuccess="4" />
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
+			<Step ID="4" Type="ACT" Action="RC_Run_CleaningProgram"/>
+		</Event>
 		<Event Code="" ErrorID="513010300" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
@@ -1246,7 +1256,7 @@
 		<Event Code="" ErrorID="511040221" ErrorType="INFO" AuthorityType="Auth_SERV" AlarmType="" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="101040221" RDStringID="111040221" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="FALSE"/>
 		</Event>
-		<Event Code="" ErrorID="500070001" ErrorType="INFO" AuthorityType="Auth_SERV" AlarmType="" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="520070001" ErrorType="INFO" AuthorityType="Auth_SERV" AlarmType="" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="100070001" RDStringID="110070001" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="FALSE"/>
 		</Event>
 		<Event Code="" ErrorID="33619990" ErrorType="Error" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS">
