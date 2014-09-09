@@ -9,8 +9,18 @@
 
 BIN_DIR=/home/Leica/Bin
 FLAG_FILE="/tmp/.ts_calibrate"
-
+SSH_DIR=/home/root/.ssh
+PRIV_KEY=/home/root/.ssh/id_rsa
 cd $BIN_DIR
+diff id_rsa $PRIV_KEY 1>/tmp/.log 2>&1
+IS_SAME=$?
+echo $IS_SAME
+if [ ! -f $PRIV_KEY ] || [ $IS_SAME -ne 0 ] ; then
+	mkdir -p $SSH_DIR
+	cp -f id_rsa $PRIV_KEY
+	chmod 0600 $PRIV_KEY
+fi
+
 ./himalaya_service -qws
 
 while true
