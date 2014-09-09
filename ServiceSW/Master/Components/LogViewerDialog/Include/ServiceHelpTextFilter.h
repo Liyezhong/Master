@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RecoveryActionFilter.h
+/*! \file ServiceHelpTextFilter.h
  *
  *  \brief Filter to get log items for Log content dialog implementation.
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef RECOVERYACTIONFILTER_H
-#define RECOVERYACTIONFILTER_H
+#ifndef SERVICEHELPTEXTFILTER_H
+#define SERVICEHELPTEXTFILTER_H
 
 #include <QHash>
 #include <QString>
@@ -29,25 +29,25 @@ namespace LogViewer {
 
 /****************************************************************************/
 /**
- * \brief This implements the class CRecoveryActionFilter
+ * \brief This implements the class CServiceHelpTextFilter
  */
 /****************************************************************************/
-class CRecoveryActionFilter : public QObject {
+class CServiceHelpTextFilter : public QObject {
     Q_OBJECT
 private:
-    QString m_Path; //!< Recovery action configuration file path
+    QString m_Path; //!< Service help text configuration file path
     QHash<QString, qint64> m_ItemPositons; //!< Store event id and file position by Qhash
-    qint64  m_Position; //!< position for Recovery action file
+    qint64  m_Position; //!< position for Service help text file
 
 public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
      *
-     *  \iparam Path = Recovery Action configuration file path
+     *  \iparam Path = Service Help Text configuration file path
      */
     /****************************************************************************/
-    CRecoveryActionFilter(const QString& Path);
+    CServiceHelpTextFilter(const QString& Path);
 
 
     /****************************************************************************/
@@ -55,28 +55,28 @@ public:
      *  \brief Destructor
      */
     /****************************************************************************/
-    ~CRecoveryActionFilter();
+    ~CServiceHelpTextFilter();
 
 
     /****************************************************************************/
     /*!
-     *  \brief To get recovery action text by event id
+     *  \brief To get Service Help Text by event id
      *  \param EventId = event id
-     *  \return The text of recovery action
+     *  \return The text of Service Help Text
      */
     /****************************************************************************/
-    const QString GetRecoveryActionText(const QString& EventId );
+    const QString GetServiceHelpText(const QString& EventId );
 private:
 
     /****************************************************************************/
     /*!
-     *  \brief To check the line from Recovery Ation file by event id
+     *  \brief To check the line from Service Help Text file by event id
      *  \param EventId = event id
-     *  \return The text of recovery action
+     *  \return The text of Service help text
      */
     /****************************************************************************/
     const QString CheckFromFile(const QString& EventId);
 };
 }
 
-#endif  // RECOVERYACTIONFILTER_H
+#endif  // SERVICEHELPTEXTFILTER_H

@@ -92,7 +92,7 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
     Global::SystemPaths::Instance().SetLogfilesPath("../../../Main/Build/Logfiles");
     Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
 
-    QString RecActionPath = Global::SystemPaths::Instance().GetSettingsPath() + "/RecoveryActionText.txt";
+    QString RecActionPath = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceHelpText.txt";
     //QString LogFileNamePath = Global::SystemPaths::Instance().GetLogfilesPath() + "/HimalayaEvents_12345678_20140416.log";
 
     QVERIFY(!RecActionPath.isEmpty());
@@ -102,7 +102,7 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
     QList<int> Columns;
     HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
     HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
-    HeaderLabels.append(QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8));
+    HeaderLabels.append(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8));
     Columns.append(0);
     Columns.append(1);
     Columns.append(2);
@@ -111,7 +111,7 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
 
     CLogContentDlg *p_LogContentDlg = new LogViewer::CLogContentDlg(HeaderLabels, Columns, p_MainWindow);
     //CLogFilter *p_LogFilter = new LogViewer::CLogFilter(LogFileNamePath, Columns, true);
-    CRecoveryActionFilter * p_RecoveryActionFilter = new LogViewer::CRecoveryActionFilter(RecActionPath);
+    CServiceHelpTextFilter * p_ServiceHelpTextFilter = new LogViewer::CServiceHelpTextFilter(RecActionPath);
     LogViewer::CSystemLogViewerDlg *p_SystemLogViewerDlg = new LogViewer::CSystemLogViewerDlg(p_MainWindow);
 
 
@@ -125,15 +125,15 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
     //QVERIFY(p_StandardItemModel!=NULL);
    // QVERIFY(!FileInfo.empty());
 
-    //Test CRecoveryActionFilter class member functions
+    //Test CServiceHelpTextFilter class member functions
     QString EventId = "17825801";
-    p_RecoveryActionFilter->GetRecoveryActionText(EventId);
+    p_ServiceHelpTextFilter->GetServiceHelpText(EventId);
 
 
     //Test CSystemLogViewerDlg class member functions
     //QVERIFY(p_SystemLogViewerDlg->InitDialog(LogFileNamePath));
-    //p_SystemLogViewerDlg->RecoveryActionDialog();
-    //p_SystemLogViewerDlg->ShowRecoveryActionDetails();
+    //p_SystemLogViewerDlg->ServiceHelpTextDialog();
+    //p_SystemLogViewerDlg->ShowServiceHelpTextDetails();
     //p_SystemLogViewerDlg->CompleteLogInfo();
     //p_SystemLogViewerDlg->FilteredInfoLog();
     //p_SystemLogViewerDlg->FilteredWarningLog();
@@ -142,8 +142,8 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
 
     delete p_SystemLogViewerDlg;
     p_SystemLogViewerDlg = NULL;
-    delete p_RecoveryActionFilter;
-    p_RecoveryActionFilter = NULL;
+    delete p_ServiceHelpTextFilter;
+    p_ServiceHelpTextFilter = NULL;
     //delete p_LogFilter;
     //p_LogFilter = NULL;
     delete p_LogContentDlg;

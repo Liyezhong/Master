@@ -26,7 +26,7 @@
 #include "LogViewerDialog/Include/SystemLogViewerDlg.h"
 #include "ui_SystemLogViewerDlg.h"
 #include "Global/Include/GlobalDefines.h"
-#include "LogViewerDialog/Include/RecoveryActionFilter.h"
+#include "LogViewerDialog/Include/ServiceHelpTextFilter.h"
 #include "Global/Include/EventObject.h"
 
 namespace LogViewer {
@@ -40,7 +40,7 @@ namespace LogViewer {
 /****************************************************************************/
 CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CSystemLogViewerDlg),
     mp_LogFilter(NULL),
-    mp_RecoveryActionFilter(NULL)
+    mp_ServiceHelpTextFilter(NULL)
 {
     RetranslateUI();
     m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
@@ -59,13 +59,13 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
-    mp_RecoveryActionDlg = new MainMenu::CTextDialog(this);
-    mp_RecoveryActionDlg->SetCaption(tr(""));
+    mp_ServiceHelpTextDlg = new MainMenu::CTextDialog(this);
+    mp_ServiceHelpTextDlg->SetCaption(tr(""));
     mp_Ui->allBtn->setChecked(true);
     ResetButtons(false);
     mp_Ui->showDetailsBtn->setEnabled(false);
 
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
@@ -76,8 +76,8 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     (void)connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
 
     (void)connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
-    (void)connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ShowRecoveryActionDetails()));
-    (void)connect(mp_Ui->recoveryActionBtn, SIGNAL(clicked()), this, SLOT(RecoveryActionDialog()));
+    (void)connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ShowServiceHelpTextDetails()));
+    (void)connect(mp_Ui->serviceHelpTextBtn, SIGNAL(clicked()), this, SLOT(ServiceHelpTextDialog()));
     (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
 }
@@ -92,13 +92,13 @@ CSystemLogViewerDlg::~CSystemLogViewerDlg()
     try {
         delete mp_Ui;
         delete mp_TableWidget;
-        delete mp_RecoveryActionDlg;
+        delete mp_ServiceHelpTextDlg;
         delete mp_MessageDlg;
         if (mp_LogFilter) {
             delete mp_LogFilter;
         }
-        if (mp_RecoveryActionFilter) {
-            delete mp_RecoveryActionFilter;
+        if (mp_ServiceHelpTextFilter) {
+            delete mp_ServiceHelpTextFilter;
         }
         m_SelectedRowValues.clear();
     }
@@ -116,17 +116,18 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 
     QString Type = m_SelectedRowValues.at(3).data((int)Qt::DisplayRole).toString();
     if (Type.compare("Error")==0 || Type.compare("Fatal Error")==0) {
-        mp_Ui->recoveryActionBtn->setEnabled(true);
+        mp_Ui->serviceHelpTextBtn->setEnabled(true);
     }
     else {
-        mp_Ui->recoveryActionBtn->setEnabled(false);
+        mp_Ui->serviceHelpTextBtn->setEnabled(false);
     }
     mp_Ui->showDetailsBtn->setEnabled(true);
 }
 
-void CSystemLogViewerDlg::RecoveryActionDialog()
+void CSystemLogViewerDlg::ServiceHelpTextDialog()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICERECOVERYACTION_FOR_ERROR);
+    qDebug() << "\n\n" << __FUNCTION__ << __LINE__ << "\n\n";
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICESERVICEHELPTEXT_FOR_ERROR);
 
     if(m_SelectedRowValues.count() == 0)
     {
@@ -141,23 +142,23 @@ void CSystemLogViewerDlg::RecoveryActionDialog()
     {
         QString Type = m_SelectedRowValues.at(3).data((int)Qt::DisplayRole).toString();
         if ( Type == QString("Info") || Type == QString("Undefined") || Type == QString("Warning")) {
-            mp_MessageDlg->SetTitle(m_strMsgRecoveryActionTitle);
+            mp_MessageDlg->SetTitle(m_strMsgServiceHelpTextTitle);
             mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
-            QString Text = m_strMsgRecoveryActionText + Type + ".";
+            QString Text = m_strMsgServiceHelpTextText + Type + ".";
             mp_MessageDlg->SetText(Text);
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->show();
         }
         else {
-            QString Path = Global::SystemPaths::Instance().GetSettingsPath() + "/RecoveryActionText.txt";
+            QString Path = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceHelpText.txt";
 
-            if (mp_RecoveryActionFilter == NULL) {
-                mp_RecoveryActionFilter = new LogViewer::CRecoveryActionFilter(Path);
+            if (mp_ServiceHelpTextFilter == NULL) {
+                mp_ServiceHelpTextFilter = new LogViewer::CServiceHelpTextFilter(Path);
             }
 
             QString EventId = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toString();
-            QString Line = QString(mp_RecoveryActionFilter->GetRecoveryActionText(EventId));
+            QString Line = QString(mp_ServiceHelpTextFilter->GetServiceHelpText(EventId));
             QStringList List = Line.split(";");
             if (List.size()>0) {
                 QString InputText = m_strErrorCode;
@@ -165,13 +166,13 @@ void CSystemLogViewerDlg::RecoveryActionDialog()
                 if (List.count() > 1)
                     InputText.append(List.at(1));
                 InputText.append("\n\n");
-                InputText.append(m_strRecoveryActionText);
+                InputText.append(m_strServiceHelpText);
                 if (List.count() > 2)
                     InputText.append(List.at(2));
-                mp_RecoveryActionDlg->SetDialogTitle(m_strRecoveryActionTitle);
-                mp_RecoveryActionDlg->resize(428, 428);
-                mp_RecoveryActionDlg->SetText(InputText);
-                mp_RecoveryActionDlg->show();
+                mp_ServiceHelpTextDlg->SetDialogTitle(m_strServiceHelpTextTitle);
+                mp_ServiceHelpTextDlg->resize(428, 428);
+                mp_ServiceHelpTextDlg->SetText(InputText);
+                mp_ServiceHelpTextDlg->show();
             }
             else {
                 mp_MessageDlg->SetTitle(m_strMsgServerHelpTitle);
@@ -198,7 +199,7 @@ void CSystemLogViewerDlg::SetTableModel()
     HeaderLabels.append(m_strTimeStamp);
     HeaderLabels.append(m_strEventID);
     HeaderLabels.append(m_strType);
-    HeaderLabels.append(m_strRecoveryActionInfoTitle);
+    HeaderLabels.append(m_strServiceHelpTextInfoTitle);
 
     mp_Model->setHorizontalHeaderLabels(HeaderLabels);
 
@@ -213,28 +214,28 @@ void CSystemLogViewerDlg::RetranslateUI()
     m_strWarning = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Warning", 0, QApplication::UnicodeUTF8);
     m_strMsgSelectRowText = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Please Select a row to continue..",
                                                     0, QApplication::UnicodeUTF8);
-    m_strMsgRecoveryActionTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Recovery Action",
+    m_strMsgServiceHelpTextTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Service Help Text",
                                                           0, QApplication::UnicodeUTF8);
-    m_strMsgRecoveryActionText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                         "Recovery Action is not applicable for the type ",
+    m_strMsgServiceHelpTextText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                         "Service Help Text is not applicable for the type ",
                                                          0, QApplication::UnicodeUTF8);
     m_strErrorCode = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Error Code: ", 0, QApplication::UnicodeUTF8);
     m_strDescription = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Description: ",
                                                0, QApplication::UnicodeUTF8);
-    m_strRecoveryActionText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                      "Recovery Action Text", 0, QApplication::UnicodeUTF8);
-    m_strRecoveryActionTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                       "Recovery Action Text", 0, QApplication::UnicodeUTF8);
+    m_strServiceHelpText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                      "Service Help Text Text", 0, QApplication::UnicodeUTF8);
+    m_strServiceHelpTextTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                       "Service Help Text Text", 0, QApplication::UnicodeUTF8);
     m_strMsgServerHelpTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
                                                       "Service Help Text", 0, QApplication::UnicodeUTF8);
     m_strMsgServerHelpText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                     "Recovery Action Text is not available.",
+                                                     "Service Help Text Text is not available.",
                                                      0, QApplication::UnicodeUTF8);
     m_strDate = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Date", 0, QApplication::UnicodeUTF8);
     m_strTimeStamp = QApplication::translate("LogViewer::CSystemLogViewerDlg", "TimeStamp", 0, QApplication::UnicodeUTF8);
     m_strEventID = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Event ID", 0, QApplication::UnicodeUTF8);
     m_strType = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Type", 0, QApplication::UnicodeUTF8);
-    m_strRecoveryActionInfoTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Log Information",
+    m_strServiceHelpTextInfoTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Log Information",
                                                            0, QApplication::UnicodeUTF8);
 }
 
@@ -269,9 +270,9 @@ void CSystemLogViewerDlg::changeEvent(QEvent *p_Event)
     }
 }
 
-void CSystemLogViewerDlg::ShowRecoveryActionDetails()
+void CSystemLogViewerDlg::ShowServiceHelpTextDetails()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICESERVICEHELPTEXT_DISPLAY_INFO);
     if(m_SelectedRowValues.count() == 0)
     {
         mp_MessageDlg->SetTitle(m_strWarning);
@@ -289,10 +290,10 @@ void CSystemLogViewerDlg::ShowRecoveryActionDetails()
             Text.append(m_SelectedRowValues.at(i).data((int)Qt::DisplayRole).toString());
             Text.append("\n\n");
         }
-        mp_RecoveryActionDlg->SetDialogTitle(m_strRecoveryActionInfoTitle);
-        mp_RecoveryActionDlg->SetText(Text);
-        mp_RecoveryActionDlg->resize(428,428);
-        mp_RecoveryActionDlg->show();
+        mp_ServiceHelpTextDlg->SetDialogTitle(m_strServiceHelpTextInfoTitle);
+        mp_ServiceHelpTextDlg->SetText(Text);
+        mp_ServiceHelpTextDlg->resize(428,428);
+        mp_ServiceHelpTextDlg->show();
     }
 }
 
@@ -312,7 +313,7 @@ void CSystemLogViewerDlg::ResetButtons(bool EnableFlag)
 void CSystemLogViewerDlg::CompleteLogInfo()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->allBtn->isChecked()) {
@@ -334,7 +335,7 @@ void CSystemLogViewerDlg::FilteredErrorLog()
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
                                                Global::tTranslatableStringList() << "Error");
     mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
     mp_TableWidget->clearSelection();
@@ -359,7 +360,7 @@ void CSystemLogViewerDlg::FilteredInfoLog()
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
                                                Global::tTranslatableStringList() << "Info");
     mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->infoBtn->isChecked()) {
@@ -381,7 +382,7 @@ void CSystemLogViewerDlg::FilteredUndefinedLog()
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
                                                Global::tTranslatableStringList() << "Undefined");
     mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->undefinedBtn->isChecked()) {
@@ -403,7 +404,7 @@ void CSystemLogViewerDlg::FilteredWarningLog()
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
                                                Global::tTranslatableStringList() << "Warning");
     mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->warningBtn->isChecked()) {

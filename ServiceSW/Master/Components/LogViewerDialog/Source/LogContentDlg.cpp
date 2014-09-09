@@ -79,12 +79,12 @@ int CLogContentDlg::InitDialog(QString FilePath)
 
     mp_TableWidget->setModel(mp_Model);
 
-    if (FilePath.contains("RecoveryAction")) {
+    if (FilePath.contains("ServiceHelpText")) {
         QMap<QString, QString> FileInfo = mp_LogFilter->GetFileInfo();
         QString Title ;
         qDebug()<<"FileInfo:"<<FileInfo;
 
-        Title.append("Recovery Action");
+//        Title.append("Service Help Text");
         Title.append(" Version:");
         Title.append(FileInfo.value("Version"));
         Title.append(" ");

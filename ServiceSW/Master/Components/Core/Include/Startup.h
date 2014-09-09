@@ -149,7 +149,7 @@ private:
     MainMenu::CMenuGroup                    *mp_LogViewerGroup;             //!< Log information of module data
 
     LogViewer::CLogViewer             *mp_SystemLogViewer;            //!< System Log information
-    LogViewer::CLogViewer              *mp_RecoveryAction;             //!< Provides Recovery action Help pages.
+    LogViewer::CLogViewer              *mp_ServiceHelpText;             //!< Service Help Text.
     LogViewer::CLogViewer            *mp_ServiceLogViewer;           //!< Service Log Viewer
     LogViewer::CLogViewer           *mp_SoftwareUpdateLogViewer;    //!< Software Update Log Viewer
     LogViewer::CLogContentDlg       *mp_LogContentDlg;              //!< Log Content Dialog
