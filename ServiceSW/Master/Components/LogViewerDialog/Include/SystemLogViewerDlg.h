@@ -30,7 +30,7 @@
 #include <QStandardItemModel>
 #include <QFile>
 #include "LogViewerDialog/Include/LogFilter.h"
-#include "LogViewerDialog/Include/RecoveryActionFilter.h"
+#include "LogViewerDialog/Include/ServiceHelpTextFilter.h"
 
 namespace LogViewer {
 
@@ -89,30 +89,30 @@ private:
     Ui::CSystemLogViewerDlg *mp_Ui;                 //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;           //!< Table for the system log information
     QStandardItemModel *mp_Model;                     //!< Model for the System log dialog table
-    MainMenu::CTextDialog *mp_RecoveryActionDlg;    //!< Recovery action text dialog
+    MainMenu::CTextDialog *mp_ServiceHelpTextDlg;    //!< Service help text text dialog
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Information message dialog
     QString m_LogFilePath;                          //!< Stores log file path
     QModelIndexList m_SelectedRowValues;              //!< Model Index list stores selected row values
     CLogFilter* mp_LogFilter;                       //!< Log filter to get model list.
     quint8 m_EventTypes;                           //!< Event Types of previously diaplayed.
-    CRecoveryActionFilter *mp_RecoveryActionFilter; //!< Recovery Action Filter to get Recovery Action Text
+    CServiceHelpTextFilter *mp_ServiceHelpTextFilter; //!< Service Help Text Filter to get Service Help Text
     QHash<QString, qint64> m_PositionItems;
     QString m_strOK;
     QString m_strWarning;
     QString m_strMsgSelectRowText;
-    QString m_strMsgRecoveryActionTitle;
-    QString m_strMsgRecoveryActionText;
+    QString m_strMsgServiceHelpTextTitle;
+    QString m_strMsgServiceHelpTextText;
     QString m_strErrorCode;
     QString m_strDescription;
-    QString m_strRecoveryActionText;
-    QString m_strRecoveryActionTitle;
+    QString m_strServiceHelpText;
+    QString m_strServiceHelpTextTitle;
     QString m_strMsgServerHelpTitle;
     QString m_strMsgServerHelpText;
     QString m_strDate;
     QString m_strTimeStamp;
     QString m_strEventID;
     QString m_strType;
-    QString m_strRecoveryActionInfoTitle;
+    QString m_strServiceHelpTextInfoTitle;
 
 private:
     /****************************************************************************/
@@ -145,7 +145,7 @@ public slots:
      *  \brief  To initialize the pop up dialog
      */
     /****************************************************************************/
-    void RecoveryActionDialog();
+    void ServiceHelpTextDialog();
 
     /****************************************************************************/
     /*!
@@ -195,7 +195,7 @@ public slots:
      *  \brief  To display selected EventID information
      */
     /****************************************************************************/
-    void ShowRecoveryActionDetails();
+    void ShowServiceHelpTextDetails();
 
 };
 

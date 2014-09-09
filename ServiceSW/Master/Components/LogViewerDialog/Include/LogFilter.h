@@ -53,11 +53,11 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Add Recovery action item to Model of the dialog table
+     *  \brief  Add Service help text item to Model of the dialog table
      *  \param  data = The line of log data;
      */
     /****************************************************************************/
-    void AddItem4RecoveryAction(QString& data);
+    void AddItem4ServiceHelpText(QString& data);
 
     /****************************************************************************/
     /*!

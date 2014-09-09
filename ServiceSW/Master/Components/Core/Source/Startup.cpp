@@ -144,22 +144,21 @@ CStartup::CStartup() : QObject(),
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
 //    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
-//    mp_RecoveryAction = new LogViewer::CRecoveryAction;
 //    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
 //    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
 
     mp_SystemLogViewer = new LogViewer::CLogViewer("HimalayaEvents_12345678", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_RecoveryAction = new LogViewer::CLogViewer("RecoveryActionText", Global::SystemPaths::Instance().GetSettingsPath());
+    mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
     mp_ServiceLogViewer = new LogViewer::CLogViewer("Himalaya_Service", Global::SystemPaths::Instance().GetLogfilesPath());
     mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("Himalaya_SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
 
     CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_RecoveryAction , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+    CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
     CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
     CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
 
     CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_RecoveryAction, UpdateLogFileTableEntries());
+    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
     CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
     CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
@@ -332,7 +331,7 @@ CStartup::~CStartup()
         // Log viewer
         delete mp_SoftwareUpdateLogViewer;
         delete mp_ServiceLogViewer;
-        delete mp_RecoveryAction;
+        delete mp_ServiceHelpText;
         delete mp_SystemLogViewer;
         delete mp_LogViewerGroup;
         if (mp_LogContentDlg) {
@@ -415,8 +414,8 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
         // Log Viewer
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_SystemLogViewer);
-        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Recovery Action", 0, QApplication::UnicodeUTF8)
-                                    , mp_RecoveryAction);
+        mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8)
+                                    , mp_ServiceHelpText);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_ServiceLogViewer);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Software Update Log", 0, QApplication::UnicodeUTF8)
@@ -1744,6 +1743,7 @@ void CStartup::OnGuiOvenEmptyHeatingTest()
 void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
+
     if (FileName.startsWith("HimalayaEvents_12345678")) {  // System log
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
@@ -1770,11 +1770,11 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(0);
             Columns.append(3);
         }
-        else if (FileName.startsWith("RecoveryActionText")) { // Recovery Action
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO);
+        else if (FileName.startsWith("ServiceHelpText")) { // Service Help Text
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICESERVICEHELPTEXT_DISPLAY_INFO);
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Service Help Text Text", 0, QApplication::UnicodeUTF8));
             Columns.append(0);
             Columns.append(1);
             Columns.append(2);

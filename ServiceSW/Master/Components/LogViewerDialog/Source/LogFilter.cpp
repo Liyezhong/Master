@@ -129,7 +129,7 @@ void CLogFilter::AddItem4LogNeedClassify(QString &data)
     m_LogIndex++;
 }
 
-void CLogFilter::AddItem4RecoveryAction(QString &data)
+void CLogFilter::AddItem4ServiceHelpText(QString &data)
 {
     QStringList List = data.split(";");
     QList<QStandardItem *> ItemList;
@@ -143,7 +143,7 @@ void CLogFilter::AddItem4RecoveryAction(QString &data)
 
 bool CLogFilter::CheckFileInfo(const QString &line)
 {
-    if (m_Filename.contains("RecoveryAction")) {
+    if (m_Filename.contains("ServiceHelpText")) {
         if (line.startsWith("Version") ||
                 line.startsWith("FileName") ||
                 line.startsWith("System")) {
@@ -177,7 +177,7 @@ bool CLogFilter::InitData()
         return false;
     }
 
-    if (m_Filename.contains("RecoveryAction")) {
+    if (m_Filename.contains("ServiceHelpText")) {
         Flag = true;
     }
 
@@ -193,7 +193,7 @@ bool CLogFilter::InitData()
 
         if (LogData.contains(";")) {
             if (Flag) {
-                AddItem4RecoveryAction(LogData);
+                AddItem4ServiceHelpText(LogData);
             }
             else {
                 if (m_needClassify) {

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RecoveryActionFilter.cpp
+/*! \file ServiceHelpTextFilter.cpp
  *
  *  \brief Filter to get log items for Log content dialog implementation.
  *
@@ -20,19 +20,19 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
-#include "LogViewerDialog/Include/RecoveryActionFilter.h"
+#include "LogViewerDialog/Include/ServiceHelpTextFilter.h"
 #include "Global/Include/GlobalDefines.h"
 
 namespace LogViewer {
 
-CRecoveryActionFilter::CRecoveryActionFilter(const QString& Path)
+CServiceHelpTextFilter::CServiceHelpTextFilter(const QString& Path)
 {
     m_Path = Path;
     m_ItemPositons.clear();
     m_Position = 0;
 }
 
-CRecoveryActionFilter::~CRecoveryActionFilter()
+CServiceHelpTextFilter::~CServiceHelpTextFilter()
 {
     try {
         m_ItemPositons.clear();
@@ -42,7 +42,7 @@ CRecoveryActionFilter::~CRecoveryActionFilter()
     }
 }
 
-const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
+const QString CServiceHelpTextFilter::CheckFromFile(const QString& EventId)
 {
     QFile File(m_Path);
 
@@ -51,7 +51,7 @@ const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
     }
 
     (void)File.seek(m_Position);
-
+        qDebug() << "\n\n" << __FUNCTION__ << __LINE__ << "\n\n";
     while(!File.atEnd()) {
         qint64 Position = File.pos();
         QByteArray LineBa = File.readLine();
@@ -72,7 +72,7 @@ const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
     return "";
 }
 
-const QString CRecoveryActionFilter::GetRecoveryActionText(const QString &EventId)
+const QString CServiceHelpTextFilter::GetServiceHelpText(const QString &EventId)
 {
     quint64 Position = m_ItemPositons.value(EventId);
 

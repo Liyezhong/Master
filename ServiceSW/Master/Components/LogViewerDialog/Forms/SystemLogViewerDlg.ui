@@ -191,9 +191,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="recoveryActionBtn">
+      <widget class="QPushButton" name="serviceHelpTextBtn">
        <property name="text">
-        <string>Recovery Action</string>
+        <string>Service Help Text</string>
        </property>
       </widget>
      </item>
