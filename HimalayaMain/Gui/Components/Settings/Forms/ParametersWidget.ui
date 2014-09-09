@@ -116,7 +116,8 @@
     <property name="icon">
      <iconset>
       <normalon>:/Large/Icons/Configuration/Configuration_DateTime.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_DateTime_act.png</selectedon>
+      <selectedoff>:/Large/Icons/Configuration/Configuration_DateTime_act.png</selectedoff>
+      <selectedon>:/Large/Icons/Configuration/Configuration_DateTime_act.png</selectedon>
      </iconset>
     </property>
    </item>
