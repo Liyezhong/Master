@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
         App.TheMasterThreadController.SetOperatingMode("production");
         // base file name for logging is "Events"
-        App.TheMasterThreadController.SetEventLoggerBaseFileName("HimalayaEvents_");
+        App.TheMasterThreadController.SetEventLoggerBaseFileName("PRIMARIS_");
         /// \todo set max file size of event logger
         App.TheMasterThreadController.SetEventLoggerMaxFileSize(1000000);
         // set max file count for day operation logger

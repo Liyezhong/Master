@@ -168,18 +168,12 @@ void CDataManagementWidget::ResetButtons()
 
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)
-         && (!m_ProcessRunning)) {
-        //Edit Mode
+    if (!m_ProcessRunning) {
         mp_Ui->saveusbButton->setEnabled(true);
+         mp_Ui->serviceExportButton->setEnabled(true);
     }
     else {
         mp_Ui->saveusbButton->setEnabled(false);
-    }
-    if ((m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
-        mp_Ui->serviceExportButton->setEnabled(true);
-    }
-    else {
         mp_Ui->serviceExportButton->setEnabled(false);
     }
 
