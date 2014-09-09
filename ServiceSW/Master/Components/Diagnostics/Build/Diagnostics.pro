@@ -17,7 +17,8 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/LaSystem/*.h \
     ../Include/System/*.h \
     ../Include/Display.h \
-    ../Include/BasicColor/BasicColorTestDlg.h
+    ../Include/BasicColor/BasicColorTestDlg.h \
+    ../Include/MainControl.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -25,9 +26,11 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/RotaryValve/*.cpp \
     ../Source/LaSystem/*.cpp \
     ../Source/System/*.cpp \
-    ../Source/BasicColor/BasicColorTestDlg.cpp
+    ../Source/BasicColor/BasicColorTestDlg.cpp \
+    ../Source/MainControl.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/System/*.ui \
     ../Forms/BasicColor/BasicColorTestDlg.ui \
-    ../Forms/Display.ui
+    ../Forms/Display.ui \
+    ../Forms/MainControl.ui

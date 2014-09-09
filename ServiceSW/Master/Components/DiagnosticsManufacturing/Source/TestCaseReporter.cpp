@@ -180,7 +180,7 @@ void CTestCaseReporter::WriteReportFile(QTextStream& TextStream)
     TextStream<<QString("Time Stamp: %1\n").arg(CurrentDateTime);
     TextStream<<QString("Serial Number: %1\n").arg(m_SerialNumber);
 
-    QList<Service::ModuleTestCaseID>::iterator itr = m_TestCaseList.begin();
+    QSet<Service::ModuleTestCaseID>::iterator itr = m_TestCaseList.begin();
     for (; itr != m_TestCaseList.end(); ++itr) {
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(*itr);
         DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);

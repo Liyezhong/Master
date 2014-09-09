@@ -23,7 +23,7 @@
 #include <QString>
 #include <QTextStream>
 #include <QFile>
-#include <QList>
+#include <QSet>
 #include "Core/Include/ServiceDefines.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
@@ -78,7 +78,7 @@ public:
     }
 
     void AddTestCaseId(Service::ModuleTestCaseID Id) {
-        m_TestCaseList.append(Id);
+        m_TestCaseList.insert(Id);
     }
 
 private:
@@ -97,7 +97,7 @@ private:
     void WriteReportFile(QTextStream& TextStream);
 
     Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
-    QList<Service::ModuleTestCaseID> m_TestCaseList; //!< Stores test case list;
+    QSet<Service::ModuleTestCaseID> m_TestCaseList;  //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
     QString m_ModuleName;                            //!< Stores module name
     QString m_SerialNumber;                          //!< Stores serial number

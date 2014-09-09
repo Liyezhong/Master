@@ -170,6 +170,7 @@ CStartup::CStartup() : QObject(),
     mp_RotaryValve      = new Diagnostics::CRotaryValve;
     mp_LaSystem         = new Diagnostics::CLaSystem;
     mp_System           = new Diagnostics::CSystem;
+    mp_MainControl      = new Diagnostics::CMainControl;
 
     //Diagnostics1 Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
@@ -625,6 +626,7 @@ void CStartup::ServiceGuiInit()
     //Diagnostics
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, Service::CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_Display);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControl);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT,  mp_Retort);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN,    mp_Oven);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV,      mp_RotaryValve);

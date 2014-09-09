@@ -64,6 +64,7 @@
 #include "Diagnostics/Include/RotaryValve.h"
 #include "Diagnostics/Include/LaSystem.h"
 #include "Diagnostics/Include/System.h"
+#include "Diagnostics/Include/MainControl.h"
 #include "Core/Include/CalibrationHandler.h"
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include "DiagnosticsManufacturing/Include/SealingTestReportDialog.h"
@@ -165,6 +166,7 @@ private:
     Diagnostics::CRotaryValve               *mp_RotaryValve;                //!< Rotary Valve tests
     Diagnostics::CLaSystem                  *mp_LaSystem;                   //!< L&A System tests
     Diagnostics::CSystem                    *mp_System;                     //!< System tests
+    Diagnostics::CMainControl               *mp_MainControl;                //!< Main Control tests
 
     // Diagnostics1 Manufacturing
     MainMenu::CMenuGroup                    *mp_DiagnosticsManufGroup;
