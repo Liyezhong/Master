@@ -180,6 +180,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
             ALStopCmd->SetCmdType(0);
             mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+            m_StopFillingSeq++;
         }
         else
         {
@@ -197,6 +198,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
             ALStopCmd->SetCmdType(1);
             mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+            m_StopDrainingSeq++;
         }
         else
         {
