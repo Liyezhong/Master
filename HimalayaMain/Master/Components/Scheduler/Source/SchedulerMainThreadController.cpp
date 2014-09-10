@@ -2724,7 +2724,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     {
     case CDS_READY:
         LogDebug(QString("Start the cleaning dry step"));
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Step", m_CurProgramStepIndex, 900);
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Processing", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -2747,48 +2747,41 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             }
             else
             {
-//                RaiseError(0, retCode, m_CurrentScenario, true);
+                RaiseError(0, retCode, m_CurrentScenario, true);
+                CurrentState = CDS_READY;
                 m_SchedulerMachine->SendErrorSignal();
-                CurrentState = CDS_ERROR;
+//                m_SchedulerMachine->NotifyProgramFinished();
+                StepStartTime = 0;
             }
         }
         break;
     case CDS_WAIT_HIT_TEMPERATURE:
         qDebug() << "CDS_WAIT_HIT_TEMPERATURE";
-        if(m_TempRTBottom >= 70)// heating timeout should be done in heating strategy
-        {
-            CurrentState = CDS_VACUUM;
-        }
+        CurrentState = CDS_VACUUM;
         break;
     case CDS_VACUUM:
         qDebug() << "CDS_VACUUM";
         Vaccum();
-        StepStartTime = QDateTime::currentMSecsSinceEpoch();
         CurrentState = CDS_WAIT_HIT_PPRESSURE;
         break;
     case CDS_WAIT_HIT_PPRESSURE:
         qDebug() << "CDS_WAIT_HIT_PPRESSURE";
         if(cmd != NULL && ("Scheduler::ALVaccum" == cmd->GetName()))
         {
+            cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                //raise error
+                RaiseError(0, retCode, m_CurrentScenario, true);
+                CurrentState = CDS_READY;
                 m_SchedulerMachine->SendErrorSignal();
-                CurrentState = CDS_ERROR;
-                break;
+//                m_SchedulerMachine->NotifyProgramFinished();
+                StepStartTime = 0;;
             }
-        }
-        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 300000) // 3 minutes timeout
-        {
-            //raise error
-            m_SchedulerMachine->SendErrorSignal();
-            CurrentState = CDS_ERROR;
-            break;
-        }
-        if(m_PressureAL <= -20)
-        {
-            CurrentState = CDS_WAITING_DRY;
-            StepStartTime = QDateTime::currentMSecsSinceEpoch();
+            else
+            {
+                CurrentState = CDS_WAITING_DRY;
+                StepStartTime = QDateTime::currentMSecsSinceEpoch();
+            }
         }
         break;
     case CDS_WAITING_DRY:
@@ -2804,15 +2797,12 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         CurrentState = CDS_SUCCESS;
         break;
     case CDS_SUCCESS:
-        qDebug() << "CDS_EXIT";
+        qDebug() << "CDS_SUCCESS";
         m_SchedulerMachine->NotifyProgramFinished();
         CurrentState = CDS_READY;
         StepStartTime = 0;
         break;
     case CDS_ERROR:
-        CurrentState = CDS_READY;
-        m_SchedulerMachine->NotifyProgramFinished();
-        StepStartTime = 0;
         break;
 
     }

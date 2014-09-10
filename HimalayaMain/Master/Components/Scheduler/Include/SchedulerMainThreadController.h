@@ -73,7 +73,7 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
-#define TIME_FOR_CLEANING_DRY_STEP   900    ///< seconds spending in dry step
+#define TIME_FOR_CLEANING_DRY_STEP   720    ///< seconds spending in dry step
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of enum ControlCommandType_t
