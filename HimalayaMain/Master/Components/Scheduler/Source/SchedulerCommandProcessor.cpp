@@ -113,7 +113,6 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
-    strctHWMonitor.TempLevelSensorStatus = mp_IDeviceProcessing->ALGetTemperatureControlState(AL_LEVELSENSOR) != DeviceControl::TEMPCTRL_STATE_OFF? true : false;
 	strctHWMonitor.TempALTube1			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE1,0);
 	strctHWMonitor.TempALTube2			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE2,0);
 	strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
@@ -141,6 +140,7 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.Slave3Current        = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_3);
     strctHWMonitor.Slave5Current        = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_5);
     strctHWMonitor.Slave15Current       = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_15);
+    strctHWMonitor.OvenHeatingStatus    = mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_BOTTOM) && mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_TOP) ;
     return strctHWMonitor;
 }
 
