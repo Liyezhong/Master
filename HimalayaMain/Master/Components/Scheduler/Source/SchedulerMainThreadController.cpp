@@ -3358,6 +3358,21 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     return RetTime;
 }
 
+qint64 SchedulerMainThreadController::GetPreTestTime()
+{
+    quint32 BottleCount = m_ProgramStationList.size();
+    qint64 preTesttTime = 0;
+    if( (BottleCount - 2) > 0)
+    {
+        preTesttTime = (4 + 1 * (BottleCount - 2)) * 60;
+    }
+    else
+    {
+        preTesttTime = 4 * 60;
+    }
+    return preTesttTime;
+}
+
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
 {
     if (!mp_DataManager)

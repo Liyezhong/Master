@@ -1047,6 +1047,14 @@ protected:
         qint64 GetOvenHeatingTime();
 
         /****************************************************************************/
+        /**
+         *  \brief Get the time(in seconds) that PreTest
+         *  \return from GetPreTestTime of qint64
+         */
+        /****************************************************************************/
+        qint64 GetPreTestTime();
+
+        /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetCurProgramID
          *
