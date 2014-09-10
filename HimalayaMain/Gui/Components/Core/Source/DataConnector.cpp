@@ -1778,7 +1778,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit UpdateProgramTimerStatus(true);
         }
         break;
-
+        case DataManager::TISSUE_PROTECT_PASSED:
+        {
+            emit TissueProtectPassed();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

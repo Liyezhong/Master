@@ -21,7 +21,6 @@
 #include "Global/Include/Utils.h"
 #include "Scheduler/Include/SchedulerMachine.h"
 #include "Scheduler/Include/HimalayaDeviceEventCodes.h"
-#include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
@@ -72,6 +71,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmProcessingSRState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToTubeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmDrainingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVPosChangeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -137,6 +137,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeFiling()), mp_PssmFillingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveToSeal()), mp_PssmRVMoveToSealState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessing()), mp_PssmProcessingState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessingSR()), mp_PssmProcessingSRState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
@@ -158,12 +159,14 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(this, sigProcessingFinished(), mp_SchedulerThreadController, DisablePause());
+    mp_PssmProcessingSRState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, OnRVMoveToTube());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
     CONNECTSIGNALSLOT(this, sigDrainFinished(), mp_SchedulerThreadController, DisablePauseButton());
+    mp_PssmDrainingState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
@@ -321,8 +324,17 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 }
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
-    Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_TISSUE_PROTECT_REPORT, 0, true);
-    emit sigEnterIdleState();
+    if (false == flag)
+    {
+        Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_TISSUE_PROTECT_REPORT, 0, true);
+        emit sigEnterIdleState();
+    }
+    else
+    {
+        mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING_SR);
+        emit SigEnterRcRestart();
+
+    }
 }
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
@@ -411,6 +423,11 @@ void CSchedulerStateMachine::SendResumeRVMoveToSeal()
 void CSchedulerStateMachine::SendResumeProcessing()
 {
     emit ResumeProcessing();
+}
+
+void CSchedulerStateMachine::SendResumeProcessingSR()
+{
+    emit ResumeProcessingSR();
 }
 
 void CSchedulerStateMachine::SendResumeRVMoveTube()
@@ -563,6 +580,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingState.data()))
         {
             return PSSM_PROCESSING;
+        }
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingSRState.data()))
+        {
+            return PSSM_PROCESSING_SR;
         }
         else if (mp_SchedulerMachine->configuration().contains(mp_PssmRVMoveToTubeState.data()))
         {
@@ -916,9 +937,9 @@ void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cm
     mp_RsStandbyWithTissue->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, ReturnCode_t retCode)
 {
-    mp_RsTissueProtect->HandleWorkFlow(cmdName, retCode);
+    mp_RsTissueProtect->HandleWorkFlow(ctrlCmd, cmdName, retCode);
 }
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
@@ -965,6 +986,7 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
         else if (1 == retValue)
         {
             m_RestartLevelSensor = RESTART_LEVELSENSOR;
+
             this->OnTasksDone(false);
         }
         else if (2 == retValue)
@@ -979,11 +1001,11 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
         }
         else
         {
-            m_RestartLevelSensor = WAIT2SECONDS;
+            m_RestartLevelSensor = WAIT2MIN;
         }
         break;
-    case WAIT2SECONDS:
-        if ((QDateTime::currentMSecsSinceEpoch() - m_LevelSensorWaitTime) >= 2*1000)
+    case WAIT2MIN:
+        if ((QDateTime::currentMSecsSinceEpoch() - m_LevelSensorWaitTime) >= 15*1000)
         {
             m_RestartLevelSensor = RESTART_LEVELSENSOR;
             this->OnTasksDone(true);

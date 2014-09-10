@@ -42,8 +42,8 @@ class  CRsTissueProtect : public QObject
     {
         UNDEF,
         INIT,
-        STOP_FILLING,
-        STOP_DRAINING,
+        STOP_CMDEXEC,
+        DRAIN_CUR_REAGENT,
         MOVE_TO_TUBE,
         LEVELSENSOR_HEATING,
         FILLING,
@@ -98,33 +98,35 @@ public:
     /*!
      *  \brief Handle the whole work flow for RS_Tissue_Protect
      *
+     *  \param ctrlCmd - control command from GUI
      *  \param cmdName - command name
      *  \param retCode - return code
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for stopping filling
-     *
-     */
-    /****************************************************************************/
-    void StopFilling();
 
     /****************************************************************************/
     /*!
-     *  \brief  Signal for stopping draining
+     *  \brief  Signal for stopping command execution
      *
      */
     /****************************************************************************/
-    void StopDraining();
+    void StopCmdExec();
 
     /****************************************************************************/
     /*!
-     *  \brief  Signal for moving to tube
+     *  \brief  Signal for draining current reagent
+     *
+     */
+    /****************************************************************************/
+    void DrainCurReagent();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for moving to tube position
      *
      */
     /****************************************************************************/
@@ -214,23 +216,23 @@ private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Tissue_Protect
     QSharedPointer<QState> mp_Init;                         //!< Initial state
+    QSharedPointer<QState> mp_StopCmdExec;         			//!< Stop command execution state
+    QSharedPointer<QState> mp_DrainCurReagent;              //!< Drain current reagent state
     QSharedPointer<QState> mp_MoveToTube;         			//!< Move to Tube position state
-    QSharedPointer<QState> mp_StopFilling;         			//!< Stop Filling state
-    QSharedPointer<QState> mp_StopDraining;                 //!< Stop Draining state
     QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
     QSharedPointer<QState> mp_Filling;           			//!< Filling state
     QSharedPointer<QState> mp_Wait8S;           			//!< Wait for 8 seconds state
     QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
-    QSharedPointer<QState> mp_ReleasePressure;       		//!< Release pressure
+    QSharedPointer<QState> mp_ReleasePressure;       		//!< Release pressure state
+
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
+    quint8 m_DrainCurReagentSeq;                            //!< Sequnece of draining current reagent
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
     quint8 m_FillSeq;                                       //!< Sequence of Filling
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
-    quint8 m_StopFillingSeq;                                //!< Sequnece of Stopping Filling
-    quint8 m_StopDrainingSeq;                               //!< Sequnece of Stopping Filling
-    qint64 m_StartWaitTime;                                 //!< Start up time for waiting for 8 seconds
+    qint64 m_StartWaitTime;                                 //!< start up time for wait
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);

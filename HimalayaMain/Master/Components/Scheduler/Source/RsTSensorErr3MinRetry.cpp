@@ -146,6 +146,7 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
         else
         {
             mp_WaitBeginTime = 0;
+            mp_SchedulerThreadController->ShutdownFailedHeaters();
             emit TasksDone(false);
         }
         break;
@@ -155,6 +156,7 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
         if(nowTime - mp_WaitBeginTime > 3 * 1000)
         {
             mp_WaitBeginTime = 0;
+            mp_SchedulerThreadController->ShutdownFailedHeaters();
             emit TasksDone(true);
         }
         else
@@ -162,6 +164,7 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
             if (false == CheckTSensorCurrentStatus())
             {
                 mp_WaitBeginTime = 0;
+                mp_SchedulerThreadController->ShutdownFailedHeaters();
                 emit TasksDone(false);
             }
         }

@@ -188,6 +188,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
             m_Counter = 0;
+            mp_SchedulerController->ShutdownFailedHeaters();
             emit TasksDone(true);
         }
         else

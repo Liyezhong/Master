@@ -74,51 +74,6 @@ typedef struct {
 } ProgramStepInfor;
 
 #define TIME_FOR_CLEANING_DRY_STEP   720    ///< seconds spending in dry step
-/****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of enum ControlCommandType_t
- */
-/****************************************************************************/
-typedef enum
-{
-    CTRL_CMD_START,
-    CTRL_CMD_PAUSE,
-    CTRL_CMD_ABORT,
-    CTRL_CMD_SET_REMOTE_ALARM,
-    CTRL_CMD_CLEAR_REMOTE_ALARM,
-    CTRL_CMD_DRAIN,
-    CTRL_CMD_QUITAPP,
-    CTRL_CMD_SHUTDOWN,
-    CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN,
-    CTRL_CMD_RS_STANDBY,
-    CTRL_CMD_RS_STANDBY_WITHTISSUE,
-    CTRL_CMD_RS_HEATINGERR30SRETRY,
-    CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY,
-    CTRL_CMD_RS_TSENSORERR3MINRETRY,
-    CTRL_CMD_RC_RESTART,
-    CTRL_CMD_RC_REPORT,
-    CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
-    CTRL_CMD_RC_PRESSURE,
-    CTRL_CMD_RC_VACUUM,
-    CTRL_CMD_RC_FILLING,
-    CTRL_CMD_RC_DRAINING,
-    CTRL_CMD_RS_DRAINATONCE,
-    CTRL_CMD_RC_BOTTLECHECK_I,
-    CTRL_CMD_RS_FILLINGAFTERFLUSH,
-    CTRL_CMD_RS_CHECK_BLOCKAGE,
-    CTRL_CMD_RS_PAUSE,
-    CTRL_CMD_RS_RV_WAITINGTEMPUP,
-    CTRL_CMD_RS_TISSUE_PROTECT,
-    CTRL_CMD_USER_RESPONSE_PAUSE_ALARM,
-    CTRL_CMD_RC_CHECK_RTLOCK,
-    CTRL_CMD_ALARM_RMT_ON,
-    CTRL_CMD_ALARM_RMT_OFF,
-    CTRL_CMD_ALARM_LOC_ON,
-    CTRL_CMD_ALARM_LOC_OFF,
-    CTRL_CMD_ALARM_ALL_OFF,
-    CTRL_CMD_NONE,
-    CTRL_CMD_UNKNOWN
-}ControlCommandType_t;
 
 /****************************************************************************/
 /*!
@@ -294,6 +249,7 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
+        bool m_IsSafeReagentState;                            ///< Scheduler is in RS_Tissue_Protect state
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1255,10 +1211,11 @@ protected:
         /*!
          *  \brief  Filling for Rs_Tissue_Protect
          *  \param  QString StationID
+         *  \param  bool Insufficientcheck
          *  \return void
          */
         /****************************************************************************/
-        void FillRsTissueProtect(const QString& StationID);
+        void FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck);
 
         /****************************************************************************/
         /*!
@@ -1286,7 +1243,14 @@ protected:
          */
         /****************************************************************************/
         QString GetCurrentStationID() { return m_CurProgramStepInfo.stationID; }
-
+        /****************************************************************************/
+        /*!
+         *  \brief  Set current station ID
+         *  \param  QString station ID
+         *  \return void
+         */
+        /****************************************************************************/
+        void SetCurrentStationID(const QString& StationID) { m_CurProgramStepInfo.stationID = StationID; }
         /****************************************************************************/
         /*!
          *  \brief  Set current step state
@@ -1304,6 +1268,16 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Send out Tisue Protect done message to GUI
+         *  \param  void
+         *  \return void
+         */
+        /****************************************************************************/
+        void SendTissueProtectMsg();
+
     public slots:
 
         /****************************************************************************/

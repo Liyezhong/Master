@@ -86,7 +86,9 @@ typedef enum  {
 
         PROGRAM_ABORT_BEGIN,
         PROGRAM_ABORT_FINISHED,
-        PROGRAM_SELFTEST_FAILED
+        PROGRAM_SELFTEST_FAILED,
+
+        TISSUE_PROTECT_PASSED
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

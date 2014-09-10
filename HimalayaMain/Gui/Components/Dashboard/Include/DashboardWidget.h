@@ -161,6 +161,7 @@ private:
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
     QString m_strProgramComplete;
+    QString m_strTissueProtectPassed;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
@@ -217,6 +218,14 @@ private slots:
      */
     /****************************************************************************/
     void OnProgramWillComplete();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnTissueProtectPassed
+     */
+    /****************************************************************************/
+    void OnTissueProtectPassed();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramAborted

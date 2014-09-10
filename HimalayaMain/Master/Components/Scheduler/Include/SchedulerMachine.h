@@ -28,7 +28,6 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Include/SchedulerStateMachineStates.h"
 
-
 namespace Scheduler{
 
 class CRsStandby;
@@ -77,6 +76,7 @@ private:
     QSharedPointer<QState> mp_PssmFillingState;                                         ///<  Busy State's sub state: Filling
     QSharedPointer<QState> mp_PssmRVMoveToSealState;                                    ///<  Busy State's sub state: RV move to Seal position
     QSharedPointer<QState> mp_PssmProcessingState;                                      ///<  Busy State's sub state: Processing or Soak state
+    QSharedPointer<QState> mp_PssmProcessingSRState;                                    ///<  Busy State's sub state: Processing or Soak state (for Safe Reagent)
     QSharedPointer<QState> mp_PssmRVMoveToTubeState;                                    ///<  Busy State's sub state: RV move to tube position state
     QSharedPointer<QState> mp_PssmDrainingState;                                        ///<  Busy State's sub state: Draining state
     QSharedPointer<QState> mp_PssmRVPosChangeState;                                     ///<  Busy State's sub state: RV move to next tube state
@@ -130,7 +130,7 @@ private:
         RESTART_LEVELSENSOR,
         CHECK_TEMPERATURE,
         STOP_LEVELSENSOR,
-        WAIT2SECONDS
+        WAIT2MIN
     } LEVELSENSOR_RESTART_STAGE_t;
 
     LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;                                   ///< State restart Level sensor sub state
@@ -295,6 +295,15 @@ public:
      */
     /****************************************************************************/
     void SendResumeProcessing();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeProcessingSR
+     *
+     *  \return from SendResumeProcessingSR
+     */
+    /****************************************************************************/
+    void SendResumeProcessingSR();
 
     /****************************************************************************/
     /*!
@@ -898,13 +907,14 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rs_Tissue_Protect
      *
+     *  \param ctrlCmd - control command
      *  \param cmdName - command name
      *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleRsTissueProtectWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1174,6 +1184,12 @@ signals:
    /****************************************************************************/
    void ResumeProcessing();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeProcessingSR
+    */
+   /****************************************************************************/
+   void ResumeProcessingSR();
    /****************************************************************************/
    /*!
     *  \brief  Definition/Declaration of signal ResumeRVMoveTube

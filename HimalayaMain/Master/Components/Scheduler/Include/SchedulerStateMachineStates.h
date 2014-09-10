@@ -16,16 +16,17 @@ namespace Scheduler{
 #define L2_PRO_FILLING                        (0x6)
 #define L2_PRO_RV_MOVE_TO_SEAL                (0x7)
 #define L2_PRO_PROCESSING                     (0x8)
-#define L2_PRO_RV_MOVE_TO_TUBE                (0x9)
-#define L2_PRO_DRAINING                       (0xA)
-#define L2_PRO_RV_POS_CHANGE                  (0xB)
-#define L2_PRO_STEP_PROGRAM_FINISH            (0xC)
-#define L2_PRO_PROGRAM_FINISH                 (0xD)
-#define L2_PRO_PAUSE                          (0xE)
-#define L2_PRO_PAUSE_DRAIN                    (0xF)
-#define L2_PRO_ABORTING                       (0x10)
-#define L2_PRO_ABORTED                        (0x11)
-#define L2_PRO_CLEANING_DRY_STEP              (0x12)
+#define L2_PRO_PROCESSING_SR                  (0x9)
+#define L2_PRO_RV_MOVE_TO_TUBE                (0xA)
+#define L2_PRO_DRAINING                       (0xB)
+#define L2_PRO_RV_POS_CHANGE                  (0xC)
+#define L2_PRO_STEP_PROGRAM_FINISH            (0xD)
+#define L2_PRO_PROGRAM_FINISH                 (0xE)
+#define L2_PRO_PAUSE                          (0xF)
+#define L2_PRO_PAUSE_DRAIN                    (0x10)
+#define L2_PRO_ABORTING                       (0x11)
+#define L2_PRO_ABORTED                        (0x12)
+#define L2_PRO_CLEANING_DRY_STEP              (0x13)
 
 #define L2_ERR_WAIT                                 (0x1)
 #define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
@@ -68,6 +69,7 @@ typedef enum
     PSSM_FILLING_LEVELSENSOR_HEATING = ((L2_PRO_FILLING_LEVELSENSOR_HEATING << 8) | L1_BUSY),
     PSSM_FILLING = ((L2_PRO_FILLING << 8) | L1_BUSY),
     PSSM_RV_MOVE_TO_SEAL = ((L2_PRO_RV_MOVE_TO_SEAL << 8) | L1_BUSY),
+    PSSM_PROCESSING_SR = ((L2_PRO_PROCESSING_SR << 8) | L1_BUSY),
     PSSM_PROCESSING = ((L2_PRO_PROCESSING << 8) | L1_BUSY),
     PSSM_RV_MOVE_TO_TUBE = ((L2_PRO_RV_MOVE_TO_TUBE << 8) | L1_BUSY),
     PSSM_DRAINING = ((L2_PRO_DRAINING << 8) | L1_BUSY),
@@ -102,5 +104,52 @@ typedef enum
     SM_ERR_RS_TISSUE_PROTECT = ((L2_ERR_RS_TISSUE_PROTECT << 8) | L1_ERROR),
     SM_ERR_RC_CHECK_RTLOCK = ((L2_ERR_RC_CHECK_RTLOCK << 8) | L1_ERROR)
 } SchedulerStateMachine_t;
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ControlCommandType_t
+ */
+/****************************************************************************/
+typedef enum
+{
+    CTRL_CMD_START,
+    CTRL_CMD_PAUSE,
+    CTRL_CMD_ABORT,
+    CTRL_CMD_SET_REMOTE_ALARM,
+    CTRL_CMD_CLEAR_REMOTE_ALARM,
+    CTRL_CMD_DRAIN,
+    CTRL_CMD_QUITAPP,
+    CTRL_CMD_SHUTDOWN,
+    CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN,
+    CTRL_CMD_RS_STANDBY,
+    CTRL_CMD_RS_STANDBY_WITHTISSUE,
+    CTRL_CMD_RS_HEATINGERR30SRETRY,
+    CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY,
+    CTRL_CMD_RS_TSENSORERR3MINRETRY,
+    CTRL_CMD_RC_RESTART,
+    CTRL_CMD_RC_REPORT,
+    CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
+    CTRL_CMD_RC_PRESSURE,
+    CTRL_CMD_RC_VACUUM,
+    CTRL_CMD_RC_FILLING,
+    CTRL_CMD_RC_DRAINING,
+    CTRL_CMD_RS_DRAINATONCE,
+    CTRL_CMD_RC_BOTTLECHECK_I,
+    CTRL_CMD_RS_FILLINGAFTERFLUSH,
+    CTRL_CMD_RS_CHECK_BLOCKAGE,
+    CTRL_CMD_RS_PAUSE,
+    CTRL_CMD_RS_RV_WAITINGTEMPUP,
+    CTRL_CMD_RS_TISSUE_PROTECT,
+    CTRL_CMD_USER_RESPONSE_PAUSE_ALARM,
+    CTRL_CMD_RC_CHECK_RTLOCK,
+    CTRL_CMD_ALARM_RMT_ON,
+    CTRL_CMD_ALARM_RMT_OFF,
+    CTRL_CMD_ALARM_LOC_ON,
+    CTRL_CMD_ALARM_LOC_OFF,
+    CTRL_CMD_ALARM_ALL_OFF,
+    CTRL_CMD_NONE,
+    CTRL_CMD_UNKNOWN
+}ControlCommandType_t;
+
 }
 #endif // SCHEDULERSTATEMACHINESTATES_H

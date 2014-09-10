@@ -12,31 +12,28 @@
 			<Step ID="4" Type="ACT" Action="RC_Run_CleaningProgram"/>
 		</Event>
 		<Event Code="" ErrorID="513010300" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="4" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnClickOk="2" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="6" NextStepOnSuccess="6"/>
-			<Step ID="6" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513010304" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103010304" RDStringID="113010304" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="4" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="103010304" RDStringID="113010304" ButtonType="OK" NextStepOnClickOk="2" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010304" RDStringID="113010304" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="6" NextStepOnSuccess="6"/>
-			<Step ID="6" Type="MSG" StringID="103010304" RDStringID="113010304" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513010308" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103010308" RDStringID="113010308" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="4" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="103010308" RDStringID="113010308" ButtonType="OK" NextStepOnClickOk="2" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010308" RDStringID="113010308" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="6" NextStepOnSuccess="6"/>
-			<Step ID="6" Type="MSG" StringID="103010308" RDStringID="113010308" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513010316" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>

@@ -107,6 +107,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
                       this, OnProgramWillComplete());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, TissueProtectPassed(),
+                      this, OnTissueProtectPassed());
+
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramAborted(),
                       this, OnProgramAborted());
 
@@ -235,6 +238,23 @@ void CDashboardWidget::OnProgramWillComplete()
         return;
     }
 }
+
+void CDashboardWidget::OnTissueProtectPassed()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+    QString strTemp(m_strTissueProtectPassed);
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+
+    if (mp_MessageDlg->exec())
+    {
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
+        return;
+    }
+}
+
 
 void CDashboardWidget::OnProgramBeginAbort()
 {
@@ -872,6 +892,7 @@ void CDashboardWidget::RetranslateUI()
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Porgam will be delayed for some mintues in the first step as the paraffin is not melted completly. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, please take out of tissues", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

@@ -121,6 +121,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsCleaningProgram = false;
     QFile ProgramStatusFile(ProgramStatusFilePath);
     m_CurrentStepState = PSSM_INIT;
+    m_IsSafeReagentState = false;
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
@@ -510,6 +511,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                case PSSM_PROCESSING:
                     m_SchedulerMachine->SendResumeProcessing();
                     break;
+                case PSSM_PROCESSING_SR:
+                     m_SchedulerMachine->SendResumeProcessingSR();
+                     break;
                case PSSM_RV_MOVE_TO_TUBE:
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
@@ -727,6 +731,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
             }
         }
+        else if (PSSM_PROCESSING_SR == stepState)
+        {
+            if(CTRL_CMD_DRAIN == ctrlCmd)
+            {
+                m_IsSafeReagentState = true;
+                m_SchedulerMachine->NotifyProcessingFinished();
+            }
+        }
         else if(PSSM_RV_MOVE_TO_TUBE == stepState)
         {
             m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
@@ -769,12 +781,20 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              }
 
              //In case that Scheduler was recovered from Error
-            if( "Scheduler::ALDraining"== cmdName)
-            {
+             if( "Scheduler::ALDraining"== cmdName)
+             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                    m_SchedulerMachine->NotifyDrainFinished();
+                    if (false == m_IsSafeReagentState)
+                    {
+                        m_SchedulerMachine->NotifyDrainFinished();
+                    }
+                    else
+                    {
+                        m_IsSafeReagentState = false; // Reset
+                        m_SchedulerMachine->NotifyProgramFinished();
+                    }
                 }
                 else
                 {
@@ -782,7 +802,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RaiseError(0, retCode, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
-            }
+             }
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
         {
@@ -1205,7 +1225,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RS_TISSUE_PROTECT == currentState)
     {
         LogDebug("In RS_Tissue_Protect");
-        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode);
+        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(ctrlCmd, cmdName, retCode);
     }
     else if (SM_ERR_RC_CHECK_RTLOCK == currentState)
     {
@@ -1716,6 +1736,14 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
     return true;
 }
 
+void SchedulerMainThreadController::SendTissueProtectMsg()
+{
+    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    Q_ASSERT(CmdTissueProtectDone);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
+}
+
 /**
  * @brief Check which step has no safe reagent in a program.
  * @param ProgramID The the program Id, which to be checked.
@@ -2135,6 +2163,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         reagentRelated = true;
         break;
     case PSSM_PROCESSING:
+    case PSSM_PROCESSING_SR:
         scenario = 214;
         reagentRelated = true;
         break;
@@ -3053,21 +3082,13 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
 
 }
 
-void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID)
+void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck)
 {
     LogDebug("Send cmd to DCL to Fill in Rs_Tissue_Protect");
     CmdALFilling* cmd  = new CmdALFilling(500, this);
     cmd->SetDelayTime(0);
 
-    // For paraffin, Insufficient Check is NOT needed.
-    if (272 == m_CurrentScenario)
-    {
-        cmd->SetEnableInsufficientCheck(false);
-    }
-    else
-    {
-        cmd->SetEnableInsufficientCheck(true);
-    }
+    cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     // acknowledge to gui
