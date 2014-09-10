@@ -181,7 +181,7 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
                 emit StopCmdExec();
             }
-            else if (QString::number(Scenario).right(1).toInt(&ok)>=1 && QString::number(Scenario).right(1).toInt(&ok) <= 7)
+            else if (QString::number(Scenario).right(1).toInt(&ok)>=2 && QString::number(Scenario).right(1).toInt(&ok) <= 6)
             {
                 mp_SchedulerController->MoveRV(0);
                 emit DrainCurReagent();
