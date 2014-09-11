@@ -9,9 +9,11 @@
 
 BIN_DIR=/home/Leica/Bin
 FLAG_FILE="/tmp/.ts_calibrate"
-SSH_DIR=/home/root/.ssh
-PRIV_KEY=/home/root/.ssh/id_rsa
-SSH_CONFIG=/home/root/.ssh/config
+
+SSH_DIR=/tmp/root/.ssh
+PRIV_KEY=/tmp/root/.ssh/id_rsa
+SSH_CONFIG=/tmp/root/.ssh/config
+
 cd $BIN_DIR
 diff id_rsa $PRIV_KEY 1>/tmp/.log 2>&1
 IS_SAME=$?
