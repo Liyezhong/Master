@@ -11,13 +11,19 @@ BIN_DIR=/home/Leica/Bin
 FLAG_FILE="/tmp/.ts_calibrate"
 SSH_DIR=/home/root/.ssh
 PRIV_KEY=/home/root/.ssh/id_rsa
+SSH_CONFIG=/home/root/.ssh/config
 cd $BIN_DIR
 diff id_rsa $PRIV_KEY 1>/tmp/.log 2>&1
 IS_SAME=$?
 if [ ! -f $PRIV_KEY ] || [ $IS_SAME -ne 0 ] ; then
 	mkdir -p $SSH_DIR
+	chmod 0700 $SSH_DIR
 	cp -f id_rsa $PRIV_KEY
 	chmod 0600 $PRIV_KEY
+
+	echo "UserKnownHostsFile /dev/null" > $SSH_CONFIG
+	echo "ConnectTimeout 15" >> $SSH_CONFIG
+	echo "StrictHostKeyChecking no" >> $SSH_CONFIG
 fi
 
 ./himalaya_service -qws

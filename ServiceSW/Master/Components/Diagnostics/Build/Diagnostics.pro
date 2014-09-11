@@ -8,7 +8,9 @@
     error("Diagnostics.pri not found")
 }
 
-TARGET = Diagnostics
+INCLUDEPATH += ../../../../../../Platform/Common/Components
+
+DEFINES += PRE_ALFA_TEST
 
 HEADERS *= ../Include/*.h \    # header file location
     ../Include/Retort/*.h \
@@ -18,7 +20,8 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/System/*.h \
     ../Include/Display.h \
     ../Include/BasicColor/BasicColorTestDlg.h \
-    ../Include/MainControl.h
+    ../Include/MainControl.h \
+    ../Include/ServiceDeviceProcess/ServiceDeviceProcess.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -27,7 +30,8 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/LaSystem/*.cpp \
     ../Source/System/*.cpp \
     ../Source/BasicColor/BasicColorTestDlg.cpp \
-    ../Source/MainControl.cpp
+    ../Source/MainControl.cpp \
+    ../Source/ServiceDeviceProcess/ServiceDeviceProcess.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/System/*.ui \
