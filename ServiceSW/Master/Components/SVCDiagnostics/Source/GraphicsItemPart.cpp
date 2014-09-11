@@ -14,7 +14,7 @@ QVariant CGraphicsItemPart::itemChange(GraphicsItemChange change, const QVariant
 {
      switch (change) {
      case ItemSelectedHasChanged:
-         emit PartSelectedChange();
+         //emit PartSelectedChange();
         break;
      default:
          break;
