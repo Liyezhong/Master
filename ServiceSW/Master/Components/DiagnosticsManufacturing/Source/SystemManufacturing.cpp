@@ -65,7 +65,7 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     if (mp_DataConnector->GetDeviceConfigInterface()) {
         mp_DeviceConfiguration = mp_DataConnector->GetDeviceConfigInterface()->GetDeviceConfiguration();
         if (mp_DeviceConfiguration) {
-            m_SystemSNString = mp_DeviceConfiguration->GetValue("SERIALNUMBER");
+            m_SystemSNString = mp_DeviceConfiguration->GetSerialNumber();
         }
     }
 

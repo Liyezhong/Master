@@ -385,7 +385,7 @@ void CRetort::SendTestReport()
         if (DevConfigurationInterface) {
             DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
             if (DeviceConfiguration) {
-                serialNumber = DeviceConfiguration->GetValue("SERIALNUMBER");
+                serialNumber = DeviceConfiguration->GetSerialNumber();
                 isInvalidSN = serialNumber.startsWith("XXXX");
                 MessageText = Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN;
             }

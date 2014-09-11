@@ -383,7 +383,7 @@ void CMainControl::SendTestReport()
     if (DevConfigurationInterface) {
         DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
         if (DeviceConfiguration) {
-            systemSN = DeviceConfiguration->GetValue("SERIALNUMBER");
+            systemSN = DeviceConfiguration->GetSerialNumber();
         }
     }
 
