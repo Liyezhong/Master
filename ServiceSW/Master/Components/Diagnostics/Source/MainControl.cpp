@@ -1,11 +1,11 @@
 /****************************************************************************/
-/*! \file LaSystem.cpp
+/*! \file MainContril.cpp
  *
- *  \brief Implementation of Liquid and air system test.
+ *  \brief Implementation of Main control test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-27
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-09-09
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *

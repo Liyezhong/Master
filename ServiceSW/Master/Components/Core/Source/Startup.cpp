@@ -28,6 +28,7 @@
 #include <ServiceWidget/Include/DlgWizardSelectTestOptions.h>
 #include <Core/Include/SelectTestOptions.h>
 #include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
+#include "Diagnostics/Include/InitialSystem.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCase.h"
@@ -584,9 +585,16 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
     {
         if(!mp_USBKeyValidator->GetSystemLogOff())
         {
+            mp_USBKeyValidator->HideKeyBoard();
+            Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(QApplication::desktop()->screen());
+            p_InitSystem->setFixedSize(800, 600);
+            //(void)p_InitSystem->exec();
+            delete p_InitSystem;
+
             ServiceGuiInit();
             QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
             StartTimer();
+
         }
         else
         {
