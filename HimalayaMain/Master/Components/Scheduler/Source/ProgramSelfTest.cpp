@@ -464,16 +464,40 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
     switch(m_StatePressureStep)
     {
         case START_PUMP:
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
-            m_StatePressureStep = STOP_PUMP;
-            m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+            if(0 == m_StartReq)
+            {
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
+                m_StartReq++;
+            }
+            else
+            {
+                if("Scheduler::ALPressure" == cmdName)
+                {
+                    mp_SchedulerThreadController->LogDebug(QString("Self-Test in pressure,recode:%1").arg(retCode));
+                    m_StatePressureStep = STOP_PUMP;
+                    m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+                    m_StartReq = 0;
+                }
+            }
             break;
         case STOP_PUMP:
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                m_StatePressureStep = START_VALVE1;
+                if(0 == m_StartReq)
+                {
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                    m_StartReq++;
+                }
+                else
+                {
+                    if("Scheduler::ALReleasePressure" == cmdName)
+                    {
+                        mp_SchedulerThreadController->LogDebug(QString("Self-Test in release pressure,recode:%1").arg(retCode));
+                        m_StatePressureStep = START_VALVE1;
+                        m_StartReq = 0;
+                    }
+                }
             }
             break;
         case START_VALVE1:
