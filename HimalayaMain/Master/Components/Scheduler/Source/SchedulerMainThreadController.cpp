@@ -1231,7 +1231,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_PS_PAUSE == currentState)
     {
         LogDebug("In RS_Pause state");
-        m_SchedulerMachine->HandleRsPauseWorkFlow();
+        m_SchedulerMachine->HandleRsPauseWorkFlow(ctrlCmd);
     }
     else if(SM_ERR_RS_RV_WAITINGTEMPUP == currentState)
     {
@@ -1294,6 +1294,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_DRAIN_SR)
         {
             return CTRL_CMD_DRAIN_SR;
+        }
+        if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_OVEN_COVER_OPEN)
+        {
+            return CTRL_CMD_OVEN_COVER_OPEN;
         }
     }
 
@@ -1769,6 +1773,13 @@ void SchedulerMainThreadController::SendTissueProtectMsg()
     {
         m_CmdDrainSR_Click = false;
     }
+}
+void SchedulerMainThreadController::SendOvenCoverOpenMsg()
+{
+    MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
+    Q_ASSERT(CmdOvenCoverOpen);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(CmdOvenCoverOpen));
 }
 
 /**

@@ -52,6 +52,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
 
     mp_Init->addTransition(this, SIGNAL(DrainCurReagent()), mp_DrainCurReagent.data());
     mp_Init->addTransition(this, SIGNAL(StopCmdExec()), mp_StopCmdExec.data());
+    mp_Init->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_StopCmdExec->addTransition(this, SIGNAL(DrainCurReagent()), mp_DrainCurReagent.data());
     mp_DrainCurReagent->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
@@ -185,6 +186,10 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
             {
                 mp_SchedulerController->MoveRV(0);
                 emit DrainCurReagent();
+            }
+            else
+            {
+                emit MoveToTube();
             }
 
         }

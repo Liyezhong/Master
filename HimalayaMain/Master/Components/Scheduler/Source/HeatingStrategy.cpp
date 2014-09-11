@@ -261,6 +261,21 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP;
     }
 
+    if (m_CurScenario >= 271 && m_CurScenario <=277)
+    {
+        //Parrifin melting point (user input)
+        qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        if (strctHWMonitor.TempALTube1 < userInputMeltingPoint)
+        {
+            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
+        }
+
+        if (strctHWMonitor.TempALTube2 < userInputMeltingPoint)
+        {
+            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
+        }
+    }
+
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
@@ -1512,14 +1527,11 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
         {
-        if(-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario) )
-        {
             if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
             {
                 int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
                 mp_SchedulerController->LogDebug(QString("RVoutlet heat over time, the current temp:%1, but the hope temp:%2").arg(HWTemp).arg(retTmp));
                 return false;
-            }
             }
         }
     }

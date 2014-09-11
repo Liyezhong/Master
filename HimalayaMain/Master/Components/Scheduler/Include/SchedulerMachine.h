@@ -1038,10 +1038,10 @@ public:
     /*!
      *  \brief Handle the whole work flow for HandleRsPauseWorkFlow
      *
-     *  \return void
+     *  \return ctrlCmd - control command
      */
     /****************************************************************************/
-    void HandleRsPauseWorkFlow();
+    void HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd);
 
     /****************************************************************************/
     /*!

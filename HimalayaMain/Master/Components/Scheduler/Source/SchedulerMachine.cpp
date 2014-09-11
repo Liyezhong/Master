@@ -288,6 +288,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Pause
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsPause()), mp_ErrorRsPauseState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsPauseState.data(), entered(), mp_SchedulerThreadController, SendOvenCoverOpenMsg());
     mp_ErrorRsPauseState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_RV_WaitingTempUp
@@ -1286,15 +1287,23 @@ void CSchedulerStateMachine::HandleRsCheckBlockageWorkFlow(const QString& cmdNam
     }
 }
 
-void CSchedulerStateMachine::HandleRsPauseWorkFlow()
+void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
 {
     qint32 scenario = 0;
     qint64 nowTime = 0;
+
     if(0 == m_RsPauseCount)
     {
         m_RsPauseStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RsPauseCount++;
     }
+
+    // We will always wait there until user clicks the OK button
+    if (CTRL_CMD_OVEN_COVER_OPEN != ctrlCmd)
+    {
+        return;
+    }
+
     scenario = mp_SchedulerThreadController->GetCurrentScenario();
     if(273 == scenario)//move seal position
     {
@@ -1309,7 +1318,14 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow()
         }
         else
         {
-            OnTasksDone(true);
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            {
+                OnTasksDone(true);
+            }
+            else
+            {
+                OnTasksDone(false);
+            }
             m_RsPauseCount =0;
         }
     }
@@ -1326,7 +1342,14 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow()
         }
         else
         {
-            OnTasksDone(true);
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            {
+                OnTasksDone(true);
+            }
+            else
+            {
+                OnTasksDone(false);
+            }
             m_RsPauseCount =0;
         }
     }
@@ -1343,13 +1366,27 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow()
         }
         else
         {
-            OnTasksDone(true);
+            if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+            {
+                OnTasksDone(true);
+            }
+            else
+            {
+                OnTasksDone(false);
+            }
             m_RsPauseCount =0;
         }
     }
     else
     {
-        OnTasksDone(true);
+        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().OvenLidStatus == 0)
+        {
+            OnTasksDone(true);
+        }
+        else
+        {
+            OnTasksDone(false);
+        }
         m_RsPauseCount =0;
     }
 }

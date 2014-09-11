@@ -1783,6 +1783,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit TissueProtectPassed();
         }
         break;
+        case DataManager::OVEN_COVER_OPEN:
+        {
+            emit OvenCoverOpen();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";
