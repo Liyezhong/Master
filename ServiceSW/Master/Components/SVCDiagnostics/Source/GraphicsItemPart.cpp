@@ -13,7 +13,7 @@ CGraphicsItemPart::CGraphicsItemPart(const QPixmap &pixmap, QGraphicsItem *paren
 QVariant CGraphicsItemPart::itemChange(GraphicsItemChange change, const QVariant &value)
 {
      switch (change) {
-     case ItemSelectedHasChange:
+     case ItemSelectedHasChanged:
          emit PartSelectedChange();
         break;
      default:
