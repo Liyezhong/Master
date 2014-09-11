@@ -949,7 +949,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
+            iter->OTTargetTemperature = tmpTemperatureOffset;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -1465,7 +1465,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
     {
         heatingSensor.OTCheckPassed = true;
     }
-    //heating over time less than ,it need check heating over time
+    //heating over time less than zero,it need NOT check heating over time
     if(heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime < 0)
     {
         return true;

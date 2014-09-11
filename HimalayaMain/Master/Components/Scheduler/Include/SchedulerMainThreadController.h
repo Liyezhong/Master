@@ -250,6 +250,7 @@ typedef struct
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         bool m_IsSafeReagentState;                            ///< Scheduler is in RS_Tissue_Protect state
+        bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1269,15 +1270,6 @@ protected:
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
 
-        /****************************************************************************/
-        /*!
-         *  \brief  Send out Tisue Protect done message to GUI
-         *  \param  void
-         *  \return void
-         */
-        /****************************************************************************/
-        void SendTissueProtectMsg();
-
     public slots:
 
         /****************************************************************************/
@@ -1407,6 +1399,15 @@ protected:
          */
         /****************************************************************************/
         void DisablePause();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Send out Tisue Protect done message to GUI
+         *  \param  void
+         *  \return void
+         */
+        /****************************************************************************/
+        void SendTissueProtectMsg();
     };
 
 } // EONS ::Scheduler

@@ -35,6 +35,7 @@ namespace DataManager {
         PROGRAM_PAUSE,
         PROGRAM_ABORT,
         PROGRAM_DRAIN,
+        PROGRAM_DRAIN_SR,
         PROGRAM_UNDEFINED
     } ProgramActionType_t;
 /****************************************************************************/

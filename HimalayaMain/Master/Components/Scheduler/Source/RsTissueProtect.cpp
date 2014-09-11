@@ -437,7 +437,6 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
             }
             mp_SchedulerController->SetCurrentStationID(m_StationID);
-            mp_SchedulerController->SendTissueProtectMsg();
             emit TasksDone(true);
         }
         else

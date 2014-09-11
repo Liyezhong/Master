@@ -250,7 +250,7 @@ void CDashboardWidget::OnTissueProtectPassed()
 
     if (mp_MessageDlg->exec())
     {
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN_SR);
         return;
     }
 }

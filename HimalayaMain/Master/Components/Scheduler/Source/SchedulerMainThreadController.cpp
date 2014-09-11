@@ -44,6 +44,7 @@
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
+#include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
@@ -122,6 +123,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     QFile ProgramStatusFile(ProgramStatusFilePath);
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
+    m_CmdDrainSR_Click = false;
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
@@ -490,6 +492,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+                CmdALStopCmdExec* ALStopCmd = NULL;
                 switch (m_CurrentStepState)
                 {
                 case PSSM_INIT:
@@ -503,6 +506,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     break;
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
                 case PSSM_FILLING:
+                    // Stop filling at first
+                    ALStopCmd = new CmdALStopCmdExec(500, this);
+                    ALStopCmd->SetCmdType(0);
+                    m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
                     m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
@@ -518,6 +525,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
+                    // Stop draining at first
+                    ALStopCmd = new CmdALStopCmdExec(500, this);
+                    ALStopCmd->SetCmdType(1);
+                    m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
                     m_SchedulerMachine->SendResumeDraining();
                     break;
                 case PSSM_RV_POS_CHANGE:
@@ -733,7 +744,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (PSSM_PROCESSING_SR == stepState)
         {
-            if(CTRL_CMD_DRAIN == ctrlCmd)
+            if(CTRL_CMD_DRAIN_SR == ctrlCmd)
             {
                 m_IsSafeReagentState = true;
                 m_SchedulerMachine->NotifyProcessingFinished();
@@ -1026,6 +1037,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         m_RecvCommandList.push_back(recvCommand);
     }
 
+    if (CTRL_CMD_DRAIN_SR == ctrlCmd)
+    {
+        m_CmdDrainSR_Click = true;
+    }
+
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
     {
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
@@ -1274,6 +1290,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_DRAIN)
         {
             return CTRL_CMD_DRAIN;
+        }
+        if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_DRAIN_SR)
+        {
+            return CTRL_CMD_DRAIN_SR;
         }
     }
 
@@ -1738,10 +1758,17 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
 void SchedulerMainThreadController::SendTissueProtectMsg()
 {
-    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
-    Q_ASSERT(CmdTissueProtectDone);
-    Global::tRefType fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
+    if (false == m_CmdDrainSR_Click)
+    {
+        MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+        Q_ASSERT(CmdTissueProtectDone);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
+    }
+    else
+    {
+        m_CmdDrainSR_Click = false;
+    }
 }
 
 /**
