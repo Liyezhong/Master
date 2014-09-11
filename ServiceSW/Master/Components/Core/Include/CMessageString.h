@@ -43,7 +43,8 @@ public:
 	static QString MSG_DIAGNOSTICS_SYSTEM;                            //!<System
 	static QString MSG_DIAGNOSTICS_CLEANING;                          //!<Cleaning
 	static QString MSG_DIAGNOSTICS_CLEANING_BEGIN;                    //!<Begin cleaning...
-	static QString MSG_DIAGNOSTICS_DIAGNOSTICS;                       //!<Diagnostics
+    static QString MSG_DIAGNOSTICS_DIAGNOSTICS;                       //!<Diagnostics
+    static QString MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS;                 //!<Service Diagnostics
 	static QString MSG_DIAGNOSTICS_FAILED;                            //!<Failed
 	static QString MSG_DIAGNOSTICS_SUCCESS;                           //!<Success
 	static QString MSG_DIAGNOSTICS_ENTER_SN;                          //!<Please enter the serial number.

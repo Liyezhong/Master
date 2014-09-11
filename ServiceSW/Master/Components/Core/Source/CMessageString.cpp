@@ -39,6 +39,7 @@ QString CMessageString::MSG_DIAGNOSTICS_SYSTEM;                            //!<S
 QString CMessageString::MSG_DIAGNOSTICS_CLEANING;                          //!<Cleaning
 QString CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN;                    //!<Begin cleaning...
 QString CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS;                       //!<Diagnostics
+QString CMessageString::MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS;                 //!<Service Diagnostics
 QString CMessageString::MSG_DIAGNOSTICS_FAILED;                            //!<Failed
 QString CMessageString::MSG_DIAGNOSTICS_SUCCESS;                           //!<Success
 QString CMessageString::MSG_DIAGNOSTICS_ENTER_SN;                          //!<Please enter the serial number.
@@ -183,7 +184,8 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_SYSTEM                            = (QApplication::translate("Service", "System", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CLEANING                          = (QApplication::translate("Service", "Cleaning", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CLEANING_BEGIN                    = (QApplication::translate("Service", "Begin cleaning...", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_DIAGNOSTICS                       = (QApplication::translate("Service", "Diagnostics", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_DIAGNOSTICS                       = (QApplication::translate("Service", "Diagnostics", 0, QApplication::UnicodeUTF8));
+    MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS                 = QApplication::translate("Service", "SVC Diagnostics", 0, QApplication::UnicodeUTF8);
 	MSG_DIAGNOSTICS_FAILED                            = (QApplication::translate("Service", "Failed", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_SUCCESS                           = (QApplication::translate("Service", "Success", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ENTER_SN                          = (QApplication::translate("Service", "Please enter the serial number.", 0, QApplication::UnicodeUTF8));

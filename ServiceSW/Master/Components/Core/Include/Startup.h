@@ -70,6 +70,10 @@
 #include "DiagnosticsManufacturing/Include/SealingTestReportDialog.h"
 #include <QTimer>
 
+namespace SVCDiagnostics{
+    class CSVCDashboardWidget;
+}
+
 namespace ServiceKeyValidator {
     class CUSBKeyValidator;
 }
@@ -167,6 +171,9 @@ private:
     Diagnostics::CLaSystem                  *mp_LaSystem;                   //!< L&A System tests
     Diagnostics::CSystem                    *mp_System;                     //!< System tests
     Diagnostics::CMainControl               *mp_MainControl;                //!< Main Control tests
+
+    //SVC Diagnostics
+    SVCDiagnostics::CSVCDashboardWidget     *mp_SVCDashboardWidget;
 
     // Diagnostics1 Manufacturing
     MainMenu::CMenuGroup                    *mp_DiagnosticsManufGroup;

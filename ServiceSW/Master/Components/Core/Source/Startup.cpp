@@ -34,6 +34,7 @@
 #include "DiagnosticsManufacturing/Include/UserInputDialog.h"
 #include <QDesktopWidget>
 #include "Core/Include/ServiceUtils.h"
+#include "SVCDiagnostics/Include/SVCDashboardWidget.h"
 
 //lint -e613
 
@@ -171,6 +172,9 @@ CStartup::CStartup() : QObject(),
     mp_LaSystem         = new Diagnostics::CLaSystem;
     mp_System           = new Diagnostics::CSystem;
     mp_MainControl      = new Diagnostics::CMainControl;
+
+    //Service Diagnostics
+    mp_SVCDashboardWidget = new SVCDiagnostics::CSVCDashboardWidget();
 
     //Diagnostics1 Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
@@ -325,6 +329,7 @@ CStartup::~CStartup()
         delete mp_Display;
         delete mp_Retort;
         delete mp_DiagnosticsGroup;
+        delete mp_SVCDashboardWidget;
 
         //Diagnostics1 Manufacturing
         delete mp_DiagnosticsManufGroup;
@@ -633,10 +638,11 @@ void CStartup::ServiceGuiInit()
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA,      mp_LaSystem);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_SYSTEM,  mp_System);
 
+    mp_MainWindow->AddMenuGroup(mp_SVCDashboardWidget, Service::CMessageString::MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS);
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
 
-    mp_MainWindow->SetTabWidgetIndex(4);
+    mp_MainWindow->SetTabWidgetIndex(5);
 }
 
 void CStartup::InitManufacturingDiagnostic()

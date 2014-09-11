@@ -61,6 +61,7 @@ int main(int Argc, char *p_Argv[])
     Q_INIT_RESOURCE(KeyBoard);
     Q_INIT_RESOURCE(SpellerButtons);
     Q_INIT_RESOURCE(Speller);
+    Q_INIT_RESOURCE(SVCDiagnostics);
 
     Application::CApplication App(Argc, p_Argv, Application::DEVICE_HIMALAYA);
     QFont Font;

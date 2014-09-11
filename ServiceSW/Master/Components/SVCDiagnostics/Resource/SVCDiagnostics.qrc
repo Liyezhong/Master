@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/SVCDiagnosticsBackground.png</file>
+        <file>Images/retortGlow.PNG</file>
+        <file>Images/retort.png</file>
+    </qresource>
+</RCC>
