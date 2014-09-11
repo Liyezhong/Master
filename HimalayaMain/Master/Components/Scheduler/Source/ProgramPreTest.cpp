@@ -281,24 +281,9 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Enter Pressure Calibration"));
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_PressureCalibrationSeq++;
+            m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
         }
         else if (1 == m_PressureCalibrationSeq)
-        {
-            if ("Scheduler::ALReleasePressure" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_PressureCalibrationSeq++;
-                    m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                else
-                {
-                    m_PressureCalibrationSeq = 0;
-                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-            }
-        }
-        else if (2 == m_PressureCalibrationSeq)
         {
             if ((QDateTime::currentMSecsSinceEpoch() - m_ReleasePressureTime) >= 20*1000)
             {
@@ -309,11 +294,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 // Do nothing, just wait for time out
             }
         }
-        else if (3 == m_PressureCalibrationSeq)
+        else if (2 == m_PressureCalibrationSeq)
         {
             currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
             mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Pressure Calibration, current pressure is :%1f").arg(currentPressure));
-            if (qAbs(currentPressure) > 1.5) //Reitry, at most 3 times
+            if (qAbs(currentPressure) > 1.5) //Retry, at most 3 times
             {
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter++;
