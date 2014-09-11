@@ -244,7 +244,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             ASB5SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("Retort");
             ASB3SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("RV");
             mp_SchedulerThreadController->LogDebug(QString("Self-Test the ASB5SwithcType:%1,ASB3SwitchType:%2").arg(ASB5SwitchType).arg(ASB3SwitchType));
-//            ASB5SwitchType = ASB3SwitchType = 1;
+
             if(0 == m_StateACVoltageStepCount)
             {
                 //first time
@@ -464,56 +464,16 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
     switch(m_StatePressureStep)
     {
         case START_PUMP:
-            if(0 == m_StartReq)
-            {
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
-                m_StartReq++;
-            }
-            else
-            {
-                if("Scheduler::ALPressure" == cmdName)
-                {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test in pressure,recode:%1").arg(retCode));
-                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                    {
-                        m_StatePressureStep = STOP_PUMP;
-                        m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
-                    }
-                    else
-                    {
-                        m_StatePressureStep = START_PUMP;
-                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                    }
-                    m_StartReq = 0;
-                }
-            }
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
+            m_StatePressureStep = STOP_PUMP;
+            m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             break;
         case STOP_PUMP:
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
-                if(0 == m_StartReq)
-                {
-                    m_StartReq++;
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                }
-                else
-                {
-                    if("Scheduler::ALReleasePressure" == cmdName)
-                    {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test in release pressure,recode:%1").arg(retCode));
-                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            m_StatePressureStep = START_VALVE1;
-                        }
-                        else
-                        {
-                            m_StatePressureStep = START_PUMP;
-                            mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                        }
-                        m_StartReq = 0;
-                    }
-                }
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                m_StatePressureStep = START_VALVE1;
             }
             break;
         case START_VALVE1:
