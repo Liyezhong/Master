@@ -31,6 +31,7 @@
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALGetRecentPressure.h"
@@ -115,8 +116,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
 	strctHWMonitor.TempALTube1			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE1,0);
 	strctHWMonitor.TempALTube2			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE2,0);
-	strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
-	strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
+    strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
+    strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
 	strctHWMonitor.PositionRV			= mp_IDeviceProcessing->RVReqActRVPosition();
     strctHWMonitor.TempRTBottom1		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
     strctHWMonitor.TempRTBottom2		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,1);
@@ -328,6 +329,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure()));
 	}
+    else if  ("Scheduler::ALForceDraining" == cmdName)
+    {
+        scmd->SetResult(mp_IDeviceProcessing->ALForceDraining(qSharedPointerDynamicCast<CmdALForceDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALForceDraining>(scmd)->GetDrainPressure()));
+    }
 	else if  ("Scheduler::ALFilling" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),

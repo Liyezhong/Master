@@ -202,7 +202,7 @@
 		<Event Code="" ErrorID="513010461" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103010461" RDStringID="113010461" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" NextStepOnClickOK="2" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>>
-			<Step ID="2" Type="ACT" Action="RC_Check_RTrtLock" NextStepOnFail="4" NextStepOnSuccess="3"/>
+			<Step ID="2" Type="ACT" Action="RC_Check_RTLock" NextStepOnFail="4" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010461" RDStringID="113010461" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="6" NextStepOnSuccess="6"/>

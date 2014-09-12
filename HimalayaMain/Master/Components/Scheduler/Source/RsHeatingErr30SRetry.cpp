@@ -161,6 +161,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         break;
     case WAIT_FOR_10SECONDS:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state WAIT_FOR_10SECONDS");
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_ShutdownHeaterTime) >= 10*1000)
         {
@@ -168,6 +169,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         break;
     case RESTART_FAILED_HEATER:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state RESTART_FAILED_HEATER");
         if (true == mp_SchedulerController->RestartFailedHeaters())
         {
             m_StartTime = QDateTime::currentMSecsSinceEpoch();
@@ -182,6 +184,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         break;
     case CHECK_MODULE_CURRENT:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state CHECK_MODULE_CURRENT");
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_StartTime) > 3*1000)
         {

@@ -24,6 +24,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
@@ -203,13 +204,14 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
         }
         break;
     case DRAIN_CUR_REAGENT:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
         if (0 == m_DrainCurReagentSeq)
         {
             if (mp_SchedulerController->IsRVRightPosition(0))
             {
-                mp_SchedulerController->LogDebug("Send cmd to DCL to Drain in RS_Tissue_Protect");
-                CmdALDraining* cmd  = new CmdALDraining(500, mp_SchedulerController);
-                cmd->SetDelayTime(0);
+                mp_SchedulerController->LogDebug("Send cmd to DCL to Drain current reagent in RS_Tissue_Protect");
+                CmdALForceDraining* cmd  = new CmdALForceDraining(500, mp_SchedulerController);
+                cmd->SetDelayTime(30);
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_DrainCurReagentSeq++;
             }
@@ -220,17 +222,21 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
         }
         else
         {
-            if ("Scheduler::ALDraining" == cmdName)
+            if ("Scheduler::ALForceDraining" == cmdName)
             {
                 m_DrainCurReagentSeq = 0;
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    emit MoveToTube();
+                    //emit MoveToTube();
                 }
                 else
                 {
-                    TasksDone(false);
+                    //TasksDone(false);
                 }
+
+                // either success or failure, we always move to tube. The reason behind this is
+                // when we are in process of Filling, in this case there is NO sufficient reagent in Retort.
+                emit MoveToTube();
             }
             else
             {
