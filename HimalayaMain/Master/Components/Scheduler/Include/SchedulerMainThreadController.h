@@ -571,6 +571,18 @@ typedef struct
 
          /****************************************************************************/
          /*!
+          *  \brief Check no-signal error for temperature sensors
+          *
+          *  \param Scenario - current scenario
+          *  \param HwTemp - current temperature of sensor
+          *
+          *  \return ture - no error, false - error was gotten
+          */
+         /****************************************************************************/
+         bool CheckLevelSensorNoSignal(quint32 Scenario, qreal HWTemp);
+
+         /****************************************************************************/
+         /*!
           *  \brief Check if current over range error occurs
           *
           *    \param Scenario - current scenario

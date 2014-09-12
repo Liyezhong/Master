@@ -2578,7 +2578,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
-
+    //the Level Scenario no signal is the same with over range
+    if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
+    {
+        RaiseError(0, DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
     m_PositionRV = strctHWMonitor.PositionRV;
 }
 
@@ -3649,9 +3654,22 @@ bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenar
             || (Scenario >= 252 && Scenario <= 257) || 260 == Scenario || (Scenario >= 217 && Scenario <=277)
             || (Scenario >= 222 && Scenario <= 227) || (Scenario >= 231 && Scenario <=237)
             || (Scenario >= 241 && Scenario <=247) || 251 == Scenario || 002 == Scenario
-            || (Scenario >= 218 && Scenario <= 297) )
+            || (Scenario >= 281 && Scenario <= 297) )
     {
         //if (qFuzzyCompare((qAbs(HWTemp-299+1)), 0.0+1))
+        if (qAbs(HWTemp-299) < 0.000000000001)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, qreal HWTemp)
+{
+    if (200 == Scenario || 203 == Scenario || (Scenario >= 211 && Scenario <= 257)
+        || (Scenario >= 271 && Scenario <= 297) )
+    {
         if (qAbs(HWTemp-299) < 0.000000000001)
         {
             return false;
