@@ -24,11 +24,13 @@ namespace MsgClasses {
 QString CmdStationSuckDrain::NAME = "MsgClasses::CmdStationSuckDrain";
 
 
-CmdStationSuckDrain::CmdStationSuckDrain(int timeout, const QString& stationID, bool isStart, bool isSuck) :
+CmdStationSuckDrain::CmdStationSuckDrain(int timeout, const QString& stationID,
+                                         bool isStart, bool isSuck, bool noCleaningProgram) :
     Command(timeout),
     m_StationID(stationID),
     m_IsStart(isStart),
-    m_IsSuck(isSuck)
+    m_IsSuck(isSuck),
+    m_NoCleaningProgram(noCleaningProgram)
 {
 }
 

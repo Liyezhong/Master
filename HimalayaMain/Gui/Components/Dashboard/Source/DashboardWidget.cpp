@@ -134,6 +134,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PauseTimeout15Mintues(),
                               this, OnPauseTimeout15Mintues());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, TakeoutSpecimenWaitRunCleaning(),
+                              this, TakeOutSpecimenAndWaitRunCleaning());
+
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
@@ -945,7 +948,7 @@ void CDashboardWidget::RequestAsapDateTime()
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
 {
-    if (m_IsDrainingWhenPrgrmCompleted && !cmd.IsStart() && !cmd.IsSuck())
+    if (m_IsDrainingWhenPrgrmCompleted && !cmd.IsStart() && !cmd.IsSuck() && !cmd.NoCleaningProgram())
     {
         emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
         this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown

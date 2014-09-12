@@ -126,14 +126,6 @@ private:
      */
     /****************************************************************************/
     void RetranslateUI();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function TakeOutSpecimenAndWaitRunCleaning
-     *
-     *  \return from TakeOutSpecimenAndWaitRunCleaning
-     */
-    /****************************************************************************/
-    void TakeOutSpecimenAndWaitRunCleaning();
     void SetCassetteNumber();
     bool IsOKPreConditionsToRunProgram();
     Ui::CDashboardWidget *ui;       ///<  Definition/Declaration of variable ui
@@ -313,6 +305,15 @@ private slots:
      */
     /****************************************************************************/
     void CheckPreConditionsToRunProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TakeOutSpecimenAndWaitRunCleaning
+     *
+     *  \return from TakeOutSpecimenAndWaitRunCleaning
+     */
+    /****************************************************************************/
+    void TakeOutSpecimenAndWaitRunCleaning();
+
  signals:
     /****************************************************************************/
     /*!

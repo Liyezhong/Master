@@ -623,6 +623,12 @@ signals:
     void ProgramPaused();
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal TakeoutSpecimenWaitRunCleaning
+     */
+    /****************************************************************************/
+    void TakeoutSpecimenWaitRunCleaning();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal RetortLockStatusChanged
      *  \param Command = command for retort lock status
      */

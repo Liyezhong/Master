@@ -1783,9 +1783,14 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit TissueProtectPassed();
         }
         break;
-        case DataManager::OVEN_COVER_OPEN:
+		case DataManager::OVEN_COVER_OPEN:
         {
             emit OvenCoverOpen();
+        }
+        break;
+        case DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING:
+        {
+            emit TakeoutSpecimenWaitRunCleaning();
         }
         break;
         default:

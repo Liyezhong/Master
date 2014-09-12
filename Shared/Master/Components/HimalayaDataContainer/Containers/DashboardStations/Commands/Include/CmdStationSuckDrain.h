@@ -53,7 +53,7 @@ public:
      *  \return from CmdStationSuckDrain
      */
     /****************************************************************************/
-    CmdStationSuckDrain(int timeout, const QString& stationID, bool isStart, bool isSuck);
+    CmdStationSuckDrain(int timeout, const QString& stationID, bool isStart, bool isSuck, bool noCleaningProgram);
     ~CmdStationSuckDrain();
     virtual QString GetName() const;
     /****************************************************************************/
@@ -80,6 +80,14 @@ public:
      */
     /****************************************************************************/
     inline const QString& StationID()const {return m_StationID;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NoCleaningProgram
+     *
+     *  \return from NoCleaningProgram
+     */
+    /****************************************************************************/
+    inline const bool NoCleaningProgram()const {return m_NoCleaningProgram;}
 private:
     CmdStationSuckDrain(const CmdStationSuckDrain &);                     ///< Not implemented.
     const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.
@@ -87,7 +95,8 @@ private:
     QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
     bool m_IsStart;///< true: start, false: completed
     bool m_IsSuck; ///< true: suck, false:drain
-    
+    bool m_NoCleaningProgram; ///< true: NoCleaningProgram, false:CleaningProgram
+
 }; // end class CmdStationSuckDrain
 
 /****************************************************************************/

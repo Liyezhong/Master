@@ -91,7 +91,8 @@ typedef enum  {
         PROGRAM_SELFTEST_FAILED,
 
         TISSUE_PROTECT_PASSED,
-        OVEN_COVER_OPEN
+		OVEN_COVER_OPEN,
+        TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
