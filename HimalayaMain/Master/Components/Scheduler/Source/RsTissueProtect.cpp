@@ -211,7 +211,7 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
             {
                 mp_SchedulerController->LogDebug("Send cmd to DCL to Drain current reagent in RS_Tissue_Protect");
                 CmdALForceDraining* cmd  = new CmdALForceDraining(500, mp_SchedulerController);
-                cmd->SetDelayTime(30);
+                cmd->SetDelayTime(60);
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_DrainCurReagentSeq++;
             }
