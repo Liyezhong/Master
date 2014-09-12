@@ -116,12 +116,19 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
     }
 
+
+    //the scenario is 2,don't check heating overtime and statrt time is hard code
+    if(2 == scenario)
+    {
+        m_CurScenario = 2;
+        return retCode;
+    }
+
     /***************************************************
      *
     Set temperature for each sensor
     *
     ***************************************************/
-
     if (scenario != m_CurScenario)
     {
         mp_SchedulerController->LogDebug(QString("the coming scenario is:%1, but the last scenario is:%2").arg(scenario).arg(m_CurScenario));
@@ -361,6 +368,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
     {
+        m_RTLevelSensor.curModuleId = "21";
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(95);
@@ -372,6 +380,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("RTSide" == HeaterName)
     {
+        m_RTTop.curModuleId = "1";
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -383,6 +392,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("RTBottom" == HeaterName)
     {
+        m_RTBottom.curModuleId = "1";
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -394,6 +404,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("OvenTop" == HeaterName)
     {
+        m_OvenTop.curModuleId = "1";
         pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_TOP);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -405,6 +416,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("OvenBottom" == HeaterName)
     {
+        m_OvenBottom.curModuleId = "1";
         pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_BOTTOM);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -416,6 +428,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("RV" == HeaterName)
     {
+        m_RV_1_HeatingRod.curModuleId = "3";
+        m_RV_2_Outlet.curModuleId = "3";
         pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
@@ -426,6 +440,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("LA_Tube1" == HeaterName)
     {
+        m_LARVTube.curModuleId = "1";
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_TUBE1);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -437,6 +452,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     }
     if ("LA_Tube2" == HeaterName)
     {
+        m_LAWaxTrap.curModuleId = "1";
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_TUBE2);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);

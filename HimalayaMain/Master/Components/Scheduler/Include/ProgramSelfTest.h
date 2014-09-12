@@ -77,6 +77,24 @@ public:
     /****************************************************************************/
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  whether the self test done
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool IsSelfTestDone() { return m_IsSelfTestDone;   }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  send signal for self test
+     *  \param  flag = bool
+     *  \return void
+     */
+    /****************************************************************************/
+    void SendSignalSelfTestDone(bool flag);
+
+
 signals:
     /****************************************************************************/
     /*!
@@ -111,7 +129,7 @@ signals:
      *  \brief Signal for tasks done
      */
     /****************************************************************************/
-    void SigSelfTestDone();
+    void SigSelfTestDone(bool flag);
 
 private:
     /****************************************************************************/
@@ -247,7 +265,7 @@ private:
     qint64                          m_DelayBeginTime;                   //!< the delay start time
     quint8                          m_StartReq;                         //!< start requence
     quint8                          m_StateACVoltageStepCount;          //!< the number of AC voltage
-
+    bool                            m_IsSelfTestDone;                   //!< whether self test done
 };
 
 }

@@ -323,6 +323,13 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
     emit sigStateChange();
+    if(false == flag)
+    {
+        if(false == mp_ProgramSelfTest->IsSelfTestDone())
+        {
+            mp_ProgramSelfTest->SendSignalSelfTestDone(false);
+        }
+    }
 }
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
@@ -1441,7 +1448,14 @@ void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdN
 
 void CSchedulerStateMachine::EnterRcRestart()
 {
-    emit SigEnterRcRestart();
+    if(false == mp_ProgramSelfTest->IsSelfTestDone())
+    {
+        emit SigSelfRcRestart();
+    }
+    else
+    {
+        emit SigEnterRcRestart();
+    }
 }
 
 void CSchedulerStateMachine::EnterRsRVGetOriginalPositionAgain()

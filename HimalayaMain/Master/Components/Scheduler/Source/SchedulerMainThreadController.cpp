@@ -274,7 +274,7 @@ void SchedulerMainThreadController::OnTickTimer()
     {
     case SM_INIT:
         //In INIT state will do self test
-        //HardwareMonitor("INIT");
+        HardwareMonitor("INIT");
         HandleInitState(newControllerCmd, cmd);
         break;
     case SM_IDLE:
@@ -300,19 +300,27 @@ void SchedulerMainThreadController::OnTickTimer()
     }
 }
 
-void SchedulerMainThreadController::OnSelfTestDone()
+void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
 
-    m_SchedulerMachine->SendSchedulerInitComplete();
-    //for debug
-    LogDebug("Self test is done");
-
-    //send command to main controller to tell self test OK
-    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
-    Q_ASSERT(commandPtr);
-    Global::tRefType Ref = GetNewCommandRef();
-    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
+    if(flag)
+    {
+        m_SchedulerMachine->SendSchedulerInitComplete();
+        LogDebug("Self test is done");
+        //send command to main controller to tell self test OK
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    }
+    else
+    {
+        LogDebug("Self test is failed");
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_FAILED));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    }
 }
 
 void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)

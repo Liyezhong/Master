@@ -1385,7 +1385,7 @@ protected:
          *  \brief  Definition/Declaration of slot OnSelfTestDone
          */
         /****************************************************************************/
-        void OnSelfTestDone();
+        void OnSelfTestDone(bool flag);
 
         /****************************************************************************/
         /*!
