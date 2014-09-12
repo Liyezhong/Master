@@ -51,7 +51,6 @@ const QString CServiceHelpTextFilter::CheckFromFile(const QString& EventId)
     }
 
     (void)File.seek(m_Position);
-        qDebug() << "\n\n" << __FUNCTION__ << __LINE__ << "\n\n";
     while(!File.atEnd()) {
         qint64 Position = File.pos();
         QByteArray LineBa = File.readLine();

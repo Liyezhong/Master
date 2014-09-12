@@ -48,21 +48,34 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="4">
-        <widget class="QCheckBox" name="warningBtn">
+       <item row="0" column="3">
+        <widget class="QRadioButton" name="warningBtn">
          <property name="text">
           <string>Warning</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QCheckBox" name="errorBtn">
+       <item row="0" column="2">
+        <widget class="QRadioButton" name="errorBtn">
          <property name="text">
           <string>Error</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="5" rowspan="2">
+       <item row="1" column="2">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="4" rowspan="2">
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -88,6 +101,27 @@
          </property>
         </spacer>
        </item>
+       <item row="2" column="0">
+        <widget class="QRadioButton" name="infoBtn">
+         <property name="text">
+          <string>Info</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QRadioButton" name="infoErrorBtn">
+         <property name="text">
+          <string>Info+Error</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="allBtn">
+         <property name="text">
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="1">
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
@@ -101,7 +135,7 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="5">
+       <item row="0" column="4">
         <spacer name="horizontalSpacer_4">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -127,39 +161,12 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="4">
-        <widget class="QCheckBox" name="undefinedBtn">
+       <item row="2" column="2">
+        <widget class="QRadioButton" name="errorWarningBtn">
          <property name="text">
-          <string>Undefined</string>
+          <string>Error +Warning</string>
          </property>
         </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QCheckBox" name="infoBtn">
-         <property name="text">
-          <string>Info</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="allBtn">
-         <property name="text">
-          <string>All</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2" colspan="3">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>18</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -173,7 +180,7 @@
      <item>
       <widget class="QPushButton" name="showDetailsBtn">
        <property name="text">
-        <string>Show Deatils</string>
+        <string>Show Details</string>
        </property>
       </widget>
      </item>

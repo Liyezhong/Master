@@ -95,8 +95,9 @@ private:
     QModelIndexList m_SelectedRowValues;              //!< Model Index list stores selected row values
     CLogFilter* mp_LogFilter;                       //!< Log filter to get model list.
     quint8 m_EventTypes;                           //!< Event Types of previously diaplayed.
-    CServiceHelpTextFilter *mp_ServiceHelpTextFilter; //!< Service Help Text Filter to get Service Help Text
+//    CServiceHelpTextFilter *mp_ServiceHelpTextFilter; //!< Service Help Text Filter to get Service Help Text
     QHash<QString, qint64> m_PositionItems;
+    QHash<quint64, QString> m_ServiceHelpTextHash; //!< Store Serice help text by Qhash
     QString m_strOK;
     QString m_strWarning;
     QString m_strMsgSelectRowText;
@@ -112,16 +113,9 @@ private:
     QString m_strTimeStamp;
     QString m_strEventID;
     QString m_strType;
-    QString m_strServiceHelpTextInfoTitle;
+    QString m_strDescriptonTitle;
 
 private:
-    /****************************************************************************/
-    /*!
-     *  \brief Reset Buttons
-     *  \iparam EnableFlag = true:enable, false:disable
-     */
-    /****************************************************************************/
-    void ResetButtons(bool EnableFlag);
 
     /****************************************************************************/
     /*!
@@ -197,6 +191,19 @@ public slots:
     /****************************************************************************/
     void ShowServiceHelpTextDetails();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Info and Error
+     */
+    /****************************************************************************/
+    void FilteredInfoErrorLog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Warn and Error
+     */
+    /****************************************************************************/
+    void FilteredErrorWarningLog();
 };
 
 }   // end namespace LogViewer

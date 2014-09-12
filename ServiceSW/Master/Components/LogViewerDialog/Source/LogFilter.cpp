@@ -185,6 +185,7 @@ bool CLogFilter::InitData()
 
     while (!Text.atEnd()) {
         QString LogData = Text.readLine();
+        LogData.replace(QString("\\n"), QString(" "));
         if (skipHeader == false ) {
             if (CheckFileInfo(LogData) == true) {
                 continue;

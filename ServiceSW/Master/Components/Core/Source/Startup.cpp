@@ -149,9 +149,9 @@ CStartup::CStartup() : QObject(),
 //    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
 //    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
 
-    mp_SystemLogViewer = new LogViewer::CLogViewer("HimalayaEvents_12345678", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_SystemLogViewer = new LogViewer::CLogViewer("PRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
     mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
-    mp_ServiceLogViewer = new LogViewer::CLogViewer("Himalaya_Service", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_ServiceLogViewer = new LogViewer::CLogViewer("PRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
     mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("Himalaya_SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
 
     CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
@@ -1760,7 +1760,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
 
-    if (FileName.startsWith("HimalayaEvents_12345678")) {  // System log
+    if (FileName.startsWith("PRIMARIS_")) {  // System log
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
             delete mp_SystemLogContentDlg;
@@ -1778,7 +1778,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QStringList HeaderLabels;
         QList<int> Columns;
 
-        if (FileName.startsWith("Himalaya_Service")) {  // Service log
+        if (FileName.startsWith("PRIMARIS_Service")) {  // Service log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));

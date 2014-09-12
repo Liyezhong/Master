@@ -39,8 +39,7 @@ namespace LogViewer {
  */
 /****************************************************************************/
 CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CSystemLogViewerDlg),
-    mp_LogFilter(NULL),
-    mp_ServiceHelpTextFilter(NULL)
+    mp_LogFilter(NULL)
 {
     RetranslateUI();
     m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
@@ -62,7 +61,6 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     mp_ServiceHelpTextDlg = new MainMenu::CTextDialog(this);
     mp_ServiceHelpTextDlg->SetCaption(tr(""));
     mp_Ui->allBtn->setChecked(true);
-    ResetButtons(false);
     mp_Ui->showDetailsBtn->setEnabled(false);
 
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
@@ -72,7 +70,7 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     (void)connect(mp_Ui->allBtn, SIGNAL(clicked()), this, SLOT(CompleteLogInfo()));
     (void)connect(mp_Ui->errorBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorLog()));
     (void)connect(mp_Ui->infoBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoLog()));
-    (void)connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
+//    (void)connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
     (void)connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
 
     (void)connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
@@ -80,6 +78,31 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     (void)connect(mp_Ui->serviceHelpTextBtn, SIGNAL(clicked()), this, SLOT(ServiceHelpTextDialog()));
     (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    (void)connect(mp_Ui->errorWarningBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorWarningLog()));
+    (void)connect(mp_Ui->infoErrorBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoErrorLog()));
+    (void)connect(mp_ServiceHelpTextDlg, SIGNAL(clicked()), this, SLOT(CloseHelpTextDialog()));
+
+    // read data from ServiceHelpText.txt to hash table
+    QString path = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceHelpText.txt";
+    QFile file(path);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (!line.contains(";"))
+            continue;
+        bool ok;
+        quint64 id = line.split(';').at(0).toULongLong(&ok, 10);
+        if (ok == false)
+            continue;
+        line.replace(QString("\\n"), QString(" "));
+        m_ServiceHelpTextHash.insert(id, line);
+    }
+
+    file.close();
 }
 
 /****************************************************************************/
@@ -97,9 +120,6 @@ CSystemLogViewerDlg::~CSystemLogViewerDlg()
         if (mp_LogFilter) {
             delete mp_LogFilter;
         }
-        if (mp_ServiceHelpTextFilter) {
-            delete mp_ServiceHelpTextFilter;
-        }
         m_SelectedRowValues.clear();
     }
     catch (...) {
@@ -115,10 +135,11 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
     m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items
 
     QString Type = m_SelectedRowValues.at(3).data((int)Qt::DisplayRole).toString();
-    if (Type.compare("Error")==0 || Type.compare("Fatal Error")==0) {
-        mp_Ui->serviceHelpTextBtn->setEnabled(true);
-    }
-    else {
+
+    if (Type.compare("Error") == 0 || Type.compare("Fatal Error") == 0) {
+        quint64 id = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toULongLong();
+        mp_Ui->serviceHelpTextBtn->setEnabled(m_ServiceHelpTextHash.contains(id));
+    } else {
         mp_Ui->serviceHelpTextBtn->setEnabled(false);
     }
     mp_Ui->showDetailsBtn->setEnabled(true);
@@ -126,7 +147,6 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 
 void CSystemLogViewerDlg::ServiceHelpTextDialog()
 {
-    qDebug() << "\n\n" << __FUNCTION__ << __LINE__ << "\n\n";
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICESERVICEHELPTEXT_FOR_ERROR);
 
     if(m_SelectedRowValues.count() == 0)
@@ -151,14 +171,12 @@ void CSystemLogViewerDlg::ServiceHelpTextDialog()
             mp_MessageDlg->show();
         }
         else {
-            QString Path = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceHelpText.txt";
+            quint64 EventId = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toULongLong();
+            if (!m_ServiceHelpTextHash.contains(EventId))
+                return;
 
-            if (mp_ServiceHelpTextFilter == NULL) {
-                mp_ServiceHelpTextFilter = new LogViewer::CServiceHelpTextFilter(Path);
-            }
-
-            QString EventId = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toString();
-            QString Line = QString(mp_ServiceHelpTextFilter->GetServiceHelpText(EventId));
+            // TODO
+            QString Line = m_ServiceHelpTextHash.value(EventId);
             QStringList List = Line.split(";");
             if (List.size()>0) {
                 QString InputText = m_strErrorCode;
@@ -199,7 +217,7 @@ void CSystemLogViewerDlg::SetTableModel()
     HeaderLabels.append(m_strTimeStamp);
     HeaderLabels.append(m_strEventID);
     HeaderLabels.append(m_strType);
-    HeaderLabels.append(m_strServiceHelpTextInfoTitle);
+    HeaderLabels.append(m_strDescriptonTitle);
 
     mp_Model->setHorizontalHeaderLabels(HeaderLabels);
 
@@ -235,7 +253,7 @@ void CSystemLogViewerDlg::RetranslateUI()
     m_strTimeStamp = QApplication::translate("LogViewer::CSystemLogViewerDlg", "TimeStamp", 0, QApplication::UnicodeUTF8);
     m_strEventID = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Event ID", 0, QApplication::UnicodeUTF8);
     m_strType = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Type", 0, QApplication::UnicodeUTF8);
-    m_strServiceHelpTextInfoTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Log Information",
+    m_strDescriptonTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Description",
                                                            0, QApplication::UnicodeUTF8);
 }
 
@@ -246,7 +264,7 @@ bool CSystemLogViewerDlg::InitDialog(QString Path)
     Columns.append(0);
     Columns.append(1);
     Columns.append(2);
-    Columns.append(3);
+    Columns.append(4);
 
     m_LogFilePath = Path;
     mp_LogFilter = new CLogFilter(Path, Columns, true);
@@ -290,24 +308,11 @@ void CSystemLogViewerDlg::ShowServiceHelpTextDetails()
             Text.append(m_SelectedRowValues.at(i).data((int)Qt::DisplayRole).toString());
             Text.append("\n\n");
         }
-        mp_ServiceHelpTextDlg->SetDialogTitle(m_strServiceHelpTextInfoTitle);
+        mp_ServiceHelpTextDlg->SetDialogTitle(m_strDescriptonTitle);
         mp_ServiceHelpTextDlg->SetText(Text);
         mp_ServiceHelpTextDlg->resize(428,428);
         mp_ServiceHelpTextDlg->show();
     }
-}
-
-void CSystemLogViewerDlg::ResetButtons(bool EnableFlag)
-{
-    mp_Ui->errorBtn->setEnabled(EnableFlag);
-    mp_Ui->infoBtn->setEnabled(EnableFlag);
-    mp_Ui->warningBtn->setEnabled(EnableFlag);
-    mp_Ui->undefinedBtn->setEnabled(EnableFlag);
-
-    mp_Ui->errorBtn->setChecked(false);
-    mp_Ui->infoBtn->setChecked(false);
-    mp_Ui->warningBtn->setChecked(false);
-    mp_Ui->undefinedBtn->setChecked(false);
 }
 
 void CSystemLogViewerDlg::CompleteLogInfo()
@@ -316,18 +321,8 @@ void CSystemLogViewerDlg::CompleteLogInfo()
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
-    if (mp_Ui->allBtn->isChecked()) {
-        ResetButtons(false);
-
-        m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
-        SetTableModel();
-    }
-    else {
-        ResetButtons(true);
-        mp_TableWidget->setModel(NULL);
-        m_EventTypes = 0;
-    }
-
+    m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
+    SetTableModel();
 }
 
 void CSystemLogViewerDlg::FilteredErrorLog()
@@ -338,21 +333,9 @@ void CSystemLogViewerDlg::FilteredErrorLog()
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
-    mp_TableWidget->clearSelection();
-    if (mp_Ui->errorBtn->isChecked()) {
-        m_EventTypes |= (1<<(int)Global::EVTTYPE_ERROR);
-        m_EventTypes |= (1<<(int)Global::EVTTYPE_FATAL_ERROR);
-    }
-    else {
-        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_ERROR));
-        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_FATAL_ERROR));
-    }
-    if (m_EventTypes == 0) {
-        mp_TableWidget->setModel(NULL);
-    }
-    else {
-       SetTableModel();
-    }
+    m_EventTypes  = (1<<(int)Global::EVTTYPE_ERROR);
+    m_EventTypes |= (1<<(int)Global::EVTTYPE_FATAL_ERROR);
+    SetTableModel();
 }
 
 void CSystemLogViewerDlg::FilteredInfoLog()
@@ -363,40 +346,30 @@ void CSystemLogViewerDlg::FilteredInfoLog()
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
-    if (mp_Ui->infoBtn->isChecked()) {
-        m_EventTypes |= (1<<(int)Global::EVTTYPE_INFO);
-    }
-    else {
-        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_INFO));
-    }
-    if (m_EventTypes == 0) {
-        mp_TableWidget->setModel(NULL);
-    }
-    else {
-       SetTableModel();
-    }
+    m_EventTypes = (1<<(int)Global::EVTTYPE_INFO);
+    SetTableModel();
 }
 
 void CSystemLogViewerDlg::FilteredUndefinedLog()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
-                                               Global::tTranslatableStringList() << "Undefined");
-    mp_Ui->showDetailsBtn->setEnabled(false);
-    mp_Ui->serviceHelpTextBtn->setEnabled(false);
-    mp_TableWidget->clearSelection();
+//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
+//                                               Global::tTranslatableStringList() << "Undefined");
+//    mp_Ui->showDetailsBtn->setEnabled(false);
+//    mp_Ui->serviceHelpTextBtn->setEnabled(false);
+//    mp_TableWidget->clearSelection();
 
-    if (mp_Ui->undefinedBtn->isChecked()) {
-        m_EventTypes |= (1<<(int)Global::EVTTYPE_UNDEFINED);
-    }
-    else {
-        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_UNDEFINED));
-    }
-    if (m_EventTypes == 0) {
-        mp_TableWidget->setModel(NULL);
-    }
-    else {
-       SetTableModel();
-    }
+//    if (mp_Ui->undefinedBtn->isChecked()) {
+//        m_EventTypes |= (1<<(int)Global::EVTTYPE_UNDEFINED);
+//    }
+//    else {
+//        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_UNDEFINED));
+//    }
+//    if (m_EventTypes == 0) {
+//        mp_TableWidget->setModel(NULL);
+//    }
+//    else {
+//       SetTableModel();
+//    }
 }
 
 void CSystemLogViewerDlg::FilteredWarningLog()
@@ -407,17 +380,33 @@ void CSystemLogViewerDlg::FilteredWarningLog()
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
 
-    if (mp_Ui->warningBtn->isChecked()) {
-        m_EventTypes |= (1<<(int)Global::EVTTYPE_WARNING);
-    }
-    else {
-        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_WARNING));
-    }
-    if (m_EventTypes == 0) {
-        mp_TableWidget->setModel(NULL);
-    }
-    else {
-       SetTableModel();
-    }
+    m_EventTypes = (1<<(int)Global::EVTTYPE_WARNING);
+
+    SetTableModel();
 }
+
+void CSystemLogViewerDlg::FilteredErrorWarningLog()
+{
+    mp_Ui->showDetailsBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
+    mp_TableWidget->clearSelection();
+
+    m_EventTypes  = (1<<(int)Global::EVTTYPE_ERROR);
+    m_EventTypes |= (1<<(int)Global::EVTTYPE_FATAL_ERROR);
+    m_EventTypes |= (1<<(int)Global::EVTTYPE_WARNING);
+    SetTableModel();
+}
+
+void CSystemLogViewerDlg::FilteredInfoErrorLog()
+{
+    mp_Ui->showDetailsBtn->setEnabled(false);
+    mp_Ui->serviceHelpTextBtn->setEnabled(false);
+    mp_TableWidget->clearSelection();
+
+    m_EventTypes  = (1<<(int)Global::EVTTYPE_ERROR);
+    m_EventTypes |= (1<<(int)Global::EVTTYPE_FATAL_ERROR);
+    m_EventTypes |= (1<<(int)Global::EVTTYPE_INFO);
+    SetTableModel();
+}
+
 }
