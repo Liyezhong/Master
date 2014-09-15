@@ -1844,7 +1844,7 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
                 break;
             }
         }
-        else if (pressure >= (targetPressure - departure) && pressure <= (targetPressure + departure)) {
+        else if (pressure >= (targetPressure - qAbs(departure)) && pressure <= (targetPressure + qAbs(departure))) {
             result = true;
             break;
         }

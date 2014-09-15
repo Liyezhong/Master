@@ -1174,6 +1174,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
+        if (Id == Service::SYSTEM_SEALING_TEST) {
+            (void)GetTestResponse();
+        }
+
         mp_SystemManuf->SetTestResult(Id, Result);
     }
 

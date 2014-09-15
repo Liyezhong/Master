@@ -96,6 +96,14 @@ signals:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);
 
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Result = true of false
+       */
+    /****************************************************************************/
+    void RefreshResultToMain(bool Result);
+
 protected:
     /****************************************************************************/
     /*!

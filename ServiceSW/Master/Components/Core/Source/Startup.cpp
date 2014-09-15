@@ -1326,6 +1326,8 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
             mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
 
             CONNECTSIGNALSIGNAL(mp_SealingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+            CONNECTSIGNALSLOT(mp_SealingStatusDlg, RefreshResultToMain(bool), mp_ManaufacturingDiagnosticsHandler, OnReturnManufacturingMsg(bool));
+
             mp_SealingStatusDlg->UpdateLabel(Status);
             mp_SealingStatusDlg->show();
         }

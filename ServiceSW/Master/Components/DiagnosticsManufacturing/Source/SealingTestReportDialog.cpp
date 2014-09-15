@@ -91,6 +91,9 @@ void CSealingTestReportDialog::OnButtonClicked()
     if (!m_IsOkButton) {
         PerformManufacturingTest(Service::TEST_ABORT, Service::SYSTEM_SEALING_TEST);
     }
+    else {
+        emit RefreshResultToMain(true);
+    }
 
     (void)this->close();
 }
