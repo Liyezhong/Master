@@ -31,6 +31,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 //lint -e1013
 //lint -e115
@@ -175,6 +176,8 @@ void DeviceProcessor::CreateWrappers()
         mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
     }
 */
+    Diagnostics::ServiceDeviceProcess::Instance()->SetIDevProc(&m_rIdevProc);
+    Diagnostics::ServiceDeviceProcess::Instance()->Initialize();
 
     /* Create Manufacturing Test Handler*/
     if(NULL != mp_ManufacturingTestHandler)

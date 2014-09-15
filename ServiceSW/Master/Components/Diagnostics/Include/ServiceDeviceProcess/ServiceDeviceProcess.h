@@ -62,14 +62,16 @@ typedef enum {
 class ServiceDeviceProcess : public QObject
 {
     Q_OBJECT
+private:
+    static ServiceDeviceProcess* mp_Instance;
+    ServiceDeviceProcess();
+
 public:
-    /**
-     * \brief Constructor.
-     *
-     * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
-     */
-    /****************************************************************************/
-    ServiceDeviceProcess(DeviceControl::IDeviceProcessing &iDevProc);
+    static ServiceDeviceProcess* Instance();
+    static void Destroy();
+
+public:
+    void SetIDevProc(DeviceControl::IDeviceProcessing* iDevProc);
 
     /****************************************************************************/
     /**
@@ -144,7 +146,7 @@ public:
 
 
 private:
-    DeviceControl::IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
+    DeviceControl::IDeviceProcessing*           m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
 
     WrapperUtils*               mp_Utils;
