@@ -43,7 +43,6 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     mp_RestartFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_CheckTempModuleCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
-
     mp_StateMachine->setInitialState(mp_Initialize.data());
     mp_Initialize->addTransition(this, SIGNAL(ReleasePressureSig()), mp_ReleasePressure.data());
     mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeaters()), mp_ShutdownFailedHeater.data());
@@ -120,7 +119,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     qint64 now = 0;
-
+     HeaterType_t heaterType = mp_SchedulerController->GetFailerHeaterType();
     switch (currentState)
     {
     case HEATINGERROR_30SRetry_INIT:
@@ -180,6 +179,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
             m_Counter = 0;
+            mp_SchedulerController->ShutdownFailedHeaters();
             emit TasksDone(false);
         }
         break;
@@ -196,8 +196,23 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         else
         {
+            bool ret = false;
+            if (heaterType == LATUBE1)
+            {
+                qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLASensorStatus("LATube1",HWTemp);
+            }
+            else if (heaterType == LATUBE2)
+            {
+                qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube2;
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLASensorStatus("LATube2",HWTemp);
+            }
+            else
+            {
+                ret = mp_SchedulerController->CheckSensorTempOverange();
+            }
             if (false ==  mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3)
-                    || false == mp_SchedulerController->CheckSensorTempOverange())
+                    || false == ret)
             {
                 m_Counter++;
                 if (3 == m_Counter)
@@ -205,6 +220,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
                     m_ShutdownHeaterTime = 0;
                     m_StartTime = 0;
                     m_Counter = 0;
+                    mp_SchedulerController->ShutdownFailedHeaters();
                     emit TasksDone(false);
                 }
                 else

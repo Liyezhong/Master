@@ -533,11 +533,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
-                    // Stop draining at first
-                    ALStopCmd = new CmdALStopCmdExec(500, this);
-                    ALStopCmd->SetCmdType(1);
-                    m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
-                    m_SchedulerMachine->SendResumeDraining();
+                    m_SchedulerMachine->HandleRcRestartAtDrain(cmd->GetName());
                     break;
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
@@ -3958,7 +3954,7 @@ void SchedulerMainThreadController::OnEnterRcRestart()
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrRcRestart));
 
-    if ((PSSM_PROCESSING != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
+    if ((PSSM_PROCESSING != m_CurrentStepState) && (PSSM_PROCESSING_SR != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
     {
         qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
         MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));

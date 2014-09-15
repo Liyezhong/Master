@@ -241,6 +241,16 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief check LA Sensor status
+     *  \param HeaterName - sensor's name
+     *  \param HWTemp = qreal temperature
+     *  \return bool true - success, false - failed
+     */
+    /****************************************************************************/
+    bool CheckLASensorStatus(const QString& HeaterName, qreal HWTemp);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Get the oven heating begin Time
      *  \param  void
      *  \return qint64

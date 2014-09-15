@@ -27,6 +27,8 @@
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
+#include "Scheduler/Commands/Include/CmdALForceDraining.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
@@ -317,6 +319,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RsRVWaitingTempUpTime = 0;
     m_RcPressureSeq = 0;
     m_RcPressureDelayTime = 0;
+    m_RcRestart_AtDrain = STOP_DRAINING;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -1440,6 +1443,43 @@ void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdN
             OnTasksDone(true);
             m_RsRVWaitingTempUp = STOP_HEATING;
          }
+        break;
+    default:
+        break;
+    }
+}
+void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName)
+{
+    switch (m_RcRestart_AtDrain)
+    {
+    case STOP_DRAINING:
+    {
+        // Stop draining at first
+        CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerThreadController);
+        ALStopCmd->SetCmdType(1);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+        m_RcRestart_AtDrain = FORCE_DRAINING;
+    }
+        break;
+    case FORCE_DRAINING:
+        if ("Scheduler::ALStopCmdExec" == cmdName)
+        {
+            CmdALForceDraining* cmd  = new CmdALForceDraining(500, mp_SchedulerThreadController);
+            cmd->SetDelayTime(60);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            m_RcRestart_AtDrain = RV_POS_CHANGE;
+        }
+        else
+        {
+            // Do nothing
+        }
+        break;
+    case RV_POS_CHANGE:
+        if ("Scheduler::ALForceDraining" == cmdName)
+        {
+            m_RcRestart_AtDrain = STOP_DRAINING;
+            emit ResumeRVPosChange();
+        }
         break;
     default:
         break;

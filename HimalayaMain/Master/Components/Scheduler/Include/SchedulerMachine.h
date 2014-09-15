@@ -178,6 +178,14 @@ private:
     qint8                 m_RcPressureSeq;                                              ///< Sequence of RC_Pressure
     qint64                m_RcPressureDelayTime;                                        ///< Delay time for RC_Pressure
 
+    typedef enum
+    {
+        STOP_DRAINING,
+        FORCE_DRAINING,
+        RV_POS_CHANGE
+    } RCRESTART_DRAIN_t;
+    RCRESTART_DRAIN_t m_RcRestart_AtDrain;
+
 private:
     /****************************************************************************/
     /*!
@@ -1047,11 +1055,20 @@ public:
     /*!
      *  \brief Handle the whole work flow for HandleRsRVWaitingTempUpWorkFlow
      *  \param cmdName - command name
-     *  \param retCode - return cod
+     *  \param retCode - return code
      *  \return void
      */
     /****************************************************************************/
     void HandleRsRVWaitingTempUpWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle Rc_Restart when the error occurs at Draining stage
+     *  \param cmdName - command name
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcRestartAtDrain(const QString& cmdName);
 
     /****************************************************************************/
     /*!

@@ -257,15 +257,20 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
     }
-    //For LA RVTube
-    if (false == this->CheckSensorHeatingOverTime(m_LARVTube, strctHWMonitor.TempALTube1))
+
+    // We only check LA heating overtime in scenario 260
+    if (260 == m_CurScenario)
     {
-        return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP;
-    }
-    //For LA WaxTrap
-    if (false == this->CheckSensorHeatingOverTime(m_LAWaxTrap, strctHWMonitor.TempALTube2))
-    {
-        return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP;
+        //For LA RVTube
+        if (false == this->CheckSensorHeatingOverTime(m_LARVTube, strctHWMonitor.TempALTube1))
+        {
+            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP;
+        }
+        //For LA WaxTrap
+        if (false == this->CheckSensorHeatingOverTime(m_LAWaxTrap, strctHWMonitor.TempALTube2))
+        {
+            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP;
+        }
     }
 
     if (m_CurScenario >= 271 && m_CurScenario <=277)
@@ -738,6 +743,38 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
     }
     return 0; // Have not got the time out
 }
+bool HeatingStrategy::CheckLASensorStatus(const QString& HeaterName, qreal HWTemp)
+{
+    if ("LATube1" == HeaterName)
+    {
+        mp_SchedulerController->LogDebug("In HeatingStrategy, heater name is LATube1");
+
+        if (HWTemp >= m_LARVTube.functionModuleList[m_LARVTube.curModuleId].OTTargetTemperature
+                && HWTemp < m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    if ("LATube2" == HeaterName)
+    {
+        mp_SchedulerController->LogDebug("In HeatingStrategy, heater name is LATube2");
+
+        if (HWTemp >= m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].OTTargetTemperature
+                && HWTemp < m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {
@@ -1107,7 +1144,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
             {
                 heatingSensor.OTCheckPassed = false;
             }
-            iter->OTTargetTemperature = iter->TemperatureOffset;
+            if (260 == m_CurScenario)
+            {
+                iter->OTTargetTemperature = iter->TemperatureOffset;
+            }
+            else
+            {
+                iter->OTTargetTemperature =  mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            }
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
