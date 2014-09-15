@@ -87,7 +87,7 @@ int main(int Argc, char *p_Argv[])
 
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);
-    TheMasterThreadController.SetEventLoggerBaseFileName("Himalaya_Service");
+    TheMasterThreadController.SetEventLoggerBaseFileName("PRIMARIS_Service");
 
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     (void)DataManager::CTestCaseFactory::Instance().InitData(FileName);
