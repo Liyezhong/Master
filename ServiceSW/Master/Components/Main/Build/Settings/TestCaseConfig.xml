@@ -32,7 +32,7 @@
 		<SystemExhaustFan Position="1"/>
 		<SystemVentilationFan Parameter="N/A"/>
 		<SystemRemoteLocalAlarm AlarmFlag="1" ConnectFlag="1"/>
-		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="316" SwitchOnCurrentHigh="1358" SwitchOffCurrentLow="150"/>
+		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrentLow="150"/>
 	</System>
 	<Cleaning>
 		<CleaningSystem TargetPressure="30" Departure="3" Time="00:02:00" BlowTime="00:00:10"/>
@@ -42,7 +42,7 @@
 		<RetortLevelSensorHeating PowerSupply="DC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:02:00"/>
 		<RetortLevelSensorDetecting  Position="1"/>
 		<RetortHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:15:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="15"/>
-		<RetortHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" Position="1" DurationTime="03:00:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="6"/>
+		<RetortHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" Position="1" DurationTime="01:00:00" SideTargetTemp="50" BottomTargetTemp="50" TargetTemp="50" DepartureLow="0" DepartureHigh="6"/>
 	</Retort>
 	<Firmware>
 		<FirmwareUpdate SlaveType="3" Path="" />

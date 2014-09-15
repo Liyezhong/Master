@@ -2012,6 +2012,9 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
             }
         }
         else {
+            if (WaitSec <= 60) {
+                break;
+            }
             KeepSeconds = 0;
         }
 
