@@ -33,7 +33,7 @@ public:
     CTestBase(void) : QObject() { }
     virtual ~CTestBase(void) { }
 
-    virtual void Run(void) = 0;
+    virtual int Run(void) = 0;
 };
 
 }

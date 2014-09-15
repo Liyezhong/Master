@@ -43,7 +43,7 @@ CAirSystemTest::~CAirSystemTest(void)
 {
 }
 
-void CAirSystemTest::Run(void)
+int CAirSystemTest::Run(void)
 {
     qDebug() << "Air System test starts!";
 

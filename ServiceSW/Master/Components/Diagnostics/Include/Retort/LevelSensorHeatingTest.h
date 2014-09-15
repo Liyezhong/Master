@@ -35,7 +35,7 @@ public:
     CLevelSensorHeatingTest();
     ~CLevelSensorHeatingTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void StartHeating(void);

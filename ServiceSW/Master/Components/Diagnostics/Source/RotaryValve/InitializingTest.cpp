@@ -42,7 +42,7 @@ CInitializingTest::~CInitializingTest(void)
 {
 }
 
-void CInitializingTest::Run(void)
+int CInitializingTest::Run(void)
 {
     qDebug() << "Rotary Valve Initializing test starts!";
 

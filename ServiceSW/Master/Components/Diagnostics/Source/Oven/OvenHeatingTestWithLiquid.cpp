@@ -42,7 +42,7 @@ CHeatingTestWithLiquid::~CHeatingTestWithLiquid(void)
 {
 }
 
-void CHeatingTestWithLiquid::Run(void)
+int CHeatingTestWithLiquid::Run(void)
 {
     qDebug() << "Oven heating test with liquid starts!";
 }

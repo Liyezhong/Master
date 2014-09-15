@@ -35,7 +35,7 @@ public:
     CInitializingTest();
     ~CInitializingTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void StartInitializing(void);

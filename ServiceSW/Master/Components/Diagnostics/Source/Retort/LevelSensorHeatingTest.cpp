@@ -42,7 +42,7 @@ CLevelSensorHeatingTest::~CLevelSensorHeatingTest(void)
 {
 }
 
-void CLevelSensorHeatingTest::Run(void)
+int CLevelSensorHeatingTest::Run(void)
 {
     qDebug() << "Level sensor heating test starts!";
 

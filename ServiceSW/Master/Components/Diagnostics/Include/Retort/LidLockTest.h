@@ -35,7 +35,7 @@ public:
     CLidLockTest(void);
     ~CLidLockTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstManualClose(void);

@@ -35,7 +35,7 @@ public:
     CHeatingTestWithLiquid(void);
     ~CHeatingTestWithLiquid(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
 

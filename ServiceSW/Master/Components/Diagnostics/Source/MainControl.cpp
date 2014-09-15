@@ -28,12 +28,16 @@
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
+#include "Diagnostics/Include/MainControl/ASBTest.h"
+
 namespace Diagnostics {
 
 CMainControl::CMainControl(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CMainControl)
 {
+    qDebug() << "Diagnostics::CMainControl::CMainControl";
+
     ui->setupUi(this);
 
     (void)connect(ui->testASB3,
@@ -62,23 +66,9 @@ void CMainControl::StartASB3Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST);
     qDebug() << "CMainControl: start ASB3 test";
 
-    //LaSystem::CHeatingBelt1Test test;
+    MainControl::CASBTest Test(this);
 
-    //test.Run();
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
-    dlg->SetTitle(tr("Main Control test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Mains Relay Selftest Failed. Please exchange Mains relay and repeat the test. If still not successful , replace ASB15. Unless this error is resolved, all test functions using AC heating are disabled. The instrument must not be used by the user unless this error is resolved"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    dlg->exec();
-
-    delete dlg;
-
-    emit GuiASB3Test();
+    Test.Run();
 }
 
 void CMainControl::StartASB5Test(void)
@@ -86,11 +76,6 @@ void CMainControl::StartASB5Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST);
     qDebug() << "CMainControl: start ASB5 test";
 
-    //LaSystem::CHeatingBelt2Test test;
-
-    //test.Run();
-
-    emit GuiASB5Test();
 
 }
 
@@ -98,12 +83,6 @@ void CMainControl::StartASB15Test(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST);
     qDebug() << "CMainControl: start ASB15 test";
-
-    //LaSystem::CAirSystemTest test;
-
-    //test.Run();
-
-    emit GuiASB15Test();
 
 }
 /****************************************************************************/

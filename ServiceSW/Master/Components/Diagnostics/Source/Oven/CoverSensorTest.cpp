@@ -43,7 +43,7 @@ CCoverSensorTest::~CCoverSensorTest(void)
 {
 }
 
-void CCoverSensorTest::Run(void)
+int CCoverSensorTest::Run(void)
 {
     qDebug() << "Cover sensor test starts!";
 

@@ -35,7 +35,7 @@ public:
     CHeatingBelt1Test(void);
     ~CHeatingBelt1Test(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstCheckBottle(void);

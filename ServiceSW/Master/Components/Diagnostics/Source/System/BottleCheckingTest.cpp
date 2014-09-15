@@ -45,7 +45,7 @@ CBottleCheckingTest::~CBottleCheckingTest(void)
 {
 }
 
-void CBottleCheckingTest::Run(void)
+int CBottleCheckingTest::Run(void)
 {
     qDebug() << "Bottle Checking Test starts!";
 

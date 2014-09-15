@@ -43,7 +43,7 @@ CHeatingTestEmpty::~CHeatingTestEmpty(void)
 {
 }
 
-void CHeatingTestEmpty::Run(void)
+int CHeatingTestEmpty::Run(void)
 {
     qDebug() << "Oven Heating test empty starts!";
 

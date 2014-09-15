@@ -35,7 +35,7 @@ public:
     CHeatingTestWithLiquid();
     ~CHeatingTestWithLiquid(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstCheckBottle(int Position = 1);

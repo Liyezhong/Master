@@ -45,7 +45,7 @@ CUsbTest::~CUsbTest(void)
 {
 }
 
-void CUsbTest::Run(void)
+int CUsbTest::Run(void)
 {
     qDebug() << "USB Test starts!";
 

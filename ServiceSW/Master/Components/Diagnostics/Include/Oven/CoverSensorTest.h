@@ -35,7 +35,7 @@ public:
     CCoverSensorTest(void);
     ~CCoverSensorTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstManualOpen(void);

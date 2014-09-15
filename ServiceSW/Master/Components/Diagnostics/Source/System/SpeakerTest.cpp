@@ -44,7 +44,7 @@ CSpeakerTest::~CSpeakerTest(void)
 {
 }
 
-void CSpeakerTest::Run(void)
+int CSpeakerTest::Run(void)
 {
     qDebug() << "Speaker Test starts!";
 

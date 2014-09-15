@@ -43,7 +43,7 @@ CHeatingBelt1Test::~CHeatingBelt1Test(void)
 {
 }
 
-void CHeatingBelt1Test::Run(void)
+int CHeatingBelt1Test::Run(void)
 {
     qDebug() << "Heating belt 1 test starts!";
 

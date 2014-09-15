@@ -44,7 +44,7 @@ CLidLockTest::~CLidLockTest(void)
 {
 }
 
-void CLidLockTest::Run(void)
+int CLidLockTest::Run(void)
 {
     qDebug() << "Lid lock test starts!";
 

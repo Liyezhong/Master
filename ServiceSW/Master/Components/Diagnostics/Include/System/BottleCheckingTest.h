@@ -35,7 +35,7 @@ public:
     CBottleCheckingTest();
     ~CBottleCheckingTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstInputBottlePosition(void);

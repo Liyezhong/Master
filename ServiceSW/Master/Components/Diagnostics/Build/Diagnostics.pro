@@ -18,6 +18,7 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/RotaryValve/*.h \
     ../Include/LaSystem/*.h \
     ../Include/System/*.h \
+    ../Include/MainControl/*.h \
     ../Include/Display.h \
     ../Include/BasicColor/BasicColorTestDlg.h \
     ../Include/MainControl.h \
@@ -30,6 +31,7 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/RotaryValve/*.cpp \
     ../Source/LaSystem/*.cpp \
     ../Source/System/*.cpp \
+    ../Source/MainControl/*.cpp \
     ../Source/BasicColor/BasicColorTestDlg.cpp \
     ../Source/MainControl.cpp \
     ../Source/ServiceDeviceProcess/ServiceDeviceProcess.cpp \

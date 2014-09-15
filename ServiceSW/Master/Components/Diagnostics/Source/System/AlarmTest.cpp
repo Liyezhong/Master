@@ -44,7 +44,7 @@ CAlarmTest::~CAlarmTest(void)
 {
 }
 
-void CAlarmTest::Run(void)
+int CAlarmTest::Run(void)
 {
     qDebug() << "Alarm Test starts!";
 

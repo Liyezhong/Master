@@ -42,7 +42,7 @@ CVoltageTest::~CVoltageTest(void)
 {
 }
 
-void CVoltageTest::Run(void)
+int CVoltageTest::Run(void)
 {
     qDebug() << "110V/220V Switching Test starts!";
 

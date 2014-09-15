@@ -35,7 +35,7 @@ public:
     CSpeakerTest(void);
     ~CSpeakerTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstOpenDialog(void);

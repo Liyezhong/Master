@@ -46,7 +46,7 @@ CSelectingTest::~CSelectingTest(void)
 {
 }
 
-void CSelectingTest::Run(void)
+int CSelectingTest::Run(void)
 {
     qDebug() << "Rotary valve selecting test starts!";
 

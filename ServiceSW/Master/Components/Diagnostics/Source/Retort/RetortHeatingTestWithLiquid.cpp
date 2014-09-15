@@ -45,7 +45,7 @@ CHeatingTestWithLiquid::~CHeatingTestWithLiquid(void)
 {
 }
 
-void CHeatingTestWithLiquid::Run(void)
+int CHeatingTestWithLiquid::Run(void)
 {
     qDebug() << "Retort Heating test with liquid starts!";
 

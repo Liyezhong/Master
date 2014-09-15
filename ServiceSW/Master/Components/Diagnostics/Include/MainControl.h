@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_MAINCONTROL_H
 
 #include <QWidget>
+#include "MainMenu/Include/MainWindow.h"
 
 namespace Diagnostics {
 
@@ -47,11 +48,6 @@ private Q_SLOTS:
 
 private:
     Ui::CMainControl *ui;
-
-signals:
-    void GuiASB3Test();
-    void GuiASB5Test();
-    void GuiASB15Test();
 };
 
 

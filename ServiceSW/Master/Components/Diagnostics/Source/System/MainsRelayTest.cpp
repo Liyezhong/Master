@@ -44,7 +44,7 @@ CMainsRelayTest::~CMainsRelayTest(void)
 {
 }
 
-void CMainsRelayTest::Run(void)
+int CMainsRelayTest::Run(void)
 {
     qDebug() << "Mains Relay Test starts!";
 

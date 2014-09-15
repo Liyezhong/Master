@@ -45,7 +45,7 @@ CFillingNDrainingTest::~CFillingNDrainingTest(void)
 {
 }
 
-void CFillingNDrainingTest::Run(void)
+int CFillingNDrainingTest::Run(void)
 {
     qDebug() << "Filling and Draining Test starts!";
 

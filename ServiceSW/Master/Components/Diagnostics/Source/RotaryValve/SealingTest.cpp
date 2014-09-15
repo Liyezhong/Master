@@ -46,7 +46,7 @@ CSealingTest::~CSealingTest(void)
 {
 }
 
-void CSealingTest::Run(void)
+int CSealingTest::Run(void)
 {
     qDebug() << "Rotary valve sealing test starts!";
 

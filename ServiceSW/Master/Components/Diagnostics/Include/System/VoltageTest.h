@@ -35,7 +35,7 @@ public:
     CVoltageTest(void);
     ~CVoltageTest(void);
 
-    void Run(void);
+    int Run(void);
 
 public Q_SLOTS:
     void FirstConfirmVoltage(void);

@@ -47,7 +47,7 @@ CLevelSensorDetectingTest::~CLevelSensorDetectingTest(void)
 {
 }
 
-void CLevelSensorDetectingTest::Run(void)
+int CLevelSensorDetectingTest::Run(void)
 {
     qDebug() << "Level sensor detecting test starts!";
 
