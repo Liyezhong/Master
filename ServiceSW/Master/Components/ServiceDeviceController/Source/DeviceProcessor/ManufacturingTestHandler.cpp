@@ -1640,7 +1640,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 Status.clear();
                 (void)Status.insert("Position", QString("%1").arg(Position));
                 (void)Status.insert("Pressure", QString("%1").arg(OrigPressure));
-                (void)Status.insert("Result", "Fail");
+                (void)Status.insert("Result", Service::CMessageString::MSG_BUTTON_FAIL);
                 RetValue = -1;
                 if (m_UserAbort) {
                     RetValue = 1;

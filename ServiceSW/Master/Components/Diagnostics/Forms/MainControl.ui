@@ -28,7 +28,7 @@
     </spacer>
    </item>
    <item row="1" column="1">
-    <widget class="QPushButton" name="testASB5">
+    <widget class="QPushButton" name="testASB3">
      <property name="text">
       <string>ASB3</string>
      </property>
@@ -48,7 +48,7 @@
     </spacer>
    </item>
    <item row="5" column="1">
-    <widget class="QPushButton" name="testASB3">
+    <widget class="QPushButton" name="testASB15">
      <property name="text">
       <string>ASB15</string>
      </property>
@@ -68,7 +68,7 @@
     </spacer>
    </item>
    <item row="3" column="1">
-    <widget class="QPushButton" name="testASB15">
+    <widget class="QPushButton" name="testASB5">
      <property name="text">
       <string>ASB5</string>
      </property>

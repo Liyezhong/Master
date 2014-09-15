@@ -24,9 +24,7 @@
 
 #include "ui_MainControl.h"
 
-//#include "Diagnostics/Include/LaSystem/HeatingBelt1Test.h"
-//#include "Diagnostics/Include/LaSystem/HeatingBelt2Test.h"
-//#include "Diagnostics/Include/LaSystem/AirSystemTest.h"
+#include "MainMenu/Include/MessageDlg.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -67,6 +65,18 @@ void CMainControl::StartASB3Test(void)
     //LaSystem::CHeatingBelt1Test test;
 
     //test.Run();
+
+    // display success message
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
+    dlg->SetTitle(tr("Main Control test"));
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(tr("Mains Relay Selftest Failed. Please exchange Mains relay and repeat the test. If still not successful , replace ASB15. Unless this error is resolved, all test functions using AC heating are disabled. The instrument must not be used by the user unless this error is resolved"));
+    dlg->HideButtons();
+    dlg->SetButtonText(1, tr("OK"));
+
+    dlg->exec();
+
+    delete dlg;
 
     emit GuiASB3Test();
 }

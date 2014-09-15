@@ -24,6 +24,7 @@
 #include "ui_SealingTestReportDialog.h"
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Core/Include/CMessageString.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -79,7 +80,7 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
         mp_Ui->statusLabel->setText(StatusText);
     }
     if (FinishFlag == "1") {
-        mp_Ui->pushButton->setText("OK");
+        mp_Ui->pushButton->setText(Service::CMessageString::MSG_BUTTON_OK);
         m_IsOkButton = true;
     }
 }
