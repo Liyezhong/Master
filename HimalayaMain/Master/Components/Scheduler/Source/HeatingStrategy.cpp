@@ -6,7 +6,7 @@
  *
  *  $Version:   $ 0.1
  *  $Date:      $ April 3rd, 2014
- *  $Author:    $ Songtao Yu 
+ *  $Author:    $ Songtao Yu
  *
  *  @b Company:
  *
@@ -36,8 +36,8 @@ namespace Scheduler{
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
                                 DataManager::CDataManager* DataManager)
-								:mp_SchedulerController(schedController),
-								mp_SchedulerCommandProcessor(SchedCmdProcessor),
+                                :mp_SchedulerController(schedController),
+                                mp_SchedulerCommandProcessor(SchedCmdProcessor),
                                 mp_DataManager(DataManager)
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
@@ -693,7 +693,7 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     {
         pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
         dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_TUBE2);
-    }  
+    }
     mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
 
     SchedulerCommandShPtr_t pResHeatingCmd;
@@ -862,8 +862,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
-		// Get the userInput temperature
-		qreal userInputTemp = 0.0;
+        // Get the userInput temperature
+        qreal userInputTemp = 0.0;
         // make sure program ID is NOT empty and current Program Step Index is NOT -1
         if (false == mp_SchedulerController->GetCurProgramID().isEmpty() && -1 != mp_SchedulerController->GetCurProgramStepIndex())
         {
@@ -877,14 +877,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             userInputTemp = 80;
         }
-		else
-		{
-			return DCL_ERR_FCT_CALL_SUCCESS;
-		}
+        else
+        {
+            return DCL_ERR_FCT_CALL_SUCCESS;
+        }
         if (userInputTemp < 0)
-        {   
+        {
             userInputTemp = 0.0;
-        }  
+        }
         CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(RTType);
         pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputTemp);
@@ -980,7 +980,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = tmpTemperatureOffset;
+            iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -1416,7 +1416,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
-    //Add other attributes for LA RV Tube 
+    //Add other attributes for LA RV Tube
     iter = sequenceList.begin();
     for (; iter != sequenceList.end(); ++iter)
     {
