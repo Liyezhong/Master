@@ -22,15 +22,16 @@
 #include "MainMenu/Include/MessageDlg.h"
 
 #include <QDebug>
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 namespace Diagnostics {
 
 namespace MainControl {
 
-CASBTest::CASBTest(QWidget *parent)
+CASBTest::CASBTest(HimSlaveType_t SlaveType, QWidget *parent)
     : CTestBase(),
-    mp_Parent(parent)
+    mp_Parent(parent),
+    m_SlaveType(SlaveType)
 {
 }
 
@@ -40,14 +41,39 @@ CASBTest::~CASBTest(void)
 
 int CASBTest::Run(void)
 {
-    HimSlaveType_t SlaveType = Slave_3;
+    QString TestCaseName;
+    HimSlaveType_t SlaveType = m_SlaveType;
+
+    if (SlaveType == Slave_3) {
+        TestCaseName = QString("SMCASB3");
+    }
+    else if (SlaveType == Slave_5) {
+        TestCaseName = QString("SMCASB5");
+    }
+    else if (SlaveType == Slave_15) {
+        TestCaseName = QString("SMCASB15");
+    }
+
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase(TestCaseName);
+
+    if (!p_TestCase) {
+        qDebug()<<"Diagnostics::CASBTest get test case config failed.";
+        return RETURN_ERR_FAIL;
+    }
+
     quint16 Current(0);
     quint16 Voltage(0);
     ErrorCode_t Ret(RETURN_OK);
-    qreal VoltageRangeLow = 24*(1-0.1);
-    qreal VoltageRangeHigh = 24*(1+0.1);
-    qreal CurrentRangeLow = 0;
-    qreal CurrentRangeHigh = 200;
+
+    qreal VoltageRange = p_TestCase->GetParameter("Voltage").toDouble();
+    qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
+    qreal VoltageRangeLow  = VoltageRange*(1-VoltageTolerance);
+    qreal VoltageRangeHigh = VoltageRange*(1+VoltageTolerance);
+    qreal CurrentRangeLow = p_TestCase->GetParameter("CurrentLow").toInt();
+    qreal CurrentRangeHigh = p_TestCase->GetParameter("CurrentHigh").toInt();
+
+    qDebug()<<"Diagnostics:ASB test current low:"<<CurrentRangeLow;
+    qDebug()<<"Diagnostics:ASB test current high:"<<CurrentRangeHigh;
     qreal VoltageV = Voltage/1000.0;
     QString CurrentResult("OK");
     QString VoltageResult("OK");
@@ -66,7 +92,7 @@ int CASBTest::Run(void)
         VoltageResult = "failed";
     }
 
-    QString Text = QString("ASB %1 DC output voltage is %2 (%3V/range %4~%5V), ")
+    QString Text = QString("ASB%1 DC output voltage is %2 (%3V/range %4~%5V), ")
             .arg(SlaveType).arg(VoltageResult).arg(VoltageV).arg(VoltageRangeLow).arg(VoltageRangeHigh);
     QString CurrentText = QString("and current is %1 (%2mA/range %3~%4mA)").
             arg(CurrentResult).arg(Current).arg(CurrentRangeLow).arg(CurrentRangeHigh);

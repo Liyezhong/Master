@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TestCaseConfig>
+<TestCaseConfig Version="1">
+	<Oven>
+	</Oven>
+	<RotaryValve>
+	</RotaryValve>
+	<MainControl>
+		<SMCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
+		<SMCASB5 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
+		<SMCASB15 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="700"/>
+	</MainControl>
+	<LaSystem>
+	</LaSystem>
+	<System>
+	</System>
+	<Retort>
+	</Retort>
+</TestCaseConfig>

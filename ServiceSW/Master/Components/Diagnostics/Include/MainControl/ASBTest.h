@@ -23,6 +23,7 @@
 
 #include "Diagnostics/Include/TestBase.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
@@ -33,12 +34,13 @@ class CASBTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CASBTest(QWidget *parent=NULL);
+    CASBTest(HimSlaveType_t SlaveType, QWidget *parent=NULL);
     ~CASBTest(void);
 
     int Run(void);
 private:
     QWidget                   *mp_Parent;
+    HimSlaveType_t            m_SlaveType;
 };
 
 } // namespace Oven

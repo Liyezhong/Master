@@ -92,6 +92,8 @@ int main(int Argc, char *p_Argv[])
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     (void)DataManager::CTestCaseFactory::Instance().InitData(FileName);
 
+    (void)DataManager::CTestCaseFactory::ServiceInstance().InitData(Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfigSVC.xml");
+
     FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide_en.xml";
     (void)DataManager::CTestCaseGuide::Instance().InitData(FileName);
 

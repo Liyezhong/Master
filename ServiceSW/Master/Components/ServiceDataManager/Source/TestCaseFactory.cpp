@@ -156,7 +156,7 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
                 qDebug()<<"-------------------------------------Case Name="<<CaseName;
 
                 m_TestCases.insert(CaseName, p_TestCase);
-                SavetoIDHash(CaseName);
+                //SavetoIDHash(CaseName);
             }
         }
     }

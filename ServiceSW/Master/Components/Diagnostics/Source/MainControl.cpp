@@ -66,7 +66,7 @@ void CMainControl::StartASB3Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST);
     qDebug() << "CMainControl: start ASB3 test";
 
-    MainControl::CASBTest Test(this);
+    MainControl::CASBTest Test(Slave_3, this);
 
     Test.Run();
 }
@@ -76,7 +76,9 @@ void CMainControl::StartASB5Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST);
     qDebug() << "CMainControl: start ASB5 test";
 
+    MainControl::CASBTest Test(Slave_5, this);
 
+    Test.Run();
 }
 
 void CMainControl::StartASB15Test(void)
@@ -84,6 +86,9 @@ void CMainControl::StartASB15Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST);
     qDebug() << "CMainControl: start ASB15 test";
 
+    MainControl::CASBTest Test(Slave_15, this);
+
+    Test.Run();
 }
 /****************************************************************************/
 /*!
