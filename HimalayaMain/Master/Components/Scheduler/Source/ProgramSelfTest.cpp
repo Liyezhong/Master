@@ -723,7 +723,7 @@ void CProgramSelfTest::HandleStateACHeating()
     {
         case STARTHEATING_RETORTTOP:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RTSide");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test start heating RTSide,"));
+            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RTSide,the retCode:%1").arg(ret));
             if(DCL_ERR_FCT_CALL_SUCCESS == ret )
             {
                 m_StateACHeatingStep = STOPHEATING_RETORTOP;
@@ -741,6 +741,7 @@ void CProgramSelfTest::HandleStateACHeating()
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RTSide,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTBOTTOM;
@@ -755,6 +756,7 @@ void CProgramSelfTest::HandleStateACHeating()
             break;
         case STARTHEATING_RETORTBOTTOM:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RTBottom");
+            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RTBottom,the retCode:%1").arg(ret));
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
                 m_StateACHeatingStep = STOPHEATING_RETORTBOTTOM;
@@ -772,6 +774,7 @@ void CProgramSelfTest::HandleStateACHeating()
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RTBottom,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STARTHEATING_OVENTOP;
@@ -786,6 +789,7 @@ void CProgramSelfTest::HandleStateACHeating()
             break;
         case STARTHEATING_OVENTOP:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("OvenTop");
+            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating OvenTop,the retCode:%1").arg(ret));
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
                 m_StateACHeatingStep = STOPHEATING_OVENTOP;
@@ -803,6 +807,7 @@ void CProgramSelfTest::HandleStateACHeating()
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("OvenTop");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating OvenTop,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STARTHEATING_OVENBOTTOM;
@@ -819,7 +824,8 @@ void CProgramSelfTest::HandleStateACHeating()
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
-                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("OvenBottom");
+                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("OvenBottom");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating OvenBottom,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STOPHEATING_OVENBOTTOM;
@@ -838,6 +844,7 @@ void CProgramSelfTest::HandleStateACHeating()
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("OvenBottom");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating OvenBottom,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STARTHEATING_RV;
@@ -854,7 +861,8 @@ void CProgramSelfTest::HandleStateACHeating()
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
-                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RV");
+                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RV,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STOPHEATING_RV;
@@ -873,6 +881,7 @@ void CProgramSelfTest::HandleStateACHeating()
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RV");
+                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RV,the retCode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
