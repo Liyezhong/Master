@@ -152,7 +152,7 @@ CStartup::CStartup() : QObject(),
     mp_SystemLogViewer = new LogViewer::CLogViewer("PRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
     mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
     mp_ServiceLogViewer = new LogViewer::CLogViewer("PRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("PRIMARIS_SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
 
     CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
     CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
@@ -588,7 +588,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
             mp_USBKeyValidator->HideKeyBoard();
             Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(QApplication::desktop()->screen());
             p_InitSystem->setFixedSize(800, 600);
-            //(void)p_InitSystem->exec();
+            (void)p_InitSystem->exec();
             delete p_InitSystem;
 
             ServiceGuiInit();
@@ -1762,7 +1762,8 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
 
-    if (FileName.startsWith("PRIMARIS_") && !FileName.startsWith("PRIMARIS_Service")) {  // System log
+    if (FileName.startsWith("PRIMARIS_")
+            && !FileName.startsWith("PRIMARIS_Service")) {  // System log
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
             delete mp_SystemLogContentDlg;
@@ -1797,7 +1798,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(1);
             Columns.append(2);
         }
-        else if (FileName.startsWith("PRIMARIS_SW_Update_Events") || FileName.startsWith("SW_Update_Events"))  {// SW Update log
+        else if (FileName.startsWith("SW_Update_Events"))  {// SW Update log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO);
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));

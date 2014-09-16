@@ -70,6 +70,7 @@ void CLogFilter::ReleaseModelItem()
 
 void CLogFilter::AddItem4Log(QString &data)
 {
+
     QStringList List = data.split(";");
     QStringList DateTime = List.at(0).split(" ");
 
@@ -151,8 +152,16 @@ bool CLogFilter::CheckFileInfo(const QString &line)
             (void) m_FileInfo.insert(list.at(0), list.at(1));
             return true;
         }
-    }
-    else {
+    } else if (m_Filename.contains("SW_Update_Events")) {
+        if (line.startsWith("Format Version")
+                || line.startsWith("Component")
+                || line.startsWith("BaseEventID")
+                || line.startsWith("TimeStamp")) {
+            QStringList list = line.split(":");
+            (void) m_FileInfo.insert(list.at(0), list.at(1));
+            return true;
+        }
+    } else {
         if (line.startsWith("Format Version") ||
                 line.startsWith("FileName") ||
                 line.startsWith("OperatingMode") ||
@@ -182,30 +191,36 @@ bool CLogFilter::InitData()
     }
 
     QTextStream Text(&File);
-
     while (!Text.atEnd()) {
+
         QString LogData = Text.readLine();
+
         LogData.replace(QString("\\n"), QString(" "));
-        if (skipHeader == false ) {
-            if (CheckFileInfo(LogData) == true) {
-                continue;
-            }
+        if (skipHeader == false && CheckFileInfo(LogData))
+            continue;
+
+        if (m_Filename.contains("SW_Update_Events")) {
+            LogData.replace(QString("\n"), QString(" "))
+                   .replace(QString(", "), QString(";"))
+                   .replace(QString(","), QString(";"))
+                    ;
+            if (LogData.size() > 10 && LogData[10] == ';')
+                LogData[10] = ' ';
         }
 
-        if (LogData.contains(";")) {
-            if (Flag) {
-                AddItem4ServiceHelpText(LogData);
+        if (!LogData.contains(";"))
+            continue;
+
+        if (Flag) {
+            AddItem4ServiceHelpText(LogData);
+        } else {
+            if (m_needClassify) {
+                AddItem4LogNeedClassify(LogData);
+            } else {
+                AddItem4Log(LogData);
             }
-            else {
-                if (m_needClassify) {
-                    AddItem4LogNeedClassify(LogData);
-                }
-                else {
-                    AddItem4Log(LogData);
-                }
-            }
-            skipHeader = true;
         }
+        skipHeader = true;
     }
     File.close();
 
