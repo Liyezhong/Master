@@ -543,6 +543,34 @@ ErrorCode_t ServiceDeviceProcess::RetortGetLidLockState(qint32 *RetLidLockState)
     return RETURN_OK;
 }
 
+ErrorCode_t ServiceDeviceProcess::RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
+{
+    if (mp_TempRetortBottom == NULL) {
+        return RETURN_ERR_NULL_POINTER;
+    }
+
+    bool Flag;
+    Flag = mp_TempRetortBottom->SetTemperatureSwitchState(SwitchState, AutoSwitch);
+
+    if (Flag) {
+        return RETURN_OK;
+    }
+    else {
+        return RETURN_ERR_FAIL;
+    }
+}
+
+ErrorCode_t ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
+{
+    if (mp_TempRetortBottom == NULL || RetSwitchType == NULL) {
+        return RETURN_ERR_NULL_POINTER;
+    }
+
+    *RetSwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+
+    return RETURN_OK;
+}
+
 
 ErrorCode_t ServiceDeviceProcess::LiquidTubeStartHeating(qreal TargetTemp)
 {
@@ -762,6 +790,33 @@ ErrorCode_t ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
     }
 }
 
+ErrorCode_t ServiceDeviceProcess::RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
+{
+    if (mp_TempRV == NULL) {
+        return RETURN_ERR_NULL_POINTER;
+    }
+
+    bool Flag;
+    Flag = mp_TempRV->SetTemperatureSwitchState(SwitchState, AutoSwitch);
+
+    if (Flag) {
+        return RETURN_OK;
+    }
+    else {
+        return RETURN_ERR_FAIL;
+    }
+}
+
+ErrorCode_t ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
+{
+    if (mp_TempRV == NULL || RetSwitchType == NULL) {
+        return RETURN_ERR_NULL_POINTER;
+    }
+
+    *RetSwitchType = mp_TempRV->GetHeaterSwitchType();
+
+    return RETURN_OK;
+}
 
 ErrorCode_t ServiceDeviceProcess::LSStartHeating(bool QuickFlag, bool WaterFlag)
 {

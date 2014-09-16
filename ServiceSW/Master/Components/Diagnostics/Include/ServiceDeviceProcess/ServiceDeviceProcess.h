@@ -112,6 +112,9 @@ public:
     ErrorCode_t RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2);
     ErrorCode_t RetortGetCurrent(qreal *RetCurrentSide, qreal *RetCurrentBottom);
     ErrorCode_t RetortGetLidLockState(qint32 *RetLidLockState);
+    ErrorCode_t RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
+    ErrorCode_t RetortGetHeaterSwitchType(quint8 *RetSwitchType);
+
 
     ErrorCode_t LiquidTubeStartHeating(qreal TargetTemp);
     ErrorCode_t LiquidTubeStopHeating();
@@ -129,6 +132,8 @@ public:
     ErrorCode_t RVGetCurrent(quint16 *RetCurrent);
     ErrorCode_t RVInitialize();
     ErrorCode_t RVMovePosition(bool TubeFlag, int Position);
+    ErrorCode_t RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
+    ErrorCode_t RVGetHeaterSwitchType(quint8 *RetSwitchType);
 
     ErrorCode_t LSStartHeating(bool QuickFlag, bool WaterFlag);
     ErrorCode_t LSStopHeating();
