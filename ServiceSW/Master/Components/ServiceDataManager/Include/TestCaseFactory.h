@@ -50,7 +50,6 @@ public:
      */
     /****************************************************************************/
     static CTestCaseFactory &Instance(){
-        m_IsServiceConfig = false;
         return m_TestCaseFactory;
     }
 
@@ -61,7 +60,6 @@ public:
      */
     /****************************************************************************/
     static CTestCaseFactory &ServiceInstance(){
-        m_IsServiceConfig = true;
         return m_ServiceTestCaseFactory;
     }
 
@@ -116,7 +114,6 @@ private:
     static CTestCaseFactory m_ServiceTestCaseFactory;            ///< The one and only instance for service
     QHash<QString, CTestCase*> m_TestCases;                      ///< Store all test case information
     QHash<Service::ModuleTestCaseID, QString> m_TestCaseIDHash;  ///< Stores all test case ID, key=ID, value=test case name
-    bool m_IsServiceConfig;                                      ///< Service Config-true, Manufacturing Config- false
 
     /****************************************************************************/
     /**

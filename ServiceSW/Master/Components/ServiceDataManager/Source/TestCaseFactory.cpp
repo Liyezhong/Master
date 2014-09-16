@@ -28,7 +28,7 @@ namespace DataManager {
 CTestCaseFactory CTestCaseFactory::m_TestCaseFactory;
 CTestCaseFactory CTestCaseFactory::m_ServiceTestCaseFactory;
 
-CTestCaseFactory::CTestCaseFactory():m_IsServiceConfig(true)
+CTestCaseFactory::CTestCaseFactory()
 {
 
 }
@@ -156,10 +156,7 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
                 qDebug()<<"-------------------------------------Case Name="<<CaseName;
 
                 m_TestCases.insert(CaseName, p_TestCase);
-                if (m_IsServiceConfig)
-                {
-                    SavetoIDHash(CaseName);
-                }
+                SavetoIDHash(CaseName);
             }
         }
     }
