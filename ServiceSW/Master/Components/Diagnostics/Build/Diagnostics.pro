@@ -19,6 +19,7 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/LaSystem/*.h \
     ../Include/System/*.h \
     ../Include/MainControl/*.h \
+    ../Include/InitialSystem/*.h \
     ../Include/Display.h \
     ../Include/BasicColor/BasicColorTestDlg.h \
     ../Include/MainControl.h \
@@ -32,6 +33,7 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/LaSystem/*.cpp \
     ../Source/System/*.cpp \
     ../Source/MainControl/*.cpp \
+    ../Source/InitialSystem/*.cpp \
     ../Source/BasicColor/BasicColorTestDlg.cpp \
     ../Source/MainControl.cpp \
     ../Source/ServiceDeviceProcess/ServiceDeviceProcess.cpp \

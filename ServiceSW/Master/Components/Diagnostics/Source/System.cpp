@@ -99,9 +99,6 @@ void CSystem::StartBottleCheckingTest(void)
     //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST);
     qDebug() << "System: start bottle checking test";
 
-    System::CBottleCheckingTest test;
-
-    test.Run();
 }
 
 void CSystem::StartFillingNDrainingTest(void)
@@ -109,9 +106,7 @@ void CSystem::StartFillingNDrainingTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST);
     qDebug() << "System: start filling and draining test";
 
-    System::CFillingNDrainingTest test;
 
-    test.Run();
 }
 
 void CSystem::StartOverflowTest(void)
@@ -125,9 +120,6 @@ void CSystem::StartSpeakerTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
     qDebug() << "System: start speaker test";
 
-    System::CSpeakerTest test;
-
-    test.Run();
 }
 
 void CSystem::StartAlarmTest(void)
@@ -135,9 +127,6 @@ void CSystem::StartAlarmTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start alarm test";
 
-    System::CAlarmTest test;
-
-    test.Run();
 }
 
 void CSystem::StartEthernetTest(void)
@@ -151,9 +140,7 @@ void CSystem::StartUsbTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST);
     qDebug() << "System: start USB test";
 
-    System::CUsbTest test;
 
-    test.Run();
 }
 
 void CSystem::StartMainsRelayTest(void)
@@ -161,9 +148,7 @@ void CSystem::StartMainsRelayTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST);
     qDebug() << "System: start Mains relay test";
 
-    System::CMainsRelayTest test;
 
-    test.Run();
 }
 
 void CSystem::StartVoltageTest(void)
@@ -171,9 +156,6 @@ void CSystem::StartVoltageTest(void)
     //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST);
     qDebug() << "System: start 110V/220V switching test";
 
-    System::CVoltageTest test;
-
-    test.Run();
 }
 
 } // namespace Diagnostics
