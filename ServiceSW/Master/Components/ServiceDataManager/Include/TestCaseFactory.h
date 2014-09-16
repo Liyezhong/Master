@@ -29,6 +29,7 @@
 #include <QIODevice>
 #include <QTime>
 #include "ServiceDataManager/Include/TestCase.h"
+#include "Core/Include/ServiceDefines.h"
 
 namespace DataManager {
 
@@ -49,7 +50,19 @@ public:
      */
     /****************************************************************************/
     static CTestCaseFactory &Instance(){
+        m_IsServiceConfig = false;
         return m_TestCaseFactory;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Get reference to instance for service.
+     * \return  Reference to instance for service.
+     */
+    /****************************************************************************/
+    static CTestCaseFactory &ServiceInstance(){
+        m_IsServiceConfig = true;
+        return m_ServiceTestCaseFactory;
     }
 
     /****************************************************************************/
@@ -72,6 +85,15 @@ public:
 
     /****************************************************************************/
     /**
+     * \brief Overload Get TestCase by test case Id.
+     * \param Id = test case Id
+     * \return Pointer of TestCase
+     */
+    /****************************************************************************/
+    CTestCase* GetTestCase(Service::ModuleTestCaseID Id);
+
+    /****************************************************************************/
+    /**
      * \brief Get parameter by test case name and parameter name.
      * \iparam CaseName = test case name
      * \iparam ParamName = parameter name
@@ -90,8 +112,11 @@ public:
     QList<CTestCase*> GetModuleTestCase(const QString& ModuleName);
 
 private:
-    static CTestCaseFactory m_TestCaseFactory;   ///< The one and only instance.
-    QHash<QString, CTestCase*> m_TestCases;      ///< Store all test case information
+    static CTestCaseFactory m_TestCaseFactory;                   ///< The one and only instance.
+    static CTestCaseFactory m_ServiceTestCaseFactory;            ///< The one and only instance for service
+    QHash<QString, CTestCase*> m_TestCases;                      ///< Store all test case information
+    QHash<Service::ModuleTestCaseID, QString> m_TestCaseIDHash;  ///< Stores all test case ID, key=ID, value=test case name
+    bool m_IsServiceConfig;                                      ///< Service Config-true, Manufacturing Config- false
 
     /****************************************************************************/
     /**
@@ -126,6 +151,14 @@ private:
      */
     /****************************************************************************/
     bool DeserializeContent(QIODevice& IODevice);
+
+    /****************************************************************************/
+    /**
+     * \brief Save test case id
+     * \!param TestCaseName = the name of test case
+     */
+    /****************************************************************************/
+    void SavetoIDHash(const QString &TestCaseName);
 };
 
 } //end of namespace Datamanager

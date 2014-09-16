@@ -26,8 +26,9 @@
 namespace DataManager {
 
 CTestCaseFactory CTestCaseFactory::m_TestCaseFactory;
+CTestCaseFactory CTestCaseFactory::m_ServiceTestCaseFactory;
 
-CTestCaseFactory::CTestCaseFactory()
+CTestCaseFactory::CTestCaseFactory():m_IsServiceConfig(true)
 {
 
 }
@@ -54,6 +55,11 @@ CTestCase* CTestCaseFactory::GetTestCase(const QString& CaseName)
         p_TestCase = itr.value();
     }
     return p_TestCase;
+}
+
+CTestCase* CTestCaseFactory::GetTestCase(Service::ModuleTestCaseID Id)
+{
+    return GetTestCase(m_TestCaseIDHash.value(Id));
 }
 
 QString CTestCaseFactory::GetParameter(const QString& CaseName, const QString& ParamName)
@@ -150,11 +156,35 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
                 qDebug()<<"-------------------------------------Case Name="<<CaseName;
 
                 m_TestCases.insert(CaseName, p_TestCase);
+                if (m_IsServiceConfig)
+                {
+                    SavetoIDHash(CaseName);
+                }
             }
         }
     }
 
     return true;
+}
+
+void CTestCaseFactory::SavetoIDHash(const QString &TestCaseName)
+{
+     Service::ModuleTestCaseID Id = Service::TEST_CASE_ID_UNUSED;
+
+     if (TestCaseName == "SMCASB3")
+     {
+        Id = Service::MAINCONTROL_ASB3;
+     }
+     else if (TestCaseName == "SMCASB5")
+     {
+         Id = Service::MAINCONTROL_ASB5;
+     }
+     else if (TestCaseName == "SMCASB15")
+     {
+         Id = Service::MAINCONTROL_ASB15;
+     }
+
+     (void)m_TestCaseIDHash.insert(Id,TestCaseName);
 }
 
 }// end of namespace DataManager
