@@ -22,14 +22,13 @@
 #include "MainMenu/Include/MessageDlg.h"
 
 #include <QDebug>
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
 namespace InitialSystem {
 
 CInitialSystemCheck::CInitialSystemCheck(QWidget *parent)
-    : CTestBase(),
+    : CTestBase(parent),
     mp_Parent(parent)
 {
 }

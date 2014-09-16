@@ -22,14 +22,13 @@
 #include "MainMenu/Include/MessageDlg.h"
 
 #include <QDebug>
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
 namespace InitialSystem {
 
 CACVoltageTest::CACVoltageTest(QWidget *parent)
-    : CTestBase(),
+    : CTestBase(parent),
     mp_Parent(parent)
 {
 }
@@ -40,7 +39,7 @@ CACVoltageTest::~CACVoltageTest(void)
 
 int CACVoltageTest::Run(void)
 {
-
+    return RETURN_ERR_FAIL;
 }
 
 } // namespace InitialSystem

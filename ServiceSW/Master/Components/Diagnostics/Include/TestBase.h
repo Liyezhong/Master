@@ -22,6 +22,8 @@
 #define DIAGNOSTICS_TESTBASE_H
 
 #include <QObject>
+#include "MainMenu/Include/MessageDlg.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
@@ -30,10 +32,16 @@ class CTestBase : public QObject
     Q_OBJECT
 
 public:
-    CTestBase(void) : QObject() { }
-    virtual ~CTestBase(void) { }
+    CTestBase(QWidget *parent=NULL);
+    virtual ~CTestBase(void);
 
     virtual int Run(void) = 0;
+
+protected:
+    void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
+
+private:
+    QWidget        *mp_Parent;
 };
 
 }

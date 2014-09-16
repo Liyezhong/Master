@@ -25,7 +25,16 @@
 #include "ui_InitialSystem.h"
 
 #include "Global/Include/Utils.h"
+#include "Core/Include/ServiceUtils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+#include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
+#include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
+#include "Diagnostics/Include/InitialSystem/MainsRelayTest.h"
+#include "Diagnostics/Include/InitialSystem/OvenPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RVPreTest.h"
+#include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
 
 namespace Diagnostics {
 
@@ -37,15 +46,18 @@ CInitialSystem::CInitialSystem(QWidget *parent) :
 
     this->SetDialogTitle(tr("Initial System Check"));
 
-    QPixmap CheckMap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
-    QPixmap SetPixmap;
-    SetPixmap = CheckMap.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
-    //mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);
-    //mp_Ui->ovenCheckLabel->setFixedSize(45,45);
-    mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);
-    mp_Ui->liquidCheckLabel->setPixmap(SetPixmap);
-    mp_Ui->rvCheckLabel->setPixmap(SetPixmap);
-    mp_Ui->retortCheckLabel->setPixmap(SetPixmap);
+    QPixmap PixMapCheck(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
+    QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
+    QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
+
+    m_PixmapCheck = PixMapCheck.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
+    m_PixmapPass  = PixMapPass.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
+    m_PixmapFail  = PixMapFail.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
+
+    mp_Ui->ovenCheckLabel->setPixmap(m_PixmapCheck);
+    mp_Ui->liquidCheckLabel->setPixmap(m_PixmapCheck);
+    mp_Ui->rvCheckLabel->setPixmap(m_PixmapCheck);
+    mp_Ui->retortCheckLabel->setPixmap(m_PixmapCheck);
 
     mp_Ui->ovenFrame->setBackgroundRole(QPalette::Dark);
     mp_Ui->liquidFrame->setBackgroundRole(QPalette::Dark);
@@ -59,8 +71,15 @@ CInitialSystem::CInitialSystem(QWidget *parent) :
     mp_Ui->retortGroup->setFixedSize(388,152);
 
     CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
-    CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateMainRelayStatus());
-    CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateOvenTestStatus());
+
+    QTimer timer;
+    timer.setSingleShot(true);
+    timer.setInterval(15000);
+    timer.start();
+    CONNECTSIGNALSLOT(&timer, timeout(), this, StartCheck());
+
+    //CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateMainRelayStatus());
+    //CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateOvenTestStatus());
 }
 
 CInitialSystem::~CInitialSystem()
@@ -87,6 +106,31 @@ void CInitialSystem::changeEvent(QEvent *p_Event)
         break;
     default:
         break;
+    }
+}
+
+void CInitialSystem::StartCheck()
+{
+    mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
+    Core::CServiceUtils::delay(3000);
+    InitialSystem::CMainsRelayTest MainsRelayTest(this);
+    if (MainsRelayTest.Run() == RETURN_OK) {
+        mp_Ui->mrChcekLable->setPixmap(m_PixmapPass);
+    }
+    else {
+        mp_Ui->mrChcekLable->setPixmap(m_PixmapFail);
+        return;
+    }
+
+    mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
+    Core::CServiceUtils::delay(3000);
+    InitialSystem::CACVoltageTest ACVoltageTest(this);
+    if (ACVoltageTest.Run() == RETURN_OK) {
+        mp_Ui->voltageCheckLabel->setPixmap(m_PixmapPass);
+    }
+    else {
+        mp_Ui->voltageCheckLabel->setPixmap(m_PixmapFail);
+        return;
     }
 }
 

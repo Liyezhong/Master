@@ -37,7 +37,8 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/BasicColor/BasicColorTestDlg.cpp \
     ../Source/MainControl.cpp \
     ../Source/ServiceDeviceProcess/ServiceDeviceProcess.cpp \
-    ../Source/InitialSystem.cpp
+    ../Source/InitialSystem.cpp \
+    ../Source/TestBase.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/System/*.ui \

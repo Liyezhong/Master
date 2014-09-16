@@ -22,14 +22,13 @@
 #include "MainMenu/Include/MessageDlg.h"
 
 #include <QDebug>
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
 namespace InitialSystem {
 
 CMainsRelayTest::CMainsRelayTest(QWidget *parent)
-    : CTestBase(),
+    : CTestBase(parent),
     mp_Parent(parent)
 {
 }
@@ -40,7 +39,7 @@ CMainsRelayTest::~CMainsRelayTest(void)
 
 int CMainsRelayTest::Run(void)
 {
-
+    return RETURN_OK;
 }
 
 } // namespace InitialSystem

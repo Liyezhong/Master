@@ -41,6 +41,7 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
+    void StartCheck(void);
     void UpdateMainRelayStatus();
     void UpdateOvenTestStatus();
     void UpdateLiquidTestStatus();
@@ -49,6 +50,9 @@ private Q_SLOTS:
 
 private:
     Ui::CInitialSystem *mp_Ui;
+    QPixmap             m_PixmapCheck;
+    QPixmap             m_PixmapPass;
+    QPixmap             m_PixmapFail;
 
 signals:
 };

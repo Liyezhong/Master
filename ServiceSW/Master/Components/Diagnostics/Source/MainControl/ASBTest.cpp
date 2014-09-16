@@ -29,8 +29,7 @@ namespace Diagnostics {
 namespace MainControl {
 
 CASBTest::CASBTest(HimSlaveType_t SlaveType, QWidget *parent)
-    : CTestBase(),
-    mp_Parent(parent),
+    : CTestBase(parent),
     m_SlaveType(SlaveType)
 {
 }
@@ -100,23 +99,7 @@ int CASBTest::Run(void)
 
     QString Title = QString("ASB %1").arg(SlaveType);
 
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
-    dlg->SetTitle(Title);
-    if (Ret == RETURN_OK) {
-        dlg->SetIcon(QMessageBox::Information);
-    }
-    else {
-        dlg->SetIcon(QMessageBox::Critical);
-    }
-    dlg->SetText(Text);
-    dlg->HideButtons();
-    dlg->SetButtonText(1, "OK");
-    dlg->setModal(true);
-    qDebug()<<Text;
-
-    dlg->exec();
-
-    delete dlg;
+    ShowMessage(Title, Text, Ret);
 
     return Ret;
 }

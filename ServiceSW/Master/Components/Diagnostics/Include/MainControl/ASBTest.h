@@ -23,7 +23,6 @@
 
 #include "Diagnostics/Include/TestBase.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
@@ -39,7 +38,6 @@ public:
 
     int Run(void);
 private:
-    QWidget                   *mp_Parent;
     HimSlaveType_t            m_SlaveType;
 };
 
