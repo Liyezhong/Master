@@ -39,9 +39,12 @@ public:
 
 protected:
     void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
+    void ShowWaitingDialog(QString& MessageTitle, QString& MessageText);
+    void HideWaitingDialog();
 
 private:
     QWidget        *mp_Parent;
+    MainMenu::CMessageDlg *mp_WaitDlg;
 };
 
 }

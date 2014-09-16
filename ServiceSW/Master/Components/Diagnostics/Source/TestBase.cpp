@@ -25,12 +25,16 @@ namespace Diagnostics {
 CTestBase::CTestBase(QWidget *parent)
     :mp_Parent(parent)
 {
-
+    mp_WaitDlg = NULL;
 }
 
 CTestBase::~CTestBase()
 {
-
+    if (mp_WaitDlg) {
+        mp_WaitDlg->hide();
+        delete mp_WaitDlg;
+        mp_WaitDlg = NULL;
+    }
 }
 
 void CTestBase::ShowMessage(QString &MessageTitle, QString &MessageText, ErrorCode_t Ret)
@@ -52,6 +56,33 @@ void CTestBase::ShowMessage(QString &MessageTitle, QString &MessageText, ErrorCo
     dlg->exec();
 
     delete dlg;
+}
+
+void CTestBase::ShowWaitingDialog(QString &MessageTitle, QString &MessageText)
+{
+    if (mp_WaitDlg) {
+        mp_WaitDlg->hide();
+        delete mp_WaitDlg;
+        mp_WaitDlg = NULL;
+    }
+
+    mp_WaitDlg = new MainMenu::CMessageDlg(mp_Parent);
+    mp_WaitDlg->SetTitle(MessageTitle);
+    mp_WaitDlg->SetIcon(QMessageBox::Information);
+
+    mp_WaitDlg->SetText(MessageText);
+    mp_WaitDlg->HideButtons();
+    mp_WaitDlg->setModal(true);
+    mp_WaitDlg->Show();
+}
+
+void CTestBase::HideWaitingDialog()
+{
+    if (mp_WaitDlg) {
+        mp_WaitDlg->hide();
+        delete mp_WaitDlg;
+        mp_WaitDlg = NULL;
+    }
 }
 
 } // namespace Diagnostics

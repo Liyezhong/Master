@@ -117,7 +117,14 @@ int CMainsRelayTest::Run(void)
 
 void CMainsRelayTest::ShowWaitingMessage(bool ShowFlag)
 {
-
+    if (ShowFlag) {
+        QString Title = "Mains Relay Self-test";
+        QString Text = Title.append(" is running...");
+        ShowWaitingDialog(Title, Text);
+    }
+    else {
+        HideWaitingDialog();
+    }
 }
 
 void CMainsRelayTest::ShowFailMessage(int Error)
@@ -141,6 +148,7 @@ void CMainsRelayTest::ShowFailMessage(int Error)
                 "is resolved.";
     }
 
+    ShowMessage(Title, Text, RETURN_ERR_FAIL);
 }
 
 } // namespace InitialSystem
