@@ -30,6 +30,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBaseModule.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h>
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 using namespace DeviceControl;
 
@@ -149,6 +150,7 @@ public:
     ErrorCode_t PumpSucking(int DelayTime);
     ErrorCode_t PumpDraining();
 
+    ErrorCode_t GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName, ReportError_t* RetReportError);
     void Pause(quint32 MillSeconds);
 
 private:

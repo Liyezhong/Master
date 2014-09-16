@@ -879,6 +879,19 @@ ErrorCode_t ServiceDeviceProcess::PumpDraining()
 
 }
 
+ErrorCode_t ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName, ReportError_t* RetReportError)
+{
+    if (m_rIdevProc == NULL || RetReportError == NULL) {
+        return RETURN_ERR_NULL_POINTER;
+    }
+
+    ReportError_t ReportErr = m_rIdevProc->GetSlaveModuleReportError(ErrorCode, DevName, SensorName);
+
+    memcpy((ReportError_t*) RetReportError, (ReportError_t*) &ReportErr, sizeof(ReportError_t));
+
+    return RETURN_OK;
+}
+
 void ServiceDeviceProcess::Pause(quint32 MilliSeconds)
 {
     mp_Utils->Pause(MilliSeconds);

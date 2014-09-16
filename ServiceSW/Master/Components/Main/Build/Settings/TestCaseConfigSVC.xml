@@ -3,6 +3,7 @@
 <TestCaseConfig Version="1">
 	<InitialSystem>
 		<SMainsRelay RVTargetTemp="120" OvenTopTargetTemp="90" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrent="150"/>
+		<SRVPreTest RVTargetTemp="120" RVDiffTemp="100" />
 	</InitialSystem>
 	<Oven>
 	</Oven>
