@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE TestCaseConfig>
 <TestCaseConfig Version="1">
+	<InitialSystem>
+		<SMainsRelay RVTargetTemp="120" OvenTopTargetTemp="90" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrent="150"/>
+	</InitialSystem>
 	<Oven>
 	</Oven>
 	<RotaryValve>

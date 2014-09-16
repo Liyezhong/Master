@@ -144,6 +144,7 @@ public:
     ErrorCode_t PumpSucking(int DelayTime);
     ErrorCode_t PumpDraining();
 
+    void Pause(quint32 MillSeconds);
 
 private:
     DeviceControl::IDeviceProcessing*           m_rIdevProc;           //!< IDeviceProcessing reference to interact with device

@@ -361,11 +361,17 @@ ErrorCode_t ServiceDeviceProcess::OvenStartHeating(qreal TargetTempTop, qreal Ta
         return RETURN_ERR_NULL_POINTER;
     }
 
+
     mp_TempOvenBottom->StopTemperatureControl();
     mp_TempOvenTop->StopTemperatureControl();
 
-    Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
-    Ret |= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
+
+    if (TargetTempBottom > 0) {
+        Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
+    }
+    if (TargetTempTop > 0) {
+        Ret |= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
+    }
 
     if (Ret) {
         return RETURN_OK;
@@ -818,6 +824,10 @@ ErrorCode_t ServiceDeviceProcess::PumpDraining()
 
 }
 
+void ServiceDeviceProcess::Pause(quint32 MilliSeconds)
+{
+    mp_Utils->Pause(MilliSeconds);
+}
 
 
 } // end namespace Diagnostics
