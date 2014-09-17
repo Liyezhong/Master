@@ -99,7 +99,8 @@ typedef struct
                 QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)").arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2)+
                 QString("RTSideCurrent(%1)RTBottomCurrent(%2)OvenTop(%3)OvenBottom(%4)ALLSCurrent(%5)ALTube1Current(%6)ALTube2Current(%7)RVTempCurrent(%8)Slave3Voltage(%9)Slave5Voltage(%10)Slave15Voltage(%11)")
                 .arg(CurrentRTSide).arg(CurrentRTBottom).arg(CurrentOvenTop).arg(CurrentOvenBottom).arg(CurrentLALevelSensor).arg(CurrentLATube1).arg(CurrentLATube2).arg(CurrentRVTemp)
-                .arg(Slave3Voltage).arg(Slave5Voltage).arg(Slave15Voltage);
+                .arg(Slave3Voltage).arg(Slave5Voltage).arg(Slave15Voltage) +
+                QString("ASB3Current(%1)ASB5Curent(%2)ASB15Current(%3)").arg(Slave3Current).arg(Slave5Current).arg(Slave15Current);
     }
 #endif
     QString toLogString(){

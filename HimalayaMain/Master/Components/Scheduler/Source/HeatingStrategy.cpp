@@ -148,24 +148,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
-        // For Oven Top
-        retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        //For Oven Bottom
-        retCode = StartOvenTemperatureControl(m_OvenBottom, OVEN_BOTTOM);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
 
-        if (false == m_IsOvenHeatingStarted)
-        {
-            m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
-            m_IsOvenHeatingStarted = true;
-        }
         //For RVRod
         retCode = StartRVTemperatureControl(m_RV_1_HeatingRod);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -198,6 +181,24 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return retCode;
     }
 
+    // For Oven Top
+    retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        return retCode;
+    }
+    //For Oven Bottom
+    retCode = StartOvenTemperatureControl(m_OvenBottom, OVEN_BOTTOM);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        return retCode;
+    }
+
+    if (false == m_IsOvenHeatingStarted)
+    {
+        m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
+        m_IsOvenHeatingStarted = true;
+    }
 
     /***********************************************************
      *
@@ -243,14 +244,25 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         //return DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED;
     }
     //For Oven Top
-    if (false == this->CheckSensorHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop))
+    retCode = CheckOvenHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop, OVEN_TOP_SENSOR);
+    if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        return DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL;
+        mp_SchedulerController->LogDebug("**********************00000000000");
+        return retCode;
     }
-    //For Oven Bottom
-    if (false == this->CheckSensorHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
+    //For Oven Bottom1
+    retCode = CheckOvenHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom1, OVEN_BOTTOM1_SENSOR);
+    if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        return DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL;
+        mp_SchedulerController->LogDebug("**********************1111111111");
+        return retCode;
+    }
+    //For oven Bottom2
+    retCode = CheckOvenHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom2, OVEN_BOTTOM2_SENSOR);
+    if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        mp_SchedulerController->LogDebug("**********************2222222222222");
+        return retCode;
     }
     //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
     if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
@@ -594,6 +606,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].DerivativeTime);
         m_OvenBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_OvenBottom.OTCheckPassed = false;
+        m_OvenBottom.OvenBottom2OTCheckPassed = false;
     }
     if ("RV" == HeaterName)
     {
@@ -676,14 +689,21 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     }
     if ("OvenTop" == HeaterName)
     {
-
         pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
         dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_TOP);
+        if(!m_OvenTop.curModuleId.isEmpty())
+        {
+            m_OvenTop.curModuleId = "";
+        }
     }
     if ("OvenBottom" == HeaterName)
     {
         pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
         dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_BOTTOM);
+        if(!m_OvenBottom.curModuleId.isEmpty())
+        {
+            m_OvenTop.curModuleId = "";
+        }
     }
     if ("RV" == HeaterName)
     {
@@ -956,45 +976,53 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
+void HeatingStrategy::ResetTheOvenHeating()
+{
+    m_OvenTop.curModuleId = "";
+    m_OvenTop.heatingStartTime = 0;
+    m_OvenTop.IsStartedHeating = false;
+
+    m_OvenBottom.curModuleId = "";
+    m_OvenBottom.heatingStartTime = 0;
+    m_OvenBottom.IsStartedHeating = false;
+}
+
 DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSensor& heatingSensor, OVENTempCtrlType_t OvenType)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
     //Firstly, get the Parrifin melting point (user input)
     qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if(userInputMeltingPoint < 0)
-    {
-        userInputMeltingPoint = 0.0;
-    }
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
+        QPair<qint64,qint64> timeRange = heatingSensor.TimeRangeList[iter->Id];
         QPair<qreal,qreal> meltingRange = heatingSensor.ParaffinTempRangeList[iter->Id];
-        if (meltingRange.first<=userInputMeltingPoint && meltingRange.second>= userInputMeltingPoint)
+
+        qint64 now = QDateTime::currentMSecsSinceEpoch();
+        qint64 timeElapse = 0;
+        if (0 != heatingSensor.heatingStartTime)
         {
-            if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
-            {
+            timeElapse = now - heatingSensor.heatingStartTime;
+        }
+        if (meltingRange.first <= userInputMeltingPoint && meltingRange.second >= userInputMeltingPoint
+                && (timeRange.first * 1000) <= timeElapse && (timeRange.second * 1000) >= timeElapse)
+        {
                 break;
-            }
         }
     }
 
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
-        qreal tmpTemperatureOffset = 0.0;
-        if ( 4 == m_CurScenario || (214 == m_CurScenario && mp_SchedulerController->HasParaffinReagent()) )
+        if(heatingSensor.curModuleId == iter->Id)
         {
-            tmpTemperatureOffset = iter->TemperatureOffsetWithParaffin + userInputMeltingPoint;
-        }
-        else
-        {
-            tmpTemperatureOffset = iter->TemperatureOffset + userInputMeltingPoint;
+            return retCode;
         }
         CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(OvenType);
-        pHeatingCmd->SetNominalTemperature(tmpTemperatureOffset);
+        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputMeltingPoint);
         pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
         pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
@@ -1012,17 +1040,22 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         {
             mp_SchedulerController->LogDebug(
                         QString("start Oven(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
-                        .arg(m_CurScenario).arg(tmpTemperatureOffset).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
+                        .arg(m_CurScenario).arg(iter->TemperatureOffset+userInputMeltingPoint).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
                         .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(OvenType));
-            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
-            heatingSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
+            if(false == heatingSensor.IsStartedHeating)
+            {
+                heatingSensor.OvenBottom2OTCheckPassed = false;
+                heatingSensor.OTCheckPassed = false;
+                heatingSensor.IsStartedHeating = true;
+                heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+            }
+
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
 
-    // The current scenario is NOT related to Level Sensor's ones.
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
@@ -1259,6 +1292,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     //For Oven Top
     m_OvenTop.devName = "Oven";
     m_OvenTop.sensorName = "OvenTop";
+    m_OvenTop.IsStartedHeating = false;
     m_OvenTop.heatingStartTime = 0;
     m_OvenTop.curModuleId = "";
     m_OvenTop.OTCheckPassed = false;
@@ -1303,15 +1337,16 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         //TimeRange
         QString timeRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenTop.devName, funcKey, "TimeRange");
         strList = timeRange.split(",");
-        QPair<qreal, qreal> timePair;
-        timePair.first = strList[0].toDouble(&ok);
-        timePair.second = strList[1].toDouble(&ok);
+        QPair<qint64, qint64> timePair;
+        timePair.first = strList[0].toInt(&ok);
+        timePair.second = strList[1].toInt(&ok);
         m_OvenTop.TimeRangeList.insert(*iter,timePair);
     }
 
     //For Oven Bottom
     m_OvenBottom.devName = "Oven";
     m_OvenBottom.sensorName = "OvenBottom";
+    m_OvenBottom.IsStartedHeating = false;
     m_OvenBottom.heatingStartTime = 0;
     m_OvenBottom.curModuleId = "";
     m_OvenBottom.OTCheckPassed = false;
@@ -1356,9 +1391,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         //TimeRange
         QString timeRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenBottom.devName, funcKey, "TimeRange");
         strList = timeRange.split(",");
-        QPair<qreal, qreal> timePair;
-        timePair.first = strList[0].toDouble(&ok);
-        timePair.second = strList[1].toDouble(&ok);
+        QPair<qint64, qint64> timePair;
+        timePair.first = strList[0].toInt(&ok);
+        timePair.second = strList[1].toInt(&ok);
         m_OvenBottom.TimeRangeList.insert(*iter,timePair);
     }
 
@@ -1570,6 +1605,93 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         }
     }
     return true;
+}
+
+DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor& heatingSensor, qreal HWTemp, OVENSensorType_t OvenType)
+{
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    if(!isEffectiveTemp(HWTemp))
+    {
+        return retCode;
+    }
+
+    if(!heatingSensor.curModuleId.isEmpty())
+    {
+        qint64 now = QDateTime::currentMSecsSinceEpoch();
+        qint64 timeElapse = 0;
+        if (0 != heatingSensor.heatingStartTime)
+        {
+            timeElapse = now - heatingSensor.heatingStartTime;
+        }
+        QPair<qint64,qint64> timeRange = heatingSensor.TimeRangeList[heatingSensor.curModuleId];
+
+        if(0 == timeRange.first)
+        {
+            if(OVEN_BOTTOM2_SENSOR == OvenType)
+            {
+                if(heatingSensor.OvenBottom2OTCheckPassed)
+                    return retCode;
+            }
+            else if(heatingSensor.OTCheckPassed)
+            {
+                return retCode;
+            }
+            if( timeElapse < (timeRange.second*1000 - 30*1000) )
+            {
+                if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+                {
+                    if(OVEN_BOTTOM2_SENSOR == OvenType)
+                    {
+                        heatingSensor.OvenBottom2OTCheckPassed = true;
+                    }
+                    else
+                    {
+                        heatingSensor.OTCheckPassed = true;
+                    }
+                    return retCode;
+                }
+            }
+            else if( HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+            {
+                switch(OvenType)
+                {
+                    case OVEN_TOP_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL;
+                        break;
+                    case OVEN_BOTTOM1_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL;
+                        break;
+                    case OVEN_BOTTOM2_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_ABNORMAL;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        else
+        {
+            int userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            if( (timeElapse >= timeRange.second*1000) && (HWTemp < userInputMeltingPoint-4 || HWTemp > userInputMeltingPoint+12))
+            {
+                switch(OvenType)
+                {
+                    case OVEN_TOP_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE;
+                        break;
+                    case OVEN_BOTTOM1_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE;
+                        break;
+                    case OVEN_BOTTOM2_SENSOR:
+                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    return retCode;
 }
 
 bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)

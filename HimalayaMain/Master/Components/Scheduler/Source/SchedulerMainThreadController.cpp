@@ -302,7 +302,6 @@ void SchedulerMainThreadController::OnTickTimer()
 
 void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
-
     if(flag)
     {
         m_SchedulerMachine->SendSchedulerInitComplete();
@@ -321,6 +320,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     }
+    mp_HeatingStrategy->ResetTheOvenHeating();
 }
 
 void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -2412,7 +2412,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[2].CurrentMax5VDC)
+        if (strctHWMonitor.Slave15Current > m_SlaveAttrList[2].CurrentMax5VDC)
         {
             LogDebug(QString("slave 15 5V current is: %1").arg(strctHWMonitor.Slave15Current));
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE,Scenario,true);

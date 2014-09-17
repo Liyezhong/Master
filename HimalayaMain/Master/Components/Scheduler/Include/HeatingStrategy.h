@@ -102,11 +102,25 @@ struct RTBottomSensor : public HeatingSensor
 /****************************************************************************/
 struct OvenSensor : public HeatingSensor
 {
-    QMap<QString, qreal>                    OTTempOffsetList;       //!< oven temperature offset map
-    QMap< QString, QPair<qreal,qreal> >     ParaffinTempRangeList;  //!< paraffin temperature range map
-    QMap< QString, QPair<qreal, qreal> >    TimeRangeList;          //!< time range map
+    bool                                    IsStartedHeating;           //!< started begin flag
+    bool                                    OvenBottom2OTCheckPassed;   //!< Oven Bottom2 sensor OT Check passed
+    QMap<QString, qreal>                    OTTempOffsetList;           //!< oven temperature offset map
+    QMap< QString, QPair<qreal,qreal> >     ParaffinTempRangeList;      //!< paraffin temperature range map
+    QMap< QString, QPair<qint64, qint64> >  TimeRangeList;              //!< time range map
 
 };
+
+/****************************************************************************/
+/*!
+ * \brief enum type of oven sensor
+ */
+/****************************************************************************/
+typedef enum
+{
+    OVEN_TOP_SENSOR = 0,
+    OVEN_BOTTOM1_SENSOR,
+    OVEN_BOTTOM2_SENSOR
+} OVENSensorType_t;
 
 /****************************************************************************/
 /*!
@@ -309,6 +323,14 @@ public:
     /****************************************************************************/
     void ResetTheHeatingScenario() {m_CurScenario = 0;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief reset the Oven heating
+     *  \return void
+     */
+    /****************************************************************************/
+    void ResetTheOvenHeating();
+
 private slots:
     /****************************************************************************/
     /*!
@@ -436,6 +458,17 @@ private:
      */
     /****************************************************************************/
 	inline bool CheckRVOutletHeatingOverTime(qreal HWTemp);
+
+    /****************************************************************************/
+    /*!
+     *  \brief check Oven heating over time or not
+     *  \param heatingSensor = OvenSensor
+     *  \param HWTemp = qreal temperature
+     *  \param OvenType = OVENSensorType_t
+     *  \return ReturnCode_t
+     */
+    /****************************************************************************/
+    DeviceControl::ReturnCode_t CheckOvenHeatingOverTime(OvenSensor& heatingSensor, qreal HWTemp, OVENSensorType_t OvenType);
 
 private:
     /****************************************************************************/
