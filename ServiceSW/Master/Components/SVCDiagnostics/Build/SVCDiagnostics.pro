@@ -10,8 +10,7 @@
 
 TARGET = SVCDiagnostics
 
-HEADERS += ../Include/*.h \      # header file location
-    ../Source/GraphicsItemPart.h
+HEADERS += ../Include/*.h      # header file location
 SOURCES += ../Source/*.cpp     # source file location
 FORMS   += ../Forms/*.ui      # form file location
 RESOURCES *= ../Resource/SVCDiagnostics.qrc # resource file location
