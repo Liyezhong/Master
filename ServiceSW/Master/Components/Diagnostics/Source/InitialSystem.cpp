@@ -35,16 +35,20 @@
 #include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
 #include "Diagnostics/Include/InitialSystem/RVPreTest.h"
 #include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
+#include "Diagnostics/Include/SelectMeltingPointDialog.h"
 
 namespace Diagnostics {
 
-CInitialSystem::CInitialSystem(QWidget *parent) :
+const QString MSG_TITLE("Initial System Check");
+
+CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent) :
     MainMenu::CDialogFrame(parent),
+    mp_DataConnector(p_DataConnector),
     mp_Ui(new Ui::CInitialSystem)
 {
     mp_Ui->setupUi(GetContentFrame());
 
-    this->SetDialogTitle(tr("Initial System Check"));
+    this->SetDialogTitle(MSG_TITLE);
 
     QPixmap PixMapCheck(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
@@ -72,19 +76,18 @@ CInitialSystem::CInitialSystem(QWidget *parent) :
 
     CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
 
-    QTimer timer;
-    timer.setSingleShot(true);
-    timer.setInterval(15000);
-    timer.start();
-    CONNECTSIGNALSLOT(&timer, timeout(), this, StartCheck());
+    mp_StartTimer = new QTimer;
+    mp_StartTimer->setSingleShot(true);
+    mp_StartTimer->setInterval(5000);
+    mp_StartTimer->start();
+    CONNECTSIGNALSLOT(mp_StartTimer, timeout(), this, StartCheck());
 
-    //CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateMainRelayStatus());
-    //CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), this, UpdateOvenTestStatus());
 }
 
 CInitialSystem::~CInitialSystem()
 {
     delete mp_Ui;
+    delete mp_StartTimer;
 }
 
 /****************************************************************************/
@@ -132,6 +135,36 @@ void CInitialSystem::StartCheck()
         mp_Ui->voltageCheckLabel->setPixmap(m_PixmapFail);
         return;
     }
+
+    int ParaffinBath = CheckParaffinBath();
+    qDebug()<<"InitialSystem Paraffin melting point :"<<ParaffinBath;
+}
+
+int CInitialSystem::CheckParaffinBath(void)
+{
+    int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
+    QString Text = QString("Current paraffin melting point is %1. If correct, press 'Yes'. If incorrect,press 'No', then select the correct paraffinmelting point").arg(ParaffinBath);
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
+
+    dlg->SetTitle(MSG_TITLE);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(1, tr("Yes"));
+    dlg->SetButtonText(3, tr("No"));
+    dlg->setModal(true);
+
+    if (dlg->exec() == 0) {
+        CSelectMeltingPointDialog* SelectDlg = new CSelectMeltingPointDialog(ParaffinBath, this);
+        (void)SelectDlg->exec();
+
+        ParaffinBath = SelectDlg->GetMeltingPoint();
+        delete SelectDlg;
+    }
+
+    delete dlg;
+
+    return ParaffinBath;
 }
 
 void CInitialSystem::UpdateMainRelayStatus()

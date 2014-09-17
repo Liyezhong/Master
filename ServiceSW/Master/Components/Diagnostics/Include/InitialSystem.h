@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_INITIALSYSTEM_H
 
 #include "MainMenu/Include/DialogFrame.h"
+#include "Core/Include/ServiceGUIConnector.h"
 
 namespace Diagnostics {
 
@@ -34,7 +35,7 @@ class CInitialSystem : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
-    explicit CInitialSystem(QWidget *parent = 0);
+    explicit CInitialSystem(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *parent = 0);
     ~CInitialSystem();
 
 protected:
@@ -48,13 +49,19 @@ private Q_SLOTS:
     void UpdateRVTestStatus();
     void UpdateRetortTestStatus();
 
-private:
-    Ui::CInitialSystem *mp_Ui;
-    QPixmap             m_PixmapCheck;
-    QPixmap             m_PixmapPass;
-    QPixmap             m_PixmapFail;
-
 signals:
+
+private:
+    int CheckParaffinBath(void);
+
+private:
+    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
+    Ui::CInitialSystem         *mp_Ui;
+    QTimer*                    mp_StartTimer;
+    QPixmap                    m_PixmapCheck;
+    QPixmap                    m_PixmapPass;
+    QPixmap                    m_PixmapFail;
+
 };
 
 

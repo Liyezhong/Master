@@ -24,7 +24,8 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/BasicColor/BasicColorTestDlg.h \
     ../Include/MainControl.h \
     ../Include/ServiceDeviceProcess/ServiceDeviceProcess.h \
-    ../Include/InitialSystem.h
+    ../Include/InitialSystem.h \
+    ../Include/SelectMeltingPointDialog.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -38,11 +39,13 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/MainControl.cpp \
     ../Source/ServiceDeviceProcess/ServiceDeviceProcess.cpp \
     ../Source/InitialSystem.cpp \
-    ../Source/TestBase.cpp
+    ../Source/TestBase.cpp \
+    ../Source/SelectMeltingPointDialog.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/System/*.ui \
     ../Forms/BasicColor/BasicColorTestDlg.ui \
     ../Forms/Display.ui \
     ../Forms/MainControl.ui \
-    ../Forms/InitialSystem.ui
+    ../Forms/InitialSystem.ui \
+    ../Forms/SelectMeltingPointDialog.ui
