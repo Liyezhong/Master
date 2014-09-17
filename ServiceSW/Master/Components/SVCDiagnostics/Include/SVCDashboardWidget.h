@@ -22,10 +22,15 @@ public:
     ~CSVCDashboardWidget();
     
 private:
+    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos);
     void paintEvent(QPaintEvent *p_PaintEvent);
     Ui::CSVCDashboardWidget *ui;
     QGraphicsScene *m_pScene;
     CGraphicsItemPart * m_pRetort;
+    CGraphicsItemPart * m_pOven;
+    CGraphicsItemPart * m_pRotaryValve;
+    CGraphicsItemPart * m_pHeatingTube;
+    CGraphicsItemPart * m_pAirHeatingTube;
 
 private slots:
 

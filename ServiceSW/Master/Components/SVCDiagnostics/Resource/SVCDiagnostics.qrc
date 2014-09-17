@@ -1,7 +1,24 @@
 <RCC>
     <qresource prefix="/">
         <file>Images/SVCDiagnosticsBackground.png</file>
-        <file>Images/retortGlow.PNG</file>
-        <file>Images/retort.png</file>
+        <file>Images/Retort.png</file>
+        <file>Images/RetortDisabled.png</file>
+        <file>Images/RetortGlow.png</file>
+        <file>Images/Oven.png</file>
+        <file>Images/OvenDisabled.png</file>
+        <file>Images/OvenGlow.png</file>
+        <file>Images/HeatingTubeDisabled.png</file>
+        <file>Images/HeatingTube.png</file>
+        <file>Images/HeatingTubeGlow.png</file>
+        <file>Images/RotaryValve.png</file>
+        <file>Images/RotaryValveDisabled.png</file>
+        <file>Images/RotaryValveGlow.png</file>
+        <file>Images/WaxTrap.png</file>
+        <file>Images/WaxTrapDisabled.png</file>
+        <file>Images/WaxTrapGlow.png</file>
+        <file>Images/PumbDisabled.png</file>
+        <file>Images/AirHeatingTubeGlow.png</file>
+        <file>Images/AirHeatingTubeDisabled.png</file>
+        <file>Images/AirHeatingTube.png</file>
     </qresource>
 </RCC>

@@ -20,18 +20,34 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *parent) :
     m_pScene = new QGraphicsScene(ui->graphicsView);
     m_pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
     m_pScene->setSceneRect(0, 0, 772, 490);
-    //m_pScene->setBackgroundBrush(QImage(":/Images/SVCDiagnosticsBackground.png"));
+    m_pScene->setBackgroundBrush(QImage(":/Images/SVCDiagnosticsBackground.png"));
     ui->graphicsView->setScene(m_pScene);
 
-    m_pRetort = new CGraphicsItemPart(QPixmap(":/Images/retort.png"));
-    m_pScene->addItem(m_pRetort);
-    m_pRetort->setPos(0, 0);
+    m_pRetort = CreatePart("Retort", QPoint(406, 30));
+    m_pOven = CreatePart("Oven", QPoint(7, 70));
+    m_pRotaryValve = CreatePart("RotaryValve", QPoint(219, 154));
+
+    m_pAirHeatingTube = CreatePart("AirHeatingTube", QPoint(488, 50));
+    m_pHeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
 {
     delete ui;
     delete m_pScene;
+}
+
+CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos)
+{
+    QString normalImg = ":/Images/" + partResName + ".png";
+    QString disabledImg = ":/Images/" + partResName + "Disabled.png";
+    QString glowImg = ":/Images/" + partResName + "Glow.png";
+    CGraphicsItemPart* pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
+                                             QPixmap(disabledImg),
+                                             QPixmap(glowImg));
+    m_pScene->addItem(pGraphicsItemPart);
+    pGraphicsItemPart->setPos(pos);
+    return pGraphicsItemPart;
 }
 
 void CSVCDashboardWidget::paintEvent(QPaintEvent* pPaintEvent)
