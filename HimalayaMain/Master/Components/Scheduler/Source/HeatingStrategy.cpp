@@ -247,21 +247,18 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     retCode = CheckOvenHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop, OVEN_TOP_SENSOR);
     if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        mp_SchedulerController->LogDebug("**********************00000000000");
         return retCode;
     }
     //For Oven Bottom1
     retCode = CheckOvenHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom1, OVEN_BOTTOM1_SENSOR);
     if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        mp_SchedulerController->LogDebug("**********************1111111111");
         return retCode;
     }
     //For oven Bottom2
     retCode = CheckOvenHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom2, OVEN_BOTTOM2_SENSOR);
     if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        mp_SchedulerController->LogDebug("**********************2222222222222");
         return retCode;
     }
     //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
