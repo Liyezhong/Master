@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdALForceDraining.h
+/*! \file CmdIDForceDraining.h
  *
- *  \brief CmdALForceDraining command definition.
+ *  \brief CmdIDForceDraining command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 29.03.2013
@@ -19,8 +19,8 @@
 /****************************************************************************/
 
 
-#ifndef CMDALFORCEDRAINING_H
-#define CMDALFORCEDRAINING_H
+#ifndef CMDIDFORCEDRAINING_H
+#define CMDIDFORCEDRAINING_H
 
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
@@ -31,7 +31,7 @@ namespace Scheduler{
  *  \brief  Definition/Declaration of class CmdALForceDraining
  */
 /****************************************************************************/
-class CmdALForceDraining : public CmdSchedulerCommandBase
+class CmdIDForceDraining : public CmdSchedulerCommandBase
 {
 public:
     /****************************************************************************/
@@ -44,8 +44,8 @@ public:
      *  \return from CmdALForceDraining
      */
     /****************************************************************************/
-    CmdALForceDraining(int Timeout, SchedulerMainThreadController *controller);
-    ~CmdALForceDraining();
+    CmdIDForceDraining(int Timeout, SchedulerMainThreadController *controller);
+    ~CmdIDForceDraining();
 
     static QString NAME;    ///< Command name.
 
@@ -82,22 +82,22 @@ public:
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	/****************************************************************************/
 	/*!
-	 *  \brief  Definition/Declaration of function GetDelayTime
+     *  \brief  Definition/Declaration of function GetRVPosition
 	 *
-	 *  \return from GetDelayTime
+     *  \return from GetRVPosition
 	 */
 	/****************************************************************************/
-	quint32 GetDelayTime(){return m_DelayTime;}
+    quint32 GetRVPosition(){return m_RVPosition;}
 	/****************************************************************************/
 	/*!
-	 *  \brief  Definition/Declaration of function SetDelayTime
+     *  \brief  Definition/Declaration of function SetRVPosition
 	 *
 	 *  \param DelayTime = quint32 type parameter
 	 *
-	 *  \return from SetDelayTime
+     *  \return from SetRVPosition
 	 */
 	/****************************************************************************/
-	void SetDelayTime(quint32 DelayTime){m_DelayTime = DelayTime;}
+    void SetRVPosition(quint32 RVPos){m_RVPosition = RVPos;}
 	
 	/****************************************************************************/
 	/*!
@@ -106,7 +106,7 @@ public:
 	 *  \return from GetParameters
 	 */
 	/****************************************************************************/
-	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_DelayTime);}
+    QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_RVPosition);}
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetStrResult
@@ -136,13 +136,13 @@ public:
     void SetDrainPressure(float tartgetPressure){m_TargetPressure = tartgetPressure;}
 
 private:
-    CmdALForceDraining();                                                    ///< Not implemented.
-    CmdALForceDraining(const CmdALForceDraining &);                     ///< Not implemented.
-    const CmdALForceDraining & operator = (const CmdALForceDraining &); ///< Not implemented.
+    CmdIDForceDraining();                                                    ///< Not implemented.
+    CmdIDForceDraining(const CmdIDForceDraining &);                     ///< Not implemented.
+    const CmdIDForceDraining & operator = (const CmdIDForceDraining &); ///< Not implemented.
 
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
-	mutable quint32 m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
+    mutable quint32 m_RVPosition;       ///<  Definition/Declaration of variable m_DelayTime
     mutable float  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
 	
 };
@@ -151,4 +151,4 @@ private:
 
 }
 
-#endif // CMDALFORCEDRAINING_H
+#endif // CMDIDFORCEDRAINING_H

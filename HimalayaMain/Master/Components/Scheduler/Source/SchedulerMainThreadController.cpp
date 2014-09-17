@@ -533,7 +533,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
-                    m_SchedulerMachine->HandleRcRestartAtDrain(cmd->GetName());
+                    m_SchedulerMachine->HandleRcRestartAtDrain(cmd->GetName(), retCode);
                     break;
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
@@ -1245,7 +1245,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RS_TISSUE_PROTECT == currentState)
     {
         LogDebug("In RS_Tissue_Protect");
-        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(ctrlCmd, cmdName, retCode);
+        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RC_CHECK_RTLOCK == currentState)
     {
@@ -3700,6 +3700,8 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
     memset(&reportError7, 0, sizeof(reportError7));
     ReportError_t reportError8;
     memset(&reportError8, 0, sizeof(reportError8));
+    ReportError_t reportError9;
+    memset(&reportError9, 0, sizeof(reportError9));
     reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_BOTTOM);
     reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
     reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
@@ -3707,7 +3709,8 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
     reportError5 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_LEVELSENSOR);
     reportError6 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
     reportError7 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
-    reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
+    reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_FAN);
+    reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {
         RaiseError(0,DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED, Scenario, true);
@@ -3744,6 +3747,11 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
        // m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError8.instanceID != 0)
+    {
+        RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+    if (reportError9.instanceID != 0)
     {
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();

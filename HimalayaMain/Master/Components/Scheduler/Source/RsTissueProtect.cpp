@@ -24,7 +24,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
-#include "Scheduler/Commands/Include/CmdALForceDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
@@ -137,7 +137,7 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
 }
 
 
-void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, ReturnCode_t retCode)
+void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	switch (currentState)
@@ -185,7 +185,6 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
             }
             else if (QString::number(Scenario).right(1).toInt(&ok)>=2 && QString::number(Scenario).right(1).toInt(&ok) <= 6)
             {
-                mp_SchedulerController->MoveRV(0);
                 emit DrainCurReagent();
             }
             else
@@ -199,7 +198,6 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Stop_CommandExcution state");
         if ("Scheduler::ALStopCmdExec" == cmdName)
         {
-            mp_SchedulerController->MoveRV(0);
             emit DrainCurReagent();
         }
         break;
@@ -207,36 +205,29 @@ void CRsTissueProtect::HandleWorkFlow(ControlCommandType_t ctrlCmd, const QStrin
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
         if (0 == m_DrainCurReagentSeq)
         {
-            if (mp_SchedulerController->IsRVRightPosition(0))
-            {
-                mp_SchedulerController->LogDebug("Send cmd to DCL to Drain current reagent in RS_Tissue_Protect");
-                CmdALForceDraining* cmd  = new CmdALForceDraining(500, mp_SchedulerController);
-                cmd->SetDelayTime(60);
-                mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
-                m_DrainCurReagentSeq++;
-            }
-            else
-            {
-                // Do nothing
-            }
+            mp_SchedulerController->LogDebug("Send cmd to DCL to force Drain current reagent in RS_Tissue_Protect");
+            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerController);
+            QString stationID = mp_SchedulerController->GetCurrentStationID();
+            mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(stationID));
+            RVPosition_t tubePos = mp_SchedulerController->GetRVTubePositionByStationID(stationID);
+            cmd->SetRVPosition((quint32)(tubePos));
+            cmd->SetDrainPressure(40.0);
+            mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+            m_DrainCurReagentSeq++;
         }
         else
         {
-            if ("Scheduler::ALForceDraining" == cmdName)
+            if ("Scheduler::IDForceDraining" == cmdName)
             {
                 m_DrainCurReagentSeq = 0;
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    //emit MoveToTube();
+                    emit MoveToTube();
                 }
                 else
                 {
-                    //TasksDone(false);
+                    TasksDone(false);
                 }
-
-                // either success or failure, we always move to tube. The reason behind this is
-                // when we are in process of Filling, in this case there is NO sufficient reagent in Retort.
-                emit MoveToTube();
             }
             else
             {

@@ -31,7 +31,7 @@
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
-#include "Scheduler/Commands/Include/CmdALForceDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALGetRecentPressure.h"
@@ -329,9 +329,9 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure()));
 	}
-    else if  ("Scheduler::ALForceDraining" == cmdName)
+    else if  ("Scheduler::IDForceDraining" == cmdName)
     {
-        scmd->SetResult(mp_IDeviceProcessing->ALForceDraining(qSharedPointerDynamicCast<CmdALForceDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALForceDraining>(scmd)->GetDrainPressure()));
+        scmd->SetResult(mp_IDeviceProcessing->IDForceDraining(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure()));
     }
 	else if  ("Scheduler::ALFilling" == cmdName)
 	{

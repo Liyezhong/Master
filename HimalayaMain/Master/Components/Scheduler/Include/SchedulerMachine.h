@@ -915,14 +915,13 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rs_Tissue_Protect
      *
-     *  \param ctrlCmd - control command
      *  \param cmdName - command name
      *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsTissueProtectWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1065,10 +1064,11 @@ public:
     /*!
      *  \brief  Handle Rc_Restart when the error occurs at Draining stage
      *  \param cmdName - command name
+     *  \param retCode - return code
      *  \return void
      */
     /****************************************************************************/
-    void HandleRcRestartAtDrain(const QString& cmdName);
+    void HandleRcRestartAtDrain(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!

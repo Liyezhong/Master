@@ -98,13 +98,12 @@ public:
     /*!
      *  \brief Handle the whole work flow for RS_Tissue_Protect
      *
-     *  \param ctrlCmd - control command from GUI
      *  \param cmdName - command name
      *  \param retCode - return code
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
 

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdALForceDraining.cpp
+/*! \file CmdIDForceDraining.cpp
  *
- *  \brief CmdALForceDraining command definition.
+ *  \brief CmdIDForceDraining command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 29.03.2013
@@ -19,20 +19,20 @@
 /****************************************************************************/
 
 
-#include "Scheduler/Commands/Include/CmdALForceDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 
 
 namespace Scheduler{
 
-QString CmdALForceDraining::NAME = "Scheduler::ALForceDraining";
+QString CmdIDForceDraining::NAME = "Scheduler::IDForceDraining";
 
-CmdALForceDraining::CmdALForceDraining(int Timeout, SchedulerMainThreadController *controller):
+CmdIDForceDraining::CmdIDForceDraining(int Timeout, SchedulerMainThreadController *controller):
     CmdSchedulerCommandBase(Timeout, controller),m_TargetPressure(AL_TARGET_PRESSURE_POSITIVE)
 {
 }
 
-CmdALForceDraining::~CmdALForceDraining(){}
+CmdIDForceDraining::~CmdIDForceDraining(){}
 
 }
 

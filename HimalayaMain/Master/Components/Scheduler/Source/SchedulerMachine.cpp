@@ -28,7 +28,7 @@
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
-#include "Scheduler/Commands/Include/CmdALForceDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
@@ -948,9 +948,9 @@ void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cm
     mp_RsStandbyWithTissue->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(ControlCommandType_t ctrlCmd, const QString& cmdName, ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    mp_RsTissueProtect->HandleWorkFlow(ctrlCmd, cmdName, retCode);
+    mp_RsTissueProtect->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
@@ -1447,7 +1447,7 @@ void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdN
         break;
     }
 }
-void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName)
+void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName, ReturnCode_t retCode)
 {
     switch (m_RcRestart_AtDrain)
     {
@@ -1463,8 +1463,10 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName)
     case FORCE_DRAINING:
         if ("Scheduler::ALStopCmdExec" == cmdName)
         {
-            CmdALForceDraining* cmd  = new CmdALForceDraining(500, mp_SchedulerThreadController);
-            cmd->SetDelayTime(60);
+            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+            QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
+            cmd->SetRVPosition(mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID));
+            cmd->SetDrainPressure(40.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             m_RcRestart_AtDrain = RV_POS_CHANGE;
         }
@@ -1474,10 +1476,18 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName)
         }
         break;
     case RV_POS_CHANGE:
-        if ("Scheduler::ALForceDraining" == cmdName)
+        if ("Scheduler::CmdIDForceDraining" == cmdName)
         {
             m_RcRestart_AtDrain = STOP_DRAINING;
-            emit ResumeRVPosChange();
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                emit ResumeRVPosChange();
+            }
+            else
+            {
+                // Go back to error state
+                 emit ErrorSignal();
+            }
         }
         break;
     default:
