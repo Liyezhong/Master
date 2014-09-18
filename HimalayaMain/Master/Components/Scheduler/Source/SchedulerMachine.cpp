@@ -1476,7 +1476,7 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName, Retu
         }
         break;
     case RV_POS_CHANGE:
-        if ("Scheduler::CmdIDForceDraining" == cmdName)
+        if ("Scheduler::IDForceDraining" == cmdName)
         {
             m_RcRestart_AtDrain = STOP_DRAINING;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)

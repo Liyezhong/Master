@@ -2398,7 +2398,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-
+#if 0
         // For current related
         if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
         {
@@ -2406,7 +2406,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[1].CurrentMax5VDC)
+        if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
         {
             LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
@@ -2418,7 +2418,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-
+#endif
     }
 
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))

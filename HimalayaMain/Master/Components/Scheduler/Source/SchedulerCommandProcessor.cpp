@@ -116,8 +116,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
 	strctHWMonitor.TempALTube1			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE1,0);
 	strctHWMonitor.TempALTube2			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE2,0);
-    strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
-    strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
+    strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
+    strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
 	strctHWMonitor.PositionRV			= mp_IDeviceProcessing->RVReqActRVPosition();
     strctHWMonitor.TempRTBottom1		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
     strctHWMonitor.TempRTBottom2		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,1);

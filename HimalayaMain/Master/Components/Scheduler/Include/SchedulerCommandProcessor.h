@@ -91,7 +91,7 @@ typedef struct
      *  \return from toLogString
      */
     /****************************************************************************/
-#if 0
+
     QString toLogString(){
         return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)").arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
@@ -102,13 +102,15 @@ typedef struct
                 .arg(Slave3Voltage).arg(Slave5Voltage).arg(Slave15Voltage) +
                 QString("ASB3Current(%1)ASB5Curent(%2)ASB15Current(%3)").arg(Slave3Current).arg(Slave5Current).arg(Slave15Current);
     }
-#endif
+
+#if 0
     QString toLogString(){
         return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)").arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
                 QString("RV1(%1)RV2(%2)RVp(%3)").arg(TempRV1).arg(TempRV2).arg(PositionRV) +
                 QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)").arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2);
     }
+#endif
 } HardwareMonitor_t;
 
 class SchedulerMainThreadController;
