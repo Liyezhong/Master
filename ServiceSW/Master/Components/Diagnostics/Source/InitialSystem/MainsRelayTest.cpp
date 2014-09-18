@@ -128,7 +128,7 @@ void CMainsRelayTest::ShowWaitingMessage(bool ShowFlag)
 {
     if (ShowFlag) {
         QString Title = "Mains Relay Self-test";
-        QString Text = Title.append(" is running...");
+        QString Text = Title + QString(" is running...");
         ShowWaitingDialog(Title, Text);
     }
     else {

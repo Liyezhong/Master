@@ -86,10 +86,14 @@ int CRVPreTest::Run(void)
 
 void CRVPreTest::ShowWaitingMessage(bool ShowFlag)
 {
-    QString Title = "Pre-test Rotary Valve";
-    QString Text = Title.append(" is running ...");
-
-    ShowWaitingDialog(Title, Text);
+    if (ShowFlag) {
+        QString Title = "Pre-test Rotary Valve";
+        QString Text = Title + QString(" is running ...");
+        ShowWaitingDialog(Title, Text);
+    }
+    else {
+        HideWaitingDialog();
+    }
 }
 
 void CRVPreTest::ShowFailMessage(int ErrorCode)

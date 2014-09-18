@@ -89,7 +89,7 @@ void COvenPreTest::ShowWaitingMessage(bool ShowFlag)
 {
     if (ShowFlag) {
         QString Title = "Pre-test Oven";
-        QString Text = Title.append(" is running ...");
+        QString Text = Title + QString(" is running ...");
         ShowWaitingDialog(Title, Text);
     }
     else {

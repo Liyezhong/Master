@@ -38,20 +38,15 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
 {
     mp_Ui->setupUi(GetContentFrame());
 
-    //this->SetDialogTitle(InitialSystem::MSG_TITLE);
+    this->SetDialogTitle(InitialSystem::MSG_TITLE);
 
     QPixmap PixMapCheck(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
-    QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
-    QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
+    QPixmap SetPixmap = PixMapCheck.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
 
-    m_PixmapCheck = PixMapCheck.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
-    m_PixmapPass  = PixMapPass.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
-    m_PixmapFail  = PixMapFail.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
-
-    mp_Ui->ovenCheckLabel->setPixmap(m_PixmapCheck);
-    mp_Ui->liquidCheckLabel->setPixmap(m_PixmapCheck);
-    mp_Ui->rvCheckLabel->setPixmap(m_PixmapCheck);
-    mp_Ui->retortCheckLabel->setPixmap(m_PixmapCheck);
+    mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);
+    mp_Ui->liquidCheckLabel->setPixmap(SetPixmap);
+    mp_Ui->rvCheckLabel->setPixmap(SetPixmap);
+    mp_Ui->retortCheckLabel->setPixmap(SetPixmap);
 
     mp_Ui->ovenFrame->setBackgroundRole(QPalette::Dark);
     mp_Ui->liquidFrame->setBackgroundRole(QPalette::Dark);
@@ -64,6 +59,13 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_Ui->liquidGroup->setFixedSize(388,152);
     mp_Ui->retortGroup->setFixedSize(388,152);
 
+    mp_WaitDlg = new MainMenu::CMessageDlg(parent);
+    mp_WaitDlg->SetTitle(InitialSystem::MSG_TITLE);
+    mp_WaitDlg->SetIcon(QMessageBox::Information);
+    mp_WaitDlg->SetText(tr("System is initializing..."));
+    mp_WaitDlg->HideAllButtons();
+    mp_WaitDlg->setModal(true);
+
     mp_InitialSystemCheck = new InitialSystem::CInitialSystemCheck(p_DataConnector, parent);
 
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshStatusToGUI(Service::InitialSystemTestType, int),
@@ -73,7 +75,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
 
     mp_StartTimer = new QTimer;
     mp_StartTimer->setSingleShot(true);
-    mp_StartTimer->setInterval(15000);
+    mp_StartTimer->setInterval(1000);
     mp_StartTimer->start();
     CONNECTSIGNALSLOT(mp_StartTimer, timeout(), this, StartCheck());
 
@@ -109,8 +111,19 @@ void CInitialSystem::changeEvent(QEvent *p_Event)
 
 void CInitialSystem::StartCheck()
 {
+    mp_WaitDlg->show();
+
+    while(1) {
+        if (ServiceDeviceProcess::Instance()) {
+            mp_WaitDlg->hide();
+            break;
+        }
+        Core::CServiceUtils::delay(1000);
+    }
+
     mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
     mp_InitialSystemCheck->Run();
+
 }
 
 void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Ret)

@@ -57,11 +57,9 @@ private Q_SLOTS:
 
 private:
     //Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
+    MainMenu::CMessageDlg      *mp_WaitDlg;
     Ui::CInitialSystem         *mp_Ui;
     QTimer*                    mp_StartTimer;
-    QPixmap                    m_PixmapCheck;
-    QPixmap                    m_PixmapPass;
-    QPixmap                    m_PixmapFail;
 
     InitialSystem::CInitialSystemCheck *mp_InitialSystemCheck;
 

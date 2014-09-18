@@ -88,7 +88,7 @@ void CRetortPreTest::ShowWaitingMessage(bool ShowFlag)
 {
     if (ShowFlag) {
         QString Title = "Pre-test Retort";
-        QString Text = Title.append(" is running ...");
+        QString Text = Title + QString(" is running ...");
         ShowWaitingDialog(Title, Text);
     }
     else {

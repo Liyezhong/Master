@@ -88,7 +88,7 @@ void CLTubePreTest::ShowWaitingMessage(bool ShowFlag)
 {
     if (ShowFlag) {
         QString Title = "Pre-test Liquid Heating Tube";
-        QString Text = Title.append(" is running ...");
+        QString Text = Title + QString(" is running ...");
         ShowWaitingDialog(Title, Text);
     }
     else {
