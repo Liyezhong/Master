@@ -1891,7 +1891,7 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
     }
 
     qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave)/1000.0;
-    qreal ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
+    quint16 ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -1900,8 +1900,8 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
     qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
     qreal VolLow = Voltage - Voltage*VoltageTolerance;
     qreal VolHigh = Voltage + Voltage*VoltageTolerance;
-    qreal CurrentLow = p_TestCase->GetParameter("CurrentLow").toDouble();
-    qreal CurrentHigh = p_TestCase->GetParameter("CurrentHigh").toDouble();
+    qint16 CurrentLow = p_TestCase->GetParameter("CurrentLow").toInt();
+    qint16 CurrentHigh = p_TestCase->GetParameter("CurrentHigh").toInt();
 
     p_TestCase->AddResult("Voltage", QString("%1").arg(ActualVoltage));
     p_TestCase->AddResult("Current", QString("%1").arg(ActualCurrent));
