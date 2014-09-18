@@ -52,7 +52,10 @@ int COvenPreTest::Run(void)
 
     ShowWaitingMessage(true);
 
+    qDebug()<<"OvenGetTemp ---- ";
+
     Ret = p_DevProc->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
+    qDebug()<<"OvenGetTemp ---- "<<OvenTempSensor1<<"  "<<OvenTempSensor2;
 
     if (Ret != RETURN_OK || (OvenTempSensor1-OvenTempSensor2) > DiffTemp) {
         ShowWaitingMessage(false);
@@ -80,8 +83,10 @@ int COvenPreTest::Run(void)
         }
 
         WaitMSec -= 500;
+        p_DevProc->Pause(500);
     }
 
+    p_DevProc->OvenStopHeating();
     ShowWaitingMessage(false);
     return RETURN_OK;
 }
@@ -98,8 +103,10 @@ void COvenPreTest::StartPreHeating(qreal MeltPoint)
         MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp2").toFloat();
     }
 
-
+    qDebug()<<"OvenStartHeating   " << MeltPoint+MoreTargetTemp;
     ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);
+
+    qDebug()<<"OvenStartHeating";
 }
 
 void COvenPreTest::ShowWaitingMessage(bool ShowFlag)

@@ -60,6 +60,8 @@ void CTestBase::ShowMessage(QString &MessageTitle, QString &MessageText, ErrorCo
 
 void CTestBase::ShowWaitingDialog(QString &MessageTitle, QString &MessageText)
 {
+    qDebug()<<"CTestBase::ShowWaitingDialog title="<<MessageTitle<<" MessageText="<<MessageText;
+
     if (mp_WaitDlg) {
         mp_WaitDlg->hide();
         delete mp_WaitDlg;
@@ -78,6 +80,8 @@ void CTestBase::ShowWaitingDialog(QString &MessageTitle, QString &MessageText)
 
 void CTestBase::HideWaitingDialog()
 {
+    qDebug()<<"CTestBase::HideWaitingDialog........";
+
     if (mp_WaitDlg) {
         mp_WaitDlg->hide();
         delete mp_WaitDlg;

@@ -177,7 +177,6 @@ void DeviceProcessor::CreateWrappers()
     }
 */
 
-    Diagnostics::ServiceDeviceProcess::NewInstance(m_rIdevProc)->Initialize();
 
     /* Create Manufacturing Test Handler*/
     if(NULL != mp_ManufacturingTestHandler)
@@ -871,6 +870,7 @@ void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestNa
         mp_ManufacturingTestHandler->PerformModuleManufacturingTest(TestName, AbortId);
     }
 
+    Diagnostics::ServiceDeviceProcess::NewInstance(m_rIdevProc)->Initialize();
 }
 
 } // end namespace DeviceControl

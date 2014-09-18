@@ -43,7 +43,7 @@ CACVoltageTest::~CACVoltageTest(void)
 
 int CACVoltageTest::Run(void)
 {
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SMainsRelay");
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SACVoltage");
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
     qreal RVTargetTemp = p_TestCase->GetParameter("RVTargetTemp").toFloat();
@@ -61,6 +61,8 @@ int CACVoltageTest::Run(void)
     p_DevProc->RVStartHeating(RVTargetTemp);
     p_DevProc->RetortStartHeating(0, RetortTargetTemp);
 
+    qDebug()<<"Pause 5 sec";
+
     p_DevProc->Pause(5000);
 
     p_DevProc->RVStopHeating();
@@ -75,6 +77,9 @@ int CACVoltageTest::Run(void)
     p_DevProc->RetortGetHeaterSwitchType(&RetortSwitchType);
 
     qDebug()<<"RVSwitchType="<<RVSwitchType<<"  RetortSwitchType="<<RetortSwitchType;
+
+    // for test
+    RVSwitchType = 2;
 
     if (RetortSwitchType == 0) { // undefined
         ShowFailMessage(1);

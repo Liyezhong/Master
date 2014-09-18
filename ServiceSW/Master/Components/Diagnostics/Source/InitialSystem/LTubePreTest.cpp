@@ -49,8 +49,11 @@ int CLTubePreTest::Run(void)
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
     ShowWaitingMessage(true);
+    qDebug()<<"LiquidTubeGetTemp";
 
     Ret = p_DevProc->LiquidTubeGetTemp(&LTubeTempSensor);
+    qDebug()<<"LiquidTubeGetTemp --- "<<LTubeTempSensor;
+
 
     if (Ret != RETURN_OK || (LTubeTempSensor) >= RangeTemp) {
         ShowWaitingMessage(false);
@@ -58,7 +61,7 @@ int CLTubePreTest::Run(void)
         return Ret;
     }
 
-    qreal LTubeTargetTemp = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
+    qreal LTubeTargetTemp = p_TestCase->GetParameter("LTubeTargetTemp").toFloat();
 
     int WaitMSec = 3000;
 
@@ -78,8 +81,11 @@ int CLTubePreTest::Run(void)
         }
 
         WaitMSec -= 500;
+
+        p_DevProc->Pause(500);
     }
 
+    p_DevProc->LiquidTubeStopHeating();
     ShowWaitingMessage(false);
     return RETURN_OK;
 

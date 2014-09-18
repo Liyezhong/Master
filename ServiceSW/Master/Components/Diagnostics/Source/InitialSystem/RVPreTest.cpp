@@ -51,14 +51,18 @@ int CRVPreTest::Run(void)
     int WaitMSec = 3000;
 
     ShowWaitingMessage(true);
+    qDebug()<<"RVGetTemp";
 
     Ret = p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
+    qDebug()<<"RVGetTemp --- "<<RVTempSensor1;
+
 
     if (Ret != RETURN_OK || (RVTempSensor1-RVTempSensor2)>DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return Ret;
     }
+
 
     Ret = p_DevProc->RVStartHeating(TargetTemp);
 
@@ -77,8 +81,11 @@ int CRVPreTest::Run(void)
         }
 
         WaitMSec -= 500;
+
+        p_DevProc->Pause(500);
     }
 
+    p_DevProc->RVStopHeating();
     ShowWaitingMessage(false);
 
     return RETURN_OK;

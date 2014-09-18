@@ -51,12 +51,21 @@ int CMainsRelayTest::Run(void)
 
     ShowWaitingMessage(true);
 
-    p_DevProc->RVStartHeating(RVTargetTemp);
+
+    qDebug()<<"MainRelaySetOnOff";
+
     p_DevProc->MainRelaySetOnOff(true);
+    qDebug()<<"RVStartHeating";
+
+    p_DevProc->RVStartHeating(RVTargetTemp);
+
+    qDebug()<<"Pause 2.5 sec";
 
     p_DevProc->Pause(2500);
 
     quint16 Current(0);
+
+    qDebug()<<"RVGetCurrent";
 
     p_DevProc->RVGetCurrent(&Current);
 

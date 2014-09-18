@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>290</width>
+    <width>344</width>
     <height>150</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>290</width>
+    <width>344</width>
     <height>146</height>
    </size>
   </property>
@@ -24,7 +24,7 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>241</width>
+     <width>301</width>
      <height>71</height>
     </rect>
    </property>
@@ -46,7 +46,7 @@
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>66</width>
+        <width>40</width>
         <height>20</height>
        </size>
       </property>
@@ -66,7 +66,7 @@
     <rect>
      <x>20</x>
      <y>100</y>
-     <width>241</width>
+     <width>301</width>
      <height>41</height>
     </rect>
    </property>

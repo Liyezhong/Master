@@ -52,62 +52,83 @@ CInitialSystemCheck::~CInitialSystemCheck(void)
 
 int CInitialSystemCheck::Run(void)
 {   
-    //ErrorCode_t Ret(RETURN_ERR_FAIL);
-    int Ret = 0;
+     int Ret = 0;
 
-    CMainsRelayTest MainsRelayTest(mp_Parent);
+    CMainsRelayTest *MainsRelayTest = new CMainsRelayTest(mp_Parent);
+    qDebug()<<"Start MainsRelayTest";
 
-    Ret = MainsRelayTest.Run();
+    Ret = MainsRelayTest->Run();
+
+    Ret = RETURN_OK; // only for test
+
     emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
+    delete MainsRelayTest;
 
     if (Ret != RETURN_OK) {
-//        return Ret;
+        return Ret;
     }
+    ServiceDeviceProcess::Instance()->Pause(1000);
 
-    CACVoltageTest ACVoltageTest(mp_Parent);
-    Ret = ACVoltageTest.Run();
+    qDebug()<<"Start ACVoltageTest";
+
+    CACVoltageTest *ACVoltageTest = new CACVoltageTest(mp_Parent);
+    Ret = ACVoltageTest->Run();
+
+    Ret = RETURN_OK; // only for test
+
     emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
+    delete ACVoltageTest;
 
     if (Ret != RETURN_OK) {
-//        return Ret;
+        return Ret;
     }
+    ServiceDeviceProcess::Instance()->Pause(1000);
 
     ConfirmParaffinBath();
     ConfirmRetortCondition();
 
     qDebug()<<"Start oven pre-test";
 
-    COvenPreTest OvenPreTest(mp_Parent);
-    Ret = OvenPreTest.Run();
+    COvenPreTest *OvenPreTest = new COvenPreTest(mp_Parent);
+    Ret = OvenPreTest->Run();
     emit RefreshStatusToGUI(Service::INITIAL_OVEN, Ret);
     if (Ret == RETURN_OK) {
-        OvenPreTest.StartPreHeating(m_ParaffinMeltPoint);
+        OvenPreTest->StartPreHeating(m_ParaffinMeltPoint);
     }
+    delete OvenPreTest;
+    ServiceDeviceProcess::Instance()->Pause(1000);
 
     qDebug()<<"Start liquid tube pre-test";
 
-    CLTubePreTest LTubePreTest(mp_Parent);
-    Ret = LTubePreTest.Run();
+    CLTubePreTest *LTubePreTest = new CLTubePreTest(mp_Parent);
+    Ret = LTubePreTest->Run();
     emit RefreshStatusToGUI(Service::INITIAL_LIQUID_TUBE, Ret);
     if (Ret == RETURN_OK) {
-        LTubePreTest.StartPreHeating();
+        LTubePreTest->StartPreHeating();
     }
+    delete LTubePreTest;
+    ServiceDeviceProcess::Instance()->Pause(1000);
 
     qDebug()<<"Start rotary valve pre-test";
 
-    CRVPreTest RVPreTest(mp_Parent);
-    Ret = RVPreTest.Run();
+    CRVPreTest *RVPreTest = new CRVPreTest(mp_Parent);
+    Ret = RVPreTest->Run();
     emit RefreshStatusToGUI(Service::INITIAL_ROTARY_VALVE, Ret);
     if (Ret == RETURN_OK) {
-        RVPreTest.StartPreHeating();
+        RVPreTest->StartPreHeating();
     }
+    delete RVPreTest;
+
+    ServiceDeviceProcess::Instance()->Pause(1000);
 
     qDebug()<<"Start retort pre-test";
 
-    CRetortPreTest RetortPreTest(mp_Parent);
-    Ret = RetortPreTest.Run();
+    CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
+    Ret = RetortPreTest->Run();
     emit RefreshStatusToGUI(Service::INITIAL_RETORT, Ret);
+    delete RetortPreTest;
 
+    return Ret;
 }
 
 void CInitialSystemCheck::ConfirmParaffinBath(void)

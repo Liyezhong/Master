@@ -52,7 +52,11 @@ int CRetortPreTest::Run(void)
 
     ShowWaitingMessage(true);
 
+    qDebug()<<"RetortGetTemp";
+
     Ret = p_DevProc->RetortGetTemp(&RetortTempSide, &RetortTempBottom1, &RetortTempBottom1);
+    qDebug()<<"RetortGetTemp --- "<<RetortTempSide;
+
 
     if (Ret != RETURN_OK || (RetortTempBottom1-RetortTempBottom1) > DiffTemp) {
         ShowWaitingMessage(false);
@@ -79,8 +83,11 @@ int CRetortPreTest::Run(void)
         }
 
         WaitMSec -= 500;
+        p_DevProc->Pause(500);
+
     }
 
+    p_DevProc->RetortStopHeating();
     ShowWaitingMessage(false);
 
     return RETURN_OK;
