@@ -48,6 +48,7 @@ CStatusConfirmDialog::CStatusConfirmDialog(QWidget *p_Parent) : MainMenu::CDialo
     setModal(true);
 
 
+    mp_Ui->labelConfirm->setFixedWidth(457);
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonNo, clicked(), this, AbortWaitDialog());
 //    CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, accept());

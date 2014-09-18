@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
+    <width>501</width>
     <height>148</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>434</width>
+    <width>500</width>
     <height>148</height>
    </size>
   </property>
@@ -34,9 +34,9 @@
   <widget class="QLabel" name="labelConfirm">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>9</y>
-     <width>411</width>
+     <x>20</x>
+     <y>10</y>
+     <width>461</width>
      <height>21</height>
     </rect>
    </property>
@@ -53,7 +53,7 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>90</x>
      <y>40</y>
      <width>321</width>
      <height>31</height>
@@ -92,7 +92,7 @@
   <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>90</x>
      <y>90</y>
      <width>321</width>
      <height>51</height>
