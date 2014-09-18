@@ -543,6 +543,9 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         }
         else {
             KeepSeconds = 0;
+            if (WaitSec <= 60) {
+                break;
+            }
         }
 
         TopValue = QString("%1").arg(CurrentTempTop);
@@ -2131,7 +2134,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     WaitSecSensor1 = DurationTimeSensor1.hour()*60*60 + DurationTimeSensor1.minute()*60 + DurationTimeSensor1.second();
 
-    WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second();
+    WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second() + 60;
 
     SumSec = WaitSec;
 
@@ -2225,6 +2228,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
         else {
             KeepSeconds=0;
+            if (WaitSec <= 60) {
+                break;
+            }
         }
 #endif
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
@@ -2496,6 +2502,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
          else {
              KeepSeconds = 0;
+             if (WaitSec <= 60) {
+                 break;
+             }
          }
 
          Sensor1Value = QString("%1").arg(CurrentTempSensor1);
