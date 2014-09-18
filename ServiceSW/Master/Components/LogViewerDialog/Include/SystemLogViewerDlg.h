@@ -95,7 +95,6 @@ private:
     QModelIndexList m_SelectedRowValues;              //!< Model Index list stores selected row values
     CLogFilter* mp_LogFilter;                       //!< Log filter to get model list.
     quint8 m_EventTypes;                           //!< Event Types of previously diaplayed.
-//    CServiceHelpTextFilter *mp_ServiceHelpTextFilter; //!< Service Help Text Filter to get Service Help Text
     QHash<QString, qint64> m_PositionItems;
     QHash<quint64, QString> m_ServiceHelpTextHash; //!< Store Serice help text by Qhash
     QString m_strOK;
