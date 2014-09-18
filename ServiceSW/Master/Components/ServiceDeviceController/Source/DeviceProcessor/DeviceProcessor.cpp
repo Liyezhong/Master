@@ -176,8 +176,8 @@ void DeviceProcessor::CreateWrappers()
         mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
     }
 */
-    Diagnostics::ServiceDeviceProcess::Instance()->SetIDevProc(&m_rIdevProc);
-    Diagnostics::ServiceDeviceProcess::Instance()->Initialize();
+
+    Diagnostics::ServiceDeviceProcess::NewInstance(m_rIdevProc)->Initialize();
 
     /* Create Manufacturing Test Handler*/
     if(NULL != mp_ManufacturingTestHandler)

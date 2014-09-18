@@ -73,7 +73,7 @@ void CTestBase::ShowWaitingDialog(QString &MessageTitle, QString &MessageText)
     mp_WaitDlg->SetText(MessageText);
     mp_WaitDlg->HideAllButtons();
     mp_WaitDlg->setModal(true);
-    mp_WaitDlg->Show();
+    mp_WaitDlg->show();
 }
 
 void CTestBase::HideWaitingDialog()

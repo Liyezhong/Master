@@ -63,7 +63,7 @@ int CRVPreTest::Run(void)
     Ret = p_DevProc->RVStartHeating(TargetTemp);
 
     ReportError_t ReportError;
-    while(WaitMSec<=0) {
+    while(WaitMSec>0) {
         qint64 now = QDateTime::currentMSecsSinceEpoch();
 
         Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV", 0, &ReportError);
@@ -78,6 +78,8 @@ int CRVPreTest::Run(void)
 
         WaitMSec -= 500;
     }
+
+    ShowWaitingMessage(false);
 
     return RETURN_OK;
 }

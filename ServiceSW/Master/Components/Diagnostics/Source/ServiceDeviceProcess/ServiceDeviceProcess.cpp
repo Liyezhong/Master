@@ -44,11 +44,16 @@ namespace Diagnostics {
 
 ServiceDeviceProcess* ServiceDeviceProcess::mp_Instance = NULL;
 
-ServiceDeviceProcess* ServiceDeviceProcess::Instance()
+ServiceDeviceProcess* ServiceDeviceProcess::NewInstance(DeviceControl::IDeviceProcessing &iDevProc)
 {
     if (mp_Instance==NULL) {
-        mp_Instance = new ServiceDeviceProcess();
+        mp_Instance = new ServiceDeviceProcess(iDevProc);
     }
+    return mp_Instance;
+}
+
+ServiceDeviceProcess* ServiceDeviceProcess::Instance()
+{
     return mp_Instance;
 }
 
@@ -60,14 +65,10 @@ void ServiceDeviceProcess::Destroy()
     mp_Instance = NULL;
 }
 
-void ServiceDeviceProcess::SetIDevProc(DeviceControl::IDeviceProcessing* iDevProc)
-{
-    m_rIdevProc = iDevProc;
-}
-
 /****************************************************************************/
-ServiceDeviceProcess::ServiceDeviceProcess()
-    : m_IsConfigured(false)
+ServiceDeviceProcess::ServiceDeviceProcess(DeviceControl::IDeviceProcessing &iDevProc)
+    : m_IsConfigured(false),
+      m_rIdevProc(iDevProc)
 {
     mp_Utils = NULL;
 
@@ -106,105 +107,105 @@ void ServiceDeviceProcess::CreateWrappers()
     CTemperatureControl *pTemperature;
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenTopTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenTopTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempOvenTop = new WrapperFmTempControl("temp_oven_top", pTemperature, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenBottomTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenBottomTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempOvenBottom = new WrapperFmTempControl("temp_oven_bottom", pTemperature, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortSideTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortSideTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempRetortSide = new WrapperFmTempControl("temp_retort_side", pTemperature, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortBottomTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortBottomTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempRetortBottom = new WrapperFmTempControl("temp_retort_bottom", pTemperature, this);
     }
 
     CDigitalInput *pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenLidDIKey));
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenLidDIKey));
     if ( NULL != pDigitalInput ) {
         mp_DIOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
     }
 
     pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
     if ( NULL != pDigitalInput ) {
         mp_DIRetortLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
     }
 
     pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmDIKey));
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmDIKey));
     if ( NULL != pDigitalInput ) {
         mp_DIRemoteAlarm = new WrapperFmDigitalInput("remote_alarm_digital_input", pDigitalInput, this);
     }
 
     pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmDIKey));
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmDIKey));
     if ( NULL != pDigitalInput ) {
         mp_DILocalAlarm = new WrapperFmDigitalInput("local_alarm_digital_input", pDigitalInput, this);
     }
 
     CDigitalOutput *pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerMainRelayDOKey));
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerMainRelayDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DOMainRelay = new WrapperFmDigitalOutput("heater_relay", pDigitalOutput, this);
     }
 
     pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
     }
 
     pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube1TempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube1TempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempTubeLiquid = new WrapperFmTempControl("temp_tube1", pTemperature, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube2TempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube2TempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempTubeAir = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
 
     CStepperMotor *pMotor = NULL;
-    pMotor = static_cast<CStepperMotor *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVMotorKey));
+    pMotor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVMotorKey));
     if (NULL != pMotor)
     {
         mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempRV = new WrapperFmTempControl("temp_rv", pTemperature, this);
     }
 
     pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALLevelSensorTempCtrlKey));
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALLevelSensorTempCtrlKey));
     if (NULL != pTemperature)
     {
         mp_TempLSensor = new WrapperFmTempControl("temp_lsensor", pTemperature, this);
@@ -212,7 +213,7 @@ void ServiceDeviceProcess::CreateWrappers()
     }
 
     CPressureControl *pPressure = NULL;
-    pPressure = static_cast<CPressureControl *>(m_rIdevProc->GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
+    pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
@@ -220,17 +221,17 @@ void ServiceDeviceProcess::CreateWrappers()
     }
 
     CBaseModule *pBaseModule = NULL;
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc->GetBaseModule(Slave_3));
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_3));
     if (NULL != pBaseModule) {
         mp_BaseModule3 = new WrapperFmBaseModule("asb3_0", pBaseModule, this);
     }
 
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc->GetBaseModule(Slave_5));
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_5));
     if (NULL != pBaseModule) {
         mp_BaseModule5 = new WrapperFmBaseModule("asb5_0", pBaseModule, this);
     }
 
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc->GetBaseModule(Slave_15));
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_15));
     if (NULL != pBaseModule) {
         mp_BaseModule15 = new WrapperFmBaseModule("asb15_0", pBaseModule, this);
     }
@@ -336,7 +337,7 @@ ErrorCode_t ServiceDeviceProcess::MainControlGetCurrent(HimSlaveType_t SlaveType
         return RETURN_ERR_NULL_POINTER;
     }
 
-    *RetCurrent = m_rIdevProc->IDGetSlaveCurrent(SlaveType);
+    *RetCurrent = m_rIdevProc.IDGetSlaveCurrent(SlaveType);
 
     return RETURN_OK;
 }
@@ -347,7 +348,7 @@ ErrorCode_t ServiceDeviceProcess::MainControlGetVoltage(HimSlaveType_t SlaveType
         return RETURN_ERR_NULL_POINTER;
     }
 
-    *RetVoltage = m_rIdevProc->IDGetSlaveVoltage(SlaveType);
+    *RetVoltage = m_rIdevProc.IDGetSlaveVoltage(SlaveType);
 
     return RETURN_OK;
 }
@@ -421,7 +422,7 @@ ErrorCode_t ServiceDeviceProcess::OvenGetTemp(qreal *RetTempTop, qreal *RetTempB
     return RETURN_OK;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenGetCurrent(qreal *RetCurrentTop, qreal *RetCurrentBottom)
+ErrorCode_t ServiceDeviceProcess::OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom)
 {
     if (mp_TempOvenBottom == NULL || mp_TempOvenTop == NULL) {
         return RETURN_ERR_NULL_POINTER;
@@ -881,11 +882,11 @@ ErrorCode_t ServiceDeviceProcess::PumpDraining()
 
 ErrorCode_t ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName, ReportError_t* RetReportError)
 {
-    if (m_rIdevProc == NULL || RetReportError == NULL) {
+    if (RetReportError == NULL) {
         return RETURN_ERR_NULL_POINTER;
     }
 
-    ReportError_t ReportErr = m_rIdevProc->GetSlaveModuleReportError(ErrorCode, DevName, SensorName);
+    ReportError_t ReportErr = m_rIdevProc.GetSlaveModuleReportError(ErrorCode, DevName, SensorName);
 
     memcpy((ReportError_t*) RetReportError, (ReportError_t*) &ReportErr, sizeof(ReportError_t));
 

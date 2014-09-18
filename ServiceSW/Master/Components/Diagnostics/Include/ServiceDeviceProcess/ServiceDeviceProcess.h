@@ -65,14 +65,14 @@ class ServiceDeviceProcess : public QObject
     Q_OBJECT
 private:
     static ServiceDeviceProcess* mp_Instance;
-    ServiceDeviceProcess();
+    ServiceDeviceProcess(DeviceControl::IDeviceProcessing &iDevProc);
 
 public:
+    static ServiceDeviceProcess* NewInstance(DeviceControl::IDeviceProcessing &iDevProc);
     static ServiceDeviceProcess* Instance();
     static void Destroy();
 
 public:
-    void SetIDevProc(DeviceControl::IDeviceProcessing* iDevProc);
 
     /****************************************************************************/
     /**
@@ -104,7 +104,7 @@ public:
     ErrorCode_t OvenStartHeating(qreal TargetTempTop, qreal TargetTempBottom);
     ErrorCode_t OvenStopHeating();
     ErrorCode_t OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2);
-    ErrorCode_t OvenGetCurrent(qreal *RetCurrentTop, qreal *RetCurrentBottom);
+    ErrorCode_t OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom);
     ErrorCode_t OvenGetCoverSensorState(qint32 *RetCoverSensorState);
     ErrorCode_t OvenGetSwithType(int *RetSwithType);
 
@@ -154,7 +154,7 @@ public:
     void Pause(quint32 MillSeconds);
 
 private:
-    DeviceControl::IDeviceProcessing*           m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
+    DeviceControl::IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
 
     WrapperUtils*               mp_Utils;

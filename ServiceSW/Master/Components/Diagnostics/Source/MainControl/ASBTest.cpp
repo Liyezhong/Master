@@ -73,13 +73,15 @@ int CASBTest::Run(void)
 
     qDebug()<<"Diagnostics:ASB test current low:"<<CurrentRangeLow;
     qDebug()<<"Diagnostics:ASB test current high:"<<CurrentRangeHigh;
-    qreal VoltageV = Voltage/1000.0;
+
     QString CurrentResult("OK");
     QString VoltageResult("OK");
 
 
     ServiceDeviceProcess::Instance()->MainControlGetCurrent(SlaveType, &Current);
     ServiceDeviceProcess::Instance()->MainControlGetVoltage(SlaveType, &Voltage);
+
+    qreal VoltageV = Voltage/1000.0;
 
     if (Current <= CurrentRangeLow || Current >= CurrentRangeHigh ) {
         CurrentResult = "failed";
