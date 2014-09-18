@@ -64,6 +64,8 @@ public:
         return m_SelectedVoltage;
     }
 
+    void UpdateLabelForService();
+
 private slots:
 
     /****************************************************************************/

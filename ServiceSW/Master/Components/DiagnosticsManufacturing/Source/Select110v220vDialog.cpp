@@ -83,4 +83,10 @@ bool CSelect110v220vDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
     //return false; //PC-lint
 }
 
+void CSelect110v220vDialog::UpdateLabelForService()
+{
+    mp_Ui->radioButton110->setText("[90-132V AC]");
+    mp_Ui->radioButton220->setText("[198-253V AC]");
+}
+
 } // end namespace DiagnosticsManufacturing

@@ -47,7 +47,7 @@ int CRetortPreTest::Run(void)
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
 
-    qreal DiffTemp = p_TestCase->GetParameter("RetortDiffTemp").toInt();
+    qreal DiffTemp = p_TestCase->GetParameter("RetortDiffTemp").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
     ShowWaitingMessage(true);
@@ -60,12 +60,12 @@ int CRetortPreTest::Run(void)
         return Ret;
     }
 
-    qreal RetortTargetTemp    = p_TestCase->GetParameter("RetortTargetTemp").toInt();
+    qreal RetortTargetTemp    = p_TestCase->GetParameter("RetortTargetTemp").toFloat();
     int WaitMSec = 3000;
 
     Ret = p_DevProc->RetortStartHeating(RetortTargetTemp, RetortTargetTemp);
     ReportError_t ReportError;
-    while(WaitMSec<=0) {
+    while(WaitMSec>0) {
         qint64 now = QDateTime::currentMSecsSinceEpoch();
 
         Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0, &ReportError);
@@ -81,7 +81,17 @@ int CRetortPreTest::Run(void)
         WaitMSec -= 500;
     }
 
+    ShowWaitingMessage(false);
+
     return RETURN_OK;
+}
+
+void CRetortPreTest::StartPreHeating(qreal MeltPoint)
+{
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
+    qreal MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp").toFloat();
+
+    ServiceDeviceProcess::Instance()->RetortStartHeating(MeltPoint+MoreTargetTemp+2, MeltPoint+MoreTargetTemp+7);
 }
 
 void CRetortPreTest::ShowWaitingMessage(bool ShowFlag)

@@ -45,8 +45,8 @@ int CRVPreTest::Run(void)
     qreal RVTempSensor2(0);
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
-    qreal TargetTemp = p_TestCase->GetParameter("RVTargetTemp").toInt();
-    qreal DiffTemp = p_TestCase->GetParameter("RVDiffTemp").toInt();
+    qreal TargetTemp = p_TestCase->GetParameter("RVTargetTemp").toFloat();
+    qreal DiffTemp = p_TestCase->GetParameter("RVDiffTemp").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
     int WaitMSec = 3000;
 
@@ -82,6 +82,14 @@ int CRVPreTest::Run(void)
     ShowWaitingMessage(false);
 
     return RETURN_OK;
+}
+
+void CRVPreTest::StartPreHeating()
+{
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
+    qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
+
+    ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
 }
 
 void CRVPreTest::ShowWaitingMessage(bool ShowFlag)

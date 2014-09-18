@@ -37,6 +37,7 @@ public:
     ~CRVPreTest(void);
 
     int Run(void);
+    void StartPreHeating();
 private:
     void ShowWaitingMessage(bool ShowFlag=true);
     void ShowFailMessage(int ErrorCode);

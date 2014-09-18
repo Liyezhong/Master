@@ -37,6 +37,8 @@ public:
     ~COvenPreTest(void);
 
     int Run(void);
+
+    void StartPreHeating(qreal MeltPoint);
 private:
     void ShowWaitingMessage(bool ShowFlag=true);
     void ShowFailMessage(int ErrorCode);

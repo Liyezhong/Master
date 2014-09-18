@@ -47,7 +47,7 @@ int COvenPreTest::Run(void)
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
 
-    qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toInt();
+    qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
     ShowWaitingMessage(true);
@@ -60,13 +60,13 @@ int COvenPreTest::Run(void)
         return Ret;
     }
 
-    qreal TopTargetTemp    = p_TestCase->GetParameter("OvenTopTargetTemp").toInt();
-    qreal BottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toInt();
+    qreal TopTargetTemp    = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
+    qreal BottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
     int WaitMSec = 3000;
 
     Ret = p_DevProc->OvenStartHeating(TopTargetTemp, BottomTargetTemp);
     ReportError_t ReportError;
-    while(WaitMSec<=0) {
+    while(WaitMSec>0) {
         qint64 now = QDateTime::currentMSecsSinceEpoch();
 
         Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", 0, &ReportError);
@@ -82,7 +82,24 @@ int COvenPreTest::Run(void)
         WaitMSec -= 500;
     }
 
+    ShowWaitingMessage(false);
     return RETURN_OK;
+}
+
+void COvenPreTest::StartPreHeating(qreal MeltPoint)
+{
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
+    qreal MoreTargetTemp(0);
+
+    if (MeltPoint < 64) {
+        MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp1").toFloat();
+    }
+    else {
+        MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp2").toFloat();
+    }
+
+
+    ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);
 }
 
 void COvenPreTest::ShowWaitingMessage(bool ShowFlag)

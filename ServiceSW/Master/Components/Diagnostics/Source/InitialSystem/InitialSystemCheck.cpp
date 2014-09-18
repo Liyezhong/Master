@@ -61,7 +61,7 @@ int CInitialSystemCheck::Run(void)
     emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
 
     if (Ret != RETURN_OK) {
-        return Ret;
+//        return Ret;
     }
 
     CACVoltageTest ACVoltageTest(mp_Parent);
@@ -69,11 +69,44 @@ int CInitialSystemCheck::Run(void)
     emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
 
     if (Ret != RETURN_OK) {
-        return Ret;
+//        return Ret;
     }
 
     ConfirmParaffinBath();
     ConfirmRetortCondition();
+
+    qDebug()<<"Start oven pre-test";
+
+    COvenPreTest OvenPreTest(mp_Parent);
+    Ret = OvenPreTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_OVEN, Ret);
+    if (Ret == RETURN_OK) {
+        OvenPreTest.StartPreHeating(m_ParaffinMeltPoint);
+    }
+
+    qDebug()<<"Start liquid tube pre-test";
+
+    CLTubePreTest LTubePreTest(mp_Parent);
+    Ret = LTubePreTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_LIQUID_TUBE, Ret);
+    if (Ret == RETURN_OK) {
+        LTubePreTest.StartPreHeating();
+    }
+
+    qDebug()<<"Start rotary valve pre-test";
+
+    CRVPreTest RVPreTest(mp_Parent);
+    Ret = RVPreTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_ROTARY_VALVE, Ret);
+    if (Ret == RETURN_OK) {
+        RVPreTest.StartPreHeating();
+    }
+
+    qDebug()<<"Start retort pre-test";
+
+    CRetortPreTest RetortPreTest(mp_Parent);
+    Ret = RetortPreTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_RETORT, Ret);
 
 }
 

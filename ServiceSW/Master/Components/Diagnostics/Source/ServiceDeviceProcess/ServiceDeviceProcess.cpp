@@ -886,6 +886,8 @@ ErrorCode_t ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, co
         return RETURN_ERR_NULL_POINTER;
     }
 
+    qDebug()<<"ErrorCode="<<ErrorCode<<"  DevName="<<DevName<<"  SensorName="<<SensorName;
+
     ReportError_t ReportErr = m_rIdevProc.GetSlaveModuleReportError(ErrorCode, DevName, SensorName);
 
     memcpy((ReportError_t*) RetReportError, (ReportError_t*) &ReportErr, sizeof(ReportError_t));

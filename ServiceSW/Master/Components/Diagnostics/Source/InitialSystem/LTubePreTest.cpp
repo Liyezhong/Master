@@ -64,7 +64,7 @@ int CLTubePreTest::Run(void)
 
     Ret = p_DevProc->LiquidTubeStartHeating(LTubeTargetTemp);
     ReportError_t ReportError;
-    while(WaitMSec<=0) {
+    while(WaitMSec>0) {
         qint64 now = QDateTime::currentMSecsSinceEpoch();
 
         Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", 0, &ReportError);
@@ -80,8 +80,17 @@ int CLTubePreTest::Run(void)
         WaitMSec -= 500;
     }
 
+    ShowWaitingMessage(false);
     return RETURN_OK;
 
+}
+
+void CLTubePreTest::StartPreHeating()
+{
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
+    qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
+
+    ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
 }
 
 void CLTubePreTest::ShowWaitingMessage(bool ShowFlag)
