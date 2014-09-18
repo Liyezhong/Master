@@ -40,7 +40,6 @@ CMainsRelayTest::~CMainsRelayTest(void)
 
 int CMainsRelayTest::Run(void)
 {
-    return RETURN_OK;
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SMainsRelay");
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
@@ -58,17 +57,12 @@ int CMainsRelayTest::Run(void)
     p_DevProc->Pause(2500);
 
     quint16 Current(0);
-<<<<<<< HEAD
-    p_DevProc->MainControlGetCurrent(Slave_3, &Current);
-    qDebug()<<"Initial System Check: Mains Relay test switch on get current:---"<<Current;
-=======
 
     p_DevProc->RVGetCurrent(&Current);
 
     qDebug()<<"MainsRelayOn Get Current : "<<Current;
 
     p_DevProc->RVStopHeating();
->>>>>>> S: update workflow for MainsRelaySelfTest and ASBTest
 
     if (Current>=SwitchOnCurrentLow && Current<=SwitchOnCurrentHigh) {
         p_DevProc->MainRelaySetOnOff(false);
