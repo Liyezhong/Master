@@ -69,6 +69,14 @@ private:
 
     /****************************************************************************/
     /*!
+     *  \brief  Add Software update log item to Model of the dialog table
+     *  \param  line = The line of log data;
+     */
+    /****************************************************************************/
+    void AddItem4SwUpdateLog(QString& data);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Add item to Model of the dialog table if need classify
      *  \param  line = The line of log data;
      */

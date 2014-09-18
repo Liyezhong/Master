@@ -70,9 +70,11 @@ void CLogFilter::ReleaseModelItem()
 
 void CLogFilter::AddItem4Log(QString &data)
 {
-
     QStringList List = data.split(";");
     QStringList DateTime = List.at(0).split(" ");
+
+    if (!data.contains(";") || DateTime.size() != 2)
+        return;
 
     QList<QStandardItem *> ItemList;
     ItemList << new QStandardItem(DateTime.at(0));
@@ -87,14 +89,27 @@ void CLogFilter::AddItem4Log(QString &data)
         }
     }
     m_Model.appendRow(ItemList);
+}
 
+void CLogFilter::AddItem4SwUpdateLog(QString &data)
+{
+    data.replace(QString("\n"), QString(" "))
+           .replace(QString(", "), QString(";"))
+           .replace(QString(","), QString(";"));
+    if (data.size() < 10 || data[10] != ';')
+        return;
+    data[10] = ' ';
+    AddItem4Log(data);
 }
 
 void CLogFilter::AddItem4LogNeedClassify(QString &data)
 {
     QStringList List = data.split(";");
     QStringList DateTime = List.at(0).split(" ");
-    QStringList ItemList ;
+    QStringList ItemList;
+
+    if (!data.contains(";") || DateTime.size() != 2)
+        return;
 
     ItemList.append(DateTime.at(0));
     ItemList.append(DateTime.at(1));
@@ -135,11 +150,13 @@ void CLogFilter::AddItem4ServiceHelpText(QString &data)
     QStringList List = data.split(";");
     QList<QStandardItem *> ItemList;
 
+    if (!data.contains(";"))
+        return;
+
     for(int i=0; i<m_Columns.size(); i++) {
         ItemList << new QStandardItem(List.at(m_Columns.at(i)));
     }
     m_Model.appendRow(ItemList);
-
 }
 
 bool CLogFilter::CheckFileInfo(const QString &line)
@@ -181,46 +198,35 @@ bool CLogFilter::InitData()
     ReleaseModelItem();
     m_Model.clear();
     QFile File(m_Filename);
-    bool Flag = false;
-    if (!File.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return false;
-    }
 
-    if (m_Filename.contains("ServiceHelpText")) {
-        Flag = true;
-    }
+    if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    void (CLogFilter::*addItem)(QString &);
+
+    if (m_Filename.contains("ServiceHelpText"))
+        addItem = &CLogFilter::AddItem4ServiceHelpText;
+    else if (m_Filename.contains("SW_Update_Events"))
+        addItem = &CLogFilter::AddItem4SwUpdateLog;
+    else
+        addItem = &CLogFilter::AddItem4Log;
+
+    // system log
+    if (m_needClassify)
+        addItem = &CLogFilter::AddItem4LogNeedClassify;
 
     QTextStream Text(&File);
     while (!Text.atEnd()) {
-
-        QString LogData = Text.readLine();
-
-        LogData.replace(QString("\\n"), QString(" "));
-        if (skipHeader == false && CheckFileInfo(LogData))
-            continue;
-
-        if (m_Filename.contains("SW_Update_Events")) {
-            LogData.replace(QString("\n"), QString(" "))
-                   .replace(QString(", "), QString(";"))
-                   .replace(QString(","), QString(";"))
-                    ;
-            if (LogData.size() > 10 && LogData[10] == ';')
-                LogData[10] = ' ';
+        QString data = Text.readLine().replace(QString("\\n"), QString(" "));
+        // header
+        if (skipHeader == false) {
+            if (CheckFileInfo(data))
+                continue;
+            else
+                skipHeader = true;
         }
-
-        if (!LogData.contains(";"))
-            continue;
-
-        if (Flag) {
-            AddItem4ServiceHelpText(LogData);
-        } else {
-            if (m_needClassify) {
-                AddItem4LogNeedClassify(LogData);
-            } else {
-                AddItem4Log(LogData);
-            }
-        }
-        skipHeader = true;
+        // entry
+        (this->*addItem)(data);
     }
     File.close();
 
@@ -229,61 +235,58 @@ bool CLogFilter::InitData()
 
 QStandardItemModel* CLogFilter::GetItemModel(quint64 EventTypes)
 {
-    if (m_needClassify == false ) {
-        QStandardItemModel* RetModel = &m_Model;
-        return RetModel;
-    }
-    else {
-        ReleaseModelItem();
-        m_Model.clear();
-        if (EventTypes == m_AllTypes) {
-            for(int i=0; i<m_LogItems.size(); i++) {
-                QList<QStandardItem *> ItemList;
-                for(int j=0; j<m_LogItems[i].size(); j++) {
-                    QStandardItem* Item = new QStandardItem(m_LogItems[i].at(j));
-                    ItemList << Item;
-                }
-                m_Model.appendRow(ItemList);
-            }
-        }
-        else
-        {
-            QMap<int, int> Numbers;
+    if (m_needClassify == false)
+        return &m_Model;
 
-            // get index list for event types
-            for (int i=(int)Global::EVTTYPE_UNDEFINED; i<=(int)Global::EVTTYPE_FATAL_ERROR; i++) {
-                if ((int)EventTypes&(1<<i)) {
-                    if (Numbers.size()==0) {
-                        Numbers = m_SubItems[i];
-                    }
-                    else {
-                        QList<int> SubList = m_SubItems[i].values();
-                        for(int a=0; a<SubList.size(); a++) {
-                            (void) Numbers.insert(SubList.at(a), SubList.at(a));
-                        }
+    ReleaseModelItem();
+    m_Model.clear();
+
+    if (EventTypes == m_AllTypes) {
+        for(int i=0; i<m_LogItems.size(); i++) {
+            QList<QStandardItem *> ItemList;
+            for(int j=0; j<m_LogItems[i].size(); j++) {
+                QStandardItem* Item = new QStandardItem(m_LogItems[i].at(j));
+                ItemList << Item;
+            }
+            m_Model.appendRow(ItemList);
+        }
+    }
+    else
+    {
+        QMap<int, int> Numbers;
+
+        // get index list for event types
+        for (int i=(int)Global::EVTTYPE_UNDEFINED; i<=(int)Global::EVTTYPE_FATAL_ERROR; i++) {
+            if ((int)EventTypes&(1<<i)) {
+                if (Numbers.size()==0) {
+                    Numbers = m_SubItems[i];
+                }
+                else {
+                    QList<int> SubList = m_SubItems[i].values();
+                    for(int a=0; a<SubList.size(); a++) {
+                        (void) Numbers.insert(SubList.at(a), SubList.at(a));
                     }
                 }
             }
-
-            QList<int> IndexList = Numbers.values();
-            for(int j=0; j<IndexList.size(); j++) {
-                QList<QStandardItem *> ItemList;
-                QStringList LogItem = m_LogItems[IndexList.at(j)];
-
-                for(int k=0; k<LogItem.size(); k++) {
-                    QStandardItem* Item = new QStandardItem(LogItem.at(k));
-                    ItemList << Item;
-                }
-                m_Model.appendRow(ItemList);
-            }
-
-            Numbers.clear();
-            IndexList.clear();
         }
 
-        QStandardItemModel* RetModel = &m_Model;
-        return RetModel;
+        QList<int> IndexList = Numbers.values();
+        for(int j=0; j<IndexList.size(); j++) {
+            QList<QStandardItem *> ItemList;
+            QStringList LogItem = m_LogItems[IndexList.at(j)];
+
+            for(int k=0; k<LogItem.size(); k++) {
+                QStandardItem* Item = new QStandardItem(LogItem.at(k));
+                ItemList << Item;
+            }
+            m_Model.appendRow(ItemList);
+        }
+
+        Numbers.clear();
+        IndexList.clear();
     }
+
+    return &m_Model;
 }
 
 const QMap<QString, QString>& CLogFilter::GetFileInfo()
