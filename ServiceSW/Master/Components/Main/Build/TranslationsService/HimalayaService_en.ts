@@ -731,6 +731,118 @@ Current Temperature: %2Â°C</source>
     </message>
 </context>
 <context>
+    <name>CInitialSystem</name>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="65"/>
+        <source>System is initializing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="124"/>
+        <source>Mains relay self test...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="147"/>
+        <source>AC voltage auto-switch self test...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="182"/>
+        <source>Target Temperature(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="183"/>
+        <source>Current Temperature(top)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="184"/>
+        <source>Current Temperature(bottom1)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="185"/>
+        <source>Current Temperature(bottom2)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="186"/>
+        <source>Paraffin Oven Current (top) (mA):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="187"/>
+        <source>Paraffin Oven Current (bottom) (mA):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="189"/>
+        <source>65</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="190"/>
+        <source>35</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="191"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="192"/>
+        <source>37</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="193"/>
+        <source>536</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="194"/>
+        <source>537</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CInitialSystemCheck</name>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="90"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="91"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="113"/>
+        <source>Retort Condition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="115"/>
+        <source>Select the content/condition within the retort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="116"/>
+        <source>Empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="117"/>
+        <source>Other Reagent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="118"/>
+        <source>Paraffin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CInitializingTest</name>
     <message>
         <location filename="../../../Diagnostics/Source/RotaryValve/InitializingTest.cpp" line="61"/>
@@ -1006,6 +1118,7 @@ Then manually Open the Retort!</source>
     <name>CMenuGroup</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
         <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1050,11 +1163,6 @@ Then manually Open the Retort!</source>
 </context>
 <context>
     <name>CNetworkSettingsWidget</name>
-    <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="394"/>
-        <source>%1 is not a valid IP address.Valid range is from 000.000.000.001 to 255.255.255.255</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="456"/>
         <source>&lt;font color=&apos;%1&apos;&gt;%2&lt;/font&gt;</source>
@@ -1106,12 +1214,12 @@ Then manually Open the Retort!</source>
 <context>
     <name>CRotaryValveDevice</name>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1515"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1533"/>
         <source>Seal %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1519"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1537"/>
         <source>Tube %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1167,6 +1275,19 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../Diagnostics/Source/RotaryValve/SealingTest.cpp" line="197"/>
         <source>Rotary valve sealing test FAILED!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSelectMeltingPointDialog</name>
+    <message>
+        <location filename="../../../Diagnostics/Source/SelectMeltingPointDialog.cpp" line="37"/>
+        <source>Initial System Check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/SelectMeltingPointDialog.cpp" line="54"/>
+        <source>Melting Point</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1616,131 +1737,131 @@ Then manually Open the Retort!</source>
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="384"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="390"/>
         <source>Himalaya Service Software</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="396"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="402"/>
         <source>Current Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="406"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="412"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="409"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="415"/>
         <source>View History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="424"/>
+        <source>Service Help Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="434"/>
         <source>System Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
         <source>System Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
-        <source>Recovery Action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="420"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="426"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
         <source>Software Update Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="430"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="436"/>
         <source>Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
         <source>Firmware Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="449"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
         <source>Data Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="457"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="453"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="459"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="461"/>
         <source>Service Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="677"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="692"/>
         <source>System is initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="745"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="760"/>
         <source>Missing Xml files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="748"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="763"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1216"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1234"/>
         <source>Alarm Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1764"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1781"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1786"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1803"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1765"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1782"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1787"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1804"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1766"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1773"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1784"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1788"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1795"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1806"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1772"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1794"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1774"/>
-        <source>Recovery Action Text</source>
+        <location filename="../../../Core/Source/Startup.cpp" line="1796"/>
+        <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1783"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1805"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1828,6 +1949,44 @@ Then manually Open the Retort!</source>
     </message>
 </context>
 <context>
+    <name>Diagnostics::CInitialSystem</name>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="58"/>
+        <source>Paraffin Oven</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="293"/>
+        <source>Liquid Heating Tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="392"/>
+        <source>Retort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="454"/>
+        <source>Retort PreHeating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="492"/>
+        <source>Rotary Valve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="577"/>
+        <source>Enter SVC Main Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Diagnostics::CLaSystem</name>
     <message>
         <location filename="../../../Diagnostics/Forms/LaSystem.ui" line="14"/>
@@ -1847,6 +2006,29 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../Diagnostics/Forms/LaSystem.ui" line="73"/>
         <source>Heating Belt 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Diagnostics::CMainControl</name>
+    <message>
+        <location filename="../../../Diagnostics/Forms/MainControl.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/MainControl.ui" line="33"/>
+        <source>ASB3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/MainControl.ui" line="53"/>
+        <source>ASB15</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/MainControl.ui" line="73"/>
+        <source>ASB5</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1951,6 +2133,24 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../Diagnostics/Forms/RotaryValve.ui" line="119"/>
         <source>Heating Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Diagnostics::CSelectMeltingPointDialog</name>
+    <message>
+        <location filename="../../../Diagnostics/Forms/SelectMeltingPointDialog.ui" line="32"/>
+        <source>Heating Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/SelectMeltingPointDialog.ui" line="38"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select the correct paraffin&lt;br/&gt;melting point:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/SelectMeltingPointDialog.ui" line="102"/>
+        <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2579,7 +2779,7 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Source/StatusConfirmDialog.cpp" line="108"/>
+        <location filename="../../../DiagnosticsManufacturing/Source/StatusConfirmDialog.cpp" line="109"/>
         <source>Retort lid lock status:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2711,7 +2911,7 @@ Then manually Open the Retort!</source>
     <name>LogViewer::CSystemLogViewer</name>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="152"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="204"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="206"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2722,7 +2922,7 @@ Then manually Open the Retort!</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="157"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="207"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="209"/>
         <source>Please Select a log file to continue.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2741,7 +2941,7 @@ Then manually Open the Retort!</source>
     </message>
     <message>
         <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="54"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="213"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="231"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2751,100 +2951,101 @@ Then manually Open the Retort!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="133"/>
-        <source>Undefined</source>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="167"/>
+        <source>Error +Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="140"/>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="183"/>
+        <source>Show Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="107"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="147"/>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="114"/>
+        <source>Info+Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="121"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="176"/>
-        <source>Show Deatils</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="196"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="216"/>
-        <source>Recovery Action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="216"/>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="223"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="212"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="230"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="214"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="232"/>
         <source>Please Select a row to continue..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="218"/>
-        <source>Recovery Action is not applicable for the type </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="221"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="239"/>
         <source>Error Code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="222"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="240"/>
         <source>Description: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="224"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="226"/>
-        <source>Recovery Action Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="228"/>
+        <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="203"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="234"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="246"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="230"/>
-        <source>Recovery Action Text is not available.</source>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="236"/>
+        <source>Service Help Text is not applicable for the type </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="233"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="242"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="244"/>
+        <source>Service Help Text Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="248"/>
+        <source>Service Help Text Text is not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="251"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="234"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="252"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="235"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="253"/>
         <source>Event ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="236"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="254"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="237"/>
-        <source>Log Information</source>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="255"/>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3391,11 +3592,6 @@ Then manually Open the Retort!</source>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
-        <source>Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MainMenu::CMessageDlg</name>
@@ -3625,9 +3821,9 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/CANMessageConfiguration.cpp" line="85"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="112"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="385"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="513"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1584"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="386"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="514"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1585"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="unfinished"></translation>
@@ -3635,9 +3831,9 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/CANMessageConfiguration.cpp" line="96"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="124"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="397"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="524"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1596"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="398"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="525"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1597"/>
         <source>Parse error at line %1, column %2:
 %3</source>
         <translation type="unfinished"></translation>
@@ -3649,7 +3845,7 @@ Then manually Open the Retort!</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/CANMessageConfiguration.cpp" line="118"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="544"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="545"/>
         <source>The himalaya hardware config files&apos; version is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3681,717 +3877,730 @@ Then manually Open the Retort!</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="137"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1609"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1610"/>
         <source>The file is not a hardware config file. Tag &apos;hwconfig&apos; missed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="146"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="419"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="420"/>
         <source>The hardware config files&apos; version is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="410"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="411"/>
         <source>The file is not a hardware config file.. Tag &apos;hwconfig&apos; missed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="536"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="537"/>
         <source>The file is not a himalaya hardware config file. Tag &apos;hwconfig&apos; missed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1618"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1619"/>
         <source>The process settings file version is not valid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SVCDiagnostics::CSVCDashboardWidget</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/SVCDashboardWidget.ui" line="32"/>
+        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Service</name>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="153"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="154"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="154"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="155"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="155"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="156"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="156"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="157"/>
         <source>Please Wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="157"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="158"/>
         <source>Communication Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="158"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="159"/>
         <source>Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="159"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="160"/>
         <source>Enter Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="160"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="161"/>
         <source>Send Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="161"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="162"/>
         <source>User Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="162"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="163"/>
         <source>Enter Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="163"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="164"/>
         <source>Sealing Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="164"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="165"/>
         <source>System speaker test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="165"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="166"/>
         <source>Mains relay test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="166"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="167"/>
         <source>Confirm water level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="167"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="168"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="168"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="169"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="169"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="170"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="170"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="171"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="171"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="172"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="172"/>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="247"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="173"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="249"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="173"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="174"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="174"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="175"/>
         <source>PASS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="175"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="176"/>
         <source>FAIL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="176"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="177"/>
         <source>Retest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="177"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="178"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="178"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="179"/>
         <source>Main Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="179"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="180"/>
         <source>Retort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="180"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="181"/>
         <source>Paraffin Oven</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="181"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="182"/>
         <source>Rotary Valve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="182"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="183"/>
         <source>L&amp;&amp;A System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="183"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="184"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="184"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="185"/>
         <source>Cleaning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="185"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="186"/>
         <source>Begin cleaning...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="186"/>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="187"/>
         <source>Diagnostics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="187"/>
-        <source>Failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="188"/>
-        <source>Success</source>
+        <source>SVC Diagnostics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="189"/>
-        <source>Please enter the serial number.</source>
+        <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="190"/>
-        <source>Please enter the system serial number.</source>
+        <source>Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="191"/>
-        <source>Please select a test case.</source>
+        <source>Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="192"/>
-        <source>Sending...</source>
+        <source>Please enter the system serial number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="193"/>
-        <source>Send test report ok.</source>
+        <source>Please select a test case.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="194"/>
-        <source>Generation report file failed.</source>
+        <source>Sending...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="195"/>
-        <source>The report file is not exists.</source>
+        <source>Send test report ok.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="196"/>
-        <source>Nr.</source>
+        <source>Generation report file failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="197"/>
-        <source>Tests</source>
+        <source>The report file is not exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="198"/>
-        <source>Current Temperature:</source>
+        <source>Nr.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="199"/>
-        <source>Current Temperature (Sensor 1):</source>
+        <source>Tests</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="200"/>
-        <source>Current Temperature (Sensor 2):</source>
+        <source>Current Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="201"/>
-        <source>Current Temperature (Side):</source>
+        <source>Current Temperature (Sensor 1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="202"/>
-        <source>Current Temperature (Bottom 1):</source>
+        <source>Current Temperature (Sensor 2):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="203"/>
-        <source>Current Temperature (Bottom 2):</source>
+        <source>Current Temperature (Side):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="204"/>
-        <source>Left Sensor Temperature:</source>
+        <source>Current Temperature (Bottom 1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="205"/>
-        <source>Middle Sensor Temperature:</source>
+        <source>Current Temperature (Bottom 2):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="206"/>
-        <source>Right Sensor Temperature:</source>
+        <source>Left Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="207"/>
-        <source>External sensor value:</source>
+        <source>Middle Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="208"/>
-        <source>External sensor value (again):</source>
+        <source>Right Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="209"/>
-        <source>The two values you input are not same. Please check again.</source>
+        <source>External sensor value:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="210"/>
-        <source>The value of Left sensor is wrong</source>
+        <source>External sensor value (again):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="211"/>
-        <source>The external sensor value is wrong</source>
+        <source>The two values you input are not same. Please check again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="212"/>
-        <source>The value of Middle sensor is wrong</source>
+        <source>The value of Left sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="213"/>
-        <source>The external sensor value (again) is wrong</source>
+        <source>The external sensor value is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="214"/>
-        <source>The value of Right sensor is wrong</source>
+        <source>The value of Middle sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="215"/>
-        <source>The value of Original Pressure should be in</source>
+        <source>The external sensor value (again) is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="216"/>
-        <source>Position</source>
+        <source>The value of Right sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="217"/>
-        <source>Positon %1# is ready.</source>
+        <source>The value of Original Pressure should be in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="218"/>
-        <source>Is the test pass?</source>
+        <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="219"/>
-        <source>Do you see the retort lid &apos;%1&apos; ?</source>
+        <source>Positon %1# is ready.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="220"/>
-        <source>Do you see the cover sensor status shows &apos;%1&apos;</source>
+        <source>Is the test pass?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="221"/>
-        <source>Did you hear the speaker test sound ?</source>
+        <source>Do you see the retort lid &apos;%1&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="222"/>
-        <source>Did you hear a louder speaker test sound this time ?</source>
+        <source>Do you see the cover sensor status shows &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="223"/>
-        <source>Please confirm the alarm light is on and status is &apos;Connected&apos; ?</source>
+        <source>Did you hear the speaker test sound ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="224"/>
-        <source>Please confirm the alarm status is &apos;DisConnected&apos; ?</source>
+        <source>Did you hear a louder speaker test sound this time ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="225"/>
-        <source>relay switch on Spec.%1mA-%2mA</source>
+        <source>Please confirm the alarm light is on and status is &apos;Connected&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="226"/>
-        <source>relay switch off Spec.&amp;lt;%1mA</source>
+        <source>Please confirm the alarm status is &apos;DisConnected&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="227"/>
-        <source>&lt;br&gt;ASB3 current:%1&lt;br&gt;Result:%2</source>
+        <source>relay switch on Spec.%1mA-%2mA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="228"/>
-        <source>Please check if the exhaust fan is runing and check if the air flow direction is out of device.</source>
+        <source>relay switch off Spec.&amp;lt;%1mA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="229"/>
-        <source>Please check if the ventilation fan is runing and check if the air flow direction is out of device</source>
+        <source>&lt;br&gt;ASB3 current:%1&lt;br&gt;Result:%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="230"/>
-        <source>Please adjust retort lid lock assembly then re-test...</source>
+        <source>Please check if the exhaust fan is runing and check if the air flow direction is out of device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="231"/>
-        <source>ASB %1 DC output voltage is failed (%2 V). &lt;br&gt;and current is failed (%3 mA).</source>
+        <source>Please check if the ventilation fan is runing and check if the air flow direction is out of device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="232"/>
-        <source>ASB %1 DC output voltage is Ok (%2 V). &lt;br&gt;and current is Ok (%3 mA).</source>
+        <source>Please adjust retort lid lock assembly then re-test...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="233"/>
-        <source>Open the retort lid. do you see water cover the level sensor?</source>
+        <source>ASB %1 DC output voltage is failed (%2 V). &lt;br&gt;and current is failed (%3 mA).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="234"/>
-        <source>Rotary valve selecting test in progress...</source>
+        <source>ASB %1 DC output voltage is Ok (%2 V). &lt;br&gt;and current is Ok (%3 mA).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="235"/>
-        <source>Rotary valve sealing test in progress...</source>
+        <source>Open the retort lid. do you see water cover the level sensor?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="236"/>
-        <source>Heating rotary valve in progress...</source>
+        <source>Rotary valve selecting test in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="237"/>
-        <source>Initializing rotary valve in progress...</source>
+        <source>Rotary valve sealing test in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="238"/>
-        <source>Detecting level sensor in progress...</source>
+        <source>Heating rotary valve in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="239"/>
-        <source>Heating level sensor in progress...</source>
+        <source>Initializing rotary valve in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="240"/>
-        <source>Heating retort(empty) in progress...</source>
+        <source>Detecting level sensor in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="241"/>
-        <source>Heating retort(liquid) in progress...</source>
+        <source>Heating level sensor in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="242"/>
-        <source>Heating Belt1 in progress...</source>
+        <source>Heating retort(empty) in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="243"/>
-        <source>Heating Belt2 in progress...</source>
+        <source>Heating retort(liquid) in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="244"/>
-        <source>Heating Oven(empty) in progress...</source>
+        <source>Heating Belt1 in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="245"/>
-        <source>%1 V test</source>
+        <source>Heating Belt2 in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="246"/>
-        <source>(Current Voltage: %1 V)</source>
+        <source>Heating Oven(empty) in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="247"/>
+        <source>%1 V test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="248"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="249"/>
-        <source>Disconnected</source>
+        <source>(Current Voltage: %1 V)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="250"/>
-        <source>Connected</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="251"/>
-        <source>Update Firmware for Slave %1. please wait...</source>
+        <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="252"/>
-        <source>Requested operation is in progress...</source>
+        <source>Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="253"/>
-        <source>Rotate rotary valve to tube position #%1</source>
+        <source>Update Firmware for Slave %1. please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="254"/>
-        <source>Rotate rotary valve to sealing position #%1</source>
+        <source>Requested operation is in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="255"/>
-        <source>Creating pressure to %1Kpa...</source>
+        <source>Rotate rotary valve to tube position #%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="256"/>
-        <source>Keep pressure for %1 seconds</source>
+        <source>Rotate rotary valve to sealing position #%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="257"/>
-        <source>Releasing pressure...</source>
+        <source>Creating pressure to %1Kpa...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="258"/>
-        <source>Creating pressure, current pressure is %1Kpa</source>
+        <source>Keep pressure for %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="259"/>
-        <source>Rotary valve is initializing...</source>
+        <source>Releasing pressure...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="260"/>
-        <source>Heating level sensor...</source>
+        <source>Creating pressure, current pressure is %1Kpa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="261"/>
-        <source>Filling...</source>
+        <source>Rotary valve is initializing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="262"/>
-        <source>Draining...</source>
+        <source>Heating level sensor...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="263"/>
-        <source>Air Blowing...</source>
+        <source>Filling...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="264"/>
-        <source>Test is finished.</source>
+        <source>Draining...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="265"/>
-        <source>Rotate rotary valve to tube position %1 failed</source>
+        <source>Air Blowing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="266"/>
-        <source>Rotate rotary valve to sealing position %1 failed</source>
+        <source>Test is finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="267"/>
-        <source>create pressure failed.</source>
+        <source>Rotate rotary valve to tube position %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="268"/>
-        <source>Filling is failed.</source>
+        <source>Rotate rotary valve to sealing position %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="269"/>
-        <source>Level sensor heating is failed.</source>
+        <source>create pressure failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="270"/>
-        <source>Rotary valve initializing is failed.</source>
+        <source>Filling is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="271"/>
-        <source>Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <source>Level sensor heating is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="272"/>
-        <source>Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)</source>
+        <source>Rotary valve initializing is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="273"/>
-        <source>Level Sensor Current Temperature is (%1) which is not in (%2~%3)</source>
+        <source>Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="274"/>
-        <source>Retort current temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <source>Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="275"/>
-        <source>Tube Current Temperature is (%1) which is not in (%2~%3)</source>
+        <source>Level Sensor Current Temperature is (%1) which is not in (%2~%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="276"/>
-        <source>ERROR: Device is not responding restart the system!</source>
+        <source>Retort current temperature is (%1 %2 %3) which is not in (%4~%5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="277"/>
-        <source>Manufacturing Test Result</source>
+        <source>Tube Current Temperature is (%1) which is not in (%2~%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="278"/>
-        <source>The server ip can&apos;t reachable.</source>
+        <source>ERROR: Device is not responding restart the system!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="279"/>
-        <source>Server folder can&apos;t access.</source>
+        <source>Manufacturing Test Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="280"/>
-        <source>Download firmware files failed.</source>
+        <source>The server ip can&apos;t reachable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="281"/>
-        <source>The current version is latest one.</source>
+        <source>Server folder can&apos;t access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="282"/>
-        <source>Download firmware files success.</source>
+        <source>Download firmware files failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="283"/>
-        <source>Send report file to server failed.</source>
+        <source>The current version is latest one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="284"/>
-        <source>Checking host reachable...</source>
+        <source>Download firmware files success.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="285"/>
-        <source>Checking host access rights...</source>
+        <source>Send report file to server failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="286"/>
-        <source>Check host finished.</source>
+        <source>Checking host reachable...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="287"/>
-        <source>Error: Device Layer not yet Initialized. Please retry after some time...</source>
+        <source>Checking host access rights...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="288"/>
-        <source>ERROR: Release pressure failure.</source>
+        <source>Check host finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="289"/>
-        <source>ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!</source>
+        <source>Error: Device Layer not yet Initialized. Please retry after some time...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="290"/>
+        <source>ERROR: Release pressure failure.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="291"/>
+        <source>ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="292"/>
         <source>Pressure sensor calibration is successful! Pressure drift value(Kpa):</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4654,6 +4863,11 @@ Then manually Open the Retort!</source>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="333"/>
         <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="382"/>
         <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="393"/>
+        <source>%1 is not a valid IP address.Valid range is from 000.000.000.001 to 255.255.255.255</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
