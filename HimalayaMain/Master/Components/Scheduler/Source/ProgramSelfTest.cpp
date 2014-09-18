@@ -41,6 +41,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     ,m_DelayBeginTime(0)
     ,m_StartReq(0)
     ,m_StateACVoltageStepCount(0)
+    ,m_ASB3SwitchType(0)
+    ,m_ASB5SwitchType(0)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
@@ -141,8 +143,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, DeviceControl::Ret
 void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     qint64 nowTime = 0;
-    quint8 ASB3SwitchType = 0;
-    quint8 ASB5SwitchType = 0;
 
     ReturnCode_t ret = DCL_ERR_FCT_CALL_SUCCESS;
 
@@ -261,14 +261,14 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             }
             break;
         case CHECK_VOLTAGE_RANGE:
-            ASB5SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("Retort");
-            ASB3SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("RV");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test the ASB5SwithcType:%1,ASB3SwitchType:%2").arg(ASB5SwitchType).arg(ASB3SwitchType));
+            m_ASB5SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("Retort");
+            m_ASB3SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("RV");
+            mp_SchedulerThreadController->LogDebug(QString("Self-Test the ASB5SwithcType:%1,ASB3SwitchType:%2").arg(m_ASB5SwitchType).arg(m_ASB3SwitchType));
 
             if(0 == m_StateACVoltageStepCount)
             {
                 //first time
-                if( (1 == ASB5SwitchType || 2 == ASB5SwitchType) && (ASB5SwitchType == ASB3SwitchType) )
+                if( (1 == m_ASB5SwitchType || 2 == m_ASB5SwitchType) && (m_ASB5SwitchType == m_ASB3SwitchType) )
                 {
                     emit SigDCHeating();
                 }
@@ -282,80 +282,19 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             else
             {
                 //the secod time
-                if( 1 == ASB5SwitchType || 2 == ASB5SwitchType)
+                if( 1 == m_ASB5SwitchType || 2 == m_ASB5SwitchType)
                 {
-                    if(ASB5SwitchType == ASB3SwitchType)
+                    if(m_ASB5SwitchType == m_ASB3SwitchType)
                     {
                         // is the same pass
                         emit SigDCHeating();
                         m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
-                        m_StateACVoltageStepCount = 0;
                     }
                     else
                     {
-                        if(1 == ASB5SwitchType)
-                        {
-                            //Serial for 220V
-                            if(0 == m_StartReq)
-                            {
-                                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
-                                cmd->SetHeaterVoltage(HEATER_220V);
-                                cmd->SetAutoType(AUTO_SWITCH_ENABLE);
-                                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                                m_StartReq++;
-                            }
-                            else
-                            {
-                                if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
-                                {
-                                    mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 220v votage,the recode:%1").arg(retCode));
-                                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                                    {
-                                        emit SigDCHeating();
-                                    }
-                                    else
-                                    {
-                                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                                        SendSignalSelfTestDone(false);
-                                    }
-                                    m_StartReq = 0;
-                                    m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
-                                    m_StateACVoltageStepCount = 0;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //Parallel for 110V
-                            if(0 == m_StartReq)
-                            {
-                                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
-                                cmd->SetHeaterVoltage(HEATER_110V);
-                                cmd->SetAutoType(AUTO_SWITCH_ENABLE);
-                                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                                m_StartReq++;
-                            }
-                            else
-                            {
-                                if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
-                                {
-                                    mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 110v votage,the recode:%1").arg(retCode));
-                                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                                    {
-                                        emit SigDCHeating();
-                                    }
-                                    else
-                                    {
-                                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                                        SendSignalSelfTestDone(false);
-                                    }
-                                    m_StartReq = 0;
-                                    m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
-                                    m_StateACVoltageStepCount = 0;
-                                }
-                            }
-                        }
+                        m_StateACVoltageStep = CHECK_VOLTAGE_RANGE_AGAIN;
                     }
+                    m_StateACVoltageStepCount = 0;
                 }
                 else
                 {
@@ -366,7 +305,68 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     m_StateACVoltageStepCount = 0;
                 }
             }
-
+            break;
+        case CHECK_VOLTAGE_RANGE_AGAIN:
+            if(1 == m_ASB5SwitchType)
+            {
+                //Serial for 220V
+                if(0 == m_StartReq)
+                {
+                    CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                    cmd->SetHeaterVoltage(HEATER_220V);
+                    cmd->SetAutoType(AUTO_SWITCH_ENABLE);
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                    m_StartReq++;
+                }
+                else
+                {
+                    if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
+                    {
+                        mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 220v votage,the recode:%1").arg(retCode));
+                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                        {
+                            emit SigDCHeating();
+                        }
+                        else
+                        {
+                            mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                            SendSignalSelfTestDone(false);
+                        }
+                        m_StartReq = 0;
+                        m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
+                    }
+                }
+            }
+            else
+            {
+                //Parallel for 110V
+                if(0 == m_StartReq)
+                {
+                    CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                    cmd->SetHeaterVoltage(HEATER_110V);
+                    cmd->SetAutoType(AUTO_SWITCH_ENABLE);
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                    m_StartReq++;
+                }
+                else
+                {
+                    if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
+                    {
+                        mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 110v votage,the recode:%1").arg(retCode));
+                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                        {
+                            emit SigDCHeating();
+                        }
+                        else
+                        {
+                            mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                            SendSignalSelfTestDone(false);
+                        }
+                        m_StartReq = 0;
+                        m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
+                    }
+                }
+            }
             break;
         default:
             break;

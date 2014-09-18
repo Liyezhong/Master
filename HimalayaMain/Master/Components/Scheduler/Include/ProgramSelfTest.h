@@ -94,7 +94,6 @@ public:
     /****************************************************************************/
     void SendSignalSelfTestDone(bool flag);
 
-
 signals:
     /****************************************************************************/
     /*!
@@ -157,6 +156,7 @@ private:
         START_HEATING_ACMODE,
         STOP_HEATING_ACMODE,
         CHECK_VOLTAGE_RANGE,
+        CHECK_VOLTAGE_RANGE_AGAIN
     }StepACVoltage_t;
 
     /****************************************************************************/
@@ -266,6 +266,8 @@ private:
     quint8                          m_StartReq;                         //!< start requence
     quint8                          m_StateACVoltageStepCount;          //!< the number of AC voltage
     bool                            m_IsSelfTestDone;                   //!< whether self test done
+    quint8                          m_ASB3SwitchType;                   //!< ASB3 Switch Type
+    quint8                          m_ASB5SwitchType;                   //!< ASB5 Switch Type
 };
 
 }
