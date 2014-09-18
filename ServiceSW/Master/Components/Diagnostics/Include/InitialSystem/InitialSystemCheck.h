@@ -23,22 +23,37 @@
 
 #include "Diagnostics/Include/TestBase.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "Core/Include/ServiceDefines.h"
+#include "Core/Include/ServiceGUIConnector.h"
 
 namespace Diagnostics {
 
 namespace InitialSystem {
+
+const QString MSG_TITLE("Initial System Check");
 
 class CInitialSystemCheck : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
-    CInitialSystemCheck(QWidget *parent=NULL);
+    CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *parent=NULL);
     ~CInitialSystemCheck(void);
 
     int Run(void);
+
+signals:
+    void RefreshStatusToGUI(Service::InitialSystemTestType Type, int Ret);
+
 private:
-    QWidget                   *mp_Parent;
+    void ConfirmParaffinBath(void);
+    void ConfirmRetortCondition(void);
+
+private:
+    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
+    QWidget                    *mp_Parent;
+    int                        m_ParaffinMeltPoint;
+    bool                       m_IsParaffinInRetort;
 };
 
 } // namespace InitialSystem

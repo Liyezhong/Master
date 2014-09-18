@@ -226,6 +226,20 @@ typedef enum ModuleNames {
     CLEANING_SYSTEM       ///< Cleaning system Module
 } ModuleNames_t;
 
+/****************************************************************************/
+/**
+ * \brief Enum Initial system  test type Names
+ */
+/****************************************************************************/
+enum InitialSystemTestType{
+    INITIAL_OVEN,               ///< Oven
+    INITIAL_RETORT,             ///< Retort
+    INITIAL_ROTARY_VALVE,       ///< rotary valve
+    INITIAL_MAINS_RELAY,        ///< mains relay
+    INITIAL_AC_VOLTAGE,         ///< AC voltage
+    INITIAL_LIQUID_TUBE         ///< Liquid tube
+};
+
 typedef QMap<QString, QString>  ModuleTestStatus;
 
 /****************************************************************************/

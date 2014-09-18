@@ -29,8 +29,7 @@ namespace Diagnostics {
 namespace InitialSystem {
 
 CRVPreTest::CRVPreTest(QWidget *parent)
-    : CTestBase(parent),
-    mp_Parent(parent)
+    : CTestBase(parent)
 {
 }
 
@@ -103,8 +102,8 @@ void CRVPreTest::ShowFailMessage(int ErrorCode)
                 "exchange Rotary Valve module and repeat this test.";
     }
     else if (ErrorCode == 2) {
-        Text = "Pre - test Rotary Valve failed .<br>" \
-                "Current of heating elements is out of specifications . Sequentially check " \
+        Text = "Pre-test Rotary Valve failed .<br>" \
+                "Current of heating elements is out of specifications. Sequentially check " \
                 "function of ASB3 and Rotary Valve heating elements." \
                 "Exchange Rotary Valve and repeat this test .";
     }

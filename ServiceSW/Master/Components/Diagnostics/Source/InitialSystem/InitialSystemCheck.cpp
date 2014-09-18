@@ -20,6 +20,15 @@
 
 #include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
 #include "MainMenu/Include/MessageDlg.h"
+#include "Core/Include/ServiceUtils.h"
+
+#include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
+#include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
+#include "Diagnostics/Include/InitialSystem/MainsRelayTest.h"
+#include "Diagnostics/Include/InitialSystem/OvenPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RVPreTest.h"
+#include "Diagnostics/Include/SelectMeltingPointDialog.h"
 
 #include <QDebug>
 
@@ -27,10 +36,14 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-CInitialSystemCheck::CInitialSystemCheck(QWidget *parent)
+CInitialSystemCheck::CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent)
     : CTestBase(parent),
-    mp_Parent(parent)
+      mp_Parent(parent),
+      mp_DataConnector(p_DataConnector),
+      m_ParaffinMeltPoint(0),
+      m_IsParaffinInRetort(false)
 {
+
 }
 
 CInitialSystemCheck::~CInitialSystemCheck(void)
@@ -38,8 +51,81 @@ CInitialSystemCheck::~CInitialSystemCheck(void)
 }
 
 int CInitialSystemCheck::Run(void)
-{
+{   
+    //ErrorCode_t Ret(RETURN_ERR_FAIL);
+    int Ret = 0;
 
+    CMainsRelayTest MainsRelayTest(mp_Parent);
+
+    Ret = MainsRelayTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
+
+    if (Ret != RETURN_OK) {
+        return Ret;
+    }
+
+    CACVoltageTest ACVoltageTest(mp_Parent);
+    Ret = ACVoltageTest.Run();
+    emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
+
+    if (Ret != RETURN_OK) {
+        return Ret;
+    }
+
+    ConfirmParaffinBath();
+    ConfirmRetortCondition();
+
+}
+
+void CInitialSystemCheck::ConfirmParaffinBath(void)
+{
+    int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
+    QString Text = QString("Current paraffin melting point is %1. If correct, press 'Yes'. If incorrect,press 'No', then select the correct paraffinmelting point").arg(ParaffinBath);
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
+
+    dlg->SetTitle(MSG_TITLE);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(1, tr("Yes"));
+    dlg->SetButtonText(3, tr("No"));
+    dlg->setModal(true);
+
+    if (dlg->exec() == 0) {
+        CSelectMeltingPointDialog* SelectDlg = new CSelectMeltingPointDialog(ParaffinBath, mp_Parent);
+        (void)SelectDlg->exec();
+
+        ParaffinBath = SelectDlg->GetMeltingPoint();
+        delete SelectDlg;
+    }
+
+    delete dlg;
+
+    m_ParaffinMeltPoint = ParaffinBath;
+
+    qDebug()<<"InitialSystemCheck Paraffin melting point :"<<m_ParaffinMeltPoint;
+}
+
+void CInitialSystemCheck::ConfirmRetortCondition(void)
+{
+    MainMenu::CMessageDlg* dlg = new MainMenu::CMessageDlg(mp_Parent);
+
+    dlg->SetTitle(tr("Retort Condition"));
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(tr("Select the content/condition within the retort"));
+    dlg->SetButtonText(1, tr("Empty"));
+    dlg->SetButtonText(2, tr("Other Reagent"));
+    dlg->SetButtonText(3, tr("Paraffin"));
+
+    dlg->setModal(true);
+    if (dlg->exec() == 0) {
+        m_IsParaffinInRetort = true;
+    }
+    else {
+        m_IsParaffinInRetort = false;
+    }
+
+    qDebug()<<"InitialSystemCheck is Paraffin in Retort :"<<m_IsParaffinInRetort;
 }
 
 } // namespace InitialSystem

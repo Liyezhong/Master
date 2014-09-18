@@ -27,28 +27,18 @@
 #include "Global/Include/Utils.h"
 #include "Core/Include/ServiceUtils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
-#include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
-#include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
-#include "Diagnostics/Include/InitialSystem/MainsRelayTest.h"
-#include "Diagnostics/Include/InitialSystem/OvenPreTest.h"
-#include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
-#include "Diagnostics/Include/InitialSystem/RVPreTest.h"
 #include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
-#include "Diagnostics/Include/SelectMeltingPointDialog.h"
 
 namespace Diagnostics {
 
-const QString MSG_TITLE("Initial System Check");
-
 CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent) :
     MainMenu::CDialogFrame(parent),
-    mp_DataConnector(p_DataConnector),
+    //mp_DataConnector(p_DataConnector),
     mp_Ui(new Ui::CInitialSystem)
 {
     mp_Ui->setupUi(GetContentFrame());
 
-    this->SetDialogTitle(MSG_TITLE);
+    //this->SetDialogTitle(InitialSystem::MSG_TITLE);
 
     QPixmap PixMapCheck(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
@@ -74,11 +64,16 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_Ui->liquidGroup->setFixedSize(388,152);
     mp_Ui->retortGroup->setFixedSize(388,152);
 
+    mp_InitialSystemCheck = new InitialSystem::CInitialSystemCheck(p_DataConnector, parent);
+
+    CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshStatusToGUI(Service::InitialSystemTestType, int),
+                      this, OnRefreshStatus(Service::InitialSystemTestType, int));
+
     CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
 
     mp_StartTimer = new QTimer;
     mp_StartTimer->setSingleShot(true);
-    mp_StartTimer->setInterval(5000);
+    mp_StartTimer->setInterval(15000);
     mp_StartTimer->start();
     CONNECTSIGNALSLOT(mp_StartTimer, timeout(), this, StartCheck());
 
@@ -115,74 +110,49 @@ void CInitialSystem::changeEvent(QEvent *p_Event)
 void CInitialSystem::StartCheck()
 {
     mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
-    Core::CServiceUtils::delay(3000);
-    InitialSystem::CMainsRelayTest MainsRelayTest(this);
-    if (MainsRelayTest.Run() == RETURN_OK) {
-        mp_Ui->mrChcekLable->setPixmap(m_PixmapPass);
-    }
-    else {
-        mp_Ui->mrChcekLable->setPixmap(m_PixmapFail);
-        return;
-    }
-
-    mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
-    Core::CServiceUtils::delay(3000);
-    InitialSystem::CACVoltageTest ACVoltageTest(this);
-    if (ACVoltageTest.Run() == RETURN_OK) {
-        mp_Ui->voltageCheckLabel->setPixmap(m_PixmapPass);
-    }
-    else {
-        mp_Ui->voltageCheckLabel->setPixmap(m_PixmapFail);
-        return;
-    }
-
-    int ParaffinBath = CheckParaffinBath();
-    qDebug()<<"InitialSystem Paraffin melting point :"<<ParaffinBath;
+    mp_InitialSystemCheck->Run();
 }
 
-int CInitialSystem::CheckParaffinBath(void)
+void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Ret)
 {
-    int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
-    QString Text = QString("Current paraffin melting point is %1. If correct, press 'Yes'. If incorrect,press 'No', then select the correct paraffinmelting point").arg(ParaffinBath);
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
-
-    dlg->SetTitle(MSG_TITLE);
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(Text);
-    dlg->HideCenterButton();
-    dlg->SetButtonText(1, tr("Yes"));
-    dlg->SetButtonText(3, tr("No"));
-    dlg->setModal(true);
-
-    if (dlg->exec() == 0) {
-        CSelectMeltingPointDialog* SelectDlg = new CSelectMeltingPointDialog(ParaffinBath, this);
-        (void)SelectDlg->exec();
-
-        ParaffinBath = SelectDlg->GetMeltingPoint();
-        delete SelectDlg;
-    }
-
-    delete dlg;
-
-    return ParaffinBath;
-}
-
-void CInitialSystem::UpdateMainRelayStatus()
-{
-    //mp_Ui->mainRelayGroup->setFixedSize(782, 116);
-    mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
-    mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
-    mp_Ui->preTestLabel->setText(tr("Pre test..."));
-
-    //QPixmap CheckMap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
-    //QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
+    QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
     QPixmap SetPixmap;
-    SetPixmap = PixMapPass.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
 
-    mp_Ui->mrChcekLable->setPixmap(SetPixmap);
-    mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
-    //mp_Ui->preCheckLable->setPixmap(SetPixmap);
+    if (Ret == RETURN_OK) {
+        SetPixmap = PixMapPass.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
+    }
+    else {
+        SetPixmap = PixMapFail.scaled(QSize(40,40),Qt::KeepAspectRatio, Qt::FastTransformation);
+    }
+
+    switch (Type) {
+    case Service::INITIAL_MAINS_RELAY:
+        mp_Ui->mrChcekLable->setPixmap(SetPixmap);
+
+        if (Ret == RETURN_OK) {
+            mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
+        }
+        break;
+    case Service::INITIAL_AC_VOLTAGE:
+        mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
+        break;
+    case Service::INITIAL_OVEN:
+        mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);
+        break;
+    case Service::INITIAL_LIQUID_TUBE:
+        mp_Ui->liquidCheckLabel->setPixmap(SetPixmap);
+        break;
+    case Service::INITIAL_ROTARY_VALVE:
+        mp_Ui->rvCheckLabel->setPixmap(SetPixmap);
+        break;
+    case Service::INITIAL_RETORT:
+        mp_Ui->retortCheckLabel->setPixmap(SetPixmap);
+        break;
+    default:
+        qDebug()<<"invalid initial test module.";
+        return;
+    }
 }
 
 void CInitialSystem::UpdateOvenTestStatus()

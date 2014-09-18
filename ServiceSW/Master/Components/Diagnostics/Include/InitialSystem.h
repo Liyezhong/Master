@@ -23,11 +23,16 @@
 
 #include "MainMenu/Include/DialogFrame.h"
 #include "Core/Include/ServiceGUIConnector.h"
+#include "Core/Include/ServiceDefines.h"
 
 namespace Diagnostics {
 
 namespace Ui {
 class CInitialSystem;
+}
+
+namespace InitialSystem {
+class CInitialSystemCheck;
 }
 
 class CInitialSystem : public MainMenu::CDialogFrame
@@ -43,24 +48,22 @@ protected:
 
 private Q_SLOTS:
     void StartCheck(void);
-    void UpdateMainRelayStatus();
+    void OnRefreshStatus(Service::InitialSystemTestType Type, int Ret);
+
     void UpdateOvenTestStatus();
     void UpdateLiquidTestStatus();
     void UpdateRVTestStatus();
     void UpdateRetortTestStatus();
 
-signals:
-
 private:
-    int CheckParaffinBath(void);
-
-private:
-    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
+    //Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     Ui::CInitialSystem         *mp_Ui;
     QTimer*                    mp_StartTimer;
     QPixmap                    m_PixmapCheck;
     QPixmap                    m_PixmapPass;
     QPixmap                    m_PixmapFail;
+
+    InitialSystem::CInitialSystemCheck *mp_InitialSystemCheck;
 
 };
 

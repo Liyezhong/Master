@@ -38,7 +38,8 @@ public:
 
     int Run(void);
 private:
-    QWidget                   *mp_Parent;
+    void ShowWaitingMessage(bool ShowFlag=true);
+    void ShowFailMessage(int Error);
 };
 
 } // namespace InitialSystem
