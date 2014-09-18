@@ -26,7 +26,6 @@
 #include "LogViewerDialog/Include/SystemLogViewerDlg.h"
 #include "ui_SystemLogViewerDlg.h"
 #include "Global/Include/GlobalDefines.h"
-#include "LogViewerDialog/Include/ServiceHelpTextFilter.h"
 #include "Global/Include/EventObject.h"
 
 namespace LogViewer {

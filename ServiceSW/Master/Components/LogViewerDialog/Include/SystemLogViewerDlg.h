@@ -30,7 +30,6 @@
 #include <QStandardItemModel>
 #include <QFile>
 #include "LogViewerDialog/Include/LogFilter.h"
-#include "LogViewerDialog/Include/ServiceHelpTextFilter.h"
 
 namespace LogViewer {
 
