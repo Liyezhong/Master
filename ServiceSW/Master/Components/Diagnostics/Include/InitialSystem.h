@@ -46,22 +46,36 @@ public:
 protected:
     void changeEvent(QEvent *p_Event);
 
+signals:
+    void RetortPreHeating();
+
 private Q_SLOTS:
     void StartCheck(void);
-    void OnRefreshStatus(Service::InitialSystemTestType Type, int Ret);
+    void OnRefreshStatus(Service::InitialSystemTestType Type, int Ret);   
+    void OnRefreshHeatingStatus(Service::InitialSystemTestType Type);
 
-    void UpdateOvenTestStatus();
-    void UpdateLiquidTestStatus();
-    void UpdateRVTestStatus();
-    void UpdateRetortTestStatus();
+    void UpdateHeatingStatus();
+
+private:
+    void UpdateOvenHeatingStatus();
+    void UpdateLHeatingStatus();
+    void UpdateRVHeatingStatus();
+    void UpdateRetortStatus();
 
 private:
     //Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     MainMenu::CMessageDlg      *mp_WaitDlg;
     Ui::CInitialSystem         *mp_Ui;
-    QTimer*                    mp_StartTimer;
+    QTimer                     *mp_StartTimer;
+    QTimer                     *mp_HeatingTimer;
 
     InitialSystem::CInitialSystemCheck *mp_InitialSystemCheck;
+
+    bool                       m_IsHeatingTimerStart;
+    bool                       m_OvenHeating;
+    bool                       m_LiquidHeating;
+    bool                       m_RVHeating;
+    bool                       m_RetortHeating;
 
 };
 

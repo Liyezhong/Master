@@ -42,8 +42,12 @@ public:
 
     int Run(void);
 
+public slots:
+    void RetortPreHeating();
+
 signals:
     void RefreshStatusToGUI(Service::InitialSystemTestType Type, int Ret);
+    void RefreshHeatingStatus(Service::InitialSystemTestType Type);
 
 private:
     void ConfirmParaffinBath(void);

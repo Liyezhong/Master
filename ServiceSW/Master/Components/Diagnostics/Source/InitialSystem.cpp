@@ -19,6 +19,7 @@
 /****************************************************************************/
 
 #include "Diagnostics/Include/InitialSystem.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include <QDebug>
 
@@ -34,7 +35,12 @@ namespace Diagnostics {
 CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent) :
     MainMenu::CDialogFrame(parent),
     //mp_DataConnector(p_DataConnector),
-    mp_Ui(new Ui::CInitialSystem)
+    mp_Ui(new Ui::CInitialSystem),
+    m_IsHeatingTimerStart(false),
+    m_OvenHeating(false),
+    m_LiquidHeating(false),
+    m_RVHeating(false),
+    m_RetortHeating(false)
 {
     mp_Ui->setupUi(GetContentFrame());
 
@@ -71,9 +77,18 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshStatusToGUI(Service::InitialSystemTestType, int),
                       this, OnRefreshStatus(Service::InitialSystemTestType, int));
 
-    CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
+    CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshHeatingStatus(Service::InitialSystemTestType),
+                      this, OnRefreshHeatingStatus(Service::InitialSystemTestType));
 
-    mp_StartTimer = new QTimer;
+    CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
+    CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), mp_InitialSystemCheck, RetortPreHeating());
+
+    mp_HeatingTimer = new QTimer;
+    mp_HeatingTimer->setSingleShot(false);
+    mp_HeatingTimer->setInterval(1000);
+    CONNECTSIGNALSLOT(mp_HeatingTimer, timeout(), this, UpdateHeatingStatus());
+
+    mp_StartTimer   = new QTimer;
     mp_StartTimer->setSingleShot(true);
     mp_StartTimer->setInterval(1000);
     mp_StartTimer->start();
@@ -84,6 +99,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
 CInitialSystem::~CInitialSystem()
 {
     delete mp_Ui;
+    delete mp_HeatingTimer;
     delete mp_StartTimer;
 }
 
@@ -111,6 +127,8 @@ void CInitialSystem::changeEvent(QEvent *p_Event)
 
 void CInitialSystem::StartCheck()
 {
+    qDebug()<<"Start Initial System Check..........";
+    mp_StartTimer->stop();
     mp_WaitDlg->show();
 
     while(1) {
@@ -124,6 +142,27 @@ void CInitialSystem::StartCheck()
     mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
     mp_InitialSystemCheck->Run();
 
+}
+
+void CInitialSystem::UpdateHeatingStatus()
+{
+    qDebug()<<"Update Heating Status....";
+    if (m_OvenHeating) {
+        qDebug()<<"Pre-Heating Oven....";
+        UpdateOvenHeatingStatus();
+    }
+    if (m_LiquidHeating) {
+        qDebug()<<"Pre-Heating Liquid tube....";
+        UpdateLHeatingStatus();
+    }
+    if (m_RVHeating) {
+        qDebug()<<"Pre-Heating rotary valve....";
+        UpdateRVHeatingStatus();
+    }
+    if (m_RetortHeating) {
+        qDebug()<<"Pre-Heating Retort....";
+        UpdateRetortStatus();
+    }
 }
 
 void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Ret)
@@ -149,6 +188,10 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         break;
     case Service::INITIAL_AC_VOLTAGE:
         mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
+
+        if (Ret == RETURN_OK) {
+            mp_Ui->preTestLabel->setText(tr("Pre-test ..."));
+        }
         break;
     case Service::INITIAL_OVEN:
         mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);
@@ -168,45 +211,129 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
     }
 }
 
-void CInitialSystem::UpdateOvenTestStatus()
+void CInitialSystem::UpdateOvenHeatingStatus()
 {
-    QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
-    QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
-    QPixmap SetPixmap1, SetPixmap2;
-    SetPixmap1 = (PixMapPass.scaled(40,40,Qt::KeepAspectRatio));
-    SetPixmap2 = (PixMapFail.scaled(40,40,Qt::KeepAspectRatio));
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    mp_Ui->ovenTargetTempLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->ovenCurTemplabel->setText(tr("Current Temperature(top)(\260C):"));
+    mp_Ui->ovenBtmLabel1->setText(tr("Current Temperature(bottom1)(\260C):"));
+    mp_Ui->ovenBtmLable2->setText(tr("Current Temperature(bottom2)(\260C):"));
+    mp_Ui->ovenToplabel->setText(tr("Paraffin Oven Current (top)(mA):"));
+    mp_Ui->ovenBottomLabel->setText(tr("Paraffin Oven Current (bottom)(mA):"));
 
-    mp_Ui->ovenCheckLabel->setPixmap(SetPixmap1);
-    mp_Ui->liquidCheckLabel->setPixmap(SetPixmap2);
+    QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest")->GetParameter("TargetTemp");
+    qreal CurrentTemp(0);
+    qreal CurrentTempB1(0);
+    qreal CurrentTempB2(0);
+    quint16 CurrentOvenTempT(0);
+    quint16 CurrentOvenTempB(0);
 
-    mp_Ui->targTempLabel->setText(tr("Target Temperature(\260C):"));
-    mp_Ui->currentTemplabel->setText(tr("Current Temperature(top)(\260C):"));
-    mp_Ui->bottomLabel1->setText(tr("Current Temperature(bottom1)(\260C):"));
-    mp_Ui->bottomLable2->setText(tr("Current Temperature(bottom2)(\260C):"));
-    mp_Ui->ovenToplabel->setText(tr("Paraffin Oven Current (top) (mA):"));
-    mp_Ui->ovenBottomLabel->setText(tr("Paraffin Oven Current (bottom) (mA):"));
+    p_DevProc->OvenGetTemp(&CurrentTemp, &CurrentTempB1, &CurrentTempB2);
+    p_DevProc->OvenGetCurrent(&CurrentOvenTempT, &CurrentOvenTempB);
 
-    mp_Ui->targetTempValue->setText(tr("65"));
-    mp_Ui->currentTempValue->setText(tr("35"));
-    mp_Ui->bottomValue1->setText(tr("37"));
-    mp_Ui->bottomValue2->setText(tr("37"));
-    mp_Ui->ovenTopValue->setText(tr("536"));
-    mp_Ui->ovenBottomValue->setText(tr("537"));
+    mp_Ui->ovenTargetTempValue->setText(TargetTemp);
+    mp_Ui->ovenCurTempValue->setText(QString::number(CurrentTemp));
+    mp_Ui->ovenBtmValue1->setText(QString::number(CurrentTempB1));
+    mp_Ui->ovenBtmValue2->setText(QString::number(CurrentTempB2));
+    mp_Ui->ovenTopValue->setText(QString::number(CurrentOvenTempT));
+    mp_Ui->ovenBottomValue->setText(QString::number(CurrentOvenTempB));
 }
 
-void CInitialSystem::UpdateLiquidTestStatus()
+void CInitialSystem::UpdateLHeatingStatus()
 {
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    mp_Ui->LTargetTmpLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->LCurrentTempLabel->setText(tr("Current Temperature(\260C):"));
+    mp_Ui->LTubeTempLabel->setText(tr("Liquid Heating Tube Current(mA):"));
 
+    QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest")->GetParameter("PreHeatingTargetTemp");
+    quint16 CurrentTemp(0);
+    qreal TubeTemp(0);
+
+    p_DevProc->LiquidTubeGetCurrent(&CurrentTemp);
+    p_DevProc->LiquidTubeGetTemp(&TubeTemp);
+
+    mp_Ui->LTargetTmpValue->setText(TargetTemp);
+    mp_Ui->LCurrentTempValue->setText(QString::number(CurrentTemp));
+    mp_Ui->LTubeTempValue->setText(QString::number(TubeTemp));
 }
 
-void CInitialSystem::UpdateRVTestStatus()
+void CInitialSystem::UpdateRVHeatingStatus()
 {
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    mp_Ui->rvTargetTempS1Label->setText(tr("Target Temperature(Sensor1)(\260C):"));
+    mp_Ui->rvTargetTempS2Label->setText(tr("Target Temperature(Sensor2)(\260C):"));
+    mp_Ui->rvCurTempS1Label->setText(tr("Current Temperature(Sensor1)(\260C):"));
+    mp_Ui->rvCurTempS2Label->setText(tr("Current Temperature(Sensor2)(\260C):"));
+    mp_Ui->rvCurrentLabel->setText(tr("Rotary valve Current(mA):"));
 
+    //qreal TargetTempS1(0);
+    //qreal TargetTempS2(0);
+    QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
+    qreal CurrentTempS1(0);
+    qreal CurrentTempS2(0);
+    quint16 RVCurrent(0);
+
+    p_DevProc->RVGetTemp(&CurrentTempS1, &CurrentTempS2);
+    p_DevProc->RVGetCurrent(&RVCurrent);
+
+    mp_Ui->rvTargetTempS1Value->setText(TargetTemp);
+    mp_Ui->rvTargetTempS2Value->setText(TargetTemp);
+    mp_Ui->rvCurTempS1Value->setText(QString::number(CurrentTempS1));
+    mp_Ui->rvCurTempS2Value->setText(QString::number(CurrentTempS2));
+    mp_Ui->rvCurrentValue->setText(QString::number(RVCurrent));
 }
 
-void CInitialSystem::UpdateRetortTestStatus()
+void CInitialSystem::UpdateRetortStatus()
 {
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    mp_Ui->retortTargetTempLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->retortCurTempSLabel->setText(tr("Current Temperature(Side)(\260C):"));
+    mp_Ui->retortCurTempB1Label->setText(tr("Current Temperature(Bottom1)(\260C):"));
+    mp_Ui->retortCurTempB2Label->setText(tr("Current Temperature(Bottom2)(\260C):"));
+    mp_Ui->retortCurrentLabel->setText(tr("Retort Current:"));
 
+    QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest")->GetParameter("TargetTemp");
+    qDebug()<<"get retort Target temp :"<<TargetTemp;
+    qreal CurrentTempS(0);
+    qreal CurrentTempB1(0);
+    qreal CurrentTempB2(0);
+    quint16 RetortCurrent(0);
+
+    p_DevProc->RetortGetTemp(&CurrentTempS, &CurrentTempB1, &CurrentTempB2);
+    //p_DevProc->RetortGetCurrent()
+
+    mp_Ui->retortTargetTempValue->setText(TargetTemp);
+    mp_Ui->retortCurTempSValue->setText(QString::number(CurrentTempS));
+    mp_Ui->retortCurTempB1Value->setText(QString::number(CurrentTempB1));
+    mp_Ui->retortCurTempB2Value->setText(QString::number(CurrentTempB2));
+    mp_Ui->retortCurrentValue->setText(QString::number(RetortCurrent));
+}
+
+void CInitialSystem::OnRefreshHeatingStatus(Service::InitialSystemTestType Type)
+{
+    if (!m_IsHeatingTimerStart) {
+        mp_HeatingTimer->start();
+        m_IsHeatingTimerStart = true;
+    }
+
+    switch (Type) {
+    case Service::INITIAL_OVEN:
+        m_OvenHeating = true;
+        break;
+    case Service::INITIAL_LIQUID_TUBE:
+        m_LiquidHeating = true;
+        break;
+    case Service::INITIAL_ROTARY_VALVE:
+        m_RVHeating = true;
+        break;
+    case Service::INITIAL_RETORT:
+        m_RetortHeating = true;
+        break;
+    default:
+        qDebug()<<"invalid initial test module.";
+        return;
+    }
 }
 
 } // namespace Diagnostics

@@ -106,6 +106,8 @@ void COvenPreTest::StartPreHeating(qreal MeltPoint)
     qDebug()<<"OvenStartHeating   " << MeltPoint+MoreTargetTemp;
     ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);
 
+    p_TestCase->SetParameter("TargetTemp", QString::number(MeltPoint + MoreTargetTemp));
+
     qDebug()<<"OvenStartHeating";
 }
 

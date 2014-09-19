@@ -99,6 +99,8 @@ void CRetortPreTest::StartPreHeating(qreal MeltPoint)
     qreal MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp").toFloat();
 
     ServiceDeviceProcess::Instance()->RetortStartHeating(MeltPoint+MoreTargetTemp+2, MeltPoint+MoreTargetTemp+7);
+    p_TestCase->SetParameter("TargetTemp", QString::number(MeltPoint+MoreTargetTemp));
+    qDebug()<<"Set retort Target temp :"<<p_TestCase->GetParameter("TargetTemp");
 }
 
 void CRetortPreTest::ShowWaitingMessage(bool ShowFlag)

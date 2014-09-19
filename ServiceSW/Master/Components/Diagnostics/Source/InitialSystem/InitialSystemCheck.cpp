@@ -94,6 +94,7 @@ int CInitialSystemCheck::Run(void)
     emit RefreshStatusToGUI(Service::INITIAL_OVEN, Ret);
     if (Ret == RETURN_OK) {
         OvenPreTest->StartPreHeating(m_ParaffinMeltPoint);
+        emit RefreshHeatingStatus(Service::INITIAL_OVEN);
     }
     delete OvenPreTest;
     ServiceDeviceProcess::Instance()->Pause(1000);
@@ -105,6 +106,7 @@ int CInitialSystemCheck::Run(void)
     emit RefreshStatusToGUI(Service::INITIAL_LIQUID_TUBE, Ret);
     if (Ret == RETURN_OK) {
         LTubePreTest->StartPreHeating();
+        emit RefreshHeatingStatus(Service::INITIAL_LIQUID_TUBE);
     }
     delete LTubePreTest;
     ServiceDeviceProcess::Instance()->Pause(1000);
@@ -116,6 +118,7 @@ int CInitialSystemCheck::Run(void)
     emit RefreshStatusToGUI(Service::INITIAL_ROTARY_VALVE, Ret);
     if (Ret == RETURN_OK) {
         RVPreTest->StartPreHeating();
+        emit RefreshHeatingStatus(Service::INITIAL_ROTARY_VALVE);
     }
     delete RVPreTest;
 
@@ -129,6 +132,13 @@ int CInitialSystemCheck::Run(void)
     delete RetortPreTest;
 
     return Ret;
+}
+
+void CInitialSystemCheck::RetortPreHeating()
+{
+    CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
+    RetortPreTest->StartPreHeating(m_ParaffinMeltPoint);
+    emit RefreshHeatingStatus(Service::INITIAL_RETORT);
 }
 
 void CInitialSystemCheck::ConfirmParaffinBath(void)
