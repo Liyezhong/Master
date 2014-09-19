@@ -288,8 +288,8 @@ void CSystemSetupSettingsWidget::OnApply()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
     ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
-    int paraffinMeltingPoint = m_UserSettingsTemp.GetTemperatureParaffinBath();
-    if (paraffinMeltingPoint <= 63)
+    int temp = mp_ScrollWheel->GetCurrentData().toInt();
+    if (temp <= 63)
     {
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("12"));
     }
@@ -306,9 +306,7 @@ void CSystemSetupSettingsWidget::OnApply()
         {
             m_UserSettingsTemp = *mp_UserSettings;
         }
-
-        int Temp = mp_ScrollWheel->GetCurrentData().toInt();
-        m_UserSettingsTemp.SetTemperatureParaffinBath(Temp);
+        m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
 
         emit TemperatureChanged(m_UserSettingsTemp);
     }
