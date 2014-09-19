@@ -554,7 +554,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
             if(m_CurProgramStepInfo.reagentGroup == "RG6")
             {
-                if(mp_HeatingStrategy->CheckRVHeatingStatus())
+                if(mp_HeatingStrategy->CheckSensorsTemp(m_SchedulerCommandProcessor->HardwareMonitor()))
                 {
                     LogDebug("Program Step Heating Rotary Valve heating rod OK");
                     m_SchedulerMachine->NotifyRVRodHeatingReady();
@@ -2398,7 +2398,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-#if 0
+
         // For current related
         if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
         {
@@ -2418,7 +2418,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-#endif
+
     }
 
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
@@ -3709,7 +3709,7 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
     reportError5 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_LEVELSENSOR);
     reportError6 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
     reportError7 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
-    reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_FAN);
+    reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(PRESS_FAN_OUT_OF_RANGE, "LA", AL_FAN);
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {

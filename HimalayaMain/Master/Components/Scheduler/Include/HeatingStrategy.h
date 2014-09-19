@@ -274,11 +274,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  get the oven heating begin Time
-     *  \return qint64
+     *  \brief  check the temperature of sensors in scenario 260
+     **  \param strctHWMonitor - temperature list from Device Control
+     *  \return bool
      */
     /****************************************************************************/
-    bool CheckRVHeatingStatus() const {return m_RV_2_Outlet.OTCheckPassed;}
+    bool CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor);
 
     /****************************************************************************/
     /*!

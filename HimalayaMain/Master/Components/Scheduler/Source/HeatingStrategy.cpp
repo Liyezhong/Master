@@ -1897,4 +1897,21 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
     return true;
 }
 
+
+
+bool HeatingStrategy::CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor)
+{
+ qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+ if (userInputMeltingPoint <= 0)
+ {
+     return true;
+ }
+
+ return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
+         &&(strctHWMonitor.TempRTBottom2>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenTop>=userInputMeltingPoint)
+         &&(strctHWMonitor.TempOvenBottom1>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenBottom2>=userInputMeltingPoint)
+         &&(strctHWMonitor.TempRV2>=userInputMeltingPoint)&&(strctHWMonitor.TempALTube1>=userInputMeltingPoint);
+
+}
+
 }// end of namespace Scheduler
