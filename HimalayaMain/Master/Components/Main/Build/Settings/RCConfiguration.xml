@@ -19,6 +19,9 @@
             <DataItem Name="SetPingRate" Type="Analog" Quality="DataGood" Value="60"/>
             <DataItem Name="SetSubscription" Type="Digital" Quality="DataGood" Value="0"/>
             <DataItem Name="SetUpdateAvailable" Type="Digital" Quality="DataGood" Value="0"/>
+			<DataItem Name="StateDownloadFolder" Type="String" Quality="DataGood" Value="../RemoteCare/"/>
+			<DataItem Name="StateSessionType" Type="String" Quality="DataGood" Value="desktop"/>
+			<DataItem Name="StateSessionPort" Type="Analog" Quality="DataGood" Value="5900"/>
         </DataItems>
     </FileUpload>
 </RCConfiguration>
