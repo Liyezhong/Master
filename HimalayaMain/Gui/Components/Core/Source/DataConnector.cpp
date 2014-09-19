@@ -28,6 +28,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
+
 
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
@@ -1210,6 +1212,17 @@ void CDataConnector::SendRequestedFilesToImport(QStringList FileList)
         mp_WaitDialog->show();
     }
     MsgClasses::CmdDataImportFiles Command(120000, FileList);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Send command to Main about the ParaffinTemperature is Changed
+ */
+/****************************************************************************/
+void CDataConnector::SendParaffinTemperatureChanged()
+{
+    MsgClasses::CmdParaffinMeltPointChanged Command(COMMAND_TIME_OUT);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 

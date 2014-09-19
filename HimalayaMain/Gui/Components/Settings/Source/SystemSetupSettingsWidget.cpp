@@ -25,6 +25,8 @@
 #include "Settings/Include/SystemSetupSettingsWidget.h"
 #include "ui_SystemSetupSettingsWidget.h"
 #include "Core/Include/GlobalHelper.h"
+#include "MainMenu/Include/MessageDlg.h"
+#include "Dashboard/Include/CommonString.h"
 
 namespace Settings {
 
@@ -259,6 +261,7 @@ void CSystemSetupSettingsWidget::ResetButtons()
 void CSystemSetupSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
+   m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget", "If paraffin melting point is changed, %1 hours will be needed to melt paraffin, really change it?", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/
@@ -283,15 +286,34 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 
 void CSystemSetupSettingsWidget::OnApply()
 {
-    if (mp_UserSettings)
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+    ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
+    int paraffinMeltingPoint = m_UserSettingsTemp.GetTemperatureParaffinBath();
+    if (paraffinMeltingPoint <= 63)
     {
-        m_UserSettingsTemp = *mp_UserSettings;
+        ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("12"));
+    }
+    else
+        ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("15"));
+
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
+    ConfirmationMessageDlg.HideCenterButton();
+    if (ConfirmationMessageDlg.exec())
+    {
+        if (mp_UserSettings)
+        {
+            m_UserSettingsTemp = *mp_UserSettings;
+        }
+
+        int Temp = mp_ScrollWheel->GetCurrentData().toInt();
+        m_UserSettingsTemp.SetTemperatureParaffinBath(Temp);
+
+        emit TemperatureChanged(m_UserSettingsTemp);
     }
 
-    int Temp = mp_ScrollWheel->GetCurrentData().toInt();
-    m_UserSettingsTemp.SetTemperatureParaffinBath(Temp);
 
-    emit TemperatureChanged(m_UserSettingsTemp);
 }
 
 } // end namespace Settings

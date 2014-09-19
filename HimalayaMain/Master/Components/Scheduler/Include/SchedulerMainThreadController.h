@@ -27,7 +27,6 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
 #include "Threads/Include/ThreadController.h"
-//#include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
 #include <Global/Include/Commands/Command.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -44,6 +43,7 @@ namespace MsgClasses
     class CmdProgramSelected;
     class CmdQuitAppShutdown;
     class CmdSavedServiceInfor;
+    class CmdParaffinMeltPointChanged;
 }
 
 namespace DataManager
@@ -861,6 +861,17 @@ protected:
          */
         /****************************************************************************/
         void OnSavedServiceInfor(Global::tRefType Ref, const MsgClasses::CmdSavedServiceInfor & Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnParaffinMeltPointChanged
+         *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param Cmd =  MsgClasses::CmdParaffinMeltPointChanged type parameter
+         *
+         *  \return from OnParaffinMeltPointChanged
+         */
+        /****************************************************************************/
+        void OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd);
     public:
         /****************************************************************************/
         /**

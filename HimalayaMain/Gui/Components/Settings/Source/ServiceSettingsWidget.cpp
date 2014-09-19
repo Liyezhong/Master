@@ -262,10 +262,10 @@ void CServiceSettingsWidget::OnPrepareShutdown()
     int paraffinMeltingPoint = mp_UserSettings->GetTemperatureParaffinBath();
     if (paraffinMeltingPoint <= 63)
     {
-        ConfirmationMessageDlg.SetText(m_strShutdownConfirm12Hrs);
+        ConfirmationMessageDlg.SetText(m_strShutdownConfirm12Hrs.arg("12"));
     }
     else
-        ConfirmationMessageDlg.SetText(m_strShutdownConfirm15Hrs);
+        ConfirmationMessageDlg.SetText(m_strShutdownConfirm12Hrs.arg("15"));
 
     ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
@@ -334,10 +334,7 @@ void CServiceSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Maintenance", 0, QApplication::UnicodeUTF8));
    m_strShutdownConfirm12Hrs = QApplication::translate("Settings::CServiceSettingsWidget",
-                        "If shut down now, 12 hours will be needed for melt paraffin in next startup, really shut down?",
-                                           0, QApplication::UnicodeUTF8);
-   m_strShutdownConfirm15Hrs = QApplication::translate("Settings::CServiceSettingsWidget",
-                        "If shut down now, 15 hours will be needed for melt paraffin in next startup, really shut down?",
+                        "If shut down now, %1 hours will be needed for melt paraffin in next startup, really shut down?",
                                            0, QApplication::UnicodeUTF8);
 }
 

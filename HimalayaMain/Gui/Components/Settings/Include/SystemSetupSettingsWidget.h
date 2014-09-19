@@ -54,7 +54,7 @@ private:
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
-
+    QString m_strChangeMeltPointConfirm12Hrs;
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
     ~CSystemSetupSettingsWidget();

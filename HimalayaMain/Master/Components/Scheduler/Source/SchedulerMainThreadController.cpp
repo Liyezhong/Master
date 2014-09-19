@@ -61,6 +61,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -156,6 +157,9 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdSavedServiceInfor,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnSavedServiceInfor, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdParaffinMeltPointChanged,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnParaffinMeltPointChanged, this);
 
 }
 
@@ -2075,6 +2079,11 @@ void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, co
 {
     this->SendAcknowledgeOK(Ref);
     m_SchedulerCommandProcessor->NotifySavedServiceInfor(Cmd.DeviceType());
+}
+
+void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd)
+{
+
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)

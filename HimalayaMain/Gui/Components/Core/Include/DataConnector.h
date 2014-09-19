@@ -351,7 +351,10 @@ public slots:
      */
     /****************************************************************************/
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
+
     void SendRequestedFilesToImport(QStringList FileList);
+
+    void SendParaffinTemperatureChanged();
 
 signals:
 
