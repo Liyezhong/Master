@@ -11,7 +11,7 @@
 	</OvenCoverSensor>
     <OvenHeatingEmpty Description="加热测试（空）">
 		<Guide>
-			<Step>请取出石蜡缸</Step>
+			<Step>请取出三个蜡缸，关闭石蜡烤箱前盖。确保石蜡烤箱正确地连接到测试工装上！</Step>
 		</Guide>
 	</OvenHeatingEmpty>
 	<OvenHeatingWater Description="加热测试（加水）">

@@ -11,7 +11,7 @@
 	</OvenCoverSensor>
     <OvenHeatingEmpty Description="Heating test (empty)">
 		<Guide>
-			<Step>Please take out the wax baths.</Step>
+			<Step>Please take out all three wax baths, then close the cover. Make sure Oven is connected correctly to test fixture!</Step>
 		</Guide>
 	</OvenHeatingEmpty>
 	<OvenHeatingWater Description="Heating test (with water)">
