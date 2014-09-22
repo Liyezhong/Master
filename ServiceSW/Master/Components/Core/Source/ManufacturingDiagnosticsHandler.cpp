@@ -1159,6 +1159,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             QString Reason = p_TestCase->GetResult().value("FailReason");
             if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
                 mp_SystemManuf->EnableButton(true);
+                p_TestCase->AddResult("FailReason", "");
                 return ;
             }
 
