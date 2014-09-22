@@ -27,24 +27,68 @@
 
 namespace Diagnostics {
 
+/****************************************************************************/
+/*!
+ *  \brief This is the base class of the diagnostics test
+ */
+/****************************************************************************/
 class CTestBase : public QObject
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     CTestBase(QWidget *parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CTestBase(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     virtual int Run(void) = 0;
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief To popup message dialog
+     *  \iparam MessageTitle = the dialog title
+     *  \iparam MessageText  = the dialog text
+     *  \iparam Ret = test result for set dialog type
+     */
+    /****************************************************************************/
     void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To popup waiting dialog
+     *  \iparam MessageTitle = the dialog title
+     *  \iparam MessageText  = the dialog text
+     */
+    /****************************************************************************/
     void ShowWaitingDialog(QString& MessageTitle, QString& MessageText);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To hide wait dialog
+     */
+    /****************************************************************************/
     void HideWaitingDialog();
 
 private:
-    QWidget        *mp_Parent;
-    MainMenu::CMessageDlg *mp_WaitDlg;
+    QWidget        *mp_Parent;              //!< Parent widget
+    MainMenu::CMessageDlg *mp_WaitDlg;      //!< Wait dialog
 };
 
 }

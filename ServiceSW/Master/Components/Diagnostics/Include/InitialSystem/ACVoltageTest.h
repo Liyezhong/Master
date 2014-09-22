@@ -28,21 +28,62 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to initial AC voltage test
+*/
+/****************************************************************************/
 class CACVoltageTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     CACVoltageTest(QWidget *parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CACVoltageTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run(void);
 private:
-    QWidget                    *mp_Parent;
+    QWidget                    *mp_Parent;          //!< The pointer of parent widget
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
     void ShowWaitingMessage(bool ShowFlag=true);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
     void ShowFailMessage(int Error);
-    int GetCurrentSwithType();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get current switch type
+     */
+    /****************************************************************************/
+    int GetCurrentSwitchType();
 };
 
 } // namespace InitialSystem

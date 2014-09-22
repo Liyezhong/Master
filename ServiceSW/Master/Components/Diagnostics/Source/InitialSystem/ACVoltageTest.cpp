@@ -86,7 +86,7 @@ int CACVoltageTest::Run(void)
         return RETURN_OK;
     }
     else {
-        int SwitchType = GetCurrentSwithType();
+        int SwitchType = GetCurrentSwitchType();
 
         if (SwitchType == RVSwitchType) {
             ShowFailMessage(1);
@@ -140,7 +140,7 @@ void CACVoltageTest::ShowFailMessage(int Error)
     ShowMessage(Title, Text, RETURN_ERR_FAIL);
 }
 
-int CACVoltageTest::GetCurrentSwithType()
+int CACVoltageTest::GetCurrentSwitchType()
 {
     DiagnosticsManufacturing::CSelect110v220vDialog* p_Dlg = new DiagnosticsManufacturing::CSelect110v220vDialog(110, mp_Parent);
     p_Dlg->UpdateLabelForService();

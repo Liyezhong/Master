@@ -30,19 +30,50 @@ namespace Ui {
 class CSelectMeltingPointDialog;
 }
 
+/****************************************************************************/
+/**
+ * \brief This dialog is to select paraffin melting point.
+ */
+/****************************************************************************/
 class CSelectMeltingPointDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam MeltingPoint = The default melting point
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     explicit CSelectMeltingPointDialog(int MeltingPoint, QWidget *parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CSelectMeltingPointDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To get selected melting point
+     *  \return the melting point
+     */
+    /****************************************************************************/
     int GetMeltingPoint() {
         return m_MeltingPoint;
     }
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private Q_SLOTS:

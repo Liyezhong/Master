@@ -28,17 +28,52 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to initail Mains Relay test
+*/
+/****************************************************************************/
 class CMainsRelayTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     CMainsRelayTest(QWidget *parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CMainsRelayTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run(void);
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
     void ShowWaitingMessage(bool ShowFlag=true);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
     void ShowFailMessage(int Error);
 };
 

@@ -30,17 +30,40 @@ namespace Diagnostics {
 
 namespace MainControl {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to slave test
+*/
+/****************************************************************************/
 class CASBTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam SlaveType = the slave type for 3, 5,15
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     CASBTest(HimSlaveType_t SlaveType, QWidget *parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CASBTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run(void);
 private:
-    HimSlaveType_t            m_SlaveType;
+    HimSlaveType_t            m_SlaveType;  //!< Store the slave type
 };
 
 } // namespace MainControl

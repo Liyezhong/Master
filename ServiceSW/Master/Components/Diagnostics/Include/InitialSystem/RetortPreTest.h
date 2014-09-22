@@ -28,19 +28,59 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to initail retort test
+*/
+/****************************************************************************/
 class CRetortPreTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     CRetortPreTest(QWidget *parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CRetortPreTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for start pre heating
+     */
+    /****************************************************************************/
     void StartPreHeating(qreal MeltPoint);
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
     void ShowWaitingMessage(bool ShowFlag=true);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
     void ShowFailMessage(int ErrorCode);
 };
 

@@ -30,24 +30,65 @@ namespace Ui {
 class CMainControl;
 }
 
+/****************************************************************************/
+/**
+ * \brief This widget provides options to perform Main Control module tests
+ */
+/****************************************************************************/
 class CMainControl : public QWidget
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
     explicit CMainControl(QWidget *parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CMainControl();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for ASB3 test
+     */
+    /****************************************************************************/
     void StartASB3Test(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for ASB5 test
+     */
+    /****************************************************************************/
     void StartASB5Test(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for ASB15 test
+     */
+    /****************************************************************************/
     void StartASB15Test(void);
 
 private:
-    Ui::CMainControl *ui;
+    Ui::CMainControl *ui;   //!< User Interface
 };
 
 
