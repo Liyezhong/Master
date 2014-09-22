@@ -1937,7 +1937,7 @@ void CDataConnector::SendRCSWUpdate()
     mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
                     "Now downloading update package from remote server, please waiting...",
                                                    0, QApplication::UnicodeUTF8));
-    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->HideAllButtons();
     (void)mp_MessageDlg->show();
 
     RemoteCare::CmdRCSoftwareUpdate Command(COMMAND_TIME_OUT, RemoteCare::SWUpdate_StartDownload);
