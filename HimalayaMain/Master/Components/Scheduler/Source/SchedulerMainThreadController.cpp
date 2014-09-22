@@ -125,6 +125,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
+    m_NeedEnterClean = false;
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
@@ -351,6 +352,14 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+    if (m_NeedEnterClean)
+    {
+        m_NeedEnterClean = false;
+        MsgClasses::CmdProgramAcknowledge* commandEnterCleaning(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING));
+        Q_ASSERT(commandEnterCleaning);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
+    }
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
@@ -2722,9 +2731,10 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     {
         m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+        m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     }
 
-    m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    //m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
 
     m_lastPVTime = 0;
@@ -2963,6 +2973,8 @@ void SchedulerMainThreadController::Fill()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+    m_NeedEnterClean = true;
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {
@@ -3303,6 +3315,7 @@ void SchedulerMainThreadController::Pressure()
 
 void SchedulerMainThreadController::HighPressure()
 {
+
     LogDebug("Send cmd to DCL to Pressure");
     CmdALPressure* cmd = new CmdALPressure(500, this);
     cmd->SetTargetPressure(40.0);
@@ -3311,6 +3324,7 @@ void SchedulerMainThreadController::HighPressure()
 
 void SchedulerMainThreadController::Vaccum()
 {
+
     LogDebug("Send cmd to DCL to Vaccum");
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, this));
 }
@@ -3755,11 +3769,14 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
         //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
        // m_SchedulerMachine->SendErrorSignal();
     }
+#if 0
     if (reportError8.instanceID != 0)
     {
+        LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
+#endif
     if (reportError9.instanceID != 0)
     {
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
