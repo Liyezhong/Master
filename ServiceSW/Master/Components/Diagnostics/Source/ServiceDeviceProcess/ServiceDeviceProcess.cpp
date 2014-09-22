@@ -396,7 +396,7 @@ int ServiceDeviceProcess::RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom
     return Ret;
 }
 
-int ServiceDeviceProcess::RetortGetCurrent(qreal *RetCurrentSide, qreal *RetCurrentBottom)
+int ServiceDeviceProcess::RetortGetCurrent(quint16 *RetCurrentSide, quint16 *RetCurrentBottom)
 {
     QString ReqName = "RetortGetCurrent";
     QStringList Params;
@@ -914,14 +914,13 @@ void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringL
 
     qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
 
-#if 0
+#if 1
     QEventLoop *loop = m_EventLoopMap.value(ReqName);
 
     if (loop && loop->isRunning()) {
         loop->exit(Error);
-        Pause(200);
-        delete loop;
         m_EventLoopMap.remove(ReqName);
+
     }
 #else
     if (m_EventLoop.isRunning()) {
@@ -940,11 +939,13 @@ int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
     timer.setInterval(interval);
     timer.start();
 
-#if 0
+#if 1
     QEventLoop *loop = new QEventLoop();
     m_EventLoopMap.insert(ReqName, loop);
     CONNECTSIGNALSLOT(&timer, timeout(), loop, quit());
     ret = loop->exec();
+    Pause(200);
+    delete loop;
 #else
     CONNECTSIGNALSLOT(&timer, timeout(), &m_EventLoop, quit());
     ret = m_EventLoop.exec();

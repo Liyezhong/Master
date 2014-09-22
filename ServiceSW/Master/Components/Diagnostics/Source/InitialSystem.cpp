@@ -291,7 +291,7 @@ void CInitialSystem::UpdateRetortStatus()
     mp_Ui->retortCurTempSLabel->setText(tr("Current Temperature(Side)(\260C):"));
     mp_Ui->retortCurTempB1Label->setText(tr("Current Temperature(Bottom1)(\260C):"));
     mp_Ui->retortCurTempB2Label->setText(tr("Current Temperature(Bottom2)(\260C):"));
-    mp_Ui->retortCurrentLabel->setText(tr("Retort Current:"));
+    mp_Ui->retortCurrentLabel->setText(tr("Retort Current(mA):"));
 
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest")->GetParameter("TargetTemp");
     qDebug()<<"get retort Target temp :"<<TargetTemp;
@@ -301,7 +301,7 @@ void CInitialSystem::UpdateRetortStatus()
     quint16 RetortCurrent(0);
 
     p_DevProc->RetortGetTemp(&CurrentTempS, &CurrentTempB1, &CurrentTempB2);
-    //p_DevProc->RetortGetCurrent()
+    p_DevProc->RetortGetCurrent(&RetortCurrent, NULL);
 
     mp_Ui->retortTargetTempValue->setText(TargetTemp);
     mp_Ui->retortCurTempSValue->setText(QString::number(CurrentTempS));

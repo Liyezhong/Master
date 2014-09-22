@@ -78,9 +78,6 @@ int CACVoltageTest::Run(void)
 
     qDebug()<<"RVSwitchType="<<RVSwitchType<<"  RetortSwitchType="<<RetortSwitchType;
 
-    // for test
-    RVSwitchType = 2;
-
     if (RetortSwitchType == 0) { // undefined
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;

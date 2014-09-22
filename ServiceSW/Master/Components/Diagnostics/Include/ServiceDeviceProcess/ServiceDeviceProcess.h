@@ -92,7 +92,7 @@ public:
     int RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom);
     int RetortStopHeating();
     int RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2);
-    int RetortGetCurrent(qreal *RetCurrentSide, qreal *RetCurrentBottom);
+    int RetortGetCurrent(quint16 *RetCurrentSide, quint16 *RetCurrentBottom);
     int RetortGetLidLockState(qint32 *RetLidLockState);
     int RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
     int RetortGetHeaterSwitchType(quint8 *RetSwitchType);
