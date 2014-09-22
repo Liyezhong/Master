@@ -733,7 +733,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             if (-1 == cassetteNumber)
                 return false;//clicked Cancel button
 
-            m_TotalCassette += cassetteNumber;
+            m_TotalCassette = cassetteNumber;
             mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
             delete pCassetteInput;
         }

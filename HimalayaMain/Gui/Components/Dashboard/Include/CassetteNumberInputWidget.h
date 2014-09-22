@@ -70,6 +70,7 @@ namespace Dashboard {
         QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
         QString m_strTotalCassette; ///<  Definition/Declaration of variable m_strTotalCassette
         QString m_strInputCassetteHint; ///<  Definition/Declaration of variable m_strInputCassetteHint
+        int m_CurrentTotalCassette;     ///< Total cassette number since program start
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function RetranslateUI

@@ -2007,8 +2007,8 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
 
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
 {
-
-    m_ProcessCassetteCount = Cmd.CassetteCount();
+    //m_ProcessCassetteCount = Cmd.CassetteCount();
+    m_ProcessCassetteCount += Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
 }
 

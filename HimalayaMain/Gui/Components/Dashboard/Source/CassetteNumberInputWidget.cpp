@@ -10,6 +10,7 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QWidget
     MainMenu::CDialogFrame(pParent, pMainWindow),
     ui(new Ui::CCassetteNumberInputWidget),
     m_CassetteNumber(0),
+    m_CurrentTotalCassette(0),
     m_strWarning(tr("Warning")),
     m_strOK(tr("OK"))
 
@@ -69,7 +70,7 @@ void CCassetteNumberInputWidget::OnOK()
     int hundred = mp_hundredWheel->GetCurrentData().toInt() * 100;
     int ten = mp_tenWheel->GetCurrentData().toInt() * 10;
     m_CassetteNumber = hundred + ten + mp_singleWheel->GetCurrentData().toInt();
-    if (m_CassetteNumber == 0 || m_CassetteNumber > 200)
+    if (m_CassetteNumber == 0 || m_CassetteNumber > 200 || m_CurrentTotalCassette > 200)
     {
           MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg();
           pMessageDlg->SetIcon(QMessageBox::Warning);
@@ -116,6 +117,7 @@ void CCassetteNumberInputWidget::SetCurrentCassette(int count)
     QString text = m_strTotalCassette;
     text += QString::number(count);
     ui->totalcassettelbl->setText(text);
+    m_CurrentTotalCassette = count;
 }
 
 void CCassetteNumberInputWidget::RetranslateUI()
