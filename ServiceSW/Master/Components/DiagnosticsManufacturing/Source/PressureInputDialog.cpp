@@ -172,7 +172,8 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(m_TestCaseId);
         DataManager::CTestCase *mp_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-        int OrigValue = mp_Ui->lineEdit->text().toInt();
+        qreal OrigValue = mp_Ui->lineEdit->text().toDouble();
+
         qreal PressureLow = mp_TestCase->GetParameter("PressureLow").toDouble();
         qreal PressureHigh = mp_TestCase->GetParameter("PressureHigh").toDouble();
         if (OrigValue < PressureLow || OrigValue > PressureHigh) {
