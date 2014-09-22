@@ -132,7 +132,7 @@ void CInitialSystem::StartCheck()
     mp_WaitDlg->show();
 
     while(1) {
-        if (ServiceDeviceProcess::Instance()) {
+        if (ServiceDeviceProcess::Instance()->IsInitialized()) {
             mp_WaitDlg->hide();
             break;
         }
@@ -247,15 +247,15 @@ void CInitialSystem::UpdateLHeatingStatus()
     mp_Ui->LTubeTempLabel->setText(tr("Liquid Heating Tube Current(mA):"));
 
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest")->GetParameter("PreHeatingTargetTemp");
-    quint16 CurrentTemp(0);
+    quint16 TubeCurrent(0);
     qreal TubeTemp(0);
 
-    p_DevProc->LiquidTubeGetCurrent(&CurrentTemp);
+    p_DevProc->LiquidTubeGetCurrent(&TubeCurrent);
     p_DevProc->LiquidTubeGetTemp(&TubeTemp);
 
     mp_Ui->LTargetTmpValue->setText(TargetTemp);
-    mp_Ui->LCurrentTempValue->setText(QString::number(CurrentTemp));
-    mp_Ui->LTubeTempValue->setText(QString::number(TubeTemp));
+    mp_Ui->LCurrentTempValue->setText(QString::number(TubeTemp));
+    mp_Ui->LTubeTempValue->setText(QString::number(TubeCurrent));
 }
 
 void CInitialSystem::UpdateRVHeatingStatus()

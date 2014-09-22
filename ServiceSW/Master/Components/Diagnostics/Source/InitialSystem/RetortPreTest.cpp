@@ -24,6 +24,10 @@
 
 #include <QDebug>
 
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+
+using namespace DeviceControl;
+
 namespace Diagnostics {
 
 namespace InitialSystem {
@@ -39,7 +43,7 @@ CRetortPreTest::~CRetortPreTest(void)
 
 int CRetortPreTest::Run(void)
 {
-    ErrorCode_t Ret(RETURN_OK);
+    int Ret(RETURN_OK);
 
     qreal RetortTempSide(0);
     qreal RetortTempBottom1(0);
@@ -65,32 +69,19 @@ int CRetortPreTest::Run(void)
     }
 
     qreal RetortTargetTemp    = p_TestCase->GetParameter("RetortTargetTemp").toFloat();
-    int WaitMSec = 3000;
 
     Ret = p_DevProc->RetortStartHeating(RetortTargetTemp, RetortTargetTemp);
-    ReportError_t ReportError;
-    while(WaitMSec>0) {
-        qint64 now = QDateTime::currentMSecsSinceEpoch();
 
-        Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0, &ReportError);
-        if (Ret == RETURN_OK) {
-            if (ReportError.instanceID!=0 && (now-ReportError.errorTime)<=3*1000) {
-                p_DevProc->RetortStopHeating();
-                ShowWaitingMessage(false);
-                ShowFailMessage(2);
-                return RETURN_ERR_FAIL;
-            }
-        }
-
-        WaitMSec -= 500;
-        p_DevProc->Pause(500);
-
-    }
+    Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
 
     p_DevProc->RetortStopHeating();
     ShowWaitingMessage(false);
 
-    return RETURN_OK;
+    if (Ret != RETURN_OK) {
+        ShowFailMessage(2);
+    }
+
+    return Ret;
 }
 
 void CRetortPreTest::StartPreHeating(qreal MeltPoint)

@@ -37,7 +37,7 @@
 #include "Core/Include/ServiceUtils.h"
 #include "SVCDiagnostics/Include/SVCDashboardWidget.h"
 
-#include "Diagnostics/Include/ServiceDeviceProcess/ServDevProc.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 //lint -e613
 
@@ -303,7 +303,7 @@ CStartup::CStartup() : QObject(),
 
 
     /* Service device process */
-    mp_ServDevProc = Diagnostics::ServDevProc::Instance();
+    mp_ServDevProc = Diagnostics::ServiceDeviceProcess::Instance();
 
     CONNECTSIGNALSIGNAL(mp_ServDevProc, SendServRequest(QString, QStringList), this, SendServRequest(QString, QStringList));
     if (!connect(this, SIGNAL(ReturnServiceRequestResult(QString, int, QStringList)),

@@ -23,7 +23,7 @@
 
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseFactory.h"
-#include "Diagnostics/Include/ServiceDeviceProcess/ServDevProc.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace Diagnostics {
 
@@ -79,12 +79,9 @@ int CASBTest::Run(void)
     QString VoltageResult("OK");
 
 
-#if 0
     ServiceDeviceProcess::Instance()->MainControlGetCurrent(SlaveType, &Current);
     ServiceDeviceProcess::Instance()->MainControlGetVoltage(SlaveType, &Voltage);
-#else
-    ServDevProc::Instance()->MainControlGetCurrent(SlaveType, &Current);
-#endif
+
 
     qreal VoltageV = Voltage/1000.0;
 

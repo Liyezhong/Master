@@ -23,6 +23,9 @@
 
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+
+using namespace DeviceControl;
 
 namespace Diagnostics {
 
@@ -39,7 +42,7 @@ CRVPreTest::~CRVPreTest(void)
 
 int CRVPreTest::Run(void)
 {
-    ErrorCode_t Ret(RETURN_OK);
+    int Ret(RETURN_OK);
 
     qreal RVTempSensor1(0);
     qreal RVTempSensor2(0);
@@ -48,7 +51,6 @@ int CRVPreTest::Run(void)
     qreal TargetTemp = p_TestCase->GetParameter("RVTargetTemp").toFloat();
     qreal DiffTemp = p_TestCase->GetParameter("RVDiffTemp").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    int WaitMSec = 3000;
 
     ShowWaitingMessage(true);
     qDebug()<<"RVGetTemp";
@@ -66,29 +68,16 @@ int CRVPreTest::Run(void)
 
     Ret = p_DevProc->RVStartHeating(TargetTemp);
 
-    ReportError_t ReportError;
-    while(WaitMSec>0) {
-        qint64 now = QDateTime::currentMSecsSinceEpoch();
-
-        Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV", 0, &ReportError);
-        if (Ret == RETURN_OK) {
-            if (ReportError.instanceID!=0 && (now-ReportError.errorTime)<=3*1000) {
-                p_DevProc->RVStopHeating();
-                ShowWaitingMessage(false);
-                ShowFailMessage(2);
-                return RETURN_ERR_FAIL;
-            }
-        }
-
-        WaitMSec -= 500;
-
-        p_DevProc->Pause(500);
-    }
+    Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV", 0);
 
     p_DevProc->RVStopHeating();
     ShowWaitingMessage(false);
 
-    return RETURN_OK;
+    if (Ret != RETURN_OK) {
+        ShowFailMessage(2);
+    }
+
+    return Ret;
 }
 
 void CRVPreTest::StartPreHeating()

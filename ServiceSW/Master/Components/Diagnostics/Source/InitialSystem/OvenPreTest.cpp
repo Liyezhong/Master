@@ -23,6 +23,9 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include <QDebug>
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+
+using namespace DeviceControl;
 
 namespace Diagnostics {
 
@@ -39,7 +42,7 @@ COvenPreTest::~COvenPreTest(void)
 
 int COvenPreTest::Run(void)
 {
-    ErrorCode_t Ret(RETURN_OK);
+    int Ret(RETURN_OK);
 
     qreal OvenTempTop(0);
     qreal OvenTempSensor1(0);
@@ -65,30 +68,17 @@ int COvenPreTest::Run(void)
 
     qreal TopTargetTemp    = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
     qreal BottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
-    int WaitMSec = 3000;
 
     Ret = p_DevProc->OvenStartHeating(TopTargetTemp, BottomTargetTemp);
-    ReportError_t ReportError;
-    while(WaitMSec>0) {
-        qint64 now = QDateTime::currentMSecsSinceEpoch();
 
-        Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", 0, &ReportError);
-        if (Ret == RETURN_OK) {
-            if (ReportError.instanceID!=0 && (now-ReportError.errorTime)<=3*1000) {
-                p_DevProc->OvenStopHeating();
-                ShowWaitingMessage(false);
-                ShowFailMessage(2);
-                return RETURN_ERR_FAIL;
-            }
-        }
-
-        WaitMSec -= 500;
-        p_DevProc->Pause(500);
-    }
-
+    Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", 0);
     p_DevProc->OvenStopHeating();
     ShowWaitingMessage(false);
-    return RETURN_OK;
+
+    if (Ret != RETURN_OK) {
+        ShowFailMessage(2);
+    }
+    return Ret;
 }
 
 void COvenPreTest::StartPreHeating(qreal MeltPoint)

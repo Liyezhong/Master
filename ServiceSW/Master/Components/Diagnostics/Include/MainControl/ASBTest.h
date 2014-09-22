@@ -18,12 +18,14 @@
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICS_OVEN_COVERSENSORTEST_H
-#define DIAGNOSTICS_OVEN_COVERSENSORTEST_H
+#ifndef DIAGNOSTICS_ASBTEST_H
+#define DIAGNOSTICS_ASBTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
+using namespace DeviceControl;
 namespace Diagnostics {
 
 namespace MainControl {
@@ -41,8 +43,8 @@ private:
     HimSlaveType_t            m_SlaveType;
 };
 
-} // namespace Oven
+} // namespace MainControl
 
 } // namespace Diagnostics
 
-#endif // DIAGNOSTICS_OVEN_COVERSENSORTEST_H
+#endif // DIAGNOSTICS_ASBTEST_H

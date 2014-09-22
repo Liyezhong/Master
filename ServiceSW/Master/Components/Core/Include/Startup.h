@@ -69,7 +69,7 @@
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include "DiagnosticsManufacturing/Include/SealingTestReportDialog.h"
 #include <QTimer>
-#include "Diagnostics/Include/ServiceDeviceProcess/ServDevProc.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 namespace SVCDiagnostics{
     class CSVCDashboardWidget;
@@ -197,7 +197,7 @@ private:
     DiagnosticsManufacturing::CHeatingTestDialog *mp_HeatingStatusDlg;
     DiagnosticsManufacturing::CSealingTestReportDialog* mp_SealingStatusDlg;
 
-    Diagnostics::ServDevProc* mp_ServDevProc;
+    Diagnostics::ServiceDeviceProcess* mp_ServDevProc;
 
 private slots:
     void SetDateTime(QDateTime DateTime);

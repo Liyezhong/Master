@@ -32,6 +32,7 @@
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ServiceDeviceController/Include/DeviceProcessor/ServiceTestHandler.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 //lint -e1013
 //lint -e115
@@ -81,6 +82,8 @@ void DeviceProcessor::Connect()
 void DeviceProcessor::InitialDevice()
 {
     OnModuleManufacturingTest(Service::SYSTEM_SELF_TEST);
+
+    Diagnostics::ServiceDeviceProcess::Instance()->Initialize();
 }
 
 /****************************************************************************/
@@ -887,7 +890,7 @@ void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestNa
 
 void DeviceProcessor::OnServiceRequest(QString ReqName, QStringList Params)
 {
-    if (mp_ServicecTestHandler && mp_ServicecTestHandler->IsInitialized() )
+    if (mp_ServicecTestHandler && !mp_ServicecTestHandler->IsInitialized() )
     {
         mp_ServicecTestHandler->Initialize();
     }

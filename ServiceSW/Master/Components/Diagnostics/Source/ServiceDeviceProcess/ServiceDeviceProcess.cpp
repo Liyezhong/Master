@@ -17,45 +17,26 @@
  *
  */
 /****************************************************************************/
-
+#include "Global/Include/Utils.h"
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
-#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
-#include <ServiceDeviceController/Include/ServiceDeviceController.h>
-#include "DeviceControl/Include/SlaveModules/DigitalOutput.h"
-#include "DeviceControl/Include/SlaveModules/BaseModule.h"
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmStepperMotor.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h>
-
-#include "Core/Include/CMessageString.h"
-#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "ServiceDataManager/Include/TestCaseFactory.h"
-#include "ServiceDataManager/Include/TestCase.h"
-#include "ServiceDataManager/Include/TestCaseGuide.h"
-#include "Global/Include/SystemPaths.h"
-#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+#include "Core/Include/ServiceUtils.h"
+#include <QTimer>
 
 namespace Diagnostics {
 
 #define RV_MOVE_OK      1
+#define RESPONSE_TIMEOUT        0
 
 ServiceDeviceProcess* ServiceDeviceProcess::mp_Instance = NULL;
 
-ServiceDeviceProcess* ServiceDeviceProcess::NewInstance(DeviceControl::IDeviceProcessing &iDevProc)
+ServiceDeviceProcess* ServiceDeviceProcess::Instance()
 {
     if (mp_Instance==NULL) {
-        mp_Instance = new ServiceDeviceProcess(iDevProc);
+        mp_Instance = new ServiceDeviceProcess();
     }
     return mp_Instance;
 }
 
-ServiceDeviceProcess* ServiceDeviceProcess::Instance()
-{
-    return mp_Instance;
-}
 
 void ServiceDeviceProcess::Destroy()
 {
@@ -66,839 +47,912 @@ void ServiceDeviceProcess::Destroy()
 }
 
 /****************************************************************************/
-ServiceDeviceProcess::ServiceDeviceProcess(DeviceControl::IDeviceProcessing &iDevProc)
-    : m_IsConfigured(false),
-      m_rIdevProc(iDevProc)
+ServiceDeviceProcess::ServiceDeviceProcess()
 {
-    mp_Utils = NULL;
-
-    mp_TempOvenTop = NULL;
-    mp_TempOvenBottom = NULL;
-    mp_DIOven = NULL;
-    mp_DOMainRelay = NULL;
-
-    mp_TempRetortSide = NULL;
-    mp_TempRetortBottom = NULL;
-    mp_DIRetortLid = NULL;
-
-    mp_TempTubeLiquid = NULL;
-    mp_TempTubeAir = NULL;
-    mp_MotorRV = NULL;
-    mp_PressPump = NULL;
-    mp_TempRV = NULL;
-
-    mp_DIRemoteAlarm = NULL;
-    mp_DILocalAlarm = NULL;
-
-    mp_DORemoteAlarm = NULL;
-    mp_DOLocalAlarm = NULL;
-
-    mp_BaseModule3 = NULL;
-    mp_BaseModule5 = NULL;
-    mp_BaseModule15 = NULL;
-
-    mp_TempLSensor = NULL;
-}
-
-/****************************************************************************/
-void ServiceDeviceProcess::CreateWrappers()
-{
-    // Temperature control
-    CTemperatureControl *pTemperature;
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenTopTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempOvenTop = new WrapperFmTempControl("temp_oven_top", pTemperature, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenBottomTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempOvenBottom = new WrapperFmTempControl("temp_oven_bottom", pTemperature, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortSideTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempRetortSide = new WrapperFmTempControl("temp_retort_side", pTemperature, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortBottomTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempRetortBottom = new WrapperFmTempControl("temp_retort_bottom", pTemperature, this);
-    }
-
-    CDigitalInput *pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenLidDIKey));
-    if ( NULL != pDigitalInput ) {
-        mp_DIOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
-    }
-
-    pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
-    if ( NULL != pDigitalInput ) {
-        mp_DIRetortLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
-    }
-
-    pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmDIKey));
-    if ( NULL != pDigitalInput ) {
-        mp_DIRemoteAlarm = new WrapperFmDigitalInput("remote_alarm_digital_input", pDigitalInput, this);
-    }
-
-    pDigitalInput = NULL;
-    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmDIKey));
-    if ( NULL != pDigitalInput ) {
-        mp_DILocalAlarm = new WrapperFmDigitalInput("local_alarm_digital_input", pDigitalInput, this);
-    }
-
-    CDigitalOutput *pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerMainRelayDOKey));
-    if ( NULL != pDigitalOutput ) {
-        mp_DOMainRelay = new WrapperFmDigitalOutput("heater_relay", pDigitalOutput, this);
-    }
-
-    pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
-    if ( NULL != pDigitalOutput ) {
-        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
-    }
-
-    pDigitalOutput = NULL;
-    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
-    if ( NULL != pDigitalOutput ) {
-        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube1TempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempTubeLiquid = new WrapperFmTempControl("temp_tube1", pTemperature, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube2TempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempTubeAir = new WrapperFmTempControl("temp_tube2", pTemperature, this);
-    }
-
-    CStepperMotor *pMotor = NULL;
-    pMotor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVMotorKey));
-    if (NULL != pMotor)
-    {
-        mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempRV = new WrapperFmTempControl("temp_rv", pTemperature, this);
-    }
-
-    pTemperature = NULL;
-    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALLevelSensorTempCtrlKey));
-    if (NULL != pTemperature)
-    {
-        mp_TempLSensor = new WrapperFmTempControl("temp_lsensor", pTemperature, this);
-
-    }
-
-    CPressureControl *pPressure = NULL;
-    pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
-    if (NULL != pPressure)
-    {
-        mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
-        connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
-    }
-
-    CBaseModule *pBaseModule = NULL;
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_3));
-    if (NULL != pBaseModule) {
-        mp_BaseModule3 = new WrapperFmBaseModule("asb3_0", pBaseModule, this);
-    }
-
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_5));
-    if (NULL != pBaseModule) {
-        mp_BaseModule5 = new WrapperFmBaseModule("asb5_0", pBaseModule, this);
-    }
-
-    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_15));
-    if (NULL != pBaseModule) {
-        mp_BaseModule15 = new WrapperFmBaseModule("asb15_0", pBaseModule, this);
-    }
-
+    m_IsInitialized = false;
 }
 
 /****************************************************************************/
 void ServiceDeviceProcess::Initialize()
 {
-    (void) CreateWrappers();
-    m_IsConfigured = true;
-
-    mp_Utils = new WrapperUtils(this);
+    m_IsInitialized = true;
+    m_EventLoopMap.clear();
+    m_ResultsMap.clear();
 }
+
 
 /****************************************************************************/
 bool ServiceDeviceProcess::IsInitialized()
 {
-    return m_IsConfigured;
+    return m_IsInitialized;
 }
 
-ErrorCode_t ServiceDeviceProcess::MainRelaySetOnOff(bool OnFlag)
+int ServiceDeviceProcess::MainRelaySetOnOff(bool OnFlag)
 {
-    if (mp_DOMainRelay == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "MainRelaySetOnOff";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(OnFlag));
 
-    bool Ret = true;
-    if (OnFlag) {
-        Ret = mp_DOMainRelay->SetHigh();
-    }
-    else {
-        Ret = mp_DOMainRelay->SetLow();
-    }
+    emit SendServRequest(ReqName, Params);
 
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::AlarmSetOnOff(int LocalRemote, bool OnFlag)
+int ServiceDeviceProcess::AlarmSetOnOff(int LocalRemote, bool OnFlag)
 {
-    bool Ret = true;
-    if (LocalRemote == 1) {  // Local Alarm
-        if (mp_DOLocalAlarm == NULL) {
-            return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "AlarmSetOnOff";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(LocalRemote));
+    Params.append(QString("%1").arg(OnFlag));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::AlarmGetState(int LocalRemote, qint32 *RetState)
+{
+    QString ReqName = "AlarmGetState";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(LocalRemote));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {  
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetState = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::MainControlGetCurrent(quint8 SlaveType, quint16 *RetCurrent)
+{
+    QString ReqName = "MainControlGetCurrent";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(SlaveType));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetCurrent = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::MainControlGetVoltage(quint8 SlaveType, quint16 *RetVoltage)
+{
+    QString ReqName = "MainControlGetVoltage";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(SlaveType));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetVoltage = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::OvenStartHeating(qreal TargetTempTop, qreal TargetTempBottom)
+{
+    QString ReqName = "OvenStartHeating";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TargetTempTop));
+    Params.append(QString("%1").arg(TargetTempBottom));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::OvenStopHeating()
+{
+    QString ReqName = "OvenStopHeating";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2)
+{
+    QString ReqName = "OvenGetTemp";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        if (RetTempTop) {
+            *RetTempTop = Results.at(0).toFloat();
         }
-        if (OnFlag) {
-            Ret = mp_DOLocalAlarm->SetLow();
+        if (RetTempBottom1) {
+            *RetTempBottom1 = Results.at(1).toFloat();
         }
-        else {
-            Ret = mp_DOLocalAlarm->SetHigh();
-        }
-    }
-    else if (LocalRemote == 2) { // Remote Alarm
-        if (mp_DORemoteAlarm == NULL) {
-            return RETURN_ERR_NULL_POINTER;
-        }
-        if (OnFlag) {
-            Ret = mp_DORemoteAlarm->SetLow();
-        }
-        else {
-            Ret = mp_DORemoteAlarm->SetHigh();
+        if (RetTempBottom2) {
+            *RetTempBottom2 = Results.at(2).toFloat();
         }
     }
-    else {
-        return RETURN_ERR_NULL_POINTER;
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom)
+{
+    QString ReqName = "OvenGetCurrent";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
-}
-ErrorCode_t ServiceDeviceProcess::AlarmGetState(int LocalRemote, qint32 *RetState)
-{
-    if (LocalRemote == 1) {  // Local Alarm
-        if (mp_DILocalAlarm == NULL || RetState == NULL) {
-            return RETURN_ERR_NULL_POINTER;
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        if (RetCurrentTop) {
+            *RetCurrentTop = Results.at(0).toInt();
         }
-        *RetState = mp_DILocalAlarm->GetValue();
-        return RETURN_OK;
-    }
-    else if (LocalRemote == 2) { // Remote Alarm
-        if (mp_DIRemoteAlarm == NULL || RetState == NULL) {
-            return RETURN_ERR_NULL_POINTER;
+        if (RetCurrentBottom) {
+            *RetCurrentBottom = Results.at(1).toInt();
         }
-        *RetState = mp_DIRemoteAlarm->GetValue();
-        return RETURN_OK;
     }
-    else {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
-ErrorCode_t ServiceDeviceProcess::MainControlGetCurrent(HimSlaveType_t SlaveType, quint16 *RetCurrent)
+
+int ServiceDeviceProcess::OvenGetCoverSensorState(qint32 *RetCoverSensorState)
 {
-    if (RetCurrent == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "OvenGetCoverSensorState";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    *RetCurrent = m_rIdevProc.IDGetSlaveCurrent(SlaveType);
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        *RetCoverSensorState = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::MainControlGetVoltage(HimSlaveType_t SlaveType, quint16 *RetVoltage)
+int ServiceDeviceProcess::OvenGetSwitchType(int *RetSwitchType)
 {
-    if (RetVoltage == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "OvenGetSwithType";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    *RetVoltage = m_rIdevProc.IDGetSlaveVoltage(SlaveType);
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        *RetSwitchType = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-
-ErrorCode_t ServiceDeviceProcess::OvenStartHeating(qreal TargetTempTop, qreal TargetTempBottom)
+int ServiceDeviceProcess::RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom)
 {
-    bool Ret(true);
+    QString ReqName = "RetortStartHeating";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TargetTempSide));
+    Params.append(QString("%1").arg(TargetTempBottom));
 
-    if (mp_TempOvenBottom == NULL || mp_TempOvenTop == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    emit SendServRequest(ReqName, Params);
 
+    int Ret = GetResponse(ReqName);
 
-    mp_TempOvenBottom->StopTemperatureControl();
-    mp_TempOvenTop->StopTemperatureControl();
-
-
-    if (TargetTempBottom > 0) {
-        Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
-    }
-    if (TargetTempTop > 0) {
-        Ret |= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
-    }
-
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        mp_TempOvenBottom->StopTemperatureControl();
-        mp_TempOvenTop->StopTemperatureControl();
-        return RETURN_ERR_FAIL;
-    }
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenStopHeating()
+int ServiceDeviceProcess::RetortStopHeating()
 {
-    bool Ret(true);
+    QString ReqName = "RetortStopHeating";
+    QStringList Params;
+    Params.clear();
 
-    if (mp_TempOvenBottom == NULL || mp_TempOvenTop == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    emit SendServRequest(ReqName, Params);
 
-    Ret = mp_TempOvenBottom->StopTemperatureControl();
-    Ret |= mp_TempOvenTop->StopTemperatureControl();
+    int Ret = GetResponse(ReqName);
 
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2)
+int ServiceDeviceProcess::RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2)
 {
-    if (mp_TempOvenBottom == NULL || mp_TempOvenTop == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "RetortGetTemp";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    if (RetTempTop) {
-        *RetTempTop = mp_TempOvenTop->GetTemperature();
-    }
-    if (RetTempBottom1) {
-        *RetTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
-    }
-    if (RetTempBottom2) {
-        *RetTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
-    }
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        if (RetTempSide) {
+            *RetTempSide = Results.at(0).toFloat();
+        }
+
+        if (RetTempBottom1) {
+            *RetTempBottom1 = Results.at(1).toFloat();
+        }
+
+        if (RetTempBottom2) {
+            *RetTempBottom2 = Results.at(2).toFloat();
+        }
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom)
+int ServiceDeviceProcess::RetortGetCurrent(qreal *RetCurrentSide, qreal *RetCurrentBottom)
 {
-    if (mp_TempOvenBottom == NULL || mp_TempOvenTop == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "RetortGetCurrent";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    if (RetCurrentTop) {
-        *RetCurrentTop = mp_TempOvenTop->GetCurrent();
-    }
-    if (RetCurrentBottom) {
-        *RetCurrentBottom = mp_TempOvenBottom->GetCurrent();
-    }
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        if (RetCurrentSide) {
+            *RetCurrentSide = Results.at(0).toInt();
+        }
+        if (RetCurrentBottom) {
+            *RetCurrentBottom = Results.at(1).toInt();
+        }
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenGetCoverSensorState(qint32 *RetCoverSensorState)
+int ServiceDeviceProcess::RetortGetLidLockState(qint32 *RetLidLockState)
 {
-    if (mp_DIOven == NULL || RetCoverSensorState == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "RetortGetLidLockState";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    *RetCoverSensorState = mp_DIOven->GetValue();
-    return RETURN_OK;
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetLidLockState = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::OvenGetSwithType(int *RetSwithType)
+int ServiceDeviceProcess::RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
 {
-    if (mp_DIOven == NULL || RetSwithType == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "RetortSetTemperatureSwitchState";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(SwitchState));
+    Params.append(QString("%1").arg(AutoSwitch));
 
-    *RetSwithType = mp_TempOvenBottom->GetHeaterSwitchType();
-    return RETURN_OK;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-
-ErrorCode_t ServiceDeviceProcess::RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom)
+int ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
 {
-    bool Ret(true);
-    if (mp_TempRetortBottom == NULL || mp_TempRetortSide == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "RetortGetHeaterSwitchType";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    mp_TempRetortBottom->StopTemperatureControl();
-    mp_TempRetortSide->StopTemperatureControl();
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    Ret = mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom);
-    Ret |= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
+    if (Results.size()>0) {
+        *RetSwitchType = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
 
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        mp_TempRetortBottom->StopTemperatureControl();
-        mp_TempRetortSide->StopTemperatureControl();
-        return RETURN_ERR_FAIL;
-    }
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortStopHeating()
+
+int ServiceDeviceProcess::LiquidTubeStartHeating(qreal TargetTemp)
 {
-    bool Ret(true);
-    if (mp_TempRetortBottom == NULL || mp_TempRetortSide == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-    Ret = mp_TempRetortBottom->StopTemperatureControl();
-    Ret |= mp_TempRetortSide->StopTemperatureControl();
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    QString ReqName = "LiquidTubeStartHeating";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TargetTemp));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2)
+int ServiceDeviceProcess::LiquidTubeStopHeating()
 {
-    if (mp_TempRetortBottom == NULL || mp_TempRetortSide == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "LiquidTubeStopHeating";
+    QStringList Params;
+    Params.clear();
 
-    if (RetTempSide) {
-        *RetTempSide = mp_TempRetortSide->GetTemperature();
-    }
-    if (RetTempBottom1) {
-        *RetTempBottom1 = mp_TempRetortBottom->GetTemperature(0);
-    }
-    if (RetTempBottom2) {
-        *RetTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
-    }
+    emit SendServRequest(ReqName, Params);
 
-    return RETURN_OK;
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortGetCurrent(qreal *RetCurrentSide, qreal *RetCurrentBottom)
+int ServiceDeviceProcess::LiquidTubeGetTemp(qreal *RetTemp)
 {
-    if (mp_TempRetortBottom == NULL || mp_TempRetortSide == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "LiquidTubeGetTemp";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    if (RetCurrentSide) {
-        *RetCurrentSide = mp_TempRetortSide->GetCurrent();
-    }
-    if (RetCurrentBottom) {
-        *RetCurrentBottom = mp_TempRetortBottom->GetCurrent();
-    }
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        *RetTemp = Results.at(0).toFloat();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortGetLidLockState(qint32 *RetLidLockState)
+int ServiceDeviceProcess::LiquidTubeGetCurrent(quint16 *RetCurrent)
 {
-    if (mp_DIRetortLid == NULL || RetLidLockState == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "LiquidTubeGetCurrent";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    *RetLidLockState = mp_DIRetortLid->GetValue();
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    return RETURN_OK;
+    if (Results.size()>0) {
+        *RetCurrent = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
+
+int ServiceDeviceProcess::AirTubeStartHeating(qreal TargetTemp)
 {
-    if (mp_TempRetortBottom == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "AirTubeStartHeating";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TargetTemp));
 
-    bool Flag;
-    Flag = mp_TempRetortBottom->SetTemperatureSwitchState(SwitchState, AutoSwitch);
+    emit SendServRequest(ReqName, Params);
 
-    if (Flag) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
+int ServiceDeviceProcess::AirTubeStopHeating()
 {
-    if (mp_TempRetortBottom == NULL || RetSwitchType == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "AirTubeStopHeating";
+    QStringList Params;
+    Params.clear();
 
-    *RetSwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+    emit SendServRequest(ReqName, Params);
 
-    return RETURN_OK;
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-
-ErrorCode_t ServiceDeviceProcess::LiquidTubeStartHeating(qreal TargetTemp)
+int ServiceDeviceProcess::AirTubeGetTemp(qreal *RetTemp)
 {
-    bool Ret(true);
-    if (mp_TempTubeLiquid == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "AirTubeGetTemp";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    mp_TempTubeLiquid->StopTemperatureControl();
-    Ret = mp_TempTubeLiquid->StartTemperatureControl(TargetTemp);
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    if (Ret) {
-        return RETURN_OK;
+    if (Results.size()>0) {
+        *RetTemp = Results.at(0).toFloat();
     }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::LiquidTubeStopHeating()
+int ServiceDeviceProcess::AirTubeGetCurrent(quint16 *RetCurrent)
 {
-    bool Ret(true);
+    QString ReqName = "AirTubeGetCurrent";
+    QStringList Params;
+    Params.clear();
 
-    if (mp_TempTubeLiquid == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    Ret = mp_TempTubeLiquid->StopTemperatureControl();
-    if (Ret) {
-        return RETURN_OK;
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetCurrent = Results.at(0).toInt();
     }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::LiquidTubeGetTemp(qreal *RetTemp)
+
+int ServiceDeviceProcess::RVStartHeating(qreal TargetTemp)
 {
-    if (mp_TempTubeLiquid == NULL || RetTemp == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "RVStartHeating";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TargetTemp));
 
-    *RetTemp = mp_TempTubeLiquid->GetTemperature();
-    return RETURN_OK;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::LiquidTubeGetCurrent(quint16 *RetCurrent)
+int ServiceDeviceProcess::RVStopHeating()
 {
-    if (mp_TempTubeLiquid == NULL || RetCurrent == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "RVStopHeating";
+    QStringList Params;
+    Params.clear();
 
-    *RetCurrent = mp_TempTubeLiquid->GetCurrent();
-    return RETURN_OK;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-
-ErrorCode_t ServiceDeviceProcess::AirTubeStartHeating(qreal TargetTemp)
+int ServiceDeviceProcess::RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2)
 {
-    bool Ret(true);
-    if (mp_TempTubeAir == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    QString ReqName = "RVGetTemp";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    mp_TempTubeAir->StopTemperatureControl();
-    Ret = mp_TempTubeAir->StartTemperatureControl(TargetTemp);
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    if (Ret) {
-        return RETURN_OK;
+    if (Results.size()>0) {
+        if (RetTempSensor1) {
+            *RetTempSensor1 = Results.at(0).toFloat();
+        }
+        if (RetTempSensor2) {
+            *RetTempSensor2 = Results.at(0).toFloat();
+        }
     }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::AirTubeStopHeating()
+int ServiceDeviceProcess::RVGetCurrent(quint16 *RetCurrent)
 {
-    bool Ret(true);
+    QString ReqName = "RVGetCurrent";
+    QStringList Params;
+    Params.clear();
 
-    if (mp_TempTubeAir == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    Ret = mp_TempTubeAir->StopTemperatureControl();
-    if (Ret) {
-        return RETURN_OK;
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetCurrent = Results.at(0).toInt();
     }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::AirTubeGetTemp(qreal *RetTemp)
+int ServiceDeviceProcess::RVInitialize()
 {
-    if (mp_TempTubeAir == NULL || RetTemp == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "RVInitialize";
+    QStringList Params;
+    Params.clear();
 
-    *RetTemp = mp_TempTubeAir->GetTemperature();
-    return RETURN_OK;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::AirTubeGetCurrent(quint16 *RetCurrent)
+int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
 {
-    if (mp_TempTubeAir == NULL || RetCurrent == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    QString ReqName = "RVMovePosition";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(TubeFlag));
+    Params.append(QString("%1").arg(Position));
 
-    *RetCurrent = mp_TempTubeAir->GetCurrent();
-    return RETURN_OK;
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-
-ErrorCode_t ServiceDeviceProcess::RVStartHeating(qreal TargetTemp)
+int ServiceDeviceProcess::RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
 {
-    bool Ret(true);
+    QString ReqName = "RVSetTemperatureSwitchState";
+    QStringList Params;
+    Params.clear();
+    Params.append(QString("%1").arg(SwitchState));
+    Params.append(QString("%1").arg(AutoSwitch));
 
-    if (mp_TempRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
+    emit SendServRequest(ReqName, Params);
 
-    mp_TempRV->StopTemperatureControl();
-    Ret = mp_TempRV->StartTemperatureControl(TargetTemp);
+    int Ret = GetResponse(ReqName);
 
-    if (Ret) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    qDebug()<<"Ret = "<<Ret;
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RVStopHeating()
+int ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
 {
-    bool Ret(true);
+    QString ReqName = "RVGetHeaterSwitchType";
+    QStringList Params;
+    Params.clear();
 
-    if (mp_TempRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    qDebug()<<"Ret = "<<Ret;
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
     }
 
-    Ret = mp_TempRV->StopTemperatureControl();
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
 
-    if (Ret) {
-        return RETURN_OK;
+    if (Results.size()>0) {
+        *RetSwitchType = Results.at(0).toInt();
     }
-    else {
-        return RETURN_ERR_FAIL;
-    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-ErrorCode_t ServiceDeviceProcess::RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2)
-{
-    if (mp_TempRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    if (RetTempSensor1) {
-        *RetTempSensor1 = mp_TempRV->GetTemperature(0);
-    }
-
-    if (RetTempSensor2) {
-        *RetTempSensor2 = mp_TempRV->GetTemperature(1);
-    }
-
-    return RETURN_OK;
-}
-
-ErrorCode_t ServiceDeviceProcess::RVGetCurrent(quint16 *RetCurrent)
-{
-    if (mp_TempRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    if (RetCurrent) {
-        *RetCurrent = mp_TempRV->GetCurrent();
-    }
-
-    return RETURN_OK;
-}
-
-ErrorCode_t ServiceDeviceProcess::RVInitialize()
-{
-    int Ret(0);
-    if (mp_MotorRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    Ret = mp_MotorRV->MoveToInitialPosition();
-
-    if (Ret == RV_MOVE_OK) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
-}
-
-ErrorCode_t ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
-{
-    int Ret(0);
-    if (mp_MotorRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    if (TubeFlag) {
-        Ret = mp_MotorRV->MoveToTubePosition(Position);
-    }
-    else {
-        Ret = mp_MotorRV->MoveToSealPosition(Position);
-    }
-
-    if (Ret == RV_MOVE_OK) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
-}
-
-ErrorCode_t ServiceDeviceProcess::RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
-{
-    if (mp_TempRV == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    bool Flag;
-    Flag = mp_TempRV->SetTemperatureSwitchState(SwitchState, AutoSwitch);
-
-    if (Flag) {
-        return RETURN_OK;
-    }
-    else {
-        return RETURN_ERR_FAIL;
-    }
-}
-
-ErrorCode_t ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
-{
-    if (mp_TempRV == NULL || RetSwitchType == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
-
-    *RetSwitchType = mp_TempRV->GetHeaterSwitchType();
-
-    return RETURN_OK;
-}
-
-ErrorCode_t ServiceDeviceProcess::LSStartHeating(bool QuickFlag, bool WaterFlag)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::LSStopHeating()
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::LSGetTemp(qreal *RetTemp)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::LSGetCurrent(qreal *RetCurrent)
-{
-
-}
-
-
-ErrorCode_t ServiceDeviceProcess::PumpBuildPressure(float TargetPressure)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpReleasePressure()
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpGetPressure(float *RetPressure)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpSetFan(bool OnFlag)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpStopCompressor()
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpSucking(int DelayTime)
-{
-
-}
-
-ErrorCode_t ServiceDeviceProcess::PumpDraining()
+int ServiceDeviceProcess::LSStartHeating(bool QuickFlag, bool WaterFlag)
 {
 
 }
 
-ErrorCode_t ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName, ReportError_t* RetReportError)
+int ServiceDeviceProcess::LSStopHeating()
 {
-    if (RetReportError == NULL) {
-        return RETURN_ERR_NULL_POINTER;
-    }
 
-    qDebug()<<"ErrorCode="<<ErrorCode<<"  DevName="<<DevName<<"  SensorName="<<SensorName;
+}
 
-    ReportError_t ReportErr = m_rIdevProc.GetSlaveModuleReportError(ErrorCode, DevName, SensorName);
+int ServiceDeviceProcess::LSGetTemp(qreal *RetTemp)
+{
 
-    memcpy((ReportError_t*) RetReportError, (ReportError_t*) &ReportErr, sizeof(ReportError_t));
+}
 
-    return RETURN_OK;
+int ServiceDeviceProcess::LSGetCurrent(qreal *RetCurrent)
+{
+
+}
+
+
+int ServiceDeviceProcess::PumpBuildPressure(float TargetPressure)
+{
+
+}
+
+int ServiceDeviceProcess::PumpReleasePressure()
+{
+
+}
+
+int ServiceDeviceProcess::PumpGetPressure(float *RetPressure)
+{
+
+}
+
+int ServiceDeviceProcess::PumpSetFan(bool OnFlag)
+{
+
+}
+
+int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
+{
+
+}
+
+int ServiceDeviceProcess::PumpStopCompressor()
+{
+
+}
+
+int ServiceDeviceProcess::PumpSucking(int DelayTime)
+{
+
+}
+
+int ServiceDeviceProcess::PumpDraining()
+{
+
+}
+
+int ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName)
+{
+    QString ReqName = "GetSlaveModuleReportError";
+    QStringList Params;
+    Params.clear();
+
+    Params.append(QString("%1").arg(ErrorCode));
+    Params.append(QString("%1").arg(DevName));
+    Params.append(QString("%1").arg(SensorName));
+
+    qint64 now1 = QDateTime::currentMSecsSinceEpoch();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName, 20);
+
+    qint64 now2 = QDateTime::currentMSecsSinceEpoch();
+
+    qDebug()<<"ServiceDeviceProcess::GetSlaveModuleReportError delay="<<(now2-now1)<<"   Ret="<<Ret;
+
+    return Ret;
 }
 
 void ServiceDeviceProcess::Pause(quint32 MilliSeconds)
 {
-    mp_Utils->Pause(MilliSeconds);
+    Core::CServiceUtils::delay(MilliSeconds);
 }
 
+void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringList Results)
+{
+    if (Results.size()>0) {
+        m_ResultsMap.insert(ReqName, Results);
+    }
+
+    qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
+
+#if 0
+    QEventLoop *loop = m_EventLoopMap.value(ReqName);
+
+    if (loop && loop->isRunning()) {
+        loop->exit(Error);
+        Pause(200);
+        delete loop;
+        m_EventLoopMap.remove(ReqName);
+    }
+#else
+    if (m_EventLoop.isRunning()) {
+        m_EventLoop.exit(Error);
+    }
+#endif
+
+}
+
+int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
+{
+    QTimer timer;
+    qint32 ret;
+    quint32 interval = 1000 * TimeoutSeconds; // 10 sec.
+    timer.setSingleShot(true);
+    timer.setInterval(interval);
+    timer.start();
+
+#if 0
+    QEventLoop *loop = new QEventLoop();
+    m_EventLoopMap.insert(ReqName, loop);
+    CONNECTSIGNALSLOT(&timer, timeout(), loop, quit());
+    ret = loop->exec();
+#else
+    CONNECTSIGNALSLOT(&timer, timeout(), &m_EventLoop, quit());
+    ret = m_EventLoop.exec();
+
+    qDebug()<<"ServiceDeviceProcess::GetResponse -- ret = "<<ret;
+#endif
+
+    return ret;
+}
 
 } // end namespace Diagnostics
