@@ -31,7 +31,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/ServiceTestHandler.h"
 
 //lint -e1013
 //lint -e115
@@ -49,6 +49,7 @@ DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
     , m_DeviceLightInit(false)
     , mp_PressPump(NULL)
     , mp_ManufacturingTestHandler(NULL)
+    , mp_ServicecTestHandler(NULL)
 {
 #if 0
     qRegisterMetaType<Global::LiquidLevelState>("Global::LiquidLevelState");
@@ -205,6 +206,18 @@ void DeviceProcessor::CreateWrappers()
         qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshTestStatustoMain' signal";
     }
 
+    // create service test handler
+    if (NULL != mp_ServicecTestHandler) {
+        delete mp_ServicecTestHandler;
+        mp_ServicecTestHandler = NULL;
+    }
+    mp_ServicecTestHandler = ServiceTestHandler::NewInstance(m_rIdevProc);
+
+    // return messages signals connected here
+    if (!connect(mp_ServicecTestHandler, SIGNAL(ReturnServiceRequestResult(QString,int,QStringList)),
+                this, SIGNAL(ReturnServiceRequestResult(QString,int,QStringList)))) {
+        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'ReturnServiceRequestResult' signal";
+    }
 }
 
 /****************************************************************************/
@@ -870,7 +883,18 @@ void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestNa
         mp_ManufacturingTestHandler->PerformModuleManufacturingTest(TestName, AbortId);
     }
 
-    Diagnostics::ServiceDeviceProcess::NewInstance(m_rIdevProc)->Initialize();
+}
+
+void DeviceProcessor::OnServiceRequest(QString ReqName, QStringList Params)
+{
+    if (mp_ServicecTestHandler && mp_ServicecTestHandler->IsInitialized() )
+    {
+        mp_ServicecTestHandler->Initialize();
+    }
+
+    if (mp_ServicecTestHandler) {
+        mp_ServicecTestHandler->HandleRequest(ReqName, Params);
+    }
 }
 
 } // end namespace DeviceControl

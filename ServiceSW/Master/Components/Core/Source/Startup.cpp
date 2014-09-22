@@ -37,6 +37,8 @@
 #include "Core/Include/ServiceUtils.h"
 #include "SVCDiagnostics/Include/SVCDashboardWidget.h"
 
+#include "Diagnostics/Include/ServiceDeviceProcess/ServDevProc.h"
+
 //lint -e613
 
 namespace Core {
@@ -299,6 +301,15 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSIGNAL(mp_Setting, PerformNetworkTests(), this, PerformNetworkTests());
     CONNECTSIGNALSIGNAL(mp_Setting, DownloadFirmware(), this, DownloadFirmware());
 
+
+    /* Service device process */
+    mp_ServDevProc = Diagnostics::ServDevProc::Instance();
+
+    CONNECTSIGNALSIGNAL(mp_ServDevProc, SendServRequest(QString, QStringList), this, SendServRequest(QString, QStringList));
+    if (!connect(this, SIGNAL(ReturnServiceRequestResult(QString, int, QStringList)),
+                 mp_ServDevProc, SLOT(HandleServResult(QString,int,QStringList)))){
+        qDebug() << "CStartup: cannot connect 'ReturnServiceRequestResult' signal";
+    }
 
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
@@ -1889,6 +1900,14 @@ void CStartup::SendFilesToMaster(QStringList FileList)
 {
     //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_FILE_SELECTION_IMPORT);
     emit SendSignalToMaster(FileList);
+}
+
+void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results)
+{
+    qDebug()<<"CStartup::OnReturnServiceRequestResult Req="<<ReqName;
+    qDebug()<<Results;
+
+    mp_ServDevProc->HandleServResult(ReqName, ErrorCode, Results);
 }
 
 } // end namespace Core

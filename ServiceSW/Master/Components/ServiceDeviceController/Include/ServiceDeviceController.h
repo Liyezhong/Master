@@ -43,6 +43,7 @@
 #include <ServiceDeviceController/Include/Commands/CmdRotaryValveTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdLSensorDetectingTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdModuleManufacturingTest.h>
+#include <ServiceDeviceController/Include/Commands/CmdServiceTest.h>
 
 #include <ServiceDeviceController/Include/DeviceProcessor/DeviceProcessor.h>
 
@@ -181,6 +182,8 @@ public:
     /****************************************************************************/
     void OnCmdModuleManufacturingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdModuleManufacturingTest &Cmd);
 
+    void OnCmdServiceRequest(Global::tRefType Ref, const DeviceCommandProcessor::CmdServiceTest &Cmd);
+
 public slots:
     /**
      * \brief Returns a message to Main Thread Controller.
@@ -225,6 +228,9 @@ public slots:
      */
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
+
+
+    void OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 #if 0
     /****************************************************************************/
@@ -289,6 +295,8 @@ signals:
      */
     /****************************************************************************/
     void ModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
+
+    void ServiceRequest(QString ReqName, QStringList Params);
 
 protected:
     /**

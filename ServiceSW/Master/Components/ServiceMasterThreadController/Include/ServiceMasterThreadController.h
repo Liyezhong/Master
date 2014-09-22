@@ -468,6 +468,8 @@ signals:
       /****************************************************************************/
       void SetInformationToNetworkSettings(QString Text, QString Color);
 
+      void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
+
 private slots:
     /****************************************************************************/
     /**
@@ -621,6 +623,7 @@ private slots:
     /****************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);
 
+    void sendServiceTestRequest(QString ReqName, QStringList Params);
 protected:
 
     /****************************************************************************/

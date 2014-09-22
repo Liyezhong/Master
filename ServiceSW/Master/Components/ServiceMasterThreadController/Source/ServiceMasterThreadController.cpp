@@ -191,11 +191,23 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'PerformManufacturingTest' signal";
     }
 
-    // Refresh heating status to GUI
-    if (!connect(this, SIGNAL(RefreshTestStatustoMain(QString, Service::ModuleTestStatus)),
-                 mp_GUIStartup, SLOT(RefreshTestStatus(QString, Service::ModuleTestStatus)))) {
-        qDebug() << "CStartup: cannot connect 'RefreshTestStatustoMain' signal";
+    if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
+                 mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
+        qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
     }
+    //
+
+    // Service Tests
+    if (!connect(mp_GUIStartup, SIGNAL(SendServRequest(QString,QStringList)),
+                 this, SLOT(sendServiceTestRequest(QString,QStringList)))) {
+        qDebug() << "CStartup: cannot connect 'SendServRequest' signal";
+    }
+
+    if (!connect(this, SIGNAL(ReturnServiceRequestResult(QString, int, QStringList)),
+                 mp_GUIStartup, SLOT(OnReturnServiceRequestResult(QString,int,QStringList)))) {
+        qDebug() << "CStartup: cannot connect 'ReturnServiceRequestResult' signal";
+    }
+    //
 
     if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
                  mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
@@ -1326,7 +1338,7 @@ void ServiceMasterThreadController::OnGetDataContainersCommand(Global::tRefType 
 /****************************************************************************/
 void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
-//    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
+    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
 
     SendAcknowledgeOK(Ref, AckCommandChannel);
     switch(Cmd.m_MessageType)
@@ -1351,6 +1363,9 @@ void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref,
         break;
     case Service::GUIMSGTYPE_MANUFMSGMODE:
         emit ReturnManufacturingMsgtoMain(Cmd.m_ModuleTestResult);
+        break;
+    case Service::GUIMSGTYPE_SERVICE_REQ_RESULT:
+        emit ReturnServiceRequestResult(Cmd.m_ServReqName, Cmd.m_ServErrorCode, Cmd.m_ServResults);
         break;
     default:
         emit returnMessageToGUI(Cmd.m_ReturnMessage);
@@ -1445,6 +1460,12 @@ void ServiceMasterThreadController::sendManufacturingTestCommand(Service::Module
     qDebug()<<"ServiceMasterThreadController::sendManufacturingTestCommand -- modulename="<<Test;
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdModuleManufacturingTest(Test, AbortTestCaseId)), m_CommandChannelDeviceThread);
 
+}
+
+void ServiceMasterThreadController::sendServiceTestRequest(QString ReqName, QStringList Params)
+{
+    qDebug()<<"ServiceMasterThreadController::sendServiceTestRequest -- ReqName="<<ReqName;
+    (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdServiceTest(ReqName, Params)), m_CommandChannelDeviceThread);
 }
 
 void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)

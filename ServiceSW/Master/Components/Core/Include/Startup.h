@@ -69,6 +69,7 @@
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include "DiagnosticsManufacturing/Include/SealingTestReportDialog.h"
 #include <QTimer>
+#include "Diagnostics/Include/ServiceDeviceProcess/ServDevProc.h"
 
 namespace SVCDiagnostics{
     class CSVCDashboardWidget;
@@ -196,6 +197,8 @@ private:
     DiagnosticsManufacturing::CHeatingTestDialog *mp_HeatingStatusDlg;
     DiagnosticsManufacturing::CSealingTestReportDialog* mp_SealingStatusDlg;
 
+    Diagnostics::ServDevProc* mp_ServDevProc;
+
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
@@ -275,6 +278,8 @@ public slots:
     void ImportExportCompleted(int ExitCode, bool IsImport);
     void SendFileSelectionToGUI(QStringList FileList);
     void SendFilesToMaster(QStringList FileList);
+
+    void OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 signals:
     /****************************************************************************/
@@ -492,6 +497,10 @@ signals:
      */
     /*******************************************************************************/
     void DownloadFirmware();
+
+    void SendServRequest(QString ReqName, QStringList Params);
+
+    void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Result);
 };
 
 } // end namespace Core

@@ -178,6 +178,17 @@ void ServiceDeviceController::ConnectSignalsnSlots()
                  this, SLOT(ReturnManufacturingTestMsg(bool)))) {
         qDebug() << "ServiceDeviceController::ReturnManufacturingTestMsg cannot connect 'ReturnManufacturingTestMsg' signal";
     }
+
+    // for service request
+    if (!connect(this, SIGNAL(ServiceRequest(QString,QStringList)),
+                 mp_DeviceProcessor, SLOT(OnServiceRequest(QString,QStringList)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ServiceRequest' signal";
+    }
+
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnServiceRequestResult(QString,int,QStringList)),
+                 this, SLOT(OnReturnServiceRequestResult(QString,int,QStringList)))) {
+        qDebug() << "ServiceDeviceController::ReturnManufacturingTestMsg cannot connect 'ReturnServiceRequestResult' signal";
+    }
 }
 
 /****************************************************************************/
@@ -211,6 +222,9 @@ void ServiceDeviceController::RegisterCommands(){
 
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdModuleManufacturingTest, ServiceDeviceController>
             (&ServiceDeviceController::OnCmdModuleManufacturingTest, this);
+
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdServiceTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnCmdServiceRequest, this);
 }
 
 /****************************************************************************/
@@ -379,7 +393,20 @@ void ServiceDeviceController::ReturnManufacturingTestMsg(bool TestResult)
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
 }
 
+void ServiceDeviceController::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results)
+{
+    qDebug()<<"ServiceDeviceController::OnReturnServiceRequestResult TestResult="<<ErrorCode;
+    qDebug()<<"ReqName="<<ReqName;
+    qDebug()<<Results;
 
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage("Service Request Result"));
+    commandPtr->m_ServErrorCode = ErrorCode;
+    commandPtr->m_ServReqName = ReqName;
+    commandPtr->m_ServResults = Results;
+    commandPtr->m_MessageType = Service::GUIMSGTYPE_SERVICE_REQ_RESULT;
+
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
 
 #if 0
 
@@ -470,6 +497,15 @@ void ServiceDeviceController::OnCmdModuleManufacturingTest(Global::tRefType Ref,
     qDebug()<<"ServiceDeviceController::OnCmdModuleManufacturingTest CmdType="<<Cmd.m_CommandType;
 
     emit ModuleManufacturingTest(Cmd.m_CommandType, Cmd.m_AbortTestCaseId);
+}
+
+void ServiceDeviceController::OnCmdServiceRequest(Global::tRefType Ref, const DeviceCommandProcessor::CmdServiceTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+
+    qDebug()<<"ServiceDeviceController::OnCmdServiceRequest ReqName="<<Cmd.m_ReqName;
+
+    emit ServiceRequest(Cmd.m_ReqName, Cmd.m_Params);
 }
 
 } //End Of namespace DeviceControl

@@ -79,6 +79,10 @@ public:
     Service::ModuleTestStatus m_Status;
     bool m_ModuleTestResult;
 
+    QString m_ServReqName;                ///< Service Request Name
+    QStringList m_ServResults;                ///< Service Request results
+    int     m_ServErrorCode;                ///< Service Request error code
+
     /****************************************************************************/
     /**
      * \brief Constructor.

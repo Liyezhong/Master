@@ -174,6 +174,9 @@ signals:
      */
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
+
+    void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
+
 private:
     /****************************************************************************/
     /**

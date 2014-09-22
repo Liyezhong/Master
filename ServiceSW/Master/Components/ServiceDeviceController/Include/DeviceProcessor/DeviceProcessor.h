@@ -26,6 +26,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
 #include "ServiceDeviceController/Include/DeviceProcessor/ManufacturingTestHandler.h"
+#include "ServiceDeviceController/Include/DeviceProcessor/ServiceTestHandler.h"
 
 class WrapperUtils;
 class WrapperFmTempControl;
@@ -154,6 +155,7 @@ public slots:
     /****************************************************************************/
     void OnModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
+    void OnServiceRequest(QString ReqName, QStringList Params);
 
 signals:
 
@@ -201,6 +203,9 @@ signals:
      */
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
+
+    void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
+
 private:
 
     /****************************************************************************/
@@ -280,6 +285,8 @@ private:
     // Pressure control module
     WrapperFmPressureControl*   mp_PressPump;
     ManufacturingTestHandler*   mp_ManufacturingTestHandler; //!< Manufacturing Test Handler helper class
+
+    ServiceTestHandler*         mp_ServicecTestHandler;
 };
 
 } // end namespace DeviceCommandProcessor

@@ -70,7 +70,8 @@ enum GUIReturnMessageType {
     GUIMSGTYPE_BOTTLEINFO,      ///< Bottle Info Message.
     GUIMSGTYPE_INITCALIBRATION,  ///< Init for Calibration Message.
     GUIMSGTYPE_HEATINGSTATUS,  ///< Refresh Heating Status Message.
-    GUIMSGTYPE_MANUFMSGMODE     ///< Manufacturing report Message.
+    GUIMSGTYPE_MANUFMSGMODE,     ///< Manufacturing report Message.
+    GUIMSGTYPE_SERVICE_REQ_RESULT ///< Service request result Message.
 };
 
 /****************************************************************************/
