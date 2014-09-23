@@ -65,7 +65,7 @@ int CInitialSystemCheck::Run(void)
     delete MainsRelayTest;
 
     if (Ret != RETURN_OK) {
-        //return Ret;
+        return Ret;
     }
     ServiceDeviceProcess::Instance()->Pause(1000);
 
@@ -80,7 +80,7 @@ int CInitialSystemCheck::Run(void)
     delete ACVoltageTest;
 
     if (Ret != RETURN_OK) {
-        //return Ret;
+        return Ret;
     }
     ServiceDeviceProcess::Instance()->Pause(1000);
 
