@@ -44,7 +44,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    COvenPreTest(QWidget *parent=NULL);
+    COvenPreTest(QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!

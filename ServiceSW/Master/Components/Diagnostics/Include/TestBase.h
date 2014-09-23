@@ -86,7 +86,7 @@ protected:
     /****************************************************************************/
     void HideWaitingDialog();
 
-private:
+protected:
     QWidget        *mp_Parent;              //!< Parent widget
     MainMenu::CMessageDlg *mp_WaitDlg;      //!< Wait dialog
 };

@@ -29,8 +29,8 @@ namespace Diagnostics {
 
 namespace MainControl {
 
-CASBTest::CASBTest(HimSlaveType_t SlaveType, QWidget *parent)
-    : CTestBase(parent),
+CASBTest::CASBTest(HimSlaveType_t SlaveType, QWidget *p_Parent)
+    : CTestBase(p_Parent),
     m_SlaveType(SlaveType)
 {
 }
@@ -79,8 +79,8 @@ int CASBTest::Run(void)
     QString VoltageResult("OK");
 
 
-    ServiceDeviceProcess::Instance()->MainControlGetCurrent(SlaveType, &Current);
-    ServiceDeviceProcess::Instance()->MainControlGetVoltage(SlaveType, &Voltage);
+    (void)ServiceDeviceProcess::Instance()->MainControlGetCurrent(SlaveType, &Current);
+    (void)ServiceDeviceProcess::Instance()->MainControlGetVoltage(SlaveType, &Voltage);
 
 
     qreal VoltageV = Voltage/1000.0;

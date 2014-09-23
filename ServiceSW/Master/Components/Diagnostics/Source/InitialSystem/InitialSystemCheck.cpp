@@ -36,9 +36,8 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-CInitialSystemCheck::CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent)
-    : CTestBase(parent),
-      mp_Parent(parent),
+CInitialSystemCheck::CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent)
+    : CTestBase(p_Parent),
       mp_DataConnector(p_DataConnector),
       m_ParaffinMeltPoint(0),
       m_IsParaffinInRetort(false)
@@ -87,7 +86,7 @@ int CInitialSystemCheck::Run(void)
     ConfirmParaffinBath();
     ConfirmRetortCondition();
 
-    ServiceDeviceProcess::Instance()->MainRelaySetOnOff(true);
+    (void)ServiceDeviceProcess::Instance()->MainRelaySetOnOff(true);
     qDebug()<<"Start oven pre-test";
 
 

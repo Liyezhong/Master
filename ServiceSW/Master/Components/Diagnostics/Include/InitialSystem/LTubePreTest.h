@@ -44,7 +44,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    CLTubePreTest(QWidget *parent=NULL);
+    CLTubePreTest(QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!

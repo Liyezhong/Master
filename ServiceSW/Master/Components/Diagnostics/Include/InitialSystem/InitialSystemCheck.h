@@ -49,7 +49,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *parent=NULL);
+    CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!
@@ -108,7 +108,6 @@ private:
 
 private:
     Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
-    QWidget                    *mp_Parent;          //!< The parent widget
     int                        m_ParaffinMeltPoint; //!< Store the paraffin melting point.
     bool                       m_IsParaffinInRetort;//!< The flag for retort condition if have paraffin.
 };

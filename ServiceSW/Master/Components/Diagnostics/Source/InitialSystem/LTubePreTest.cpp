@@ -32,8 +32,8 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-CLTubePreTest::CLTubePreTest(QWidget *parent)
-    : CTestBase(parent)
+CLTubePreTest::CLTubePreTest(QWidget *p_Parent)
+    : CTestBase(p_Parent)
 {
 }
 
@@ -72,7 +72,7 @@ int CLTubePreTest::Run(void)
 
     Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", 0);
 
-    p_DevProc->LiquidTubeStopHeating();
+    (void)p_DevProc->LiquidTubeStopHeating();
 
     ShowWaitingMessage(false);
     if (Ret != RETURN_OK) {
@@ -87,7 +87,7 @@ void CLTubePreTest::StartPreHeating()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
     qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
 
-    ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
+    (void)ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
 }
 
 void CLTubePreTest::ShowWaitingMessage(bool ShowFlag)

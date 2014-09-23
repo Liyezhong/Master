@@ -32,8 +32,8 @@
 
 namespace Diagnostics {
 
-CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     //mp_DataConnector(p_DataConnector),
     mp_Ui(new Ui::CInitialSystem),
     m_IsHeatingTimerStart(false),
@@ -65,7 +65,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_Ui->liquidGroup->setFixedSize(388,152);
     mp_Ui->retortGroup->setFixedSize(388,152);
 
-    mp_WaitDlg = new MainMenu::CMessageDlg(parent);
+    mp_WaitDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_WaitDlg->SetTitle(InitialSystem::MSG_TITLE);
     mp_WaitDlg->SetIcon(QMessageBox::Information);
     mp_WaitDlg->SetText(tr("System is initializing..."));
@@ -75,7 +75,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_Ui->retortHeatingBtn->setEnabled(false);
     mp_Ui->mainDisplayBtn->setEnabled(false);
 
-    mp_InitialSystemCheck = new InitialSystem::CInitialSystemCheck(p_DataConnector, parent);
+    mp_InitialSystemCheck = new InitialSystem::CInitialSystemCheck(p_DataConnector, p_Parent);
 
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshStatusToGUI(Service::InitialSystemTestType, int),
                       this, OnRefreshStatus(Service::InitialSystemTestType, int));
@@ -142,8 +142,7 @@ void CInitialSystem::StartCheck()
     }
 
     mp_Ui->mrTestLabel->setText(tr("Mains relay self test..."));
-    mp_InitialSystemCheck->Run();
-
+    (void)mp_InitialSystemCheck->Run();
 }
 
 void CInitialSystem::UpdateHeatingStatus()
@@ -226,13 +225,6 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
 void CInitialSystem::UpdateOvenHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    mp_Ui->ovenTargetTempLabel->setText(tr("Target Temperature(\260C):"));
-    mp_Ui->ovenCurTemplabel->setText(tr("Current Temperature(top)(\260C):"));
-    mp_Ui->ovenBtmLabel1->setText(tr("Current Temperature(bottom1)(\260C):"));
-    mp_Ui->ovenBtmLable2->setText(tr("Current Temperature(bottom2)(\260C):"));
-    mp_Ui->ovenToplabel->setText(tr("Paraffin Oven Current (top)(mA):"));
-    mp_Ui->ovenBottomLabel->setText(tr("Paraffin Oven Current (bottom)(mA):"));
-
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest")->GetParameter("TargetTemp");
     qreal CurrentTemp(0);
     qreal CurrentTempB1(0);
@@ -240,8 +232,15 @@ void CInitialSystem::UpdateOvenHeatingStatus()
     quint16 CurrentOvenTempT(0);
     quint16 CurrentOvenTempB(0);
 
-    p_DevProc->OvenGetTemp(&CurrentTemp, &CurrentTempB1, &CurrentTempB2);
-    p_DevProc->OvenGetCurrent(&CurrentOvenTempT, &CurrentOvenTempB);
+    (void)p_DevProc->OvenGetTemp(&CurrentTemp, &CurrentTempB1, &CurrentTempB2);
+    (void)p_DevProc->OvenGetCurrent(&CurrentOvenTempT, &CurrentOvenTempB);
+
+    mp_Ui->ovenTargetTempLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->ovenCurTemplabel->setText(tr("Current Temperature(top)(\260C):"));
+    mp_Ui->ovenBtmLabel1->setText(tr("Current Temperature(bottom1)(\260C):"));
+    mp_Ui->ovenBtmLable2->setText(tr("Current Temperature(bottom2)(\260C):"));
+    mp_Ui->ovenToplabel->setText(tr("Paraffin Oven Current (top)(mA):"));
+    mp_Ui->ovenBottomLabel->setText(tr("Paraffin Oven Current (bottom)(mA):"));
 
     mp_Ui->ovenTargetTempValue->setText(TargetTemp);
     mp_Ui->ovenCurTempValue->setText(QString::number(CurrentTemp));
@@ -254,16 +253,16 @@ void CInitialSystem::UpdateOvenHeatingStatus()
 void CInitialSystem::UpdateLHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    mp_Ui->LTargetTmpLabel->setText(tr("Target Temperature(\260C):"));
-    mp_Ui->LCurrentTempLabel->setText(tr("Current Temperature(\260C):"));
-    mp_Ui->LTubeTempLabel->setText(tr("Liquid Heating Tube Current(mA):"));
-
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest")->GetParameter("PreHeatingTargetTemp");
     quint16 TubeCurrent(0);
     qreal TubeTemp(0);
 
-    p_DevProc->LiquidTubeGetCurrent(&TubeCurrent);
-    p_DevProc->LiquidTubeGetTemp(&TubeTemp);
+    (void)p_DevProc->LiquidTubeGetCurrent(&TubeCurrent);
+    (void)p_DevProc->LiquidTubeGetTemp(&TubeTemp);
+
+    mp_Ui->LTargetTmpLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->LCurrentTempLabel->setText(tr("Current Temperature(\260C):"));
+    mp_Ui->LTubeTempLabel->setText(tr("Liquid Heating Tube Current(mA):"));   
 
     mp_Ui->LTargetTmpValue->setText(TargetTemp);
     mp_Ui->LCurrentTempValue->setText(QString::number(TubeTemp));
@@ -273,21 +272,19 @@ void CInitialSystem::UpdateLHeatingStatus()
 void CInitialSystem::UpdateRVHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    mp_Ui->rvTargetTempS1Label->setText(tr("Target Temperature(Sensor1)(\260C):"));
-    mp_Ui->rvTargetTempS2Label->setText(tr("Target Temperature(Sensor2)(\260C):"));
-    mp_Ui->rvCurTempS1Label->setText(tr("Current Temperature(Sensor1)(\260C):"));
-    mp_Ui->rvCurTempS2Label->setText(tr("Current Temperature(Sensor2)(\260C):"));
-    mp_Ui->rvCurrentLabel->setText(tr("Rotary valve Current(mA):"));
-
-    //qreal TargetTempS1(0);
-    //qreal TargetTempS2(0);
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
     qreal CurrentTempS1(0);
     qreal CurrentTempS2(0);
     quint16 RVCurrent(0);
 
-    p_DevProc->RVGetTemp(&CurrentTempS1, &CurrentTempS2);
-    p_DevProc->RVGetCurrent(&RVCurrent);
+    (void)p_DevProc->RVGetTemp(&CurrentTempS1, &CurrentTempS2);
+    (void)p_DevProc->RVGetCurrent(&RVCurrent);
+
+    mp_Ui->rvTargetTempS1Label->setText(tr("Target Temperature(Sensor1)(\260C):"));
+    mp_Ui->rvTargetTempS2Label->setText(tr("Target Temperature(Sensor2)(\260C):"));
+    mp_Ui->rvCurTempS1Label->setText(tr("Current Temperature(Sensor1)(\260C):"));
+    mp_Ui->rvCurTempS2Label->setText(tr("Current Temperature(Sensor2)(\260C):"));
+    mp_Ui->rvCurrentLabel->setText(tr("Rotary valve Current(mA):"));
 
     mp_Ui->rvTargetTempS1Value->setText(TargetTemp);
     mp_Ui->rvTargetTempS2Value->setText(TargetTemp);
@@ -299,12 +296,6 @@ void CInitialSystem::UpdateRVHeatingStatus()
 void CInitialSystem::UpdateRetortStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    mp_Ui->retortTargetTempLabel->setText(tr("Target Temperature(\260C):"));
-    mp_Ui->retortCurTempSLabel->setText(tr("Current Temperature(Side)(\260C):"));
-    mp_Ui->retortCurTempB1Label->setText(tr("Current Temperature(Bottom1)(\260C):"));
-    mp_Ui->retortCurTempB2Label->setText(tr("Current Temperature(Bottom2)(\260C):"));
-    mp_Ui->retortCurrentLabel->setText(tr("Retort Current(mA):"));
-
     QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest")->GetParameter("TargetTemp");
     qDebug()<<"get retort Target temp :"<<TargetTemp;
     qreal CurrentTempS(0);
@@ -312,8 +303,14 @@ void CInitialSystem::UpdateRetortStatus()
     qreal CurrentTempB2(0);
     quint16 RetortCurrent(0);
 
-    p_DevProc->RetortGetTemp(&CurrentTempS, &CurrentTempB1, &CurrentTempB2);
-    p_DevProc->RetortGetCurrent(&RetortCurrent, NULL);
+    (void)p_DevProc->RetortGetTemp(&CurrentTempS, &CurrentTempB1, &CurrentTempB2);
+    (void)p_DevProc->RetortGetCurrent(&RetortCurrent, NULL);
+
+    mp_Ui->retortTargetTempLabel->setText(tr("Target Temperature(\260C):"));
+    mp_Ui->retortCurTempSLabel->setText(tr("Current Temperature(Side)(\260C):"));
+    mp_Ui->retortCurTempB1Label->setText(tr("Current Temperature(Bottom1)(\260C):"));
+    mp_Ui->retortCurTempB2Label->setText(tr("Current Temperature(Bottom2)(\260C):"));
+    mp_Ui->retortCurrentLabel->setText(tr("Retort Current(mA):"));
 
     mp_Ui->retortTargetTempValue->setText(TargetTemp);
     mp_Ui->retortCurTempSValue->setText(QString::number(CurrentTempS));

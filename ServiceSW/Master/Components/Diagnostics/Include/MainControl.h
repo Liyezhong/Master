@@ -46,7 +46,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    explicit CMainControl(QWidget *parent = 0);
+    explicit CMainControl(QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

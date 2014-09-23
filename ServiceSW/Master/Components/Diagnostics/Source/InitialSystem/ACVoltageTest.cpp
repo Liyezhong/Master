@@ -31,9 +31,8 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-CACVoltageTest::CACVoltageTest(QWidget *parent)
-    : CTestBase(parent),
-      mp_Parent(parent)
+CACVoltageTest::CACVoltageTest(QWidget *p_Parent)
+    : CTestBase(p_Parent)
 {
 }
 
@@ -55,26 +54,26 @@ int CACVoltageTest::Run(void)
 
     ShowWaitingMessage(true);
 
-    p_DevProc->MainRelaySetOnOff(true);
-    p_DevProc->RVSetTemperatureSwitchState(-1, 1);
-    p_DevProc->RetortSetTemperatureSwitchState(-1, 1);
-    p_DevProc->RVStartHeating(RVTargetTemp);
-    p_DevProc->RetortStartHeating(0, RetortTargetTemp);
+    (void)p_DevProc->MainRelaySetOnOff(true);
+    (void)p_DevProc->RVSetTemperatureSwitchState(-1, 1);
+    (void)p_DevProc->RetortSetTemperatureSwitchState(-1, 1);
+    (void)p_DevProc->RVStartHeating(RVTargetTemp);
+    (void)p_DevProc->RetortStartHeating(0, RetortTargetTemp);
 
     qDebug()<<"Pause 5 sec";
 
     p_DevProc->Pause(5000);
 
-    p_DevProc->RVStopHeating();
-    p_DevProc->RetortStopHeating();
-    p_DevProc->MainRelaySetOnOff(false);
+    (void)p_DevProc->RVStopHeating();
+    (void)p_DevProc->RetortStopHeating();
+    (void)p_DevProc->MainRelaySetOnOff(false);
 
     ShowWaitingMessage(false);
 
     quint8 RVSwitchType(0);
     quint8 RetortSwitchType(0);
-    p_DevProc->RVGetHeaterSwitchType(&RVSwitchType);
-    p_DevProc->RetortGetHeaterSwitchType(&RetortSwitchType);
+    (void)p_DevProc->RVGetHeaterSwitchType(&RVSwitchType);
+    (void)p_DevProc->RetortGetHeaterSwitchType(&RetortSwitchType);
 
     qDebug()<<"RVSwitchType="<<RVSwitchType<<"  RetortSwitchType="<<RetortSwitchType;
 
@@ -97,9 +96,6 @@ int CACVoltageTest::Run(void)
             return RETURN_ERR_FAIL;
         }
     }
-
-    return RETURN_OK;
-
 }
 
 void CACVoltageTest::ShowWaitingMessage(bool ShowFlag)

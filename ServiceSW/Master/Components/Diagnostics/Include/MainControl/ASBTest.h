@@ -43,11 +43,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam SlaveType = the slave type for 3, 5,15
+     *  \iparam SlaveType = the slave type of 3, 5,15
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    CASBTest(HimSlaveType_t SlaveType, QWidget *parent=NULL);
+    CASBTest(HimSlaveType_t SlaveType, QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!

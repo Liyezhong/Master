@@ -44,7 +44,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    CACVoltageTest(QWidget *parent=NULL);
+    CACVoltageTest(QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!
@@ -60,8 +60,6 @@ public:
     /****************************************************************************/
     int Run(void);
 private:
-    QWidget                    *mp_Parent;          //!< The pointer of parent widget
-
     /****************************************************************************/
     /*!
      *  \brief To show/close waiting dialog

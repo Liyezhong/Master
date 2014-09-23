@@ -31,8 +31,8 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-COvenPreTest::COvenPreTest(QWidget *parent)
-    : CTestBase(parent)
+COvenPreTest::COvenPreTest(QWidget *p_Parent)
+    : CTestBase(p_Parent)
 {
 }
 
@@ -72,7 +72,7 @@ int COvenPreTest::Run(void)
     Ret = p_DevProc->OvenStartHeating(TopTargetTemp, BottomTargetTemp);
 
     Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", 0);
-    p_DevProc->OvenStopHeating();
+    (void)p_DevProc->OvenStopHeating();
     ShowWaitingMessage(false);
 
     if (Ret != RETURN_OK) {
@@ -94,7 +94,7 @@ void COvenPreTest::StartPreHeating(qreal MeltPoint)
     }
 
     qDebug()<<"OvenStartHeating   " << MeltPoint+MoreTargetTemp;
-    ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);
+    (void)ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);
 
     p_TestCase->SetParameter("TargetTemp", QString::number(MeltPoint + MoreTargetTemp));
 

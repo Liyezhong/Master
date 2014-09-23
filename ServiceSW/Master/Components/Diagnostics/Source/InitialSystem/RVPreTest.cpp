@@ -31,8 +31,8 @@ namespace Diagnostics {
 
 namespace InitialSystem {
 
-CRVPreTest::CRVPreTest(QWidget *parent)
-    : CTestBase(parent)
+CRVPreTest::CRVPreTest(QWidget *p_Parent)
+    : CTestBase(p_Parent)
 {
 }
 
@@ -70,7 +70,7 @@ int CRVPreTest::Run(void)
 
     Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV", 0);
 
-    p_DevProc->RVStopHeating();
+    (void)p_DevProc->RVStopHeating();
     ShowWaitingMessage(false);
 
     if (Ret != RETURN_OK) {
@@ -85,7 +85,7 @@ void CRVPreTest::StartPreHeating()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
     qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
 
-    ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
+    (void)ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
 }
 
 void CRVPreTest::ShowWaitingMessage(bool ShowFlag)

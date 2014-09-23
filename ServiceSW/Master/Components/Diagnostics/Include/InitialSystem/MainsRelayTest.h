@@ -44,7 +44,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    CMainsRelayTest(QWidget *parent=NULL);
+    CMainsRelayTest(QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!

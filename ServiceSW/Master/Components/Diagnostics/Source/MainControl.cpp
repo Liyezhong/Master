@@ -32,8 +32,8 @@
 
 namespace Diagnostics {
 
-CMainControl::CMainControl(QWidget *parent) :
-    QWidget(parent),
+CMainControl::CMainControl(QWidget *p_Parent) :
+    QWidget(p_Parent),
     ui(new Ui::CMainControl)
 {
     qDebug() << "Diagnostics::CMainControl::CMainControl";
@@ -68,7 +68,7 @@ void CMainControl::StartASB3Test(void)
 
     MainControl::CASBTest Test(Slave_3, this);
 
-    Test.Run();
+    (void)Test.Run();
 }
 
 void CMainControl::StartASB5Test(void)
@@ -78,7 +78,7 @@ void CMainControl::StartASB5Test(void)
 
     MainControl::CASBTest Test(Slave_5, this);
 
-    Test.Run();
+    (void)Test.Run();
 }
 
 void CMainControl::StartASB15Test(void)
@@ -88,7 +88,7 @@ void CMainControl::StartASB15Test(void)
 
     MainControl::CASBTest Test(Slave_15, this);
 
-    Test.Run();
+    (void)Test.Run();
 }
 /****************************************************************************/
 /*!

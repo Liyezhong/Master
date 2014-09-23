@@ -52,7 +52,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    explicit CInitialSystem(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *parent = 0);
+    explicit CInitialSystem(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
