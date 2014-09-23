@@ -972,6 +972,17 @@ void ServiceTestHandler::RVGetHeaterSwitchType(QString& ReqName, QStringList& Pa
 
 void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool QuickFlag = (bool) Params.at(0).toInt();
+    bool WaterFlag = (bool) Params.at(1).toInt();
+
 
 }
 
