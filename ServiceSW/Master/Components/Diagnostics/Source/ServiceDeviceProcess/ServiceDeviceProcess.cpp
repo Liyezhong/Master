@@ -944,7 +944,7 @@ int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
     m_EventLoopMap.insert(ReqName, loop);
     CONNECTSIGNALSLOT(&timer, timeout(), loop, quit());
     ret = loop->exec();
-    Pause(200);
+
     delete loop;
 #else
     CONNECTSIGNALSLOT(&timer, timeout(), &m_EventLoop, quit());
