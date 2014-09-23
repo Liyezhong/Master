@@ -346,7 +346,9 @@
 		</Event>
 		<Event Code="" ErrorID="513050001" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="103050001" RDStringID="113050001" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103050001" RDStringID="113050001" ButtonType="OK" NextStepOnTimeOut="2" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="3" NextStepOnSuccess="3"/>
+			<Step ID="3" Type="MSG" StringID="103050001" RDStringID="113050001" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="513050010" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
@@ -394,7 +396,9 @@
 		</Event>
 		<Event Code="" ErrorID="513050321" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="103050321" RDStringID="113050321" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103050321" RDStringID="113050321" ButtonType="OK" StatusBar="YES" NextStepOnTimeOut="2" TimeOut="15m" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="3" NextStepOnSuccess="3"/>
+			<Step ID="3" Type="MSG" StringID="103050321" RDStringID="113050321" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="513040001" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>

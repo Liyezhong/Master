@@ -3773,14 +3773,14 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
         //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
        // m_SchedulerMachine->SendErrorSignal();
     }
-#if 0
+
     if (reportError8.instanceID != 0)
     {
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
-#endif
+
     if (reportError9.instanceID != 0)
     {
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);

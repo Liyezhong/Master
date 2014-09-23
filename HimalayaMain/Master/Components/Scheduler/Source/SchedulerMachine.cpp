@@ -124,6 +124,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
 	mp_ErrorState->addTransition(this, SIGNAL(sigEnterIdleState()), mp_IdleState.data());
+    mp_ErrorState->addTransition(this, SIGNAL(SigSelfRcRestart()), mp_IdleState.data());
     CONNECTSIGNALSLOT(this, SigEnterRcRestart(), mp_SchedulerThreadController, OnEnterRcRestart());
     CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
 
