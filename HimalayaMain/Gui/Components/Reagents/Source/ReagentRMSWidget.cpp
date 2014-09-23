@@ -531,6 +531,9 @@ void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
     }
     QString Id = m_ReagentCleaningModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
+
+    mp_Ui->btnNew->setEnabled(false);
+    mp_Ui->btnDelete->setEnabled(false);
 }
 
 /****************************************************************************/

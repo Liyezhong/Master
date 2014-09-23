@@ -312,7 +312,10 @@ void CServiceSettingsWidget::ResetButtons()
         mp_Ui->checkBoxUseExhaustSystem->setEnabled(true);
         mp_Ui->btnResetCarbonFilter->setEnabled(true);
         mp_Ui->btnShutdown->setEnabled(true);
-        mp_Ui->btnStartServiceApp->setEnabled(true);
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Service)
+        {
+            mp_Ui->btnStartServiceApp->setEnabled(true);
+        }
         mp_Ui->btnSave->setEnabled(true);
     }
     else {

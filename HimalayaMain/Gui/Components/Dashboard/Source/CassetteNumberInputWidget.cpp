@@ -40,15 +40,13 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QWidget
         mp_tenWheel->AddItem(QString("%1").arg(i, 1, 10, QChar('0')), i);
     }
 
-    for (int i = 0; i <= 9; i++) {
+    for (int i = 0; i <= 2; i++) {
         mp_hundredWheel->AddItem(QString("%1").arg(i, 1, 10, QChar('0')), i);
     }
 
     ui->scrollPanelCassetteNumber->Init(3);
     ui->scrollPanelCassetteNumber->AddScrollWheel(mp_hundredWheel, 0);
-    ui->scrollPanelCassetteNumber->AddSeparator(MainMenu::CWheelPanel::FULLSTOP, 0);
     ui->scrollPanelCassetteNumber->AddScrollWheel(mp_tenWheel, 1);
-    ui->scrollPanelCassetteNumber->AddSeparator(MainMenu::CWheelPanel::FULLSTOP, 1);
     ui->scrollPanelCassetteNumber->AddScrollWheel(mp_singleWheel, 2);
 }
 

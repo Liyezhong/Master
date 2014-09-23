@@ -276,9 +276,6 @@ void CReagentGroupModel::SetUserSettings(DataManager::CUserSettings *p_UserSetti
 /****************************************************************************/
 Qt::ItemFlags CReagentGroupModel::flags(const QModelIndex &Index) const
 {
-    if (Index.column() == 1) {
-        return Qt::NoItemFlags;
-    }
     if (mp_ReagentGroupList) {
         if (m_ShowCleaningReagent)
         {

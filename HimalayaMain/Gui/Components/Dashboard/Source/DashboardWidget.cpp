@@ -404,8 +404,11 @@ void CDashboardWidget::OnProgramCompleted()
 
 void CDashboardWidget::OnProgramRunBegin()
 {
-    m_HaveSucked = false;
     bool isResumeRun = ui->programPanelWidget->IsResumeRun();
+    if (!isResumeRun)
+    {
+        m_HaveSucked = false;
+    }
     QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     int remainingTime = curDateTime.secsTo(m_EndDateTime);
     emit ProgramActionStarted(DataManager::PROGRAM_START, remainingTime, curDateTime, isResumeRun);
