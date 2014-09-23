@@ -144,7 +144,6 @@ private:
     //Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     MainMenu::CMessageDlg      *mp_WaitDlg;                     //!< Displayed when busy
     Ui::CInitialSystem         *mp_Ui;                          //!< User Interface
-    QTimer                     *mp_StartTimer;                  //!< Timeout for start timer
     QTimer                     *mp_HeatingTimer;                //!< Timeout for refresh heating status
 
     InitialSystem::CInitialSystemCheck *mp_InitialSystemCheck;  //!< To run all initial system check

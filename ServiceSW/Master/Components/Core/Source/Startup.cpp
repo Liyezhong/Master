@@ -594,14 +594,10 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
     SetCurrentUserMode(UserMode);
     if (SoftwareMode == PlatformService::SERVICE_MODE)
     {
+        mp_USBKeyValidator->HideKeyBoard();
+
         if(!mp_USBKeyValidator->GetSystemLogOff())
         {
-            mp_USBKeyValidator->HideKeyBoard();
-            Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, QApplication::desktop()->screen());
-            p_InitSystem->setFixedSize(800, 600);
-            (void)p_InitSystem->exec();
-            delete p_InitSystem;
-
             ServiceGuiInit();
             QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
             StartTimer();
@@ -611,6 +607,10 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         {
             emit LogOnSystem();
         }
+        Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
+        p_InitSystem->setFixedSize(800, 600);
+        (void)p_InitSystem->exec();
+        delete p_InitSystem;
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {

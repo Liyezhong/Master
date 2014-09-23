@@ -65,7 +65,7 @@ int CInitialSystemCheck::Run(void)
     delete MainsRelayTest;
 
     if (Ret != RETURN_OK) {
-        return Ret;
+        //return Ret;
     }
     ServiceDeviceProcess::Instance()->Pause(1000);
 
@@ -80,7 +80,7 @@ int CInitialSystemCheck::Run(void)
     delete ACVoltageTest;
 
     if (Ret != RETURN_OK) {
-        return Ret;
+        //return Ret;
     }
     ServiceDeviceProcess::Instance()->Pause(1000);
 
@@ -141,6 +141,7 @@ void CInitialSystemCheck::RetortPreHeating()
     CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
     RetortPreTest->StartPreHeating(m_ParaffinMeltPoint);
     emit RefreshHeatingStatus(Service::INITIAL_RETORT);
+    delete RetortPreTest;
 }
 
 void CInitialSystemCheck::ConfirmParaffinBath(void)

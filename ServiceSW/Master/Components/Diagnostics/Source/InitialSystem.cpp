@@ -72,6 +72,9 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_WaitDlg->HideAllButtons();
     mp_WaitDlg->setModal(true);
 
+    mp_Ui->retortHeatingBtn->setEnabled(false);
+    mp_Ui->mainDisplayBtn->setEnabled(false);
+
     mp_InitialSystemCheck = new InitialSystem::CInitialSystemCheck(p_DataConnector, parent);
 
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshStatusToGUI(Service::InitialSystemTestType, int),
@@ -87,20 +90,20 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_HeatingTimer->setSingleShot(false);
     mp_HeatingTimer->setInterval(1000);
     CONNECTSIGNALSLOT(mp_HeatingTimer, timeout(), this, UpdateHeatingStatus());
-
-    mp_StartTimer   = new QTimer;
-    mp_StartTimer->setSingleShot(true);
-    mp_StartTimer->setInterval(1000);
-    mp_StartTimer->start();
-    CONNECTSIGNALSLOT(mp_StartTimer, timeout(), this, StartCheck());
-
+    QTimer::singleShot(1000, this, SLOT(StartCheck()));
 }
 
 CInitialSystem::~CInitialSystem()
 {
-    delete mp_Ui;
-    delete mp_HeatingTimer;
-    delete mp_StartTimer;
+    try {
+        delete mp_Ui;
+        delete mp_WaitDlg;
+        delete mp_InitialSystemCheck;
+        delete mp_HeatingTimer;
+    }
+    catch (...) {
+        // to please Lint
+    }
 }
 
 /****************************************************************************/
@@ -128,7 +131,6 @@ void CInitialSystem::changeEvent(QEvent *p_Event)
 void CInitialSystem::StartCheck()
 {
     qDebug()<<"Start Initial System Check..........";
-    mp_StartTimer->stop();
     mp_WaitDlg->show();
 
     while(1) {
@@ -185,12 +187,18 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         if (Ret == RETURN_OK) {
             mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
         }
+        else {
+            mp_Ui->mainDisplayBtn->setEnabled(true);
+        }
         break;
     case Service::INITIAL_AC_VOLTAGE:
         mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
 
         if (Ret == RETURN_OK) {
             mp_Ui->preTestLabel->setText(tr("Pre-test ..."));
+        }
+        else {
+            mp_Ui->mainDisplayBtn->setEnabled(true);
         }
         break;
     case Service::INITIAL_OVEN:
@@ -204,6 +212,10 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         break;
     case Service::INITIAL_RETORT:
         mp_Ui->retortCheckLabel->setPixmap(SetPixmap);
+        if (Ret == RETURN_OK) {
+            mp_Ui->retortHeatingBtn->setEnabled(true);
+        }
+        mp_Ui->mainDisplayBtn->setEnabled(true);
         break;
     default:
         qDebug()<<"invalid initial test module.";
