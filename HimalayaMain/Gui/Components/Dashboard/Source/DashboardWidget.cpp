@@ -391,12 +391,22 @@ void CDashboardWidget::OnProgramCompleted()
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
-        QString reagentID("");
-        m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
-        emit UpdateUserSetting(*m_pUserSetting);
-        ui->programPanelWidget->EnableStartButton(false);
-        emit AddItemsToFavoritePanel();
-        ui->programPanelWidget->ChangeStartButtonToStartState();
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+        QString strTemp;
+        strTemp = m_strCleaningProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+        mp_MessageDlg->SetText(strTemp);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        {
+            QString reagentID("");
+            m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
+            emit UpdateUserSetting(*m_pUserSetting);
+            ui->programPanelWidget->EnableStartButton(false);
+            emit AddItemsToFavoritePanel();
+            ui->programPanelWidget->ChangeStartButtonToStartState();
+        }
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
@@ -916,12 +926,13 @@ void CDashboardWidget::RetranslateUI()
     m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.", 0, QApplication::UnicodeUTF8);
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Porgam will be delayed for some mintues in the first step as the paraffin is not melted completly. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
-    m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, please take out of tissues", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover was opened, please close it and then click OK button", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
+    m_strCleaningProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is completed successfully!", 0, QApplication::UnicodeUTF8);
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
@@ -954,7 +965,7 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
     if (m_IsDrainingWhenPrgrmCompleted && !cmd.IsStart() && !cmd.IsSuck() && !cmd.NoCleaningProgram())
     {
         emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-        this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
+        //this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDrainingWhenPrgrmCompleted = false;
     }
 

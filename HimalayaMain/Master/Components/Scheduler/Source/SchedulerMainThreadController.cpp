@@ -394,11 +394,14 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //m_SchedulerMachine->SendRunSignal();
 
             //send command to main controller to tell the left time
-            quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "Precheck...", m_CurProgramStepIndex, leftSeconds));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            if (m_NewProgramID.at(0) != 'C')
+            {
+                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "Precheck...", m_CurProgramStepIndex, leftSeconds));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            }
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;

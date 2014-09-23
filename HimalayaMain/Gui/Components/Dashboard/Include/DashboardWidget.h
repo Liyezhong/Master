@@ -153,6 +153,7 @@ private:
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
     QString m_strProgramComplete;
+    QString m_strCleaningProgramComplete;
     QString m_strTissueProtectPassed;
     QString m_strOvenCoverOpen;
     QString m_strTakeOutSpecimen;
