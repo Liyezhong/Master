@@ -661,7 +661,7 @@ void CStartup::ServiceGuiInit()
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
 
-    mp_MainWindow->SetTabWidgetIndex(5);
+    mp_MainWindow->SetTabWidgetIndex(0);
 }
 
 void CStartup::InitManufacturingDiagnostic()
