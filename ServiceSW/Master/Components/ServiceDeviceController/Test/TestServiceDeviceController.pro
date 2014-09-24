@@ -23,6 +23,6 @@ LIBS            += /usr/local/lib/gtest/libgtest.a
 
 
 	
-UseLibs(Core ServiceMasterThreadController ServiceDataManager ServiceDeviceController)
+UseLibs(Core Diagnostics ServiceMasterThreadController ServiceDataManager ServiceDeviceController)
 UsePlatformLibs(Threads EventHandler Global DataManager NetCommands StateMachines NetworkComponents DeviceControl DeviceCommandProcessor GPIOManager DataLogging ExternalProcessController ExportController PasswordManager)
 LIBS            += -ldl
