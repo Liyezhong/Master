@@ -320,7 +320,8 @@ void CRotaryValve::BeginTest()
                 mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_ERROR);
                 mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
                 mp_MessageDlg->HideButtons();
-                mp_MessageDlg->SetText("You can't do these tests until 'Get the initial position' test is passed. ");
+                mp_MessageDlg->SetText(QApplication::translate("CRotaryValve", "You can't do these tests until 'Get the initial position' test is passed.",
+                                                               0, QApplication::UnicodeUTF8));
                 mp_MessageDlg->SetIcon(QMessageBox::Critical);
                 mp_MessageDlg->show();
                 return;
@@ -368,8 +369,11 @@ void CRotaryValve::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             (void) m_Model.setData(m_Model.index(i, 3), SetPixMap, (int) Qt::DecorationRole);
 
             item = m_Model.item(i, 3);
-            if (Result == true) {
+            if (Result) {
                 item->setToolTip("PASS");
+            }
+            else {
+                item->setToolTip("FAIL");
             }
             break;
         }

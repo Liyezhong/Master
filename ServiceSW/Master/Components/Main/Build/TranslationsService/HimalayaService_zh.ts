@@ -733,111 +733,142 @@ Current Temperature: %2Â°C</source>
 <context>
     <name>CInitialSystem</name>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="65"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="71"/>
         <source>System is initializing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="124"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="144"/>
         <source>Mains relay self test...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="147"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="187"/>
         <source>AC voltage auto-switch self test...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="182"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="197"/>
+        <source>Pre-test ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="238"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="261"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="308"/>
         <source>Target Temperature(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="183"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="239"/>
         <source>Current Temperature(top)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="184"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="240"/>
         <source>Current Temperature(bottom1)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="185"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="241"/>
         <source>Current Temperature(bottom2)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="186"/>
-        <source>Paraffin Oven Current (top) (mA):</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="242"/>
+        <source>Paraffin Oven Current(mA):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="187"/>
-        <source>Paraffin Oven Current (bottom) (mA):</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="262"/>
+        <source>Current Temperature(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="189"/>
-        <source>65</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="263"/>
+        <source>Liquid Heating Tube Current(mA):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="190"/>
-        <source>35</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="282"/>
+        <source>Target Temperature(Sensor1)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="191"/>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="192"/>
-        <source>37</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="283"/>
+        <source>Target Temperature(Sensor2)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="193"/>
-        <source>536</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="284"/>
+        <source>Current Temperature(Sensor1)(°C):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="194"/>
-        <source>537</source>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="285"/>
+        <source>Current Temperature(Sensor2)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="286"/>
+        <source>Rotary valve Current(mA):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="309"/>
+        <source>Current Temperature(Side)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="310"/>
+        <source>Current Temperature(Bottom1)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="311"/>
+        <source>Current Temperature(Bottom2)(°C):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="312"/>
+        <source>Retort Current(mA):</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CInitialSystemCheck</name>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="90"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="162"/>
         <source>Yes</source>
         <translation type="unfinished">是</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="91"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="163"/>
         <source>No</source>
         <translation type="unfinished">否</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="113"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="188"/>
         <source>Retort Condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="115"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="190"/>
         <source>Select the content/condition within the retort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="116"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="191"/>
         <source>Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="117"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="192"/>
         <source>Other Reagent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="118"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="193"/>
         <source>Paraffin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1202,13 +1233,18 @@ Then manually Open the Retort!</source>
         <location filename="../../../Diagnostics/Source/RotaryValve.cpp" line="89"/>
         <location filename="../../../Diagnostics/Source/RotaryValve.cpp" line="118"/>
         <source>Please run &quot;Initializing&quot; successfully first!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">请先测试初始化成功！</translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/RotaryValve.cpp" line="91"/>
         <location filename="../../../Diagnostics/Source/RotaryValve.cpp" line="120"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../../DiagnosticsManufacturing/Source/RotaryValveManufacturing.cpp" line="323"/>
+        <source>You can&apos;t do these tests until &apos;Get the initial position&apos; test is passed.</source>
+        <translation type="unfinished">当‘得到初始位置’测试成功后才能做其它测试！</translation>
     </message>
 </context>
 <context>
@@ -1737,131 +1773,131 @@ Then manually Open the Retort!</source>
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1234"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1245"/>
         <source>Alarm Status:</source>
         <translation type="unfinished">警报灯状态:</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1786"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1803"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1797"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1814"/>
         <source>Date</source>
         <translation type="unfinished">日期</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1794"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1805"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1796"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1807"/>
         <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1805"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1816"/>
         <source>Type</source>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1787"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1804"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1798"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1815"/>
         <source>TimeStamp</source>
         <translation type="unfinished">时间戳</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="424"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="435"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="760"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="771"/>
         <source>Missing Xml files</source>
         <translation type="unfinished">xml文件丢失</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="763"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="774"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1788"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1795"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1799"/>
         <location filename="../../../Core/Source/Startup.cpp" line="1806"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1817"/>
         <source>Description</source>
         <translation type="unfinished">描述</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="692"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="703"/>
         <source>System is initializing ...</source>
         <translation type="unfinished">系统正在初始化…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="461"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="472"/>
         <source>Service Updates</source>
         <translation type="unfinished">服务更新</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="459"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="470"/>
         <source>Settings</source>
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="457"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="468"/>
         <source>System</source>
         <translation type="unfinished">系统</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="466"/>
         <source>Data Management</source>
         <translation type="unfinished">数据管理</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="462"/>
         <source>Firmware Update</source>
         <translation type="unfinished">固件更新</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="436"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="447"/>
         <source>Log Viewer</source>
         <translation type="unfinished">日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="439"/>
         <source>Software Update Log</source>
         <translation type="unfinished">软件更新日志</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="426"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="437"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished">服务日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="433"/>
         <source>System Log Viewer</source>
         <translation type="unfinished">系统日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="415"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="426"/>
         <source>View History</source>
         <translation type="unfinished">查看历史记录</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="412"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="423"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished">增加/修改 配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="402"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="413"/>
         <source>Current Config</source>
         <translation type="unfinished">当前配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="390"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="401"/>
         <source>Himalaya Service Software</source>
         <translation type="unfinished">Himalaya售后服务软件</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="434"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
         <source>System Tracking</source>
         <translation type="unfinished">系统跟踪信息</translation>
     </message>
@@ -1956,32 +1992,32 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">形式</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="58"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="184"/>
         <source>Paraffin Oven</source>
         <translation type="unfinished">石蜡烤箱</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="293"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="392"/>
         <source>Liquid Heating Tube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="392"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="764"/>
         <source>Retort</source>
         <translation type="unfinished">反应罐</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="454"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="952"/>
         <source>Retort PreHeating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="492"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="559"/>
         <source>Rotary Valve</source>
         <translation type="unfinished">旋转阀</translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="577"/>
+        <location filename="../../../Diagnostics/Forms/InitialSystem.ui" line="979"/>
         <source>Enter SVC Main Display</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2693,27 +2729,27 @@ Then manually Open the Retort!</source>
         <translation type="unfinished">加热测试</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="44"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="38"/>
         <source>Please select the position:</source>
         <translation type="unfinished">请选择位置</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="81"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="164"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="158"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="71"/>
         <source>Position for selecting:</source>
         <translation type="unfinished">可选择的位置：</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="193"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="106"/>
         <source>Tube position</source>
         <translation type="unfinished">管子的位置</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="203"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectPositionDialog.ui" line="116"/>
         <source>Sealing position</source>
         <translation type="unfinished">密封位置</translation>
     </message>
