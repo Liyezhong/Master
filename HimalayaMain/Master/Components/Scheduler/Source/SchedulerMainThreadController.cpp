@@ -2978,7 +2978,10 @@ void SchedulerMainThreadController::Fill()
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-    m_NeedEnterClean = true;
+    if (m_CurProgramID.at(0) != 'C')
+    {
+        m_NeedEnterClean = true;
+    }
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {

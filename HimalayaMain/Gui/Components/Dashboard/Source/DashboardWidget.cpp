@@ -406,6 +406,12 @@ void CDashboardWidget::OnProgramCompleted()
             ui->programPanelWidget->EnableStartButton(false);
             emit AddItemsToFavoritePanel();
             ui->programPanelWidget->ChangeStartButtonToStartState();
+
+            ui->programPanelWidget->EnableStartButton(false);
+
+            m_StationList.clear();
+            QString programID("");
+            emit ProgramSelected(programID, m_StationList);
         }
     }
 
