@@ -62,7 +62,7 @@ int CRetortPreTest::Run(void)
     qDebug()<<"RetortGetTemp --- "<<RetortTempSide;
 
 
-    if (Ret != RETURN_OK || (RetortTempBottom1-RetortTempBottom2) > DiffTemp) {
+    if (Ret != RETURN_OK || qAbs(RetortTempBottom1-RetortTempBottom2) > DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return Ret;

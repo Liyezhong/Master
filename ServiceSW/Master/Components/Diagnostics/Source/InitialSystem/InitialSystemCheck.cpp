@@ -41,7 +41,7 @@ CInitialSystemCheck::CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConne
     : CTestBase(p_Parent),
       mp_DataConnector(p_DataConnector),
       m_ParaffinMeltPoint(0),
-      m_IsParaffinInRetort(false)
+      m_IsEmptyInRetort(false)
 {
 
 }
@@ -59,7 +59,7 @@ int CInitialSystemCheck::Run(void)
 
     Ret = MainsRelayTest->Run();
 
-    //Ret = RETURN_OK; // only for test
+    Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
     delete MainsRelayTest;
@@ -74,7 +74,7 @@ int CInitialSystemCheck::Run(void)
     CACVoltageTest *ACVoltageTest = new CACVoltageTest(mp_Parent);
     Ret = ACVoltageTest->Run();
 
-    //Ret = RETURN_OK; // only for test
+    Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
     delete ACVoltageTest;
@@ -144,6 +144,11 @@ void CInitialSystemCheck::RetortPreHeating()
     delete RetortPreTest;
 }
 
+void CInitialSystemCheck::SelectRetortCondition()
+{
+    m_IsEmptyInRetort = true;
+}
+
 void CInitialSystemCheck::ConfirmParaffinBath(void)
 {
     int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
@@ -187,18 +192,17 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
     dlg->SetButtonText(2, tr("Other Reagent"));
     dlg->SetButtonText(3, tr("Paraffin"));
 
+    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, SelectRetortCondition());
+
     dlg->setModal(true);
     int Ret = dlg->exec();
-    if ( Ret == 0) {
-        m_IsParaffinInRetort = true;
-    }
-    else {
-        m_IsParaffinInRetort = false;
+    if ( Ret != 0 && m_IsEmptyInRetort) {
+        Ret = 2;
     }
 
     DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->SetParameter("RetortCondition",
                                                                                           QString::number(Ret));
-    qDebug()<<"InitialSystemCheck is Paraffin in Retort :"<<m_IsParaffinInRetort;
+    qDebug()<<"InitialSystemCheck is Paraffin in Retort :"<<Ret;
 }
 
 } // namespace InitialSystem

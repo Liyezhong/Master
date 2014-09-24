@@ -73,6 +73,13 @@ public slots:
     /****************************************************************************/
     void RetortPreHeating();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Select Retort Condition
+     */
+    /****************************************************************************/
+    void SelectRetortCondition();
+
 signals:
     /****************************************************************************/
     /*!
@@ -109,7 +116,7 @@ private:
 private:
     Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     int                        m_ParaffinMeltPoint; //!< Store the paraffin melting point.
-    bool                       m_IsParaffinInRetort;//!< The flag for retort condition if have paraffin.
+    bool                       m_IsEmptyInRetort;//!< The flag for retort condition.
 };
 
 } // namespace InitialSystem

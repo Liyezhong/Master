@@ -60,7 +60,7 @@ int COvenPreTest::Run(void)
     Ret = p_DevProc->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
     qDebug()<<"OvenGetTemp ---- "<<OvenTempSensor1<<"  "<<OvenTempSensor2;
 
-    if (Ret != RETURN_OK || (OvenTempSensor1-OvenTempSensor2) > DiffTemp) {
+    if (Ret != RETURN_OK || qAbs(OvenTempSensor1-OvenTempSensor2) > DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return Ret;
