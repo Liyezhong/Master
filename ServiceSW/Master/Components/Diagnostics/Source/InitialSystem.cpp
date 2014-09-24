@@ -271,7 +271,7 @@ void CInitialSystem::UpdateRVHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
     QString TargetTempS1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
-    QString TargetTempS2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->GetParameter("PMeltingPoint");
+    QString TargetTempS2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->GetParameter("PMeltingPoint");
     qreal CurrentTempS1(0);
     qreal CurrentTempS2(0);
     quint16 RVCurrent(0);

@@ -175,7 +175,7 @@ void CInitialSystemCheck::ConfirmParaffinBath(void)
 
     m_ParaffinMeltPoint = ParaffinBath;
 
-    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->SetParameter("PMeltingPoint",
+    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->SetParameter("PMeltingPoint",
                                                                                           QString::number(ParaffinBath));
 
     qDebug()<<"InitialSystemCheck Paraffin melting point :"<<m_ParaffinMeltPoint;
@@ -200,7 +200,7 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
         Ret = 2;
     }
 
-    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->SetParameter("RetortCondition",
+    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->SetParameter("RetortCondition",
                                                                                           QString::number(Ret));
     qDebug()<<"InitialSystemCheck is Paraffin in Retort :"<<Ret;
 }
