@@ -461,6 +461,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
         else
         {
             commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, m_ProcessCassetteCount);//toDo: 100, should get the actual number
+            m_ProcessCassetteCount = 0; // clear cassette when program finished or aborted.
         }
     }
 
