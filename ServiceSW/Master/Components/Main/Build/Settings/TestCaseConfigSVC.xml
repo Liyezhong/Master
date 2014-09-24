@@ -24,4 +24,7 @@
 	</System>
 	<Retort>
 	</Retort>
+	<Globel>
+		<SGlobel PMeltingPoint="0" RetortCondition="0" />
+	</Globel>
 </TestCaseConfig>

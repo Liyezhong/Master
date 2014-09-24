@@ -239,15 +239,13 @@ void CInitialSystem::UpdateOvenHeatingStatus()
     mp_Ui->ovenCurTemplabel->setText(tr("Current Temperature(top)(\260C):"));
     mp_Ui->ovenBtmLabel1->setText(tr("Current Temperature(bottom1)(\260C):"));
     mp_Ui->ovenBtmLable2->setText(tr("Current Temperature(bottom2)(\260C):"));
-    mp_Ui->ovenToplabel->setText(tr("Paraffin Oven Current (top)(mA):"));
-    mp_Ui->ovenBottomLabel->setText(tr("Paraffin Oven Current (bottom)(mA):"));
+    mp_Ui->ovenCurrentLabel->setText(tr("Paraffin Oven Current(mA):"));
 
     mp_Ui->ovenTargetTempValue->setText(TargetTemp);
     mp_Ui->ovenCurTempValue->setText(QString::number(CurrentTemp));
     mp_Ui->ovenBtmValue1->setText(QString::number(CurrentTempB1));
     mp_Ui->ovenBtmValue2->setText(QString::number(CurrentTempB2));
-    mp_Ui->ovenTopValue->setText(QString::number(CurrentOvenTempT));
-    mp_Ui->ovenBottomValue->setText(QString::number(CurrentOvenTempB));
+    mp_Ui->ovenCurrentValue->setText(QString::number(CurrentOvenTempT));
 }
 
 void CInitialSystem::UpdateLHeatingStatus()
@@ -272,7 +270,8 @@ void CInitialSystem::UpdateLHeatingStatus()
 void CInitialSystem::UpdateRVHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    QString TargetTemp = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
+    QString TargetTempS1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
+    QString TargetTempS2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->GetParameter("PMeltingPoint");
     qreal CurrentTempS1(0);
     qreal CurrentTempS2(0);
     quint16 RVCurrent(0);
@@ -286,8 +285,8 @@ void CInitialSystem::UpdateRVHeatingStatus()
     mp_Ui->rvCurTempS2Label->setText(tr("Current Temperature(Sensor2)(\260C):"));
     mp_Ui->rvCurrentLabel->setText(tr("Rotary valve Current(mA):"));
 
-    mp_Ui->rvTargetTempS1Value->setText(TargetTemp);
-    mp_Ui->rvTargetTempS2Value->setText(TargetTemp);
+    mp_Ui->rvTargetTempS1Value->setText(TargetTempS1);
+    mp_Ui->rvTargetTempS2Value->setText(TargetTempS2);
     mp_Ui->rvCurTempS1Value->setText(QString::number(CurrentTempS1));
     mp_Ui->rvCurTempS2Value->setText(QString::number(CurrentTempS2));
     mp_Ui->rvCurrentValue->setText(QString::number(RVCurrent));

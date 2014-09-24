@@ -21,6 +21,7 @@
 #include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "Core/Include/ServiceUtils.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
 #include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
@@ -169,6 +170,9 @@ void CInitialSystemCheck::ConfirmParaffinBath(void)
 
     m_ParaffinMeltPoint = ParaffinBath;
 
+    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->SetParameter("PMeltingPoint",
+                                                                                          QString::number(ParaffinBath));
+
     qDebug()<<"InitialSystemCheck Paraffin melting point :"<<m_ParaffinMeltPoint;
 }
 
@@ -184,13 +188,16 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
     dlg->SetButtonText(3, tr("Paraffin"));
 
     dlg->setModal(true);
-    if (dlg->exec() == 0) {
+    int Ret = dlg->exec();
+    if ( Ret == 0) {
         m_IsParaffinInRetort = true;
     }
     else {
         m_IsParaffinInRetort = false;
     }
 
+    DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobel")->SetParameter("RetortCondition",
+                                                                                          QString::number(Ret));
     qDebug()<<"InitialSystemCheck is Paraffin in Retort :"<<m_IsParaffinInRetort;
 }
 
