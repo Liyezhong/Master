@@ -88,6 +88,9 @@ public:
     /****************************************************************************/
     bool IsInitialized();
     /****************************************************************************/
+
+    void HandleRequest(QString ReqName, QStringList Params);
+private:
     /****************************************************************************/
     /**
      * \brief Helper function to create wrappers
@@ -140,9 +143,11 @@ public:
     void LSStopHeating(QString& ReqName, QStringList& Params);
     void LSGetTemp(QString& ReqName, QStringList& Params);
     void LSGetCurrent(QString& ReqName, QStringList& Params);
+    void LSHeatingLevelSensor(QString& ReqName, QStringList& Params);
 
     void PumpBuildPressure(QString& ReqName, QStringList& Params);
     void PumpReleasePressure(QString& ReqName, QStringList& Params);
+    void PumpSetPressure(QString& ReqName, QStringList& Params);
     void PumpGetPressure(QString& ReqName, QStringList& Params);
     void PumpSetFan(QString& ReqName, QStringList& Params);
     void PumpSetValve(QString& ReqName, QStringList& Params);
@@ -152,7 +157,7 @@ public:
 
     void GetSlaveModuleReportError(QString& ReqName, QStringList& Params);
     void Pause(quint32 MillSeconds);
-    void HandleRequest(QString ReqName, QStringList Params);
+
 private:
     DeviceControl::IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed

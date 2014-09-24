@@ -819,63 +819,253 @@ int ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
 
 int ServiceDeviceProcess::LSStartHeating(bool QuickFlag, bool WaterFlag)
 {
+    QString ReqName = "LSStartHeating";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(QuickFlag));
+    Params.append(QString("%1").arg(WaterFlag));
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::LSStopHeating()
 {
+    QString ReqName = "LSStopHeating";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::LSGetTemp(qreal *RetTemp)
 {
+    QString ReqName = "LSGetTemp";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetTemp = Results.at(0).toFloat();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-int ServiceDeviceProcess::LSGetCurrent(qreal *RetCurrent)
+int ServiceDeviceProcess::LSGetCurrent(quint16 *RetCurrent)
 {
+    QString ReqName = "LSGetCurrent";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetCurrent = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
+int ServiceDeviceProcess::LSHeatingLevelSensor(bool WaterFlag)
+{
+    QString ReqName = "LSHeatingLevelSensor";
+    QStringList Params;
+    Params.clear();
+
+    Params.append(QString("%1").arg(WaterFlag));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName, 180);
+
+    return Ret;
+}
 
 int ServiceDeviceProcess::PumpBuildPressure(float TargetPressure)
 {
+    QString ReqName = "PumpBuildPressure";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(TargetPressure));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::PumpReleasePressure()
 {
+    QString ReqName = "PumpReleasePressure";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::PumpSetPressure(quint8 Flag, float Pressure)
+{
+    QString ReqName = "PumpSetPressure";
+    QStringList Params;
+    Params.clear();
+
+    Params.append(QString("%1").arg(Flag));
+    Params.append(QString("%1").arg(Pressure));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::PumpGetPressure(float *RetPressure)
 {
+    QString ReqName = "PumpGetPressure";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetPressure = Results.at(0).toFloat();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-int ServiceDeviceProcess::PumpSetFan(bool OnFlag)
+int ServiceDeviceProcess::PumpSetFan(quint8 OnFlag)
 {
+    QString ReqName = "PumpSetFan";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(OnFlag));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
 {
+    QString ReqName = "PumpSetValve";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(ValveIndex));
+    Params.append(QString("%1").arg(ValveState));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::PumpStopCompressor()
 {
+    QString ReqName = "PumpStopCompressor";
+    QStringList Params;
+    Params.clear();
 
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
 }
 
-int ServiceDeviceProcess::PumpSucking(int DelayTime)
+int ServiceDeviceProcess::PumpSucking(quint32 DelayTime)
 {
+    QString ReqName = "PumpSucking";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(DelayTime));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName, 240);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        Ret = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
-int ServiceDeviceProcess::PumpDraining()
+int ServiceDeviceProcess::PumpDraining(quint32 DelayTime)
 {
+    QString ReqName = "PumpDraining";
+    QStringList Params;
+    Params.clear();
 
+    Params.append(QString("%1").arg(DelayTime));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName, 300);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        Ret = Results.at(0).toInt();
+    }
+    m_ResultsMap.remove(ReqName);
+
+    return Ret;
 }
 
 int ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName)
@@ -914,7 +1104,6 @@ void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringL
 
     qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
 
-#if 1
     QEventLoop *loop = m_EventLoopMap.value(ReqName);
 
     if (loop && loop->isRunning()) {
@@ -922,12 +1111,6 @@ void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringL
         m_EventLoopMap.remove(ReqName);
 
     }
-#else
-    if (m_EventLoop.isRunning()) {
-        m_EventLoop.exit(Error);
-    }
-#endif
-
 }
 
 int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
@@ -939,19 +1122,12 @@ int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
     timer.setInterval(interval);
     timer.start();
 
-#if 1
     QEventLoop *loop = new QEventLoop();
     m_EventLoopMap.insert(ReqName, loop);
     CONNECTSIGNALSLOT(&timer, timeout(), loop, quit());
     ret = loop->exec();
 
     delete loop;
-#else
-    CONNECTSIGNALSLOT(&timer, timeout(), &m_EventLoop, quit());
-    ret = m_EventLoop.exec();
-
-    qDebug()<<"ServiceDeviceProcess::GetResponse -- ret = "<<ret;
-#endif
 
     return ret;
 }

@@ -983,63 +983,370 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
     bool QuickFlag = (bool) Params.at(0).toInt();
     bool WaterFlag = (bool) Params.at(1).toInt();
 
+    quint16 ControllerGain(0);
+    quint16 ResetTime(0);
+    quint16 DerivativeTime(0);
+    quint16 DropTemp(0);
+    quint16 MaxTemp(0);
+    quint16 TargetTemp(0);
 
+    if (WaterFlag) {
+        TargetTemp = 95;
+        MaxTemp = 112;
+        DropTemp = 10;
+    }
+    else {
+        TargetTemp = 115;
+        MaxTemp = 132;
+        DropTemp = 6;
+    }
+    if (QuickFlag) {
+        ControllerGain = 120;
+        ResetTime = 1212;
+        DerivativeTime = 80;
+    }
+    else {
+        ControllerGain = 200;
+        ResetTime = 1000;
+        DerivativeTime = 0;
+    }
+
+    (void) mp_TempLSensor->StopTemperatureControl();
+    bool Ret(false);
+
+    Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGain, ResetTime, DerivativeTime);
+    Ret |= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
+
+    if (Ret == false) {
+        mp_TempLSensor->StopTemperatureControl();
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
 }
 
 void ServiceTestHandler::LSStopHeating(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool Ret = mp_TempLSensor->StopTemperatureControl();
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
 }
 
 void ServiceTestHandler::LSGetTemp(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    qreal RetTemp = mp_TempLSensor->GetTemperature();
+
+    Results.append(QString("%1").arg(RetTemp));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 void ServiceTestHandler::LSGetCurrent(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    quint16 RetCurrent = mp_TempLSensor->GetCurrent();
+
+    Results.append(QString("%1").arg(RetCurrent));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
+void ServiceTestHandler::LSHeatingLevelSensor(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    bool WaterFlag = (bool) Params.at(0).toInt();
+    quint16 ControllerGainHigh(120);
+    quint16 ResetTimeHigh(1212);
+    quint16 DerivativeTimeHigh(80);
+    quint16 ControllerGainLow(200);
+    quint16 ResetTimeLow(1000);
+    quint16 DerivativeTimeLow(0);
+
+    quint16 DropTemp(0);
+    quint16 MaxTemp(0);
+    quint16 TargetTemp(0);
+    quint16 ExchangePIDTemp(0);
+    int WaitSeconds = 120;
+    int ReadyStatus(-1);
+    bool Ret(true);
+
+    if (WaterFlag) {
+        TargetTemp = 95;
+        MaxTemp = 112;
+        DropTemp = 10;
+        ExchangePIDTemp = 90;
+    }
+    else {
+        TargetTemp = 115;
+        MaxTemp = 132;
+        DropTemp = 6;
+        ExchangePIDTemp = 110;
+    }
+
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    mp_TempLSensor->StopTemperatureControl();
+    Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGainHigh, ResetTimeHigh, DerivativeTimeHigh);
+    Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
+
+    if (Ret == false) {
+        mp_TempLSensor->StopTemperatureControl();
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+        return ;
+    }
+
+    while(WaitSeconds){
+        if (mp_TempLSensor->GetTemperature() >= ExchangePIDTemp) {
+            ReadyStatus = 1;
+            break;
+        }
+        mp_Utils->Pause(1000);
+        WaitSeconds--;
+    }
+    (void)mp_TempLSensor->StopTemperatureControl();
+    if (ReadyStatus == -1) {
+
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+        return ;
+    }
+
+    Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGainLow, ResetTimeLow, DerivativeTimeLow);
+    Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
+
+    mp_Utils->Pause(1000);
+
+    while(WaitSeconds){
+        if (mp_TempLSensor->GetTemperature() > ExchangePIDTemp) {
+            ReadyStatus = 1;
+            break;
+        }
+        mp_Utils->Pause(1000);
+        WaitSeconds--;
+    }
+
+    if (ReadyStatus == -1) {
+        (void)mp_TempLSensor->StopTemperatureControl();
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+        return ;
+    }
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 
 void ServiceTestHandler::PumpBuildPressure(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+    float TargetPressure = Params.at(0).toFloat();
+
+    bool Ret(false);
+    if (TargetPressure > 0) {
+        Ret = mp_PressPump->SetTargetPressure(1, TargetPressure);
+    }
+    else {
+        Ret = mp_PressPump->SetTargetPressure(9, TargetPressure);
+    }
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
 }
 
 void ServiceTestHandler::PumpReleasePressure(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool Ret = mp_PressPump->ReleasePressure();
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
+}
+
+void ServiceTestHandler::PumpSetPressure(QString& ReqName, QStringList& Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+    quint8 Flag = Params.at(0).toInt();
+    float Pressure = Params.at(0).toFloat();
+
+    bool Ret = mp_PressPump->SetPressure(Flag, Pressure);
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
 }
 
 void ServiceTestHandler::PumpGetPressure(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    float Pressure = mp_PressPump->GetPressure();
+    Results.append(QString("%1").arg(Pressure));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 void ServiceTestHandler::PumpSetFan(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    quint8 Flag = Params.at(0).toInt();
+
+    bool Ret = mp_PressPump->SetFan(Flag);
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
 }
 
 void ServiceTestHandler::PumpSetValve(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    quint8 ValveIndex = Params.at(0).toInt();
+    quint8 ValveState = Params.at(1).toInt();
+
+    bool Ret = mp_PressPump->SetValve(ValveIndex, ValveState);
+
+    if (Ret) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+    }
+    else {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
+    }
 }
 
 void ServiceTestHandler::PumpStopCompressor(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    mp_PressPump->StopCompressor();
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 void ServiceTestHandler::PumpSucking(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    quint32 DelayTime = Params.at(0).toInt();
+    int Ret = mp_PressPump->Sucking(DelayTime);
+
+    Results.append(QString("%1").arg(Ret));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 void ServiceTestHandler::PumpDraining(QString& ReqName, QStringList& Params)
 {
+    QStringList Results;
+    Results.clear();
 
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    quint32 DelayTime = Params.at(0).toInt();
+    int Ret = mp_PressPump->Draining(DelayTime);
+
+    Results.append(QString("%1").arg(Ret));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
 void ServiceTestHandler::GetSlaveModuleReportError(QString& ReqName, QStringList& Params)
@@ -1193,6 +1500,51 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "RVGetHeaterSwitchType") {
         RVGetHeaterSwitchType(ReqName, Params);
     }
+    // Level sensor
+    else if (ReqName == "LSStartHeating") {
+        LSStartHeating(ReqName, Params);
+    }
+    else if (ReqName == "LSStopHeating") {
+        LSStopHeating(ReqName, Params);
+    }
+    else if (ReqName == "LSGetTemp") {
+        LSGetTemp(ReqName, Params);
+    }
+    else if (ReqName == "LSGetCurrent") {
+        LSGetCurrent(ReqName, Params);
+    }
+    else if (ReqName == "LSHeatingLevelSensor") {
+        LSHeatingLevelSensor(ReqName, Params);
+    }
+    // Pump
+    else if (ReqName == "PumpBuildPressure") {
+        PumpBuildPressure(ReqName, Params);
+    }
+    else if (ReqName == "PumpReleasePressure") {
+        PumpReleasePressure(ReqName, Params);
+    }
+    else if (ReqName == "PumpSetPressure") {
+        PumpSetPressure(ReqName, Params);
+    }
+    else if (ReqName == "PumpGetPressure") {
+        PumpGetPressure(ReqName, Params);
+    }
+    else if (ReqName == "PumpSetFan") {
+        PumpSetFan(ReqName, Params);
+    }
+    else if (ReqName == "PumpSetValve") {
+        PumpSetValve(ReqName, Params);
+    }
+    else if (ReqName == "PumpStopCompressor") {
+        PumpStopCompressor(ReqName, Params);
+    }
+    else if (ReqName == "PumpSucking") {
+        PumpSucking(ReqName, Params);
+    }
+    else if (ReqName == "PumpDraining") {
+        PumpDraining(ReqName, Params);
+    }
+    // other
     else if (ReqName == "GetSlaveModuleReportError") {
         GetSlaveModuleReportError(ReqName, Params);
     }

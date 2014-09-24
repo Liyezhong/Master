@@ -191,6 +191,12 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'PerformManufacturingTest' signal";
     }
 
+    // Refresh heating status to GUI
+   if (!connect(this, SIGNAL(RefreshTestStatustoMain(QString, Service::ModuleTestStatus)),
+                mp_GUIStartup, SLOT(RefreshTestStatus(QString, Service::ModuleTestStatus)))) {
+       qDebug() << "CStartup: cannot connect 'RefreshTestStatustoMain' signal";
+   }
+
     if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
                  mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
         qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";

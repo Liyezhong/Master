@@ -120,22 +120,23 @@ public:
     int LSStartHeating(bool QuickFlag, bool WaterFlag);
     int LSStopHeating();
     int LSGetTemp(qreal *RetTemp);
-    int LSGetCurrent(qreal *RetCurrent);
+    int LSGetCurrent(quint16 *RetCurrent);
+    int LSHeatingLevelSensor(bool WaterFlag);
 
     int PumpBuildPressure(float TargetPressure);
     int PumpReleasePressure();
+    int PumpSetPressure(quint8 Flag, float Pressure);
     int PumpGetPressure(float *RetPressure);
-    int PumpSetFan(bool OnFlag);
+    int PumpSetFan(quint8 OnFlag);
     int PumpSetValve(quint8 ValveIndex, quint8 ValveState);
     int PumpStopCompressor();
-    int PumpSucking(int DelayTime);
-    int PumpDraining();
+    int PumpSucking(quint32 DelayTime);
+    int PumpDraining(quint32 DelayTime);
 
     int GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName);
     void Pause(quint32 MillSeconds);
 
 private:
-    QEventLoop                      m_EventLoop;
     QMap<QString, QEventLoop*>       m_EventLoopMap;
     QMap<QString, QStringList>      m_ResultsMap;
     bool                            m_IsInitialized;
