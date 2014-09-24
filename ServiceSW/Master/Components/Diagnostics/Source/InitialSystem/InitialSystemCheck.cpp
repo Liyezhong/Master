@@ -59,7 +59,7 @@ int CInitialSystemCheck::Run(void)
 
     Ret = MainsRelayTest->Run();
 
-    Ret = RETURN_OK; // only for test
+    //Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
     delete MainsRelayTest;
@@ -74,7 +74,7 @@ int CInitialSystemCheck::Run(void)
     CACVoltageTest *ACVoltageTest = new CACVoltageTest(mp_Parent);
     Ret = ACVoltageTest->Run();
 
-    Ret = RETURN_OK; // only for test
+    //Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
     delete ACVoltageTest;
