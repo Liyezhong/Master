@@ -1165,13 +1165,15 @@
 		</Event>
 		<Event Code="" ErrorID="513040005" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103040005" RDStringID="113040005" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103040005" RDStringID="113040005" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040006" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103040006" RDStringID="113040006" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103040006" RDStringID="113040006" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513030001" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="2"/>
