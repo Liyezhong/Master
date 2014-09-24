@@ -20,6 +20,9 @@ PRE_TARGETDEPS  += /usr/local/lib/gmock/libgmock.a
 LIBS            += /usr/local/lib/gmock/libgmock.a
 PRE_TARGETDEPS  += /usr/local/lib/gtest/libgtest.a
 LIBS            += /usr/local/lib/gtest/libgtest.a
+
+
 	
 UseLibs(Core ServiceMasterThreadController ServiceDataManager ServiceDeviceController)
 UsePlatformLibs(Threads EventHandler Global DataManager NetCommands StateMachines NetworkComponents DeviceControl DeviceCommandProcessor GPIOManager DataLogging ExternalProcessController ExportController PasswordManager)
+LIBS            += -ldl

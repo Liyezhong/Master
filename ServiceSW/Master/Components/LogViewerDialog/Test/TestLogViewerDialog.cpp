@@ -111,7 +111,7 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
 
     CLogContentDlg *p_LogContentDlg = new LogViewer::CLogContentDlg(HeaderLabels, Columns, p_MainWindow);
     //CLogFilter *p_LogFilter = new LogViewer::CLogFilter(LogFileNamePath, Columns, true);
-    CServiceHelpTextFilter * p_ServiceHelpTextFilter = new LogViewer::CServiceHelpTextFilter(RecActionPath);
+//    CServiceHelpTextFilter * p_ServiceHelpTextFilter = new LogViewer::CServiceHelpTextFilter(RecActionPath);
     LogViewer::CSystemLogViewerDlg *p_SystemLogViewerDlg = new LogViewer::CSystemLogViewerDlg(p_MainWindow);
 
 
@@ -126,8 +126,8 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
    // QVERIFY(!FileInfo.empty());
 
     //Test CServiceHelpTextFilter class member functions
-    QString EventId = "17825801";
-    p_ServiceHelpTextFilter->GetServiceHelpText(EventId);
+//    QString EventId = "17825801";
+//    p_ServiceHelpTextFilter->GetServiceHelpText(EventId);
 
 
     //Test CSystemLogViewerDlg class member functions
@@ -142,8 +142,6 @@ void CTestLogViewerDialog::utTestLogViewerDialog()
 
     delete p_SystemLogViewerDlg;
     p_SystemLogViewerDlg = NULL;
-    delete p_ServiceHelpTextFilter;
-    p_ServiceHelpTextFilter = NULL;
     //delete p_LogFilter;
     //p_LogFilter = NULL;
     delete p_LogContentDlg;

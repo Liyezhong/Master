@@ -10,4 +10,6 @@ DEPENDPATH += ../../../../
 	
 UseLibs(Core ServiceMasterThreadController ServiceDataManager)
 UsePlatformGUILibs(MainMenu Application)
-UsePlatformLibs(Threads EventHandler Global DataManager NetCommands StateMachines NetworkComponents DeviceControl GPIOManager ImportExport DataLogging ExternalProcessController ExportController PasswordManager)
+UsePlatformLibs(Threads EventHandler Global DataManager NetCommands StateMachines NetworkComponents DeviceControl GPIOManager  DataLogging ExternalProcessController ExportController PasswordManager)
+UsePlatformServiceLibs(ServiceImportExport)
+#ServiceImportExport

@@ -59,14 +59,15 @@ public:
      */
     /****************************************************************************/
     int Run(void);
-private:
+
+protected:
     /****************************************************************************/
     /*!
      *  \brief To show/close waiting dialog
      *  \iparam ShowFlag = true to show and flase to close the dialog
      */
     /****************************************************************************/
-    void ShowWaitingMessage(bool ShowFlag=true);
+    virtual void ShowWaitingMessage(bool ShowFlag=true);
 
     /****************************************************************************/
     /*!
@@ -74,14 +75,14 @@ private:
      *  \iparam Error = the error type
      */
     /****************************************************************************/
-    void ShowFailMessage(int Error);
+    virtual void ShowFailMessage(int Error);
 
     /****************************************************************************/
     /*!
      *  \brief To get current switch type
      */
     /****************************************************************************/
-    int GetCurrentSwitchType();
+    virtual int GetCurrentSwitchType();
 };
 
 } // namespace InitialSystem

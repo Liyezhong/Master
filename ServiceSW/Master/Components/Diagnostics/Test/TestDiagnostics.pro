@@ -5,6 +5,8 @@ CONFIG   += console
 SOURCES  += TestDiagnostics.cpp
 TEMPLATE  = app
 
+#HEADERS = ../Include/*
+
 
 INCLUDEPATH += ../../ \
                ../../../../../../Shared/Master/Components \
@@ -15,7 +17,7 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Core ServiceDataManager Diagnostics)
+UseLibs(Core ServiceDataManager Diagnostics DiagnosticsManufacturing)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global)
 # UseSharedLibs(HimalayaDataContainer)

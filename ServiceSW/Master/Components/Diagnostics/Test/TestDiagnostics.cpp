@@ -34,11 +34,266 @@
 //#include <Diagnostics/Include/SoftSwitch.h>
 //#include <Diagnostics/Include/WaterStations.h>
 //#include <Diagnostics/Include/XMovement.h>
+#include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
+#include "Diagnostics/Include/InitialSystem/MainsRelayTest.h"
+#include "Diagnostics/Include/InitialSystem/OvenPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
+#include "Diagnostics/Include/InitialSystem/RVPreTest.h"
+#include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
+#include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
 #include <QObject>
 #include <QMessageBox>
 #include <QMainWindow>
+#include "Global/Include/SystemPaths.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 namespace Diagnostics {
+
+namespace InitialSystem {
+class LTubePreUT : public CLTubePreTest
+{
+    Q_OBJECT
+public:
+
+    LTubePreUT()
+        : CLTubePreTest(NULL)
+    {
+    }
+
+    ~LTubePreUT()
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief The function for start pre heating
+     */
+    /****************************************************************************/
+    void StartPreHeating()
+    {
+
+    }
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+};
+
+class MainsRelayUT : public CMainsRelayTest
+{
+    Q_OBJECT
+public:
+
+    MainsRelayUT()
+        : CMainsRelayTest(NULL)
+    {
+    }
+
+    ~MainsRelayUT()
+    {
+    }
+
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+};
+
+class OvenPreUT : public COvenPreTest
+{
+    Q_OBJECT
+public:
+
+    OvenPreUT()
+        : COvenPreTest(NULL)
+    {
+    }
+
+    ~OvenPreUT()
+    {
+    }
+
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+};
+
+class RetortPreUT : public CRetortPreTest
+{
+    Q_OBJECT
+public:
+
+    RetortPreUT()
+        : CRetortPreTest(NULL)
+    {
+    }
+
+    ~RetortPreUT()
+    {
+    }
+
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+};
+
+class RVPreUT : public CRVPreTest
+{
+    Q_OBJECT
+public:
+
+    RVPreUT()
+        : CRVPreTest(NULL)
+    {
+    }
+
+    ~RVPreUT()
+    {
+    }
+
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+};
+
+
+class ACVoltageUT : public CACVoltageTest
+{
+    Q_OBJECT
+public:
+
+    ACVoltageUT()
+        : CACVoltageTest(NULL)
+    {
+    }
+
+    ~ACVoltageUT()
+    {
+    }
+
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show/close waiting dialog
+     *  \iparam ShowFlag = true to show and flase to close the dialog
+     */
+    /****************************************************************************/
+    void ShowWaitingMessage(bool ShowFlag=true)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show the fail message dialog
+     *  \iparam Error = the error type
+     */
+    /****************************************************************************/
+    void ShowFailMessage(int ErrorCode)
+    {
+    }
+
+    int GetCurrentSwitchType()
+    {
+        return 1;
+    }
+
+};
+
+}
 
 /****************************************************************************/
 /**
@@ -80,14 +335,64 @@ private slots:
     /****************************************************************************/
     void utTestDiagnostics();
 
-//private:
-//    QEventLoop m_LoopTest;
-//    int eventLoop();
+    void LTubePreTest();
+    void MainsRelayTest();
+
+    void RetortPreTest();
+    void RVPreTest();
+    void ACVoltageTest();
+    void OvenPreTest();
 
 }; // end class CTestDiagnostics
 
 /****************************************************************************/
 void CTestDiagnostics::initTestCase() {
+    Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
+    Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
+    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfigSVC.xml";
+    DataManager::CTestCaseFactory::ServiceInstance().InitData(FileName);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::LTubePreTest()
+{
+    InitialSystem::LTubePreUT ut;
+    QVERIFY(ut.Run() != 1);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::MainsRelayTest()
+{
+    InitialSystem::MainsRelayUT ut;
+    QVERIFY(ut.Run() != 1);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::OvenPreTest()
+{
+    InitialSystem::OvenPreUT ut;
+    QVERIFY(ut.Run() != 1);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::RetortPreTest()
+{
+    InitialSystem::RetortPreUT ut;
+    QVERIFY(ut.Run() != 1);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::RVPreTest()
+{
+    InitialSystem::RVPreUT ut;
+    QVERIFY(ut.Run() != 1);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::ACVoltageTest()
+{
+    InitialSystem::ACVoltageUT ut;
+    QVERIFY(ut.Run() != 1);
 }
 
 /****************************************************************************/
