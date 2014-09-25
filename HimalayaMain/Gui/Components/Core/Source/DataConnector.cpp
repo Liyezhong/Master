@@ -1801,6 +1801,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit OvenCoverOpen();
         }
         break;
+        case DataManager::RETORT_COVER_OPERN:
+        {
+            emit RetortCoverOpen();
+        }
+        break;
         case DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING:
         {
             emit TakeoutSpecimenWaitRunCleaning();

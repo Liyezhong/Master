@@ -37,6 +37,7 @@ namespace DataManager {
         PROGRAM_DRAIN,
         PROGRAM_DRAIN_SR,
         PROGRAM_OVEN_COVER_OPEN,
+        PROGRAM_RETORT_COVER_OPEN,
         PROGRAM_UNDEFINED
     } ProgramActionType_t;
 /****************************************************************************/
@@ -92,6 +93,7 @@ typedef enum  {
 
         TISSUE_PROTECT_PASSED,
 		OVEN_COVER_OPEN,
+        RETORT_COVER_OPERN,
         TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING
     } ProgramAcknownedgeType_t;
 /****************************************************************************/

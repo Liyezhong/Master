@@ -1453,7 +1453,7 @@ protected:
          *  \return void
          */
         /****************************************************************************/
-        void SendOvenCoverOpenMsg();
+        void SendCoverLidOpenMsg();
     };
 
 } // EONS ::Scheduler

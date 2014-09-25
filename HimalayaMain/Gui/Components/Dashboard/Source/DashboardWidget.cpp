@@ -113,6 +113,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, OvenCoverOpen(),
                       this, OnOvenCoverOpen());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortCoverOpen(),
+                      this, OnRetortCoverOpen());
+
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramAborted(),
                       this, OnProgramAborted());
 
@@ -277,6 +280,21 @@ void CDashboardWidget::OnOvenCoverOpen()
     }
 }
 
+void CDashboardWidget::OnRetortCoverOpen()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Critical);
+    mp_MessageDlg->SetTitle(CommonString::strOK);
+    QString strTemp(m_strRetortCoverOpen);
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+
+    if (mp_MessageDlg->exec())
+    {
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_RETORT_COVER_OPEN);
+        return;
+    }
+}
 
 void CDashboardWidget::OnProgramBeginAbort()
 {
@@ -935,6 +953,7 @@ void CDashboardWidget::RetranslateUI()
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, please take out of tissues", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover was opened, please close it and then click OK button", 0, QApplication::UnicodeUTF8);
+    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort cover or lid was opened, please close it and then click OK button", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

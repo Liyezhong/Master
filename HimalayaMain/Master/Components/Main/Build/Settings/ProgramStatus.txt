@@ -1,2 +1,2 @@
-LastRVPosition:1
-ProgramFinished:No
+LastRVPosition:25
+ProgramFinished:Yes

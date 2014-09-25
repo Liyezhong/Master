@@ -290,7 +290,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Pause
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsPause()), mp_ErrorRsPauseState.data());
-    CONNECTSIGNALSLOT(mp_ErrorRsPauseState.data(), entered(), mp_SchedulerThreadController, SendOvenCoverOpenMsg());
+    CONNECTSIGNALSLOT(mp_ErrorRsPauseState.data(), entered(), mp_SchedulerThreadController, SendCoverLidOpenMsg());
     mp_ErrorRsPauseState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_RV_WaitingTempUp

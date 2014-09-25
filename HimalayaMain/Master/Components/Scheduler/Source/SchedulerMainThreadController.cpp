@@ -1361,6 +1361,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_OVEN_COVER_OPEN;
         }
+        if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_RETORT_COVER_OPEN)
+        {
+            return CTRL_CMD_RETORT_COVER_OPEN;
+        }
     }
 
     NetCommands::CmdSystemAction* pCmdSystemAction = dynamic_cast<NetCommands::CmdSystemAction*>(pt.GetPointerToUserData());
@@ -1839,12 +1843,22 @@ void SchedulerMainThreadController::SendTissueProtectMsg()
     }
 
 }
-void SchedulerMainThreadController::SendOvenCoverOpenMsg()
+void SchedulerMainThreadController::SendCoverLidOpenMsg()
 {
-    MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
-    Q_ASSERT(CmdOvenCoverOpen);
-    Global::tRefType fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(CmdOvenCoverOpen));
+    if(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN == m_CurErrEventID)
+    {
+        MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
+        Q_ASSERT(CmdOvenCoverOpen);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(CmdOvenCoverOpen));
+    }
+    else if(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == m_CurErrEventID)
+    {
+        MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+        Q_ASSERT(CmdRetortCoverOpen);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+    }
 }
 
 /**
@@ -2609,6 +2623,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            SendCoverLidOpenMsg();
         }
         if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
 		{

@@ -156,6 +156,7 @@ private:
     QString m_strCleaningProgramComplete;
     QString m_strTissueProtectPassed;
     QString m_strOvenCoverOpen;
+    QString m_strRetortCoverOpen;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
@@ -220,13 +221,19 @@ private slots:
     /****************************************************************************/
     void OnTissueProtectPassed();
 
-
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnOvenCoverOpen
      */
     /****************************************************************************/
     void OnOvenCoverOpen();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnRetortCoverOpen
+     */
+    /****************************************************************************/
+    void OnRetortCoverOpen();
 
     /****************************************************************************/
     /*!
