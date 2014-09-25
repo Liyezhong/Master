@@ -1002,9 +1002,48 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::RVReqMoveToRVPosition" == cmdName))
+            if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALReleasePressure" == cmdName) )
+            {
+                RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+                if(RV_UNDEF != targetPos)
+                {
+                    if((m_PositionRV != targetPos))
+                    {
+                        LogDebug(QString("Aborting program, send cmd to DCL to move RV to %1").arg(targetPos));
+                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
+                        cmd->SetRVPosition(targetPos);
+                        m_SchedulerCommandProcessor->pushCmd(cmd);
+                    }
+                    else if(PSSM_FILLING == m_CurrentStepState)
+                    {
+                        //if Filling must stop filling
+                        CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, this);
+                        ALStopCmd->SetCmdType(0);
+                        m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
+                    }
+                    else
+                    {
+                        if(m_SchedulerMachine->GetPreviousState() != PSSM_DRAINING)
+                        {
+                            this->Drain();
+                        }
+                        else
+                        {
+                            LogDebug("Already in draining process, abort will happen when draining finished.");
+                        }
+                    }
+                }
+            }
+            else if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALStopCmdExec" == cmdName) )
             {
                 this->Drain();
+            }
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::RVReqMoveToRVPosition" == cmdName))
+            {
+                if(IsRVRightPosition(0))
+                {
+                    this->Drain();
+                }
             }
             else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::ALDraining" == cmdName))
             {
@@ -2733,12 +2772,9 @@ void SchedulerMainThreadController::ReleasePressure()
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
-    if(m_TimeStamps.CurStepSoakStartTime == 0)
-    {
-        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-        m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
-        m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    }
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+    m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+    m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     //m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
@@ -3368,28 +3404,7 @@ bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemp
 
 void SchedulerMainThreadController::Abort()
 {
-    RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-    if(RV_UNDEF != targetPos)
-    {
-        if((m_PositionRV != targetPos))
-        {
-            LogDebug(QString("Aborting program, send cmd to DCL to move RV to %1").arg(targetPos));
-            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
-            cmd->SetRVPosition(targetPos);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
-        }
-        else
-        {
-            if(m_SchedulerMachine->GetPreviousState() != PSSM_DRAINING)
-            {
-                this->Drain();
-            }
-            else
-            {
-                LogDebug("Already in draining process, abort will happen when draining finished.");
-            }
-        }
-    }
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
 }
 
 
