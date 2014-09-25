@@ -83,6 +83,8 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, RefreshHeatingStatus(Service::InitialSystemTestType),
                       this, OnRefreshHeatingStatus(Service::InitialSystemTestType));
 
+    CONNECTSIGNALSLOT(mp_InitialSystemCheck, PreTestFinished(), this, FinishedCheck());
+
     CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
     CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), mp_InitialSystemCheck, RetortPreHeating());
 
@@ -184,7 +186,7 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         mp_Ui->mrChcekLable->setPixmap(SetPixmap);
 
         if (Ret == RETURN_OK) {
-            mp_Ui->voltageTestLabel->setText(tr("AC voltage auto-switch self test..."));
+            mp_Ui->voltageTestLabel->setText(tr("AC voltage selection self test..."));
         }
         else {
             mp_Ui->mainDisplayBtn->setEnabled(true);
@@ -194,7 +196,7 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
 
         if (Ret == RETURN_OK) {
-            mp_Ui->preTestLabel->setText(tr("Pre-test ..."));
+            mp_Ui->preTestLabel->setText(tr("Pre-test..."));
         }
         else {
             mp_Ui->mainDisplayBtn->setEnabled(true);
@@ -214,12 +216,16 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         if (Ret == RETURN_OK) {
             mp_Ui->retortHeatingBtn->setEnabled(true);
         }
-        mp_Ui->mainDisplayBtn->setEnabled(true);
         break;
     default:
         qDebug()<<"invalid initial test module.";
         return;
     }
+}
+
+void CInitialSystem::FinishedCheck(void)
+{
+    mp_Ui->mainDisplayBtn->setEnabled(true);
 }
 
 void CInitialSystem::UpdateOvenHeatingStatus()

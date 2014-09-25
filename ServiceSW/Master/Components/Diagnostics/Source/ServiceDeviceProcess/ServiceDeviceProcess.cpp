@@ -711,7 +711,7 @@ int ServiceDeviceProcess::RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2
             *RetTempSensor1 = Results.at(0).toFloat();
         }
         if (RetTempSensor2) {
-            *RetTempSensor2 = Results.at(0).toFloat();
+            *RetTempSensor2 = Results.at(1).toFloat();
         }
     }
     m_ResultsMap.remove(ReqName);

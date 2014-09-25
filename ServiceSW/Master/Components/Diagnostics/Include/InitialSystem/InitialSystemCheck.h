@@ -98,6 +98,13 @@ signals:
     /****************************************************************************/
     void RefreshHeatingStatus(Service::InitialSystemTestType Type);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for finished all pre test.
+     */
+    /****************************************************************************/
+    void PreTestFinished();
+
 private:
     /****************************************************************************/
     /*!
@@ -116,7 +123,8 @@ private:
 private:
     Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     int                        m_ParaffinMeltPoint; //!< Store the paraffin melting point.
-    bool                       m_IsEmptyInRetort;//!< The flag for retort condition.
+    bool                       m_IsEmptyInRetort;   //!< The flag for retort condition of empty.
+    bool                       m_IsParaffinInRetort;//!< The flag for retort condition of paraffin.
 };
 
 } // namespace InitialSystem

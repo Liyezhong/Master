@@ -101,7 +101,7 @@ int CASBTest::Run(void)
             arg(CurrentResult).arg(Current).arg(CurrentRangeLow).arg(CurrentRangeHigh);
     Text.append(CurrentText);
 
-    QString Title = QString("ASB %1").arg(SlaveType);
+    QString Title = QString("ASB%1").arg(SlaveType);
 
     ShowMessage(Title, Text, Ret);
 

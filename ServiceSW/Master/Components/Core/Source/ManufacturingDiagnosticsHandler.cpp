@@ -423,7 +423,8 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemSealing()
     dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_RETEST);
     dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_ABORT);
 
-    int ret = dlg->exec();
+    int ret = dlg->exec();  
+    delete dlg;
 
     if (ret == 0) {
         return true;

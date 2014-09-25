@@ -41,7 +41,8 @@ CInitialSystemCheck::CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConne
     : CTestBase(p_Parent),
       mp_DataConnector(p_DataConnector),
       m_ParaffinMeltPoint(0),
-      m_IsEmptyInRetort(false)
+      m_IsEmptyInRetort(false),
+      m_IsParaffinInRetort(false)
 {
 
 }
@@ -128,10 +129,14 @@ int CInitialSystemCheck::Run(void)
 
     qDebug()<<"Start retort pre-test";
 
-    CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
-    Ret = RetortPreTest->Run();
-    emit RefreshStatusToGUI(Service::INITIAL_RETORT, Ret);
-    delete RetortPreTest;
+    if (m_IsParaffinInRetort) {
+        CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
+        Ret = RetortPreTest->Run();
+        emit RefreshStatusToGUI(Service::INITIAL_RETORT, Ret);
+        delete RetortPreTest;
+    }
+
+    emit PreTestFinished();
 
     return Ret;
 }
@@ -152,7 +157,9 @@ void CInitialSystemCheck::SelectRetortCondition()
 void CInitialSystemCheck::ConfirmParaffinBath(void)
 {
     int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
-    QString Text = QString("Current paraffin melting point is %1. If correct, press 'Yes'. If incorrect,press 'No', then select the correct paraffinmelting point").arg(ParaffinBath);
+
+    QString Text = QString("Current paraffin melting point is %1\260C. If correct, press 'Yes'. If incorrect,"
+                           " press 'No', then select the correct paraffin melting point").arg(ParaffinBath);
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
 
     dlg->SetTitle(MSG_TITLE);
@@ -196,7 +203,10 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
 
     dlg->setModal(true);
     int Ret = dlg->exec();
-    if ( Ret != 0 && m_IsEmptyInRetort) {
+    if (Ret == 0) {
+        m_IsParaffinInRetort = true;
+    }
+    else if (m_IsEmptyInRetort) {
         Ret = 2;
     }
 

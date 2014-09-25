@@ -115,7 +115,7 @@ void CACVoltageTest::ShowFailMessage(int Error)
     QString Title = "AC Voltage Selection Self-test";
     QString Text;
     if (Error == 1) {
-        Text = "AC Voltage Selection Selftest Failed. <br>Please check " \
+        Text = "AC Voltage Selection Self-test Failed. <br>Please check " \
                 "if mains input voltage is within [198-253V AC] or [90-132V AC]." \
                 "Alternatively check resistance of Retort bottom heater, cable and function of ASB5." \
                 "Resolve the issue accordingly and restart service software.<br>" \
@@ -124,7 +124,7 @@ void CACVoltageTest::ShowFailMessage(int Error)
                 "by the user unless this error is resolved";
     }
     else if (Error == 2) {
-        Text = "AC Voltage Selection Selftest Failed.<br>" \
+        Text = "AC Voltage Selection Self-test Failed.<br>" \
                 "Please check if mains input voltage is within [198-253V AC] or [90-132V AC]. " \
                 "Alternatively check resistance of Retort bottom heater, cable and function of ASB3." \
                 "Resolve the issue accordingly and restart service software.<br>" \
