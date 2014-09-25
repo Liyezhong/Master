@@ -1509,9 +1509,6 @@
     <event eventid="500050011">
         <error errorid="513050010">
             <scenario type="single" id="200"/>
-        </error>
-        <error errorid="513050011">
-            <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="217"/>
             <scenario type="single" id="221"/>
             <scenario type="range" startid="252" endid="257"/>

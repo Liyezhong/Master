@@ -1275,7 +1275,11 @@ protected:
          *  \return void
          */
         /****************************************************************************/
-        void SetCurrentStationID(const QString& StationID) { m_CurProgramStepInfo.stationID = StationID; }
+        void UpdateCurProgramStepInfo(const QString& StationID, const QString& ReagentGroup)
+        {
+            m_CurProgramStepInfo.stationID = StationID;
+            m_CurProgramStepInfo.reagentGroup = ReagentGroup;
+        }
         /****************************************************************************/
         /*!
          *  \brief  Set current step state
@@ -1284,6 +1288,15 @@ protected:
          */
         /****************************************************************************/
         void SetCurrentStepState(SchedulerStateMachine_t stepState) { m_CurrentStepState = stepState; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Get current step state
+         *  \param  void
+         *  \return Current step state
+         */
+        /****************************************************************************/
+        SchedulerStateMachine_t GetCurrentStepState() { return m_CurrentStepState; }
 
         /****************************************************************************/
         /*!

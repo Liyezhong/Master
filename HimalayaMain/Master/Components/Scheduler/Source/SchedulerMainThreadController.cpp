@@ -1824,6 +1824,8 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
 void SchedulerMainThreadController::SendTissueProtectMsg()
 {
+    // Once we get safe reagent done, we need always run cleaning program
+    m_NeedEnterClean = true;
     if (false == m_CmdDrainSR_Click)
     {
         MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
@@ -1835,6 +1837,7 @@ void SchedulerMainThreadController::SendTissueProtectMsg()
     {
         m_CmdDrainSR_Click = false;
     }
+
 }
 void SchedulerMainThreadController::SendOvenCoverOpenMsg()
 {

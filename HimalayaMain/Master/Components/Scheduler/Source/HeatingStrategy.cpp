@@ -172,6 +172,20 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
+        // Add sepcial handling for safe reagent (in Scheduler's PSSM_PROCESSING_SR state)
+        if (mp_SchedulerController->GetCurrentStepState() == PSSM_PROCESSING_SR)
+        {
+            if (m_CurScenario >= 272 && m_CurScenario <=277)
+            {
+                //do nothing
+            }
+            else // no-paraffin safe reagent, we should stop retort heating
+            {
+                this->StopTemperatureControl("RTSide");
+                this->StopTemperatureControl("RTBottom");
+            }
+        }
+
     }
 
     // For Level Sensor, we need set two times (high and low) in each scenario
@@ -286,12 +300,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         //Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if (strctHWMonitor.TempALTube1 < userInputMeltingPoint)
+        if (strctHWMonitor.TempALTube1 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
         }
 
-        if (strctHWMonitor.TempALTube2 < userInputMeltingPoint)
+        if (strctHWMonitor.TempALTube2 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
         }

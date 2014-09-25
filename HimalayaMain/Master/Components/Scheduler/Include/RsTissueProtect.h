@@ -226,6 +226,7 @@ private:
 
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
+    QString m_ReagentGroup;                                 //!< Reagent group
     quint8 m_DrainCurReagentSeq;                            //!< Sequnece of draining current reagent
     quint8 m_MoveToTubeSeq;                                 //!< Sequnece of Moving to tube
     quint8 m_FillSeq;                                       //!< Sequence of Filling

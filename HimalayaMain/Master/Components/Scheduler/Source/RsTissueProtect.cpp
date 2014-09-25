@@ -438,7 +438,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
             }
-            mp_SchedulerController->SetCurrentStationID(m_StationID);
+            mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
             emit TasksDone(true);
         }
         else
@@ -572,18 +572,22 @@ QString CRsTissueProtect::GetStationID()
     case Fixation:
     case Fixation_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG1", stationList);
+        m_ReagentGroup = "RG1";
         break;
     case Concentration_Dehydration:
     case Concentration_Dehydration_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG3", stationList);
+        m_ReagentGroup = "RG3";
         break;
     case Clearing:
     case Clearing_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG5", stationList);
+        m_ReagentGroup = "RG5";
         break;
     case Paraffin:
     case Paraffin_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG6", stationList);
+        m_ReagentGroup = "RG6";
         break;
     default:
         break;
