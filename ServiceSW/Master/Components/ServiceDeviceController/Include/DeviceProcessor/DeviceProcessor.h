@@ -106,45 +106,6 @@ public slots:
      */
     /****************************************************************************/
     void OnAbortTest(Global::tRefType Ref, quint32 id);
-    /****************************************************************************/
-    /**
-     * \brief Handle Command of type CmdHeatingTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnHeatingTest(Global::tRefType Ref, quint32 id,
-                         quint8 HeaterIndex, quint8 CmdType);
-    /****************************************************************************/
-    /**
-     * \brief Handle Command of type CmdRotaryValveTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnRotaryValveTest(Global::tRefType Ref, quint32 id,
-                         qint32 Postion, quint8 CmdType);
-    /****************************************************************************/
-    /**
-     * \brief Handle Command of type CmdLSensorDetectingTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
-                         qint32 Position);
-
-    /****************************************************************************/
-    /**
-     * \brief Calibrate Device, currently only calibrate pressure sensor for Himalaya
-     *
-     * \iparam       CmdType            Command type
-     */
-    /****************************************************************************/
-    void OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType);
 
     /****************************************************************************/
     /**
@@ -207,83 +168,12 @@ signals:
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 private:
-
-    /****************************************************************************/
-    /**
-     * \brief To Test heating of rotary valve
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     */
-    /****************************************************************************/
-    qint32 TestRVHeating(quint32 DeviceId);
-    /****************************************************************************/
-    /**
-     * \brief To Test heating of oven
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     */
-    /****************************************************************************/
-    qint32 TestOvenHeating(quint32 DeviceId);
-    /****************************************************************************/
-    /**
-     * \brief To Test heating of level sensor
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     */
-    /****************************************************************************/
-    qint32 TestLSensorHeating(quint32 DeviceId);
-    /****************************************************************************/
-    /**
-     * \brief To Test heating of tube1/tube2
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     * \param[in]       TubeIndex           Index of Tube
-     */
-    /****************************************************************************/
-    qint32 TestTubeHeating(quint32 DeviceId, quint8 TubeIndex);
-    /****************************************************************************/
-    /**
-     * \brief Move rotary valve to initial position
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     */
-    /****************************************************************************/
-    qint32 TestLSensorDetecting(quint32 DeviceId, qint32 Position);
-    /****************************************************************************/
-    /**
-     * \brief To Test detecting of level sensor
-     *
-     * \param[in]       DeviceId            Device Instance ID
-     ** \param[in]      Position            Tube position for sucking
-     */
-    /****************************************************************************/
-    qint32 MoveRVToInitPos(quint32 DeviceId);
-    qint32 MoveRVToTubePos(quint32 DeviceId, qint32 Pos);
-    qint32 MoveRVToSealPos(quint32 DeviceId, qint32 Pos);
-
-
-
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
-    bool                        m_ExhaustInit;
-    bool                        m_WaterDeviceInit;
-    bool                        m_HoodDeviceInit;
-    bool                        m_DeviceLightInit;
+
     bool                        m_UserAbort;
     WrapperUtils*               mp_Utils;
-    // Temperature control modules
-    WrapperFmTempControl*       mp_TempRV;
-    WrapperFmTempControl*       mp_TempRetortSide;
-    WrapperFmTempControl*       mp_TempRetortBottom;
-    WrapperFmTempControl*       mp_TempOvenTop;
-    WrapperFmTempControl*       mp_TempOvenBottom;
-    WrapperFmTempControl*       mp_TempLSensor;
-    WrapperFmTempControl*       mp_TempTube1;
-    WrapperFmTempControl*       mp_TempTube2;
-    // Stepper motor module
-    WrapperFmStepperMotor*      mp_MotorRV;
-    // Pressure control module
-    WrapperFmPressureControl*   mp_PressPump;
+
     ManufacturingTestHandler*   mp_ManufacturingTestHandler; //!< Manufacturing Test Handler helper class
 
     ServiceTestHandler*         mp_ServicecTestHandler;

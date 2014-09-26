@@ -140,29 +140,11 @@ void ServiceDeviceController::ConnectSignalsnSlots()
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnAbortTest' signal";
     }
 
-    if (!connect(this, SIGNAL(SDC_HeatingTest(Global::tRefType,DeviceControl::DevInstanceID_t,quint8,quint8)),
-                 mp_DeviceProcessor, SLOT(OnHeatingTest(Global::tRefType,DeviceControl::DevInstanceID_t,quint8,quint8)))) {
-        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnHeatingTest' signal";
-    }
-
-    if (!connect(this, SIGNAL(SDC_RotaryValveTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32,quint8)),
-                 mp_DeviceProcessor, SLOT(OnRotaryValveTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32,quint8)))) {
-        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnRotaryValveTest' signal";
-    }
-
-    if (!connect(this, SIGNAL(SDC_LSensorDetectingTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32)),
-                 mp_DeviceProcessor, SLOT(OnLSensorDetectingTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32)))) {
-        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnLSensorDetectingTest' signal";
-    }
-
     if (!connect(mp_DeviceProcessor, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)),
                  this, SLOT(ReturnCalibrationInitMessagetoMain(QString,bool)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnCalibrationInitMessagetoMain' signal";
     }
-    if (!connect(this, SIGNAL(CalibrateDevice(Service::DeviceCalibrationCmdType)),
-                 mp_DeviceProcessor, SLOT(OnCalibrateDevice(Service::DeviceCalibrationCmdType)))) {
-        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'CalibrateDevice' signal";
-    }
+
 
     // for Manufacturing Diagnostic
     if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)),
@@ -200,25 +182,10 @@ void ServiceDeviceController::ConnectSignalsnSlots()
 void ServiceDeviceController::RegisterCommands(){
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, ServiceDeviceController>
             (&ServiceDeviceController::OnAcknowledge, this);
-#if 0
-    RegisterCommandForProcessing<DataManager::CmdGetProcessSettingsDataContainer, ServiceDeviceController>(
-            &ServiceDeviceController::OnGetProcessSettingsDataContainer, this);
-#endif
 
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdAbortTest, ServiceDeviceController>
             (&ServiceDeviceController::OnSDC_AbortTest, this);
 
-    RegisterCommandForProcessing<DeviceCommandProcessor::CmdHeatingTest, ServiceDeviceController>
-            (&ServiceDeviceController::OnSDC_HeatingTest, this);
-
-    RegisterCommandForProcessing<DeviceCommandProcessor::CmdRotaryValveTest, ServiceDeviceController>
-            (&ServiceDeviceController::OnSDC_RotaryValveTest, this);
-
-    RegisterCommandForProcessing<DeviceCommandProcessor::CmdLSensorDetectingTest, ServiceDeviceController>
-            (&ServiceDeviceController::OnSDC_LSensorDetectingTest, this);
-
-    RegisterCommandForProcessing<DeviceCommandProcessor::CmdCalibrateDevice, ServiceDeviceController>
-            (&ServiceDeviceController::OnCmdCalibrateDevice, this);
 
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdModuleManufacturingTest, ServiceDeviceController>
             (&ServiceDeviceController::OnCmdModuleManufacturingTest, this);
@@ -408,19 +375,6 @@ void ServiceDeviceController::OnReturnServiceRequestResult(QString ReqName, int 
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
 }
 
-#if 0
-
-/****************************************************************************/
-void ServiceDeviceController::SetProcessSettingsFlag(DataManager::CProcessSettings Container)
-{
-    m_ProcessSettings = true;
-    if(m_Adjustment)
-    {
-        m_DeviceDataContainers = true;
-        emit DataContainersInitialized();
-    }
-}
-#endif
 
 /****************************************************************************/
 void ServiceDeviceController::OnSDC_AbortTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdAbortTest &Cmd)
@@ -437,57 +391,6 @@ void ServiceDeviceController::OnSDC_AbortTest(Global::tRefType Ref, const Device
     //}
 }
 
-/****************************************************************************/
-void ServiceDeviceController::OnSDC_HeatingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdHeatingTest &Cmd)
-{
-    SendAcknowledgeOK(Ref);
-    //if(m_DeviceDataContainers)
-    //if(true)
-    //{
-        emit SDC_HeatingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_HeaterIndex, Cmd.m_CmdType);
-    //}
-    //else
-    //{
-        //ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    //}
-}
-
-/****************************************************************************/
-void ServiceDeviceController::OnSDC_RotaryValveTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdRotaryValveTest &Cmd)
-{
-    SendAcknowledgeOK(Ref);
-    //if(m_DeviceDataContainers)
-    //if(true)
-    //{
-        emit SDC_RotaryValveTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position, Cmd.m_CmdType);
-    //}
-    //else
-    //{
-        //ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    //}
-}
-
-/****************************************************************************/
-void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdLSensorDetectingTest &Cmd)
-{
-    SendAcknowledgeOK(Ref);
-    //if(m_DeviceDataContainers)
-    //if(true)
-    //{
-        emit SDC_LSensorDetectingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position);
-    //}
-    //else
-    //{
-        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
-    //}
-}
-
-/****************************************************************************/
-void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd)
-{
-    SendAcknowledgeOK(Ref);
-    emit CalibrateDevice(Cmd.m_CommandType);
-}
 
 /****************************************************************************/
 void ServiceDeviceController::OnCmdModuleManufacturingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdModuleManufacturingTest &Cmd)

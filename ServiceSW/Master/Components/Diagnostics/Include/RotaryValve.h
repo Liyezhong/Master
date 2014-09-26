@@ -50,17 +50,6 @@ private:
     Ui::CRotaryValve *ui;
     bool              m_InitSuccess;
 
-signals:
-    void GuiRVHeatingTest();
-    void GuiRVInitTest();
-    void GuiRVSelectTest(qint32);
-    void GuiRVSealTest(qint32);
-
-public slots:
-    void OnRVInitTestAck(bool);
-    void OnStartRVInitTest();
-    void OnStartRVSelectTest(qint32);
-    void OnStartRVSealTest(qint32);
 };
 
 

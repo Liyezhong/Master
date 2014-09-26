@@ -209,64 +209,10 @@ CStartup::CStartup() : QObject(),
         qDebug() << "CStartup: cannot connect 'timeout' signal";
     }
 
-    if (!connect(mp_RotaryValve, SIGNAL(GuiRVHeatingTest()),
-                 this, SLOT(OnGuiRVHeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiRVHeatingTest' signal";
-    }
-
-    if (!connect(mp_RotaryValve, SIGNAL(GuiRVInitTest()),
-                 this, SLOT(OnGuiRVInitTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiRVInitTest' signal";
-    }
-
-    if (!connect(mp_RotaryValve, SIGNAL(GuiRVSelectTest(qint32)),
-                 this, SLOT(OnGuiRVSelectTest(qint32)))) {
-        qDebug() << "CStartup: cannot connect 'GuiRVSelectTest' signal";
-    }
-
-    if (!connect(mp_RotaryValve, SIGNAL(GuiRVSealTest(qint32)),
-                 this, SLOT(OnGuiRVSealTest(qint32)))) {
-        qDebug() << "CStartup: cannot connect 'GuiRVSealTest' signal";
-    }
 
     if (!connect(mp_Display, SIGNAL(BasicColorTest()),
                  this, SLOT(OnBasicColorTest()))) {
         qDebug() << "CStartup: cannot connect 'BasicColorTest' signal";
-    }
-
-    if (!connect(mp_Retort, SIGNAL(GuiLevelSensorDetectingTest(qint32)),
-                 this, SLOT(OnGuiLevelSensorDetectingTest(qint32)))) {
-        qDebug() << "CStartup: cannot connect 'GuiLevelSensorDetectingTest' signal";
-    }
-
-    if (!connect(mp_Retort, SIGNAL(GuiLevelSensorHeatingTest()),
-                 this, SLOT(OnGuiLevelSensorHeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiLevelSensorHeatingTest' signal";
-    }
-
-    if (!connect(mp_Retort, SIGNAL(GuiRetortEmptyHeatingTest()),
-                 this, SLOT(OnGuiRetortEmptyHeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiRetortEmptyHeatingTest' signal";
-    }
-
-    if (!connect(mp_Retort, SIGNAL(GuiRetortLiquidHeatingTest()),
-                 this, SLOT(OnGuiRetortLiquidHeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiRetortLiquidHeatingTest' signal";
-    }
-
-    if (!connect(mp_LaSystem, SIGNAL(GuiTube1HeatingTest()),
-                 this, SLOT(OnGuiTube1HeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiTube1HeatingTest' signal";
-    }
-
-    if (!connect(mp_LaSystem, SIGNAL(GuiTube2HeatingTest()),
-                 this, SLOT(OnGuiTube2HeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiTube2HeatingTest' signal";
-    }
-
-    if (!connect(mp_LaSystem, SIGNAL(GuiOvenEmptyHeatingTest()),
-                 this, SLOT(OnGuiOvenEmptyHeatingTest()))) {
-        qDebug() << "CStartup: cannot connect 'GuiOvenEmptyHeatingTest' signal";
     }
 
     if (!connect(mp_ServiceConnector->GetWaitDlgPtr(), SIGNAL(rejected()),
@@ -274,7 +220,6 @@ CStartup::CStartup() : QObject(),
         qDebug() << "CStartup: cannot connect 'GuiAbortTest' signal";
     }
     /* Calibration Signals */
-    CONNECTSIGNALSIGNAL(mp_CalibrationHandler, OvenLidInitCalibrationRequest(), this, OvenLidInitCalibrationRequest());
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PressureSensorCalibrationRequest(), this, PressureSensorCalibrationRequest());
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, ShutdownSystem(bool), this, ShutdownSystem(bool));
 
@@ -1606,62 +1551,6 @@ void CStartup::OnGuiAbortTest()
     emit AbortTest();
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Rotary valve heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRVHeatingTest()
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RV, false);
-    emit RVHeatingTest(Service::HEATER_ROTARY_VALVE, Service::HEATING_ROTARY_VALVE);
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Rotary valve initialization test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRVInitTest()
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_INITIALIZING_RV, true);
-    emit RotaryValveTest(0, Service::RV_MOVE_TO_INIT_POS);
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Rotary valve select test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRVSelectTest(qint32 Position)
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_RV_SELECT_TEST, true);
-    emit RotaryValveTest(Position, Service::RV_MOVE_TO_TUBE_POS);
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Rotary valve seal test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRVSealTest(qint32 Position)
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_RV_SEALINT_TEST, true);
-    emit RotaryValveTest(Position, Service::RV_MOVE_TO_SEAL_POS);
-}
-
 /****************************************************************************/
 /*!
  *  \brief Basic color test
@@ -1673,94 +1562,6 @@ void CStartup::OnBasicColorTest()
     mp_Display->DoBasicColorTest();
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Level senosor detecting test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiLevelSensorDetectingTest(qint32 Position)
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_DETECTING_LS, false);
-    emit LevelSensorDetectingTest(Position);
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Level senosor heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiLevelSensorHeatingTest()
-{
-
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LS, false);
-    emit LevelSensorHeatingTest(Service::HEATER_LEVEL_SENSOR, Service::HEATING_LEVEL_SENSOR);
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Retort(empty) heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRetortEmptyHeatingTest()
-{
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_EMPTY, false);
-    emit RetortHeatingTest(Service::HEATER_RETORT, Service::HEATING_RETORT_EMMPTY);
-}
-
-/****************************************************************************/
-/*!
- *  \brief Retort(liquid) heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiRetortLiquidHeatingTest()
-{
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_RETORT_LIQUID, false);
-    emit RetortHeatingTest(Service::HEATER_RETORT, Service::HEATING_RETORT_LIQUID);
-}
-
-/****************************************************************************/
-/*!
- *  \brief Tube1 heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiTube1HeatingTest()
-{
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_BELT1, false);
-    emit TubeHeatingTest(Service::HEATER_TUBE1, Service::HEATING_TUBE1);
-}
-
-/****************************************************************************/
-/*!
- *  \brief Tube2 heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiTube2HeatingTest()
-{
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_BELT2, false);
-    emit TubeHeatingTest(Service::HEATER_TUBE2, Service::HEATING_TUBE2);
-}
-
-/****************************************************************************/
-/*!
- *  \brief Oven(empty) heating test
- *
- */
-/****************************************************************************/
-void CStartup::OnGuiOvenEmptyHeatingTest()
-{
-    mp_ServiceConnector->ShowBusyDialog(Service::CMessageString::MSG_DIAGNOSTICS_HEATING_OVEN, false);
-    emit OvenHeatingTest(Service::HEATER_OVEN, Service::HEATING_OVEN_EMPTY);
-}
 
 /****************************************************************************/
 /*!

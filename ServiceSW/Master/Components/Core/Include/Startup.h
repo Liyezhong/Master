@@ -246,27 +246,10 @@ public slots:
     /* General slots */
     void OnGuiAbortTest();
 
-    /* Rotary Valve slots */
-    void OnGuiRVHeatingTest();
-    void OnGuiRVInitTest();
-    void OnGuiRVSelectTest(qint32);
-    void OnGuiRVSealTest(qint32);
-
     /* Display slots*/
     void OnBasicColorTest();
 
-    /* Retort slots */
-    void OnGuiLevelSensorDetectingTest(qint32);
-    void OnGuiLevelSensorHeatingTest();
-    void OnGuiRetortEmptyHeatingTest();
-    void OnGuiRetortLiquidHeatingTest();
 
-    /* Air and Liquid slots */
-    void OnGuiTube1HeatingTest();
-    void OnGuiTube2HeatingTest();
-
-    /* Oven slots */
-    void OnGuiOvenEmptyHeatingTest();
     void RetranslateUI();
 
     void IdleTimeout();
@@ -340,74 +323,6 @@ signals:
     /****************************************************************************/
     void AbortTest();
 
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to rotary valve heating test
-     * \iparam HeaterType = heating type
-     * \iparam HeatingTestType = heating test type
-     */
-    /****************************************************************************/
-    void RVHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to rotary valve test
-     * \iparam Position = the rotary valve position
-     * \iparam RVTestType = Rotary valve test type
-     */
-    /****************************************************************************/
-    void RotaryValveTest(qint32 Position, quint8 RVTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to retort level sensor detecting test
-     * \iparam Position = the level sensor postion
-     */
-    /****************************************************************************/
-    void LevelSensorDetectingTest(qint32 Position);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to retort level sensor heating test
-     * \iparam HeaterType = heating type
-     * \iparam HeatingTestType = heating test type
-     */
-    /****************************************************************************/
-    void LevelSensorHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to retort heating test
-     * \iparam HeaterType = heating type
-     * \iparam HeatingTestType = heating test type
-     */
-    /****************************************************************************/
-    void RetortHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to LA System tube heating test
-     * \iparam TubeType = tube type
-     * \iparam TubeTestType = tube test type
-     */
-    /****************************************************************************/
-    void TubeHeatingTest(quint8 TubeType, quint8 TubeTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal is emitted to oven heating test
-     * \iparam HeaterType = heating type
-     * \iparam HeatingTestType = heating test type
-     */
-    /****************************************************************************/
-    void OvenHeatingTest(quint8 HeaterType, quint8 HeatingTestType);
-
-    /****************************************************************************/
-    /**
-     * \brief Signal emitted for ovenlid init calibration
-     */
-    /****************************************************************************/
-    void OvenLidInitCalibrationRequest();
 
     /****************************************************************************/
     /**

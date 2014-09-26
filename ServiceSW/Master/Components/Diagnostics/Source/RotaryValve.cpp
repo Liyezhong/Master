@@ -143,35 +143,7 @@ void CRotaryValve::StartHeatingTest(void)
 
     // test.Run();
 
-    emit GuiRVHeatingTest();
 }
 
-void CRotaryValve::OnRVInitTestAck(bool InitSuccess)
-{
-    qDebug() << "Rotary Valve: ack of init test";
-
-    m_InitSuccess = InitSuccess;
-}
-
-void CRotaryValve::OnStartRVInitTest()
-{
-    qDebug() << "Rotary Valve: start RV init test";
-
-    emit GuiRVInitTest();
-}
-
-void CRotaryValve::OnStartRVSelectTest(qint32 Position)
-{
-    qDebug() << "Rotary Valve: start RV select test with bottle position";
-
-    emit GuiRVSelectTest(Position);
-}
-
-void CRotaryValve::OnStartRVSealTest(qint32 Position)
-{
-    qDebug() << "Rotary Valve: start RV seal test with bottle position";
-
-    emit GuiRVSealTest(Position);
-}
 
 } // namespace Diagnostics

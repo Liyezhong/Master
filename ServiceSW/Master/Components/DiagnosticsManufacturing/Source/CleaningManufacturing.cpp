@@ -81,7 +81,6 @@ CCleaning::CCleaning(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     mp_Ui->widget->SetContent(mp_TableWidget);
     mp_Ui->sendTestReportBtn->setEnabled(false);
 
-    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
