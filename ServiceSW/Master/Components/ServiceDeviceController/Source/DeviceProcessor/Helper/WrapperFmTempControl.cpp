@@ -153,12 +153,12 @@ bool WrapperFmTempControl::StartTemperatureControl(qreal NominalTemperature, qui
 void WrapperFmTempControl::OnSetTemp(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, qreal Temperature)
 {
     qint32 ret = 1;
-    m_CurrentTemperature = Temperature;
+    m_CurrentTemperature[0] = Temperature;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
     }
     if (m_LoopSetTemperature.isRunning()) {
-        if (m_CurrentTemperature != m_TargetTemperature) {
+        if (m_CurrentTemperature[0] != m_TargetTemperature) {
             Log(tr("ERROR: Target temp is not reached."));
             ret = UNDEFINED;
         }
@@ -192,7 +192,7 @@ qreal WrapperFmTempControl::GetTemperature(quint8 Index)
     //quint8 SensorIndex = Index & 0x0F;
     quint8 SensorIndex = Index;
     qint64 Now = QDateTime::currentMSecsSinceEpoch();
-    qreal RetValue = m_CurrentTemperature;
+    qreal RetValue = m_CurrentTemperature[Index];
     if((Now - m_LastGetTempTime[SensorIndex]) >= 200) // check if 500 msec has passed since last read
     {
         bool ok = HandleErrorCode(m_pTempControl->ReqActTemperature(SensorIndex));
@@ -209,7 +209,7 @@ qreal WrapperFmTempControl::GetTemperature(quint8 Index)
             }
             else
             {
-                RetValue = m_CurrentTemperature;
+                RetValue = m_CurrentTemperature[Index];
             }
             m_LastGetTempTime[SensorIndex] = Now;
         }
@@ -267,7 +267,7 @@ void WrapperFmTempControl::OnGetTemp(quint32 /*InstanceID*/, ReturnCode_t Return
     Q_UNUSED(Index)
 
     qint32 ret = 1;
-    m_CurrentTemperature = Temp;
+    m_CurrentTemperature[Index] = Temp;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
     }
@@ -792,7 +792,10 @@ void WrapperFmTempControl::OnTemperatureRange(quint32 InstanceID, ReturnCode_t R
 void WrapperFmTempControl::Reset()
 {
    m_TargetTemperature = UNDEFINED;
-   m_CurrentTemperature = UNDEFINED;
+   for (int i=0; i< MAX_TEMP_SENSOR_NUM; i++)
+   {
+       m_CurrentTemperature[i] = UNDEFINED;
+   }
    m_TargetTempCtrlStatus = TEMPCTRL_STATUS_UNDEF;
    m_CurrentTempCtrlStatus = TEMPCTRL_STATUS_UNDEF;
    m_TargetOperatingMode = TEMPCTRL_OPMODE_UNDEF;
@@ -917,9 +920,9 @@ QString WrapperFmTempControl::GetTemperatureControlState()
 bool WrapperFmTempControl::IsInsideRange()
 {
     if(GetTemperature(0) != UNDEFINED) {
-        if((m_TargetTemperature != UNDEFINED) || (m_CurrentTemperature != UNDEFINED)) {
-            if ((m_CurrentTemperature > m_TargetTemperature - TOLERANCE)||
-                    (m_CurrentTemperature < m_TargetTemperature + TOLERANCE)) {
+        if((m_TargetTemperature != UNDEFINED) || (m_CurrentTemperature[0] != UNDEFINED)) {
+            if ((m_CurrentTemperature[0] > m_TargetTemperature - TOLERANCE)||
+                    (m_CurrentTemperature[0] < m_TargetTemperature + TOLERANCE)) {
                 return true;
             } else {
                 return false;
@@ -943,9 +946,9 @@ bool WrapperFmTempControl::IsInsideRange()
 bool WrapperFmTempControl::IsOutsideRange()
 {
     if(GetTemperature(0) != UNDEFINED) {
-        if((m_TargetTemperature != UNDEFINED) || (m_CurrentTemperature != UNDEFINED)) {
-            if ((m_CurrentTemperature < m_TargetTemperature - TOLERANCE)||
-                    (m_CurrentTemperature > m_TargetTemperature + TOLERANCE)) {
+        if((m_TargetTemperature != UNDEFINED) || (m_CurrentTemperature[0] != UNDEFINED)) {
+            if ((m_CurrentTemperature[0] < m_TargetTemperature - TOLERANCE)||
+                    (m_CurrentTemperature[0] > m_TargetTemperature + TOLERANCE)) {
                 return true;
             } else {
                 return false;

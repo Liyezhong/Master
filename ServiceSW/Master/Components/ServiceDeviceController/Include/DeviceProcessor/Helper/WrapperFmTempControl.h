@@ -30,6 +30,9 @@
 
 using namespace DeviceControl;
 
+#define MAX_TEMP_SENSOR_NUM  50
+
+
 /****************************************************************************/
 /*! \brief Wrapper for Temperature control function module
  *
@@ -138,7 +141,7 @@ private slots:
 
     CTemperatureControl *m_pTempControl;            //!< Pointer to the Temperature Control function module
     qreal m_TargetTemperature;                      //!< Target temperature; for verification of action result.
-    qreal m_CurrentTemperature;                     //!< Current temperature
+    qreal m_CurrentTemperature[MAX_TEMP_SENSOR_NUM];//!< Current temperature
     TempCtrlStatus_t m_TargetTempCtrlStatus;        //!< Target temperature control status; for verification of action result.
     TempCtrlStatus_t m_CurrentTempCtrlStatus;       //!< Current temperature control status
     TempCtrlOperatingMode_t m_TargetOperatingMode;  //!< Target operatig mode; for verification of action result.

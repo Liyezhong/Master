@@ -817,6 +817,7 @@ void ServiceTestHandler::RVStartHeating(QString& ReqName, QStringList& Params)
 
     mp_TempRV->StopTemperatureControl();
     Ret = mp_TempRV->StartTemperatureControl(TargetTemp);
+    qDebug()<<"RVStartHeating : target="<<TargetTemp<<"   Ret="<<Ret;
 
     if (Ret) {
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
@@ -859,6 +860,9 @@ void ServiceTestHandler::RVGetTemp(QString& ReqName, QStringList& Params)
 
     qreal RetTempSensor1 = mp_TempRV->GetTemperature(0);
     qreal RetTempSensor2 = mp_TempRV->GetTemperature(1);
+
+    qDebug()<<"RVGetTemp   temp1="<<RetTempSensor1<<"   temp2="<<RetTempSensor2;
+
 
     Results.append(QString("%1").arg(RetTempSensor1));
     Results.append(QString("%1").arg(RetTempSensor2));
