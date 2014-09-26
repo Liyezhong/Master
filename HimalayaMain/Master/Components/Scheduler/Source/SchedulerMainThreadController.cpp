@@ -126,6 +126,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
     m_NeedEnterClean = false;
+    m_StopFilling = false;
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
@@ -533,10 +534,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
                 case PSSM_FILLING:
                     // Stop filling at first
-                    ALStopCmd = new CmdALStopCmdExec(500, this);
-                    ALStopCmd->SetCmdType(0);
-                    m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
-                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
+                    if(false == m_StopFilling)
+                    {
+                        ALStopCmd = new CmdALStopCmdExec(500, this);
+                        ALStopCmd->SetCmdType(0);
+                        m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
+                        m_StopFilling = true;
+                    }
+                    else if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALStopCmdExec" == cmdName) )
+                    {
+                        m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
+                        m_StopFilling = false;
+                    }
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
                     m_SchedulerMachine->SendResumeRVMoveToSeal();
