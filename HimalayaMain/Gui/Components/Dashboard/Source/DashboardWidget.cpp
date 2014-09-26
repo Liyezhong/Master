@@ -1061,14 +1061,8 @@ void CDashboardWidget::OnUserRoleChanged()
 
     }
     else if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)) {
-        if (m_CurProgramStepIndex >= 3) {
-            ui->programPanelWidget->EnablePauseButton(false);
-            ui->programPanelWidget->EnableStartButton(false);
-        }
-        else {
             ui->programPanelWidget->EnablePauseButton(true);
             ui->programPanelWidget->EnableStartButton(true);
-        }
     }
 
     if (m_IsDrainingWhenPrgrmCompleted == true) {
