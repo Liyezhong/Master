@@ -106,16 +106,6 @@ void CFirmwareUpdate::UpdateGUI()
         }
     }
 
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
-
-    mp_TableWidget->verticalHeader()->resizeSection(0,45);
-    mp_TableWidget->verticalHeader()->resizeSection(1,45);
-    mp_TableWidget->verticalHeader()->resizeSection(2,45);
-    mp_TableWidget->verticalHeader()->resizeSection(3,45);
-
     RefreshLatestVersion();
 }
 
@@ -288,9 +278,9 @@ void CFirmwareUpdate::RetranslateUI()
                                                     << "");
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 105);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 149);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 149);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 101);
 
     mp_TableWidget->verticalHeader()->resizeSection(0,45);
     mp_TableWidget->verticalHeader()->resizeSection(1,45);

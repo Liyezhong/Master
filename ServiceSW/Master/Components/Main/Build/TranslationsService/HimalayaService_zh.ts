@@ -1854,7 +1854,7 @@ Then manually Open the Retort!</source>
     <message>
         <location filename="../../../Core/Source/Startup.cpp" line="462"/>
         <source>Firmware Update</source>
-        <translation type="unfinished">固件更新</translation>
+        <translation type="unfinished">      固件更新      </translation>
     </message>
     <message>
         <location filename="../../../Core/Source/Startup.cpp" line="447"/>
