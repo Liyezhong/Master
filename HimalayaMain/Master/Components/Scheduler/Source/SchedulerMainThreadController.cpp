@@ -316,6 +316,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        mp_HeatingStrategy->ResetTheOvenHeating();
     }
     else
     {
@@ -324,8 +325,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        m_SchedulerMachine->SendErrorSignal();
     }
-    mp_HeatingStrategy->ResetTheOvenHeating();
 }
 
 void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)

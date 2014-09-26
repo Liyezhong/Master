@@ -154,8 +154,6 @@
        <event id="500050411"    name="EVENT_MC_LocalAlarm_Unconnected"/>
   </group>
  <group name="System">
-       <event id="500060010"    name="EVENT_ASB3_ASB5_Voltage_Value_Different"/>
-       <event id="500060020"    name="EVENT_ASB5_Voltage_Value_Unknown"/>
        <event id="500060100"    name="EVENT_PowerFailure"/>
   </group>
  <group name="Internal">
