@@ -140,7 +140,7 @@
             <Function Key="Heating" name="OvenBottom" sequence="1">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
+                <Parameter Key="HeatingOverTime" Value="28800"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
@@ -168,7 +168,7 @@
             <Function Key="Heating" name="OvenBottom" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
+                <Parameter Key="HeatingOverTime" Value="28800"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
@@ -196,7 +196,7 @@
             <Function Key="Heating" name="OvenTop" sequence="1">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
+                <Parameter Key="HeatingOverTime" Value="28800"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
@@ -224,7 +224,7 @@
             <Function Key="Heating" name="OvenTop" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
+                <Parameter Key="HeatingOverTime" Value="28800"/>
                 <Parameter Key="MaxTemperature" Value="100"/>
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>

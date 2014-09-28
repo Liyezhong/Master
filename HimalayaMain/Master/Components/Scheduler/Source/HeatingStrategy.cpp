@@ -953,6 +953,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             userInputTemp = 0.0;
         }
+
+        mp_SchedulerController->LogDebug(QString("In Retort temperature control, userInputTemp is: %1").arg(userInputTemp));
         CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(RTType);
         pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputTemp);
@@ -972,7 +974,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         else
         {
             mp_SchedulerController->LogDebug(
-                        QString("start Retort(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
+                        QString("start Retort(%8) heating, scenario:%1, targetTemperature %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
                         .arg(m_CurScenario).arg(iter->TemperatureOffset+userInputTemp).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
                         .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(RTType));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
