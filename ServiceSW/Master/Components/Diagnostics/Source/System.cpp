@@ -142,7 +142,7 @@ void CSystem::StartExhaustFanTest(void)
 
 void CSystem::StartVentilationFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
     qDebug() << "System: start ventilation fan test";
 
 
