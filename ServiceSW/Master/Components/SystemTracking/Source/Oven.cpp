@@ -34,7 +34,7 @@
 
 namespace SystemTracking {
 
-const QString MODULE_OVEN("Paraffine Oven");         //!< Paraffine oven name
+const QString MODULE_OVEN("Paraffin Oven");         //!< Paraffin oven name
 const QString SUBMODULE_HEATER("Heater");            //!< name of heater submodule
 const QString SUBMODULE_COVERSENSOR("Cover Sensor"); //!< name of cover sensor submodule
 

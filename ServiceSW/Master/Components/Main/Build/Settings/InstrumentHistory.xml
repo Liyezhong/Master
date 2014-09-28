@@ -97,7 +97,7 @@
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>
         </Module>
-        <Module name="Paraffine Oven" description="Paraffine Oven">
+        <Module name="Paraffin Oven" description="Paraffin Oven">
             <SerialNumber>042/XXXX</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>DATE</DateOfExchange>

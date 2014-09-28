@@ -2976,7 +2976,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             return ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
         }
     }
-    else if (Module =="Paraffine Oven"){
+    else if (Module =="Paraffin Oven"){
         if (SubModule == "Heater") {
             Ret = mp_TempOvenTop->ResetHeaterOperatingTime(0);
             Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(0);

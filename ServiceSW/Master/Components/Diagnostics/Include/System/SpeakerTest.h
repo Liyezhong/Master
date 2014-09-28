@@ -32,24 +32,13 @@ class CSpeakerTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CSpeakerTest(void);
+    CSpeakerTest(QWidget *p_Parent=NULL);
     ~CSpeakerTest(void);
 
     int Run(void);
 
-public Q_SLOTS:
-    void FirstOpenDialog(void);
-
-private Q_SLOTS:
-    void TestSpeaker(int Sound, int Volume);
-
-    void SecondConfirmResult(void);
-
-    void Succeed(void);
-
-    void Fail(void);
-
-    void Cancel(void);
+protected:
+    //virtual int Show
 };
 
 } // namespace System

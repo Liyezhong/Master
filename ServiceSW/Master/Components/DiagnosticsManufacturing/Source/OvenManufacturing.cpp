@@ -61,7 +61,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     mp_Ui->setupUi(this);
 
     if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Paraffine Oven");
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Paraffin Oven");
     }
     mp_Ui->ovenSNEdit->installEventFilter(this);
     mp_Ui->ovenSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);

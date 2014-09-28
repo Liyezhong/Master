@@ -136,7 +136,7 @@ void CModuleDataListAdapter::SetMCLifeCycle()
 
 void CModuleDataListAdapter::SetOvenLifeCycle()
 {
-    ServiceDataManager::CModule* OvenModule = mp_ModuleList->GetModule("Paraffine Oven");
+    ServiceDataManager::CModule* OvenModule = mp_ModuleList->GetModule("Paraffin Oven");
     if (!OvenModule) {
         qDebug()<<"CModuleDataListAdapter::SetOvenLifeCycle: invalid Module";
         return;

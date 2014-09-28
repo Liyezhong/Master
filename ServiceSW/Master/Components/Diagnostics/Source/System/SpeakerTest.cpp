@@ -21,22 +21,19 @@
 #include "Diagnostics/Include/System/SpeakerTest.h"
 
 #include <QDebug>
+#include <QProcess>
 
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-
-#include "ServiceWidget/Include/DlgConfirmationText.h"
-
-#include "Diagnostics/Include/System/DlgSpeaker.h"
+#include "Global/Include/SystemPaths.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 namespace Diagnostics {
 
 namespace System {
 
-CSpeakerTest::CSpeakerTest(void)
-    : CTestBase()
+CSpeakerTest::CSpeakerTest(QWidget *p_Parent)
+    : CTestBase(p_Parent)
 {
 }
 
@@ -48,98 +45,24 @@ int CSpeakerTest::Run(void)
 {
     qDebug() << "Speaker Test starts!";
 
-    this->FirstOpenDialog();
-}
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase("SSystemSpeaker");
 
-void CSpeakerTest::FirstOpenDialog(void)
-{
-    qDebug() << "Speaker Test: first open speaker test dialog!";
+    QString LowVolume  = p_TestCase->GetParameter("LowVolume");
+    QString HighVolume = p_TestCase->GetParameter("HighVolume");
 
-    // open the speaker test dialog
-    CDlgSpeaker *dlg = new CDlgSpeaker;
-    dlg->SetDialogTitle(tr("Speaker Test"));
+    QProcess  SpeakProc;
 
-    CONNECTSIGNALSLOT(dlg, TestSpeaker(int, int), this, TestSpeaker(int, int));
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SecondConfirmResult() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
+    QString SetVolume;
+    QStringList PlayParams;
 
-    dlg->exec();
+    SetVolume = "amixer set PCM " + LowVolume + "%";
+    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note6.ogg";
 
-    delete dlg;
-}
 
-void CSpeakerTest::TestSpeaker(int Sound, int Volume)
-{
-    qDebug() << "Speaker Test: test speaker with sound: " 
-             << Sound << " and Volume: " << Volume << " !";
+    SpeakProc.start(SetVolume);
+    (void)SpeakProc.waitForFinished();
 
-    /// \todo: play sound here **************************/
-}
-
-void CSpeakerTest::SecondConfirmResult(void)
-{
-    qDebug() << "Speaker Test: second confirm result!";
-
-    // ask the customer to confirm the test result
-    MainMenu::CDlgConfirmationText *dlg = new MainMenu::CDlgConfirmationText;
-    dlg->SetDialogTitle(tr("Speaker Test"));
-    dlg->SetText(tr("Does the speaker test pass?"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(),this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CSpeakerTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS);
-    qDebug() << "Speaker Test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Speaker Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Speaker test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CSpeakerTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE);
-    qDebug() << "Speaker Test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Speaker Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Speaker test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CSpeakerTest::Cancel(void)
-{
-    qDebug() << "Speaker Test canceled!";
+    SpeakProc.start("ogg123", PlayParams);
 }
 
 } // namespace System

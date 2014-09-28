@@ -387,7 +387,7 @@ void CMainControl::SaveLifeCycle2Device(QString& SlaveName)
         }
     }
     else if (SlaveName == "ASB5") {
-        ServiceDataManager::CModule* OvenModule = ModuleList->GetModule("Paraffine Oven");
+        ServiceDataManager::CModule* OvenModule = ModuleList->GetModule("Paraffin Oven");
         DeviceControl::ModuleLifeCycleRecord* OvenModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value("OvenDevice");
         if (OvenModule) {
             SetDeviceModuleLifeCycle(OvenModuleRecord, "temp_oven_top",
