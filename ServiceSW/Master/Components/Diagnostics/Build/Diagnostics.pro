@@ -25,8 +25,7 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/MainControl.h \
     ../Include/ServiceDeviceProcess/*.h \
     ../Include/InitialSystem.h \
-    ../Include/SelectMeltingPointDialog.h \
-    ../Include/DiagnosticsMessageDlg.h
+    ../Include/SelectMeltingPointDialog.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \

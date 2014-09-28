@@ -34,30 +34,28 @@ class CSystem : public QWidget
     Q_OBJECT
     
 public:
-    explicit CSystem(QWidget *parent = 0);
+    explicit CSystem(QWidget *p_Parent = 0);
     ~CSystem();
 
 private Q_SLOTS:
-    void StartBottleCheckingTest(void);
+    void StartSealingTest(void);
 
     void StartFillingNDrainingTest(void);
 
-    void StartOverflowTest(void);
+    void StartLiquidHoseTest(void);
 
     void StartSpeakerTest(void);
 
-    void StartAlarmTest(void);
+    void StartLocalAlarmTest(void);
 
-    void StartEthernetTest(void);
+    void StartRemoteAlarmTest(void);
 
-    void StartUsbTest(void);
+    void StartExhaustFanTest(void);
 
-    void StartMainsRelayTest(void);
-
-    void StartVoltageTest(void);
+    void StartVentilationFanTest(void);
     
 private:
-    Ui::CSystem *ui;
+    Ui::CSystem *mp_Ui;
 };
 
 

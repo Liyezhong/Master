@@ -39,65 +39,62 @@ namespace Diagnostics {
 
 CSystem::CSystem(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CSystem)
+    mp_Ui(new Ui::CSystem)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->testBottleChecking,
+    (void)connect(mp_Ui->testSealing,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartBottleCheckingTest()) );
+                  SLOT(StartSealingTest()) );
 
-    (void)connect(ui->testFillingDraining,
+    (void)connect(mp_Ui->testFillingDraining,
                   SIGNAL(clicked()),
                   this,
                   SLOT(StartFillingNDrainingTest()) );
 
-    (void)connect(ui->testOverflow,
+    (void)connect(mp_Ui->testLiquidHose,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartOverflowTest()) );
+                  SLOT(StartLiquidHoseTest()) );
 
-    (void)connect(ui->testSpeaker,
+    (void)connect(mp_Ui->testSpeaker,
                   SIGNAL(clicked()),
                   this,
                   SLOT(StartSpeakerTest()) );
 
-    (void)connect(ui->testAlarm,
+    (void)connect(mp_Ui->testLocalAlarm,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartAlarmTest()) );
+                  SLOT(StartLocalAlarmTest()) );
 
-    (void)connect(ui->testEthernet,
+    (void)connect(mp_Ui->testRemoteAlarm,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartEthernetTest()) );
+                  SLOT(StartRemoteAlarmTest()) );
 
-    (void)connect(ui->testUSB,
+    (void)connect(mp_Ui->testExhaustFan,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartUsbTest()) );
+                  SLOT(StartExhaustFanTest()) );
 
-    (void)connect(ui->testMainsRelay,
+    (void)connect(mp_Ui->testVentilationFan,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartMainsRelayTest()) );
+                  SLOT(StartVentilationFanTest()) );
 
-    (void)connect(ui->testVoltageSwitching,
-                  SIGNAL(clicked()),
-                  this,
-                  SLOT(StartVoltageTest()) );
 }
 
 CSystem::~CSystem()
 {
-    delete ui;
+    delete mp_Ui;
 }
 
-void CSystem::StartBottleCheckingTest(void)
+void CSystem::StartSealingTest(void)
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST);
-    qDebug() << "System: start bottle checking test";
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
+
+    qDebug() << "System: start sealing test";
 
 }
 
@@ -109,10 +106,10 @@ void CSystem::StartFillingNDrainingTest(void)
 
 }
 
-void CSystem::StartOverflowTest(void)
+void CSystem::StartLiquidHoseTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST);
-    qDebug() << "System: start overflow test";
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST);
+    qDebug() << "System: start liquid hose test";
 }
 
 void CSystem::StartSpeakerTest(void)
@@ -122,39 +119,32 @@ void CSystem::StartSpeakerTest(void)
 
 }
 
-void CSystem::StartAlarmTest(void)
+void CSystem::StartLocalAlarmTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
-    qDebug() << "System: start alarm test";
+    qDebug() << "System: start local alarm test";
 
 }
 
-void CSystem::StartEthernetTest(void)
+void CSystem::StartRemoteAlarmTest(void)
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST);
-    qDebug() << "System: start ethernet test";
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
+    qDebug() << "System: start retmote alarm test";
 }
 
-void CSystem::StartUsbTest(void)
+void CSystem::StartExhaustFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST);
-    qDebug() << "System: start USB test";
-
-
-}
-
-void CSystem::StartMainsRelayTest(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST);
-    qDebug() << "System: start Mains relay test";
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
+    qDebug() << "System: start exhaust fan test";
 
 
 }
 
-void CSystem::StartVoltageTest(void)
+void CSystem::StartVentilationFanTest(void)
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST);
-    qDebug() << "System: start 110V/220V switching test";
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
+    qDebug() << "System: start ventilation fan test";
+
 
 }
 

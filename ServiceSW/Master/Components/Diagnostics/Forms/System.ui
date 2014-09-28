@@ -27,13 +27,6 @@
      </property>
     </spacer>
    </item>
-   <item row="5" column="1">
-    <widget class="QPushButton" name="testOverflow">
-     <property name="text">
-      <string>Overflow Test</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
@@ -46,6 +39,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="5" column="1">
+    <widget class="QPushButton" name="testLocalAlarm">
+     <property name="text">
+      <string>Local Alarm</string>
+     </property>
+    </widget>
    </item>
    <item row="6" column="1">
     <spacer name="verticalSpacer_4">
@@ -87,16 +87,16 @@
     </spacer>
    </item>
    <item row="3" column="3">
-    <widget class="QPushButton" name="testUSB">
+    <widget class="QPushButton" name="testSpeaker">
      <property name="text">
-      <string>USB</string>
+      <string>Speaker</string>
      </property>
     </widget>
    </item>
    <item row="7" column="3">
-    <widget class="QPushButton" name="testVoltageSwitching">
+    <widget class="QPushButton" name="testVentilationFan">
      <property name="text">
-      <string>110V/220V switching</string>
+      <string>Ventilation Fan</string>
      </property>
     </widget>
    </item>
@@ -114,16 +114,16 @@
     </spacer>
    </item>
    <item row="5" column="3">
-    <widget class="QPushButton" name="testMainsRelay">
+    <widget class="QPushButton" name="testRemoteAlarm">
      <property name="text">
-      <string>Mains Relay</string>
+      <string>Remote Alarm</string>
      </property>
     </widget>
    </item>
    <item row="7" column="1">
-    <widget class="QPushButton" name="testSpeaker">
+    <widget class="QPushButton" name="testExhaustFan">
      <property name="text">
-      <string>Speaker</string>
+      <string>Exhaust Fan</string>
      </property>
     </widget>
    </item>
@@ -141,48 +141,28 @@
     </spacer>
    </item>
    <item row="1" column="1">
-    <widget class="QPushButton" name="testBottleChecking">
+    <widget class="QPushButton" name="testSealing">
      <property name="text">
-      <string>Bottle Checking Test</string>
+      <string>Sealing</string>
      </property>
     </widget>
    </item>
    <item row="1" column="3">
-    <widget class="QPushButton" name="testEthernet">
+    <widget class="QPushButton" name="testLiquidHose">
      <property name="text">
-      <string>Ethernet</string>
+      <string>Liquid Hose</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="testFillingDraining">
      <property name="text">
-      <string>Filling&amp;&amp;Draining Test</string>
+      <string>Filling&amp;&amp;Draining</string>
      </property>
     </widget>
    </item>
    <item row="8" column="1">
     <spacer name="verticalSpacer_5">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="9" column="1">
-    <widget class="QPushButton" name="testAlarm">
-     <property name="text">
-      <string>Remote/Local alarm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <spacer name="verticalSpacer_6">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>

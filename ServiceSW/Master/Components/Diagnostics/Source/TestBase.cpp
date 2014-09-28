@@ -89,6 +89,27 @@ void CTestBase::HideWaitingDialog()
     }
 }
 
+int CTestBase::ShowConfirmMessage(QString& MessageTitle, QString& MessageText)
+{
+    qDebug()<<"CTestBase::ShowConfirmMessage title="<<MessageTitle<<"  MessageText="<<MessageText;
+
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
+    dlg->SetTitle(MessageTitle);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(MessageText);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(1, "Yes");
+    dlg->SetButtonText(3, "No");
+    dlg->setModal(true);
+    qDebug()<<MessageText;
+
+    int Ret = dlg->exec();
+
+    delete dlg;
+
+    return Ret;
+}
+
 } // namespace Diagnostics
 
 

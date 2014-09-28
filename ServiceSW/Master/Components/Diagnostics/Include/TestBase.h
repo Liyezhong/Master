@@ -68,7 +68,7 @@ protected:
      *  \iparam Ret = test result for set dialog type
      */
     /****************************************************************************/
-    void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
+    virtual void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
 
     /****************************************************************************/
     /*!
@@ -77,14 +77,16 @@ protected:
      *  \iparam MessageText  = the dialog text
      */
     /****************************************************************************/
-    void ShowWaitingDialog(QString& MessageTitle, QString& MessageText);
+    virtual void ShowWaitingDialog(QString& MessageTitle, QString& MessageText);
 
     /****************************************************************************/
     /*!
      *  \brief To hide wait dialog
      */
     /****************************************************************************/
-    void HideWaitingDialog();
+    virtual void HideWaitingDialog();
+
+    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText);
 
 protected:
     QWidget        *mp_Parent;              //!< Parent widget
