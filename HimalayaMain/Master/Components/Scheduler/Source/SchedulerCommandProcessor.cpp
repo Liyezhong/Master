@@ -327,7 +327,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	}
 	else if  ("Scheduler::ALDraining" == cmdName)
 	{
-        scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure()));
+        scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetIgnorePressure()));
 	}
     else if  ("Scheduler::IDForceDraining" == cmdName)
     {

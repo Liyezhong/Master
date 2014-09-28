@@ -269,7 +269,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_DrainAtOnce
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsDrainAtOnce()), mp_RsDrainAtOnce.data());
-    CONNECTSIGNALSLOT(mp_RsDrainAtOnce.data(), entered(), mp_SchedulerThreadController, Drain());
+    CONNECTSIGNALSLOT(mp_RsDrainAtOnce.data(), entered(), mp_SchedulerThreadController, RcDrainAtOnce());
     CONNECTSIGNALSLOT(mp_RsDrainAtOnce.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_RsDrainAtOnce->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
@@ -1453,15 +1453,17 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName, Retu
     switch (m_RcRestart_AtDrain)
     {
     case STOP_DRAINING:
-    {
+        mp_SchedulerThreadController->LogDebug("HandleRcRestartAtDrain, in STOP_DRAINING");
+        {
         // Stop draining at first
         CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerThreadController);
         ALStopCmd->SetCmdType(1);
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
         m_RcRestart_AtDrain = FORCE_DRAINING;
-    }
+        }
         break;
     case FORCE_DRAINING:
+        mp_SchedulerThreadController->LogDebug("HandleRcRestartAtDrain, in FORCE_DRAINING");
         if ("Scheduler::ALStopCmdExec" == cmdName)
         {
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
@@ -1477,6 +1479,7 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName, Retu
         }
         break;
     case RV_POS_CHANGE:
+        mp_SchedulerThreadController->LogDebug("HandleRcRestartAtDrain, in RV_POS_CHANGE");
         if ("Scheduler::IDForceDraining" == cmdName)
         {
             m_RcRestart_AtDrain = STOP_DRAINING;

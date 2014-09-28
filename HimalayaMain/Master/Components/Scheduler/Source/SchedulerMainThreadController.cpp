@@ -555,7 +555,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
-                    m_SchedulerMachine->HandleRcRestartAtDrain(cmd->GetName(), retCode);
+                    m_SchedulerMachine->HandleRcRestartAtDrain(cmdName, retCode);
                     break;
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
@@ -3355,6 +3355,23 @@ void SchedulerMainThreadController::Drain()
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
     cmd->SetDelayTime(2000);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    // acknowledge to gui
+    LogDebug("Notice GUI Draining started");
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::RcDrainAtOnce()
+{
+    LogDebug("Send cmd to DCL to Drain in RC_Drain_AtOnce");
+    CmdALDraining* cmd  = new CmdALDraining(500, this);
+    //todo: get delay time here
+    cmd->SetDelayTime(2000);
+    cmd->SetIgnorePressure(true);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     // acknowledge to gui

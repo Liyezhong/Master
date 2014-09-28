@@ -163,7 +163,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             // Stop level sensor heating at first
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
             {
-                TasksDone(false);
+                //TasksDone(false);
+                // Based on comments from team members, we ignore the error
             }
 
             quint32 Scenario = mp_SchedulerController->GetCurrentScenario();

@@ -937,6 +937,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
                 ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+            mp_SchedulerController->LogDebug(QString("uerInputTemp is: %1").arg(userInputTemp));
         }
         // cleaning dry step
         else if(mp_SchedulerController->GetCurProgramStepIndex() == -1
@@ -949,9 +950,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
-        if (userInputTemp < 0)
+        if (userInputTemp < 0) // In this case, the GUI setting is to be ambient
         {
-            userInputTemp = 0.0;
+            return DCL_ERR_FCT_CALL_SUCCESS;
         }
 
         mp_SchedulerController->LogDebug(QString("In Retort temperature control, userInputTemp is: %1").arg(userInputTemp));

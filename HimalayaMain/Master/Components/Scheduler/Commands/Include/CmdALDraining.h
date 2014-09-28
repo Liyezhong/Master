@@ -135,15 +135,36 @@ public:
     /****************************************************************************/
     void SetDrainPressure(float tartgetPressure){m_TargetPressure = tartgetPressure;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetIgnorePressure
+     *
+     *  \return from GetIgnorePressure
+     */
+    /****************************************************************************/
+    bool GetIgnorePressure(){return m_IgnorePressure;}
+
+    /***************************l*************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetIgnorePressure
+     *
+     *  \param flag = bool flag parameter
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void SetIgnorePressure(bool flag) { m_IgnorePressure = flag; }
+
 private:
     CmdALDraining();                                                    ///< Not implemented.
     CmdALDraining(const CmdALDraining &);                     ///< Not implemented.
     const CmdALDraining & operator = (const CmdALDraining &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
-	mutable quint32 m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
-    mutable float  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
+    mutable DeviceControl::ReturnCode_t m_result;       ///< Definition/Declaration of variable m_result
+    mutable quint32 m_DelayTime;                        ///< Definition/Declaration of variable m_DelayTime
+    mutable float  m_TargetPressure;                    ///< Defiinition/Declaration of variable m_TargetPressure
+    bool    m_IgnorePressure;                           ///< Flag for check to ignore pressure
 	
 };
 

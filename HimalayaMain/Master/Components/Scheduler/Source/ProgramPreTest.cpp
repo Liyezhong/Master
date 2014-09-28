@@ -248,6 +248,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         break;
     case RV_POSITION_CHECKING:
+        mp_SchedulerThreadController->LogDebug("Pre-Test: In RV_POSITION_CHECKING");
         if (0 == m_RVPositioinChkSeq)
         {
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
@@ -266,6 +267,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 else
                 {
                     m_RVPositioinChkSeq = 0; //reset to initial value
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition failed");
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
@@ -356,6 +358,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 }
                 else
                 {
+                    m_PressureSealingChkSeq = 0;
                     mp_SchedulerThreadController->LogDebug(QString("Pre-Test, Return code is: %1").arg(retCode));
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
