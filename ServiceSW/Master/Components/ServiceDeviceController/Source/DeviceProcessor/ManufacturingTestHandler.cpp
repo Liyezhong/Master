@@ -1142,8 +1142,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         // if failed, then draining
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         (void)mp_PressPump->Draining();
-
-        p_TestCase->SetStatus(false);
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->SetStatus(false);       
         return -1;
     }
     else {

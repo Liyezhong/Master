@@ -165,7 +165,7 @@
 	</RetortHeatingEmpty>
 	<RetortHeatingWater Description="加热测试(加水)">
 		<Guide>
-			<Step>请清理液位传感器,关上反应罐（Retort）盖的锁,然后将装满水的瓶子放到位置1</Step>
+			<Step>请清理液位传感器,将填充块放入到反应罐（Retort）中,关上反应罐（Retort）盖的锁,然后将装满水的瓶子放到位置1</Step>
 		</Guide>
 		<Guide>
 			<Step>请将外部的传感器放到反应罐（Retort）中,然后关上反应罐（Retort）盖的锁</Step>

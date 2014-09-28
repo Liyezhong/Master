@@ -53,7 +53,7 @@ CPressureInputDialog::CPressureInputDialog(Service::ModuleTestCaseID Id, QWidget
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
 
-    this->SetDialogTitle("User Input");
+    this->SetDialogTitle(Service::CMessageString::MSG_TITLE_USER_INPUT);
 
     mp_Ui->lineEdit->installEventFilter(this);
     mp_Ui->lineEdit_2->installEventFilter(this);
