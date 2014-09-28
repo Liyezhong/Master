@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file CmdRmtLocAlarm.h
  *
- *  \brief CmdIDBottleCheck command definition.
+ *  \brief CmdRmtLocAlarm command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 21.08.2014
@@ -26,8 +26,24 @@
 
 namespace Scheduler {
 
-class CmdRmtLocAlarm : public CmdSchedulerCommandBase {
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRmtLocAlarm
+ */
+/****************************************************************************/
+class CmdRmtLocAlarm : public CmdSchedulerCommandBase
+{
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRmtLocAlarm
+     *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdRmtLocAlarm
+     */
+    /****************************************************************************/
     CmdRmtLocAlarm(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRmtLocAlarm();
 
@@ -76,7 +92,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetRmtLocOpcode
-     *
+     *  \param  code - int
+     *  \return from SetRmtLocOpcode
      */
     /****************************************************************************/
     void SetRmtLocOpcode(int code) { opcode = code; }

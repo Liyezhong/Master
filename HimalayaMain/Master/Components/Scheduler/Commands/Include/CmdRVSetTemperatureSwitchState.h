@@ -64,7 +64,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetResult
-     *
+     *  \param  result - DeviceControl::ReturnCode_t
      *  \return from SetResult
      */
     /****************************************************************************/
@@ -73,7 +73,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetResult
-     *
+     *  \param result - DeviceControl::ReturnCode_t
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -91,7 +91,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetHeaterVoltage
-     *
+     *  \param  HeaterVoltage - qint8
      *  \return from SetHeaterVoltage
      */
     /****************************************************************************/
@@ -109,7 +109,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetAutoType
-     *
+     *  \param  AutoType - qint8
      *  \return from SetAutoType
      */
     /****************************************************************************/

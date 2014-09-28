@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdCmdALControlValve.h
+/*! \file CmdALControlValve.h
  *
- *  \brief CmdCmdALControlValve command definition.
+ *  \brief CmdALControlValve command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 29.03.2013
@@ -28,7 +28,7 @@ namespace Scheduler{
 
 /****************************************************************************/
 /*!
- *  \brief  Definition/Declaration of class CmdCmdALControlValve
+ *  \brief  Definition/Declaration of class CmdALControlValve
  */
 /****************************************************************************/
 class CmdALControlValve : public CmdSchedulerCommandBase
@@ -36,12 +36,12 @@ class CmdALControlValve : public CmdSchedulerCommandBase
 public:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function CmdCmdALControlValve
+     *  \brief  Definition/Declaration of function CmdALControlValve
      *
      *  \param Timeout = int type parameter
      *  \param controller =  SchedulerMainThreadController type parameter
      *
-     *  \return from CmdCmdALControlValve
+     *  \return from CmdALControlValve
      */
     /****************************************************************************/
     CmdALControlValve(int Timeout, SchedulerMainThreadController *controller);
@@ -65,6 +65,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param  result - DeviceControl::ReturnCode_t result
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -73,6 +75,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \param result - DeviceControl::ReturnCode_t
      *
      *  \return from GetResult
      */
@@ -92,6 +96,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param ValveIndex - quint8
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -109,6 +115,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \param  ValveState - quint8
      *
      *  \return from GetResult
      */

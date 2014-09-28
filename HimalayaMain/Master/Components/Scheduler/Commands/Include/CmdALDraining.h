@@ -128,7 +128,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetDelayTime
      *
-     *  \param DelayTime = quint32 type parameter
+     *  \param tartgetPressure - float
      *
      *  \return from SetDrainPressure
      */

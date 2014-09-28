@@ -110,7 +110,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetTargetPressure
      *
-     *  \param result = DeviceControl::ReturnCode_t type parameter
+     *  \param value - void
      *
      *  \return from SetTargetPressure
      */

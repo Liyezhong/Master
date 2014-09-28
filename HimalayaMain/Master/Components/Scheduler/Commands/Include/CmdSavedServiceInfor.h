@@ -34,9 +34,32 @@ class CmdSavedServiceInfor : public Global::Command {
 public:
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdSavedServiceInfor
+     *
+     *  \param Timeout = int type parameter
+     *  \param deviceType =  QString type parameter
+     *
+     *  \return from CmdSavedServiceInfor
+     */
+    /****************************************************************************/
     CmdSavedServiceInfor(int Timeout, const QString& deviceType);
     ~CmdSavedServiceInfor();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetName
+     *
+     *  \return from GetName
+     */
+    /****************************************************************************/
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DeviceType
+     *
+     *  \return from DeviceType
+     */
+    /****************************************************************************/
     const QString& DeviceType() const { return m_DeviceType; }
 private:
     CmdSavedServiceInfor(const CmdSavedServiceInfor &);                       ///< Not implemented.

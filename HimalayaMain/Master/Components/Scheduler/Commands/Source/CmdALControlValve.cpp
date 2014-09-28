@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdCmdALControlValve.cpp
+/*! \file CmdALControlValve.cpp
  *
- *  \brief CmdCmdALControlValve command definition.
+ *  \brief CmdALControlValve command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 29.03.2013

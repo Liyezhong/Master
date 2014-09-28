@@ -34,8 +34,20 @@ class CmdSystemState : public Global::Command {
 public:
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdSystemState
+     *  \param  stateId - quint32
+     *  \return from CmdSystemState
+     */
+    /****************************************************************************/
     CmdSystemState(quint32 stateId);
     ~CmdSystemState();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetName
+     *  \return from GetName
+     */
+    /****************************************************************************/
     virtual QString GetName() const;
 
 private:

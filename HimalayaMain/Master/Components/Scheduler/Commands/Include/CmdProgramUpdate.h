@@ -39,11 +39,39 @@ class CmdProgramUpdate : public Global::Command {
 public:
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramUpdate
+     *
+     *  \param Timeout = int type parameter
+     *  \param ProgramDataStream =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdProgramUpdate
+     */
+    /****************************************************************************/
     CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramUpdate
+     *
+     *  \param Timeout = int type parameter
+     *  \param ProgramDataStream =  QDataStream type parameter
+     *  \param NextProgramDataStream - QDataStream type parameter
+     *
+     *  \return from CmdProgramUpdate
+     */
+    /****************************************************************************/
     CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream,
                      const QDataStream &NextProgramDataStream);
     CmdProgramUpdate();
     ~CmdProgramUpdate();
+
+    /****************************************************************************/
+    /*!
+     * \brief Definition/Declaration of function GetName
+     * \return QString
+     **/
+    /****************************************************************************/
     virtual QString GetName() const;
 
     /****************************************************************************/
