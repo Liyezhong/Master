@@ -280,6 +280,10 @@ void CServiceSettingsWidget::OnPrepareShutdown()
 
 void CServiceSettingsWidget::OnStartServiceApp()
 {
+    // checkout udisk
+    // mount u
+    // check usb-key file
+    // check content
     emit AppQuitSystemPrepareShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP);
 }
 
@@ -313,9 +317,9 @@ void CServiceSettingsWidget::ResetButtons()
         mp_Ui->btnResetCarbonFilter->setEnabled(true);
         mp_Ui->btnShutdown->setEnabled(true);
         if (m_CurrentUserRole == MainMenu::CMainWindow::Service)
-        {
             mp_Ui->btnStartServiceApp->setEnabled(true);
-        }
+        else
+            mp_Ui->btnStartServiceApp->setEnabled(false);
         mp_Ui->btnSave->setEnabled(true);
     }
     else {
