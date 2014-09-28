@@ -143,10 +143,9 @@ void CDashboardScene::InitDashboardStationItemsPositions()
 
 void CDashboardScene::InitStationConnectedPipeList()
 {
-    m_PipeListP1 << "P1" << "P1P2Left" << "Retort";
-    m_PipeListP2 << "P2" << "P1P2Right" << "Retort";
-
-    m_PipeListP3 << "P3" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListP1 << "P1LeftEnd" << "P1" << "P1P2Left" << "Retort";
+    m_PipeListP2 << "P2RightEnd" << "P2" << "P1P2Right" << "Retort";
+    m_PipeListP3 << "P3RightEnd" << "P3" << "P2P3" << "P1P2Right" << "Retort";
 
     m_PipeListS1 << "S1" << "S1S2" << "S2S3" << "S3S4" << "S4S5" << "S5S6"     << "S6S7"          << "S7S7RightPoint" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
     m_PipeListS2         <<   "S2" << "S2S3" << "S3S4" << "S4S5" << "S5S6"     << "S6S7"          << "S7S7RightPoint" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
@@ -248,18 +247,16 @@ void CDashboardScene::AddPathLeftTopArc(QPainterPath& path, QPointF& pnt)
 
 void CDashboardScene::AddPathRightBottomArc(QPainterPath& path, QPointF& pnt)
 {
-    QPointF originalPoint(pnt.rx() + PipeWidth, pnt.ry() + PipeWidth);
-    QPainterPath pathArcTopLeft;
-    pathArcTopLeft.moveTo(originalPoint.rx(), originalPoint.ry() - PipeWidth);
-    pathArcTopLeft.arcTo(originalPoint.rx()- PipeWidth, originalPoint.ry() - PipeWidth, 2 * PipeWidth, 2 * PipeWidth, 270.0, 90.0);
-    pathArcTopLeft.lineTo(originalPoint);
-    pathArcTopLeft.lineTo(originalPoint.rx(), originalPoint.ry() - PipeWidth);
-    pathArcTopLeft.closeSubpath();
-
-    path.addPath(pathArcTopLeft);
+    QPainterPath pathRightBottom;
+    pathRightBottom.moveTo(pnt.rx(), pnt.ry());
+    pathRightBottom.arcTo(pnt.rx() - PipeWidth, pnt.ry() - PipeWidth, 2 * PipeWidth, 2 * PipeWidth, 270.0, 90.0);
+    pathRightBottom.lineTo(pnt.rx(), pnt.ry());
+    pathRightBottom.lineTo(pnt.rx(), pnt.ry() + PipeWidth);
+    pathRightBottom.closeSubpath();
+    path = pathRightBottom;
 }
 
-void CDashboardScene::AddPathRightTopArc(QPainterPath& path, QPointF& originalPoint)
+void CDashboardScene::AddPathRightTopArc(QPainterPath& path, QPointF& originalPoint, bool leftTopNeed)
 {
     QPainterPath pathArc, pathTopArcTopRight, pathTopArcBottomLeft;
     pathTopArcTopRight.moveTo(originalPoint.rx() + PipeWidth, originalPoint.ry());
@@ -268,14 +265,18 @@ void CDashboardScene::AddPathRightTopArc(QPainterPath& path, QPointF& originalPo
     pathTopArcTopRight.lineTo(originalPoint.rx() + PipeWidth, originalPoint.ry());
     pathTopArcTopRight.closeSubpath();
 
-    int harfPipeWidth = PipeWidth / 2;
-    pathTopArcBottomLeft.moveTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
-    pathTopArcBottomLeft.arcTo(originalPoint.rx() - PipeWidth, originalPoint.ry(), PipeWidth, PipeWidth, 0.0, 90.0);
-    pathTopArcBottomLeft.lineTo(originalPoint);
-    pathTopArcBottomLeft.lineTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
-    pathTopArcBottomLeft.closeSubpath();
-
-    pathArc = pathTopArcTopRight.united(pathTopArcBottomLeft);
+    if (leftTopNeed) {
+        int harfPipeWidth = PipeWidth / 2;
+        pathTopArcBottomLeft.moveTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
+        pathTopArcBottomLeft.arcTo(originalPoint.rx() - PipeWidth, originalPoint.ry(), PipeWidth, PipeWidth, 0.0, 90.0);
+        pathTopArcBottomLeft.lineTo(originalPoint);
+        pathTopArcBottomLeft.lineTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
+        pathTopArcBottomLeft.closeSubpath();
+        pathArc = pathTopArcTopRight.united(pathTopArcBottomLeft);
+    }
+    else {
+        pathArc = pathTopArcTopRight;
+    }
     path.addPath(pathArc);
 }
 
@@ -307,11 +308,6 @@ QPainterPath CDashboardScene::MakeHorizontalBinaryPipePath(const QString& statio
         {
             AddPathLeftTopArc(path, p1);
             path.addRect(p1.rx() + PipeWidth, p1.ry(), p2.rx() - p1.rx() - PipeWidth, PipeWidth);
-            if (stationID == "P1" && OtherStationID == "P2")
-            {
-                QPointF p3 = p2 + QPointF(-PipeWidth, 2.5);
-                AddPathRightBottomArc(path, p3);
-            }
         }
         else
            path.addRect(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
@@ -822,30 +818,39 @@ void CDashboardScene::AddDashboardStationItemsToScene()
         addItem(p_DashboardStationItem);
         int xOrigin = 0;
         const QString& strID = m_DashboardStationIDs[i];
-        if ("S9" == strID || "S11" == strID || "S13" == strID || "S6" == strID
-                || "S4" == strID || "S2" == strID)
-        {
+        if ("S9" == strID || "S11" == strID || "S13" == strID || "S6" == strID || "S4" == strID || "S2" == strID) {
            xOrigin = -5;
-        } else if("P2" == strID)
-        {
+        }
+        else if("P2" == strID) {
             xOrigin = -2;
-        }  else if("P3" == strID)
-        {
+        }
+        else if("P3" == strID) {
             xOrigin = -3;
         }
 
         QPainterPath path;
-        if ("P1" == strID || "P2" == strID || "P3" == strID)
-        {
+        if ("P1" == strID || "P2" == strID || "P3" == strID) {
             path.addRect(x, y + PipeWidth, PipeWidth, JointHeight - PipeWidth);
         }
-        else
-        if ("S1" == strID || "S8" == strID)
-        {
+        else if ("S1" == strID || "S8" == strID) {
             path.addRect(x, y + PipeWidth, PipeWidth, JointHeight - PipeWidth + 2);
         }
         else
             path.addRect(x, y, PipeWidth, JointHeight + 2);
+
+        if ("P2" == strID) {
+            QPainterPath pathRigthTopArc;
+            QPointF vPoint(m_StationJointList["P2"].rx(), m_StationJointList["P2"].ry() + 5);
+            AddPathRightTopArc(pathRigthTopArc, vPoint, false);
+            m_PipeRectList.insert("P2RightEnd", PipePathAndOrientation(pathRigthTopArc, "up", QPoint(0, 0)));
+        }
+        else if ("P3" == strID) {
+            QPainterPath pathRigthTopArc;
+            QPointF vPoint(m_StationJointList["P3"].rx(), m_StationJointList["P3"].ry() + 5);
+            AddPathRightTopArc(pathRigthTopArc, vPoint, false);
+            m_PipeRectList.insert("P3RightEnd", PipePathAndOrientation(pathRigthTopArc, "up", QPoint(0, 0)));
+        }
+
         m_PipeRectList.insert(m_DashboardStationIDs[i], PipePathAndOrientation(path, "up", QPoint(xOrigin, 0)));
     }   
 
@@ -861,6 +866,11 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     qreal y = posStation.ry() + rectStation.height();
     m_StationJointList.insert("Retort", QPointF(x, y));
     int hh = (int)m_StationJointList["P1"].ry()  - y + (PipeWidth / 3);
+
+    QPainterPath pathRigthBottomArc;
+    QPointF vPoint(m_StationJointList["Retort"].rx(), m_StationJointList["Retort"].ry()+7);
+    AddPathRightBottomArc(pathRigthBottomArc, vPoint);
+    m_PipeRectList.insert("P1LeftEnd", PipePathAndOrientation(pathRigthBottomArc, "up", QPoint(0, 0)));
 
     QPainterPath pathRetort;
     pathRetort.addRect(x, y, PipeWidth, hh);

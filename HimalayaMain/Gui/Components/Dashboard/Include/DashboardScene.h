@@ -231,11 +231,12 @@ private:
      *
      *  \param path = QPainterPath type parameter
      *  \param pnt =  QPointF type parameter
+     *  \param leftTopNeed = left top point
      *
      *  \return from AddPathRightTopArc
      */
     /****************************************************************************/
-    void AddPathRightTopArc(QPainterPath& path, QPointF& pnt);
+    void AddPathRightTopArc(QPainterPath& path, QPointF& pnt, bool leftTopNeed = true);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function AddPathRightBottomArc
