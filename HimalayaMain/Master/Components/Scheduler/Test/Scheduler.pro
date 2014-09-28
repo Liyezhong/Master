@@ -9,6 +9,7 @@ SUBDIRS  +=          TestRsStandby.pro
 SUBDIRS  +=          TestSchedulerCommandProcessor.pro
 SUBDIRS  +=          TestSchedulerMainThreadController.pro
 SUBDIRS  +=          TestHeatingStrategy.pro
+SUBDIRS  +=          TestProgramStatusInfor.pro
 
 CONFIG += ordered
 
