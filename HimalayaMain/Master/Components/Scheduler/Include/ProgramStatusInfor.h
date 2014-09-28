@@ -47,18 +47,93 @@ public:
      */
     /****************************************************************************/
     bool ReadProgramStatusFile();
-
+    /****************************************************************************/
+    /*!
+     *  \brief Set RV position
+     *  \param rvpos RV position
+     */
+    /****************************************************************************/
     void SetLastRVPosition(const DeviceControl::RVPosition_t& rvpos);
+    /****************************************************************************/
+    /*!
+     *  \brief get last rv position
+     */
+    /****************************************************************************/
     DeviceControl::RVPosition_t GetLastRVPosition();
+    /****************************************************************************/
+    /*!
+     *  \brief program ID
+     *  \param ProgramID program id
+     */
+    /****************************************************************************/
     void SetProgramID(const QString& ProgramID);
+    /****************************************************************************/
+    /*!
+     *  \brief Get program id
+     */
+    /****************************************************************************/
     QString GetProgramId();
-    void SetStepID(const QString& ProgramID);
+    /****************************************************************************/
+    /*!
+     *  \brief Set step id
+     *  \param StepID, step id
+     */
+    /****************************************************************************/
+    void SetStepID(const QString& StepID);
+    /****************************************************************************/
+    /*!
+     *  \brief Get step id
+     */
+    /****************************************************************************/
     QString GetStepID();
+    /****************************************************************************/
+    /*!
+     *  \brief set scenario
+     *  \param Scenario scenario
+     */
+    /****************************************************************************/
     void SetScenario(const quint32 Scenario);
+    /****************************************************************************/
+    /*!
+     *  \brief Get scenario
+     */
+    /****************************************************************************/
     quint32 GetScenario();
+    /****************************************************************************/
+    /*!
+     *  \brief program is finished or not
+     *  \return true - program finished, false - not finished
+     */
+    /****************************************************************************/
     bool IsProgramFinished();
+    /****************************************************************************/
+    /*!
+     *  \brief set program to finished
+     */
+    /****************************************************************************/
+    void SetProgramFinished();
+    /****************************************************************************/
+    /*!
+     *  \brief retort is contaminted or not
+     *  \return true- contaminted, false not
+     */
+    /****************************************************************************/
     bool IsRetortContaminted();
+    /****************************************************************************/
+    /*!
+     *  \brief Get oven heating time
+     *  \param ParaffinMeltingPoint  paraffin melting point
+     */
+    /****************************************************************************/
     quint64 GetOvenHeatingTime(quint32 ParaffinMeltingPoint);
+    /****************************************************************************/
+    /*!
+     *  \brief update oven heating time
+     *  \param Time oven heating time
+     *  \param StartFlag oven heating start time
+     *  \param ResetFlag reset oven heating time to 0
+     */
+    /****************************************************************************/
     void UpdateOvenHeatingTime(quint64 Time, bool StartFlag = false, bool ResetFlag = false);
 
 

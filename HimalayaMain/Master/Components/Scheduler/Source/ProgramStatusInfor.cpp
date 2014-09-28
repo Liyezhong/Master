@@ -22,6 +22,7 @@
 #include <QStringList>
 #include <QDateTime>
 #include "Scheduler/Include/ProgramStatusInfor.h"
+#include <unistd.h>
 
 CProgramStatusInfor::CProgramStatusInfor()
 {
@@ -114,6 +115,11 @@ bool CProgramStatusInfor::IsProgramFinished()
     return GetProgramId().isEmpty();
 }
 
+void CProgramStatusInfor::SetProgramFinished()
+{
+    SetStatus("ProgramID","");
+}
+
 quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
 {
     quint64 TimeLimit = 12 * 60 * 60 * 1000;
@@ -136,14 +142,12 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
         {
             Slices.removeAt(2 * i);
             Slices.removeAt(2 * i + 1);
-            FlushFile();
         }
         else if(End >= TimeLimit && Start < TimeLimit)
         {
             Slices.replace(2 * i ,QString::number(TimeLimit));
             HeatingTime += End - TimeLimit;
             i++;
-            FlushFile();
         }
         else
         {
@@ -178,7 +182,6 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool StartFlag, bo
         Slices.replace(Slices.length() - 1,QString::number(Time));
     }
     SetStatus(key, Slices.join(","));
-    FlushFile();
 }
 
 bool CProgramStatusInfor::IsRetortContaminted()

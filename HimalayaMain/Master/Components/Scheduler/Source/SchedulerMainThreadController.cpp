@@ -119,18 +119,14 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_completionNotifierSent = false;
     m_IsReleasePressureOfSoakFinish = false;
     m_ReleasePressureSucessOfSoakFinish = false;
-    QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
     m_IsCleaningProgram = false;
-    QFile ProgramStatusFile(ProgramStatusFilePath);
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
     m_NeedEnterClean = false;
     m_StopFilling = false;
 
-    if(!ProgramStatusFile.exists())
-        CreateProgramStatusFile(&ProgramStatusFile);
-    ReadProgramStatusFile(&ProgramStatusFile);
+    (void)m_ProgramStatusInfor.ReadProgramStatusFile();
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -411,9 +407,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )
             {
-                QString LastPosition = getTheProgramStatus("LastRVPosition");
                 CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
-                cmdSet->SetRVPosition( (RVPosition_t)LastPosition.toUInt() );
+                cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
                 m_SchedulerCommandProcessor->pushCmd(cmdSet);
 
                 SchedulerCommandShPtr_t resCmdPtr;
@@ -426,7 +421,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 }
                 else
                 {
-                    LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
+                    LogDebug(QString("cleaning program set the rv position to:%1").arg(m_ProgramStatusInfor.GetLastRVPosition()));
                     m_SchedulerMachine->SendRunSignal();
                 }
             }
@@ -930,7 +925,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(m_IsCleaningProgram)
             {
                 m_IsCleaningProgram = false;
-                UpdateProgramStatusFile("ProgramFinished", "Yes");
+                m_ProgramStatusInfor.SetProgramFinished();
             }
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
@@ -2858,7 +2853,7 @@ bool SchedulerMainThreadController::IsRVRightPosition(qint16 type)
         {
             LogDebug(QString("RV hit tube position: %1").arg(targetPos));
         }
-        UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+        m_ProgramStatusInfor.SetLastRVPosition(targetPos);
     }
     return ret;
 }
@@ -3834,98 +3829,6 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
     {
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
-    }
-}
-
-void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)
-{
-    if(p_StatusFile)
-    {
-        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
-        {
-            LogDebug("ProgramStatus file open failed");
-        }
-        QTextStream FileStream(p_StatusFile);
-        FileStream.setFieldAlignment(QTextStream::AlignLeft);
-        FileStream << "LastRVPosition:" << "1" << "\n" << left;
-        FileStream << "ProgramFinished:" << "No" << "\n" << left;
-        p_StatusFile->close();
-    }
-}
-
-void SchedulerMainThreadController::ReadProgramStatusFile(QFile *p_StatusFile)
-{
-    if(p_StatusFile)
-    {
-        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
-        {
-            LogDebug("Read programStatus file open failed");
-        }
-        QString Line;
-        QTextStream FileStream(p_StatusFile);
-        do{
-            Line = FileStream.readLine().simplified();
-            QString tmpString("0");
-            if(Line.contains("ProgramFinished", Qt::CaseInsensitive))
-            {
-                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
-                if(LineFields.count() == 2)
-                {
-                    m_ProgramStatusFileMap.insert("ProgramFinished", LineFields[1]);
-                }
-            }
-            else if(Line.contains("LastRVPosition", Qt::CaseInsensitive))
-            {
-                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
-                if(LineFields.count() == 2)
-                {
-                    m_ProgramStatusFileMap.insert("LastRVPosition", LineFields[1]);
-                }
-            }
-
-        }while(!Line.isNull());
-    }
-}
-
-void SchedulerMainThreadController::UpdateProgramStatusFile(const QString& key, const QString& value)
-{
-    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
-    if(iter != m_ProgramStatusFileMap.end())
-    {
-        iter.value() = value;
-    }
-
-    const QString ProgramStatusFilePath = Global::SystemPaths::Instance().GetSettingsPath() + "/ProgramStatus.txt";
-    QFile ProgramStatusFile(ProgramStatusFilePath);
-    if(!ProgramStatusFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate))
-    {
-        LogDebug("open the ProgramStatusFilePath failed");
-    }
-    QTextStream FileStream(&ProgramStatusFile);
-    FileStream.setFieldAlignment(QTextStream::AlignLeft);
-
-    QMapIterator<QString, QString> StatusfileItr(m_ProgramStatusFileMap);
-    while (StatusfileItr.hasNext()) {
-        StatusfileItr.next();
-        QString Key1 = StatusfileItr.key();
-        QString Value1 = m_ProgramStatusFileMap.value(Key1);
-        FileStream << Key1 << ":" << Value1 << "\n" << left;
-    }
-    ProgramStatusFile.flush();
-    fsync(ProgramStatusFile.handle());
-    ProgramStatusFile.close();
-}
-
-QString SchedulerMainThreadController::getTheProgramStatus(const QString& key)
-{
-    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
-    if(iter != m_ProgramStatusFileMap.end())
-    {
-        return iter.value();
-    }
-    else
-    {
-        return "";
     }
 }
 

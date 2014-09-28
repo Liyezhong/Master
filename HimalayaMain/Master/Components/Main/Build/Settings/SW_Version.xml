@@ -5,7 +5,7 @@
   </SW>
   <Master_SW>
     <file Filename="himalaya" Version="MAIN_1.000" Date="2013-09-10"></file>
-    <file Filename="RemoteCare" Version="RECA_1.000" Date="2013-9-10"></file>
+    <file Filename="RemoteCareAgent" Version="RECA_1.000" Date="2013-9-10"></file>
     <file Filename="himalaya_gui" Version="GUI_1.000" Date="2013-09-10"></file>
     <file Filename="Export" Version="EXP_1.000" Date="2013-09-10"></file>
     <file Filename="himalaya_service" Version="SERV_1.000" Date="2013-09-10"></file>

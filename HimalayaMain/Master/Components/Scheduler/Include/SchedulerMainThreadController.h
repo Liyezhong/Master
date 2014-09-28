@@ -34,6 +34,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
+#include "Scheduler/Include/ProgramStatusInfor.h"
 
 using namespace DeviceControl;
 
@@ -238,7 +239,7 @@ typedef struct
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
         bool m_IsCleaningProgram;                             ///< cleaning program run or not
-        QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
+        CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
@@ -257,41 +258,6 @@ typedef struct
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
-
-        /****************************************************************************/
-        /**
-         * \brief CreateRebootFile.
-         * \param p_StatusFile = QFile
-         */
-        /****************************************************************************/
-        void CreateProgramStatusFile(QFile *p_StatusFile);
-
-        /****************************************************************************/
-        /**
-         * \brief ReadProgramStatusFile
-         * \param p_StatusFile = QFile
-         */
-        /****************************************************************************/
-        void ReadProgramStatusFile(QFile *p_StatusFile);
-
-        /****************************************************************************/
-        /**
-         * \brief UpdateProgramStatusFile
-         * \param key = QString
-         * \param value = QString
-         */
-        /****************************************************************************/
-        void UpdateProgramStatusFile(const QString& key, const QString& value);
-
-        /****************************************************************************/
-        /**
-         * \brief UpdateProgramStatusFile
-         * \param key = QString
-         * \param value = QString
-         * \return from QString
-         */
-        /****************************************************************************/
-        QString getTheProgramStatus(const QString& key);
 
         /****************************************************************************/
         /**
