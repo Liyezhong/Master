@@ -121,8 +121,8 @@ typedef struct
 /****************************************************************************/
 typedef struct
 {
-    QString         ReagentGrpId;
-    RVPosition_t    RvPos;
+    QString         ReagentGrpId;           //!< reagent group ID
+    RVPosition_t    RvPos;                  //!< RV position
 }BottlePosition_t;
 
 /****************************************************************************/
@@ -163,8 +163,8 @@ typedef enum
 /****************************************************************************/
 typedef struct
 {
-    DeviceControl::ReturnCode_t retCode;
-    QString                     cmdName;
+    DeviceControl::ReturnCode_t retCode;    //!< return Code
+    QString                     cmdName;    //!< the command name
 } RecvCommand_t;
 
 /****************************************************************************/
@@ -174,9 +174,9 @@ typedef struct
 /****************************************************************************/
 typedef struct
 {
-    qreal CurrentMax5VDC;
-    qreal Voltagerated24VDC;
-    qreal VoltageTolerance24VDC;
+    qreal CurrentMax5VDC;               //!< the current max 5VDC
+    qreal Voltagerated24VDC;            //!< the voltage 24 VDC
+    qreal VoltageTolerance24VDC;        //!< the voltage 24 VDC
 } SlaveAttr_t;
     /****************************************************************************/
     /**
@@ -1076,8 +1076,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief  Send out Error message
-         *  \param  Event Id
-         *  \return void
+         *  \param  EventId
          */
         /****************************************************************************/
         void SendOutErrMsg(ReturnCode_t EventId)
@@ -1108,8 +1107,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  do cleaning dry step
-         *  \param  void
-         *  \return void
+         *  \param  ctrlCmd - ControlCommandType_t
+         *  \param  cmd - SchedulerCommandShPtr_t
          */
         /****************************************************************************/
         void DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
@@ -1126,9 +1125,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Get the tpe of failed heater
-         *  \param  void
          *  \return Heater type
-         *
          */
         /****************************************************************************/
         HeaterType_t GetFailerHeaterType();
@@ -1136,7 +1133,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Shutting down failed heaters
-         *  \param  void
          *  \return bool, ture - success, false -failure
          *
          */
@@ -1146,7 +1142,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Restart failed heaters
-         *  \param  void
          *  \return bool, ture - success, false -failure
          *
          */
@@ -1202,8 +1197,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Filling for Rs_Tissue_Protect
-         *  \param  QString StationID
-         *  \param  bool Insufficientcheck
+         *  \param  StationID - QString
+         *  \param  EnableInsufficientCheck - bool
          *  \return void
          */
         /****************************************************************************/
@@ -1212,7 +1207,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send Stop Filling for Rs_Tissue_Protect to GUI
-         *  \param  QString StationID
+         *  \param  StationID - QString
          *  \return void
          */
         /****************************************************************************/
@@ -1221,7 +1216,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Get the command list from Device Control
-         *  \param  void
          *  \return Reference of received command list
          */
         /****************************************************************************/
@@ -1230,7 +1224,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Get current station ID
-         *  \param  void
          *  \return QString current station ID
          */
         /****************************************************************************/
@@ -1238,7 +1231,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Set current station ID
-         *  \param  QString station ID
+         *  \param  StationID - QString station ID
+         *  \param  ReagentGroup - QString
          *  \return void
          */
         /****************************************************************************/
@@ -1250,8 +1244,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Set current step state
-         *  \param  SchedulerStateMachine_t current step state
-         *  \return void
+         *  \param  stepState - chedulerStateMachine_t current step state
          */
         /****************************************************************************/
         void SetCurrentStepState(SchedulerStateMachine_t stepState) { m_CurrentStepState = stepState; }
@@ -1259,7 +1252,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Get current step state
-         *  \param  void
          *  \return Current step state
          */
         /****************************************************************************/
@@ -1278,7 +1270,7 @@ protected:
 
         /****************************************************************************/
         /**
-         * @brief For advancing the time
+         *  \brief For advancing the time
          */
         /****************************************************************************/
         void OnTickTimer();
@@ -1296,8 +1288,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Protocol filling
-         *  \param  void
-         *  \return void
          */
         /****************************************************************************/
         void Fill();
@@ -1382,6 +1372,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot OnSelfTestDone
+         *  \param  flag - bool
          */
         /****************************************************************************/
         void OnSelfTestDone(bool flag);
@@ -1414,8 +1405,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send out Tisue Protect done message to GUI
-         *  \param  void
-         *  \return void
          */
         /****************************************************************************/
         void SendTissueProtectMsg();
@@ -1423,8 +1412,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send Oven cover open message to GUI
-         *  \param  void
-         *  \return void
          */
         /****************************************************************************/
         void SendCoverLidOpenMsg();

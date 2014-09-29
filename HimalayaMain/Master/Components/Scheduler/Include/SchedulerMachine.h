@@ -199,10 +199,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CSchedulerStateMachine
-     *
      *  \param  SchedulerThreadController
-     *
-     *  \return from void
      */
     /****************************************************************************/
     CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController);
@@ -211,32 +208,24 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function Start
-     *
-     *  \return from Start
      */
     /****************************************************************************/
     void Start();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function Stop
-     *
-     *  \return from Stop
      */
     /****************************************************************************/
     void Stop();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendSchedulerInitComplete
-     *
-     *  \return from SendSchedulerInitComplete
      */
     /****************************************************************************/
     void SendSchedulerInitComplete();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendRunSignal
-     *
-     *  \return from SendRunSignal
      */
     /****************************************************************************/
     void SendRunSignal();
@@ -244,8 +233,6 @@ public:
    /****************************************************************************/
    /*!
     *  \brief  Send signal "RunPreTest" to Scheduler
-    *
-    *  \return void
     */
    /****************************************************************************/
    void SendRunPreTest();
@@ -253,8 +240,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendRunComplete
-     *
-     *  \return from SendRunComplete
      */
     /****************************************************************************/
     void SendRunComplete();
@@ -262,8 +247,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeFillingRVRodHeating
-     *
-     *  \return from SendResumeFillingRVRodHeating
      */
     /****************************************************************************/
     void SendResumeFillingRVRodHeating();
@@ -271,8 +254,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeFillingLevelSensorHeating
-     *
-     *  \return from SendResumeFillingLevelSensorHeating
      */
     /****************************************************************************/
     void SendResumeFillingLevelSensorHeating();
@@ -280,8 +261,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeFiling
-     *
-     *  \return from SendResumeFiling
      */
     /****************************************************************************/
     void SendResumeFiling();
@@ -289,8 +268,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeRVMoveToSeal
-     *
-     *  \return from SendResumeRVMoveToSeal
      */
     /****************************************************************************/
     void SendResumeRVMoveToSeal();
@@ -298,8 +275,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeProcessing
-     *
-     *  \return from SendResumeProcessing
      */
     /****************************************************************************/
     void SendResumeProcessing();
@@ -307,8 +282,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeProcessingSR
-     *
-     *  \return from SendResumeProcessingSR
      */
     /****************************************************************************/
     void SendResumeProcessingSR();
@@ -316,8 +289,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeRVMoveTube
-     *
-     *  \return from SendResumeRVMoveTube
      */
     /****************************************************************************/
     void SendResumeRVMoveTube();
@@ -325,8 +296,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeDraining
-     *
-     *  \return from SendResumeDraining
      */
     /****************************************************************************/
     void SendResumeDraining();
@@ -334,8 +303,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendResumeRVPosChange
-     *
-     *  \return from SendResumeRVPosChange
      */
     /****************************************************************************/
     void SendResumeRVPosChange();
@@ -343,8 +310,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendErrorSignal
-     *
-     *  \return from SendErrorSignal
      */
     /****************************************************************************/
     void SendErrorSignal();
@@ -352,96 +317,72 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStInitOK
-     *
-     *  \return from NotifyStInitOK
      */
     /****************************************************************************/
     void NotifyStInitOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStTempOK
-     *
-     *  \return from NotifyStTempOK
      */
     /****************************************************************************/
     void NotifyStTempOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStCurrentOK
-     *
-     *  \return from NotifyStCurrentOK
      */
     /****************************************************************************/
     void NotifyStCurrentOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStVoltageOK
-     *
-     *  \return from NotifyStVoltageOK
      */
     /****************************************************************************/
     void NotifyStVoltageOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStRVPositionOK
-     *
-     *  \return from NotifyStRVPositionOK
      */
     /****************************************************************************/
     void NotifyStRVPositionOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStPressureOK
-     *
-     *  \return from NotifyStPressureOK
      */
     /****************************************************************************/
     void NotifyStPressureOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStSealingOK
-     *
-     *  \return from NotifyStSealingOK
      */
     /****************************************************************************/
     void NotifyStSealingOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStGetStationcheckResult
-     *
-     *  \return from NotifyStGetStationcheckResult
      */
     /****************************************************************************/
     void NotifyStGetStationcheckResult();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStStationLeft
-     *
-     *  \return from NotifyStStationLeft
      */
     /****************************************************************************/
     void NotifyStStationLeft();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStStationOK
-     *
-     *  \return from NotifyStStationOK
      */
     /****************************************************************************/
     void NotifyStStationOK();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStDone
-     *
-     *  \return from NotifyStDone
      */
     /****************************************************************************/
     void NotifyStDone();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyTempsReady
-     *
-     *  \return from NotifyTempsReady
      */
     /****************************************************************************/
     void NotifyTempsReady();
@@ -449,8 +390,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Notify level sensor heating is ready
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyLevelSensorHeatingReady();
@@ -458,8 +397,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Notify RV Rod heating is ready
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyRVRodHeatingReady();
@@ -467,8 +404,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Notify RV moving to Sealing position is ready
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyRVMoveToSealReady();
@@ -476,8 +411,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Notify RV moving to tube position is ready
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyRVMoveToTubeReady();
@@ -485,40 +418,30 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyHitTubeBefore
-     *
-     *  \return from NotifyHitTubeBefore
      */
     /****************************************************************************/
     void NotifyHitTubeBefore();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyFillFinished
-     *
-     *  \return from NotifyFillFinished
      */
     /****************************************************************************/
     void NotifyFillFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyHitSeal
-     *
-     *  \return from NotifyHitSeal
      */
     /****************************************************************************/
     void NotifyHitSeal();
     /****************************************************************************/
     /*!
      *  \brief  Notify processing finished
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyProcessingFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyHitTubeAfter
-     *
-     *  \return from NotifyHitTubeAfter
      */
     /****************************************************************************/
     void NotifyHitTubeAfter();
@@ -526,8 +449,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Notify Drain finished
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void NotifyDrainFinished();
@@ -535,16 +456,12 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStepFinished
-     *
-     *  \return from NotifyStepFinished
      */
     /****************************************************************************/
     void NotifyStepFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyProgramFinished
-     *
-     *  \return from NotifyProgramFinished
      */
     /****************************************************************************/
     void NotifyProgramFinished();
@@ -552,8 +469,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  notify to enter cleaning dry step
-     *
-     *  \return void
      */
     /****************************************************************************/
     void NotifyEnterCleaningDryStep();
@@ -561,26 +476,19 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStepProgramFinished
-     *
-     *  \return from NotifyStepProgramFinished
      */
     /****************************************************************************/
     void NotifyStepProgramFinished();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyError
-     *
-     *  \return from NotifyError
+     *  \brief  Definition/Declaration of function NotifyErro
      */
     /****************************************************************************/
     void NotifyError();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyPause
-     *
      *  \param PreviousState = SchedulerStateMachine_t type parameter
-     *
-     *  \return from NotifyPause
      */
     /****************************************************************************/
     void NotifyPause(SchedulerStateMachine_t PreviousState);
@@ -588,16 +496,12 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyResumeDrain
-     *
-     *  \return from NotifyResumeDrain
      */
     /****************************************************************************/
     void NotifyResumeDrain();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyAbort
-     *
-     *  \return from NotifyAbort
      */
     /****************************************************************************/
     void NotifyAbort();
@@ -605,8 +509,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter RS_RV_GetOriginalPostionAgain
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsRVGetOriginalPositionAgain();
@@ -614,40 +516,30 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsRvMoveToInitPositionFinished
-     *
-     *  \return from NotifyRsRvMoveToInitPositionFinished
      */
     /****************************************************************************/
     void NotifyRsRvMoveToInitPositionFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRcReport
-     *
-     *  \return from NotifyRcReport
      */
     /****************************************************************************/
     void NotifyRcReport();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsReleasePressure
-     *
-     *  \return from NotifyRsReleasePressure
      */
     /****************************************************************************/
     void NotifyRsReleasePressure();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsShutdownFailedHeater
-     *
-     *  \return from NotifyRsShutdownFailedHeater
      */
     /****************************************************************************/
     void NotifyRsShutdownFailedHeater();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsShutdownFailedHeaterFinished
-     *
-     *  \return from NotifyRsShutdownFailedHeaterFinished
      */
     /****************************************************************************/
     void NotifyRsShutdownFailedHeaterFinished();
@@ -657,8 +549,6 @@ public:
      *  \brief  Definition/Declaration of function UpdateCurrentState
      *
      *  \param currentState = SchedulerStateMachine_t type parameter
-     *
-     *  \return from UpdateCurrentState
      */
     /****************************************************************************/
     void UpdateCurrentState(SchedulerStateMachine_t currentState);
@@ -666,8 +556,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rs_Standby sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsStandBy();
@@ -675,8 +563,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rs_HeatingErr30SRetry sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsHeatingErr30SRetry();
@@ -684,8 +570,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rs_PressureOverRange_3SRetry sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsPressureOverRange3SRetry();
@@ -693,8 +577,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rs_TSensorErr_3min_Retry sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsTSensorErr3MinRetry();
@@ -702,8 +584,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rs_Standby_WithTissue sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRsStandByWithTissue();
@@ -711,8 +591,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rc_Levelsensor_Heating_Overtime sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRcLevelsensorHeatingOvertime();
@@ -720,40 +598,30 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rc_Restart sub state machine
-     *
-     *  \return void
      */
     /****************************************************************************/
     void EnterRcRestart();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRcPressure
-     *
-     *  \return from NotifyRcPressure
      */
     /****************************************************************************/
     void EnterRcPressure();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyVacuum
-     *
-     *  \return from NotifyRcVacuum
      */
     /****************************************************************************/
     void EnterRcVacuum();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRcFilling
-     *
-     *  \return from NotifyRcFilling
      */
     /****************************************************************************/
     void EnterRcFilling();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRcDraining
-     *
-     *  \return from NotifyRcDraining
      */
     /****************************************************************************/
     void EnterRcDraining();
@@ -761,8 +629,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsDrainAtOnce
-     *
-     *  \return from EnterRsDrainAtOnce
      */
     /****************************************************************************/
     void EnterRsDrainAtOnce();
@@ -770,8 +636,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRcBottleCheckI
-     *
-     *  \return from EnterRcBottleCheckI
      */
     /****************************************************************************/
     void EnterRcBottleCheckI();
@@ -779,8 +643,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsFillingAfterFlush
-     *
-     *  \return from EnterRsFillingAfterFlush
      */
     /****************************************************************************/
     void EnterRsFillingAfterFlush();
@@ -788,8 +650,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsCheckBlockage
-     *
-     *  \return from EnterRsCheckBlockage
      */
     /****************************************************************************/
     void EnterRsCheckBlockage();
@@ -797,8 +657,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsPause
-     *
-     *  \return from EnterRsPause
      */
     /****************************************************************************/
     void EnterRsPause();
@@ -806,8 +664,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsRVWaitingTempUp
-     *
-     *  \return from EnterRsRVWaitingTempUp
      */
     /****************************************************************************/
     void EnterRsRVWaitingTempUp();
@@ -815,8 +671,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRsTissueProtect
-     *
-     *  \return from EnterRsTissueProtect
      */
     /****************************************************************************/
     void EnterRsTissueProtect();
@@ -824,8 +678,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnterRcCheckRTLock
-     *
-     *  \return from EnterRcCheckRTLock
      */
     /****************************************************************************/
     void EnterRcCheckRTLock();
@@ -833,11 +685,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Handle the whole work flow for Program Pre-Test
-     *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode); 
@@ -847,7 +696,6 @@ public:
      *  \brief Handle the whole work flow for Program Self-Test
      *  \param cmdName - command name
      *  \param retCode - return code
-     *  \return void
      */
     /****************************************************************************/
     void HandleSelfTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -858,8 +706,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsStandByWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -870,8 +716,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsHeatingErr30SRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -883,8 +727,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsPressureOverRange3SRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -894,7 +736,6 @@ public:
      *  \brief Handle the whole work flow for RS_TSensorErr3MinRetry
      *  \param cmdName - command name
      *  \param retCode - return code
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsTSensorErr3MinRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -905,8 +746,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsStandByWithTissueWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -917,8 +756,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -926,10 +763,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Handle the whole work flow for Rc_Check_RTLock
-     *
-     *  \param void
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcCheckRTLockWorkFlow();
@@ -937,10 +770,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Handle the whole work flow for Rc_Levelsensor_Heating_Overtime
-     *
-     *  \param void
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcLevelSensorHeatingOvertimeWorkFlow();
@@ -951,8 +780,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -963,8 +790,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcPressureWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -975,8 +800,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcVacuumWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -987,8 +810,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcFillingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -999,8 +820,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -1011,8 +830,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcBottleCheckIWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -1023,8 +840,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsFillingAfterFlushWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -1035,8 +850,6 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
-     *
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsCheckBlockageWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -1045,7 +858,7 @@ public:
     /*!
      *  \brief Handle the whole work flow for HandleRsPauseWorkFlow
      *
-     *  \return ctrlCmd - control command
+     *  \param ctrlCmd - control command
      */
     /****************************************************************************/
     void HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd);
@@ -1055,7 +868,6 @@ public:
      *  \brief Handle the whole work flow for HandleRsRVWaitingTempUpWorkFlow
      *  \param cmdName - command name
      *  \param retCode - return code
-     *  \return void
      */
     /****************************************************************************/
     void HandleRsRVWaitingTempUpWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
@@ -1065,7 +877,6 @@ public:
      *  \brief  Handle Rc_Restart when the error occurs at Draining stage
      *  \param cmdName - command name
      *  \param retCode - return code
-     *  \return void
      */
     /****************************************************************************/
     void HandleRcRestartAtDrain(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
@@ -1073,16 +884,14 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetCurrentState
-     *
-     *  \return from GetCurrentState
+     *  \return SchedulerStateMachine_t from GetCurrentState
      */
     /****************************************************************************/
     SchedulerStateMachine_t GetCurrentState();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetPreviousState
-     *
-     *  \return from GetPreviousState
+     *  \return  SchedulerStateMachine_t from GetPreviousState
      */
     /****************************************************************************/
     SchedulerStateMachine_t GetPreviousState();

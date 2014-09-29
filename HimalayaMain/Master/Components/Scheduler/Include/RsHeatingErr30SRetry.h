@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RsHeatingErr3SRetry.h
+/*! \file RsHeatingErr30SRetry.h
  *
  *  \brief CRsHeatingErr3SRetry class definition.
  *

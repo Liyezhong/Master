@@ -81,8 +81,8 @@ struct RTLevelSensor : public HeatingSensor
 {
     QMap<QString, QString>	CurrentSpeedList;       //!< the current of speed map
     QMap<QString, qreal>	ExchangePIDTempList;    //!< temperature of exchange PID parameter map
-    bool                    SetTemp4High;
-    bool                    SetTemp4Low;
+    bool                    SetTemp4High;           //!< whether set temperature high
+    bool                    SetTemp4Low;            //!< whether set temperature low
 };
 
 /****************************************************************************/
@@ -236,8 +236,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Check temperature difference of the two Retort bottom sensors
-     *  \param  qreal temp1 - temperature of RT Bottom1
-     *  \param  qreal temp2 - temperature of RT Bottom2
+     *  \param  temp1 - temperature of RT Bottom1
+     *  \param  temp2 - temperature of RT Bottom2
      *  \return bool true - success, false - failed
      */
     /****************************************************************************/
@@ -266,7 +266,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Get the oven heating begin Time
-     *  \param  void
      *  \return qint64
      */
     /****************************************************************************/
@@ -284,7 +283,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Check the status of all the temperature sensors
-     *  \param  void
      *  \return bool
      */
     /****************************************************************************/
@@ -293,15 +291,16 @@ public:
     /****************************************************************************/
      /*!
      *  \brief  Check if level sensor heating reaches target temperature or not
-     *  \param  void
+     *  \param  devName - Qstring
+     *  \param  temperature - qreal
      *  \return bool, ture - passed, false - not yet
      */
     /****************************************************************************/
     bool CheckSensorTempOverRange(const QString& devName, qreal temperature);
 
+    /****************************************************************************/
     /*!
      *  \brief  Check if level sensor heating reaches target temperature or not
-     *  \param  void
      *  \return bool, ture - passed, false - not yet
      */
     /****************************************************************************/

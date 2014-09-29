@@ -25,13 +25,6 @@
 
 namespace Scheduler{
 
-/****************************************************************************/
-/*!
- *  \brief    Constructor
- *  \iparam   pStateMachine: Pointer to current state machine
- *  \iparam   pParentState: Pointer to parent state
- */
-/****************************************************************************/
 CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController)
     :mp_SchedulerController(SchedController)
 {

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ProgramStatusInfro.h
+/*! \file ProgramStatusInfor.h
  *
- *  \brief CProgramSelfTest class definition.
+ *  \brief CProgramStatusInfor class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ Aug 18th, 2014
@@ -44,6 +44,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Read program status from file to m_Status;
+     *  \return true - program finished, false - not finished
      */
     /****************************************************************************/
     bool ReadProgramStatusFile();
@@ -57,6 +58,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief get last rv position
+     *  \return DeviceControl::RVPosition_t from GetLastRVPosition
      */
     /****************************************************************************/
     DeviceControl::RVPosition_t GetLastRVPosition();
@@ -70,19 +72,21 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Get program id
+     *  \return QString from GetProgramId
      */
     /****************************************************************************/
     QString GetProgramId();
     /****************************************************************************/
     /*!
      *  \brief Set step id
-     *  \param StepID, step id
+     *  \param StepID - step id
      */
     /****************************************************************************/
     void SetStepID(const QString& StepID);
     /****************************************************************************/
     /*!
      *  \brief Get step id
+     *  \return QString from GetStepID
      */
     /****************************************************************************/
     QString GetStepID();
@@ -96,6 +100,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Get scenario
+     *  \return quint32 from GetScenario
      */
     /****************************************************************************/
     quint32 GetScenario();
@@ -123,6 +128,7 @@ public:
     /*!
      *  \brief Get oven heating time
      *  \param ParaffinMeltingPoint  paraffin melting point
+     *  \return quint64 form GetOvenHeatingTime
      */
     /****************************************************************************/
     quint64 GetOvenHeatingTime(quint32 ParaffinMeltingPoint);

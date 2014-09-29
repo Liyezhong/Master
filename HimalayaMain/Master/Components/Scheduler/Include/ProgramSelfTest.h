@@ -29,17 +29,17 @@ using namespace DeviceControl;
 
 namespace Scheduler{
 
-#define VALVE_1_INDEX (0)
-#define VALVE_2_INDEX (1)
-#define VALVE_STATE_OPEN (1)
-#define VALVE_STATE_CLOSE (0)
-#define HEATER_IGNORE (-1);
-#define HEATER_UNDEF (0)
-#define HEATER_220V  (1)
-#define HEATER_110V  (2)
-#define HEATER_DC    (3)
-#define AUTO_SWITCH_DISABLE (0)
-#define AUTO_SWITCH_ENABLE  (1)
+#define VALVE_1_INDEX (0)                       //!< the valve 1
+#define VALVE_2_INDEX (1)                       //!< the valve 2
+#define VALVE_STATE_OPEN (1)                    //!< valve open
+#define VALVE_STATE_CLOSE (0)                   //!< valve close
+#define HEATER_IGNORE (-1);                     //!< heater ignore
+#define HEATER_UNDEF (0)                        //!< heater undefin
+#define HEATER_220V  (1)                        //!< the 220v heater
+#define HEATER_110V  (2)                        //!< the 110v heater
+#define HEATER_DC    (3)                        //!< heat DC mode
+#define AUTO_SWITCH_DISABLE (0)                 //!< disable the auto switch
+#define AUTO_SWITCH_ENABLE  (1)                 //!< enble the auto swicth
 
 class SchedulerMainThreadController;
 
@@ -126,6 +126,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal for tasks done
+     *  \param flag - bool
      */
     /****************************************************************************/
     void SigSelfTestDone(bool flag);

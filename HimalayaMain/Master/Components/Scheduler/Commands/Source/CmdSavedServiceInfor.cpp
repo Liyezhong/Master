@@ -24,14 +24,6 @@ namespace MsgClasses {
 
 QString CmdSavedServiceInfor::NAME = "MsgClasses::CmdSavedServiceInfor";
 
-/****************************************************************************/
-/*!
- *  \brief   Constructor
- *
- * \param[in]   Timeout              Timeout for command.
- * \param[in]   ProgramDataStream    The changed program.
- */
-/****************************************************************************/
 CmdSavedServiceInfor::CmdSavedServiceInfor(int Timeout, const QString& deviceType)
     :Command(Timeout), m_DeviceType(deviceType)
 {

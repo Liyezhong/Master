@@ -51,8 +51,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Constructor of class CRsStandbyWithTissue
-     *
-     *  \param SchedController = pointer to SchedulerMainThreadController
+     *  \param  type - quint8
+     *  \param  SchedController = pointer to SchedulerMainThreadController
      *
      */
     /****************************************************************************/
@@ -123,11 +123,11 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Signal for Tasks done
-     *  \param  bool ture- tasks done successfully, false - tasks failed
+     *  \param  flag - bool ture- tasks done successfully, false - tasks failed
      *
      */
     /****************************************************************************/
-    void TasksDone(bool);
+    void TasksDone(bool flag);
 private slots:
 
     /****************************************************************************/

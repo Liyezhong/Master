@@ -172,8 +172,6 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ShutDownDevice
      *
-     *  \param void
-     *
      *  \return from void
      */
     /****************************************************************************/
@@ -198,9 +196,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Get report error from salve module
-     *
-     *  \param  Qstring devname - device name
-     *  \param  quint32 sensor name
+     *  \param  CANErrCode - quint8
+     *  \param  devName - device name
+     *  \param  sensorName - quint32 sensor name
      *
      *  \return ReportError_t
      */
@@ -211,7 +209,7 @@ public:
     /*!
      *  \brief  Get heater switch type from salve module
      *
-     *  \param  Qstring devname - device name
+     *  \param  devName - QString device name
      *
      *  \return quint8
      */
@@ -241,11 +239,28 @@ signals:
     /****************************************************************************/
     void NewCmdAdded();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigShutDownDevice
+     */
+    /****************************************************************************/
     void SigShutDownDevice();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigNotifySavedServiceInfor
+     *  \param  deviceType - QString
+     */
+    /****************************************************************************/
     void SigNotifySavedServiceInfor(const QString& deviceType);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigResetActiveCarbonFilterLifetime
+     */
+    /****************************************************************************/
     void SigResetActiveCarbonFilterLifetime();
+
     /************************************************************************************/
     /*!
      *  \brief  Forward AirLiquid's 'level sensor status change to 1' to Heating strategy
@@ -279,8 +294,9 @@ signals:
     /*!
      *  \brief  Returns the service information of a device
      *
-     *  \iparam ReturnCode = ReturnCode of Device Control Layer
-     *  \iparam ModuleInfo = Contains the service information
+     *  \param ReturnCode = ReturnCode of Device Control Layer
+     *  \param ModuleInfo = Contains the service information
+     *  \param deviceType - QString
      */
     /****************************************************************************/
     void ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& deviceType);
@@ -359,16 +375,32 @@ public slots:
         this->OnNewCmdAdded4Slot();
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnShutDownDevice
+     */
+    /****************************************************************************/
     virtual void OnShutDownDevice()
     {
         this->OnShutDownDevice4Slot();
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnNotifySavedServiceInfor
+     *  \param  deviceType - QString
+     */
+    /****************************************************************************/
     virtual void OnNotifySavedServiceInfor(const QString& deviceType)
     {
         this->OnNotifySavedServiceInfor4Slot(deviceType);
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnResetActiveCarbonFilterLifetime
+     */
+    /****************************************************************************/
     virtual void OnResetActiveCarbonFilterLifetime()
     {
         this ->OnResetActiveCarbonFilterLifetime4Slot();
@@ -526,10 +558,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ShutDownDevice
-     *
-     *  \param void
-     *
-     *  \return from void
      */
     /****************************************************************************/
     virtual void ShutDownDevice();
@@ -553,10 +581,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Get report error from salve module
-     *
-     *  \param  Qstring devname - device name
-     *  \param  quint32 sensor name
-     *
+     *  \param  CANErrCode - quint8
+     *  \param  devName - QString sensor name
+     *  \param  sensorName - quint32
      *  \return ReportError_t
      */
     /****************************************************************************/
@@ -566,7 +593,7 @@ public:
     /*!
      *  \brief  Get heater switch type from salve module
      *
-     *  \param  Qstring devname - device name
+     *  \param  devName - device name
      *
      *  \return quint8
      */

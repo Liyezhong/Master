@@ -149,7 +149,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="0,28800"/>
+                <Parameter Key="TimeRange" Value="0,60"/>
             </Function>
             <Function Key="Heating" name="OvenBottom" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -163,7 +163,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="28800,43200"/>
+                <Parameter Key="TimeRange" Value="60,120"/>
             </Function>
             <Function Key="Heating" name="OvenBottom" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -177,7 +177,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="0,36000"/>
+                <Parameter Key="TimeRange" Value="0,60"/>
             </Function>
             <Function Key="Heating" name="OvenBottom" sequence="4">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -191,7 +191,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="36000,54000"/>
+                <Parameter Key="TimeRange" Value="60,120"/>
             </Function>
             <Function Key="Heating" name="OvenTop" sequence="1">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -205,7 +205,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="0,28800"/>
+                <Parameter Key="TimeRange" Value="0,60"/>
             </Function>
             <Function Key="Heating" name="OvenTop" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -219,7 +219,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="28800,43200"/>
+                <Parameter Key="TimeRange" Value="60,120"/>
             </Function>
             <Function Key="Heating" name="OvenTop" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -233,7 +233,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="0,36000"/>
+                <Parameter Key="TimeRange" Value="0,60"/>
             </Function>
             <Function Key="Heating" name="OvenTop" sequence="4">
                 <Parameter Key="ControllerGain" Value="6000"/>
@@ -247,7 +247,7 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TimeRange" Value="36000,54000"/>
+                <Parameter Key="TimeRange" Value="60,120"/>
             </Function>
 		</Device>
 		<Device Key="Rotary Valve">

@@ -40,8 +40,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor of CProgramPreTest
-     *
-     *  \param none
+     *  \param SchedController - SchedulerMainThreadController
      *
      */
     /****************************************************************************/

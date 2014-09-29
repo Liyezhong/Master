@@ -174,19 +174,17 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Signal for Tasks done
-     *  \param  bool ture- tasks done successfully, false - tasks failed
+     *  \param  flag = bool ture- tasks done successfully, false - tasks failed
      *
      */
     /****************************************************************************/
-    void TasksDone(bool);
+    void TasksDone(bool flag);
 
 private slots:
     /****************************************************************************/
     /*!
      *  \brief  slot for moving to safe reagent tube position
-     *  \param  void
      *  \return void
-     *
      */
     /****************************************************************************/
     void OnMoveToTube();
