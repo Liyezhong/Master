@@ -135,19 +135,27 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_CurScenario = scenario;
         m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
-        //For RTTop
-        retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        //For RTBottom
-        retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
 
+        // If we are in processing for safe reagent (non-paraffin), retort heating is NOT needed. For paraffin, we need heat Retort sensors
+        if (mp_SchedulerController->GetCurrentStepState() == PSSM_PROCESSING_SR && mp_SchedulerController->GetCurrentScenario() != 274)
+        {
+
+        }
+        else
+        {
+            //For RTTop
+            retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                return retCode;
+            }
+            //For RTBottom
+            retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                return retCode;
+            }
+        }
 
         //For RVRod
         retCode = StartRVTemperatureControl(m_RV_1_HeatingRod);
@@ -587,8 +595,6 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ControllerGain);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ResetTime);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].DerivativeTime);
-        m_OvenTop.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-        m_OvenTop.OTCheckPassed = false;
     }
     if ("OvenBottom" == HeaterName)
     {
@@ -615,9 +621,6 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ControllerGain);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ResetTime);
         dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].DerivativeTime);
-        m_OvenBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-        m_OvenBottom.OTCheckPassed = false;
-        m_OvenBottom.OvenBottom2OTCheckPassed = false;
     }
     if ("RV" == HeaterName)
     {

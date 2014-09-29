@@ -1846,7 +1846,6 @@ void SchedulerMainThreadController::SendTissueProtectMsg()
     {
         m_CmdDrainSR_Click = false;
     }
-
 }
 void SchedulerMainThreadController::SendCoverLidOpenMsg()
 {

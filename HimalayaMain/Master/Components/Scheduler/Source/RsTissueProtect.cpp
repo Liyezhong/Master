@@ -456,7 +456,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
-    bool IsRTRVOVenError = false;
+
     //Firstly, check if the event id is related with Level Sensor or not
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == EventId
             || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == EventId
@@ -468,7 +468,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     {
         m_IsLevelSensorRelated = false;
     }
-
+#if 0
     //Secondly, check if the event id is relatd with Retort, heating tube, RV and Oven failed error
     if (DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED == EventId
             || DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED == EventId
@@ -508,13 +508,14 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     {
         IsRTRVOVenError = true;
     }
+#endif
 
     ReagentType_t ret = UNKNOWN;
-    if (false == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
+    if (false == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
     {
         ret = Fixation;
     }
-    if (false == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
+    if (false == m_IsLevelSensorRelated && Scenario >= 221 && Scenario <= 247)
     {
         ret = Concentration_Dehydration;
     }
@@ -524,38 +525,24 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     }
     if (false == m_IsLevelSensorRelated && Scenario >= 271 && Scenario <= 277)
     {
-        if (false == IsRTRVOVenError)
-        {
-            ret = Paraffin;
-        }
-        else
-        {
-            ret = Clearing;
-        }
+        ret = Paraffin;
     }
 
-    if (true == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 221)
+    if (true == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
     {
         ret = Fixation_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
+    if (true == m_IsLevelSensorRelated && Scenario >= 221 && Scenario <= 247)
     {
         ret = Concentration_Dehydration_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
+    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 260)
     {
         ret = Clearing_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
+    if (true == m_IsLevelSensorRelated && Scenario >= 271 && Scenario <= 277)
     {
-        if (false == IsRTRVOVenError)
-        {
-            ret = Clearing_Overflow;
-        }
-        else
-        {
-            ret = Paraffin_Overflow;
-        }
+        ret = Paraffin_Overflow;
     }
 
     return ret;

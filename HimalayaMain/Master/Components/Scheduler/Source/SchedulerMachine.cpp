@@ -336,6 +336,10 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 }
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
+    // stop Retort sensors heating
+    mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
+    mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
+
     if (false == flag)
     {
         Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_TISSUE_PROTECT_REPORT, 0, true);
