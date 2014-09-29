@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_SYSTEM_H
 
 #include <QWidget>
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -56,6 +57,7 @@ private Q_SLOTS:
     
 private:
     Ui::CSystem *mp_Ui;
+    CDiagnosticMessageDlg*   mp_MessageDlg;
 };
 
 

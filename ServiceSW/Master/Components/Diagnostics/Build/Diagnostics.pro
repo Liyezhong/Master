@@ -25,7 +25,8 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/MainControl.h \
     ../Include/ServiceDeviceProcess/*.h \
     ../Include/InitialSystem.h \
-    ../Include/SelectMeltingPointDialog.h
+    ../Include/SelectMeltingPointDialog.h \
+    ../Include/DiagnosticMessageDlg.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -40,7 +41,8 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/ServiceDeviceProcess/*.cpp \
     ../Source/InitialSystem.cpp \
     ../Source/TestBase.cpp \
-    ../Source/SelectMeltingPointDialog.cpp
+    ../Source/SelectMeltingPointDialog.cpp \
+    ../Source/DiagnosticMessageDlg.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/System/*.ui \

@@ -21,6 +21,7 @@
 	<LaSystem>
 	</LaSystem>
 	<System>
+		<SSystemSpeaker LowVolume="80" HighVolume="100" />
 	</System>
 	<Retort>
 	</Retort>

@@ -37,11 +37,13 @@
 
 namespace Diagnostics {
 
-CSystem::CSystem(QWidget *parent) :
-    QWidget(parent),
+CSystem::CSystem(QWidget *p_Parent) :
+    QWidget(p_Parent),
     mp_Ui(new Ui::CSystem)
 {
     mp_Ui->setupUi(this);
+
+    mp_MessageDlg = new CDiagnosticMessageDlg(this);
 
     (void)connect(mp_Ui->testSealing,
                   SIGNAL(clicked()),
@@ -87,7 +89,13 @@ CSystem::CSystem(QWidget *parent) :
 
 CSystem::~CSystem()
 {
-    delete mp_Ui;
+    try {
+        delete mp_Ui;
+        delete mp_MessageDlg;
+    }
+    catch (...) {
+
+    }
 }
 
 void CSystem::StartSealingTest(void)
@@ -117,6 +125,8 @@ void CSystem::StartSpeakerTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
     qDebug() << "System: start speaker test";
 
+    System::CSpeakerTest SpeakerTest(mp_MessageDlg);
+    (void)SpeakerTest.Run();
 }
 
 void CSystem::StartLocalAlarmTest(void)

@@ -21,7 +21,9 @@
 #ifndef DIAGNOSTICS_SYSTEM_SPEAKERTEST_H
 #define DIAGNOSTICS_SYSTEM_SPEAKERTEST_H
 
+#include <QProcess>
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -32,13 +34,20 @@ class CSpeakerTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CSpeakerTest(QWidget *p_Parent=NULL);
+    CSpeakerTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
     ~CSpeakerTest(void);
 
     int Run(void);
 
-protected:
-    //virtual int Show
+private:
+    void PlaySound(QString& Volume);
+    int ShowConfirmDlg(int StepNum);
+
+    void ShowFinishDlg(int RetNum);
+
+private:
+    QProcess*               mp_SpeakProc;
+    CDiagnosticMessageDlg*  mp_MessageDlg;
 };
 
 } // namespace System
