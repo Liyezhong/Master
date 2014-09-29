@@ -329,7 +329,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
-            userInputTemp = 0.0;
+            return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
@@ -361,7 +361,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
-            userInputTemp = 0.0;
+            return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
@@ -526,7 +526,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
-            userInputTemp = 0.0;
+            return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
@@ -549,7 +549,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
-            userInputTemp = 0.0;
+            return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
