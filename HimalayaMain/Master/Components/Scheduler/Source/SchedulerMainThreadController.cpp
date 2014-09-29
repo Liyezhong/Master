@@ -1055,6 +1055,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 this->OnStopDrain();
                 m_SchedulerMachine->NotifyAbort();//Aborting --->Aborted
             }
+            else if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                LogDebug("Aboting error");
+                RaiseError(0, retCode, m_CurrentScenario, true);
+                m_SchedulerMachine->SendErrorSignal();
+            }
         }
         else if(PSSM_ABORTED == stepState)
         {
