@@ -24,13 +24,9 @@
 
 #include "ui_System.h"
 
-#include "Diagnostics/Include/System/BottleCheckingTest.h"
 #include "Diagnostics/Include/System/FillingNDrainingTest.h"
 #include "Diagnostics/Include/System/SpeakerTest.h"
 #include "Diagnostics/Include/System/AlarmTest.h"
-#include "Diagnostics/Include/System/UsbTest.h"
-#include "Diagnostics/Include/System/MainsRelayTest.h"
-#include "Diagnostics/Include/System/VoltageTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 

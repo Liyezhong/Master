@@ -77,7 +77,7 @@ public:
     /****************************************************************************/
     virtual void HideWaitingDialog();
 
-    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText);
+    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, bool HaveAbort = false);
 
 protected:
     QWidget        *mp_Parent;              //!< Parent widget

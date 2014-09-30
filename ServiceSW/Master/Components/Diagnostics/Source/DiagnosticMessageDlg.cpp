@@ -91,7 +91,7 @@ void CDiagnosticMessageDlg::HideWaitingDialog()
     }
 }
 
-int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& MessageText)
+int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& MessageText, bool HaveAbort)
 {
     qDebug()<<"CDiagnosticMessageDlg::ShowConfirmMessage title="<<MessageTitle<<"  MessageText="<<MessageText;
 
@@ -100,8 +100,14 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& Me
     dlg->SetIcon(QMessageBox::Information);
     dlg->SetText(MessageText);
     dlg->HideCenterButton();
-    dlg->SetButtonText(1, "Yes");
-    dlg->SetButtonText(3, "No");
+    if (HaveAbort) {
+        dlg->SetButtonText(1, "Ok");
+        dlg->SetButtonText(3, "Abort");
+    }
+    else {
+        dlg->SetButtonText(1, "Yes");
+        dlg->SetButtonText(3, "No");
+    }
     dlg->setModal(true);
     qDebug()<<MessageText;
 

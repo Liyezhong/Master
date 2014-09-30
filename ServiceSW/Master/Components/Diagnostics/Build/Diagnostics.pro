@@ -45,7 +45,7 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/DiagnosticMessageDlg.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
-    ../Forms/System/*.ui \
+    #../Forms/System/*.ui \
     ../Forms/BasicColor/BasicColorTestDlg.ui \
     ../Forms/Display.ui \
     ../Forms/MainControl.ui \

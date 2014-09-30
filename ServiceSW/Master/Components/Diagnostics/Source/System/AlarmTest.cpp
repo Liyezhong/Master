@@ -29,7 +29,6 @@
 
 #include "ServiceWidget/Include/DlgConfirmationText.h"
 
-#include "Diagnostics/Include/System/DlgAlarm.h"
 
 namespace Diagnostics {
 
@@ -55,26 +54,6 @@ void CAlarmTest::FirstOpenDialog(void)
 {
     qDebug() << "Alarm Test: first open alarm test dialog!";
 
-    // open the Alarm Test dialog
-    CDlgAlarm *dlg = new CDlgAlarm;
-    dlg->SetDialogTitle(tr("Alarm Test"));
-
-
-    /// \todo: test Socket connection status here **************************/
-    /// \todo: update soceket connection status through slot here **********/
-    // CONNECTSIGNALSLOT(TEST,
-    //                   SOCKET_STATUS_SIGNAL(const QString &),
-    //                   dlg,
-    //                   SetStatus(const QString &));
-    dlg->SetStatus(tr("Socket connection status: disconnected"));
-
-    CONNECTSIGNALSLOT(dlg, TestAlarm(bool), this, TestAlarm(bool));
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SecondConfirmResult() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
-
-    dlg->exec();
-
-    delete dlg;
 }
 
 void CAlarmTest::TestAlarm(bool On)
@@ -89,36 +68,12 @@ void CAlarmTest::SecondConfirmResult(void)
     qDebug() << "Alarm Test: second confirm result!";
 
     // ask the customer to confirm the test result
-    MainMenu::CDlgConfirmationText *dlg = new MainMenu::CDlgConfirmationText;
-    dlg->SetDialogTitle(tr("Alarm Test"));
-    dlg->SetText(tr("Does the alarm test pass?"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(),this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
 }
 
 void CAlarmTest::Succeed(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
     qDebug() << "Alarm Test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Alarm Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Alarm test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
 
     /// \todo: log here **************************************/
 }
