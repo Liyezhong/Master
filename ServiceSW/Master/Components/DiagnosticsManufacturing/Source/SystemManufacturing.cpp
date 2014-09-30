@@ -282,16 +282,7 @@ void CSystem::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED);
 
-    if (mp_Ui->systemSNEdit->text().startsWith("XXXX")) {
-        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
-        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN);
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            mp_Ui->systemSNEdit->setFocus();
-            mp_Ui->systemSNEdit->selectAll();
-        }
+    if (!mp_TestReporter->CheckSystemSN()) {
         return;
     }
     qDebug()<<"CSystem::BeginTest  ";
@@ -375,7 +366,6 @@ void CSystem::EnableButton(bool EnableFlag)
 void CSystem::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED);
-    mp_TestReporter->SetSerialNumber(m_SystemSNString);
 
     if (mp_TestReporter->GenReportFile()) {
         (void)mp_TestReporter->SendReportFile();

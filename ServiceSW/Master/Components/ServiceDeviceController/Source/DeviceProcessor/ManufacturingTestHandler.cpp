@@ -2640,7 +2640,12 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
         RetValue = p_WrapperBootLoader->BootFirmware();
 
-        mp_Utils->Pause(5000);
+        if (SlaveType == Slave_3) {
+            mp_Utils->Pause(10000);
+        }
+        else {
+            mp_Utils->Pause(5000);
+        }
 
         Service::ModuleTestStatus Status;
 
@@ -2655,7 +2660,12 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
         RetValue = p_WrapperBootLoader->BootFirmware();
 
-        mp_Utils->Pause(5000);
+        if (SlaveType == Slave_3) {
+            mp_Utils->Pause(10000);
+        }
+        else {
+            mp_Utils->Pause(5000);
+        }
     }
 ERROR_EXIT:
     if (p_WrapperBootLoader) {

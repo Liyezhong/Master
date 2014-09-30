@@ -38,9 +38,12 @@ CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUI
     m_ModuleName(ModuleName),
     mp_DataConnector(p_DataConnector),
     mp_IEClient(NULL),
-    m_ReportDir("")
+    m_ReportDir(""),
+    m_SerialNumber(""),
+    mp_MessageDlg(NULL),
+    mp_Parent(p_Parent)
+
 {
-    mp_MessageDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_WaitDlg    = new MainMenu::CWaitDialog(p_Parent);
     mp_WaitDlg->setModal(true);
 
@@ -50,15 +53,47 @@ CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUI
 CTestCaseReporter::~CTestCaseReporter()
 {
     try {
-        delete mp_MessageDlg;
         delete mp_WaitDlg;
         if (mp_IEClient) {
             delete mp_IEClient;
+        }
+        if (mp_MessageDlg) {
+            delete mp_MessageDlg;
         }
     }
     catch(...) {
 
     }
+}
+
+bool CTestCaseReporter::CheckSystemSN()
+{
+    QString SystemSN;
+    DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+    if (DevConfigurationInterface) {
+        DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+        if (DeviceConfiguration) {
+            SystemSN = DeviceConfiguration->GetSerialNumber();
+        }
+    }
+
+    if (SystemSN.startsWith("XXXX")) {
+        if (mp_MessageDlg) {
+            delete mp_MessageDlg;
+            mp_MessageDlg = NULL;
+        }
+        mp_MessageDlg = new MainMenu::CMessageDlg(mp_Parent);
+        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
+        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN);
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        (void)mp_MessageDlg->exec();
+        return false;
+    }
+
+    m_SerialNumber = SystemSN;
+    return true;
 }
 
 bool CTestCaseReporter::GenReportFile()
@@ -119,6 +154,11 @@ bool CTestCaseReporter::SendReportFile()
     mp_WaitDlg->show();
     Core::CServiceUtils::delay(500);
 
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg(mp_Parent);
     mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
     mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
     mp_MessageDlg->HideButtons();

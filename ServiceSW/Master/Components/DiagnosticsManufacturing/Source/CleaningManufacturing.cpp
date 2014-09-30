@@ -171,6 +171,11 @@ void CCleaning::BeginTest()
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_CLEANING_SYSTEM_TEST_REQUESTED);
 
     qDebug()<<"CCleaning::BeginTest  ";
+
+    if (!mp_TestReporter->CheckSystemSN()) {
+        return;
+    }
+
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
@@ -251,27 +256,6 @@ void CCleaning::EnableButton(bool EnableFlag)
 void CCleaning::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_CLEANING_SYSTEM_SENDTESTREPORT_REQUESTED);
-
-    QString systemSN;
-    DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
-    if (DevConfigurationInterface) {
-        DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
-        if (DeviceConfiguration) {
-            systemSN = DeviceConfiguration->GetSerialNumber();
-        }
-    }
-
-    if (systemSN.startsWith("XXXX")) {
-        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
-        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN);
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        (void)mp_MessageDlg->exec();
-        return;
-    }
-
-    mp_TestReporter->SetSerialNumber(systemSN);
 
     if (mp_TestReporter->GenReportFile()) {
         (void)mp_TestReporter->SendReportFile();

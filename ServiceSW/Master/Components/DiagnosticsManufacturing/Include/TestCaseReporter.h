@@ -81,6 +81,8 @@ public:
         m_TestCaseList.insert(Id);
     }
 
+    bool CheckSystemSN();
+
 private:
     /****************************************************************************/
     /**
@@ -104,6 +106,7 @@ private:
     QString m_ReportDir;                             //!< The server report folder
     MainMenu::CMessageDlg *mp_MessageDlg;            //!< Information dialog
     MainMenu::CWaitDialog *mp_WaitDlg;               //!< Waiting dialog
+    MainMenu::CMainWindow *mp_Parent;                //!< Parent widget
     NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
 };
 

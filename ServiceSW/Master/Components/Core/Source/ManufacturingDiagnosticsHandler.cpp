@@ -844,6 +844,7 @@ Sealing_Test_Twice:
             if ( Id == Service::ROTARY_VALVE_INITIALIZING ||
                  Id == Service::ROTARY_VALVE_HEATING_STATION ||
                  Id == Service::ROTARY_VALVE_HEATING_END ) {
+                Global::EventObject::Instance().RaiseEvent(OkId);
                 QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
                 Text = QString("%1 - %2").arg(TestCaseDescription).arg(Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
                 mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);

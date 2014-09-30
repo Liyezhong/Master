@@ -291,6 +291,15 @@ void COven::BeginTest()
         return;
     }
 
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        if (!mp_TestReporter->CheckSystemSN()) {
+            return;
+        }
+    }
+    else {
+        mp_TestReporter->SetSerialNumber(m_OvenSNString);
+    }
+
     qDebug()<<"COven::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -371,39 +380,6 @@ void COven::EnableButton(bool EnableFlag)
 void COven::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED);
-
-    QString serialNumber;
-    QString MessageText;
-    bool isInvalidSN = false;
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
-        if (DevConfigurationInterface) {
-            DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
-            if (DeviceConfiguration) {
-                serialNumber = DeviceConfiguration->GetSerialNumber();
-                isInvalidSN = serialNumber.startsWith("XXXX");
-                MessageText = Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN;
-            }
-        }
-
-    }
-    else {
-        serialNumber = m_OvenSNString;
-        isInvalidSN  = serialNumber.endsWith("XXXX");
-        MessageText = Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SN;
-    }
-
-    if (isInvalidSN) {
-        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
-        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(MessageText);
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        (void)mp_MessageDlg->exec();
-        return;
-    }
-
-    mp_TestReporter->SetSerialNumber(serialNumber);
 
     if (mp_TestReporter->GenReportFile()) {
         (void)mp_TestReporter->SendReportFile();
