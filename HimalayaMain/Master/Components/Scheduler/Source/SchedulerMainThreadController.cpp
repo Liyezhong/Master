@@ -60,6 +60,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
@@ -110,6 +111,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
+        ,m_PowerFailureStep(SET_RVPOSITION)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -279,6 +281,9 @@ void SchedulerMainThreadController::OnTickTimer()
         HardwareMonitor("INIT");
         HandleInitState(newControllerCmd, cmd);
         break;
+    case SM_POWER_FAILURE:
+        HandlePowerFailure(newControllerCmd, cmd);
+        break;
     case SM_IDLE:
         //qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor( "IDLE" );
@@ -306,13 +311,30 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
-        m_SchedulerMachine->SendSchedulerInitComplete();
+
         LogDebug("Self test is done");
         //send command to main controller to tell self test OK
-        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
-        Q_ASSERT(commandPtr);
-        Global::tRefType Ref = GetNewCommandRef();
-        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        {
+            m_SchedulerMachine->EnterPowerFailure();
+            MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
+                        new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
+                                                                    m_ProgramStatusInfor.GetStepID(),
+                                                                    m_ProgramStatusInfor.GetScenario(),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID())));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+        }
+        else
+        {
+            m_SchedulerMachine->SendSchedulerInitComplete();
+            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+        }
         mp_HeatingStrategy->ResetTheOvenHeating();
     }
     else
@@ -325,6 +347,65 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         m_SchedulerMachine->SendErrorSignal();
     }
 }
+
+void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
+{
+    Q_UNUSED(ctrlCmd);
+    Q_UNUSED(cmd);
+    quint32 scenario = m_ProgramStatusInfor.GetScenario();
+    if( SET_RVPOSITION == m_PowerFailureStep)
+    {
+        if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario)
+        {
+            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+        }
+        else if(283 == scenario || 293 == scenario)
+        {
+            m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
+        }
+        else if(284 == scenario || 294 == scenario)
+        {
+            m_CurrentStepState = PSSM_PROCESSING;
+        }
+        else if(285 == scenario || 295 == scenario)
+        {
+            m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
+        }
+        else if(286 == scenario || 296 == scenario)
+        {
+            m_CurrentStepState = PSSM_DRAINING;
+        }
+        else if(287 == scenario || 297 == scenario)
+        {
+            m_CurrentStepState = PSSM_RV_POS_CHANGE;
+        }
+
+        if( (QString::number(scenario).right(1) == "3" || QString::number(scenario).right(1) == "5"
+                  || QString::number(scenario).right(1) == "7"))
+        {
+            RaiseError(0, DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION, scenario, true);
+            m_SchedulerMachine->SendErrorSignal();
+            m_PowerFailureStep = RUN_POWERFAILURE;
+        }
+        else
+        {
+            CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
+            cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
+            m_SchedulerCommandProcessor->pushCmd(cmdSet);
+
+            LogDebug(QString("power failure set the rv position to:%1").arg(m_ProgramStatusInfor.GetLastRVPosition()));
+            RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+    }
+    else if(RUN_POWERFAILURE == m_PowerFailureStep)
+    {
+        RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
+        m_PowerFailureStep = SET_RVPOSITION;
+    }
+}
+
 
 void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
@@ -376,6 +457,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_CurProgramID = m_NewProgramID;
             m_IsCleaningProgram = false;
         }
+        m_ProgramStatusInfor.SetProgramID(m_CurProgramID);
 
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
@@ -899,6 +981,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(m_IsCleaningProgram)
                 { // need run cleaning dry step
                     m_SchedulerMachine->NotifyEnterCleaningDryStep();
+                    m_ProgramStatusInfor.SetLastReagentGroup("");// set Retort to clean
                 }
                 else
                 {
@@ -2354,6 +2437,10 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
             scenario += 80;
         }
     }
+    if(m_ProgramStatusInfor.GetScenario() != scenario)
+    {
+        m_ProgramStatusInfor.SetScenario(scenario);
+    }
     return scenario;
 }
 
@@ -2442,6 +2529,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     LogDebug(strctHWMonitor.toLogString());
+    m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
 
     if("ERROR" == StepID)
     {
@@ -3046,6 +3134,7 @@ void SchedulerMainThreadController::Fill()
     else
     {
         cmd->SetDelayTime(0);
+        m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup); /// only store ReagentGroup for normal program
     }
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
@@ -3521,13 +3610,12 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
-    qint64 OvenStartTime = mp_HeatingStrategy->GetOvenHeatingBeginTime();
-    qint64 RetTime = 0;
-    if (0 != OvenStartTime)
+    quint32 ParaffinMeltPoint = 64;
+    if (!mp_DataManager && ! mp_DataManager->GetUserSettings())
     {
-        RetTime = (QDateTime::currentDateTime().toMSecsSinceEpoch() - OvenStartTime)/1000;
+        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-    return RetTime;
+    return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
 }
 
 qint64 SchedulerMainThreadController::GetPreTestTime()
@@ -4005,6 +4093,7 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
 }
 
 }

@@ -6,6 +6,7 @@ namespace Scheduler{
 #define L1_IDLE                             (0x2)
 #define L1_BUSY                             (0x3)
 #define L1_ERROR                            (0x4)
+#define L1_POWER_FAILURE                    (0x5)
 
 #define L2_INIT_SELFTEST                    (0x1)
 
@@ -55,6 +56,7 @@ typedef enum
     // Layer one state
     SM_UNDEF = (STATE_UNDEFINED),
     SM_INIT = (L1_INIT),
+    SM_POWER_FAILURE = (L1_POWER_FAILURE),
     SM_IDLE = (L1_IDLE),
     SM_BUSY = (L1_BUSY),
     SM_ERROR = (L1_ERROR),

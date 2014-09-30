@@ -169,6 +169,17 @@ typedef struct
 
 /****************************************************************************/
 /*!
+ * \brief enum for power failure step
+ */
+/****************************************************************************/
+typedef enum
+{
+    SET_RVPOSITION,
+    RUN_POWERFAILURE
+}PowerFailureStep_t;
+
+/****************************************************************************/
+/*!
  *  \brief struct for Slave module attributes
  */
 /****************************************************************************/
@@ -254,6 +265,7 @@ typedef struct
         bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
         bool m_NeedEnterClean;                                ///< Need enter cleaning program once program completes
         bool m_StopFilling;                                   ///< When restart filling, need stop filling
+        PowerFailureStep_t m_PowerFailureStep;                 ///< power failure step
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -619,12 +631,21 @@ signals:
          /****************************************************************************/
          void NotifyResume();
 
-private slots:         /****************************************************************************/
+private slots:
+         /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot HandleInitState
           */
          /****************************************************************************/
          void HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HandleInitState
+          *  \param ctrlCmd command from GUI
+          *  \param cmd command from DC
+          */
+         /****************************************************************************/
+         void HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
 
          /****************************************************************************/
          /*!
@@ -1265,6 +1286,14 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+        /****************************************************************************/
+        /*!
+         * \brief Get power failure step state
+         * \return PowerFailureStep_t
+         */
+        /****************************************************************************/
+        PowerFailureStep_t GetPowerFailureStep() {return m_PowerFailureStep;}
+
 
     public slots:
 

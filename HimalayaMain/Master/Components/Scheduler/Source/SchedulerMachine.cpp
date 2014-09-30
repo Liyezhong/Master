@@ -58,6 +58,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Layer one states
     mp_InitState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
+    mp_PowerFailureState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_IdleState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_BusyState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
@@ -117,14 +118,18 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Add transition
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState.data());
+    mp_InitState->addTransition(this, SIGNAL(SigPowerFailure()), mp_PowerFailureState.data());
+
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState.data());
     mp_BusyState->addTransition(this, SIGNAL(RunComplete()), mp_IdleState.data());
     mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
+    mp_PowerFailureState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
 	mp_ErrorState->addTransition(this, SIGNAL(sigEnterIdleState()), mp_IdleState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigSelfRcRestart()), mp_InitState.data());
+    mp_ErrorState->addTransition(this, SIGNAL(SigRestartPowerFailure()), mp_PowerFailureState.data());
     CONNECTSIGNALSLOT(this, SigEnterRcRestart(), mp_SchedulerThreadController, OnEnterRcRestart());
     CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
 
@@ -401,6 +406,11 @@ void CSchedulerStateMachine::Stop()
     mp_SchedulerMachine->stop();
 }
 
+void CSchedulerStateMachine::EnterPowerFailure()
+{
+    emit SigPowerFailure();
+}
+
 void CSchedulerStateMachine::SendSchedulerInitComplete()
 {
     emit SchedulerInitComplete();
@@ -475,6 +485,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             currentState = SM_INIT_SELFTEST;
         }
+    }
+    else if(mp_SchedulerMachine->configuration().contains(mp_PowerFailureState.data()))
+    {
+        currentState = SM_POWER_FAILURE;
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
     {
@@ -1508,6 +1522,10 @@ void CSchedulerStateMachine::EnterRcRestart()
     if(false == mp_ProgramSelfTest->IsSelfTestDone())
     {
         emit SigSelfRcRestart();
+    }
+    else if(RUN_POWERFAILURE == mp_SchedulerThreadController->GetPowerFailureStep())
+    {
+        emit SigRestartPowerFailure();
     }
     else
     {

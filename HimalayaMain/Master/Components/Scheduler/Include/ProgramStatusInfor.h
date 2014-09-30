@@ -62,6 +62,20 @@ public:
      */
     /****************************************************************************/
     DeviceControl::RVPosition_t GetLastRVPosition();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Set Last Reagent Group for normal protocol, not involve the cleaning program
+     *  \param rgb - reagent group id
+     */
+    /****************************************************************************/
+    void SetLastReagentGroup(QString rgb);
+    /****************************************************************************/
+    /*!
+     *  \brief get last reagent group for normal protocol, not involve the cleaning program
+     */
+    /****************************************************************************/
+    QString GetLastReagentGroup();
     /****************************************************************************/
     /*!
      *  \brief program ID
@@ -82,14 +96,14 @@ public:
      *  \param StepID - step id
      */
     /****************************************************************************/
-    void SetStepID(const QString& StepID);
+    void SetStepID(int StepID);
     /****************************************************************************/
     /*!
      *  \brief Get step id
      *  \return QString from GetStepID
      */
     /****************************************************************************/
-    QString GetStepID();
+    int GetStepID();
     /****************************************************************************/
     /*!
      *  \brief set scenario
@@ -136,11 +150,11 @@ public:
     /*!
      *  \brief update oven heating time
      *  \param Time oven heating time
-     *  \param StartFlag oven heating start time
+     *  \param IsHeatingOn oven heating start time
      *  \param ResetFlag reset oven heating time to 0
      */
     /****************************************************************************/
-    void UpdateOvenHeatingTime(quint64 Time, bool StartFlag = false, bool ResetFlag = false);
+    void UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, bool ResetFlag = false);
 
 
 
@@ -150,6 +164,8 @@ private:
     QString GetStatus(const QString& key);
     QFile m_StatusFile;         //!< File for store program status
     QMap<QString, QString> m_Status;             //!< the pairs for keys and values
+    quint64 m_LastTimeUpdateHeatingTime;        //!< the last time of update oven heating time
+    bool m_LastHeatingOn;                       //!< store the last status of heating
 };
 
 #endif // PROGRAMSTATUSINFOR_H

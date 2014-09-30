@@ -73,6 +73,16 @@ DeviceControl::RVPosition_t CProgramStatusInfor::GetLastRVPosition()
     return pos;
 }
 
+
+void CProgramStatusInfor::SetLastReagentGroup(QString rgb)
+{
+    SetStatus("LastReagentGroup",rgb);
+}
+
+QString CProgramStatusInfor::GetLastReagentGroup()
+{
+    return GetStatus("LastReagentGroup");
+}
 void CProgramStatusInfor::SetProgramID(const QString& ProgramID)
 {
     SetStatus("ProgramID",ProgramID);
@@ -83,14 +93,20 @@ QString CProgramStatusInfor::GetProgramId()
     return GetStatus("ProgramID");
 }
 
-void CProgramStatusInfor::SetStepID(const QString& StepID)
+void CProgramStatusInfor::SetStepID(int StepID)
 {
-     SetStatus("ProgramStepID",StepID);
+     SetStatus("ProgramStepID",QString::number(StepID));
 }
 
-QString CProgramStatusInfor::GetStepID()
+int CProgramStatusInfor::GetStepID()
 {
-    return GetStatus("ProgramStepID");
+    bool ok = false;
+    int step = -1;
+    if(!GetStatus("ProgramStepID").isEmpty())
+    {
+        step = GetStatus("ProgramStepID").toInt(&ok);
+    }
+    return step;
 }
 
 void CProgramStatusInfor::SetScenario(const quint32 Scenario)
@@ -102,7 +118,11 @@ quint32 CProgramStatusInfor::GetScenario()
 {
     QString value = GetStatus("Scenario");
     bool ok = false;
-    quint32 scen =  value.toUInt(&ok);
+    quint32 scen = 0;
+    if(!value.isEmpty())
+    {
+        scen = value.toUInt(&ok);
+    }
     if(!ok)
     {
         scen = 0;
@@ -112,22 +132,26 @@ quint32 CProgramStatusInfor::GetScenario()
 
 bool CProgramStatusInfor::IsProgramFinished()
 {
-    return GetProgramId().isEmpty();
+    quint32 scenario = GetScenario();
+    return  (GetProgramId().isEmpty() ||
+            (GetStepID() < 0) ||
+            scenario <= 4 || scenario == 200 || scenario == 203);
 }
 
 void CProgramStatusInfor::SetProgramFinished()
 {
-    SetStatus("ProgramID","");
 }
 
 quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
 {
     quint64 TimeLimit = 12 * 60 * 60 * 1000;
     quint64 HeatingTime = 0;
+    quint64 UnHeatingTime = 0;
     if(ParaffinMeltingPoint >= 64)
     {
         TimeLimit = 15 * 60 * 60 * 1000;
     }
+    quint64 TimeForMelting = TimeLimit;
     TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
     QString value = m_Status.value("HeatingOvenSlice");
     QStringList Slices = value.split(",");
@@ -146,21 +170,37 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
         else if(End >= TimeLimit && Start < TimeLimit)
         {
             Slices.replace(2 * i ,QString::number(TimeLimit));
-            HeatingTime += End - TimeLimit;
+            HeatingTime += (End - TimeLimit);
             i++;
         }
         else
         {
-            HeatingTime += End - Start;
+            HeatingTime += (End - Start);
+            if(i > 0)
+            {
+                UnHeatingTime += (Start - Slices.at(2 * i - 1).toULongLong(&ok));
+            }
             i++;
         }
     }
     SetStatus("HeatingOvenSlice", Slices.join(","));
-    return HeatingTime;
+
+    if(TimeForMelting - HeatingTime + UnHeatingTime <= 4 * 60 * 60 * 1000)
+    {
+        return 2 * (TimeForMelting - HeatingTime + UnHeatingTime) / 1000;
+    }
+    else
+    {
+        return TimeForMelting/1000;
+    }
 }
 
-void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool StartFlag, bool ResetFlag)
+void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, bool ResetFlag)
 {
+    if((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000) // record by one minutes
+    {
+        return;
+    }
     QString key="HeatingOvenSlice";
     QString value = m_Status.value(key);
     QStringList Slices;
@@ -172,21 +212,30 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool StartFlag, bo
     {
         Slices.clear();
     }
-    if(StartFlag)
+    if(IsHeatingOn)
     {
-        Slices.append(QString::number(Time));
-        Slices.append(QString::number(Time));
+        if(Slices.length() == 0 || !m_LastHeatingOn)
+        {
+            Slices.append(QString::number(Time));
+            Slices.append(QString::number(Time));
+        }
+        else
+        {
+            Slices.replace(Slices.length() - 1,QString::number(Time));
+        }
+        m_LastTimeUpdateHeatingTime = QDateTime::currentMSecsSinceEpoch();
+        SetStatus(key, Slices.join(","));
     }
-    else
-    {
-        Slices.replace(Slices.length() - 1,QString::number(Time));
-    }
-    SetStatus(key, Slices.join(","));
+    m_LastHeatingOn = IsHeatingOn;
 }
 
 bool CProgramStatusInfor::IsRetortContaminted()
 {
-    return true;
+    QString ReagentGroup = GetLastReagentGroup();
+    return ((!ReagentGroup.isEmpty()) &&
+            (ReagentGroup.compare("RG2") != 0) &&   //water
+            (ReagentGroup.compare("RG7") != 0) &&   //Cleaning Solvent
+            (ReagentGroup.compare("RG8") != 0));    //Cleaning Alcohol
 }
 void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
 {

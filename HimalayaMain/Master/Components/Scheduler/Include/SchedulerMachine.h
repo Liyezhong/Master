@@ -61,6 +61,7 @@ private:
 
 	// Layer one states
     QSharedPointer<QState> mp_InitState;                                                ///<  Initial state
+    QSharedPointer<QState> mp_PowerFailureState;                                        ///<  state for power failure scenario
     QSharedPointer<QState> mp_IdleState;                                                ///<  Idle state
     QSharedPointer<QState> mp_BusyState;                                                ///<  Busy state
     QSharedPointer<QState> mp_ErrorState;                                               ///<  Error state
@@ -217,6 +218,13 @@ public:
      */
     /****************************************************************************/
     void Stop();
+    /****************************************************************************/
+    /*!
+     * \brief Definition/Declaration of function EnterPowerFailure
+     */
+    /****************************************************************************/
+    void EnterPowerFailure();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendSchedulerInitComplete
@@ -960,7 +968,12 @@ signals:
      */
     /****************************************************************************/
     void SchedulerInitComplete();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigPowerFailure
+     */
+    /****************************************************************************/
+    void SigPowerFailure();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RunSignal
@@ -1098,6 +1111,12 @@ signals:
     /****************************************************************************/
     void SigSelfRcRestart();
 
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter SigRestartPowerFailure
+     */
+    /****************************************************************************/
+    void SigRestartPowerFailure();
     /****************************************************************************/
     /*!
      *  \brief signal to enter RS_HeatingErr30SRetry
