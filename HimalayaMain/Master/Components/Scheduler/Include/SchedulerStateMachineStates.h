@@ -50,6 +50,9 @@ namespace Scheduler{
 #define L2_ERR_RS_RVWAITINGTEMPUP                   (0x13)
 #define L2_ERR_RS_TISSUE_PROTECT                    (0x14)
 #define L2_ERR_RC_CHECK_RTLOCK                      (0x15)
+#define L2_ERR_RC_REHEATING                         (0x16)
+#define L2_ERR_RS_REAGENTCHECK                      (0x17)
+#define L2_ERR_RS_RV_MOVETOPOSITIONSEAL             (0x18)
 
 typedef enum
 {
@@ -104,7 +107,10 @@ typedef enum
     SM_ERR_RS_PS_PAUSE = ((L2_ERR_RS_PAUSE << 8) | L1_ERROR),
     SM_ERR_RS_RV_WAITINGTEMPUP = ((L2_ERR_RS_RVWAITINGTEMPUP << 8) | L1_ERROR),
     SM_ERR_RS_TISSUE_PROTECT = ((L2_ERR_RS_TISSUE_PROTECT << 8) | L1_ERROR),
-    SM_ERR_RC_CHECK_RTLOCK = ((L2_ERR_RC_CHECK_RTLOCK << 8) | L1_ERROR)
+    SM_ERR_RC_CHECK_RTLOCK = ((L2_ERR_RC_CHECK_RTLOCK << 8) | L1_ERROR),
+    SM_ERR_RC_REHEATING = ((L2_ERR_RC_REHEATING << 8) | L1_ERROR),
+    SM_ERR_RS_REAGENTCHECK = ((L2_ERR_RS_REAGENTCHECK << 8) | L1_ERROR),
+    SM_ERR_RS_RV_MOVETOPOSITIONSEAL = ((L2_ERR_RS_RV_MOVETOPOSITIONSEAL << 8) | L1_ERROR)
 } SchedulerStateMachine_t;
 
 /****************************************************************************/
@@ -147,6 +153,10 @@ typedef enum
     CTRL_CMD_RS_TISSUE_PROTECT,
     CTRL_CMD_USER_RESPONSE_PAUSE_ALARM,
     CTRL_CMD_RC_CHECK_RTLOCK,
+    CTRL_CMD_RC_REHEATING,
+    CTRL_CMD_RC_REHEATING_CLEANING,
+    CTRL_CMD_RS_REAGENTCHECK,
+    CTRL_CMD_RS_RV_MOVETOSEALPOSITION,
     CTRL_CMD_ALARM_RMT_ON,
     CTRL_CMD_ALARM_RMT_OFF,
     CTRL_CMD_ALARM_LOC_ON,

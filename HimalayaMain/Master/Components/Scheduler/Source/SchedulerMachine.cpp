@@ -29,6 +29,7 @@
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
+#include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
@@ -37,6 +38,7 @@
 #include "Scheduler/Include/ProgramSelfTest.h"
 #include "Scheduler/Include/RsFillingAfterFlush.h"
 #include "Scheduler/Include/RsTissueProtect.h"
+#include "Scheduler/Include/RcReHeating.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -109,6 +111,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsRVWaitintTempUpState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsTissueProtectState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcCheckRTLockState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRcReHeatingState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsReagentCheckState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsRvMoveToSealPositionState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -148,6 +153,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProgramFinished()), mp_PssmProgramFinish.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
@@ -216,6 +222,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
     mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController));
     mp_RsTissueProtect = QSharedPointer<CRsTissueProtect>(new CRsTissueProtect(SchedulerThreadController));
+    mp_RcReHeating = QSharedPointer<CRcReHeating>(new CRcReHeating(SchedulerThreadController));
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
@@ -311,6 +318,19 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcCheckRTLock()), mp_ErrorRcCheckRTLockState.data());
     mp_ErrorRcCheckRTLockState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
+    //Rc_ReHeating
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcReHeating()), mp_ErrorRcReHeatingState.data());
+    CONNECTSIGNALSLOT(mp_RcReHeating.data(), TasksDone(bool), this, OnTasksDone(bool));
+    mp_ErrorRcReHeatingState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RS_ReagentCheck
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsReagentCheck()), mp_ErrorRsReagentCheckState.data());
+    mp_ErrorRsReagentCheckState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //Rs_Rv_MoveToPosition3.5
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsRvMoveToSealPositon()), mp_ErrorRsRvMoveToSealPositionState.data());
+    mp_ErrorRsRvMoveToSealPositionState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_LevelSensorWaitTime = 0;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
@@ -325,6 +345,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcPressureSeq = 0;
     m_RcPressureDelayTime = 0;
     m_RcRestart_AtDrain = STOP_DRAINING;
+    m_RsReagentCheckStep = FORCE_DRAIN;
+    m_RsRvMoveToSealPosition = BUILD_VACUUM;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -471,6 +493,11 @@ void CSchedulerStateMachine::SendResumeRVPosChange()
     emit ResumeRVPosChange();
 }
 
+void CSchedulerStateMachine::SendResumeProgramFinished()
+{
+    emit ResumeProgramFinished();
+}
+
 void CSchedulerStateMachine::SendErrorSignal()
 {
     emit ErrorSignal();
@@ -579,6 +606,18 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRcCheckRTLockState.data()))
         {
             return SM_ERR_RC_CHECK_RTLOCK;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRcReHeatingState.data()))
+        {
+            return SM_ERR_RC_REHEATING;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsReagentCheckState.data()))
+        {
+            return SM_ERR_RS_REAGENTCHECK;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsRvMoveToSealPositionState.data()))
+        {
+            return SM_ERR_RS_RV_MOVETOPOSITIONSEAL;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -930,6 +969,26 @@ void CSchedulerStateMachine::EnterRsTissueProtect()
 void CSchedulerStateMachine::EnterRcCheckRTLock()
 {
     emit SigEnterRcCheckRTLock();
+}
+
+void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, bool NeedRunCleaning)
+{
+    if(NeedRunCleaning)
+    {
+        mp_RcReHeating->SetNeedRunCleaning(NeedRunCleaning);
+    }
+    mp_RcReHeating->SetScenario(Scenario);
+    emit SigRcReHeating();
+}
+
+void CSchedulerStateMachine::EnterRsReagentCheck()
+{
+    emit SigRsReagentCheck();
+}
+
+void CSchedulerStateMachine::EnterRsRVMoveToSealPosition()
+{
+    emit SigRsRvMoveToSealPositon();
 }
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
@@ -1516,6 +1575,232 @@ void CSchedulerStateMachine::HandleRcRestartAtDrain(const QString& cmdName, Retu
         break;
     }
 }
+
+void CSchedulerStateMachine::HandleRcReHeatingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+{
+    mp_RcReHeating->HandleWorkFlow(cmdName, retCode);
+}
+
+void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+{
+    static qint32 startReq = 0;
+    switch(m_RsReagentCheckStep)
+    {
+    case FORCE_DRAIN:
+        if (0 == startReq)
+        {
+            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent in PowerFailure");
+            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+            cmd->SetRVPosition(0);
+            cmd->SetDrainPressure(30.0);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            startReq++;
+        }
+        else if(1 == startReq)
+        {
+            if ("Scheduler::IDForceDraining" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                }
+                else
+                {
+                    m_RsReagentCheckStep = BUILD_VACUUM;
+                }
+                startReq = 0;
+            }
+        }
+        break;
+    case BUILD_VACUUM:
+        if(0 == startReq)
+        {
+            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
+            CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
+            cmd->SetTargetPressure(-6.0);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            startReq++;
+        }
+        else if("Scheduler::ALVaccum" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+            }
+            else
+            {
+                m_RsReagentCheckStep = FORCE_DRAIN;
+                OnTasksDone(false);
+            }
+            startReq = 0;
+        }
+        break;
+    case MOVE_INITIALIZE_POSITION:
+        if(0 == startReq)
+        {
+            CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            startReq++;
+        }
+        else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_RsReagentCheckStep = MOVE_SEALPOSITION;
+            }
+            else
+            {
+                m_RsReagentCheckStep = FORCE_DRAIN;
+                OnTasksDone(false);
+            }
+            startReq = 0;
+        }
+        break;
+    case MOVE_SEALPOSITION:
+        if(0 == startReq)
+        {
+            mp_SchedulerThreadController->MoveRV(1);
+            startReq++;
+        }
+        else if(mp_SchedulerThreadController->IsRVRightPosition(1))
+        {
+            startReq = 0;
+            m_RsReagentCheckStep = REALSE_PRESSRE;
+        }
+        else
+        {
+            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    OnTasksDone(false);
+                }
+            }
+        }
+        break;
+    case REALSE_PRESSRE:
+        if(0 == startReq)
+        {
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            startReq++;
+        }
+        else if("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                OnTasksDone(true);
+            }
+            else
+            {
+                OnTasksDone(false);
+            }
+            startReq = 0;
+            m_RsReagentCheckStep = FORCE_DRAIN;
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void CSchedulerStateMachine::HandleRsRvMoveToSealPosition(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+{
+    static qint32 StartReq = 0;
+    switch(m_RsRvMoveToSealPosition)
+    {
+    case BUILD_VACUUM:
+        if(0 == StartReq)
+        {
+            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
+            CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
+            cmd->SetTargetPressure(-6.0);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            StartReq++;
+        }
+        else if("Scheduler::ALVaccum" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_RsRvMoveToSealPosition = MOVE_INITIALIZE_POSITION;
+            }
+            else
+            {
+                m_RsRvMoveToSealPosition = BUILD_VACUUM;
+                OnTasksDone(false);
+            }
+            StartReq = 0;
+        }
+        break;
+    case MOVE_INITIALIZE_POSITION:
+        if(0 == StartReq)
+        {
+            CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            StartReq++;
+        }
+        else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_RsRvMoveToSealPosition = MOVE_SEALPOSITION;
+            }
+            else
+            {
+                m_RsRvMoveToSealPosition = BUILD_VACUUM;
+                OnTasksDone(false);
+            }
+            StartReq = 0;
+        }
+        break;
+    case MOVE_SEALPOSITION:
+        if(0 == StartReq)
+        {
+            mp_SchedulerThreadController->MoveRV(1);
+            StartReq++;
+        }
+        else if(mp_SchedulerThreadController->IsRVRightPosition(1))
+        {
+            StartReq = 0;
+            m_RsRvMoveToSealPosition = REALSE_PRESSRE;
+        }
+        else
+        {
+            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    m_RsRvMoveToSealPosition = BUILD_VACUUM;
+                    OnTasksDone(false);
+                }
+            }
+        }
+        break;
+    case REALSE_PRESSRE:
+        if(0 == StartReq)
+        {
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            StartReq++;
+        }
+        else if("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                OnTasksDone(true);
+            }
+            else
+            {
+                OnTasksDone(false);
+            }
+            StartReq = 0;
+            m_RsRvMoveToSealPosition = BUILD_VACUUM;
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 
 void CSchedulerStateMachine::EnterRcRestart()
 {

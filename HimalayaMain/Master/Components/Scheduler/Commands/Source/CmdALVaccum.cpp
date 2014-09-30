@@ -28,7 +28,7 @@ namespace Scheduler{
 QString CmdALVaccum::NAME = "Scheduler::ALVaccum";
 
 CmdALVaccum::CmdALVaccum(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+    CmdSchedulerCommandBase(Timeout, controller),m_pressure(AL_TARGET_PRESSURE_NEGATIVE)
 {
 }
 

@@ -98,6 +98,25 @@ public:
 	/****************************************************************************/
     QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetTargetPressure
+     *
+     *  \return from GetTargetPressure
+     */
+    /****************************************************************************/
+    float GetTargetPressure()const {return m_pressure;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetTargetPressure
+     *
+     *  \param value = DeviceControl::ReturnCode_t type parameter
+     *
+     *  \return from SetTargetPressure
+     */
+    /****************************************************************************/
+    void SetTargetPressure(float value) { m_pressure = value;}
+
 private:
     CmdALVaccum();                                                    ///< Not implemented.
     CmdALVaccum(const CmdALVaccum &);                     ///< Not implemented.
@@ -105,6 +124,7 @@ private:
 
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+    mutable float m_pressure;     ///<  Definition/Declaration of variable m_pressure
 	
 };
 

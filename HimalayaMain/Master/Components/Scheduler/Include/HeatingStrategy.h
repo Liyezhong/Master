@@ -218,6 +218,15 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Start the specific sensor's temperature control
+     *  \param 	HeaterName - sensor's name
+     *  \return ReturnCode_t
+     */
+    /****************************************************************************/
+    ReturnCode_t StartTemperatureControlForPowerFailure(const QString& HeaterName);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name 
      *  \return ReturnCode_t
      */
@@ -318,10 +327,19 @@ public:
     /****************************************************************************/
     /*!
      *  \brief reset the heating strategy scenario
+     *  \param Scenario = qint32
      *  \return void
      */
     /****************************************************************************/
-    void ResetTheHeatingScenario() {m_CurScenario = 0;}
+    void SetHeatingStrategyScenario(qint32 Scenario) {m_CurScenario = Scenario;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief reset the heating strategy scenario
+     *  \return qint32
+     */
+    /****************************************************************************/
+    qint32 GetHeatingStrategyScenario() {return m_CurScenario;}
 
     /****************************************************************************/
     /*!

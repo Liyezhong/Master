@@ -642,6 +642,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
                     break;
+                case PSSM_PROGRAM_FINISH:
+                    m_SchedulerMachine->SendResumeProgramFinished();
+                    break;
                 default:
                     break;
                 }
@@ -1304,6 +1307,27 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_Check_RTLock");
             m_SchedulerMachine->EnterRcCheckRTLock();
         }
+        else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
+        {
+            LogDebug("Go to RcReHeating");
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), false);
+        }
+        else if (CTRL_CMD_RC_REHEATING_CLEANING == ctrlCmd)
+        {
+            LogDebug("Go to RcReHeating_Clean");
+            m_NeedEnterClean = true;
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), true);
+        }
+        else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
+        {
+            LogDebug("Go to Rs_ReagentCheck");
+            m_SchedulerMachine->EnterRsReagentCheck();
+        }
+        else if (CTRL_CMD_RS_RV_MOVETOSEALPOSITION == ctrlCmd)
+        {
+            LogDebug("Go to Rs_RV_MoveToPosition3.5");
+            m_SchedulerMachine->EnterRsRVMoveToSealPosition();
+        }
         else
         {
         }
@@ -1403,7 +1427,21 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In Rc_Check_RTLock");
         m_SchedulerMachine->HandleRcCheckRTLockWorkFlow();
-
+    }
+    else if (SM_ERR_RC_REHEATING == currentState)
+    {
+        LogDebug("In RcReHeating");
+        m_SchedulerMachine->HandleRcReHeatingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_REAGENTCHECK == currentState)
+    {
+        LogDebug("In Rs_ReagentCheck");
+        m_SchedulerMachine->HandleRsReagentWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_RV_MOVETOPOSITIONSEAL == currentState)
+    {
+        LogDebug("In Rs_Rv_MoveToPosition3.5");
+        m_SchedulerMachine->HandleRsRvMoveToSealPosition(cmdName, retCode);
     }
     else
     {
@@ -1580,7 +1618,26 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_CHECK_RTLOCK;
         }
-
+        if (cmd == "rc_reheating")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RC_REHEATING;
+        }
+        if (cmd == "rc_reheating_cleaning")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RC_REHEATING_CLEANING;
+        }
+        if (cmd == "rs_reagentcheck")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RS_REAGENTCHECK;
+        }
+        if (cmd == "rs_rv_movetoposition3.5")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RS_RV_MOVETOSEALPOSITION;
+        }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
         {
             QString str = cmd;
@@ -2533,7 +2590,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 
     if("ERROR" == StepID)
     {
-        mp_HeatingStrategy->ResetTheHeatingScenario();
+        mp_HeatingStrategy->SetHeatingStrategyScenario(0);
     }
     // Run Heating Strategy
     if ("ERROR" != StepID && 0 != Scenario)

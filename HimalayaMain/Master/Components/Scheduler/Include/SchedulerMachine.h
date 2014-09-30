@@ -44,6 +44,7 @@ class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 class CRsFillingAfterFlush;
 class CRsTissueProtect;
+class CRcReHeating;
 
 /****************************************************************************/
 /*!
@@ -112,6 +113,9 @@ private:
     QSharedPointer<QState> mp_ErrorRsRVWaitintTempUpState;                              ///<  Error State's sub state: for RS_RV_WaitingTempUp
     QSharedPointer<QState> mp_ErrorRsTissueProtectState;                                ///<  Error State's sub state: for RS_Tissue_Protect
     QSharedPointer<QState> mp_ErrorRcCheckRTLockState;                                  ///<  Error State's sub state: for RC_Check_RTLock
+    QSharedPointer<QState> mp_ErrorRcReHeatingState;                                    ///<  Error State's sub state: for RC_ReHeating
+    QSharedPointer<QState> mp_ErrorRsReagentCheckState;                                 ///<  Error State's sub state: for RS_ReagentCheck
+    QSharedPointer<QState> mp_ErrorRsRvMoveToSealPositionState;                         ///<  Error State's sub state: for Rs_Rv_MoveToPosition3.5
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for self-test
@@ -125,6 +129,7 @@ private:
     QSharedPointer<CRsTSensorErr3MinRetry> mp_RsTSensorErr3MinRetry;                    ///<  State machine for Rs_TSensorErr3MinRetry
     QSharedPointer<CRsFillingAfterFlush> mp_RsFillingAfterFlush;                        ///<  State machine for Rs_FillingAfterFlush
     QSharedPointer<CRsTissueProtect> mp_RsTissueProtect;                                ///<  State machine for Rs_Tissue_Protect
+    QSharedPointer<CRcReHeating> mp_RcReHeating;                                        ///<  State machine for Rc_ReHeating
 
     typedef enum
     {
@@ -186,6 +191,17 @@ private:
         RV_POS_CHANGE
     } RCRESTART_DRAIN_t;
     RCRESTART_DRAIN_t m_RcRestart_AtDrain;
+
+    typedef enum
+    {
+        FORCE_DRAIN,
+        BUILD_VACUUM,
+        MOVE_INITIALIZE_POSITION,
+        MOVE_SEALPOSITION,
+        REALSE_PRESSRE
+    }RS_REAGENTCHECK_t;
+    RS_REAGENTCHECK_t   m_RsReagentCheckStep;                                           ///< the Rs_ReagentCheck state step
+    RS_REAGENTCHECK_t   m_RsRvMoveToSealPosition;                                       ///< the Rs_Rv_MoveToSealPosition state step
 
 private:
     /****************************************************************************/
@@ -314,6 +330,13 @@ public:
      */
     /****************************************************************************/
     void SendResumeRVPosChange();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeProgramFinished
+     */
+    /****************************************************************************/
+    void SendResumeProgramFinished();
 
     /****************************************************************************/
     /*!
@@ -692,6 +715,29 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRcReHeating
+     *  \param  Scenario = qint32
+     *  \param  NeedRunCleaning = bool
+     */
+    /****************************************************************************/
+    void EnterRcReHeating(quint32 Scenario, bool NeedRunCleaning = false);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterRsReagentCheck
+     */
+    /****************************************************************************/
+    void EnterRsReagentCheck();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterRsRVMoveToSealPosition
+     */
+    /****************************************************************************/
+    void EnterRsRVMoveToSealPosition();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *  \param cmdName - command name
      *  \param retCode - return code
@@ -891,6 +937,33 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Handle ReHeating for power failure
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     */
+    /****************************************************************************/
+    void HandleRcReHeatingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle RsReagentCheck for power failure
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     */
+    /****************************************************************************/
+    void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle RsRvMoveToSealPosition for power failure
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     */
+    /****************************************************************************/
+    void HandleRsRvMoveToSealPosition(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetCurrentState
      *  \return SchedulerStateMachine_t from GetCurrentState
      */
@@ -1049,6 +1122,13 @@ signals:
     */
    /****************************************************************************/
    void ResumeRVPosChange();
+
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeProgramFinished
+    */
+   /****************************************************************************/
+   void ResumeProgramFinished();
 
     /****************************************************************************/
     /*!
@@ -1728,6 +1808,27 @@ signals:
      */
     /****************************************************************************/
     void sigResumeToProcessing();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRcReHeating
+     */
+    /****************************************************************************/
+    void SigRcReHeating();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsReagentCheck
+     */
+    /****************************************************************************/
+    void SigRsReagentCheck();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsRvMoveToPositonSeal
+     */
+    /****************************************************************************/
+    void SigRsRvMoveToSealPositon();
 };
 }
 

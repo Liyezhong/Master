@@ -507,6 +507,69 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     return retCode;
 }
 
+ReturnCode_t HeatingStrategy::StartTemperatureControlForPowerFailure(const QString& HeaterName)
+{
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    if ("RTSide" == HeaterName)
+    {
+        retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+    if ("RTBottom" == HeaterName)
+    {
+        retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+    if ("OvenTop" == HeaterName)
+    {
+        retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+    if ("OvenBottom" == HeaterName)
+    {
+        retCode = StartOvenTemperatureControl(m_OvenBottom, OVEN_BOTTOM);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+    if ("RV" == HeaterName)
+    {
+        retCode = StartRVTemperatureControl(m_RV_1_HeatingRod);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+
+        //For RVOutlet
+        StartRVOutletHeatingOTCalculation();
+    }
+    if ("LA_Tube1" == HeaterName)
+    {
+        retCode = StartLATemperatureControl(m_LARVTube, AL_TUBE1);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+    if ("LA_Tube2" == HeaterName)
+    {
+        retCode = StartLATemperatureControl(m_LAWaxTrap, AL_TUBE2);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+}
 
 ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
 {
