@@ -2597,6 +2597,15 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+            //In error state, we just notify the user. For normal cases (in Run or Idle state), we have used RS_Pause for this
+            if ("ERROR" == StepID)
+            {
+                MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
+                Q_ASSERT(CmdOvenCoverOpen);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(CmdOvenCoverOpen));
+            }
         }
         if ( (m_OvenLidStatus == 1) && (strctHWMonitor.OvenLidStatus == 0) )
         {
@@ -2612,42 +2621,55 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	{
         if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
         {
-            // retort is open, turn on the fan
-            m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
-            SchedulerCommandShPtr_t pResHeatingCmd;
-            PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOnFan");
-            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-            pResHeatingCmd->GetResult(retCode);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            if ("ERROR" != StepID)
             {
-                RaiseError(0, retCode, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
+                // retort is open, turn on the fan
+                m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+                SchedulerCommandShPtr_t pResHeatingCmd;
+                PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOnFan");
+                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+                pResHeatingCmd->GetResult(retCode);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    RaiseError(0, retCode, Scenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
+                SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+                if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
+                {
+                    RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
             }
-            SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-            if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
-            {
-                RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
-            }
+
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            SendCoverLidOpenMsg();
+
+            // Notify retort lid is opened
+            MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+            Q_ASSERT(CmdRetortCoverOpen);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
         }
         if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
 		{
-           // retort is closed, turn off the fan
-			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
-            SchedulerCommandShPtr_t pResHeatingCmd;
-            PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOffFan");
-            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-            pResHeatingCmd->GetResult(retCode);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            if ("ERROR" != StepID)
             {
-                RaiseError(0, retCode, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
+                // retort is closed, turn off the fan
+                m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+                SchedulerCommandShPtr_t pResHeatingCmd;
+                PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOffFan");
+                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+                pResHeatingCmd->GetResult(retCode);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    RaiseError(0, retCode, Scenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
             }
+
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();

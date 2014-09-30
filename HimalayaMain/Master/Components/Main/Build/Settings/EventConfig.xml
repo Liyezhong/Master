@@ -436,6 +436,11 @@
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010462" RDStringID="103010462" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
+		<Event Code="" ErrorID="513010601" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="103010601" RDStringID="113010601" ButtonType="OK" StatusBar="YES" NextStepOnTimeOut="2" TimeOut="15m" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>
+		</Event>
 		<Event Code="" ErrorID="513020050" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103020050" RDStringID="113020050" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
@@ -1214,9 +1219,10 @@
 			<Step ID="6" Type="MSG" StringID="103040014" RDStringID="113040014" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
 		<Event Code="" ErrorID="513020091" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Pause" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="0" Type="ACT" Action="RS_Pause" NextStepOnFail="2" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="ACT" Action="RC_Restart"/>
+			<Step ID="2" Type="MSG" StringID="103020091" RDStringID="113020091" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040141" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="Rs_Drainatonce" NextStepOnFail="1" NextStepOnSuccess="2"/>
