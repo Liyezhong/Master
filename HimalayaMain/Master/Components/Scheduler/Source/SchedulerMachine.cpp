@@ -346,7 +346,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcPressureDelayTime = 0;
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsReagentCheckStep = FORCE_DRAIN;
-    m_RsRvMoveToSealPosition = BUILD_VACUUM;
+    m_HasReagent = false;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -1589,7 +1589,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
     case FORCE_DRAIN:
         if (0 == startReq)
         {
-            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent in PowerFailure");
+            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent");
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
             cmd->SetRVPosition(0);
             cmd->SetDrainPressure(30.0);
@@ -1603,6 +1603,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                    m_HasReagent = true;
                 }
                 else
                 {
@@ -1646,7 +1647,15 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                m_RsReagentCheckStep = MOVE_SEALPOSITION;
+                if(m_HasReagent)
+                {
+                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    OnTasksDone(true);
+                }
+                else
+                {
+                    m_RsReagentCheckStep = MOVE_SEALPOSITION;
+                }
             }
             else
             {
@@ -1703,104 +1712,6 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         break;
     }
 }
-
-void CSchedulerStateMachine::HandleRsRvMoveToSealPosition(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
-{
-    static qint32 StartReq = 0;
-    switch(m_RsRvMoveToSealPosition)
-    {
-    case BUILD_VACUUM:
-        if(0 == StartReq)
-        {
-            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
-            CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
-            cmd->SetTargetPressure(-6.0);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-            StartReq++;
-        }
-        else if("Scheduler::ALVaccum" == cmdName)
-        {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_RsRvMoveToSealPosition = MOVE_INITIALIZE_POSITION;
-            }
-            else
-            {
-                m_RsRvMoveToSealPosition = BUILD_VACUUM;
-                OnTasksDone(false);
-            }
-            StartReq = 0;
-        }
-        break;
-    case MOVE_INITIALIZE_POSITION:
-        if(0 == StartReq)
-        {
-            CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-            StartReq++;
-        }
-        else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
-        {
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_RsRvMoveToSealPosition = MOVE_SEALPOSITION;
-            }
-            else
-            {
-                m_RsRvMoveToSealPosition = BUILD_VACUUM;
-                OnTasksDone(false);
-            }
-            StartReq = 0;
-        }
-        break;
-    case MOVE_SEALPOSITION:
-        if(0 == StartReq)
-        {
-            mp_SchedulerThreadController->MoveRV(1);
-            StartReq++;
-        }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(1))
-        {
-            StartReq = 0;
-            m_RsRvMoveToSealPosition = REALSE_PRESSRE;
-        }
-        else
-        {
-            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    m_RsRvMoveToSealPosition = BUILD_VACUUM;
-                    OnTasksDone(false);
-                }
-            }
-        }
-        break;
-    case REALSE_PRESSRE:
-        if(0 == StartReq)
-        {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-            StartReq++;
-        }
-        else if("Scheduler::ALReleasePressure" == cmdName)
-        {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                OnTasksDone(true);
-            }
-            else
-            {
-                OnTasksDone(false);
-            }
-            StartReq = 0;
-            m_RsRvMoveToSealPosition = BUILD_VACUUM;
-        }
-        break;
-    default:
-        break;
-    }
-}
-
 
 void CSchedulerStateMachine::EnterRcRestart()
 {

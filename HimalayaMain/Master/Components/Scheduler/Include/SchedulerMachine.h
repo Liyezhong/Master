@@ -201,7 +201,7 @@ private:
         REALSE_PRESSRE
     }RS_REAGENTCHECK_t;
     RS_REAGENTCHECK_t   m_RsReagentCheckStep;                                           ///< the Rs_ReagentCheck state step
-    RS_REAGENTCHECK_t   m_RsRvMoveToSealPosition;                                       ///< the Rs_Rv_MoveToSealPosition state step
+    bool                m_HasReagent;                                                   ///< wether has reagent
 
 private:
     /****************************************************************************/
@@ -952,15 +952,6 @@ public:
      */
     /****************************************************************************/
     void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Handle RsRvMoveToSealPosition for power failure
-     *  \param cmdName - command name
-     *  \param retCode - return code
-     */
-    /****************************************************************************/
-    void HandleRsRvMoveToSealPosition(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
