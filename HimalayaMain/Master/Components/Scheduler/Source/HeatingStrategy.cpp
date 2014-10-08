@@ -337,6 +337,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
+            this->StopTemperatureControl("RTSide");
+            this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -369,6 +371,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
+            this->StopTemperatureControl("RTSide");
+            this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -597,6 +601,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
+            this->StopTemperatureControl("RTSide");
+            this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -620,6 +626,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
+            this->StopTemperatureControl("RTSide");
+            this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -1018,6 +1026,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         }
         if (userInputTemp < 0) // In this case, the GUI setting is to be ambient
         {
+            this->StopTemperatureControl("RTSide");
+            this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
 
