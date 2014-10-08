@@ -70,14 +70,7 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
                 }
                 else
                 {
-                    if(m_IsNeedRunCleaning)
-                    {
-                        m_RcReHeatingStep = BEGIN_DRAIN;
-                    }
-                    else
-                    {
-                        emit TasksDone(true);
-                    }
+                    m_RcReHeatingStep = BEGIN_DRAIN;
                 }
             }
             break;
@@ -151,13 +144,13 @@ bool CRcReHeating::CheckTheTemperature()
         }
         else
         {
-            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_SENSOR2_TEMP * 1000)
+            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_RV_SENSOR2_TEMP * 1000)
                 emit TasksDone(false);
         }
     }
     else
     {
-        if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > 15 * 1000)
+        if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > mp_SchedulerThreadController->GetOvenHeatingTime() * 1000)
         {
             ret = true;
         }

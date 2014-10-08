@@ -25,12 +25,10 @@
 #include <QSharedPointer>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
-using namespace DeviceControl;
-
 namespace Scheduler{
 
-#define RV_SENSOR2_TEMP (40)
-#define WAIT_SENSOR2_TEMP (1800)
+#define RV_SENSOR2_TEMP (40)                    //!< RV sensor2 temperature
+#define WAIT_RV_SENSOR2_TEMP (1800)             //!< Wait RV Sensor2 time
 
 class SchedulerMainThreadController;
 /****************************************************************************/
@@ -146,6 +144,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal for tasks done
+     *  \param flag - bool
      *
      */
     /****************************************************************************/
