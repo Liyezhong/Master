@@ -436,7 +436,7 @@
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 			<Step ID="4" Type="MSG" StringID="103010462" RDStringID="103010462" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="513010601" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513010501" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103010601" RDStringID="113010601" ButtonType="OK" StatusBar="YES" NextStepOnTimeOut="2" TimeOut="15m" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>

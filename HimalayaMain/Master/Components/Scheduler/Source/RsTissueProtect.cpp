@@ -470,8 +470,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     }
 #if 0
     //Secondly, check if the event id is relatd with Retort, heating tube, RV and Oven failed error
-    if (DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED == EventId
-            || DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED == EventId
+    if (DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == EventId
             || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == EventId
             || DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == EventId
             || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE == EventId
@@ -479,8 +478,6 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
             || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == EventId
             || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == EventId
             || DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED == EventId
-            || DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE == EventId
             || DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == EventId
             || DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == EventId
             || DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE == EventId

@@ -717,7 +717,7 @@
         </error>
     </event>
     <event eventid="500010501">
-        <error errorid="513010601">
+        <error errorid="513010501">
             <scenario type="single" id="260"/>
         </error>
     </event>

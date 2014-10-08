@@ -3972,22 +3972,22 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {
-        RaiseError(0,DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED, Scenario, true);
+        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError2.instanceID != 0)
     {
-        RaiseError(0,DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED, Scenario, true);
+        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError3.instanceID != 0 )
     {
-        RaiseError(0,DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError4.instanceID != 0)
     {
-        RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
+        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError5.instanceID != 0)
