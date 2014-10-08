@@ -149,7 +149,7 @@
        <event id="500050321"    name="EVENT_MC_Voltage_24V_ASB15_OutofRange"/>
        <event id="500050401"    name="EVENT_MC_RemoteAlarm_Unconnected"/>
        <event id="500050411"    name="EVENT_MC_LocalAlarm_Unconnected"/>
-       <event id="500050501"    name="EVENT_AC_Current_OutofRange"/>
+       <event id="500050501"    name="EVENT_ASB5_AC_Current_OutofRange"/>
   </group>
  <group name="System">
        <event id="500060100"    name="EVENT_PowerFailure"/>
@@ -192,6 +192,7 @@
             <scenario type="single" id="002"/>
             <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
+			<scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
         </error>
     </event>
