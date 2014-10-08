@@ -1142,9 +1142,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 this->OnStopDrain();
                 m_SchedulerMachine->NotifyAbort();//Aborting --->Aborted
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            else if( DCL_ERR_FCT_CALL_SUCCESS != retCode && ("Scheduler::ALReleasePressure" == cmdName
+                                                            ||"Scheduler::ALStopCmdExec" == cmdName
+                                                            || "Scheduler::RVReqMoveToRVPosition" == cmdName
+                                                            ||"Scheduler::ALDraining" == cmdName) )
             {
-                LogDebug("Aboting error");
+                LogDebug("Aborting error");
                 RaiseError(0, retCode, m_CurrentScenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
