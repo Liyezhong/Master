@@ -26,6 +26,7 @@
 
 CProgramStatusInfor::CProgramStatusInfor()
 {
+    m_LastHeatingOn = false;
 }
 
 CProgramStatusInfor::~CProgramStatusInfor()
@@ -154,7 +155,11 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
     quint64 TimeForMelting = TimeLimit;
     TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
     QString value = m_Status.value("HeatingOvenSlice");
-    QStringList Slices = value.split(",");
+    QStringList Slices;
+    if(!value.isEmpty())
+    {
+        Slices = value.split(",");
+    }
     bool ok = false;
     quint64 Start = 0;
     quint64 End = 0;
@@ -165,12 +170,14 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
         if(End < TimeLimit)
         {
             Slices.removeAt(2 * i);
-            Slices.removeAt(2 * i + 1);
+            Slices.removeAt(2 * i);
+            Start = End = TimeLimit;
         }
         else if(End >= TimeLimit && Start < TimeLimit)
         {
             Slices.replace(2 * i ,QString::number(TimeLimit));
             HeatingTime += (End - TimeLimit);
+            Start = TimeLimit;
             i++;
         }
         else
@@ -183,6 +190,7 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
             i++;
         }
     }
+    UnHeatingTime += QDateTime::currentMSecsSinceEpoch() - End;
     SetStatus("HeatingOvenSlice", Slices.join(","));
 
     if(TimeForMelting - HeatingTime + UnHeatingTime <= 4 * 60 * 60 * 1000)
@@ -197,7 +205,8 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
 
 void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, bool ResetFlag)
 {
-    if((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000) // record by one minutes
+    if(((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000)
+            && !ResetFlag && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
     {
         return;
     }
@@ -212,17 +221,16 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, 
     {
         Slices.clear();
     }
-    if(IsHeatingOn)
+    if(Slices.length() == 0 || (!m_LastHeatingOn && IsHeatingOn)) // if 1. first boot; 2. the heating status from OFF to ON.
     {
-        if(Slices.length() == 0 || !m_LastHeatingOn)
-        {
-            Slices.append(QString::number(Time));
-            Slices.append(QString::number(Time));
-        }
-        else
-        {
-            Slices.replace(Slices.length() - 1,QString::number(Time));
-        }
+        Slices.append(QString::number(Time));
+        Slices.append(QString::number(Time));
+        m_LastTimeUpdateHeatingTime = QDateTime::currentMSecsSinceEpoch();
+        SetStatus(key, Slices.join(","));
+    }
+    else if(m_LastHeatingOn && IsHeatingOn) // if the heating status from ON to ON
+    {
+        Slices.replace(Slices.length() - 1,QString::number(Time));
         m_LastTimeUpdateHeatingTime = QDateTime::currentMSecsSinceEpoch();
         SetStatus(key, Slices.join(","));
     }

@@ -152,7 +152,7 @@
 		<string id="17498129" text1="EPD. Process %1: ExternalProcess login timedout." text2=""/>
 		<string id="17498127" text1="EPD. Process %1: Missing input." text2=""/>
 		<string id="17498128" text1="EPD. Process %1: NetworkServerDevicewas could not be started." text2=""/>
-		<string id="17039361" text1="Colorado has switched to error state" text2=""/>
+		<string id="17039361" text1="Primaris has switched to error state" text2=""/>
 		<string id="17039364" text1="Internal software error: EventId is missing %1" text2=""/>
 		<string id="17629209" text1="Export failed. Advance Encryption Standard is not initialized" text2=""/>
 		<string id="17629201" text1="Export failed. Cannot open the file for reading" text2=""/>
@@ -439,7 +439,7 @@
 		<string id="16842762" text1="Error reading config file %1." text2=""/>
 		<string id="16842772" text1="Time offset is too large  %1  seconds. Allowed:  %2  seconds." text2=""/>
 		<string id="16846858" text1="Setting date / time to  %1 ." text2=""/>
-		<string id="33619971" text1="Stainer started (serial number is %1 and type is %2)" text2=""/>
+		<string id="33619971" text1="Primaris started (serial number is %1 and type is %2)" text2=""/>
 		<string id="33947653" text1="Import failed. Format of import file is wrong" text2=""/>
 		<string id="50331760" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
 		<string id="50331763" text1="No USB devices found in the system to export files" text2=""/>
@@ -461,8 +461,8 @@
 		<string id="33619974" text1="Password changed successfully." text2=""/>
 		<string id="33619972" text1="Login failed. Incorrect password." text2=""/>
 		<string id="33619973" text1="Unable to change the password. Passwords are not matching." text2=""/>
-		<string id="33619978" text1="Coverslipper Device Connected" text2=""/>
-		<string id="33619975" text1="Stainer GUI process has stopped" text2=""/>
+		<string id="33619978" text1="GUI Connected" text2=""/>
+		<string id="33619975" text1="GUI has stopped" text2=""/>
 		<string id="50331719" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
 		<string id="50331771" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
 		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>

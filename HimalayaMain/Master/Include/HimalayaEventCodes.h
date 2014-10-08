@@ -122,7 +122,8 @@ const quint32 EVENT_GLOBAL_SET_DATE_TIME	= 16846858;	///< Setting date / time to
 
 const quint32 EVENT_GLOBAL_UNDEFINED	= 16908287;	///< undefined. Used for initialisations
 
-const quint32 EVENT_HIMALAYA_START	= 33619971;	///< Stainer started (serial number is %1 and type is %2)
+const quint32 EVENT_HIMALAYA_START	= 33619971;	///< PRIMARIS started (serial number is %1 and type is %2)
+
 
 const quint32 EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER	= 33947653;	///< Import failed. Format of import file is wrong
 
@@ -161,9 +162,9 @@ const quint32 EVENT_PASSWORD_INCORRECT	= 33619972;	///< Login failed. Incorrect 
 const quint32 EVENT_PASSWORD_NOT_MATCHING	= 33619973;	///< Unable to change the password. Passwords are not matching.
 
 
-const quint32 EVENT_PROCESS_HIMALAYA_GUI_CONNECTED	= 33619978;	///< Coverslipper Device Connected
+const quint32 EVENT_PROCESS_HIMALAYA_GUI_CONNECTED	= 33619978;	///< GUI Connected
 
-const quint32 EVENT_PROCESS_HIMALAYA_GUI_STOPPED	= 33619975;	///< Stainer GUI process has stopped
+const quint32 EVENT_PROCESS_HIMALAYA_GUI_STOPPED	= 33619975;	///< GUI has stopped
 
 const quint32 EVENT_STATIONS_DEFECT	= 33619977;	///< The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable.
 

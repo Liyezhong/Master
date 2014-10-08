@@ -92,22 +92,33 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     QVERIFY(result);
     ProStatus.SetLastRVPosition(DeviceControl::RV_SEAL_10);
     ProStatus.SetProgramID("L01");
-    ProStatus.SetStepID("3");
+    ProStatus.SetStepID(3);
     ProStatus.SetScenario(4);
     QCOMPARE(ProStatus.GetLastRVPosition(),DeviceControl::RV_SEAL_10);
     QCOMPARE(ProStatus.GetProgramId(),QString("L01"));
-    QCOMPARE(ProStatus.GetStepID(),QString("3"));
+    QVERIFY(ProStatus.GetStepID()==3);
     QVERIFY(ProStatus.GetScenario() == 4);
 
     ProStatus.SetProgramID("");
     QVERIFY(ProStatus.IsProgramFinished());
 
     quint64 OneHour = 60 * 60 * 1000;
-    quint64 time = QDateTime::currentMSecsSinceEpoch();
-    ProStatus.UpdateOvenHeatingTime(time - 13 * OneHour,true,true);
-    ProStatus.UpdateOvenHeatingTime(time - 11 * OneHour); // 1 hour
+    quint64 TimeLimit = 12 * OneHour;
     quint64 HeatingTime = ProStatus.GetOvenHeatingTime(54);
-    QVERIFY( HeatingTime <= 3600000);
+    QVERIFY(HeatingTime == TimeLimit/1000);
+
+    quint64 time = QDateTime::currentMSecsSinceEpoch();
+    ProStatus.UpdateOvenHeatingTime(time - 15 * OneHour,true,true);
+    sleep(70);
+    ProStatus.UpdateOvenHeatingTime(time - 13 * OneHour,true);
+    HeatingTime = ProStatus.GetOvenHeatingTime(54);
+    QVERIFY(HeatingTime == TimeLimit/1000);
+
+    ProStatus.UpdateOvenHeatingTime(time - 1 * OneHour,true,true);
+    sleep(70);
+    ProStatus.UpdateOvenHeatingTime(time,true);
+    HeatingTime = ProStatus.GetOvenHeatingTime(54);
+    QVERIFY(HeatingTime == TimeLimit/1000);
 }
 
 
