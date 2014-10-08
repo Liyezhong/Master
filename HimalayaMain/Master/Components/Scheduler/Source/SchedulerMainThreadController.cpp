@@ -321,7 +321,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
-                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID())));
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
+                                                                    m_ProgramStatusInfor.GetLastReagentGroup()));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
