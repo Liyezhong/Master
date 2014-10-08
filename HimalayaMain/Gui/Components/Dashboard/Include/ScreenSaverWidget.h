@@ -12,7 +12,7 @@ class ScreenSaverWidget;
  *  \brief  Definition/Declaration of class ScreenSaverWidget
  */
 /****************************************************************************/
-class ScreenSaverWidget : public MainMenu::CPanelFrame
+class ScreenSaverWidget : public QWidget
 {
     Q_OBJECT
     

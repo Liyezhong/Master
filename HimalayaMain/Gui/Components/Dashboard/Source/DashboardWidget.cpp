@@ -270,9 +270,9 @@ void CDashboardWidget::OnOvenCoverOpen()
     mp_MessageDlg->SetTitle(CommonString::strOK);
     QString strTemp(m_strOvenCoverOpen);
     mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
-
+    mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+    mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+    mp_MessageDlg->HideCenterButton();
     if (mp_MessageDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_OVEN_COVER_OPEN);
@@ -565,10 +565,10 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     else
     {
         //calculate the timeBeforeUseParraffin
-        //RemainingTimeMeltParraffin = 12 hour - TimeCosted
-        //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-        //int meltingDuration= GetParaffinHeatingDuration();
-        int RemainingTimeMeltParaffin = 10 * 60 - TimeCostedParaffinMelting;
+        //RemainingTimeMeltParraffin = 12 or 15 hour - TimeCosted
+        //final: int RemainingTimeMeltParaffin = 12/15 * 60 * 60 - TimeCostedParaffinMelting;
+        int meltingDuration= GetParaffinHeatingDuration();
+        int RemainingTimeMeltParaffin = meltingDuration * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= TimeBeforeUseParaffin)
@@ -952,8 +952,8 @@ void CDashboardWidget::RetranslateUI()
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, please take out of tissues", 0, QApplication::UnicodeUTF8);
-    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover was opened, please close it and then click OK button", 0, QApplication::UnicodeUTF8);
-    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort cover or lid was opened, please close it and then click OK button", 0, QApplication::UnicodeUTF8);
+    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover was opened, please close it and then click \"Yes\"", 0, QApplication::UnicodeUTF8);
+    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click \"OK\"", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

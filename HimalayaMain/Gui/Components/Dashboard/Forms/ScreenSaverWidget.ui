@@ -25,10 +25,14 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>631</height>
+     <height>601</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout"/>
+   <layout class="QFormLayout" name="formLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+   </layout>
   </widget>
  </widget>
  <resources/>

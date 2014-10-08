@@ -79,7 +79,7 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
 	m_Timer = new QTimer(this);
     m_Timer->setInterval(8*60*1000);//8 minutes, enter idle;
     (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
-    //m_Timer->start();
+    m_Timer->start();
 }
 
 /****************************************************************************/

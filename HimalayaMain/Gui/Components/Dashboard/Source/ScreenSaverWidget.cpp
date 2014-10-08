@@ -3,7 +3,7 @@
 #include <QTimer>
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
-    MainMenu::CPanelFrame(p),
+    QWidget(p),
     ui(new Ui::ScreenSaverWidget),
     m_isFirstShow(true)
 {
@@ -13,7 +13,7 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     m_timer = new QTimer(this);
     m_timer->setInterval(1800000);//30 mintues
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
-    //m_timer->start();
+    m_timer->start();
 }
 
 ScreenSaverWidget::~ScreenSaverWidget()
@@ -33,7 +33,7 @@ void ScreenSaverWidget::AppIdleForLongTime()
     if (m_isFirstShow)
     {
         this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-                      "QWidget { border-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png) }");
+                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png) }");
 
         m_isFirstShow = false;
     }
