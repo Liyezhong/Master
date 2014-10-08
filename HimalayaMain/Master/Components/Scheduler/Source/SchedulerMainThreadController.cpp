@@ -3260,6 +3260,15 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
             return true;
         }
         break;
+    case ASB5:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RTBottom") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RTSide") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenTop") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenBottom"))
+        {
+            return true;
+        }
+        break;
     default:
         return true;
     }
@@ -3306,6 +3315,15 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
         break;
     case RV:
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RV"))
+        {
+            return true;
+        }
+        break;
+    case ASB5:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RTBottom") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RTSide")&&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenTop") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenBottom"))
         {
             return true;
         }
@@ -3368,6 +3386,33 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         }
         break;
     case OVEN:
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
+            return false;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
+            return false;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp3))
+            return false;
+        break;
+    case ASB5:
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp1) )
+            return false;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2) )
+            return false;
+        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1,
+                                                         m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2))
+        {
+            return false;
+        }
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        if(false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp3))
+        {
+            return false;
+        }
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
             return false;
@@ -3467,6 +3512,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         // Retort and Oven are in the same card, so any heater goes wrong, we will stop all the others.
     case RETORT:
     case OVEN:
+    case ASB5:
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_BOTTOM);
         reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
         reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
@@ -3888,6 +3934,10 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     else if ("50003" == QString::number(m_CurErrEventID).left(5))
     {
         return RV;
+    }
+    else if (DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == m_CurErrEventID)
+    {
+        return ASB5;
     }
 
     return UNKNOWN;
