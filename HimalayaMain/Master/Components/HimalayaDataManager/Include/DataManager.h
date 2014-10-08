@@ -206,6 +206,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function GetSWVersion
+     *
+     *  \return from Data container of SW version
+     */
+    /****************************************************************************/
+    CSWVersionList* GetSWVersion();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetUserSettingsInterface
      *
      *  \return from GetUserSettingsInterface

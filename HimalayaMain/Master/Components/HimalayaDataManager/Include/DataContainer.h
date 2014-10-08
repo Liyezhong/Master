@@ -29,6 +29,7 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
+#include "DataManager/Containers/SWVersions/Include/SWVersionList.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 //lint -sem(DataManager::CDataContainer::DeinitializeContainers, cleanup)
 
@@ -164,6 +165,7 @@ public:
     CDashboardDataStationList* StationList;  //!< Container for stations
     CDataReagentGroupList* ReagentGroupList;  //!< Container for reagent groups
     CDataReagentList* ReagentList;  //!< Container for reagents
+    CSWVersionList *SWVersionList;  //!< Container for software version
     CReagentGroupColorList* ReagentGroupColorList; //!<//!< Container for reagentGroupColor
     CProgramSettings* ProgramSettings;         ///<! container for ProgramSettings
     CInstrumentHistory *InstrumentHistory;                //!< Container for Instrument History

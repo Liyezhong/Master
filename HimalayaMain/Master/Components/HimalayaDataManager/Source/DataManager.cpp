@@ -161,6 +161,9 @@ quint32 CDataManager::InitializeDataContainer()
         return EVENT_DM_MODULE_CONF_READ_FAILED;
     }
 
+    mp_DataContainer->SWVersionList->SetDataVerificationMode(false);
+    (void)mp_DataContainer->SWVersionList->Read( Global::SystemPaths::Instance().GetSettingsPath() + "/" + "SW_Version.xml");
+
     // when all containers are loaded, activate verification mode and verify there initial content
     mp_DataContainer->ProgramList->SetDataVerificationMode(true);
     mp_DataContainer->ReagentList->SetDataVerificationMode(true);
@@ -194,8 +197,6 @@ quint32 CDataManager::InitializeDataContainer()
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
     }
 
-
-
     mp_ModuleCommandInterface = new CModuleCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_ProgramCommandInterface = new CProgramCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_StationCommandInterface = new CStationCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
@@ -225,6 +226,16 @@ CDataReagentList* CDataManager::GetReagentList()
     }
 
     return mp_DataContainer->ReagentList;
+}
+
+CSWVersionList* CDataManager::GetSWVersion()
+{
+    if (m_IsInitialized != true) {
+        qDebug() << "CDataManager::GetSWVersion failed. Not initialized!";
+        return NULL;
+    }
+
+    return mp_DataContainer->SWVersionList;
 }
 
 //********************************************************************

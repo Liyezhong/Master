@@ -189,6 +189,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
     //Initialize objects in Master and base threads.
+    SetSWVersion(mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
     MasterThreadController::CreateAndInitializeObjects();
 
     RegisterCommandForProcessing<NetCommands::CmdExternalProcessState, HimalayaMasterThreadController>

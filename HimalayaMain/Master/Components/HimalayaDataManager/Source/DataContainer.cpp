@@ -45,6 +45,7 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
     StationList(NULL),
     ReagentGroupList(NULL),
     ReagentList(NULL),
+    SWVersionList(NULL),
     ReagentGroupColorList(NULL),
     ProgramSettings(NULL),
     InstrumentHistory(NULL),
@@ -116,7 +117,7 @@ bool CDataContainer::InitializeContainers()
     }
 
     InstrumentHistory = new CInstrumentHistory();
-
+    SWVersionList = new CSWVersionList();
       // create special verifier for reagents and programs
 //    IVerifierInterface *p_SpecialVerifier = new CSpecialVerifierGroupA(ProgramList, ReagentList, StationList);
 //    // register this verifier object in the data containers (=> dependency injection)
@@ -164,6 +165,7 @@ bool CDataContainer::DeinitializeContainers()
     delete StationList;
     delete ProgramList;
     delete ReagentList;
+    delete SWVersionList;
     delete ReagentGroupList;
     delete ReagentGroupColorList;
     delete InstrumentHistory;
