@@ -20,7 +20,7 @@
 #include "Global/Include/Commands/Command.h"
 #include "Global/Include/Utils.h"
 #include "Scheduler/Include/SchedulerMachine.h"
-#include "Scheduler/Include/HimalayaDeviceEventCodes.h"
+#include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
