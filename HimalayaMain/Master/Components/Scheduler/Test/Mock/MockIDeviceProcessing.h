@@ -30,6 +30,7 @@
 #include<QDateTime>
 #include "gmock/gmock.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "DataManager/Containers/InstrumentHistory/Include/Module.h"
 namespace IDeviceProcessing
 {
 static int GetSerialNumber(QString& serNo)
@@ -59,7 +60,10 @@ signals:
                              quint16 usErrorData, QDateTime timeStamp, QString strErrorInfo);
     //! Forward the 'Destroy finished' to IDeviceProcessing
     void ReportDestroyFinished();
-
+	void ReportLevelSensorStatus1();
+	void ReportFillingTimeOut2Min();
+	void ReportDrainingTimeOut2Min();
+	void ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&);
 };
 
 class MockIDeviceProcessing : public FackIDeviceProcessing
