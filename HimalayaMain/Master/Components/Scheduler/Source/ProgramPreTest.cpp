@@ -432,4 +432,20 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 	}
 }
 
+void CProgramPreTest::ResetVarList()
+{
+    m_RTTempStartTime = 0;
+    m_RTTempOffSeq = 0;
+    m_RVPositioinChkSeq = 0;
+    m_PressureChkSeq = 0;
+    m_SetPrressureTime = 0;
+    m_PressureCalibrationSeq = 0;
+    m_PressureCalibrationCounter = 0;
+    m_PressureDriftOffset = 0.0;
+    m_PressureSealingChkSeq = 0;
+    m_BottleChkFlag = true;
+    m_BottleSeq = 0;
+    m_MoveToTubeSeq = 0;
+}
+
 }

@@ -1735,6 +1735,7 @@ void CSchedulerStateMachine::EnterRsRVGetOriginalPositionAgain()
 }
 void CSchedulerStateMachine::SendRunPreTest()
 {
+    mp_ProgramPreTest->ResetVarList();
     emit RunPreTest();
 }
 
