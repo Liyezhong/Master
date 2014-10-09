@@ -27,6 +27,8 @@
 #include "Diagnostics/Include/System/FillingNDrainingTest.h"
 #include "Diagnostics/Include/System/SpeakerTest.h"
 #include "Diagnostics/Include/System/AlarmTest.h"
+#include "Diagnostics/Include/System/ExhaustFanTest.h"
+#include "Diagnostics/Include/System/VentilationFanTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -107,7 +109,8 @@ void CSystem::StartFillingNDrainingTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST);
     qDebug() << "System: start filling and draining test";
 
-
+    System::CFillingNDrainingTest FillingNDrainingTest(mp_MessageDlg, this);
+    (void)FillingNDrainingTest.Run();
 }
 
 void CSystem::StartLiquidHoseTest(void)
@@ -121,7 +124,7 @@ void CSystem::StartSpeakerTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
     qDebug() << "System: start speaker test";
 
-    System::CSpeakerTest SpeakerTest(mp_MessageDlg);
+    System::CSpeakerTest SpeakerTest(mp_MessageDlg, this);
     (void)SpeakerTest.Run();
 }
 
@@ -130,12 +133,17 @@ void CSystem::StartLocalAlarmTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start local alarm test";
 
+    System::CAlarmTest LocalAlarmTest("Local", mp_MessageDlg, this);
+    (void)LocalAlarmTest.Run();
 }
 
 void CSystem::StartRemoteAlarmTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start retmote alarm test";
+
+    System::CAlarmTest RemoteAlarmTest("Remote", mp_MessageDlg, this);
+    (void)RemoteAlarmTest.Run();
 }
 
 void CSystem::StartExhaustFanTest(void)
@@ -143,7 +151,8 @@ void CSystem::StartExhaustFanTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
     qDebug() << "System: start exhaust fan test";
 
-
+    System::CExhaustFanTest ExhaustFanTest(mp_MessageDlg, this);
+    (void)ExhaustFanTest.Run();
 }
 
 void CSystem::StartVentilationFanTest(void)
@@ -151,7 +160,8 @@ void CSystem::StartVentilationFanTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
     qDebug() << "System: start ventilation fan test";
 
-
+    System::CVentilationFanTest VentilationFanTest(mp_MessageDlg, this);
+    (void)VentilationFanTest.Run();
 }
 
 } // namespace Diagnostics

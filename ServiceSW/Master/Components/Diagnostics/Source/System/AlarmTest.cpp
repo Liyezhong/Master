@@ -21,22 +21,23 @@
 #include "Diagnostics/Include/System/AlarmTest.h"
 
 #include <QDebug>
-
-#include "Global/Include/Utils.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-
-#include "ServiceWidget/Include/DlgConfirmationText.h"
-
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 namespace Diagnostics {
 
 namespace System {
 
-CAlarmTest::CAlarmTest(void)
-    : CTestBase()
+CAlarmTest::CAlarmTest(QString AlarmFlag, CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
+    : CTestBase(p_Parent),
+      mp_MessageDlg(p_MessageDlg),
+      m_AlarmFlag(AlarmFlag)
 {
+    if (m_AlarmFlag == "Local") {
+        m_LocalRemote = 1;
+    }
+    else {
+        m_LocalRemote = 2;
+    }
 }
 
 CAlarmTest::~CAlarmTest(void)
@@ -47,62 +48,108 @@ int CAlarmTest::Run(void)
 {
     qDebug() << "Alarm Test starts!";
 
-    this->FirstOpenDialog();
+    int Ret(0);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemAlarm");
+    int DetectTimeOut = p_TestCase->GetParameter("DetectTimeOut").toInt();
+
+    QString Title;
+    QString WaitText = QString("Please remove any external ") + m_AlarmFlag.toLower()
+            + QString(" alarm connection within the next %1 secs").arg(DetectTimeOut);
+    mp_MessageDlg->ShowWaitingDialog(Title, WaitText);
+    bool CheckStatus = CheckAlarmStatus(DetectTimeOut, false);
+    mp_MessageDlg->HideWaitingDialog();
+    if (!CheckStatus) {
+        ShowFinishDlg(1);
+        return Ret;
+    }
+
+    WaitText = QString("Please create a shortcut between pin4 and pin5 on the ") + m_AlarmFlag.toLower()
+            + QString(" alarm connector for at least 2 sec within the next %1 secs").arg(DetectTimeOut);
+    mp_MessageDlg->ShowWaitingDialog(Title, WaitText);
+    CheckStatus = CheckAlarmStatus(DetectTimeOut, true);
+    mp_MessageDlg->HideWaitingDialog();
+
+    if (!CheckStatus) {
+        ShowFinishDlg(1);
+        return Ret;
+    }
+
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+
+    p_DevProc->AlarmSetOnOff(m_LocalRemote, true);
+    Ret = ShowConfirmDlg(1);
+
+    if (Ret == 0) {
+        ShowFinishDlg(1);
+        return Ret;
+    }
+
+    p_DevProc->AlarmSetOnOff(m_LocalRemote, false);
+    Ret = ShowConfirmDlg(2);
+
+    if (Ret == 0) {
+        ShowFinishDlg(1);
+    }
+    else {
+        ShowFinishDlg(2);
+    }
+
+    return Ret;
 }
 
-void CAlarmTest::FirstOpenDialog(void)
+bool CAlarmTest::CheckAlarmStatus(int TimeOutSec, bool ConnectedFlag)
 {
-    qDebug() << "Alarm Test: first open alarm test dialog!";
+    qint32  RetState;
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    qint64 StartTime = QDateTime::currentMSecsSinceEpoch();
+    qint64 NowTime   = QDateTime::currentMSecsSinceEpoch();
 
+    while (NowTime - StartTime < TimeOutSec*1000) {
+        p_DevProc->AlarmGetState(m_LocalRemote, &RetState);
+        qDebug()<<"RetState:"<<RetState;
+        if (RetState == (ConnectedFlag ? 0 : 1)) {
+            return true;
+        }
+        p_DevProc->Pause(1000);
+        NowTime = QDateTime::currentMSecsSinceEpoch();
+    }
+
+    return false;
 }
 
-void CAlarmTest::TestAlarm(bool On)
+int CAlarmTest::ShowConfirmDlg(int StepNum)
 {
-    qDebug() << "Alarm Test: to turn on alarm? " << On;
+    QString Title = m_AlarmFlag + " Alarm Test";
+    QString Text = "Please Measure and confirm the following resistances:<br>";
 
-    /// \todo: turn On/Off alarm here **************************/
+    if (StepNum == 1) {
+        Text += "Between pin1 and pin2: Less the 10 Ohm<br>"\
+                "Between pin1 and pin3: More than 100 KOhm";
+    }
+    else if (StepNum == 2) {
+        Text += "Between pin1 and pin2: More than 100 KOhm<br>"\
+               "Between pin1 and pin3: Less the 10 Ohm";
+    }
+
+    return mp_MessageDlg->ShowConfirmMessage(Title, Text);
 }
 
-void CAlarmTest::SecondConfirmResult(void)
+void CAlarmTest::ShowFinishDlg(int RetNum)
 {
-    qDebug() << "Alarm Test: second confirm result!";
+    QString Title = m_AlarmFlag + " Alarm Test";
+    QString Text;
 
-    // ask the customer to confirm the test result
-}
+    ErrorCode_t Ret = RETURN_ERR_FAIL;
 
-void CAlarmTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
-    qDebug() << "Alarm Test succeeded!";
+    if (RetNum == 1) {
+        Text = Title + " failed.<br>Please check " + m_AlarmFlag.toLower() + " alarm connector, cable and ASB15.";
+    }
+    else if (RetNum == 2) {
+        Text = Title + " successful.<br>Please re-connect a formerly connected external alarm system.";
+        Ret = RETURN_OK;
+    }
 
-    /// \todo: log here **************************************/
-}
-
-void CAlarmTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
-    qDebug() << "Alarm Test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Alarm Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Alarm test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CAlarmTest::Cancel(void)
-{
-    qDebug() << "Alarm Test canceled!";
+    mp_MessageDlg->ShowMessage(Title, Text, Ret);
 }
 
 } // namespace System

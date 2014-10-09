@@ -26,7 +26,10 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/ServiceDeviceProcess/*.h \
     ../Include/InitialSystem.h \
     ../Include/SelectMeltingPointDialog.h \
-    ../Include/DiagnosticMessageDlg.h
+    ../Include/DiagnosticMessageDlg.h \
+    ../Include/System/ExhaustFanTest.h \
+    ../Include/System/VentilationFanTest.h \
+    ../Include/SelectBottleNReagentDialog.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -42,7 +45,10 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/InitialSystem.cpp \
     ../Source/TestBase.cpp \
     ../Source/SelectMeltingPointDialog.cpp \
-    ../Source/DiagnosticMessageDlg.cpp
+    ../Source/DiagnosticMessageDlg.cpp \
+    ../Source/System/ExhaustFanTest.cpp \
+    ../Source/System/VentilationFanTest.cpp \
+    ../Source/SelectBottleNReagentDialog.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \
@@ -50,4 +56,6 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/Display.ui \
     ../Forms/MainControl.ui \
     ../Forms/InitialSystem.ui \
-    ../Forms/SelectMeltingPointDialog.ui
+    ../Forms/SelectMeltingPointDialog.ui \
+    ../Forms/SelectBottleNReagentDialog.ui \
+    ../Forms/DiagnosticHeatingDialog.ui

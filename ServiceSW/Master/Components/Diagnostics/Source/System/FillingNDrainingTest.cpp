@@ -22,22 +22,19 @@
 
 #include <QDebug>
 
-#include "Global/Include/Utils.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-#include "MainMenu/Include/WaitDialog.h"
-
-#include "ServiceWidget/Include/DlgWizardInputBottlePosition.h"
-#include "ServiceWidget/Include/DlgWizardText.h"
-
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 
 namespace Diagnostics {
 
 namespace System {
 
-CFillingNDrainingTest::CFillingNDrainingTest(void)
-    : CTestBase()
+QString FILLINGNDRAINING_TITLE("System Filling && Draining Test");
+
+CFillingNDrainingTest::CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
+    : CTestBase(p_Parent),
+      mp_Parent(p_Parent),
+      mp_MessageDlg(p_MessageDlg)
 {
 }
 
@@ -49,169 +46,135 @@ int CFillingNDrainingTest::Run(void)
 {
     qDebug() << "Filling and Draining Test starts!";
 
-    this->FirstInputBottlePosition();
+    int Ret = 0;
+
+    if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
+        return Ret;
+    }
+
+    qreal RVTempSensor1(0);
+    qreal RVTempSensor2(0);
+
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemFillingNDraining");
+    qreal TargetTemp = p_TestCase->GetParameter("RVTargetTemp").toFloat();
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+
+    p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
+
+    if (RVTempSensor1 < TargetTemp || RVTempSensor2 < TargetTemp) {
+        ShowFinishDlg(1);
+        return Ret;
+    }
+
+    //mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, "Rotary valve initializing...");
+    Ret = p_DevProc->RVInitialize();
+    mp_MessageDlg->HideWaitingDialog();
+    if (Ret == 0) {
+        ShowFinishDlg(2);
+        return Ret;
+    }
+
+    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(mp_Parent);
+
+    if ( p_SelectDlg->exec() == 0) {
+        delete p_SelectDlg;
+        p_SelectDlg = NULL;
+        return Ret;
+    }
+
+    qreal HeatingTargetTemp(0);
+    //qreal CurrentTemp = ;
+    int ReagentGroup = p_SelectDlg->GetReagentGroup();
+    int BottleNumber = p_SelectDlg->GetBottleNumber();
+
+    qDebug()<<"Reagent Group:"<<ReagentGroup;
+    qDebug()<<"Bottle Number:"<<BottleNumber;
+
+    delete p_SelectDlg;
+    p_SelectDlg = NULL;
+
+    if (ReagentGroup == 1) {
+        HeatingTargetTemp = p_TestCase->GetParameter("XyleneTargetTemp").toInt();
+    }
+    else if (ReagentGroup == 2) {
+        HeatingTargetTemp = p_TestCase->GetParameter("OtherTargetTemp").toInt();
+    }
+
+    p_DevProc->RVStartHeating(HeatingTargetTemp);
+
+    ShowFinishDlg(3);
 }
 
-void CFillingNDrainingTest::FirstInputBottlePosition(void)
+bool CFillingNDrainingTest::CheckRVTemperature()
 {
-    qDebug() << "Filling and Draining Test: first input bottle position!";
+    int Ret = 0;
 
-    // inform the customer to input the bottle position
-    MainMenu::CDlgWizardInputBottlePosition *dlg =
-            new MainMenu::CDlgWizardInputBottlePosition;
-    dlg->SetDialogTitle(tr("Filling and Draining Test"));
-    dlg->SetText(tr("Please input the bottle position "
-                    "you wish to suck the reagent!"));
-    dlg->SetButtonLabel(tr("Bottle position"));
 
-    CONNECTSIGNALSLOT(dlg, AcceptPosition(qint32), this, SecondCheckBottle(qint32));
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
+    //p_DevProc->Pause(60000);
 
-    dlg->exec();
 
-    delete dlg;
 }
 
-void CFillingNDrainingTest::SecondCheckBottle(int Position)
+int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
 {
-    qDebug() << "Filling and Draining Test: second check bottle!";
+    QString Text;
 
-    // save position
-    m_Position = Position;
-    /// \todo: check position ***************************************/
-    QString Station("reagent bottle");
-    /// \todo: change Station to "wax bath" according to the position */
+    if (StepNum == 1) {
+        Text = "Be aware that the result of this test is only valid if the Retort_Level Sensor "\
+                "Detection test was successfully performed before! "\
+                "Please verify status of the retort. If there is any reagent or paraffin in the retort, "\
+                "abort this test and change to the “Diagnostic_Retort_Reagent Drain” function to drain the "\
+                "liquid back to the original position. Thereafter flush the retort if necessary";
+    }
+    else if (StepNum == 2) {
+        Text = "If you want to test with different reagents , please keep "\
+                "the reagent compatibility in mind and do not cause any cross contamination";
+    }
 
-    // inform the customer to connect bottle at Position
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Filling and Draining Test"));
-    dlg->SetText(tr("Please check the %1 in position %2 is full").
-                 arg(Station).arg(Position));
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ThirdFill());
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
-
-    dlg->exec();
-
-    delete dlg;
+    return mp_MessageDlg->ShowConfirmMessage(FILLINGNDRAINING_TITLE, Text, true);
 }
 
-void CFillingNDrainingTest::ThirdFill(void)
+void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
 {
-    qDebug() << "Filling and Draining Test: third start filling!";
+    QString Text;
 
-    /// \todo: start filling function in another thread **********/
+    ErrorCode_t Ret = RETURN_ERR_FAIL;
 
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Filling and Draining Test"));
-    dlg->SetText(tr("Filling..."));
-    dlg->SetTimeout(5000); /// \todo: change time out
+    if (RetNum == 1) {
+        Text = "System Filling & Draining Test failed. "\
+                "Rotary Valve cannot rotate, due to the minimum temperature has "\
+                "not been reached. Please check resistance of temperature "\
+                "sensors, current of heating element and function of ASB3. If no "\
+                "root cause found, check main relay on ASB15 and cable "\
+                "connections in addition. Exchange part accordingly";
+    }
+    else if (RetNum == 2) {
+        Text = "System Filling & Draining Test failed. "\
+                "It might work in some minutes when solidified paraffin in "\
+                "the rotary valve is molten. Repeat initializing test again in "\
+                "about 15mins. If it still fails in the second try, exchange "\
+                "rotary valve, reboot the Service Software and repeat this test";
+    }
+    else if (RetNum == 3) {
+        Text = "System Filling & Draining Test failed. "\
+                "Level sensor’s target temperature was not "\
+                "reached in time. Clean level sensor, repeat this "\
+                "test. If still failed, exchange the level sensor";
+    }
+    else if (RetNum == 4) {
+        Text = "System Filling & Draining failed. "\
+                "It might work in some minutes when solidified paraffin in "\
+                "the rotary valve is molten. Repeat initializing test again in "\
+                "about 15mins. If it still fails in the second try, exchange "\
+                "rotary valve, reboot the Service Software and repeat this test.";
+    }
+    else if (RetNum == 5) {
+        Text = "System Filling & Draining Test failed. Level "\
+                "sensor did not detect any liquid within 2mins. "\
+                "Clean level sensor, perform Retort_Level Sensor Dection test.";
+    }
 
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ForthPressToDrain() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CFillingNDrainingTest::ForthPressToDrain(void)
-{
-    qDebug() << "Filling and Draining Test: forth press to drain!";
-
-    // inform the customer to connect bottle at Position
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Filling and Draining Test"));
-    dlg->SetText(tr("Please press to \"Next\" to start draining test!"));
-
-    dlg->HideCancel();
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, FifthDrain());
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CFillingNDrainingTest::FifthDrain(void)
-{
-    qDebug() << "Filling and Draining Test: fifth start draining!";
-
-    /// \todo: start draining function in another thread **********/
-
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Filling and Draining Test"));
-    dlg->SetText(tr("Draining..."));
-    dlg->SetTimeout(5000); /// \todo: change time out
-
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CFillingNDrainingTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS);
-    qDebug() << "Filling and Draining Test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Filling and Draining Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Filling and draining test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CFillingNDrainingTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
-    qDebug() << "Filling and Draining Test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Filling and Draining Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Filling and draining test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CFillingNDrainingTest::Cancel(void)
-{
-    qDebug() << "Filling and Draining Test canceled!";
+    mp_MessageDlg->ShowMessage(FILLINGNDRAINING_TITLE, Text, Ret);
 }
 
 } // namespace System

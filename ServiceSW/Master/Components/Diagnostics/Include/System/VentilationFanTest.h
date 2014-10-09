@@ -1,11 +1,11 @@
 /****************************************************************************/
-/*! \file AlarmTest.h
+/*! \file VentilationFanTest.h
  *
- *  \brief Declaration of System alarm test.
+ *  \brief Declaration of System Ventilation Fan test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-08
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICS_SYSTEM_ALARMTEST_H
-#define DIAGNOSTICS_SYSTEM_ALARMTEST_H
+#ifndef DIAGNOSTICS_SYSTEM_VENTILATIONFANTEST_H
+#define DIAGNOSTICS_SYSTEM_VENTILATIONFANTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
@@ -28,13 +28,13 @@ namespace Diagnostics {
 
 namespace System {
 
-class CAlarmTest : public Diagnostics::CTestBase
+class CVentilationFanTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
-    CAlarmTest(QString AlarmFlag, CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
-    ~CAlarmTest(void);
+    CVentilationFanTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
+    ~CVentilationFanTest(void);
 
     int Run(void);
 
@@ -42,16 +42,12 @@ private:
     int ShowConfirmDlg(int StepNum);
 
     void ShowFinishDlg(int RetNum);
-
-    bool CheckAlarmStatus(int TimeOutSec, bool ConnectedFlag);
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;
-    QString                 m_AlarmFlag;
-    int                     m_LocalRemote;
 };
 
 } // namespace System
 
 } // namespace Diagnostics
 
-#endif // DIAGNOSTICS_SYSTEM_ALARMTEST_H
+#endif // DIAGNOSTICS_SYSTEM_VENTILATIONFANTEST_H

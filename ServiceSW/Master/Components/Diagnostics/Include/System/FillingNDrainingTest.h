@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_SYSTEM_FILLINGNDRAININGTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -32,31 +33,20 @@ class CFillingNDrainingTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CFillingNDrainingTest();
+    CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
     ~CFillingNDrainingTest(void);
 
     int Run(void);
 
-public Q_SLOTS:
-    void FirstInputBottlePosition(void);
-
-private Q_SLOTS:
-    void SecondCheckBottle(int Position);
-
-    void ThirdFill(void);
-
-    void ForthPressToDrain(void);
-
-    void FifthDrain(void);
-
-    void Succeed(void);
-
-    void Fail(void);
-
-    void Cancel(void);
-
 private:
-    int m_Position;
+    int ShowConfirmDlg(int StepNum);
+
+    void ShowFinishDlg(int RetNum);
+
+    bool CheckRVTemperature();
+private:
+    QWidget*                mp_Parent;
+    CDiagnosticMessageDlg*  mp_MessageDlg;
 };
 
 } // namespace System
