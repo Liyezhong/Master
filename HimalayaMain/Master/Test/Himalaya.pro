@@ -31,11 +31,11 @@ SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/Himalay
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
 
-#SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
+SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
 SUBDIRS += $${PLATFORM}/Master/Components/DataManager/Test/DataManager.pro
 SUBDIRS += $${PLATFORM}/Master/Components/DataLogging/Test/DataLogging.pro
 SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
-#SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
+SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareController/Test/TestRemoteCareController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareManager/Test/TestRemoteCareManager.pro
 

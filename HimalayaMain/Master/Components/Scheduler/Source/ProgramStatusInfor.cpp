@@ -110,6 +110,30 @@ int CProgramStatusInfor::GetStepID()
     return step;
 }
 
+void CProgramStatusInfor::SetStationList(const QList<QString>&  List)
+{
+    QString Value = "";
+    QList<QString>::const_iterator ite = List.constBegin();
+    for(;ite != List.constEnd();ite++)
+    {
+        Value += (*ite + ",");
+    }
+    Value.remove(Value.length() - 1);
+    SetStatus("StationList",Value);
+}
+
+QList<QString> CProgramStatusInfor::GetStationList()
+{
+    QString Value = GetStatus("StationList");
+    QList<QString> List;
+    QStringList StrList = Value.split(",");
+    for(int i = 0; i < StrList.length(); i++)
+    {
+        List.push_back(StrList.at(i));
+    }
+    return List;
+}
+
 void CProgramStatusInfor::SetScenario(const quint32 Scenario)
 {
     SetStatus("Scenario", QString::number(Scenario));

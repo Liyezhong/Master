@@ -322,7 +322,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
                                                                     GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
-                                                                    m_ProgramStatusInfor.GetLastReagentGroup()));
+                                                                    m_ProgramStatusInfor.GetLastReagentGroup(),
+                                                                    m_ProgramStatusInfor.GetStationList()));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3722,7 +3723,13 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-    return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
+    quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
+    quint32 HeatedTime = 12 * 60 * 60 - StillNeedHeatingTime;
+    if(ParaffinMeltPoint > 64)
+    {
+        HeatedTime = 15 * 60 * 60 - StillNeedHeatingTime;
+    }
+    return HeatedTime;
 }
 
 qint64 SchedulerMainThreadController::GetPreTestTime()
