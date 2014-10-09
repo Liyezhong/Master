@@ -176,6 +176,56 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
     {
         TimeLimit = 15 * 60 * 60 * 1000;
     }
+    TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
+    QString value = m_Status.value("HeatingOvenSlice");
+    QStringList Slices;
+    if(!value.isEmpty())
+    {
+        Slices = value.split(",");
+    }
+    bool ok = false;
+    quint64 Start = 0;
+    quint64 End = 0;
+    for(int i = 0; i < Slices.length() / 2;)
+    {
+        Start = Slices.at(2 * i).toULongLong(&ok);
+        End = Slices.at(2 * i + 1).toULongLong(&ok);
+        if(End < TimeLimit)
+        {
+            Slices.removeAt(2 * i);
+            Slices.removeAt(2 * i);
+            Start = End = TimeLimit;
+        }
+        else if(End >= TimeLimit && Start < TimeLimit)
+        {
+            Slices.replace(2 * i ,QString::number(TimeLimit));
+            HeatingTime += (End - TimeLimit);
+            Start = TimeLimit;
+            i++;
+        }
+        else
+        {
+            HeatingTime += (End - Start);
+            if(i > 0)
+            {
+                UnHeatingTime += (Start - Slices.at(2 * i - 1).toULongLong(&ok));
+            }
+            i++;
+        }
+    }
+    SetStatus("HeatingOvenSlice", Slices.join(","));
+    return HeatingTime;
+}
+
+quint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin(quint32 ParaffinMeltingPoint)
+{
+    quint64 TimeLimit = 12 * 60 * 60 * 1000;
+    quint64 HeatingTime = 0;
+    quint64 UnHeatingTime = 0;
+    if(ParaffinMeltingPoint >= 64)
+    {
+        TimeLimit = 15 * 60 * 60 * 1000;
+    }
     quint64 TimeForMelting = TimeLimit;
     TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
     QString value = m_Status.value("HeatingOvenSlice");

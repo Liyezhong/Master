@@ -3723,12 +3723,17 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-    quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
-    quint32 HeatedTime = 12 * 60 * 60 - StillNeedHeatingTime;
-    if(ParaffinMeltPoint > 64)
+    quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin(ParaffinMeltPoint);
+    quint32 HeatedTime = 0;
+    if(12 * 60 * 60 - StillNeedHeatingTime > 0)
+    {
+        HeatedTime = 12 * 60 * 60 - StillNeedHeatingTime;
+    }
+    if(ParaffinMeltPoint > 64 && (15 * 60 * 60 - StillNeedHeatingTime > 0))
     {
         HeatedTime = 15 * 60 * 60 - StillNeedHeatingTime;
     }
+    LogDebug(QString("####################HeatedTime: %1").arg(HeatedTime));
     return HeatedTime;
 }
 

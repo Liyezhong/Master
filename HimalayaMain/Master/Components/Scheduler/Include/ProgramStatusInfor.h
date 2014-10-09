@@ -157,10 +157,18 @@ public:
     /*!
      *  \brief Get oven heating time
      *  \param ParaffinMeltingPoint  paraffin melting point
-     *  \return quint64 form GetOvenHeatingTime
+     *  \return quint64 form seconds that oven has been heated.
      */
     /****************************************************************************/
     quint64 GetOvenHeatingTime(quint32 ParaffinMeltingPoint);
+    /****************************************************************************/
+    /*!
+     *  \brief Get the remaining time for melting paraffin
+     *  \param ParaffinMeltingPoint  paraffin melting point
+     *  \return quint64 form seconds for melting paraffin
+     */
+    /****************************************************************************/
+    quint64 GetRemaingTimeForMeltingParffin(quint32 ParaffinMeltingPoint);
     /****************************************************************************/
     /*!
      *  \brief update oven heating time
