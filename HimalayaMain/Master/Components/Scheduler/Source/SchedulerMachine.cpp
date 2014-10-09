@@ -44,11 +44,9 @@
 
 namespace Scheduler
 {
-/****************************************************************************/
-/*!
- *  \brief    Constructor
- */
-/****************************************************************************/
+/*lint -e534 */
+/*lint -e616 */
+
 CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController)
     :mp_SchedulerThreadController(SchedulerThreadController)
 {

@@ -44,6 +44,7 @@ CRsPressureOverRange3SRetry::CRsPressureOverRange3SRetry(SchedulerMainThreadCont
 
     mp_StateMachine->setInitialState(mp_CheckPressure.data());
 
+    /*lint -e534 */
     mp_CheckPressure->addTransition(this, SIGNAL(WaitFor1S()), mp_WaitFor1S.data());
     mp_WaitFor1S->addTransition(this, SIGNAL(Retry()), mp_CheckPressure.data());
     mp_WaitFor1S->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
@@ -64,6 +65,8 @@ CRsPressureOverRange3SRetry::CRsPressureOverRange3SRetry(SchedulerMainThreadCont
 /****************************************************************************/
 CRsPressureOverRange3SRetry::~CRsPressureOverRange3SRetry()
 {
+    /*lint -e1551 */
+    /*lint -e1540 */
     mp_StateMachine->stop();
 }
 

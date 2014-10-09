@@ -28,6 +28,7 @@
 
 using namespace DeviceControl;
 namespace Scheduler{
+/*lint -e534 */
 
 CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
@@ -78,6 +79,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
 
 CProgramPreTest::~CProgramPreTest()
 {
+    /*lint -e1551 */
     mp_StateMachine->stop();
 }
 
@@ -145,6 +147,9 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     ReportError_t reportError4;
     memset(&reportError4, 0, sizeof(reportError4));
 
+    /*lint -e525 */
+    /*lint -e527 */
+    /*lint -e616 */
 	switch (currentState)
 	{
     mp_SchedulerThreadController->LogDebug(QString("Pre-Check status is: %1").arg(currentState));
@@ -221,7 +226,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     case RT_TEMCTRL_OFF:
         if (0 == m_RTTempOffSeq)
         {
-            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
             if (DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
                 m_RTTempOffSeq = 1;
@@ -234,8 +239,8 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else
         {
-            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
+            if (DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
                 m_RTTempOffSeq = 0;
                 emit RVPositionChecking();

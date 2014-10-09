@@ -31,6 +31,7 @@
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 
 namespace Scheduler{
+/*lint -e534 */
 
 CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
@@ -66,6 +67,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
 
 CProgramSelfTest::~CProgramSelfTest()
 {
+    /*lint -e1551 */
     mp_StateMachine->stop();
 }
 
@@ -146,6 +148,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
 
     ReturnCode_t ret = DCL_ERR_FCT_CALL_SUCCESS;
 
+    /*lint -e616 */
     switch(m_StateACVoltageStep)
     {
         case SET_VOLTAGE_ASB3_AWITCH:

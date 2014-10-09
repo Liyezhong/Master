@@ -33,6 +33,7 @@
 #include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
 
 namespace Scheduler{
+/*lint -e578 */
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
                                 DataManager::CDataManager* DataManager)
@@ -189,8 +190,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             }
             else // no-paraffin safe reagent, we should stop retort heating
             {
-                this->StopTemperatureControl("RTSide");
-                this->StopTemperatureControl("RTBottom");
+                (void)this->StopTemperatureControl("RTSide");
+                (void)this->StopTemperatureControl("RTBottom");
             }
         }
 
@@ -227,6 +228,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Check temperature difference of two Retort bottom sensors
     *
     ***********************************************************/
+    /*lint -e524 */
     if ( !QFile::exists("TEST_RETORT") )
     {
         if (false == m_RTBottom.curModuleId.isEmpty() &&
@@ -337,8 +339,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
-            this->StopTemperatureControl("RTSide");
-            this->StopTemperatureControl("RTBottom");
+            (void)this->StopTemperatureControl("RTSide");
+            (void)this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -371,8 +373,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         }
         if(userInputTemp < 0)
         {
-            this->StopTemperatureControl("RTSide");
-            this->StopTemperatureControl("RTBottom");
+            (void)this->StopTemperatureControl("RTSide");
+            (void)this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);

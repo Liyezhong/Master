@@ -33,6 +33,7 @@
 using namespace DeviceControl;
 
 namespace Scheduler{
+/*lint -e534 */
 
 CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController)
     :mp_SchedulerController(SchedController),m_StationID("")
@@ -88,6 +89,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
 
 CRsTissueProtect::~CRsTissueProtect()
 {
+    /*lint -e1551 */
     mp_StateMachine->stop();
 }
 
@@ -140,6 +142,7 @@ CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractSt
 void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
+    /*lint -e525 */
 	switch (currentState)
     {
     case INIT:
@@ -194,7 +197,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
 
         }
-         break;
+        break;
     case STOP_CMDEXEC:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Stop_CommandExcution state");
         if ("Scheduler::ALStopCmdExec" == cmdName)
@@ -382,7 +385,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
             }
         }
-		break;
+        break;
     case WAIT_8S:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in wait 8 seconds state");
         if ((QDateTime::currentMSecsSinceEpoch() - m_StartWaitTime) >= 8*1000)
@@ -421,7 +424,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 emit ReleasePressure();
             }
         }
-		break;
+        break;
     case RELEASE_PRESSURE:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in state RELEASE_PRESSURE");
         if ("Scheduler::ALReleasePressure" == cmdName)

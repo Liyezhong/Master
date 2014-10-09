@@ -25,6 +25,8 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
 namespace Scheduler{
+/*lint -e1527 */
+/*lint -e1411 */
 
 /****************************************************************************/
 /*!

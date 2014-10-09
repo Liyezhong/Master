@@ -24,6 +24,7 @@
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 
 namespace Scheduler{
+/*lint -e534 */
 
 CRsTSensorErr3MinRetry::CRsTSensorErr3MinRetry(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
@@ -58,6 +59,7 @@ CRsTSensorErr3MinRetry::CRsTSensorErr3MinRetry(SchedulerMainThreadController* Sc
 
 CRsTSensorErr3MinRetry::~CRsTSensorErr3MinRetry()
 {
+    /*lint -e1551 */
     mp_SchedulerMachine->stop();
 }
 
@@ -96,6 +98,7 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
 {
     StateList_t currentState = this->GetCurrentState(mp_SchedulerMachine->configuration());
     qint64 nowTime = 0;
+    /*lint -e616 */
     switch (currentState)
     {
     case RS_TSENSORERR3MINRETRY_INIT:

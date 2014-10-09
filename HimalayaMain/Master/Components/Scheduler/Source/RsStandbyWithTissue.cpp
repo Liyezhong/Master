@@ -42,6 +42,7 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
 
     mp_StateMachine->setInitialState(mp_ShutdownFailedHeater.data());
 
+    /*lint -e534 */
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(StopRTBottomTempCtrl()), mp_RTBottomStopTempCtrl.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data()); //For RS_Standby
     mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(StopRTSideTempCtrl()), mp_RTSideStopTempCtrl.data());
@@ -65,6 +66,7 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
 
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
+    /*lint -e1551 */
     mp_StateMachine->stop();
 }
 
@@ -113,6 +115,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
     ReportError_t reportError2;
     memset(&reportError2, 0, sizeof(reportError2));
 
+    /*lint -e525 */
 	switch (currentState)
     {
     case SHUTDOWN_FAILED_HEATER:

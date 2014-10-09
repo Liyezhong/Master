@@ -52,6 +52,7 @@ class  CRsTissueProtect : public QObject
         RELEASE_PRESSURE
     } StateList_t;
 
+    /*lint -e578 */
     typedef enum
     {
         UNKNOWN,

@@ -24,6 +24,9 @@
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 
 namespace Scheduler{
+/*lint -e534 */
+/*lint -e1551 */
+/*lint -e616 */
 
 CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)

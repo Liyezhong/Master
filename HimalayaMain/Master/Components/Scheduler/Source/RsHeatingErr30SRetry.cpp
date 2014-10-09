@@ -24,6 +24,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 
 namespace Scheduler{
+/*lint -e534 */
 
 CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController)
     :mp_SchedulerController(SchedController)
@@ -66,6 +67,7 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
 /****************************************************************************/
 CRsHeatingErr30SRetry::~CRsHeatingErr30SRetry()
 {
+    /*lint -e1551 */
     mp_StateMachine->stop();
 }
 
@@ -172,7 +174,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
             m_Counter = 0;
-            mp_SchedulerController->ShutdownFailedHeaters();
+            (void)mp_SchedulerController->ShutdownFailedHeaters();
             emit TasksDone(false);
         }
         break;
@@ -184,7 +186,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
             m_Counter = 0;
-            mp_SchedulerController->ShutdownFailedHeaters();
+            (void)mp_SchedulerController->ShutdownFailedHeaters();
             emit TasksDone(true);
         }
         else
@@ -213,7 +215,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
                     m_ShutdownHeaterTime = 0;
                     m_StartTime = 0;
                     m_Counter = 0;
-                    mp_SchedulerController->ShutdownFailedHeaters();
+                    (void)mp_SchedulerController->ShutdownFailedHeaters();
                     emit TasksDone(false);
                 }
                 else

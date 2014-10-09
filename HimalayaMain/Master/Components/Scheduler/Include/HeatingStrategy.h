@@ -62,6 +62,7 @@ struct FunctionModule
  * \brief struct of base heatingSensor
  */
 /****************************************************************************/
+/*lint -e1509 */
 struct HeatingSensor
 {
     QString							devName;            //!< the device name
@@ -183,6 +184,7 @@ public:
      *  \brief descontructor
      */
     /***************************************************************************/
+    /*lint -e1540 */
     ~HeatingStrategy() {}
 
     /****************************************************************************/
