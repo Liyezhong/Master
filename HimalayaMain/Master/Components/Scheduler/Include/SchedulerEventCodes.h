@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HimalayaDeviceEventCodes.h
+/*! \file SchedulerEventCodes.h
  *
  *  \brief All event codes used by Error handling for Himalaya device .
  *
@@ -18,10 +18,10 @@
  */
 /****************************************************************************/
 
-#ifndef HIMALAYADEVICEEVENTCODES_H
-#define HIMALAYADEVICEEVENTCODES_H
+#ifndef SCHEDULEREVENTCODES_H
+#define SCHEDULEREVENTCODES_H
 
 #include "../../../Include/HimalayaEventCodes.h"
 
 
-#endif // HIMALAYADEVICEEVENTCODES_H
+#endif // SCHEDULEREVENTCODES_H

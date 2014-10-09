@@ -19,7 +19,7 @@
  * ================================================================================================
 */
 #include "Scheduler/Include/SchedulerMainThreadController.h"
-#include "Scheduler/Include/HimalayaDeviceEventCodes.h"
+#include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
