@@ -753,7 +753,7 @@ int ServiceDeviceProcess::RVInitialize()
 
     emit SendServRequest(ReqName, Params);
 
-    int Ret = GetResponse(ReqName);
+    int Ret = GetResponse(ReqName, 300);
 
     return Ret;
 }
@@ -769,7 +769,7 @@ int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
 
     emit SendServRequest(ReqName, Params);
 
-    int Ret = GetResponse(ReqName);
+    int Ret = GetResponse(ReqName, 300);
 
     return Ret;
 }

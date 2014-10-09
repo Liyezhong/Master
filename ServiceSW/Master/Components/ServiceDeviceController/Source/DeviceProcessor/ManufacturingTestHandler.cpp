@@ -2714,6 +2714,11 @@ void ManufacturingTestHandler::GetSlaveInformation()
         (void)Status.insert("HardwareMinorVersion", HWInfo[1]);
         (void)Status.insert("HardwareProductionDate", HWInfo[2]);
     }
+    else {
+        (void)Status.insert("HardwareMajorVersion", "MAJOR_VER");
+        (void)Status.insert("HardwareMinorVersion", "MINOR_VER");
+        (void)Status.insert("HardwareProductionDate", "DATE");
+    }
 
     Str = p_BaseModule->ReqSerialNumber();
     (void)Status.insert("SerialNumber", Str);
@@ -2725,6 +2730,11 @@ void ManufacturingTestHandler::GetSlaveInformation()
         (void)Status.insert("BootLoaderMinorVersion", BootloaderInfo[1]);
         (void)Status.insert("BootLoaderReleaseDate", BootloaderInfo[2]);
     }
+    else {
+        (void)Status.insert("BootLoaderMajorVersion", "MAJOR_VER");
+        (void)Status.insert("BootLoaderMinorVersion", "MINOR_VER");
+        (void)Status.insert("BootLoaderReleaseDate", "DATE");
+    }
 
     Str = p_BaseModule->GetSWInfo();
     if (Str != "error" && Str != "request error") {
@@ -2732,6 +2742,12 @@ void ManufacturingTestHandler::GetSlaveInformation()
         (void)Status.insert("SoftwareVersion", SWInfo[0]);
         (void)Status.insert("SoftwareReleaseDate", SWInfo[1]);
     }
+    else {
+        (void)Status.insert("SoftwareVersion", "SW_VER");
+        (void)Status.insert("SoftwareReleaseDate", "DATE");
+    }
+
+    qDebug()<<Status;
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
 }
