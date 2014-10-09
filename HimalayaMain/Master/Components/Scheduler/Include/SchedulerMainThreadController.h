@@ -915,6 +915,7 @@ protected:
          *  \iparam    Active
          */
          /****************************************************************************/
+        /*lint -e641 */
         virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
                                   const bool ActionResult, const bool Active = true)
         {
@@ -1031,7 +1032,7 @@ protected:
          *  \return from GetCurProgramID
          */
         /****************************************************************************/
-        QString& GetCurProgramID() {return m_CurProgramID; }
+        QString GetCurProgramID() {return m_CurProgramID; }
 		/****************************************************************************/
 		/*!
 		 *  \brief  Definition/Declaration of function GetCurProgramStepIndex
@@ -1241,7 +1242,7 @@ protected:
          *  \return Reference of received command list
          */
         /****************************************************************************/
-        QVector<RecvCommand_t>& GetRecvCommandList() { return m_RecvCommandList; }
+        QVector<RecvCommand_t> GetRecvCommandList() { return m_RecvCommandList; }
 
         /****************************************************************************/
         /*!
