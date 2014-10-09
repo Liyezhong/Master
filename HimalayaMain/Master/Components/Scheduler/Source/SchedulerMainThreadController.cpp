@@ -2309,7 +2309,10 @@ void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, co
 
 void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd)
 {
-
+    this->SendAcknowledgeOK(Ref);
+    LogDebug(QString("Change the Paraffin melting point from %1 to %2"));
+    m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
+    //todo reheating Oven
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)
@@ -3718,10 +3721,16 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
+
     quint32 ParaffinMeltPoint = 64;
     if (!mp_DataManager && ! mp_DataManager->GetUserSettings())
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    }
+
+    if(QFile::exists("TEST_ISSAC")) // linear agr only for testing
+    {
+        return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
     }
     quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin(ParaffinMeltPoint);
     quint32 HeatedTime = 0;
@@ -3733,7 +3742,6 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     {
         HeatedTime = 15 * 60 * 60 - StillNeedHeatingTime;
     }
-    LogDebug(QString("####################HeatedTime: %1").arg(HeatedTime));
     return HeatedTime;
 }
 
