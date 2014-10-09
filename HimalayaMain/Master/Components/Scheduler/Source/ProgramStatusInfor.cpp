@@ -31,6 +31,7 @@ CProgramStatusInfor::CProgramStatusInfor()
 
 CProgramStatusInfor::~CProgramStatusInfor()
 {
+    /*lint -e1551 */
     m_Status.clear();
     m_StatusFile.close();
 }
@@ -50,7 +51,7 @@ bool CProgramStatusInfor::ReadProgramStatusFile()
    m_Status.clear();
    while(!Line.isNull())
    {
-       m_Status.insert(Line.split(":").at(0),Line.split(":").at(1));
+       (void)m_Status.insert(Line.split(":").at(0),Line.split(":").at(1));
        Line = FileStream.readLine().simplified();
     }
    m_StatusFile.close();
@@ -59,6 +60,7 @@ bool CProgramStatusInfor::ReadProgramStatusFile()
 
 void CProgramStatusInfor::SetLastRVPosition(const DeviceControl::RVPosition_t& rvpos)
 {
+    /*lint -e641 */
     SetStatus("LastRVPosition",QString::number(rvpos));
 }
 
@@ -118,7 +120,7 @@ void CProgramStatusInfor::SetStationList(const QList<QString>&  List)
     {
         Value += (*ite + ",");
     }
-    Value.remove(Value.length() - 1);
+    (void)Value.remove(Value.length() - 1);
     SetStatus("StationList",Value);
 }
 
@@ -321,7 +323,7 @@ bool CProgramStatusInfor::IsRetortContaminted()
 }
 void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
 {
-    m_Status.insert(key,value);
+    (void)m_Status.insert(key,value);
     FlushFile();
 }
 
@@ -345,12 +347,12 @@ void CProgramStatusInfor::FlushFile()
 
     QMapIterator<QString, QString> StatusfileItr(m_Status);
     while (StatusfileItr.hasNext()) {
-        StatusfileItr.next();
+        (void)StatusfileItr.next();
         QString Key1 = StatusfileItr.key();
         QString Value1 = m_Status.value(Key1);
         FileStream << Key1 << ":" << Value1 << "\n" << left;
     }
-    m_StatusFile.flush();
-    fsync(m_StatusFile.handle());
+    (void)m_StatusFile.flush();
+    (void)fsync(m_StatusFile.handle());
     m_StatusFile.close();
 }

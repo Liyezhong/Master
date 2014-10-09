@@ -410,7 +410,7 @@ typedef struct
           *  \param ReagentID = const QString type parameter
           *  \param unusedStationIDs
           *  \param usedStations
-          *  \param IsLastStep
+          *  \param isLastStep
           *
           *  \return from SelectStationFromReagentID
           */
@@ -418,7 +418,7 @@ typedef struct
          QString SelectStationFromReagentID(const QString& ReagentID,
                                            ListOfIDs_t& unusedStationIDs,
                                            QList<StationUseRecord_t>& usedStations,
-                                           bool IsLastStep);
+                                           bool isLastStep);
 
          /****************************************************************************/
          /*!

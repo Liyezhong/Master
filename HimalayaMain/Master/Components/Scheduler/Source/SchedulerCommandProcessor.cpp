@@ -88,7 +88,9 @@
 #endif
 
 namespace Scheduler{
-
+/*lint -e534 */
+/*lint -e613 */
+/*lint -e525 */
 
 template <class DP>
 SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
@@ -101,8 +103,12 @@ template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 {
 #ifndef GOOGLE_MOCK
-    delete mp_IDeviceProcessing;
-    mp_IDeviceProcessing = NULL;
+    try {
+        if (mp_IDeviceProcessing != NULL)
+            delete mp_IDeviceProcessing;
+        mp_IDeviceProcessing = NULL;
+    }
+    CATCHALL_DTOR();
 #endif
 }
 
@@ -324,11 +330,11 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	else if  ("Scheduler::ALVaccum" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALVaccum(qSharedPointerDynamicCast<CmdALVaccum>(scmd)->GetTargetPressure()));
-	}
-	else if  ("Scheduler::ALDraining" == cmdName)
+    }
+    else if  ("Scheduler::ALDraining" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetIgnorePressure()));
-	}
+    }
     else if  ("Scheduler::IDForceDraining" == cmdName)
     {
         scmd->SetResult(mp_IDeviceProcessing->IDForceDraining(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure()));
@@ -337,7 +343,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),
                                                                 qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()));
-	}
+    }
     else if ("Scheduler::ALStopCmdExec" == cmdName)
     {
         scmd->SetResult(mp_IDeviceProcessing->ALStopCmdExec(qSharedPointerDynamicCast<CmdALStopCmdExec>(scmd)->GetCmdType()));
@@ -433,8 +439,8 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	else if  ("Scheduler::OvenSetTempCtrlON" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlON(qSharedPointerDynamicCast<CmdOvenSetTempCtrlON>(scmd)->GetType() ) );
-	}
-	else if  ("Scheduler::OvenSetTempCtrlOFF" == cmdName)
+    }
+    else if  ("Scheduler::OvenSetTempCtrlOFF" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(qSharedPointerDynamicCast<CmdOvenSetTempCtrlOFF>(scmd)->Gettype() ) );
 	}
@@ -560,11 +566,11 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetReagentGrpID(),
                                                                       qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetTubePos() ) );
-	}
-	else if  ("Scheduler::ALAllStop" == cmdName)
+    }
+    else if  ("Scheduler::ALAllStop" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALAllStop() );
-	}
+    }
     else if ("Scheduler::IDSealingCheck" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure()));

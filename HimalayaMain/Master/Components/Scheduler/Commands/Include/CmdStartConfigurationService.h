@@ -25,7 +25,7 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
 namespace Scheduler{
-
+/*lint -e1411 */
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class CmdStartConfigurationService

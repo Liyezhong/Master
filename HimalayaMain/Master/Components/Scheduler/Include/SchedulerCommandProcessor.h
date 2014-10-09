@@ -550,7 +550,7 @@ public:
      *  \return from ALSetPressureDrift
      */
     /****************************************************************************/
-    virtual void ALSetPressureDrift(qreal pressureDrift) { mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift); }
+    virtual void ALSetPressureDrift(qreal pressureDrift) { (void)mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift); }
 #ifdef GOOGLE_MOCK
     void SetIDeviceProcessing(DP* IDeviceProcessing) { mp_IDeviceProcessing = IDeviceProcessing; }
 #endif

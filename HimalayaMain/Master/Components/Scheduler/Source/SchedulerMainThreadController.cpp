@@ -78,8 +78,10 @@
 
 using namespace DataManager;
 
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                                 Project Specific
+/*lint -e527 */
+/*lint -e616 */
+/*lint -e613 */
+
 namespace Scheduler {
 
 SchedulerMainThreadController::SchedulerMainThreadController(
@@ -133,8 +135,12 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
 {
-    delete m_SchedulerMachine;
-    m_SchedulerMachine = NULL;
+    try {
+        if (m_SchedulerMachine != NULL)
+            delete m_SchedulerMachine;
+        m_SchedulerMachine = NULL;
+    }
+    CATCHALL_DTOR();
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -248,7 +254,7 @@ void SchedulerMainThreadController::OnStopReceived()
 {
     m_TickTimer.stop();
     m_SchedulerCommandProcessorThread->quit();
-    m_SchedulerCommandProcessorThread->wait();
+    (void)m_SchedulerCommandProcessorThread->wait();
 }
 
 void SchedulerMainThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage)
@@ -269,7 +275,7 @@ void SchedulerMainThreadController::OnTickTimer()
     }
 
     SchedulerCommandShPtr_t cmd;
-    PopDeviceControlCmdQueue(cmd);
+    (void)PopDeviceControlCmdQueue(cmd);
 
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
@@ -415,6 +421,7 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
 
+    /*lint -e58 */
     if(cmd != NULL)
     {
         if(!(cmd->GetResult(retCode)))
@@ -461,7 +468,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         }
         m_ProgramStatusInfor.SetProgramID(m_CurProgramID);
 
-        this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+        (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
         {
             //send command to main controller to tell program is starting
@@ -498,7 +505,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 SchedulerCommandShPtr_t resCmdPtr;
                 PopDeviceControlCmdQueue(resCmdPtr,"Scheduler::RVReqMoveToInitialPosition");
                 ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                resCmdPtr->GetResult(retCode);
+                (void)resCmdPtr->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
                     RaiseError(0, retCode, 0, true);
@@ -599,6 +606,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 CmdALStopCmdExec* ALStopCmd = NULL;
+                /*lint -e525 */
                 switch (m_CurrentStepState)
                 {
                 case PSSM_INIT:
@@ -758,7 +766,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
+                qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
                 qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
                 {
@@ -964,7 +972,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
             LogDebug(QString("Program Step Finished"));
-            this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+            (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
@@ -973,13 +981,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
 
-                QTime leftTime(0,0,0);
-                leftTime = leftTime.addSecs(leftSeconds);
+//                QTime leftTime(0,0,0);
+//                leftTime = leftTime.addSecs(leftSeconds);
                 MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
             }
             else
             {
@@ -1103,9 +1110,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     if((m_PositionRV != targetPos))
                     {
                         LogDebug(QString("Aborting program, send cmd to DCL to move RV to %1").arg(targetPos));
-                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
-                        cmd->SetRVPosition(targetPos);
-                        m_SchedulerCommandProcessor->pushCmd(cmd);
+                        CmdRVReqMoveToRVPosition* cmdReq = new CmdRVReqMoveToRVPosition(500, this);
+                        cmdReq->SetRVPosition(targetPos);
+                        m_SchedulerCommandProcessor->pushCmd(cmdReq);
                     }
                     else if(PSSM_FILLING == m_CurrentStepState)
                     {
@@ -1787,7 +1794,7 @@ QString SchedulerMainThreadController::GetStationIDFromProgramStep(int ProgramSt
 }
 
 QString SchedulerMainThreadController::SelectStationFromReagentID(const QString& ReagentID, ListOfIDs_t& unusedStationIDs,
-                                                                 QList<StationUseRecord_t>& usedStations, bool IsLastStep)
+                                                                 QList<StationUseRecord_t>& usedStations, bool isLastStep)
 {
     if (!mp_DataManager)
         return "";
@@ -1806,8 +1813,7 @@ QString SchedulerMainThreadController::SelectStationFromReagentID(const QString&
     if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
     {
         const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
-        return this->SelectStationByReagent(pReagent,  unusedStationIDs,
-                                          usedStations, IsLastStep, rmsMode);
+        return this->SelectStationByReagent(pReagent,  unusedStationIDs, usedStations, isLastStep, rmsMode);
     }
 
     return "";
@@ -1919,65 +1925,65 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
     if (!pReagentList)
         return false;
 
-        CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
-        if (!pDashboardDataStationList)
-            return false;
+    CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
+    if (!pDashboardDataStationList)
+        return false;
 
-        ListOfIDs_t stationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
-        for (int i = 0; i < stationIDs.count(); i++)
+    ListOfIDs_t stationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
+    for (int i = 0; i < stationIDs.count(); i++)
+    {
+        CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(stationIDs.at(i));
+        if (!pDashboardStation)
+            continue;
+
+        const CReagent* pReagent = pReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        if (!pReagent)
+            continue;
+
+        if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
         {
-            CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(stationIDs.at(i));
-            if (!pDashboardStation)
-                continue;
-
-            const CReagent* pReagent = pReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
-            if (!pReagent)
-                continue;
-
-            if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
+            //Fixation:RG1, Clearing: RG5, Paraffin:RG6
+            if ( (reagentGroupID == "RG1") || (reagentGroupID == "RG5") || (reagentGroupID == "RG6"))
             {
-                //Fixation:RG1, Clearing: RG5, Paraffin:RG6
-                if ( (reagentGroupID == "RG1") || (reagentGroupID == "RG5") || (reagentGroupID == "RG6"))
+                if (reagentGroup->GetGroupID() == reagentGroupID)
                 {
-                    if (reagentGroup->GetGroupID() == reagentGroupID)
-                    {
-                        stationList.append(pDashboardStation->GetDashboardStationID());
-                    }
-                    continue;
+                    stationList.append(pDashboardStation->GetDashboardStationID());
+                }
+                continue;
+            }
+
+            if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
+            {
+                if (reagentGroup->GetGroupID() == "RG1")//Fixation
+                {
+                    fixationStationList.append(pDashboardStation->GetDashboardStationID());
                 }
 
-                if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
+                if (reagentGroup->GetGroupID() == "RG3")//Dehydrating,diluted
                 {
-                    if (reagentGroup->GetGroupID() == "RG1")//Fixation
-                    {
-                        fixationStationList.append(pDashboardStation->GetDashboardStationID());
-                    }
-
-                    if (reagentGroup->GetGroupID() == "RG3")//Dehydrating,diluted
-                    {
-                        stationList.append(pDashboardStation->GetDashboardStationID());
-                    }
-
-                    if (reagentGroup->GetGroupID() == "RG4")//Dehydrating absolute
-                    {
-                        dehydratingAbsstationList.append(pDashboardStation->GetDashboardStationID());
-                    }
-                    continue;
+                    stationList.append(pDashboardStation->GetDashboardStationID());
                 }
 
+                if (reagentGroup->GetGroupID() == "RG4")//Dehydrating absolute
+                {
+                    dehydratingAbsstationList.append(pDashboardStation->GetDashboardStationID());
+                }
+                continue;
             }
-        }// end of for
 
-        if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
-        {
-            if (stationList.isEmpty())//no Dehydrating,diluted
-            {
-                if (!fixationStationList.isEmpty())
-                    stationList = fixationStationList;
-                else
-                    stationList = dehydratingAbsstationList;
-            }
         }
+    }// end of for
+
+    if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
+    {
+        if (stationList.isEmpty())//no Dehydrating,diluted
+        {
+            if (!fixationStationList.isEmpty())
+                stationList = fixationStationList;
+            else
+                stationList = dehydratingAbsstationList;
+        }
+    }
 
     return true;
 }
@@ -2071,8 +2077,8 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    int index = SpecifiedStepIndex;
-    if (-1 == index)
+    int Index = SpecifiedStepIndex;
+    if (-1 == Index)
     {
         int programStepIDIndex(-1);
         if (-1 == m_CurProgramStepIndex)
@@ -2083,10 +2089,10 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         {
             programStepIDIndex = m_CurProgramStepIndex ;
         }
-        index = programStepIDIndex;
+        Index = programStepIDIndex;
     }
 
-    for (int i = index; i < pProgram->GetNumberOfSteps(); i++)
+    for (int i = Index; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
@@ -2196,7 +2202,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
         int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
 
-        int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
+        //int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
         /*to do...
          *int warningthreshold = 0;
         if (1 == usedExhaustSystem)
@@ -2254,7 +2260,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         curProgramID = strProgramID;
 
     m_CurProgramStepIndex = -1;
-    this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
+    (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
 
     unsigned int timeProposed = 0;
     unsigned int paraffinMeltCostedtime = 0;
@@ -2265,7 +2271,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
 
         m_FirstProgramStepIndex = m_CurProgramStepIndex;
-        this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+        (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
         m_CurProgramStepIndex = -1;
 
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
@@ -2520,30 +2526,30 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
         PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
-        resPerTurnOnRelay->GetResult(retCode);
+        (void)resPerTurnOnRelay->GetResult(retCode);
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
             LogDebug(QString("Failed turn on main relay, return code: %1").arg(retCode));
             goto ERROR;
         }
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, true);
 
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
+        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
-        CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
+        (void)CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
     }
     else
     {
@@ -2725,7 +2731,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenTop))
 	{
         m_TempOvenTop = strctHWMonitor.TempOvenTop;
-	}
+    }
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
         if ( (m_OvenLidStatus == 0) && (strctHWMonitor.OvenLidStatus == 1) )
@@ -2769,8 +2775,8 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
-	}
-	if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
+    }
+    if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
 	{
         if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
         {
@@ -2781,7 +2787,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 SchedulerCommandShPtr_t pResHeatingCmd;
                 PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOnFan");
                 ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                pResHeatingCmd->GetResult(retCode);
+                (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
                     RaiseError(0, retCode, Scenario, true);
@@ -2815,7 +2821,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 SchedulerCommandShPtr_t pResHeatingCmd;
                 PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOffFan");
                 ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                pResHeatingCmd->GetResult(retCode);
+                (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
                     RaiseError(0, retCode, Scenario, true);
@@ -2883,7 +2889,7 @@ void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
     {
         if (m_DeviceControlCmdQueue.isEmpty())
         {
-            m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
+            (void)m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
         }
         for (iter=m_DeviceControlCmdQueue.begin(); iter!=m_DeviceControlCmdQueue.end(); ++iter)
         {
@@ -2894,7 +2900,7 @@ void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
         }
         if (iter == m_DeviceControlCmdQueue.end())
         {
-            m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
+            (void)m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
         }
         else
         {
@@ -2904,7 +2910,7 @@ void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
 
     // Get the command
     PtrCmd = *iter;
-    m_DeviceControlCmdQueue.removeOne(*iter);
+    (void)m_DeviceControlCmdQueue.removeOne(*iter);
     m_MutexDeviceControlCmdQueue.unlock();
 }
 
@@ -2919,6 +2925,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 
 bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
 {
+    /*lint -e574 */
     if (bottleSeq >= m_ProgramStationList.size())
     {
         return false;
@@ -3080,7 +3087,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         qDebug() << "CDS_WAIT_HIT_POSITION";
         if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
         {
-            cmd->GetResult(retCode);
+            (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 CurrentState = CDS_WAIT_HIT_TEMPERATURE;
@@ -3108,7 +3115,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         qDebug() << "CDS_WAIT_HIT_PPRESSURE";
         if(cmd != NULL && ("Scheduler::ALVaccum" == cmd->GetName()))
         {
-            cmd->GetResult(retCode);
+            (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 RaiseError(0, retCode, m_CurrentScenario, true);
@@ -3151,6 +3158,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
 
 void SchedulerMainThreadController::MoveRV(qint16 type)
 {
+    /*lint -e593 */
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
     RVPosition_t targetPos = RV_UNDEF;
 
@@ -3644,7 +3652,7 @@ void SchedulerMainThreadController::Vaccum()
 void SchedulerMainThreadController::AllStop()
 {
     LogDebug("Send cmd to DCL to ALLStop");
-    m_SchedulerCommandProcessor->ALBreakAllOperation();
+    (void)m_SchedulerCommandProcessor->ALBreakAllOperation();
     m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, this));
 }
 
@@ -3723,7 +3731,7 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
 
     quint32 ParaffinMeltPoint = 64;
-    if (!mp_DataManager && ! mp_DataManager->GetUserSettings())
+    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
@@ -4079,14 +4087,14 @@ void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scen
         //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
        // m_SchedulerMachine->SendErrorSignal();
     }
-#if 0
     if (reportError8.instanceID != 0)
     {
+#if 0
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
-    }
 #endif
+    }
 
     if (reportError9.instanceID != 0)
     {
@@ -4212,8 +4220,8 @@ void SchedulerMainThreadController::OnEnterRcRestart()
         qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
         MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));
         Q_ASSERT(commandUpdateProgramEndTime);
-        Global::tRefType fRef = GetNewCommandRef();
-        SendCommand(fRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
+        Global::tRefType tfRef = GetNewCommandRef();
+        SendCommand(tfRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
     }
 }
 
