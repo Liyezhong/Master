@@ -1011,7 +1011,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
                 ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-            mp_SchedulerController->LogDebug(QString("uerInputTemp is: %1").arg(userInputTemp));
         }
         // cleaning dry step
         else if(mp_SchedulerController->GetCurProgramStepIndex() == -1
@@ -1031,7 +1030,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
 
-        mp_SchedulerController->LogDebug(QString("In Retort temperature control, userInputTemp is: %1").arg(userInputTemp));
         CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(RTType);
         pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputTemp);
