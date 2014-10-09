@@ -1,5 +1,5 @@
-#ifndef CDASHBOARDWIDGET2_H
-#define CDASHBOARDWIDGET2_H
+#ifndef CDASHBOARDWIDGET_H
+#define CDASHBOARDWIDGET_H
 
 #include <QWidget>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -17,6 +17,7 @@ namespace MsgClasses
     class CmdStationSuckDrain;
     class CmdLockStatus;
     class CmdCurrentProgramStepInfor;
+    class CmdRecoveryFromPowerFailure;
 }
 
 
@@ -194,6 +195,7 @@ private slots:
      */
     /****************************************************************************/
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
+    void OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& cmd);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnSelectEndDateTime
@@ -421,5 +423,5 @@ private slots:
 
 } // end namespace Dashboard
 
-#endif // CDASHBOARDWIDGET2_H
+#endif // CDASHBOARDWIDGET_H
 

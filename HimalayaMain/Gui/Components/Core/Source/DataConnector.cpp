@@ -117,12 +117,13 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdQuitAppShutdownReply>(&CDataConnector::AppQuitSystemShutdownRelyHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdQuitAppShutdownReply>(&CDataConnector::AppQuitSystemShutdownReplyHandler, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdLanguageFile>(&CDataConnector::LanguageFileHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdChangeUserSettings>(&CDataConnector::SettingsUpdateHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRecoveryFromPowerFailure>(&CDataConnector::RecoveryFromPowerFailureHandler, this);
 
     // RemoteCare commands
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdRemoteCareState>(&CDataConnector::RemoteCareStateHandler, this);
@@ -1844,7 +1845,7 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     }
 }
 
-void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)
+void CDataConnector::AppQuitSystemShutdownReplyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     if (DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN == Command.QuitAppShutdownActionType())
@@ -1856,6 +1857,12 @@ void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, cons
         mp_MessageDlg->HideButtonsOneAndTwo();
         mp_MessageDlg->show();
     }
+}
+
+void CDataConnector::RecoveryFromPowerFailureHandler(Global::tRefType Ref, const MsgClasses::CmdRecoveryFromPowerFailure & Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit RecoveryFromPowerFailure(Command);
 }
 
 void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)

@@ -12,6 +12,7 @@ namespace MsgClasses
 {
     class CmdCurrentProgramStepInfor;
     class CmdLockStatus;
+    class CmdRecoveryFromPowerFailure;
 }
 
 namespace MainMenu
@@ -141,6 +142,15 @@ public:
      */
     /****************************************************************************/
     bool IsAbortEnabled();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SwitchToProgramRunningStatus
+     *  \param  cmd = CmdRecoveryFromPowerFailure type parameter
+     *
+     *  \return from SwitchToProgramRunningStatus
+     */
+    /****************************************************************************/
+    void SwitchToProgramRunningStatus(const MsgClasses::CmdRecoveryFromPowerFailure& cmd);
 signals:
     /****************************************************************************/
     /*!
@@ -291,12 +301,7 @@ private slots:
      */
     /****************************************************************************/
     void SwitchToFavoritePanel();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of OnResumeProgramReminder
-     */
-    /****************************************************************************/
-    void OnResumeProgramReminder();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnUpdatePanelProgram
@@ -345,7 +350,6 @@ private:
 
     QString m_strConfirmation;       ///<  Definition/Declaration of variable m_strConfirmation
     QString m_strAbortProgram;       ///<  Definition/Declaration of variable m_strAbortProgram
-    QString m_strPauseProgram;       ///<  Definition/Declaration of variable m_strPauseProgram
 
     QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
     QString m_strYes;       ///<  Definition/Declaration of variable m_strYes

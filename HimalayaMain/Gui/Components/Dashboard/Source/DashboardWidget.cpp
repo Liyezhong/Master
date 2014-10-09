@@ -66,6 +66,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
 
+    CONNECTSIGNALSLOT(mp_DataConnector, RecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure &),
+                      this, OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure&));
+
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
 
@@ -813,6 +816,17 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
       strTempProgramId.append(strReagentIDOfLastStep);
     }
     mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);
+}
+
+void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& cmd)
+{
+    ui->programPanelWidget->SwitchToProgramRunningStatus(cmd);
+    //emit ProgramSelected(cmd.GetProgramID(), cmdm_StationList);
+    QString scenarioID = cmd.GetScenario();
+    if ('4' == scenarioID.at(scenarioID.count() - 1))
+    {
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_FULL);
+    }
 }
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)

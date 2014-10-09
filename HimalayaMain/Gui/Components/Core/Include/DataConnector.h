@@ -48,6 +48,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
@@ -730,6 +731,13 @@ signals:
      */
     /****************************************************************************/
     void UpdateProgramTimerStatus(bool enabled);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal RecoveryFromPowerFailure, for enter system after power failure
+     *  \param  Command = command for recovery from power failure
+     */
+    /****************************************************************************/
+    void RecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& Command);
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
@@ -856,8 +864,8 @@ private:
      *  \return from AppQuitSystemShutdownRelyHandler
      */
     /****************************************************************************/
-    void AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
-
+    void AppQuitSystemShutdownReplyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
+    void RecoveryFromPowerFailureHandler(Global::tRefType Ref, const MsgClasses::CmdRecoveryFromPowerFailure & Command);
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);
     void ExecutionStateHandler(Global::tRefType ref, const NetCommands::CmdExecutionStateChanged &Command);

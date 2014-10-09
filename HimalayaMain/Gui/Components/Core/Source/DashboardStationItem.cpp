@@ -851,6 +851,7 @@ bool CDashboardStationItem::IsReagentExpired()
 
 void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_t containerStatus)
 {
+    m_ContainerStatusType = containerStatus;//?
     if (DataManager::CONTAINER_STATUS_CONTAMINATED == containerStatus)
     {
         m_IsRetortContaminated = true;
@@ -859,6 +860,11 @@ void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_
     else if (DataManager::CONTAINER_STATUS_EMPTY == containerStatus)
     {
         m_CurrentBoundingRectReagentHeight  = 0;
+    }
+    else if (DataManager::CONTAINER_STATUS_FULL == containerStatus)
+    {
+        if (m_StationItemID == "Retort")
+            m_CurrentBoundingRectReagentHeight = m_RetortBoundingRectHeight - m_RetortCoverHeight;
     }
 
     DrawStationItemImage();
