@@ -98,10 +98,12 @@ public:
 
     MOCK_METHOD0(ALReleasePressure, ReturnCode_t());
 
-    MOCK_METHOD0(ALPressure, ReturnCode_t());
-    MOCK_METHOD0(ALVaccum, ReturnCode_t());
+    MOCK_METHOD1(ALPressure, ReturnCode_t(float targetPressure));
+    MOCK_METHOD1(ALVaccum, ReturnCode_t(float targetPressure));
 
-    MOCK_METHOD1(ALDraining, ReturnCode_t(quint32 DelayTime));
+    MOCK_METHOD3(ALDraining, ReturnCode_t(quint32 DelayTime, float targetPressure, bool IgnorePressure));
+    MOCK_METHOD2(IDForceDraining, ReturnCode_t(quint32 RVPos, float targetPressure));
+    MOCK_METHOD1(ALStopCmdExec, ReturnCode_t(quint8 CmdType));
 
     MOCK_METHOD2(ALFilling, ReturnCode_t(quint32 DelayTime, bool EnableInsufficientCheck));
 
@@ -141,7 +143,7 @@ public:
     MOCK_METHOD0(RVGetTemperatureControlState, TempCtrlState_t());
 
     //! Execute the move to intial position of the RV
-    MOCK_METHOD0(RVReqMoveToInitialPosition, ReturnCode_t());
+    MOCK_METHOD1(RVReqMoveToInitialPosition, ReturnCode_t(RVPosition_t RVPosition));
 
     //! Position the oven cover
     MOCK_METHOD1(RVReqMoveToRVPosition, ReturnCode_t(RVPosition_t RVPosition));
@@ -190,6 +192,22 @@ public:
     MOCK_METHOD0(PerTurnOnMainRelay, ReturnCode_t());
 
     MOCK_METHOD2(IDBottleCheck, ReturnCode_t(QString ReagentGrpID, RVPosition_t TubePos));
+    MOCK_METHOD2(GetSensorCurrent, quint16(const QString& DevName, quint8 Index));
+    MOCK_METHOD1(IDGetSlaveVoltage, quint16(HimSlaveType_t Type));
+    MOCK_METHOD1(IDGetSlaveCurrent, quint16(HimSlaveType_t Type));
+    MOCK_METHOD1(OvenGetHeatingStatus, bool(OVENTempCtrlType_t Type));
+    MOCK_METHOD1(GetHeaterSwitchType, quint8(const QString& DevName));
+    MOCK_METHOD3(GetSlaveModuleReportError, ReportError_t(quint8 errorCode, const QString& devName, quint32 sensorName));
+    MOCK_METHOD1(OvenSetTempCtrlOFF, ReturnCode_t(OVENTempCtrlType_t type));
+    MOCK_METHOD1(ALSetTempCtrlOFF, ReturnCode_t(ALTempCtrlType_t type));
+    MOCK_METHOD0(Destroy, void());
+    MOCK_METHOD1(NotifySavedServiceInfor, void(const QString& deviceType));
+    MOCK_METHOD0(ResetActiveCarbonFilterLifeTime, void());
+    MOCK_METHOD1(IDSetAlarm, ReturnCode_t(int opcode));
+    MOCK_METHOD2(ALControlValve, ReturnCode_t(quint8 ValveIndex, quint8 ValveState));
+    MOCK_METHOD2(RVSetTemperatureSwitchState, ReturnCode_t(qint8 HeaterVoltage, qint8 AutoType));
+    MOCK_METHOD3(RTSetTemperatureSwitchState, ReturnCode_t(RTTempCtrlType_t Type, qint8 HeaterVoltage, qint8 AutoType));
+
 	//signals related
     /*
 	MOCK_METHOD2(ReportInitializationFinished, void(DevInstanceID_t, ReturnCode_t));

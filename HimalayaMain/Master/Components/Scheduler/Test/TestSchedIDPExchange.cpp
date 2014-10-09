@@ -44,23 +44,21 @@ class TestSchedIDPExchange : public QObject {
     Q_OBJECT
 public:
     TestSchedIDPExchange()
-         :mp_IDeviceProcessing(new MockIDeviceProcessing()),
-          m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
-          mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController))
+        :mp_IDeviceProcessing(new MockIDeviceProcessing()),
+        m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
     {
         Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
         mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
         mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
-        m_pSchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
         m_pSchedulerMainController->DataManager(mp_DataManager);
-        dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchdCmdProcessor)->SetIDeviceProcessing(mp_IDeviceProcessing);
+        dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(m_pSchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
         //Set google-mock expections
         EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
                 .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition())
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition(_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
@@ -105,9 +103,6 @@ public:
 
         delete m_pSchedulerMainController;
         m_pSchedulerMainController = NULL;
-
-        delete mp_SchdCmdProcessor;
-        mp_SchdCmdProcessor = NULL;
     }
 
 private:
@@ -115,9 +110,6 @@ private:
     DataManager::CDataManager*                  mp_DataManager;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     SchedulerMainThreadController*              m_pSchedulerMainController;
-    SchedulerCommandProcessorBase*              mp_SchdCmdProcessor;
-
-
 	
 private slots:
     /****************************************************************************/
