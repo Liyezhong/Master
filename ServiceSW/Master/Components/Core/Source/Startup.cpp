@@ -588,6 +588,8 @@ void CStartup::ServiceGuiInit()
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_SERVICEUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
 
+    mp_MainControlConfig->DisableASB3();
+
     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Service);
     mp_MainWindow->SetUserMode("SERVICE");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
