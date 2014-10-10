@@ -231,10 +231,9 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     CHECKPTR(p_DeviceConfiguration);
 
     // create and connect scheduler main controller
-    schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
+    Scheduler::SchedulerMainThreadController* schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
     AddAndConnectController(schedulerMainController, &m_CommandChannelSchedulerMain, static_cast<int>(SCHEDULER_MAIN_THREAD));
     schedulerMainController->DataManager(mp_DataManager);
-    pSchedCmdProcessor = schedulerMainController->GetSchedCommandProcessor();
     // register all commands for processing and routing
     RegisterCommands();
 

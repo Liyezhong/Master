@@ -146,8 +146,6 @@ private:
     QString                          m_ExportTargetFileName;                 ///< Target file name of the export
     Global::tRefType                m_ExpectedShutDownRef;                  //!< Expected Shutdown acknowledge reference.
     bool                            m_bQuitApp;
-    Scheduler::SchedulerMainThreadController * schedulerMainController;
-    Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor;
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.
