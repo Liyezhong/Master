@@ -31,7 +31,7 @@ CmdProgramAcknowledge::CmdProgramAcknowledge(int Timeout, DataManager::ProgramAc
 }
 
 CmdProgramAcknowledge::CmdProgramAcknowledge()
-    : Command(0)
+    : Command(0), m_AcknownedgeType(DataManager::PROGRAM_READY)
 {
 }
 

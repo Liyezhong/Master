@@ -36,6 +36,7 @@ CmdCurrentProgramStepInfor::CmdCurrentProgramStepInfor(int timeout, const QStrin
 
 CmdCurrentProgramStepInfor::CmdCurrentProgramStepInfor()
     : Command(0)
+    , m_CurProgramStepIndex(0), m_CurRemainingTime(0)
 {
 }
 

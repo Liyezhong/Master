@@ -38,7 +38,8 @@ CmdStationSuckDrain::CmdStationSuckDrain():
     Command(0),
     m_StationID(""),
     m_IsStart(false),
-    m_IsSuck(false)
+    m_IsSuck(false),
+    m_NoCleaningProgram(true)
 {
 }
 

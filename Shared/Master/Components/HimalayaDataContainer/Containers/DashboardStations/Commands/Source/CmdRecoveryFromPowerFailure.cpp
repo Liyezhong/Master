@@ -34,7 +34,7 @@ CmdRecoveryFromPowerFailure::CmdRecoveryFromPowerFailure(int timeout, const QStr
 }
 
 CmdRecoveryFromPowerFailure::CmdRecoveryFromPowerFailure()
-    : Command(0)
+    : Command(0), m_StepIndex(0), m_Scenario(0), m_RemainingTime(0)
 {
 }
 

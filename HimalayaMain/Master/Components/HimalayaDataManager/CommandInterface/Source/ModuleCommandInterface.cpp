@@ -58,7 +58,7 @@ CModuleCommandInterface::CModuleCommandInterface(CDataManager *p_DataManager,
             for(SubModuleCount = 0; SubModuleCount < p_Module->GetNumberofSubModules();SubModuleCount++)
             {
                 CSubModule* p_SubModule = p_Module->GetSubModuleInfo(SubModuleCount);
-                m_SubModuleMap.insert(p_SubModule->GetSubModuleName(), p_Module->GetModuleName());
+                (void)m_SubModuleMap.insert(p_SubModule->GetSubModuleName(), p_Module->GetModuleName());
             }
         }
 
@@ -74,6 +74,7 @@ CModuleCommandInterface::CModuleCommandInterface(CDataManager *p_DataManager,
 CModuleCommandInterface::~CModuleCommandInterface()
 {
     mp_InstrumentHistory = NULL;
+    mp_DataModuleList = NULL;
 }
 
 /****************************************************************************/

@@ -92,6 +92,8 @@
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
 #include "EventHandler/Include/HimalayaEventHandlerThreadController.h"
 
+//lint -e578
+
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;       ///<  Definition/Declaration of variable ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED
 const Global::gSubComponentType SUBCOMPONENT_ERRORHANDLER   = 0x0001;   ///< Subcomponent id for error handler.
@@ -903,9 +905,9 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
                 Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
                 (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
                 LanguageList << Global::LanguageToString(QLocale(Locale).language());
-             }
-             p_DeviceConfiguration->SetLanguageList(LanguageList);
-             return true;
+            }
+            p_DeviceConfiguration->SetLanguageList(LanguageList);
+            return true;
         }
         else {
             return false;

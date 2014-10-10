@@ -19,9 +19,9 @@
 /****************************************************************************/
 
 #include "HimalayaDataContainer/Helper/Include/Helper.h"
-
 #include <QDebug>
 
+ //lint -e1551
 
 namespace DataManager {
 

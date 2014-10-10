@@ -22,6 +22,7 @@
 #include <QStringList>
 
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettingsVerifier.h"
+//lint -e1536
 
 namespace DataManager {
 

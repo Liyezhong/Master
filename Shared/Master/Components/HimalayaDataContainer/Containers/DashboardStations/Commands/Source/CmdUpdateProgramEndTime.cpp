@@ -31,7 +31,7 @@ CmdUpdateProgramEndTime::CmdUpdateProgramEndTime(int timeout, int endTimeDiff) :
 }
 
 CmdUpdateProgramEndTime::CmdUpdateProgramEndTime()
-    : Command(0)
+    : Command(0), m_EndTimeDiff(0)
 {
 }
 

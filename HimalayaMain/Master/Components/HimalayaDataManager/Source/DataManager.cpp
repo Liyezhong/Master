@@ -85,7 +85,7 @@ quint32 CDataManager::InitializeDataContainer()
     DeviceControl::DeviceLifeCycleRecord deviceLifeCycleRecord;
     deviceLifeCycleRecord.ReadRecord();
 
-    quint32 activeCarbonFilterLifeTime = -1;
+    qint32 activeCarbonFilterLifeTime = -1;
     DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
     if (pModuleLifeCycleRecord)
     {
@@ -105,8 +105,7 @@ quint32 CDataManager::InitializeDataContainer()
         tempSettings.SetActiveCarbonHours(0);
         QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
         tempSettings.SetActiveCarbonLastResetDate(strDate);
-        bool Result = true;
-        Result = mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);
+        (void)mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);
         mp_DataContainer->SettingsInterface->Write();
     }
 
