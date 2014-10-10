@@ -1,4 +1,4 @@
-// ================================================================================================
+/****************************************************************************/
 /*! @file Himalaya/HimalayaMain/Master/Components/Scheduler/Source/HeatingStrategy.cpp
  *
  *  @brief
@@ -16,8 +16,8 @@
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
- * ================================================================================================
 */
+/****************************************************************************/
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
@@ -32,8 +32,14 @@
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
 
-namespace Scheduler{
 /*lint -e578 */
+/*lint -e524 */
+/*lint -e429 */
+/*lint -e423 */
+/*lint -e613 */
+
+namespace Scheduler{
+
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
                                 DataManager::CDataManager* DataManager)
@@ -223,24 +229,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_IsOvenHeatingStarted = true;
     }
 
-    /***********************************************************
-     *
-    Check temperature difference of two Retort bottom sensors
-    *
-    ***********************************************************/
-    /*lint -e524 */
     if ( !QFile::exists("TEST_RETORT") )
     {
-        if (false == m_RTBottom.curModuleId.isEmpty() &&
-                -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
+        if (false == m_RTBottom.curModuleId.isEmpty() && -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
         {
-            if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) && isEffectiveTemp(strctHWMonitor.TempRTBottom2))
+            if(!CheckRTBottomsDifference(strctHWMonitor.TempRTBottom1, strctHWMonitor.TempRTBottom2))
             {
-                if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
-                {
-                    mp_SchedulerController->LogDebug(QString("the difference of two retort bottom sensor over range."));
-                    return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
-                }
+                return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
             }
         }
     }
@@ -399,7 +394,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     SchedulerCommandShPtr_t pResHeatingCmd;
     mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    pResHeatingCmd->GetResult(retCode);
+    (void)pResHeatingCmd->GetResult(retCode);
     return retCode;
 }
 
@@ -507,7 +502,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     SchedulerCommandShPtr_t pResHeatingCmd;
     mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    pResHeatingCmd->GetResult(retCode);
+    (void)pResHeatingCmd->GetResult(retCode);
     return retCode;
 }
 
@@ -573,6 +568,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPowerFailure(const QStri
             return retCode;
         }
     }
+    return retCode;
 }
 
 ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
@@ -601,8 +597,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
-            this->StopTemperatureControl("RTSide");
-            this->StopTemperatureControl("RTBottom");
+            (void)this->StopTemperatureControl("RTSide");
+            (void)this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -626,8 +622,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         }
         if(userInputTemp < 0)
         {
-            this->StopTemperatureControl("RTSide");
-            this->StopTemperatureControl("RTBottom");
+            (void)this->StopTemperatureControl("RTSide");
+            (void)this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS; // for ambient
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
@@ -749,7 +745,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     SchedulerCommandShPtr_t pResHeatingCmd;
     mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    pResHeatingCmd->GetResult(retCode);
+    (void)pResHeatingCmd->GetResult(retCode);
     return retCode;
 }
 
@@ -809,10 +805,11 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     SchedulerCommandShPtr_t pResHeatingCmd;
     mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    pResHeatingCmd->GetResult(retCode);
+    (void)pResHeatingCmd->GetResult(retCode);
     return retCode;
 }
 
+/*lint -e1023 */
 bool HeatingStrategy:: CheckRTBottomsDifference(qreal temp1, qreal temp2)
 {
     if ( isEffectiveTemp(temp1) && isEffectiveTemp(temp2))
@@ -965,7 +962,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        pResHeatingCmd->GetResult(retCode);
+        (void)pResHeatingCmd->GetResult(retCode);
 
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -1025,8 +1022,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         }
         if (userInputTemp < 0) // In this case, the GUI setting is to be ambient
         {
-            this->StopTemperatureControl("RTSide");
-            this->StopTemperatureControl("RTBottom");
+            (void)this->StopTemperatureControl("RTSide");
+            (void)this->StopTemperatureControl("RTBottom");
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
 
@@ -1041,7 +1038,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        pResHeatingCmd->GetResult(retCode);
+        (void)pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
@@ -1119,7 +1116,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        pResHeatingCmd->GetResult(retCode);
+        (void)pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
@@ -1193,7 +1190,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        pResHeatingCmd->GetResult(retCode);
+        (void)pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
@@ -1235,7 +1232,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        pResHeatingCmd->GetResult(retCode);
+        (void)pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
@@ -1302,6 +1299,7 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
     }
 }
 
+/*lint -e533 */
 bool HeatingStrategy::ConstructHeatingSensorList()
 {
     //For Retort Level Sensor
@@ -1668,8 +1666,10 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
     {
         return true;
     }
+    /*lint -e1055 */
+    /*lint -e628 */
     qint64 now = QDateTime::currentMSecsSinceEpoch();
-    if (false== heatingSensor.curModuleId.isEmpty() &&
+    if (false == heatingSensor.curModuleId.isEmpty() &&
             now-heatingSensor.heatingStartTime >= heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime*1000)
     {
         //For Scenarios NON-related sensors(Oven and LA)
@@ -1782,6 +1782,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
     return retCode;
 }
 
+/*lint -e527 */
 bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
 {
     if (true == m_RV_2_Outlet.OTCheckPassed)
@@ -1888,7 +1889,7 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
        funcModule.DerivativeTime = derivativeTime;
        funcModule.OTTargetTemperature = 0.0; //Initialize target temperature to zero
 
-       heatingSensor.functionModuleList.insert(*seqIter, funcModule);
+       (void)heatingSensor.functionModuleList.insert(*seqIter, funcModule);
    }
 
    return true;
@@ -1908,7 +1909,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
     SchedulerCommandShPtr_t pResHeatingCmd;
     mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    pResHeatingCmd->GetResult(retCode);
+    (void)pResHeatingCmd->GetResult(retCode);
 }
 
 bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
@@ -1992,13 +1993,13 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
 
 bool HeatingStrategy::CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor)
 {
- qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
- if (userInputMeltingPoint <= 0)
- {
+    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if (userInputMeltingPoint <= 0)
+    {
      return true;
- }
+    }
 
- return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
+    return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
          &&(strctHWMonitor.TempRTBottom2>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenTop>=userInputMeltingPoint)
          &&(strctHWMonitor.TempOvenBottom1>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenBottom2>=userInputMeltingPoint)
          &&(strctHWMonitor.TempRV2>=userInputMeltingPoint)&&(strctHWMonitor.TempALTube1>=userInputMeltingPoint);

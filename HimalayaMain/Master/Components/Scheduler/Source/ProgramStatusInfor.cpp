@@ -171,6 +171,7 @@ void CProgramStatusInfor::SetProgramFinished()
 
 quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
 {
+    /*lint -e550 */
     quint64 TimeLimit = 12 * 60 * 60 * 1000;
     quint64 HeatingTime = 0;
     quint64 UnHeatingTime = 0;

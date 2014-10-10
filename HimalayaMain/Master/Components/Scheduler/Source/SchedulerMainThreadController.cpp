@@ -3731,7 +3731,7 @@ quint32 SchedulerMainThreadController::GetSecondsForMeltingParaffin()
 {
     quint32 TotalSecondForMeltingParaffin = 12 * 60 * 60;
 
-    if (!mp_DataManager && ! mp_DataManager->GetUserSettings())
+    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
     {
         if(mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath() > 64)
         {
