@@ -1448,12 +1448,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_REAGENTCHECK == currentState)
     {
         LogDebug("In Rs_ReagentCheck");
-        m_SchedulerMachine->HandleRsReagentWorkFlow(cmdName, retCode);
+        m_SchedulerMachine->HandleRsReagentWorkFlow(cmdName, retCode, true);
     }
     else if(SM_ERR_RS_RV_MOVETOPOSITIONSEAL == currentState)
     {
         LogDebug("In Rs_Rv_MoveToPosition3.5");
-        m_SchedulerMachine->HandleRsReagentWorkFlow(cmdName, retCode);
+        m_SchedulerMachine->HandleRsReagentWorkFlow(cmdName, retCode, false);
     }
     else
     {

@@ -951,7 +951,7 @@ public:
      *  \param retCode - return code
      */
     /****************************************************************************/
-    void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+    void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, bool needDrain);
 
     /****************************************************************************/
     /*!

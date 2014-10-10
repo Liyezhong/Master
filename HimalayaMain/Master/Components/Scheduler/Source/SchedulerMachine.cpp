@@ -1579,36 +1579,44 @@ void CSchedulerStateMachine::HandleRcReHeatingWorkFlow(const QString& cmdName,  
     mp_RcReHeating->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, bool needDrain)
 {
     static qint32 startReq = 0;
     switch(m_RsReagentCheckStep)
     {
     case FORCE_DRAIN:
-        if (0 == startReq)
+        if(needDrain)
         {
-            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent");
-            CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
-            cmd->SetRVPosition(0);
-            cmd->SetDrainPressure(30.0);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-            startReq++;
-        }
-        else if(1 == startReq)
-        {
-            if ("Scheduler::IDForceDraining" == cmdName)
+            if (0 == startReq)
             {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                    m_HasReagent = true;
-                }
-                else
-                {
-                    m_RsReagentCheckStep = BUILD_VACUUM;
-                }
-                startReq = 0;
+                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent");
+                CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+                cmd->SetDrainIsMoveRV(false);
+                cmd->SetRVPosition(0);
+                cmd->SetDrainPressure(30.0);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                startReq++;
             }
+            else if(1 == startReq)
+            {
+                if ("Scheduler::IDForceDraining" == cmdName)
+                {
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                        m_HasReagent = true;
+                    }
+                    else
+                    {
+                        m_RsReagentCheckStep = BUILD_VACUUM;
+                    }
+                    startReq = 0;
+                }
+            }
+        }
+        else
+        {
+            m_RsReagentCheckStep = BUILD_VACUUM;
         }
         break;
     case BUILD_VACUUM:
@@ -1616,7 +1624,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         {
             mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
             CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
-            cmd->SetTargetPressure(-6.0);
+            cmd->SetTargetPressure(-1.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             startReq++;
         }
@@ -1715,6 +1723,7 @@ void CSchedulerStateMachine::EnterRcRestart()
 {
     if(false == mp_ProgramSelfTest->IsSelfTestDone())
     {
+        mp_ProgramSelfTest->ResetVarList();
         emit SigSelfRcRestart();
     }
     else if(RUN_POWERFAILURE == mp_SchedulerThreadController->GetPowerFailureStep())

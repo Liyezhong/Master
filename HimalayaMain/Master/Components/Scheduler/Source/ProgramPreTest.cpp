@@ -29,6 +29,9 @@
 using namespace DeviceControl;
 namespace Scheduler{
 /*lint -e534 */
+/*lint -e525 */
+/*lint -e527 */
+/*lint -e616 */
 
 CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
@@ -147,9 +150,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     ReportError_t reportError4;
     memset(&reportError4, 0, sizeof(reportError4));
 
-    /*lint -e525 */
-    /*lint -e527 */
-    /*lint -e616 */
 	switch (currentState)
 	{
     mp_SchedulerThreadController->LogDebug(QString("Pre-Check status is: %1").arg(currentState));

@@ -135,6 +135,25 @@ public:
     /****************************************************************************/
     void SetDrainPressure(float tartgetPressure){m_TargetPressure = tartgetPressure;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDrainIsMoveRV
+     *
+     *  \return bool from GetDrainPressure
+     */
+    /****************************************************************************/
+    bool GetDrainIsMoveRV(){return m_IsMoveRv;}
+    /***************************l*************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetDrainIsMoveRV
+     *
+     *  \param flag - bool
+     *
+     *  \return from SetDrainPressure
+     */
+    /****************************************************************************/
+    void SetDrainIsMoveRV(bool flag){m_IsMoveRv = flag;}
+
 private:
     CmdIDForceDraining();                                                    ///< Not implemented.
     CmdIDForceDraining(const CmdIDForceDraining &);                     ///< Not implemented.
@@ -144,6 +163,7 @@ private:
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
     mutable quint32 m_RVPosition;       ///<  Definition/Declaration of variable m_DelayTime
     mutable float  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
+    mutable bool   m_IsMoveRv;              ///< Defiinition/Declaration of variable m_IsMoveRv
 	
 };
 
