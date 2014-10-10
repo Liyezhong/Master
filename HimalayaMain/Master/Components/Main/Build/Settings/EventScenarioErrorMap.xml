@@ -1140,9 +1140,6 @@
         <error errorid="513040020">
             <scenario type="single" id="200"/>
         </error>
-        <error errorid="513045020">
-            <scenario type="single" id="502"/>
-        </error>
         <error errorid="511040021">
             <scenario type="single" id="214"/>
             <scenario type="single" id="224"/>
@@ -1156,12 +1153,6 @@
         </error>
     </event>
     <event eventid="500040051">
-        <error errorid="513040051">
-            <scenario type="single" id="200"/>
-        </error>
-        <error errorid="513045051">
-            <scenario type="single" id="504"/>
-        </error>
         <error errorid="512040052">
             <scenario type="single" id="214"/>
             <scenario type="single" id="224"/>

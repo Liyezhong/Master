@@ -258,14 +258,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     // For Retort Top
     if (false == this->CheckSensorHeatingOverTime(m_RTTop, strctHWMonitor.TempRTSide))
     {
-        //Due to on EventID for this error, we just ingore this case.
-        //return DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED;
+        return DCL_ERR_DEV_RETORT_HEATING_OVERTIME;
     }
     // For Retort Bottom
     if (false == this->CheckSensorHeatingOverTime(m_RTBottom, strctHWMonitor.TempRTBottom1))
     {
-        //Due to on EventID for this error, we just ingore this case.
-        //return DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED;
+        return DCL_ERR_DEV_RETORT_HEATING_OVERTIME;
     }
     //For Oven Top
     retCode = CheckOvenHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop, OVEN_TOP_SENSOR);

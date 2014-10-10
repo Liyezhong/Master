@@ -65,7 +65,7 @@
             <Function Key="Heating" name="RTBottom" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
-                <Parameter Key="HeatingOverTime" Value="10800"/>
+                <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="82"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
@@ -76,7 +76,7 @@
             <Function Key="Heating" name="RTBottom" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
-                <Parameter Key="HeatingOverTime" Value="10800"/>
+                <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="87"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
@@ -108,7 +108,7 @@
             <Function Key="Heating" name="RTTop" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="10800"/>
+                <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="87"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="1000"/>
@@ -118,7 +118,7 @@
             <Function Key="Heating" name="RTTop" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
-                <Parameter Key="HeatingOverTime" Value="10800"/>
+                <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="92"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="30000"/>
