@@ -28,12 +28,14 @@ CmdProgramSelectedReply::CmdProgramSelectedReply(int timeout, int timeProposed,
                                              int paraffinMeltCostedtime,
                                              int costedTimeBeforeParaffin,
                                              int whichStepHasNoSafeReagent,
+                                             quint32 SecondsMeltParaffin,
                                              QList<QString>& stationList) :
     Command(timeout),
     m_TimeProposed(timeProposed),
     m_CostedTimeBeforeParaffin(costedTimeBeforeParaffin),
     m_ParaffinMeltCostedtime(paraffinMeltCostedtime),
     m_WhichStepHasNoSafeReagent(whichStepHasNoSafeReagent),
+    m_SecondsForMelting(SecondsMeltParaffin),
     m_StationList(stationList)
 {
 }
@@ -43,7 +45,8 @@ CmdProgramSelectedReply::CmdProgramSelectedReply():
     m_TimeProposed(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinMeltCostedtime(0),
-    m_WhichStepHasNoSafeReagent(-1)
+    m_WhichStepHasNoSafeReagent(-1),
+    m_SecondsForMelting(0)
 {
 }
 

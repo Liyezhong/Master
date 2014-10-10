@@ -1019,6 +1019,14 @@ protected:
 
         /****************************************************************************/
         /**
+         *  \brief Get the time(in seconds) for melting paraffin
+         *  \return from quint32
+         */
+        /****************************************************************************/
+        quint32 GetSecondsForMeltingParaffin();
+
+        /****************************************************************************/
+        /**
          *  \brief Get the time(in seconds) that PreTest
          *  \return from GetPreTestTime of qint64
          */

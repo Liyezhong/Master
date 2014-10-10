@@ -2287,12 +2287,12 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
     m_CurrentBottlePosition.ReagentGrpId = "";
     m_CurrentBottlePosition.RvPos = RV_UNDEF;
-
     //send back the proposed program end time
     MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
                                                                                 paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 whichStep,
+                                                                                GetSecondsForMeltingParaffin(),
                                                                                 m_StationList));
     Q_ASSERT(commandPtr);
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3725,6 +3725,41 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
         }
     }
     return ret;
+}
+
+quint32 SchedulerMainThreadController::GetSecondsForMeltingParaffin()
+{
+    quint32 TotalSecondForMeltingParaffin = 12 * 60 * 60;
+
+    if (!mp_DataManager && ! mp_DataManager->GetUserSettings())
+    {
+        if(mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath() > 64)
+        {
+            TotalSecondForMeltingParaffin = 15 * 60 * 60;
+        }
+    }
+
+    if(QFile::exists("TEST_ISSAC")) // only for testing time of paraffin
+    {
+        QFile Test("TEST_ISSAC");
+        if (Test.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream in(&Test);
+            if(!in.atEnd())
+            {
+                QString line = in.readLine();
+                bool ok = false;
+                quint32 time = line.toUInt(&ok);
+                if(ok && time > 0)
+                {
+                    TotalSecondForMeltingParaffin = time * 60;
+                }
+            }
+            Test.close();
+        }
+    }
+    return TotalSecondForMeltingParaffin;
+
 }
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()

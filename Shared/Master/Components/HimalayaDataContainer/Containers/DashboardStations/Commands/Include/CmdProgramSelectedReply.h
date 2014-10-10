@@ -60,6 +60,7 @@ public:
                       int paraffinMeltCostedtime,
                       int costedTimeBeforeParaffin,
                       int whichStepHasNoSafeReagent,
+                      quint32 SecondsMeltParaffin,
                       QList<QString>& stationList);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
@@ -104,6 +105,15 @@ public:
     /****************************************************************************/
     inline const QList<QString>& StationList()const {return m_StationList;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get sceconds for melting paraffin
+     *
+     *  \return seconds
+     */
+    /****************************************************************************/
+    inline quint32 GetSecondsForMeltingParaffin(){return m_SecondsForMelting;}
+
     
 private:
     CmdProgramSelectedReply(const CmdProgramSelectedReply &);                     ///< Not implemented.
@@ -113,8 +123,8 @@ private:
     int m_CostedTimeBeforeParaffin; ///< seconds
     int m_ParaffinMeltCostedtime; ///< seconds
     int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
+    quint32 m_SecondsForMelting;   ///< total seconds for melting paraffin.
     QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
-    
 }; // end class CmdProgramSelectedReply
 
 /****************************************************************************/
@@ -135,6 +145,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelectedR
     Stream << Cmd.m_ParaffinMeltCostedtime;
     Stream << Cmd.m_CostedTimeBeforeParaffin;
     Stream << Cmd.m_WhichStepHasNoSafeReagent;
+    Stream << Cmd.m_SecondsForMelting;
     Stream << Cmd.m_StationList.count();
     for (int i = 0; i < Cmd.m_StationList.count(); i++)
     {
@@ -161,6 +172,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelectedReply &
     Stream >> Cmd.m_ParaffinMeltCostedtime;
     Stream >> Cmd.m_CostedTimeBeforeParaffin;
     Stream >> Cmd.m_WhichStepHasNoSafeReagent;
+    Stream >> Cmd.m_SecondsForMelting;
     int stationCount = 0;
     Stream >> stationCount;
     QString stationID("");
