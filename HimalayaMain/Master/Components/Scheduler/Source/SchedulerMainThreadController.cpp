@@ -2316,7 +2316,7 @@ void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, co
 void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd)
 {
     this->SendAcknowledgeOK(Ref);
-    LogDebug(QString("Change the Paraffin melting point from %1 to %2"));
+    LogDebug(QString("Change the Paraffin melting point from %1 to %2").arg(Cmd.GetLastMeltPoint()).arg(Cmd.GetCurrentMeltPoint()));
     m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
     //todo reheating Oven
 }
