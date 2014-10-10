@@ -47,9 +47,12 @@ public:
      *  \brief  Definition/Declaration of function CmdRecoveryFromPowerFailure
      *
      *  \param timeout = int type parameter
-     *  \param stepName =  const QString type parameter
-     *  \param curProgramStepIndex =  int type parameter
-     *  \param curRemainingTime =  int type parameter
+     *  \param ProgramID =  program id
+     *  \param StepIndex =  step index
+     *  \param Scenario  =  Scenario
+     *  \param RemainingTime = remain time
+     *  \param RgbID    =   color id
+     *  \param StationList = station list
      *
      *  \return from CmdCurrentProgramStepInfor
      */

@@ -46,37 +46,65 @@ class CmdParaffinMeltPointChanged : public Global::Command
     /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdParaffinMeltPointChanged &);
 public:
+    /*!
+      * \brief constructor
+      * \param TimeOut timeout
+      * \param lastMeltPoint last melt point
+      * \param currentMeltPoint current melt point
+    */
     CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint);
+    /*!
+      * \brief constructor
+    */
     CmdParaffinMeltPointChanged(void);
 
+    /*!
+      * \brief destructor
+    */
     ~CmdParaffinMeltPointChanged(void);
 
+    /*!
+      * \brief function get name
+      * \return name
+    */
     virtual QString GetName(void) const;
     static QString NAME; ///< Command name.
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of GetLastMeltPoint
+     *  \return last melt point
      */
     /****************************************************************************/
     inline int GetLastMeltPoint() const {return m_LastMeltPoint;}
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of GetCurrentMeltPoint
+     *  \return  current melt point
      */
     /****************************************************************************/
     inline int GetCurrentMeltPoint() const {return m_CurrentMeltPoint;}
 private:
+    /*!
+      * \brief copy constructor
+    */
     CmdParaffinMeltPointChanged(const CmdParaffinMeltPointChanged &); ///< Not implemented.
+    /*!
+      * \brief operator =
+      * \return from CmdParaffinMeltPointChanged
+    */
     const CmdParaffinMeltPointChanged &operator = (const CmdParaffinMeltPointChanged &); ///< Not implemented.
-    int m_LastMeltPoint;
-    int m_CurrentMeltPoint;
+
+    int m_LastMeltPoint; ///< last melt point
+
+    int m_CurrentMeltPoint; ///< current melt point
 
  }; // end class CmdParaffinMeltPointChanged
 
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function operator<<
- *
+ *  \param  Stream stream
+ *  \param  Cmd cmd
  *  \return from operator<<
  */
 /****************************************************************************/
@@ -92,7 +120,8 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinMeltPoin
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function operator>>
- *
+ *  \param  Stream stream
+ *  \param  Cmd cmd
  *  \return from operator>>
  */
 /****************************************************************************/

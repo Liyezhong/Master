@@ -51,6 +51,7 @@ public:
      *  \param paraffinMeltCostedtime
      *  \param costedTimeBeforeParaffin
      *  \param whichStepHasNoSafeReagent
+     *  \param SecondsMeltParaffin
      *  \param stationList
      *
      *  \return from CmdProgramSelectedReply

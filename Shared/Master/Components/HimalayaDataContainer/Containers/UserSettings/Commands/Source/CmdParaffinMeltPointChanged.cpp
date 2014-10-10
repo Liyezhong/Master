@@ -20,19 +20,10 @@
 
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 
-
 namespace MsgClasses {
 
 QString CmdParaffinMeltPointChanged::NAME = "MsgClasses::CmdParaffinMeltPointChanged";
 
-/****************************************************************************/
-/*!
- *  \brief   Constructor for sending
- *
- * \param[in]   timeOut     Timeout for command.
- *
- */
-/****************************************************************************/
 CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut, int lastMeltPoint, int currentMeltPoint)
     : Command(timeOut), m_LastMeltPoint(lastMeltPoint), m_CurrentMeltPoint(currentMeltPoint)
 {
@@ -47,13 +38,6 @@ CmdParaffinMeltPointChanged::~CmdParaffinMeltPointChanged(void)
 {
 }
 
-/****************************************************************************/
-/*!
- *  \brief   Get command name
- *
- *  \return  command name as string
- */
-/****************************************************************************/
 QString CmdParaffinMeltPointChanged::GetName(void) const
 {
     return NAME;
