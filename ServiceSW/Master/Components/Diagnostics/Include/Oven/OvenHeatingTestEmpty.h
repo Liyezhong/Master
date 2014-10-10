@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_OVEN_HEATINGTESTEMPTY_H
 
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -32,18 +33,20 @@ class CHeatingTestEmpty : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CHeatingTestEmpty();
+    CHeatingTestEmpty(CDiagnosticMessageDlg *dlg);
     ~CHeatingTestEmpty(void);
 
     int Run(void);
 
-public Q_SLOTS:
-    void StartHeating(void);
+public:
+    int StartHeating(void);
 
 private Q_SLOTS:
     void Succeed(void);
-
     void Fail(void);
+
+private:
+    CDiagnosticMessageDlg *dlg;
 };
 
 } // namespace Oven

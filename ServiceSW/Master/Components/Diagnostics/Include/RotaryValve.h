@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_ROTARYVALVE_H
 
 #include <QWidget>
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -38,18 +39,12 @@ public:
     ~CRotaryValve();
 
 private Q_SLOTS:
-    void StartInitializingTest(void);
-
-    void StartSelectingTest(void);
-
-    void StartSealingTest(void);
-
-    void StartHeatingTest(void);
+    void StartMovementTest(void);
 
 private:
     Ui::CRotaryValve *ui;
     bool              m_InitSuccess;
-
+    CDiagnosticMessageDlg *mp_MessageDlg;
 };
 
 

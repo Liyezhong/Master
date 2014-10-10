@@ -10,8 +10,10 @@
 		<SLTubePreTest LTubeTargetTemp="80" LTubeRangeTemp="100" PreHeatingTargetTemp="80"/>
 	</InitialSystem>
 	<Oven>
+		<HeatingTestEmpty  OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" t="100" t1="100" t2="100"/>
 	</Oven>
 	<RotaryValve>
+		<MovementTest RVSensor1TempMin="80" RVSensor2TempMin="40" t="300"/>
 	</RotaryValve>
 	<MainControl>
 		<SMCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>

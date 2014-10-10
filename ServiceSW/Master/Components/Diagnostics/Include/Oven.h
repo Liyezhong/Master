@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_OVEN_H
 
 #include <QWidget>
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -47,6 +48,7 @@ private Q_SLOTS:
     
 private:
     Ui::COven *ui;
+    CDiagnosticMessageDlg *dlg;
 
 signals:
     void GuiOvenEmptyHeatingTest();

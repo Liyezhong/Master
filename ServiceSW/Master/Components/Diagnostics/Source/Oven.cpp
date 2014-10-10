@@ -17,26 +17,21 @@
  *
  */
 /****************************************************************************/
-
-#include "Diagnostics/Include/Oven.h"
-
 #include <QDebug>
-
-#include "ui_Oven.h"
-
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
 #include "Diagnostics/Include/Oven/OvenHeatingTestWithLiquid.h"
 #include "Diagnostics/Include/Oven/CoverSensorTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
-
-
+#include "Diagnostics/Include/Oven.h"
+#include "ui_Oven.h"
 
 namespace Diagnostics {
 
 COven::COven(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::COven)
+    ui(new Ui::COven),
+    dlg(new CDiagnosticMessageDlg(this))
 {
     ui->setupUi(this);
 
@@ -53,6 +48,7 @@ COven::COven(QWidget *parent) :
 
 COven::~COven()
 {
+    delete dlg;
     delete ui;
 }
 
@@ -61,21 +57,19 @@ void COven::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
     qDebug() << "Oven: start heating test empty";
 
-    //Oven::CHeatingTestEmpty test;
+    Oven::CHeatingTestEmpty test(dlg);
 
-    //test.Run();
-
-    emit GuiOvenEmptyHeatingTest();
+    test.Run();
 }
 
 void COven::StartHeatingTestWithLiquid(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
-    qDebug() << "Oven: start heating test with liquid";
+//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
+//    qDebug() << "Oven: start heating test with liquid";
 
-    //Oven::CHeatingTestWithLiquid test;
+//    //Oven::CHeatingTestWithLiquid test;
 
-    //test.Run();
+//    //test.Run();
 
 }
 
@@ -98,12 +92,9 @@ void COven::StartCoverSensorTest(void)
 void COven::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
-    switch (p_Event->type())
-    {
+    switch (p_Event->type()) {
     case QEvent::LanguageChange:
-    {
         ui->retranslateUi(this);
-    }
         break;
     default:
         break;
