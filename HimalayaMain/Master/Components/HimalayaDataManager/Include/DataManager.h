@@ -203,7 +203,14 @@ public:
      */
     /****************************************************************************/
     CDataReagentList* GetReagentList();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetSWVersion
+     *
+     *  \return from CSWVersionList
+     */
+    /****************************************************************************/
+    CSWVersionList* GetSWVersion();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetUserSettingsInterface

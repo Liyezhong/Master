@@ -45,6 +45,14 @@ class CmdParaffinMeltPointChanged : public Global::Command
      */
     /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdParaffinMeltPointChanged &);
+public:
+    CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint);
+    CmdParaffinMeltPointChanged(void);
+
+    ~CmdParaffinMeltPointChanged(void);
+
+    virtual QString GetName(void) const;
+    static QString NAME; ///< Command name.
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of GetLastMeltPoint
@@ -57,14 +65,6 @@ class CmdParaffinMeltPointChanged : public Global::Command
      */
     /****************************************************************************/
     inline int GetCurrentMeltPoint() const {return m_CurrentMeltPoint;}
-public:
-    CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint);
-    CmdParaffinMeltPointChanged(void);
-
-    ~CmdParaffinMeltPointChanged(void);
-
-    virtual QString GetName(void) const;
-    static QString NAME; ///< Command name.
 private:
     CmdParaffinMeltPointChanged(const CmdParaffinMeltPointChanged &); ///< Not implemented.
     const CmdParaffinMeltPointChanged &operator = (const CmdParaffinMeltPointChanged &); ///< Not implemented.
