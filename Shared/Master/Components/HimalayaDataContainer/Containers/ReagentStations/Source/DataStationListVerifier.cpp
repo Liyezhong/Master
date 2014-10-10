@@ -113,6 +113,7 @@ void CDataStationListVerifier::ResetErrors()
 /****************************************************************************/
 /*!
  *  \brief  Resets the last error which is done by verifier
+ *  \return bool
  */
 /****************************************************************************/
 bool CDataStationListVerifier::IsLocalVerifier()

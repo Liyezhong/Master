@@ -96,7 +96,7 @@ private:
     QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
     QString m_strNameDuplicated;       ///<  Definition/Declaration of variable m_strNameDuplicated
     QString m_strSeclectIcon;       ///<  Definition/Declaration of variable m_strSeclectIcon
-    QString m_strPrevProgName;       ///<  Definition/Declaration of variable m_strPrevProgName
+    QString m_strLastProgName;       ///< Definition/Declaration of variable m_strPrevProgName
     bool    m_bIconSelected;        ///<  Definition/Declaration of variable m_bIconSelected
 
 protected:
@@ -229,6 +229,7 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnOkClicked
+     *  \iparam EnteredText text from keyboard
      */
     /****************************************************************************/
     void OnOkClicked(QString EnteredText);
@@ -238,6 +239,15 @@ private slots:
      */
     /****************************************************************************/
     void OnESCClicked();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOkClicked
+     *  \iparam str string to handle
+     *  \return handled string
+     */
+    /****************************************************************************/
+    QString HandleEscapedChar(QString str);
 signals:
 
     /****************************************************************************/

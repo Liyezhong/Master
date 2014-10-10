@@ -21,12 +21,9 @@
 #ifndef DATAMANAGER_DATAPROGRAMLISTVERIFIER_H
 #define DATAMANAGER_DATAPROGRAMLISTVERIFIER_H
 
-
-
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
-
 
 namespace DataManager {
 class CDataContainer;
@@ -58,15 +55,40 @@ const int HUNDRED_PERCENT = 100;            //!< 100 %
 class CDataProgramListVerifier:public IVerifierInterface
 {
 public:
+    /**
+    * \brief constructor
+    */
     CDataProgramListVerifier();
+
+    /**
+    * \brief constructor
+    * \iparam p_DataContainer data container
+    */
     CDataProgramListVerifier(CDataContainer *p_DataContainer);
 
+    /**
+    * \brief Verify Data
+    * \iparam p_DataProgramList data program list
+    * \return verify status
+    */
     bool VerifyData(CDataContainerBase* p_DataProgramList);  // use concrete class for concrete verifier
+
     //lint -esym(1536,GetErrors )
+    /**
+    * \brief get error
+    * \return error map
+    */
     ErrorMap_t &GetErrors();
 
+    /**
+    * \brief reset error
+    */
     void ResetErrors();
 
+    /**
+    * \brief IsLocalVerifier
+    * \return local verify type
+    */
     bool IsLocalVerifier();
 
     /****************************************************************************/
@@ -75,14 +97,27 @@ public:
      */
     /****************************************************************************/
     virtual ~CDataProgramListVerifier();
+
 private:
     CDataProgramList* mp_DPL;           //!< pointer to program list container
     ErrorMap_t m_ErrorsHash;           //!< To store Error ID and any arguments associated
     QStringList m_LeicaReagentIDList;   //!< To store the Leica reagent IDs
     CDataContainer *mp_DataContainer;   //!< DataContainer
-    void CheckProgramStep(CProgram* p_Program,bool &VerifiedData);
-    void CheckDurationFormat(QStringList SplitList, bool &VerifiedData, QString ProgramName);
 
+    /**
+    * \brief CheckProgramStep
+    * \iparam p_Program program
+    * \iparam VerifiedData VerifiedData
+    */
+    void CheckProgramStep(CProgram* p_Program,bool &VerifiedData);
+
+    /**
+    * \brief CheckDurationFormat
+    * \iparam SplitList SplitList
+    * \iparam VerifiedData VerifiedData
+    * \iparam ProgramName program name
+    */
+    void CheckDurationFormat(QStringList SplitList, bool &VerifiedData, QString ProgramName);
 };
 
 } // namespace DataManager

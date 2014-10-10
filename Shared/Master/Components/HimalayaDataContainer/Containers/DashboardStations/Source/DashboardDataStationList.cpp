@@ -54,18 +54,6 @@ CDashboardDataStationList::CDashboardDataStationList():
      Init();
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Copy Constructor
- *
- *  \iparam DashboardStationList = Instance of the CDashboardDataStationList class
- *  \warning Verification is not done on the data.
- *  \warning ErrorHash is not copied. We dont want to copy errors that occured
- *           on other instance.
- *  \return
- */
-/****************************************************************************/
 CDashboardDataStationList::CDashboardDataStationList(const CDashboardDataStationList& DashboardStationList) :
     CDataContainerBase(),
     m_Version(0),
@@ -91,7 +79,6 @@ CDashboardDataStationList::CDashboardDataStationList(const CDashboardDataStation
  *         Assignment operator only.
 .*  \note  Method for internal use only
  *  \param Other
- *  \return
  */
 /****************************************************************************/
 void CDashboardDataStationList::CopyFromOther(const CDashboardDataStationList &Other)
@@ -336,17 +323,6 @@ bool CDashboardDataStationList::ReadDashboardStations(QXmlStreamReader& XmlStrea
     return true;
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Output Stream Operator which streams data
- *
- *  \iparam OutDataStream = Instance of the QDataStream
- *  \iparam DashboardStationList = CDashboardDataStationList class object
- *
- *  \return Output Stream
- */
-/****************************************************************************/
 QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardDataStationList& DashboardStationList)
 {
     CDashboardDataStationList* p_TempDashboardStationList = const_cast<CDashboardDataStationList*>(&DashboardStationList);
@@ -359,16 +335,6 @@ QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardDataStation
     return OutDataStream;
 }
 
-/****************************************************************************/
-/*!
- *  \brief Input stream Operator which reads the data from Input parameter.
- *
- *  \iparam InDataStream = Instance of the DataStream
- *  \iparam DashboardStationList = CDashboardDataStationList class object
- *
- *  \return Input Stream
- */
-/****************************************************************************/
 
 QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& DashboardStationList)
 {
@@ -380,15 +346,6 @@ QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& D
     return InDataStream;
 }
 
-/****************************************************************************/
-/*!
- *  \brief Assignment Operator which copies from rhs to lhs.
- *
- *  \iparam SourceDashboardStationList = CDashboardDataStationList class object
- *
- *  \return CDashboardDataStationList Class Object
- */
-/****************************************************************************/
 CDashboardDataStationList& CDashboardDataStationList::operator=(const CDashboardDataStationList &SourceDashboardStationList)
 {
     try {

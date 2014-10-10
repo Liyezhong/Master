@@ -46,14 +46,33 @@ const int   HEATED_CUVETE_UNUSED_TEMPERATURE = 0;       //!< Heated Cuvette is n
 class CDataReagentListVerifier : public IVerifierInterface
 {
 public:
+    /**
+      * \brief constructor
+    */
     CDataReagentListVerifier();
 
+    /**
+       * \brief verify data
+       * \iparam p_DataReagentList reagent list
+       * \return bool
+    */
     bool VerifyData(CDataContainerBase* p_DataReagentList);  // use concrete class for concrete verifier
 
+    /**
+      * \brief get error
+      * \return error map
+    */
     ErrorMap_t &GetErrors();
 
+    /**
+      * \brief reset error
+    */
     void ResetErrors();
 
+    /**
+      * \brief local verifier
+      * \return bool
+    */
     bool IsLocalVerifier();
 
     /****************************************************************************/
@@ -63,7 +82,7 @@ public:
     /****************************************************************************/
     virtual ~CDataReagentListVerifier();
 private:
-    CDataReagentList* mp_DRL;                        //!< Reagent Data Container
+    CDataReagentList* mp_DRL;         //!< Reagent Data Container
     ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 };
 

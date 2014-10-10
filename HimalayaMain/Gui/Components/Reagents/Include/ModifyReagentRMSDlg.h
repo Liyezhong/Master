@@ -79,6 +79,7 @@ private:
     QString m_strEnterCycleValue;       ///<  Definition/Declaration of variable m_strEnterCycleValue
     QString m_strEnterDayValue;       ///<  Definition/Declaration of variable m_strEnterDayValue
     QString m_strInforMsg;       ///<  Definition/Declaration of variable m_strInforMsg
+    QString m_strLastReagentName;  ///<  Definition/Declaration of variable m_strLastReagentName
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
 
 
@@ -169,6 +170,7 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnOkClicked
+     *  \iparam EnteredText text from keyboard
      */
     /****************************************************************************/
     void OnOkClicked(QString EnteredText);
@@ -181,9 +183,19 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SelectionChanged
+     *  \iparam Index index
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of HandleEscapedChar
+     *  \iparam str str to handle
+     *  \return handled str
+     */
+    /****************************************************************************/
+    QString HandleEscapedChar(QString str);
 
 protected:
     void changeEvent(QEvent *p_Event);

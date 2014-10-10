@@ -76,8 +76,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     m_strCancel(tr("Cancel")),
     m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
     m_strEnterValidName(tr("Please enter a valid Program Name")),
+    m_strLastProgName(tr("")),
     m_strSeclectIcon(tr("Please select a Program Icon")),
-    m_strPrevProgName(tr("")),
     m_bIconSelected(false)
 
 {
@@ -208,7 +208,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
 
-    QString LongName = m_Program.GetName();
+    QString LongName = HandleEscapedChar(m_Program.GetName());
     if (m_ButtonType == NEW_BTN_CLICKED)
     {
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
@@ -370,11 +370,13 @@ void CModifyProgramDlg::OnEditName()
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Name"));
     mp_KeyBoardWidget->SetPasswordMode(false);
     if (!(m_ButtonType == NEW_BTN_CLICKED)) {
-        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgName->text());
+        //mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgName->text());
+        mp_KeyBoardWidget->SetLineEditContent(m_strLastProgName);
     }
     else {
         if ((mp_Ui->btnPrgName->text() != "--")) {
-            mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgName->text());
+            //mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgName->text());
+            mp_KeyBoardWidget->SetLineEditContent(m_strLastProgName);
         }
     }
     mp_KeyBoardWidget->SetMaxCharLength(MAX_LONGNAME_LENGTH);
@@ -519,7 +521,8 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    m_Program.SetName(mp_Ui->btnPrgName->text());
+    //m_Program.SetName(mp_Ui->btnPrgName->text());
+    m_Program.SetName(m_strLastProgName);
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
@@ -533,7 +536,8 @@ void CModifyProgramDlg::OnSave()
             (void) mp_MessageDlg->exec();
             return;
         }
-        mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+        //mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+        mp_NewProgram->SetName(m_strLastProgName);
         mp_NewProgram->SetIcon(m_Icon);
         emit AddProgram(*mp_NewProgram);
     }
@@ -663,6 +667,24 @@ void CModifyProgramDlg::OnESCClicked()
     DisconnectKeyBoardSignalSlots();
 }
 
+QString CModifyProgramDlg::HandleEscapedChar(QString str)
+{
+    QString EscapedText;
+    if (str.contains('&')) {
+        int len = str.length();
+        for (int i = 0; i < len; i ++ ) {
+            QChar c = str.at(i);
+            if (c == '&') {
+                EscapedText.push_back("&&");
+            }
+            else {
+                EscapedText.push_back(c);
+            }
+        }
+    }
+    return EscapedText;
+}
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when OK button on Keyboard is clicked.
@@ -694,13 +716,18 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
             (void) mp_MessageDlg->exec();
             return;
         }
-        m_strPrevProgName = mp_Ui->btnPrgName->text();
-        mp_Ui->btnPrgName->setText(tr("%1").arg(EnteredText));
+        m_strLastProgName = EnteredText;
+        if (EnteredText.contains('&')) {
+            QString EscapedText = HandleEscapedChar(EnteredText);
+            mp_Ui->btnPrgName->setText(tr("%1").arg(EscapedText));
+        }
+        else {
+            mp_Ui->btnPrgName->setText(tr("%1").arg(EnteredText));
+        }
     }
     else if (m_ProgShortNameBtnClicked) {
         m_ProgShortNameBtnClicked = false;
     }
-
     // Disconnect signals and slots connected to keyboard.
     DisconnectKeyBoardSignalSlots();
 }

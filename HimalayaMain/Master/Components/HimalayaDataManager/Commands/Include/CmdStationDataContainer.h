@@ -16,7 +16,16 @@ class CmdStationDataContainer : public Global::Command {
 private:
     static int  m_CmdTimeout;   ///< The allowed timeout for this command.
     /****************************************************************************/
+    /**
+    * \brief constructor
+    * \iparam CmdStationDataContainer CmdStationDataContainer
+    */
     CmdStationDataContainer(const CmdStationDataContainer &);                       ///< Not implemented.
+
+    /**
+    * \brief operator =
+    * \iparam CmdStationDataContainer CmdStationDataContainer
+    */
     const CmdStationDataContainer & operator = (const CmdStationDataContainer &);   ///< Not implemented.
 protected:
 public:
@@ -27,7 +36,8 @@ public:
     /****************************************************************************/
     /**
      * \brief Constructor.
-     *
+     * \iparam StationList ReagentList
+     * \iparam ReagentList ReagentList
      */
     /****************************************************************************/
     CmdStationDataContainer(CDashboardDataStationList StationList, CDataReagentList ReagentList);

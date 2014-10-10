@@ -117,19 +117,75 @@ private:
     }
 
 public:
+	/**
+	* \brief constructor
+	*/
     CDashboardDataStationList();
+	/**
+	* \brief destructor
+	*/
     ~CDashboardDataStationList();
 
-    CDashboardDataStationList(const CDashboardDataStationList&);
-    friend QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardDataStationList& StationList);
-    friend QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& StationList);
-    CDashboardDataStationList& operator=(const CDashboardDataStationList &StationList);
+	/**
+	* \brief constructor
+	* \iparam StationList station list
+	*/
+    CDashboardDataStationList(const CDashboardDataStationList& StationList);
 
+	/**
+	* \brief operator <<
+	* \iparam OutDataStream out data stream 
+    * \iparam DashboardStationList station list
+	* \return QDataStream
+	*/
+    friend QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardDataStationList& DashboardStationList);
+
+	/**
+	* \brief operator >>
+	* \iparam InDataStream in data stream 
+    * \iparam DashboardStationList station list
+	* \return QDataStream
+	*/
+    friend QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& DashboardStationList);
+	
+	/**
+	* \brief operator =	
+    * \iparam DashboardStationList station list
+	* \return CDashboardDataStationList
+	*/
+    CDashboardDataStationList& operator=(const CDashboardDataStationList &DashboardStationList);
+
+	/**
+	* \brief Init	
+	*/
     void Init();
+
+	/**
+	* \brief Read
+	* \iparam Filename file
+	* \return bool
+	*/
     bool Read(QString Filename);
 
+	/**
+	* \brief GetDashboardStationType
+	* \iparam DashboardStationID station id
+	* \return DashboardStationType
+	*/
     DashboardStationType_t GetDashboardStationType(const QString DashboardStationID);
+
+	/**
+	* \brief GetDashboardStationType
+	* \iparam Index  id
+	* \return DashboardStationType
+	*/
     DashboardStationType_t GetDashboardStationType(const unsigned int Index);
+
+	/**
+	* \brief GetDashboardStationType
+	* \iparam DashboardStationID  station id
+	* \return bool
+	*/
     bool IsDashboardStationExists(const QString DashboardStationID);
 
     /****************************************************************************/
@@ -145,14 +201,58 @@ public:
     {
         return m_DashboardStationList.value(DashboardStationID, NULL);
     }
+
+	/**
+	* \brief GetDashboardStationType
+	* \iparam DashboardStationID  station id
+	* \iparam DashboardStation  station  
+	* \return bool
+	*/
     bool GetDashboardStation(const QString DashboardStationID, CDashboardStation& DashboardStation);
+
+	/**
+	* \brief GetDashboardStation
+	* \iparam Index  id
+	* \iparam DashboardStation  station  
+	* \return bool
+	*/
     bool GetDashboardStation(const unsigned int Index, CDashboardStation& DashboardStation);
-    const CDashboardStation* GetDashboardStation(const unsigned int Index); // uses order index
+
+	/**
+	* \brief GetDashboardStation
+	* \iparam Index  id
+	* \return CDashboardStation
+	*/
+    const CDashboardStation* GetDashboardStation(const unsigned int Index);  
+
+	/**
+	* \brief AddDashboardStation
+	* \iparam p_DashboardStation staion
+	* \return bool
+	*/
     bool AddDashboardStation(const CDashboardStation* p_DashboardStation);
 
+
+	/**
+	* \brief UpdateDashboardStation
+	* \iparam p_DashboardStation staion
+	* \return bool
+	*/
     bool UpdateDashboardStation(const CDashboardStation* p_DashboardStation);
-    bool DeleteDashboardStation(const QString DashboardStationID);   // uses unique reagent ID
-    bool DeleteDashboardStation(const unsigned int Index);  // uses order index
+
+	/**
+	* \brief DeleteDashboardStation
+    * \iparam DashboardStationID staion id
+	* \return bool
+	*/
+    bool DeleteDashboardStation(const QString DashboardStationID);   
+
+	/**
+	* \brief DeleteDashboardStation
+	* \iparam Index id
+	* \return bool
+	*/
+    bool DeleteDashboardStation(const unsigned int Index);  
 
     /****************************************************************************/
     /*!

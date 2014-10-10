@@ -51,7 +51,8 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     m_strReagentCopyFailed(tr("")),
     m_strEnterCassetteValue(tr("Enter Cassette Value")),
     m_strEnterCycleValue(tr("Enter Cycle Value")),
-    m_strEnterDayValue(tr("Enter Day Value"))
+    m_strEnterDayValue(tr("Enter Day Value")),
+    m_strLastReagentName(tr(""))
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ReagentNameBtnClicked = false;
@@ -128,6 +129,25 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
     UpdateRmsLabel(Option);
 }
 
+QString CModifyReagentRMSDlg::HandleEscapedChar(QString str)
+{
+    QString EscapedText;
+    if (str.contains('&')) {
+
+        int len = str.length();
+        for (int i = 0; i < len; i ++ ) {
+            QChar c = str.at(i);
+            if (c == '&') {
+                EscapedText.push_back("&&");
+            }
+            else {
+                EscapedText.push_back(c);
+            }
+        }
+    }
+    return EscapedText;
+}
+
 
 /****************************************************************************/
 /*!
@@ -194,7 +214,8 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
         // Check if Edit button was clicked in ReagentWidget
         if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
 
-            mp_Ui->buttonReagentName->setText(m_Reagent.GetReagentName());
+            //mp_Ui->buttonReagentName->setText(m_Reagent.GetReagentName());
+            mp_Ui->buttonReagentName->setText(HandleEscapedChar(m_Reagent.GetReagentName()));
             mp_Ui->buttonValue->setVisible(true);
             mp_Ui->labelRMSStaticName->setVisible(true);
             UpdateRmsLabel(Option);
@@ -356,7 +377,8 @@ void CModifyReagentRMSDlg::OnOk()
     // Check if Edit button was clicked in ReagentWidget
     if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
         m_SelectionFlag = false;
-        m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
+        //m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
+        m_Reagent.SetReagentName(m_strLastReagentName);
         switch (m_RMSOption) {
             case Global::RMS_CASSETTES:
                 m_Reagent.SetMaxCassettes(mp_Ui->buttonValue->text().toInt());
@@ -385,7 +407,8 @@ void CModifyReagentRMSDlg::OnOk()
 
         QString Id = m_ReagentCloneList.GetNextFreeReagentID(true);
         m_Reagent.SetReagentID(Id);
-        m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
+        //m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
+        m_Reagent.SetReagentName(m_strLastReagentName);
         Global::RMSOptions_t option;
         if (mp_DataConnector->ReagentGroupList->GetReagentGroup(m_Reagent.GetGroupID())->IsCleaningReagentGroup())
         {
@@ -428,10 +451,11 @@ void CModifyReagentRMSDlg::OnEditName()
 {
     m_ReagentNameBtnClicked = true;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Reagent Name"));
+    mp_KeyBoardWidget->SetLineEditContent(tr(""));
 
     if (mp_Ui->buttonReagentName->text() != "--") {
-
-        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->buttonReagentName->text());
+        //mp_KeyBoardWidget->SetLineEditContent(mp_Ui->buttonReagentName->text());
+        mp_KeyBoardWidget->SetLineEditContent(m_strLastReagentName);
     }
 
     mp_KeyBoardWidget->SetPasswordMode(false);
@@ -495,7 +519,16 @@ void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)
     if (m_ReagentNameBtnClicked){
         m_ReagentNameBtnClicked = false;
         LineEditString = mp_KeyBoardWidget->GetLineEditString();
-        mp_Ui->buttonReagentName->setText(LineEditString);
+
+        m_strLastReagentName = LineEditString;
+
+        if (LineEditString.contains('&')) {
+            QString EscapedText = HandleEscapedChar(LineEditString);
+            mp_Ui->buttonReagentName->setText(tr("%1").arg(EscapedText));
+        }
+        else {
+            mp_Ui->buttonReagentName->setText(LineEditString);
+        }
     }
     else if (m_CassetteValueBtnClicked){
         m_CassetteValueBtnClicked = false;

@@ -403,7 +403,7 @@ bool CDataProgramList::AddProgram(const CProgram* p_Program)
 /****************************************************************************/
 /*!
  *  \brief  Updates program
- *  \iparam p_Program = program which needs to be updated
+ *  \iparam p_Program  program which needs to be updated
  *  \return true - update success, false - update failed
  */
 /****************************************************************************/

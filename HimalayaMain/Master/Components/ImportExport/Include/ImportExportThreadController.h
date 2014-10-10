@@ -547,6 +547,7 @@ signals:
     /**
      * \brief Signal for starting the export process.
      * As soon as this signal received by Main it starts the Export process
+     * \param FileName file name
      */
     /****************************************************************************/
     void StartExportProcess(QString FileName);
@@ -573,7 +574,7 @@ signals:
     /**
      * \brief Signal for request daily run log files.
      *  This signals main that export requires the daily run log files
-     *
+     *  \param FolderPath fold path
      */
     /****************************************************************************/
     void RequestDayRunLogFileNames(QString FolderPath);
@@ -583,7 +584,6 @@ signals:
      * \brief Signal for selecting required files to import.
      *  This signals main that import detected multiple files, Main requests
      *  to display selection screen in GUI side
-     *
      */
     /****************************************************************************/
     void RequestFileSelectionToImport(QStringList);

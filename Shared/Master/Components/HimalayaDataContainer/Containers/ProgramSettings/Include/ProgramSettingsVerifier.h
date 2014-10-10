@@ -41,9 +41,17 @@ namespace DataManager {
 class CProgramSettingsVerifier : public IVerifierInterface
 {
 public:
+    /**
+      * \brief constructor
+    */
     CProgramSettingsVerifier();
 
-    bool VerifyData(CDataContainerBase* p_ParameterList);  // use concrete class for concrete verifier
+    /**
+     * \brief use concrete class for concrete verifier
+     * \iparam p_ParameterList paramenter list
+     * \return success status
+    */
+    bool VerifyData(CDataContainerBase* p_ParameterList);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetSyncObject
@@ -58,8 +66,14 @@ public:
     /*! \todo complete implementation*/
     ErrorMap_t& GetErrors();
 
+    /**
+      * \brief reset errors
+    */
     void ResetErrors();
 
+    /**
+      * \brief is local verifier
+    */
     bool IsLocalVerifier();
 
     /****************************************************************************/

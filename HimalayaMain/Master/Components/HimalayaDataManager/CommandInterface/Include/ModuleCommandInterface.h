@@ -53,7 +53,6 @@ private:
     /**
      * \brief Function which handles CmdModuleListUpdate
      *
-     * \iparam Ref = Command reference
      * \iparam Cmd = Command
      * \iparam AckCommandChannel = Command channel to send acknowledge
      */

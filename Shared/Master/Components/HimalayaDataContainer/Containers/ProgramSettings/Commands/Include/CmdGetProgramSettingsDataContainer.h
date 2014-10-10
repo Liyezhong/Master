@@ -17,7 +17,13 @@ class CmdGetProgramSettingsDataContainer : public Global::Command
 private:
     static int  m_CmdTimeout;   ///< The allowed timeout for this command.
     /****************************************************************************/
-    CmdGetProgramSettingsDataContainer(const CmdGetProgramSettingsDataContainer &);                       ///< Not implemented.
+    /**
+    * \brief copy constructor
+    */
+    CmdGetProgramSettingsDataContainer(const CmdGetProgramSettingsDataContainer &);
+    /**
+    * \brief operator
+    */
     const CmdGetProgramSettingsDataContainer & operator = (const CmdGetProgramSettingsDataContainer &);   ///< Not implemented.
 
 protected:
@@ -29,7 +35,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Constructor.
-     *
+     * \param ProgramSettings program settings
      */
     /****************************************************************************/
     CmdGetProgramSettingsDataContainer(CProgramSettings ProgramSettings);

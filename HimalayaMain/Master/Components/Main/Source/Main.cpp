@@ -41,7 +41,7 @@
  *
  * \iparam argc
  * \iparam argv
- *
+ * \return main return
  */
 /****************************************************************************/
 int main(int argc, char *argv[]) {

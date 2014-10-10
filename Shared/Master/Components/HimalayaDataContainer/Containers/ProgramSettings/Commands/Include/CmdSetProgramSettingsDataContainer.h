@@ -20,15 +20,12 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CmdSetProgramSettingsDataContainer
-     *
-     *  \return from CmdSetProgramSettingsDataContainer
      */
     /****************************************************************************/
     CmdSetProgramSettingsDataContainer(const CmdSetProgramSettingsDataContainer &);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function operator=
-     *
      *  \return from operator=
      */
     /****************************************************************************/
@@ -43,7 +40,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Constructor.
-     *
+     * \param ProgramSettings settings
      */
     /****************************************************************************/
     CmdSetProgramSettingsDataContainer(CProgramSettings ProgramSettings);

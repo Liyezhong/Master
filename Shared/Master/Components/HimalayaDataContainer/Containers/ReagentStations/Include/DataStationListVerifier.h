@@ -45,8 +45,15 @@ public:
     //lint -esym(1536,GetErrors )
     ErrorMap_t &GetErrors();
 
+    /**
+      * \brief reset error
+    */
     void ResetErrors();
 
+    /**
+      * \brief local verifier
+      * \return bool
+    */
     bool IsLocalVerifier();
 
     /****************************************************************************/

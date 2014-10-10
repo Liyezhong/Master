@@ -36,19 +36,37 @@ namespace DataManager {
 class CDataReagentGroupListVerifier : public IVerifierInterface
 {
 public:
+    /**
+      * \brief constructor
+    */
     CDataReagentGroupListVerifier();
 
-    bool VerifyData(CDataContainerBase* p_ReagentGroupList);  // use concrete class for concrete verifier
+    /**
+      * \brief verify data
+      * \iparam p_ReagentGroupList group list
+      * \return bool
+    */
+    bool VerifyData(CDataContainerBase* p_ReagentGroupList);
 
     //lint -esym(1536,GetErrors )
+    /**
+      * \brief get error
+      * \return error map
+    */
     ErrorMap_t& GetErrors();
 
+    /**
+      * \brief reset error
+    */
     void ResetErrors();
 
+    /**
+      * \brief local verifier
+    */
     bool IsLocalVerifier();
 
 private:
-    CDataReagentGroupList* mp_DPSL;//!< Pointer to program Sequence List
+    CDataReagentGroupList* mp_DPSL;   //!< Pointer to program Sequence List
     ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 };
 

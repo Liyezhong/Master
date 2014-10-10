@@ -77,6 +77,7 @@ void CDataReagentListVerifier::ResetErrors()
 /****************************************************************************/
 /*!
  *  \brief  Resets the last error which is done by verifier
+ *  \return bool
  */
 /****************************************************************************/
 bool CDataReagentListVerifier::IsLocalVerifier()

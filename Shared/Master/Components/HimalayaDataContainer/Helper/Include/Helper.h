@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Helper.h
+/*! \file HimalayaDataContainer/Helper/Include/Helper.h
  *
  *  \brief Definition file for general purpose functions.
  *
@@ -163,7 +163,10 @@ typedef enum
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function ReadAttributesOfElement
- *
+ *  \iparam elementName elementName
+ *  \iparam attributeNameList attributeNameList
+ *  \iparam reader reader
+ *  \iparam attributeList attributeList
  *  \return from ReadAttributesOfElement
  */
 /****************************************************************************/
@@ -176,7 +179,10 @@ XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function ReadAttributesOfElement
- *
+ *  \iparam elementName elementName
+ *  \iparam reader reader
+ *  \iparam attributeNameList attributeNameList
+ *  \iparam attributeList attributeList
  *  \return from ReadAttributesOfElement
  */
 /****************************************************************************/
@@ -189,7 +195,10 @@ XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function WriteElementWithAttributes
- *
+ *  \iparam elementName elementName
+ *  \iparam attributeNameList attributeNameList
+ *  \iparam attributeList attributeList
+ *  \iparam writer writer
  *  \return from WriteElementWithAttributes
  */
 /****************************************************************************/

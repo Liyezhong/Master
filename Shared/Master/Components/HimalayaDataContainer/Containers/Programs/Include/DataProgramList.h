@@ -179,22 +179,78 @@ public:
      *  \return Pointer to Program
      */
     /****************************************************************************/
+    /*!
+     *  \brief  GetProgram
+     *  \iparam Index Index
+     *  \return return CProgram
+     */
     CProgram* GetProgram(const unsigned int Index); // uses order index
+
+    /*!
+     *  \brief  GetProgram
+     *  \iparam ProgramID  Program id
+     *  \return function status
+     */
     bool GetProgram(const QString ProgramID, CProgram& Program);
+
+    /*!
+     *  \brief  GetProgram
+     *  \iparam Index Index
+     *  \iparam Program program
+     *  \return function status
+     */
     bool GetProgram(const unsigned int Index, CProgram& Program);
 
+    /*!
+     *  \brief  GetProgram
+     *  \iparam p_Program program
+     *  \return function status
+     */
     bool AddProgram(const CProgram* p_Program);   // p_Program is added directly => don't delete outside!    
+
+    /*!
+     *  \brief  UpdateProgram
+     *  \iparam p_Program program
+     *  \return function status
+     */
     bool UpdateProgram(const CProgram* p_Program);  // content of p_Program will be copied  => delete outside!
+
+    /*!
+     *  \brief  DeleteProgram
+     *  \iparam ProgramID program id
+     *  \return function status
+     */
     bool DeleteProgram(const QString ProgramID);   // uses unique program ID
+
+    /*!
+     *  \brief  DeleteProgram
+     *  \iparam Index Index
+     *  \return function status
+     */
     bool DeleteProgram(const unsigned int Index);  // uses order index
+
+    /*!
+     *  \brief  DeleteAllPrograms
+     *  \return function status
+     */
     bool DeleteAllPrograms();
 
+    /*!
+     *  \brief  GetFavoriteProgramIDs
+     *  \return function status
+     */
     QStringList GetFavoriteProgramIDs(); // get five favorite Programs' ID
 
 
     //END OF SECTION PROGRAMS//
 
+    /*!
+     *  \brief  ProgramExists
+     *  \iparam ProgramID program id
+     *  \return function status
+     */
     bool ProgramExists(const QString ProgramID);
+
     /****************************************************************************/
     /*!
      *  \brief  Retreive the reagent ID's used by all the program.
@@ -203,6 +259,12 @@ public:
     /****************************************************************************/
     QStringList const & GetReagentIDList() const { return m_ReagentIDList; }
 
+    /*!
+     *  \brief  CheckForUniquePropeties
+     *  \iparam p_Program p_Program
+     *  \iparam excludeSeft excludeSeft
+     *  \return List of Reagent ID's used by all the programs in the Program List.
+     */
     bool CheckForUniquePropeties(const CProgram* p_Program, bool excludeSeft = false);
 
 private:
@@ -222,13 +284,34 @@ private:
     ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
     QStringList m_ReagentIDList;//!< Holds the reagent ID's present in Program. This member is not copied when using copy constructor/Assignment operator
 
+    /*!
+     *  \brief  SerializeContent
+     *  \iparam IODevice IO Device
+     *  \iparam CompleteData  CompleteData
+     *  \return serialize status
+     */
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
+
+    /*!
+     *  \brief  DeserializeContent
+     *  \iparam IODevice IO Device
+     *  \iparam CompleteData  CompleteData
+     *  \return de-serialize status
+     */
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
+    /*!
+     *  \brief  ReadAllPrograms
+     *  \iparam XmlStreamReader XmlStreamReader
+     *  \iparam CompleteData  CompleteData
+     *  \return function status
+     */
     bool ReadAllPrograms(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
-
-
+    /*!
+     *  \brief  UpdateReagentIDList
+     *  \return function status
+     */
     bool UpdateReagentIDList();
 
     /****************************************************************************/
@@ -246,8 +329,6 @@ private:
      */
     /****************************************************************************/
     void SetFilename(const QString Value) {m_Filename = Value;}
-
-
 };
 
 } // namespace DataManager

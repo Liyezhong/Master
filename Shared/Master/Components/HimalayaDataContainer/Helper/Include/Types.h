@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Types.h
+/*! \file HimalayaDataContainer/Helper/Include/Types.h
  *
  *  \brief Definition file for types used from datamanager
  *

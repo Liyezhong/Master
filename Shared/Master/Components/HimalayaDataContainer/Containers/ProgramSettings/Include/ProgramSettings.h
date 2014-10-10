@@ -50,7 +50,8 @@ typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;       ///<  Definiti
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function operator<
- *
+ *  \iparam key1 key1
+ *  \iparam key2 key2
  *  \return from operator<
  */
 /****************************************************************************/
@@ -140,13 +141,19 @@ public:
      *  \param DeviceKey = const QString type parameter
      *  \param FunctionKey =  const FunctionKey_t type parameter
      *  \param ParameterKey = const QString type parameter
-     *  \param ok =  bool type parameter
-     *
+     *  \param ok = bool type parameter
      *  \return from GetParameterValue
      */
     /****************************************************************************/
     double GetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, bool& ok);
-    QString GetParameterStrValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey);
+    /**
+      * \brief  GetParameterStrValue
+      * \iparam DeviceKey device key
+      * \iparam FunctionKey function key
+      * \iparam ParameterKey paramter key
+      * \return return str value
+    */
+    QString GetParameterStrValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetParameterValue

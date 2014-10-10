@@ -38,9 +38,12 @@ class CmdProgramAction : public Global::Command {
     friend QDataStream & operator << (QDataStream &, const CmdProgramAction &);
     friend QDataStream & operator >> (QDataStream &, CmdProgramAction &);
 public:
-    CmdProgramAction();                                             ///< Not implemented.
+	/**
+	* 	\brief constructor
+	*/
+    CmdProgramAction();   ///< Not implemented.
 
-    static QString NAME;    ///< Command name.
+    static QString NAME;  ///< Command name.
     /****************************************************************************/
     /****************************************************************************/
     /*!
@@ -49,14 +52,20 @@ public:
      *  \param timeout = int type parameter
      *  \param programID =  const QString type parameter
      *  \param actionType =  DataManager::ProgramActionType_t type parameter
-     *  \param programEndDateTime =  type parameter
+     *  \param delayTime =  delay time
      *
      *  \return from CmdProgramAction
      */
     /****************************************************************************/
-    CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
-                     int delayTime);
+    CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType, int delayTime);
+	/**
+	* \brief destructor
+	*/
     ~CmdProgramAction();
+	/**
+	* \brief get name
+	* \return name
+	*/
     virtual QString GetName() const;
     /****************************************************************************/
     /*!
@@ -76,14 +85,21 @@ public:
     inline DataManager::ProgramActionType_t ProgramActionType() const {return m_ActionType;}
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function ProgramEndDateTime
+     *  \brief  Definition/Declaration of function DelayTime
      *
-     *  \return from ProgramEndDateTime
+     *  \return from DelayTime
      */
     /****************************************************************************/
     inline int DelayTime()const {return m_DelayTime;}
 private:
+	/**
+	* \brief constructor
+	*/
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
+	/**
+	* \brief operator = 
+	* \iparam instance
+	*/
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
     QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID

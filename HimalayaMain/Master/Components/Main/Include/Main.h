@@ -182,7 +182,7 @@ public:
  * \iparam   argc    Argument count.
  * \iparam   argv    Argument list.
  *
- * \return   Return code.
+ * \return   main return.
  */
 /****************************************************************************/
 int main(int argc, char *argv[]);

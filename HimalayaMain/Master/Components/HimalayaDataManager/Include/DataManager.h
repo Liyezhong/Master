@@ -206,15 +206,6 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function GetSWVersion
-     *
-     *  \return from Data container of SW version
-     */
-    /****************************************************************************/
-    CSWVersionList* GetSWVersion();
-
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of function GetUserSettingsInterface
      *
      *  \return from GetUserSettingsInterface
@@ -246,6 +237,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal StationUpdate
+     *  \param Station station
      */
     /****************************************************************************/
     void StationUpdate(CDashboardStation &Station);
@@ -258,19 +250,19 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ReagentUpdate
+     *  \iparam Reargent Reargent
      */
     /****************************************************************************/
     void ReagentUpdate(CReagent &Reargent);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ReagentContainerUpdate
+     *  \iparam ReagentList ReagentList
      */
     /****************************************************************************/
-    void ReagentContainerUpdate(CDataReagentList &);
+    void ReagentContainerUpdate(CDataReagentList & ReagentList);
 
 };
 }// namespace DataManager
 
 #endif // DATAMANAGER_OBSOLETE_DATAMANAGER_H
-
-
