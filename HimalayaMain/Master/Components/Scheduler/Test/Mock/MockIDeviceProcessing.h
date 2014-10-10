@@ -119,7 +119,7 @@ public:
 
     MOCK_METHOD3(ALStartTemperatureControl, ReturnCode_t(ALTempCtrlType_t Type, qreal NominalTemperature, quint8 SlopeTempChange));
 
-    MOCK_METHOD2(ALGetRecentTemperature, ReturnCode_t(ALTempCtrlType_t Type, quint8 Index));
+    MOCK_METHOD2(ALGetRecentTemperature, qreal(ALTempCtrlType_t Type, quint8 Index));
 
     MOCK_METHOD1(ALGetTemperatureControlState, TempCtrlState_t(ALTempCtrlType_t Type));
 
@@ -211,16 +211,6 @@ public:
     MOCK_METHOD2(ALControlValve, ReturnCode_t(quint8 ValveIndex, quint8 ValveState));
     MOCK_METHOD2(RVSetTemperatureSwitchState, ReturnCode_t(qint8 HeaterVoltage, qint8 AutoType));
     MOCK_METHOD3(RTSetTemperatureSwitchState, ReturnCode_t(RTTempCtrlType_t Type, qint8 HeaterVoltage, qint8 AutoType));
-
-	//signals related
-    /*
-	MOCK_METHOD2(ReportInitializationFinished, void(DevInstanceID_t, ReturnCode_t));
-	MOCK_METHOD2(ReportConfigurationFinished, void(DevInstanceID_t, ReturnCode_t));
-	MOCK_METHOD2(ReportStartNormalOperationMode, void(DevInstanceID_t, ReturnCode_t));
-	MOCK_METHOD5(ReportError, void(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp));
-    MOCK_METHOD6(ReportErrorWithInfo, void(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp, QString strErrorInfo));
-	MOCK_METHOD0(ReportDestroyFinished, void());
-    */
 };
 
 } //namespace

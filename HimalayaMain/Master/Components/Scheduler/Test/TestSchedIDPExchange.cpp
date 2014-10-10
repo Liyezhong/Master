@@ -33,6 +33,15 @@ using::testing::AtLeast;
 using::testing::_;
 using::testing::Lt;
 
+inline void waitTime(qint8 time)
+{
+    QTime delayTime = QTime::currentTime().addMSecs(time*1000);
+    while (QTime::currentTime() < delayTime)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+}
+
 namespace Scheduler {
 
 /****************************************************************************/
@@ -55,7 +64,7 @@ public:
 
         //Set google-mock expections
         EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
-                .Times(AtLeast(1))
+  //              .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition(_))
@@ -82,11 +91,65 @@ public:
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
-//                .Times(AtLeast(1))
-                .WillRepeatedly(Return(100));
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(2.0));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentTemperature(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(80));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVGetRecentTemperature(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(80));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqActRVPosition())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(RV_TUBE_1));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RTGetRecentTemperature(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(60));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, OvenGetRecentTemperature(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(60));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, OvenGetRecentLidStatus())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(0));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RTGetRecentLockStatus())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(1));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, GetSensorCurrent(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(2400));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, IDGetSlaveVoltage(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(24000));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, IDGetSlaveCurrent(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(2400));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, OvenGetHeatingStatus(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(1));
 
         EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
 //                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        ReportError_t reportErr;
+        memset(&reportErr, 0,sizeof(reportErr));
+        EXPECT_CALL(*mp_IDeviceProcessing, GetSlaveModuleReportError(_,_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(reportErr));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALTurnOnFan())
+                .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
@@ -101,7 +164,8 @@ public:
         delete mp_IDeviceProcessing;
         mp_IDeviceProcessing = NULL;
 
-        delete m_pSchedulerMainController;
+        m_pSchedulerMainController->deleteLater();
+        //delete m_pSchedulerMainController;
         m_pSchedulerMainController = NULL;
     }
 
@@ -139,17 +203,19 @@ private slots:
     /****************************************************************************/
 
     void UTAll();
+signals:
+    void SendStop();
 
 }; // end class TestEventCSVInfo
 
 
 void TestSchedIDPExchange::UTAll()
 {
-    sleep(2);
     mp_IDeviceProcessing->InitializationFinished();
-    sleep(2);
+    waitTime(2);
     mp_IDeviceProcessing->ConfigurationFinished();
-    sleep(30);
+    waitTime(10);
+    emit SendStop();
 }
 
 /******************************************************************ls**********/
@@ -164,12 +230,12 @@ void TestSchedIDPExchange::init()
 	m_pSchedulerMainController->CreateAndInitializeObjects();
 
     // Move Scheduler into one new thread and start up
-	QThread* schedulerThread = new QThread();
-	m_pSchedulerMainController->moveToThread(schedulerThread);	
+    QThread* schedulerThread = new QThread();
+    m_pSchedulerMainController->moveToThread(schedulerThread);
     CONNECTSIGNALSLOT(schedulerThread, started(), m_pSchedulerMainController, Go());
-    //CONNECTSIGNALSLOT(m_pSchedulerMainController, destroyed(), schedulerThread, quit());
-    //CONNECTSIGNALSLOT(m_pSchedulerMainController, finished(), schedulerThread, deleteLater());
-
+    CONNECTSIGNALSLOT(this, SendStop(), m_pSchedulerMainController, Stop());
+    CONNECTSIGNALSLOT(m_pSchedulerMainController, destroyed(), schedulerThread, quit());
+    CONNECTSIGNALSLOT(m_pSchedulerMainController, destroyed(), schedulerThread, deleteLater());
     schedulerThread->start();
 }
 
@@ -181,8 +247,8 @@ void TestSchedIDPExchange::cleanup()
 /****************************************************************************/
 void TestSchedIDPExchange::cleanupTestCase()
 {
-
-    //exit(0);
+   // emit SendStop();
+   // waitTime(20);
 }
 
 } // end namespace EventHandler
