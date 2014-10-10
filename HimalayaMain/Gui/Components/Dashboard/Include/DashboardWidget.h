@@ -144,6 +144,7 @@ private:
     QList<QString> m_StationList;
     int m_TimeProposedForProgram;           //!< Time costed only for the whole program, exclude the time for the delayed time
     int m_CostedTimeBeforeParaffin;         //!< Time costed before the program step of paraffin.
+    int m_ParaffinHeatingDuration;
     QDateTime m_EndDateTime;
     int m_TimeDelta;
     QDateTime m_AsapEndDateTime;

@@ -42,6 +42,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_ParaffinStepIndex(-1),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
+    m_ParaffinHeatingDuration(0),
     m_ProgramStartReady(false),
     m_IsWaitingCleaningProgram(false),
     m_CurProgramStepIndex(-1),
@@ -569,9 +570,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     {
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 or 15 hour - TimeCosted
-        //final: int RemainingTimeMeltParaffin = 12/15 * 60 * 60 - TimeCostedParaffinMelting;
-        int meltingDuration= GetParaffinHeatingDuration();
-        int RemainingTimeMeltParaffin = meltingDuration * 60 - TimeCostedParaffinMelting;
+        int RemainingTimeMeltParaffin = m_ParaffinHeatingDuration - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= TimeBeforeUseParaffin)
@@ -859,6 +858,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_ParaffinStartHeatingTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(-cmd.ParaffinMeltCostedTime());
     m_CostedTimeBeforeParaffin = cmd.CostedTimeBeforeParaffin();
     m_iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
+    m_ParaffinHeatingDuration = cmd.GetSecondsForMeltingParaffin();
     bool bCanotRun = true;
     m_TimeDelta = 0;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),

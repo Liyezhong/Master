@@ -112,7 +112,7 @@ public:
      *  \return seconds
      */
     /****************************************************************************/
-    inline quint32 GetSecondsForMeltingParaffin(){return m_SecondsForMelting;}
+    inline int GetSecondsForMeltingParaffin()const {return m_SecondsForMelting;}
 
     
 private:
@@ -123,7 +123,7 @@ private:
     int m_CostedTimeBeforeParaffin; ///< seconds
     int m_ParaffinMeltCostedtime; ///< seconds
     int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
-    quint32 m_SecondsForMelting;   ///< total seconds for melting paraffin.
+    int m_SecondsForMelting;   ///< total seconds for melting paraffin.
     QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
 }; // end class CmdProgramSelectedReply
 
