@@ -34,8 +34,9 @@ namespace Diagnostics {
 
 namespace Oven {
 
-CCoverSensorTest::CCoverSensorTest(void)
+CCoverSensorTest::CCoverSensorTest(CDiagnosticMessageDlg *dlg)
     : CTestBase()
+    , dlg(dlg)
 {
 }
 
@@ -47,130 +48,85 @@ int CCoverSensorTest::Run(void)
 {
     qDebug() << "Cover sensor test starts!";
 
-    this->FirstManualOpen();
-}
+    QString title((tr(" Cover Sensor Test")));
+    QString text;
+    int ret;
 
-void CCoverSensorTest::FirstManualOpen(void)
-{
-    qDebug() << "Cover sensor test: first manual open cover!";
+    text = tr("Please open the cover sensor manually.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::NEXT_CANCEL);
+    if (ret == CDiagnosticMessageDlg::CANCEL)
+        return RETURN_ERR_FAIL;
 
-    // inform the customer to manually open the cover
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Cover Sensor Test"));
-    dlg->SetText(tr("Please Open the Oven cover Manually!"));
+    ServiceDeviceProcess *dev = ServiceDeviceProcess::Instance();
+    int status;
+    enum {
+        __ERROR__ = -1,
+        __CLOSE__ = 0,
+        __OPEN__  = 1
+    };
+    dev->OvenGetCoverSensorState(&status);
+    qDebug() << "status : " << status;
 
-    CONNECTSIGNALSLOT(dlg, accepted(), this, FirstCheckOpen() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
+    if (status == __OPEN__)
+        text = tr("<p>Do you see the cover sensor status shows 'OPEN' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">OPEN</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    else if (status == __CLOSE__)
+        text = tr("<p>Do you see the cover sensor status shows 'OPEN' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">CLOSE</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    else
+        text = tr("<p>Do you see the cover sensor status shows 'OPEN' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">ERROR</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::YES_NO);
+    if (ret == CDiagnosticMessageDlg::NO) {
+        text = tr("Cover sensor test - Failed");
+        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        return RETURN_ERR_FAIL;
+    }
 
-    dlg->exec();
+    text = tr("Please close the cover sensor manually.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
 
-    delete dlg;
-}
+    dev->OvenGetCoverSensorState(&status);
+    qDebug() << "status : " << status;
 
-void CCoverSensorTest::FirstCheckOpen(void)
-{
-    qDebug() << "Cover sensor test: first check Cover sensor status!";
+    if (status == __OPEN__)
+        text = tr("<p>Do you see the cover sensor status shows 'CLOSE' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">OPEN</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    else if (status == __CLOSE__)
+        text = tr("<p>Do you see the cover sensor status shows 'CLOSE' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">CLOSE</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    else
+        text = tr("<p>Do you see the cover sensor status shows 'CLOSE' ?</p>"
+                  "<p>	------------------------------------------------</p>"
+                  "<p>	| Cover ensor status : <strong><span style=\"color:#E53333;\">ERROR</span></strong>&nbsp; &nbsp;|<strong></strong></p>"
+                  "<p>	------------------------------------------------</p>"
+                );
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::YES_NO);
+    if (ret == CDiagnosticMessageDlg::NO) {
+        text = tr("Cover sensor test - Failed");
+        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        return RETURN_ERR_FAIL;
+    }
 
-    /// \todo: read cover sensor status here **************************/
+    text = tr("Cover sensor test - Success");
+    dlg->ShowMessage(title, text, RETURN_OK);
 
-    // ask the customer to confirm the Cover sensor status
-    MainMenu::CDlgConfirmationStatus *dlg = new MainMenu::CDlgConfirmationStatus;
-    dlg->SetDialogTitle(tr("Cover Sensor Test"));
-    dlg->SetText(tr("Does the Oven Cover Sensor status show \"Open\"?"));
-    dlg->SetStatus(tr("Oven Cover sensor status: \"Open\"")); /// \todo change status here **********/
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SecondManualClose() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CCoverSensorTest::SecondManualClose(void)
-{
-    qDebug() << "Cover sensor test: second close oven cover!";
-
-    // inform the customer to close the cover
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Cover sensor Test"));
-    dlg->SetText(tr("Please close the Oven Cover manually!"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(),this, SecondCheckClose() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CCoverSensorTest::SecondCheckClose(void)
-{
-    qDebug() << "Cover sensor test: second check Cover sensor status!";
-
-    /// \todo: read cover sensor status here **************************/
-
-    // ask the customer to confirm the Cover sensor status
-    MainMenu::CDlgConfirmationStatus *dlg = new MainMenu::CDlgConfirmationStatus;
-    dlg->SetDialogTitle(tr("Cover sensor - Test"));
-    dlg->SetText(tr("Does the Oven Cover Sensor status show \"Closed\"?"));
-    dlg->SetStatus(tr("Oven Cover Sensor status: \"Closed\"")); /// \todo change status here **********/
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CCoverSensorTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS);
-    qDebug() << "Cover sensor test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Cover sensor - Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Cover sensor test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CCoverSensorTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE);
-    qDebug() << "Cover sensor test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Cover sensor - Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Cover sensor test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CCoverSensorTest::Cancel(void)
-{
-    qDebug() << "Cover sensor test canceled!";
+    return RETURN_OK;
 }
 
 } // namespace Oven

@@ -64,13 +64,6 @@ void COven::StartHeatingTestEmpty(void)
 
 void COven::StartHeatingTestWithLiquid(void)
 {
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
-//    qDebug() << "Oven: start heating test with liquid";
-
-//    //Oven::CHeatingTestWithLiquid test;
-
-//    //test.Run();
-
 }
 
 void COven::StartCoverSensorTest(void)
@@ -78,9 +71,9 @@ void COven::StartCoverSensorTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
     qDebug() << "Oven: start cover sensor test";
 
-    //Oven::CCoverSensorTest test;
+    Oven::CCoverSensorTest test(dlg);
 
-    //test.Run();
+    test.Run();
 }
 /****************************************************************************/
 /*!

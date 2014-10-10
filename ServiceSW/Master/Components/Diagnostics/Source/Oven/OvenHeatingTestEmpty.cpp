@@ -95,15 +95,15 @@ int CHeatingTestEmpty::StartHeating(void)
         dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
+
     qreal OvenTopTargetTemp = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
     qreal OvenBottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
     if (OvenTempSensor1 >= OvenTopTargetTemp || OvenTempSensor2 >= OvenBottomTargetTemp) {
         text = QString(tr("Please remove any paraffin bath present in "
                           "the paraffin oven. Then please leave the oven cover"
                           "opened to speed up the cooling process."));
-        ret = dlg->ShowConfirmMessage(title, text, true);
-
-        if (ret == QMessageBox::RejectRole)
+        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
 
           // if abort
@@ -113,7 +113,7 @@ int CHeatingTestEmpty::StartHeating(void)
         // show a waiting dialog
          // wait a few minutes later, read temp
         int t = p_TestCase->GetParameter("t").toInt();
-        ret = !RETURN_OK;
+
         for (int i = 0; i < t; i += 5) {
             QCOREAPPLICATION_EXEC(5);
             qreal OvenTempSensor1Cur;
@@ -135,17 +135,18 @@ int CHeatingTestEmpty::StartHeating(void)
             return RETURN_ERR_FAIL;
         }
 
+        dlg->HideWaitingDialog();
         text = tr("Please close oven cover.");
-        ret = dlg->ShowConfirmMessage(title, text, true);
-        if (ret == QMessageBox::RejectRole)
+        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
     } else {
         text = tr("Please make sure there are no "
                   "paraffin baths present in the paraffin oven."
                   "Verify the oven surfaces are dry and clean, "
                   "and the oven cover is closed.");
-        ret = dlg->ShowConfirmMessage(title, text, true);
-        if (ret == QMessageBox::RejectRole)
+        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
     }
 
@@ -167,7 +168,7 @@ int CHeatingTestEmpty::StartHeating(void)
     OvenTempSensor2 += 10;
     dev->OvenStartHeating(OvenTempSensor1, OvenTempSensor2);
     int t1 = p_TestCase->GetParameter("t1").toInt();
-    ret = !RETURN_OK;
+
     for (int i = 0; i < t1; i += 5) {
         QCOREAPPLICATION_EXEC(5);
         qreal OvenTempSensor1Cur;
@@ -193,7 +194,7 @@ int CHeatingTestEmpty::StartHeating(void)
     }
 
     int t2 = p_TestCase->GetParameter("t2").toInt();
-    ret = RETURN_OK;
+
     for (int i = 0; i < t2; i += 5) {
         QCOREAPPLICATION_EXEC(5);
         qreal OvenTempSensor1Cur;
