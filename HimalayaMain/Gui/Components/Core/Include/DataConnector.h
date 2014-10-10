@@ -355,7 +355,7 @@ public slots:
 
     void SendRequestedFilesToImport(QStringList FileList);
 
-    void SendParaffinTemperatureChanged();
+    void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint);
 
 signals:
 

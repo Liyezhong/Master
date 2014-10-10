@@ -45,19 +45,31 @@ class CmdParaffinMeltPointChanged : public Global::Command
      */
     /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdParaffinMeltPointChanged &);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of GetLastMeltPoint
+     */
+    /****************************************************************************/
+    inline int GetLastMeltPoint() const {return m_LastMeltPoint;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of GetCurrentMeltPoint
+     */
+    /****************************************************************************/
+    inline int GetCurrentMeltPoint() const {return m_CurrentMeltPoint;}
 public:
-    CmdParaffinMeltPointChanged(int TimeOut);
+    CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint);
     CmdParaffinMeltPointChanged(void);
 
     ~CmdParaffinMeltPointChanged(void);
 
     virtual QString GetName(void) const;
     static QString NAME; ///< Command name.
-  
 private:
     CmdParaffinMeltPointChanged(const CmdParaffinMeltPointChanged &); ///< Not implemented.
     const CmdParaffinMeltPointChanged &operator = (const CmdParaffinMeltPointChanged &); ///< Not implemented.
+    int m_LastMeltPoint;
+    int m_CurrentMeltPoint;
 
  }; // end class CmdParaffinMeltPointChanged
 
@@ -71,6 +83,9 @@ private:
 inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinMeltPointChanged &Cmd)
 {
     // copy base class data
+    Cmd.CopyToStream(Stream);
+    Stream << Cmd.GetLastMeltPoint();
+    Stream << Cmd.GetCurrentMeltPoint();
     return Stream;
 }
 
@@ -84,6 +99,9 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinMeltPoin
 inline QDataStream & operator >> (QDataStream &Stream, CmdParaffinMeltPointChanged &Cmd)
 {
     // copy base class data
+    Cmd.CopyFromStream(Stream);
+    Stream >> Cmd.m_LastMeltPoint;
+    Stream >> Cmd.m_CurrentMeltPoint;
     return Stream;
 }
 

@@ -98,6 +98,14 @@ signals:
      */
     /****************************************************************************/
     void TemperatureChanged(DataManager::CUserSettings &Settings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ParaffinMeltPointchanged
+     *  \param lastMeltPoint = the paraffin melt point in last time
+     *  \param currentMeltPoint = the new set paraffin melt point
+     */
+    /****************************************************************************/
+    void ParaffinMeltPointchanged(int lastMeltPoint, int currentMeltPoint);
 };
 
 

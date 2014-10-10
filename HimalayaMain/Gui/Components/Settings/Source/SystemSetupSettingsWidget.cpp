@@ -302,13 +302,16 @@ void CSystemSetupSettingsWidget::OnApply()
     ConfirmationMessageDlg.HideCenterButton();
     if (ConfirmationMessageDlg.exec())
     {
+        int lastMeltPoint = 0;
         if (mp_UserSettings)
         {
+            lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
             m_UserSettingsTemp = *mp_UserSettings;
         }
         m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
 
         emit TemperatureChanged(m_UserSettingsTemp);
+        emit ParaffinMeltPointchanged(lastMeltPoint, temp);
     }
 
 

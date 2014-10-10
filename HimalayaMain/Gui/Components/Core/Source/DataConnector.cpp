@@ -1221,9 +1221,9 @@ void CDataConnector::SendRequestedFilesToImport(QStringList FileList)
  *  \brief Send command to Main about the ParaffinTemperature is Changed
  */
 /****************************************************************************/
-void CDataConnector::SendParaffinTemperatureChanged()
+void CDataConnector::SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint)
 {
-    MsgClasses::CmdParaffinMeltPointChanged Command(COMMAND_TIME_OUT);
+    MsgClasses::CmdParaffinMeltPointChanged Command(COMMAND_TIME_OUT, lastMeltPoint, currentMeltPoint);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 

@@ -33,8 +33,8 @@ QString CmdParaffinMeltPointChanged::NAME = "MsgClasses::CmdParaffinMeltPointCha
  *
  */
 /****************************************************************************/
-CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut)
-    : Command(timeOut)
+CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut, int lastMeltPoint, int currentMeltPoint)
+    : Command(timeOut), m_LastMeltPoint(lastMeltPoint), m_CurrentMeltPoint(currentMeltPoint)
 {
 }
 
