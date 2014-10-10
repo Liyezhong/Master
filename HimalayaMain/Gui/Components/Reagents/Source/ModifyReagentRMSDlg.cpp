@@ -133,7 +133,6 @@ QString CModifyReagentRMSDlg::HandleEscapedChar(QString str)
 {
     QString EscapedText;
     if (str.contains('&')) {
-
         int len = str.length();
         for (int i = 0; i < len; i ++ ) {
             QChar c = str.at(i);
@@ -144,8 +143,11 @@ QString CModifyReagentRMSDlg::HandleEscapedChar(QString str)
                 EscapedText.push_back(c);
             }
         }
+        return EscapedText;
     }
-    return EscapedText;
+    else {
+        return str;
+    }
 }
 
 

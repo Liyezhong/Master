@@ -209,6 +209,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     ResizeHorizontalSection();
 
     QString LongName = HandleEscapedChar(m_Program.GetName());
+
     if (m_ButtonType == NEW_BTN_CLICKED)
     {
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
@@ -681,8 +682,11 @@ QString CModifyProgramDlg::HandleEscapedChar(QString str)
                 EscapedText.push_back(c);
             }
         }
+        return EscapedText;
     }
-    return EscapedText;
+    else {
+        return str;
+    }
 }
 
 /****************************************************************************/
