@@ -255,7 +255,7 @@ void CTestServiceDeviceController::initTestCase()
 
 void CTestServiceDeviceController::caseTestDeviceProcessor()
 {
-    mp_DeviceControl->OnCalibrateDevice(Service::DEVICE_PRESSURE_SENSOR);
+    mp_DeviceControl->Initialize();
 }
 
 void CTestServiceDeviceController::caseTestManufacturingTestHandler()

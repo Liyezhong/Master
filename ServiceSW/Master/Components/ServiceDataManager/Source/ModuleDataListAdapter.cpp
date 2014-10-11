@@ -187,7 +187,7 @@ void CModuleDataListAdapter::SetRetortLifeCycle()
                           mp_RetortRef->GetSubModuleInfo("temp_retort_bottom"), TIME);
 
     SetSubModuleLifeCycle(RetortModule->GetSubModuleInfo("Lid Lock"),
-                          mp_RetortRef->GetSubModuleInfo("lid_status"), TIME);
+                          mp_RetortRef->GetSubModuleInfo("lid_status"), CYCLE);
 
     SetSubModuleLifeCycle(RetortModule->GetSubModuleInfo("Level Sensor"),
                           mp_LaRef->GetSubModuleInfo("temp_lsensor"), CYCLE);
