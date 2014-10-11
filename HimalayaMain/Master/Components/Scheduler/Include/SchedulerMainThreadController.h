@@ -263,7 +263,6 @@ typedef struct
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         bool m_IsSafeReagentState;                            ///< Scheduler is in RS_Tissue_Protect state
         bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
-        bool m_NeedEnterClean;                                ///< Need enter cleaning program once program completes
         bool m_StopFilling;                                   ///< When restart filling, need stop filling
         PowerFailureStep_t m_PowerFailureStep;                 ///< power failure step
 

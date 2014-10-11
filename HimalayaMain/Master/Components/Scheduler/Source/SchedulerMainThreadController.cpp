@@ -127,7 +127,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
-    m_NeedEnterClean = false;
     m_StopFilling = false;
 
     (void)m_ProgramStatusInfor.ReadProgramStatusFile();
@@ -440,9 +439,8 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
-    if (m_NeedEnterClean)
+    if (m_ProgramStatusInfor.IsRetortContaminted())
     {
-        m_NeedEnterClean = false;
         MsgClasses::CmdProgramAcknowledge* commandEnterCleaning(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = GetNewCommandRef();
@@ -1330,7 +1328,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RC_REHEATING_CLEANING == ctrlCmd)
         {
             LogDebug("Go to RcReHeating_Clean");
-            m_NeedEnterClean = true;
             m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), true);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
@@ -3232,11 +3229,6 @@ void SchedulerMainThreadController::Fill()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-    if (m_CurProgramID.at(0) != 'C')
-    {
-        m_NeedEnterClean = true;
-    }
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {
