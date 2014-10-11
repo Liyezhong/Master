@@ -25,6 +25,9 @@
 #include "Global/Include/EventObject.h"
 #include "HimalayaDataManager/Include/DataContainer.h"
 
+//lint -e641
+//lint -e1536
+
 namespace DataManager {
 /****************************************************************************/
 /*!
@@ -65,7 +68,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 
     if (!mp_DPL) {
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::GUI_MSG_BOX);
-        m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT, Global::tTranslatableStringList());
+        (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT, Global::tTranslatableStringList());
         return false;
     }
     // check constraints
@@ -73,7 +76,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
     // check max number of programs (12)
     if (mp_DPL->GetNumberOfPrograms() > PROGRAMS_MAX) {
         qDebug() << "### Too many programs (max 12 allowed): " << mp_DPL->GetNumberOfPrograms();
-        m_ErrorsHash.insert(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT, Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX) );
+        (void)m_ErrorsHash.insert(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT, Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX) );
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT,
                                                    Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX), (int)Global::GUI_MSG_BOX);
         VerifiedData = false;
@@ -95,7 +98,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                                                            Global::tTranslatableStringList() << p_Program->GetID()
                                                            << p_Program->GetName(),
                                                            Global::GUI_MSG_BOX);
-                m_ErrorsHash.insert(EVENT_DM_INVALID_PROGRAM_ID,
+                (void)m_ErrorsHash.insert(EVENT_DM_INVALID_PROGRAM_ID,
                                    Global::tTranslatableStringList() << p_Program->GetID()
                                    << p_Program->GetName());
                 VerifiedData = false;
@@ -108,7 +111,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                                                            Global::tTranslatableStringList() << p_Program->GetID()
                                                            << p_Program->GetName(),
                                                            Global::GUI_MSG_BOX);
-                m_ErrorsHash.insert(EVENT_DM_INVALID_PROGRAM_ID,
+                (void)m_ErrorsHash.insert(EVENT_DM_INVALID_PROGRAM_ID,
                                    Global::tTranslatableStringList() << p_Program->GetID()
                                    << p_Program->GetName());
                 VerifiedData = false;
@@ -118,7 +121,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
             if ((p_Program->GetName().length() < NAME_LENGTH_MIN) ||
                     (p_Program->GetName().length() > NAME_LENGTH_MAX)) {
                 qDebug()<<"###Short name length check failed"<<p_Program->GetName();
-                m_ErrorsHash.insert(EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
                                    Global::tTranslatableStringList() <<  p_Program->GetName()
                                    <<QString::number(NAME_LENGTH_MIN) << QString::number(NAME_LENGTH_MAX));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
@@ -131,7 +134,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
             // user program name can not contain leica letter
             if ((p_Program->GetName().contains("LEICA",Qt::CaseInsensitive) && p_Program->GetID().at(0) != 'L')) {
                 qDebug()<<"###user program name can not contain leica letter-- check failed.";
-                m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
+                (void)m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
                                    Global::tTranslatableStringList() <<  p_Program->GetName());
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
                                                            Global::tTranslatableStringList() << p_Program->GetName(),
@@ -142,7 +145,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 
             //check no of steps
             if (!p_Program->IsLeicaProgram() && p_Program->GetNumberOfSteps() > PROGRAM_STEPS_MAX) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
                                    Global::tTranslatableStringList() <<  p_Program->GetName()
                                    << QString::number(PROGRAM_STEPS_MAX));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
@@ -158,7 +161,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                                                            Global::tTranslatableStringList() <<  p_Program->GetName()
                                                            << QString::number(PROGRAM_STEPS_MIN) << QString::number(PROGRAM_STEPS_MAX),
                                                            Global::GUI_MSG_BOX);
-                m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT,
                                     Global::tTranslatableStringList() <<  p_Program->GetName()
                                     << QString::number(PROGRAM_STEPS_MIN));
                 qDebug()<<"### ProgramId less than 1";
@@ -255,7 +258,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                 int duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep.GetDuration());
                 if(duration > STEP_DURATION_MAX  || duration < STEP_DURATION_MIN)
                 {
-                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
+                    (void)m_ErrorsHash.insert(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
                                         Global::tTranslatableStringList() <<  QString::number(X+1) << p_Program->GetName()
                                         <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX));
                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
@@ -294,7 +297,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
             Value = SplitString.toInt(&Ok);
 
             if (!Ok) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -304,7 +307,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
             }
 
             if (Value > 4 || Value < 0) {  // The max time supported is 99:59 , so the max day is 4
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -317,7 +320,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
             SplitString.chop(1);
             Value = SplitString.toInt(&Ok);
             if (!Ok) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -326,7 +329,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
                 VerifiedData = false;
             }
             if ( Value > 24 || Value < 0) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -338,7 +341,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
             SplitString.chop(1);
             Value = SplitString.toInt(&Ok);
             if (!Ok) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -347,7 +350,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
                 VerifiedData = false;
             }
             if (Value > 60 || Value < 0) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -359,7 +362,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
             SplitString.chop(1);
             Value = SplitString.toInt(&Ok);
             if (!Ok) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
@@ -368,7 +371,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
                 VerifiedData = false;
             }
             if (Value > 60 || Value < 0) {
-                m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                                            Global::tTranslatableStringList() << ProgramName,
