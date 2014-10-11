@@ -2742,7 +2742,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                  || (Scenario >= 281 && Scenario <= 297) )
             {
                 LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(Scenario));
-                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
+                //RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
             }
             if(Scenario >= 271 && Scenario <= 277)
             {
@@ -2758,8 +2758,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-            //In error state, we just notify the user. For normal cases (in Run or Idle state), we have used RS_Pause for this
-            if ("ERROR" == StepID)
+            if ("ERROR" != StepID)
             {
                 MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
                 Q_ASSERT(CmdOvenCoverOpen);
