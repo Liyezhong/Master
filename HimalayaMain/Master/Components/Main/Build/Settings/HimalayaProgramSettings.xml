@@ -173,7 +173,7 @@
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
-                <Parameter Key="ParaffinTempRange" Value="64,70"/>
+                <Parameter Key="ParaffinTempRange" Value="65,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
@@ -187,7 +187,7 @@
                 <Parameter Key="NominalTemperature" Value="4"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
-                <Parameter Key="ParaffinTempRange" Value="64,70"/>
+                <Parameter Key="ParaffinTempRange" Value="65,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
@@ -229,7 +229,7 @@
                 <Parameter Key="NominalTemperature" Value="15"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
-                <Parameter Key="ParaffinTempRange" Value="64,70"/>
+                <Parameter Key="ParaffinTempRange" Value="65,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
@@ -243,7 +243,7 @@
                 <Parameter Key="NominalTemperature" Value="4"/>
                 <Parameter Key="NominalTemperatureWithParaffin" Value="15"/>
                 <Parameter Key="OverTimeTempOffset" Value="10"/>
-                <Parameter Key="ParaffinTempRange" Value="64,70"/>
+                <Parameter Key="ParaffinTempRange" Value="65,70"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
                 <Parameter Key="SlopeTempChange" Value=""/>

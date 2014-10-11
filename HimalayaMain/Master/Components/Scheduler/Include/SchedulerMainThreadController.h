@@ -1027,10 +1027,18 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) that Oven has been heated
-         *  \return from GetOvenHeatingTime of qint64
+         *  \return from GetOvenHeatingTime of quint64
          */
         /****************************************************************************/
-        qint64 GetOvenHeatingTime();
+        quint64 GetOvenHeatingTime();
+
+        /****************************************************************************/
+        /**
+         *  \brief Get the time(in seconds) that Oven has been heated
+         *  \return from GetOvenHeatingRemainingTime of quint64
+         */
+        /****************************************************************************/
+        quint64 GetOvenHeatingRemainingTime();
 
         /****************************************************************************/
         /**

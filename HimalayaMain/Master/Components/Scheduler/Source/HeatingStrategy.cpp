@@ -764,7 +764,6 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     }
     if ("RTBottom" == HeaterName)
     {
-
         pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
         dynamic_cast<CmdRTSetTempCtrlOFF*>(pHeatingCmd)->SetType(RT_BOTTOM);
     }
@@ -1078,7 +1077,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
     //Firstly, get the Parrifin melting point (user input)
-    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    int userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
@@ -1088,14 +1087,27 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
         qint64 now = QDateTime::currentMSecsSinceEpoch();
         qint64 timeElapse = 0;
-        if (0 != heatingSensor.heatingStartTime)
+        if (0 == heatingSensor.heatingStartTime)
+        {
+            qint64 remainTime = mp_SchedulerController->GetOvenHeatingRemainingTime();
+            if(50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
+            {
+                heatingSensor.heatingStartTime = (12 * 3600 - remainTime) * 1000;
+            }
+            else if(65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
+            {
+                heatingSensor.heatingStartTime = (15 * 3600 - remainTime) * 1000;
+            }
+            timeElapse = heatingSensor.heatingStartTime;
+        }
+        else
         {
             timeElapse = now - heatingSensor.heatingStartTime;
         }
         if (meltingRange.first <= userInputMeltingPoint && meltingRange.second >= userInputMeltingPoint
                 && (timeRange.first * 1000) <= timeElapse && (timeRange.second * 1000) >= timeElapse)
         {
-                break;
+            break;
         }
     }
 
@@ -1135,7 +1147,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
                 heatingSensor.OvenBottom2OTCheckPassed = false;
                 heatingSensor.OTCheckPassed = false;
                 heatingSensor.IsStartedHeating = true;
-                heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+                heatingSensor.heatingStartTime += QDateTime::currentMSecsSinceEpoch();
             }
 
             return DCL_ERR_FCT_CALL_SUCCESS;
@@ -1300,7 +1312,6 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
     }
 }
 
-/*lint -e533 */
 bool HeatingStrategy::ConstructHeatingSensorList()
 {
     //For Retort Level Sensor

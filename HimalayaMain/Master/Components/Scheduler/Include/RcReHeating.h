@@ -185,6 +185,7 @@ private:
     qint64                          m_StartHeatingTime;                 //!< the start heating time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     bool                            m_DrainIsOk;                        //!< is drain OK
+    int                             m_OvenRemainingTime;                //!< oven remaning time
 };
 
 }

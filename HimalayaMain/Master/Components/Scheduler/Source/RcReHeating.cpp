@@ -33,6 +33,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     ,m_RcReHeatingStep(START_TEMPERATURE)
     ,m_IsNeedRunCleaning(false)
     ,m_DrainIsOk(false)
+    ,m_OvenRemainingTime(0)
 {
     CONNECTSIGNALSLOT(this, SignalDrain(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(this, SignalStopDrain(), mp_SchedulerThreadController, OnStopDrain());
@@ -150,9 +151,19 @@ bool CRcReHeating::CheckTheTemperature()
     }
     else
     {
-        if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > mp_SchedulerThreadController->GetOvenHeatingTime() * 1000)
+        if(0 == m_StartReq)
         {
+            m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime() * 1000;
+            m_StartReq++;
+        }
+        if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
+        {
+            m_StartReq = 0;
             ret = true;
+        }
+        if(3 == m_StartReq)
+        {
+            m_StartReq = 0;
         }
     }
     return ret;
