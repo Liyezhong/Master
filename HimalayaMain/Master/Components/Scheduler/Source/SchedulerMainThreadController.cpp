@@ -2180,8 +2180,29 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
+    QString ProgramName;
+    if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID()))
+    {
+        ProgramName = mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->GetName();
+    }
+
     if (Cmd.ProgramActionType() != DataManager::PROGRAM_START)
+    {
+        RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName); //log
         return;
+    }
+    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_PAUSE)
+    {
+        RaiseEvent(EVENT_SCHEDULER_REC_PAUSE_PROGRAM,QStringList()<<ProgramName); //log
+    }
+    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_ABORT)
+    {
+        RaiseEvent(EVENT_SCHEDULER_REC_ABORT_PROGRAM,QStringList()<<ProgramName); //log
+    }
+    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_DRAIN)
+    {
+        RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,QStringList()<<ProgramName); //log
+    }
 
     //Check for Service
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
@@ -2230,12 +2251,13 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction & Cmd)
 {
     Q_UNUSED(Ref)
-    m_Mutex.lock();
     NetCommands::CmdSystemAction *p_CmdSystemAction = new NetCommands::CmdSystemAction();
     p_CmdSystemAction->SetActionString(Cmd.GetActionString());
     p_CmdSystemAction->SetEventKey(Cmd.GetEventKey());
+    m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(p_CmdSystemAction));
     m_Mutex.unlock();
+    RaiseEvent(EVENT_SCHEDULER_REC_ERROR_ACTION,QStringList()<<Cmd.GetActionString()); //only log
 }
 
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
@@ -2306,6 +2328,7 @@ void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, cons
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Cmd.GetTimeout(), Cmd.QuitAppShutdownActionType())));
     m_Mutex.unlock();
     m_RefCleanup = Ref;
+    RaiseEvent(EVENT_SCHEDULER_REC_ACTION_SHUTDOWN);//log the action
 }
 
 void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, const MsgClasses::CmdSavedServiceInfor & Cmd)
@@ -2373,7 +2396,7 @@ QString SchedulerMainThreadController::GetReagentGroupID(const QString& ReagentI
 
 qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup)
 {
-    qint32 scenario = 0;
+    quint32 scenario = 0;
     bool reagentRelated = false;
     switch(State)
     {
@@ -2519,57 +2542,39 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
 
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode)
 {
+    bool working = false;
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
     {
+        RaiseEvent(EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY);//log
         ReturnCode_t retCode;
-
         //hardware not ready yet
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
         PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
-        (void)resPerTurnOnRelay->GetResult(retCode);
+        (void)resPerTurnOnRelay->GetResult(retCode); 
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            //todo: error handling
-            LogDebug(QString("Failed turn on main relay, return code: %1").arg(retCode));
-            goto ERROR;
+            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE, QStringList()<<QString::number(retCode)); //log and GUI
         }
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, true);
-
-        (void)SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
-
-        (void)CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
+        else
+        {
+            RaiseEvent(EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY);//log
+            working = true;
+        }
     }
     else
     {
-ERROR:
+        RaiseEvent(EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE,QStringList()<<QString::number(RetCode));
+    }
+
+    if(!working)
+    {
         //send command to main controller to tell init failed
         MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_FAILED));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-        if(RetCode == DCL_ERR_TIMEOUT)
-        {
-            LogDebug("Some devices are not found during DCL's initialization period.");
-        }
-        //error happend
-        // set state machine "init" to "error" (David)
         m_SchedulerMachine->SendErrorSignal();
-        //for debug
-        LogDebug(QString("Error while init, Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     }
 
     // Get the slave module attribute list
@@ -2585,12 +2590,10 @@ ERROR:
     {
         return;
     }
-
-    m_TickTimer.start();
-
 	// Create HeatingStrategy
 	mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
 							m_SchedulerCommandProcessor, mp_DataManager));
+    m_TickTimer.start();
 
 }
 

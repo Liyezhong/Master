@@ -209,7 +209,6 @@ typedef struct
         QWaitCondition m_WaitCondition;                           ///< condition variable for DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
         QQueue<ProgramStationInfo_t> m_ProgramStationList;       ///<  Definition/Declaration of variable m_ProgramStationList
-        QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;       ///<  Definition/Declaration of variable m_FunctionModuleStatusList
 
         QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
         SchedulerCommandProcessorBase*  m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
@@ -939,7 +938,24 @@ protected:
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active);
             }
         }
+        /****************************************************************************/
+        /**
+         * @brief raise event to event handler
+         *
+         *  \iparam    Event  event id
+         *  \iparam    Parameters paramter list
+         */
+         /****************************************************************************/
+        inline void RaiseEvent(const quint32 Event, const QStringList& Parameters = QStringList())
+        {
 
+            Global::tTranslatableStringList ParList;
+            for(QStringList::ConstIterator ite = Parameters.constBegin(); ite != Parameters.constEnd(); ite++)
+            {
+                ParList << *ite;
+            }
+//            Global::EventObject::Instance().RaiseEvent(Event,ParList);
+        }
         /****************************************************************************/
         /**
          * @brief Destructor.
