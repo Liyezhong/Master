@@ -27,6 +27,7 @@
 CProgramStatusInfor::CProgramStatusInfor()
 {
     m_LastHeatingOn = false;
+    m_LastTimeUpdateHeatingTime = 0;
 }
 
 CProgramStatusInfor::~CProgramStatusInfor()
