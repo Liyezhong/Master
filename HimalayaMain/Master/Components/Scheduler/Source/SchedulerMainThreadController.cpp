@@ -2588,8 +2588,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         return;
     }
 	// Create HeatingStrategy
-	mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
-							m_SchedulerCommandProcessor, mp_DataManager));
+    mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this, m_SchedulerCommandProcessor, mp_DataManager));
     m_TickTimer.start();
 
 }
