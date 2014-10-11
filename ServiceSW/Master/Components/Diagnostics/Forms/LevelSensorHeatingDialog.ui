@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Diagnostics::CDiagnosticHeatingDialog</class>
- <widget class="QWidget" name="Diagnostics::CDiagnosticHeatingDialog">
+ <class>Diagnostics::CLevelSensorHeatingDialog</class>
+ <widget class="QWidget" name="Diagnostics::CLevelSensorHeatingDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>242</height>
+    <width>332</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">

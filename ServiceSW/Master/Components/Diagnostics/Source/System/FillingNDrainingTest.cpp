@@ -23,13 +23,14 @@
 #include <QDebug>
 
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Diagnostics/Include/LevelSensorHeatingDialog.h"
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 
 namespace Diagnostics {
 
 namespace System {
 
-QString FILLINGNDRAINING_TITLE("System Filling && Draining Test");
+QString FILLINGNDRAINING_TITLE("System Filling & Draining Test");
 
 CFillingNDrainingTest::CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),
@@ -66,7 +67,8 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    //mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, "Rotary valve initializing...");
+    QString Text = "Rotary valve initializing...";
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     Ret = p_DevProc->RVInitialize();
     mp_MessageDlg->HideWaitingDialog();
     if (Ret == 0) {
@@ -82,8 +84,6 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    qreal HeatingTargetTemp(0);
-    //qreal CurrentTemp = ;
     int ReagentGroup = p_SelectDlg->GetReagentGroup();
     int BottleNumber = p_SelectDlg->GetBottleNumber();
 
@@ -93,26 +93,70 @@ int CFillingNDrainingTest::Run(void)
     delete p_SelectDlg;
     p_SelectDlg = NULL;
 
-    if (ReagentGroup == 1) {
-        HeatingTargetTemp = p_TestCase->GetParameter("XyleneTargetTemp").toInt();
+    Text = "Rotary Valve is moving to tube position";
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+    Ret = p_DevProc->RVMovePosition(true, BottleNumber);
+    mp_MessageDlg->HideWaitingDialog();
+    if (Ret == 0) {
+        ShowFinishDlg(3);
+        return Ret;
     }
-    else if (ReagentGroup == 2) {
-        HeatingTargetTemp = p_TestCase->GetParameter("OtherTargetTemp").toInt();
+
+    CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(!ReagentGroup, mp_Parent);
+    p_HeatingDlg->SetTitle(FILLINGNDRAINING_TITLE);
+
+    bool HeatingRet = p_HeatingDlg->StartHeating();
+
+    if (p_HeatingDlg->result() == 0) {
+        delete p_HeatingDlg;
+        p_HeatingDlg = NULL;
+        return Ret;
     }
 
-    p_DevProc->RVStartHeating(HeatingTargetTemp);
+    delete p_HeatingDlg;
+    p_HeatingDlg = NULL;
 
-    ShowFinishDlg(3);
-}
+    if (!HeatingRet) {
+        ShowFinishDlg(4);
+        return Ret;
+    }
 
-bool CFillingNDrainingTest::CheckRVTemperature()
-{
-    int Ret = 0;
+    Text = QString("Filling retort from the %1 bottle").arg(BottleNumber);
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+    QTime TimeNow = QTime::currentTime();
+    Ret = p_DevProc->PumpSucking(120);
+    int SuckingTime = TimeNow.secsTo(QTime::currentTime());
+    mp_MessageDlg->HideWaitingDialog();
+    if (Ret == 0) {
+        ShowFinishDlg(5);
+        return Ret;
+    }
 
+    Text = QString("Rotary Valve is moving to %1 sealing position").arg(BottleNumber);
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+    (void)p_DevProc->RVMovePosition(false, BottleNumber);
+    mp_MessageDlg->HideWaitingDialog();
 
-    //p_DevProc->Pause(60000);
+    Text = QString("Rotary Valve is moving to %1 tube position").arg(BottleNumber);
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+    (void)p_DevProc->RVMovePosition(true, BottleNumber);
+    mp_MessageDlg->HideWaitingDialog();
 
+    Text = "Retort was successfully filled. Start Draining";
+    mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+    TimeNow = QTime::currentTime();
+    Ret = p_DevProc->PumpDraining(60);
+    int DrainingTime  = TimeNow.secsTo(QTime::currentTime());
+    mp_MessageDlg->HideWaitingDialog();
 
+    Text = QString("System Filling & Draining Test finished<br>"\
+            "Bottle No.: %1<br>Filling Time: %2<br>Draining Time: %3<br>")
+            .arg(QString::number(BottleNumber), QTime().addSecs(SuckingTime).toString("hh:mm:ss"),
+                 QTime().addSecs(DrainingTime).toString("hh:mm:ss"));
+
+    mp_MessageDlg->ShowMessage(FILLINGNDRAINING_TITLE, Text, RETURN_OK);
+
+    return Ret;
 }
 
 int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
@@ -127,7 +171,7 @@ int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
                 "liquid back to the original position. Thereafter flush the retort if necessary";
     }
     else if (StepNum == 2) {
-        Text = "If you want to test with different reagents , please keep "\
+        Text = "If you want to test with different reagents, please keep "\
                 "the reagent compatibility in mind and do not cause any cross contamination";
     }
 
@@ -156,17 +200,17 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
                 "rotary valve, reboot the Service Software and repeat this test";
     }
     else if (RetNum == 3) {
-        Text = "System Filling & Draining Test failed. "\
-                "Level sensor’s target temperature was not "\
-                "reached in time. Clean level sensor, repeat this "\
-                "test. If still failed, exchange the level sensor";
-    }
-    else if (RetNum == 4) {
         Text = "System Filling & Draining failed. "\
                 "It might work in some minutes when solidified paraffin in "\
                 "the rotary valve is molten. Repeat initializing test again in "\
                 "about 15mins. If it still fails in the second try, exchange "\
                 "rotary valve, reboot the Service Software and repeat this test.";
+    }
+    else if (RetNum == 4) {
+        Text = "System Filling & Draining Test failed. "\
+                "Level sensor’s target temperature was not "\
+                "reached in time. Clean level sensor, repeat this "\
+                "test. If still failed, exchange the level sensor";
     }
     else if (RetNum == 5) {
         Text = "System Filling & Draining Test failed. Level "\

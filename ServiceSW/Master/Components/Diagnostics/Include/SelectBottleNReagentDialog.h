@@ -68,7 +68,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To get selected reagent group
-     *  \return the 1-Xylene, 2-Other Reagents.
+     *  \return the 0-Xylene, 1-Other Reagents.
      */
     /****************************************************************************/
     int GetReagentGroup() {

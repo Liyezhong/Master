@@ -41,6 +41,7 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
+    this->SetDialogTitle("System Filling && Draining Test");
     mp_ButtonGroup = new QButtonGroup();
     mp_ButtonGroup->addButton(mp_Ui->radioButtonXylene, 0);
     mp_ButtonGroup->addButton(mp_Ui->radioButtonOther, 1);
@@ -59,7 +60,7 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
     mp_ScrollWheel->SetNonContinuous();
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->widget->SetThreeDigitMode(true);
-    //mp_ScrollWheel->SetCurrentData(m_Position);
+    mp_Ui->radioButtonOther->setChecked(true);
     mp_Ui->widget->SetSubtitle("bottle number", 0);
 
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
@@ -116,7 +117,7 @@ bool CSelectBottleNReagentDialog::eventFilter(QObject *p_Object, QEvent *p_Event
 /****************************************************************************/
 void CSelectBottleNReagentDialog::OnOk()
 {
-    m_BottleNumber = mp_ScrollWheel->GetCurrentData().toInt();
+    m_BottleNumber = mp_ScrollWheel->GetCurrentData().toInt() + 1;
     accept();
 }
 
@@ -126,13 +127,8 @@ void CSelectBottleNReagentDialog::OnAbort()
 }
 
 void CSelectBottleNReagentDialog::OnRadioBtnSelected(int radioBtnIndex)
-{
-    if (radioBtnIndex == 0) {
-        m_ReagentGroup = 1;
-    }
-    else {
-        m_ReagentGroup = 2;
-    }
+{   
+    m_ReagentGroup = radioBtnIndex;
 }
 
 } // end namespace Diagnostics

@@ -47,6 +47,7 @@ private:
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;
     QString                 m_AlarmFlag;
+    QString                 m_DialogTitle;
     int                     m_LocalRemote;
 };
 

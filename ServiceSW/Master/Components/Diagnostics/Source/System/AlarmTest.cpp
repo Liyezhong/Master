@@ -32,6 +32,7 @@ CAlarmTest::CAlarmTest(QString AlarmFlag, CDiagnosticMessageDlg* p_MessageDlg, Q
       mp_MessageDlg(p_MessageDlg),
       m_AlarmFlag(AlarmFlag)
 {
+    m_DialogTitle = m_AlarmFlag + " Alarm Test";
     if (m_AlarmFlag == "Local") {
         m_LocalRemote = 1;
     }
@@ -52,10 +53,9 @@ int CAlarmTest::Run(void)
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemAlarm");
     int DetectTimeOut = p_TestCase->GetParameter("DetectTimeOut").toInt();
 
-    QString Title;
     QString WaitText = QString("Please remove any external ") + m_AlarmFlag.toLower()
             + QString(" alarm connection within the next %1 secs").arg(DetectTimeOut);
-    mp_MessageDlg->ShowWaitingDialog(Title, WaitText);
+    mp_MessageDlg->ShowWaitingDialog(m_DialogTitle, WaitText);
     bool CheckStatus = CheckAlarmStatus(DetectTimeOut, false);
     mp_MessageDlg->HideWaitingDialog();
     if (!CheckStatus) {
@@ -65,7 +65,7 @@ int CAlarmTest::Run(void)
 
     WaitText = QString("Please create a shortcut between pin4 and pin5 on the ") + m_AlarmFlag.toLower()
             + QString(" alarm connector for at least 2 sec within the next %1 secs").arg(DetectTimeOut);
-    mp_MessageDlg->ShowWaitingDialog(Title, WaitText);
+    mp_MessageDlg->ShowWaitingDialog(m_DialogTitle, WaitText);
     CheckStatus = CheckAlarmStatus(DetectTimeOut, true);
     mp_MessageDlg->HideWaitingDialog();
 
@@ -119,7 +119,6 @@ bool CAlarmTest::CheckAlarmStatus(int TimeOutSec, bool ConnectedFlag)
 
 int CAlarmTest::ShowConfirmDlg(int StepNum)
 {
-    QString Title = m_AlarmFlag + " Alarm Test";
     QString Text = "Please Measure and confirm the following resistances:<br>";
 
     if (StepNum == 1) {
@@ -131,25 +130,24 @@ int CAlarmTest::ShowConfirmDlg(int StepNum)
                "Between pin1 and pin3: Less the 10 Ohm";
     }
 
-    return mp_MessageDlg->ShowConfirmMessage(Title, Text);
+    return mp_MessageDlg->ShowConfirmMessage(m_DialogTitle, Text);
 }
 
 void CAlarmTest::ShowFinishDlg(int RetNum)
 {
-    QString Title = m_AlarmFlag + " Alarm Test";
     QString Text;
 
     ErrorCode_t Ret = RETURN_ERR_FAIL;
 
     if (RetNum == 1) {
-        Text = Title + " failed.<br>Please check " + m_AlarmFlag.toLower() + " alarm connector, cable and ASB15.";
+        Text = m_DialogTitle + " failed.<br>Please check " + m_AlarmFlag.toLower() + " alarm connector, cable and ASB15.";
     }
     else if (RetNum == 2) {
-        Text = Title + " successful.<br>Please re-connect a formerly connected external alarm system.";
+        Text = m_DialogTitle + " successful.<br>Please re-connect a formerly connected external alarm system.";
         Ret = RETURN_OK;
     }
 
-    mp_MessageDlg->ShowMessage(Title, Text, Ret);
+    mp_MessageDlg->ShowMessage(m_DialogTitle, Text, Ret);
 }
 
 } // namespace System

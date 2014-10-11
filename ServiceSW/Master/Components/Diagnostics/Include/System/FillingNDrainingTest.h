@@ -43,7 +43,6 @@ private:
 
     void ShowFinishDlg(int RetNum);
 
-    bool CheckRVTemperature();
 private:
     QWidget*                mp_Parent;
     CDiagnosticMessageDlg*  mp_MessageDlg;
