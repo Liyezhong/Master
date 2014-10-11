@@ -86,7 +86,7 @@ void CSpeakerTest::PlaySound(QString& Volume)
     QStringList PlayParams;
 
     SetVolume = "amixer set PCM " + Volume + "%";
-    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note1.ogg";
+    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note6.ogg";
 
     qDebug()<<PlayParams;
     mp_SpeakProc->start(SetVolume);

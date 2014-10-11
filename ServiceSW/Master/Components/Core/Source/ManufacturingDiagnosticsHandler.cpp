@@ -1087,8 +1087,14 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             while(1) {
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
-                if (!Result && ShowConfirmDlgForSystemSealing()) {
-                    continue;
+                if (!Result) {
+                    if (ShowConfirmDlgForSystemSealing()) {
+                        continue;
+                    }
+                    else {
+                        NextFlag = false;
+                        break;
+                    }
                 }
                 break;
             }
@@ -1101,8 +1107,14 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             while(1) {
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
-                if (!Result && ShowConfirmDlgForSystemSealing()) {
-                    continue;
+                if (!Result) {
+                    if (ShowConfirmDlgForSystemSealing()) {
+                        continue;
+                    }
+                    else {
+                        NextFlag = false;
+                        break;
+                    }
                 }
                 break;
             }

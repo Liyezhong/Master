@@ -67,7 +67,7 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    QString Text = "Rotary valve initializing...";
+    QString Text = "Rotary valve is initializing...";
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     Ret = p_DevProc->RVInitialize();
     mp_MessageDlg->HideWaitingDialog();
@@ -93,7 +93,7 @@ int CFillingNDrainingTest::Run(void)
     delete p_SelectDlg;
     p_SelectDlg = NULL;
 
-    Text = "Rotary Valve is moving to tube position";
+    Text = QString("Rotary Valve is moving to tube position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     Ret = p_DevProc->RVMovePosition(true, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
@@ -121,7 +121,7 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    Text = QString("Filling retort from the %1 bottle").arg(BottleNumber);
+    Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     QTime TimeNow = QTime::currentTime();
     Ret = p_DevProc->PumpSucking(120);
@@ -132,12 +132,12 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    Text = QString("Rotary Valve is moving to %1 sealing position").arg(BottleNumber);
+    Text = QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     (void)p_DevProc->RVMovePosition(false, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
 
-    Text = QString("Rotary Valve is moving to %1 tube position").arg(BottleNumber);
+    Text = QString("Rotary Valve is moving to tube position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     (void)p_DevProc->RVMovePosition(true, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
