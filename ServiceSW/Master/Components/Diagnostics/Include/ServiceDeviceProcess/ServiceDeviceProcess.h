@@ -130,8 +130,8 @@ public:
     int PumpSetFan(quint8 OnFlag);
     int PumpSetValve(quint8 ValveIndex, quint8 ValveState);
     int PumpStopCompressor();
-    int PumpSucking(quint32 DelayTime);
-    int PumpDraining(quint32 DelayTime);
+    int PumpSucking(quint32 DelayTime=0);
+    int PumpDraining(quint32 DelayTime=0);
 
     int GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName);
     void Pause(quint32 MillSeconds);
