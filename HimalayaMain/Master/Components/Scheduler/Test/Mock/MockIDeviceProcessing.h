@@ -106,7 +106,7 @@ public:
     MOCK_METHOD1(ALVaccum, ReturnCode_t(float targetPressure));
 
     MOCK_METHOD3(ALDraining, ReturnCode_t(quint32 DelayTime, float targetPressure, bool IgnorePressure));
-    MOCK_METHOD2(IDForceDraining, ReturnCode_t(quint32 RVPos, float targetPressure));
+    MOCK_METHOD3(IDForceDraining, ReturnCode_t(quint32 RVPos, float targetPressure, bool IsMoveRV));
     MOCK_METHOD1(ALStopCmdExec, ReturnCode_t(quint8 CmdType));
 
     MOCK_METHOD2(ALFilling, ReturnCode_t(quint32 DelayTime, bool EnableInsufficientCheck));

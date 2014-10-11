@@ -164,8 +164,8 @@ public:
         delete mp_IDeviceProcessing;
         mp_IDeviceProcessing = NULL;
 
+
         m_pSchedulerMainController->deleteLater();
-        //delete m_pSchedulerMainController;
         m_pSchedulerMainController = NULL;
     }
 
