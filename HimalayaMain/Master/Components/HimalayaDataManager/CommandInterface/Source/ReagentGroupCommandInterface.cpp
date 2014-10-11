@@ -87,12 +87,8 @@ void CReagentGroupCommandInterface::UpdateReagentGroup(
     }
     else
     {
-        //BroadCast Command
-        mp_MasterThreadController->SendAcknowledgeOK(ref, ackCommandChannel);
-        mp_MasterThreadController->BroadcastCommand(
-                    Global::CommandShPtr_t(new MsgClasses::CmdReagentGroupUpdate(1000, cmd.GroupId(), cmd.GroupColor())));
-
-        qDebug()<<"\n\n Update Reagent Success";
+        SendAckAndUpdateGUI(ref, ackCommandChannel, Global::CommandShPtr_t(
+                                new MsgClasses::CmdReagentGroupUpdate(10000, cmd.GroupId(), cmd.GroupColor())));
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentGroupList->Write();
 }

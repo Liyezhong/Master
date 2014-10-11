@@ -100,14 +100,14 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         return;
     }
     else {
-        //BroadCast Command
         if(mp_MasterThreadController){
             mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         }
         (void) ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
          if(mp_MasterThreadController){
-             mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdNewProgram(1000, ProgramDataStream)));
+             SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                     new MsgClasses::CmdNewProgram(10000, ProgramDataStream)));
          }
         qDebug()<<"\n\n\n Adding New Program Success";
     }
@@ -148,8 +148,8 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
     }
     else {
         if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-            mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdProgramDeleteItem(5000, Cmd.GetItemId())));
+            SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                    new MsgClasses::CmdProgramDeleteItem(10000, Cmd.GetItemId())));
             qDebug()<<"\n\n Delete Program Success";
         }
     }
@@ -220,7 +220,8 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
         (void)ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
         if(mp_MasterThreadController){
-            mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdProgramUpdate(1000, ProgramDataStream)));
+            SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                    new MsgClasses::CmdProgramUpdate(10000, ProgramDataStream)));
             qDebug()<<"\n\n Update Program Success";
         }
     }

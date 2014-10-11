@@ -37,8 +37,6 @@ CReagentCommandInterface::CReagentCommandInterface(CDataManager *p_DataManager, 
     CCommandInterfaceBase(p_DataManager, p_MasterThreadController, p_DataContainer)
 {
     try {
-        CONNECTSIGNALSLOT(p_DataManager, ReagentUpdate(CReagent &), this , UpdateReagent(CReagent &));
-        CONNECTSIGNALSLOT(p_DataManager, ReagentContainerUpdate(CDataReagentList &), this , UpdateReagentContainer(CDataReagentList &));
     }
     catch (...) {
         qDebug()<<"Connecting signal slot failed";
@@ -101,8 +99,8 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         ReagentData.clear();
         (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
-        MsgClasses::CmdReagentAdd* p_Command = new MsgClasses::CmdReagentAdd(1000, ReagentDataStream);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+        SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                new MsgClasses::CmdReagentAdd(10000, ReagentDataStream)));
         qDebug()<<"\n\n\n Adding New Reagent Success";
         /*lint -e429 */
     }
@@ -138,8 +136,8 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
              qDebug()<<"\n\n Delete Reagent Failed";
     }
     else {
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdReagentRemove(5000, Cmd.GetReagentID())));
+        SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                new MsgClasses::CmdReagentRemove(10000, Cmd.GetReagentID())));
         qDebug()<<"\n\n Delete Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
@@ -180,73 +178,11 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         ReagentData.clear();
         (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdReagentUpdate(1000, ReagentDataStream)));
+        SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                new MsgClasses::CmdReagentUpdate(10000, ReagentDataStream)));
         qDebug()<<"\n\n Update Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
-}
-
-/****************************************************************************/
-/**
- * \brief Slot called when reagent in Updated by RMS component
- *  \iparam Reagent = Updated reagent
- */
-/****************************************************************************/
-void CReagentCommandInterface::UpdateReagent(CReagent &Reagent)
-{
-    Q_ASSERT(mp_MasterThreadController);
-    if (!mp_MasterThreadController)
-        return;
-
-    bool Result = true;
-    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->UpdateReagent(&Reagent);
-    if (!Result) {
-        qDebug()<<" \n\n Update Reaget Failed";
-        //! Todo Inform Event Handler
-    }
-    else {
-        //Inform components who use Reagent container
-        QByteArray BA;
-        QDataStream ReagentDataStream(&BA, QIODevice::ReadWrite);
-        ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-        try {
-            ReagentDataStream << Reagent;
-            MsgClasses::CmdReagentUpdate* p_Command = new MsgClasses::CmdReagentUpdate(1000, ReagentDataStream);
-            mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
-            /*lint -e429 */
-        }
-        catch (...) {
-            qDebug()<<" \n\n Update Reaget Failed";
-            //! Todo Inform Event Handler
-        }
-
-    }
-}
-
-/****************************************************************************/
-/**
- * \brief Slot called when reagent list in Updated by RMS component
- * \iparam ReagentList = Updated reagent list
- */
-/****************************************************************************/
-void CReagentCommandInterface::UpdateReagentContainer(CDataReagentList &ReagentList)
-{
-    Q_ASSERT(mp_MasterThreadController);
-    if (!mp_MasterThreadController)
-        return;
-
-    try {
-        *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList) = ReagentList;
-        QByteArray BA;
-        QDataStream ReagentDataStream(&BA, QIODevice::ReadWrite);
-        ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-        ReagentDataStream << *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, ReagentDataStream)));
-    }
-    catch (...) {
-        qDebug()<<"\n\n\n Reagent List Container Update Failed";
-        //! Todo Inform Event Handler
-    }
 }
 
 }// End of namespace DataManager

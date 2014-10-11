@@ -254,20 +254,6 @@ signals:
      */
     /****************************************************************************/
     void StationContainerUpdate();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal ReagentUpdate
-     *  \iparam Reargent Reargent
-     */
-    /****************************************************************************/
-    void ReagentUpdate(CReagent &Reargent);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal ReagentContainerUpdate
-     *  \iparam ReagentList ReagentList
-     */
-    /****************************************************************************/
-    void ReagentContainerUpdate(CDataReagentList & ReagentList);
 
 };
 }// namespace DataManager

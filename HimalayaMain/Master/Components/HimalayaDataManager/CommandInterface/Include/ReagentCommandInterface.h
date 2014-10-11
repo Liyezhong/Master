@@ -46,9 +46,6 @@ private:
     void AddReagent(Global::tRefType, const MsgClasses::CmdReagentAdd &Cmd, Threads::CommandChannel &AckCommandChannel);
     void DeleteReagent(Global::tRefType, const MsgClasses::CmdReagentRemove &Cmd, Threads::CommandChannel &AckCommandChannel);
 
-private slots:
-    void UpdateReagent(CReagent &Reagent);
-    void UpdateReagentContainer(CDataReagentList &ReagentList);
 };
 
 }// end of namespace DataManager

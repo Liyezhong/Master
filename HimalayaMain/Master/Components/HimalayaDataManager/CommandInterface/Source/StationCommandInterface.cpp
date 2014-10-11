@@ -90,10 +90,9 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
         mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
     }
     else {
-        //BroadCast Command
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationChangeReagent(1000, cmd.StationID(), cmd.ReagentID())));
-        qDebug()<<"\n\n Change reagent in station Success";
+        SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                new MsgClasses::CmdStationChangeReagent(10000, cmd.StationID(), cmd.ReagentID())));
+
     }
 
     (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
@@ -121,10 +120,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
      }
      else {
-         //BroadCast Command
-         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationResetData(1000, cmd.StationID())));
-         qDebug()<<"\n\n Reset station data Success";
+         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                 new MsgClasses::CmdStationResetData(10000, cmd.StationID())));
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
@@ -154,10 +151,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
      }
      else {
-         //BroadCast Command
-         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationSetAsFull(1000, cmd.StationID())));
-         qDebug()<<"\n\n SetStationAsFull Success";
+         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                 new MsgClasses::CmdStationSetAsFull(10000, cmd.StationID())));
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
@@ -184,10 +179,9 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
      }
      else {
-         //BroadCast Command
-         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationSetAsEmpty(1000, Cmd.StationID())));
-         qDebug()<<"\n\n SetStationAsEmpty Success";
+         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                 new MsgClasses::CmdStationSetAsEmpty(10000, Cmd.StationID())));
+
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
@@ -228,9 +222,10 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      }
 
      //for update the qata in UI
-     mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-     mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdUpdateStationReagentStatus(1000, Cmd.StationIDs(),
-     /*lint -e534 */                                                                                                                  Cmd.CassetteCount())));
+     SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                             new MsgClasses::CmdUpdateStationReagentStatus(10000, Cmd.StationIDs(), Cmd.CassetteCount())));
+
+    /*lint -e534 */
      static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 }

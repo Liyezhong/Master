@@ -147,7 +147,8 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
         {
             if(mp_MasterThreadController)
             {
-                mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdSavedServiceInfor(5000, Cmd.DeviceType())));
+                SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
+                                        new MsgClasses::CmdSavedServiceInfor(10000, Cmd.DeviceType())));
             }
 
         }
