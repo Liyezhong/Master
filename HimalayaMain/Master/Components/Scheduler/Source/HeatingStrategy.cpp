@@ -1052,7 +1052,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = iter->TemperatureOffset+userInputTemp;
+            qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            iter->OTTargetTemperature =  meltingPoint;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
