@@ -30,7 +30,8 @@ namespace Diagnostics {
 CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *parent)
     :MainMenu::CDialogFrame(parent),
      mp_Ui(new Ui::CLevelSensorHeatingDialog),
-     m_XyleneFlag(XyleneFlag)
+     m_XyleneFlag(XyleneFlag),
+     m_Abort(false)
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
@@ -71,6 +72,10 @@ bool CLevelSensorHeatingDialog::StartHeating()
 
     p_DevProc->LSStartHeating(true, !m_XyleneFlag);
     while (WaitSeconds) {
+        if (m_Abort) {
+            (void)p_DevProc->LSStopHeating();
+            return false;
+        }
         p_DevProc->LSGetTemp(&CurrentTemp);
         if (CurrentTemp >= ExchangePIDTemp) {
             break;
@@ -84,6 +89,10 @@ bool CLevelSensorHeatingDialog::StartHeating()
     p_DevProc->LSStartHeating(false, !m_XyleneFlag);
 
     while (WaitSeconds) {
+        if (m_Abort) {
+            (void)p_DevProc->LSStopHeating();
+            return false;
+        }
         p_DevProc->LSGetTemp(&CurrentTemp);
         if (CurrentTemp > ExchangePIDTemp) {
             break;
@@ -150,6 +159,7 @@ bool CLevelSensorHeatingDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
 void CLevelSensorHeatingDialog::AbortDialog()
 {
     //ServiceDeviceProcess::Instance()->LSStopHeating();
+    m_Abort = true;
     reject();
 }
 
