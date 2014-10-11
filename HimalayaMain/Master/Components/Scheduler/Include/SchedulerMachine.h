@@ -949,6 +949,7 @@ public:
      *  \brief  Handle RsReagentCheck for power failure
      *  \param cmdName - command name
      *  \param retCode - return code
+     *  \param needDrain - bool value
      */
     /****************************************************************************/
     void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, bool needDrain);

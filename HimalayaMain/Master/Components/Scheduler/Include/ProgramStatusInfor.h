@@ -73,6 +73,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief get last reagent group for normal protocol, not involve the cleaning program
+     *  \return Qstring from GetLastReagentGroup
      */
     /****************************************************************************/
     QString GetLastReagentGroup();
@@ -107,8 +108,8 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief Set step id
-     *  \param StepID - step id
+     *  \brief Set station list
+     *  \param List - QList
      */
     /****************************************************************************/
     void SetStationList(const QList<QString>&  List);

@@ -71,10 +71,6 @@ public:
     /*!
      *  \brief  Reset variable list in the state machine
      *
-     *  \param  void
-     *
-     *  \return void
-     *
      */
     /****************************************************************************/
     void ResetVarList();
