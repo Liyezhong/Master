@@ -1037,6 +1037,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_PAUSE == stepState)
         {
+            m_CurrentStepState = PSSM_PAUSE;
             if(CTRL_CMD_START == ctrlCmd)
             {
                 // resume the program
@@ -1102,6 +1103,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
+             m_CurrentStepState = PSSM_ABORTING;
             if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALReleasePressure" == cmdName) )
             {
                 RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
@@ -1162,6 +1164,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTED == stepState)
         {
+             m_CurrentStepState = PSSM_ABORTED;
             //program finished
             AllStop();
             LogDebug("Program aborted!");
@@ -2719,7 +2722,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
 	{
         m_TempRTBottom = strctHWMonitor.TempRTBottom1;
-	}
+    }
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTSide))
 	{
         m_TempRTSide = strctHWMonitor.TempRTSide;
@@ -2780,7 +2783,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	{
         if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
         {
-            if ("ERROR" != StepID)
+            if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
             {
                 // retort is open, turn on the fan
                 m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
@@ -2799,6 +2802,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                     RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
+
+                // Notify retort lid is opened
+                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                Q_ASSERT(CmdRetortCoverOpen);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
             }
 
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
@@ -2806,15 +2815,11 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-            // Notify retort lid is opened
-            MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-            Q_ASSERT(CmdRetortCoverOpen);
-            Global::tRefType fRef = GetNewCommandRef();
-            SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+
         }
         if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
 		{
-            if ("ERROR" != StepID)
+            if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
             {
                 // retort is closed, turn off the fan
                 m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
