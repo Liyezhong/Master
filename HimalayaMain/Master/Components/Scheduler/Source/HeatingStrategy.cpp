@@ -1310,7 +1310,8 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTLevelSensor.OTCheckPassed = false;
     m_RTLevelSensor.SetTemp4High = false;
     m_RTLevelSensor.SetTemp4Low = false;
-    QStringList sequenceList = {"11", "12", "21", "22"};
+    QStringList sequenceList;
+    sequenceList << "11" << "12" << "21" <<  "22";
     if (false == this->ConstructHeatingSensor(m_RTLevelSensor, sequenceList))
     {
         return false;
@@ -1324,16 +1325,16 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         funcKey.name = m_RTLevelSensor.sensorName;
         funcKey.sequence = *iter;
         QString curSpeed = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RTLevelSensor.devName, funcKey, "CurrentSPeed");
-        m_RTLevelSensor.CurrentSpeedList.insert(*iter, curSpeed);
+        (void)m_RTLevelSensor.CurrentSpeedList.insert(*iter, curSpeed);
         bool ok = false;
         qreal exchangePIDtmp = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RTLevelSensor.devName, funcKey, "ExchangePIDTemp", ok);
         if (false == ok)
         {
             return false;
         }
-        m_RTLevelSensor.ExchangePIDTempList.insert(*iter, exchangePIDtmp);
+        (void)m_RTLevelSensor.ExchangePIDTempList.insert(*iter, exchangePIDtmp);
     }
-
+    sequenceList.clear();
 
     // For Retort Top
     m_RTTop.devName = "Retort";
@@ -1341,11 +1342,12 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTTop.heatingStartTime = 0;
     m_RTTop.curModuleId = "";
     m_RTTop.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_RTTop, sequenceList))
     {
         return false;
     }
+    sequenceList.clear();
 
     // For Retort Bottom
     m_RTBottom.devName = "Retort";
@@ -1353,7 +1355,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTBottom.heatingStartTime = 0;
     m_RTBottom.curModuleId = "";
     m_RTBottom.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_RTBottom, sequenceList))
     {
         return false;
@@ -1372,8 +1374,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         {
             return false;
         }
-        m_RTBottom.TemperatureDiffList.insert(*iter, tempDiff);
+        (void)m_RTBottom.TemperatureDiffList.insert(*iter, tempDiff);
     }
+    sequenceList.clear();
 
     //For Oven Top
     m_OvenTop.devName = "Oven";
@@ -1382,7 +1385,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenTop.heatingStartTime = 0;
     m_OvenTop.curModuleId = "";
     m_OvenTop.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_OvenTop, sequenceList))
     {
         return false;
@@ -1410,7 +1413,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         {
             return false;
         }
-        m_OvenTop.OTTempOffsetList.insert(*iter, OTTempOffset);
+        (void)m_OvenTop.OTTempOffsetList.insert(*iter, OTTempOffset);
 
         //ParaffinTempRange
         QString paraffinTempRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenTop.devName, funcKey, "ParaffinTempRange");
@@ -1418,7 +1421,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         QPair<qreal,qreal> tempPair;
         tempPair.first = strList[0].toDouble(&ok);
         tempPair.second = strList[1].toDouble(&ok);
-        m_OvenTop.ParaffinTempRangeList.insert(*iter, tempPair);
+        (void)m_OvenTop.ParaffinTempRangeList.insert(*iter, tempPair);
 
         //TimeRange
         QString timeRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenTop.devName, funcKey, "TimeRange");
@@ -1426,8 +1429,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         QPair<qint64, qint64> timePair;
         timePair.first = strList[0].toInt(&ok);
         timePair.second = strList[1].toInt(&ok);
-        m_OvenTop.TimeRangeList.insert(*iter,timePair);
+        (void)m_OvenTop.TimeRangeList.insert(*iter,timePair);
     }
+    sequenceList.clear();
 
     //For Oven Bottom
     m_OvenBottom.devName = "Oven";
@@ -1436,7 +1440,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenBottom.heatingStartTime = 0;
     m_OvenBottom.curModuleId = "";
     m_OvenBottom.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_OvenBottom, sequenceList))
     {
         return false;
@@ -1464,7 +1468,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         {
             return false;
         }
-        m_OvenBottom.OTTempOffsetList.insert(*iter, OTTempOffset);
+        (void)m_OvenBottom.OTTempOffsetList.insert(*iter, OTTempOffset);
 
         //ParaffinTempRange
         QString paraffinTempRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenBottom.devName, funcKey, "ParaffinTempRange");
@@ -1472,7 +1476,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         QPair<qreal,qreal> tempPair;
         tempPair.first = strList[0].toDouble(&ok);
         tempPair.second = strList[1].toDouble(&ok);
-        m_OvenBottom.ParaffinTempRangeList.insert(*iter, tempPair);
+        (void)m_OvenBottom.ParaffinTempRangeList.insert(*iter, tempPair);
 
         //TimeRange
         QString timeRange = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_OvenBottom.devName, funcKey, "TimeRange");
@@ -1480,8 +1484,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         QPair<qint64, qint64> timePair;
         timePair.first = strList[0].toInt(&ok);
         timePair.second = strList[1].toInt(&ok);
-        m_OvenBottom.TimeRangeList.insert(*iter,timePair);
+        (void)m_OvenBottom.TimeRangeList.insert(*iter,timePair);
     }
+    sequenceList.clear();
 
     //For Rotary Valve Rod
     m_RV_1_HeatingRod.devName = "Rotary Valve";
@@ -1489,7 +1494,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RV_1_HeatingRod.heatingStartTime = 0;
     m_RV_1_HeatingRod.curModuleId = "";
     m_RV_1_HeatingRod.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_RV_1_HeatingRod, sequenceList))
     {
         return false;
@@ -1506,13 +1511,14 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         QString userInput = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RV_1_HeatingRod.devName, funcKey, "UserInput");
         if ("false" == userInput)
         {
-            m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, false);
+            (void)m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, false);
         }
         else
         {
-            m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, true);
+            (void)m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, true);
         }
     }
+    sequenceList.clear();
 
     m_RV_2_Outlet.devName = "Rotary Valve";
     m_RV_2_Outlet.sensorName = "RV_2_Outlet";
@@ -1522,7 +1528,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RV_2_Outlet.needCheckOT = false;
     m_RV_2_Outlet.needCheckOTModuleId = "";
     m_RV_2_Outlet.HeatingOverTime = 0;
-    sequenceList = {"1", "2", "3", "4"};
+    sequenceList << "1" << "2" << "3" << "4";
 
     iter = sequenceList.begin();
     for (; iter!=sequenceList.end(); ++iter)
@@ -1567,8 +1573,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             m_RV_2_Outlet.HeatingOverTime = heatingOverTime;
         }
 
-        m_RV_2_Outlet.functionModuleList.insert(*iter, funcModule);
+        (void)m_RV_2_Outlet.functionModuleList.insert(*iter, funcModule);
     }
+    sequenceList.clear();
 
     //For LA RV Tube
     m_LARVTube.devName = "LA";
@@ -1576,7 +1583,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_LARVTube.heatingStartTime = 0;
     m_LARVTube.curModuleId = "";
     m_LARVTube.OTCheckPassed = false;
-    sequenceList = {"1"};
+    sequenceList << "1";
     if (false == this->ConstructHeatingSensor(m_LARVTube, sequenceList))
     {
         return false;
@@ -1605,8 +1612,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             }
             OTCheckList.push_back(scenario);
         }
-        m_LARVTube.OTCheckScenarioList.insert(*iter, OTCheckList);
+        (void)m_LARVTube.OTCheckScenarioList.insert(*iter, OTCheckList);
     }
+    sequenceList.clear();
 
     //For LA Wax Trap
     m_LAWaxTrap.devName = "LA";
@@ -1614,7 +1622,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_LAWaxTrap.heatingStartTime = 0;
     m_LAWaxTrap.curModuleId = "";
     m_LAWaxTrap.OTCheckPassed = false;
-    sequenceList = {"1"};
+    sequenceList << "1";
     if (false == this->ConstructHeatingSensor(m_LAWaxTrap, sequenceList))
     {
         return false;
@@ -1644,8 +1652,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             }
             OTCheckList.push_back(scenario);
         }
-        m_LAWaxTrap.OTCheckScenarioList.insert(*iter, OTCheckList);
+        (void)m_LAWaxTrap.OTCheckScenarioList.insert(*iter, OTCheckList);
     }
+    sequenceList.clear();
 
     return true;
 }
