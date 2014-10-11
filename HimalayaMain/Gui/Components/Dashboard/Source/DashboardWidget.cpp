@@ -270,10 +270,9 @@ void CDashboardWidget::OnTissueProtectPassed()
 
 void CDashboardWidget::OnOvenCoverOpen()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    mp_MessageDlg->SetTitle(CommonString::strOK);
-    QString strTemp(m_strOvenCoverOpen);
-    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+    mp_MessageDlg->SetText(m_strOvenCoverOpen);
     mp_MessageDlg->SetButtonText(1, CommonString::strYes);
     mp_MessageDlg->SetButtonText(3, CommonString::strNo);
     mp_MessageDlg->HideCenterButton();
