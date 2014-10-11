@@ -35,6 +35,16 @@ using::testing::AtLeast;
 using::testing::_;
 using::testing::Lt;
 
+inline void waitTime(qint8 time)
+{
+    QTime delayTime = QTime::currentTime().addMSecs(time*1000);
+    while (QTime::currentTime() < delayTime)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+}
+
+
 namespace Scheduler {
 
 /****************************************************************************/
@@ -61,7 +71,6 @@ private:
     DataManager::CDataManager*                  mp_DataManager;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     SchedulerMainThreadController*              mp_SchedulerMainController;
-    SchedulerCommandProcessorBase*              mp_SchdCmdProcessor;
     HeatingStrategy*                            mp_HeatingStrategy;
 
 }; // end class TestHeatingStrategy
@@ -70,16 +79,14 @@ private:
 TestHeatingStrategy::TestHeatingStrategy()
  :mp_IDeviceProcessing(new MockIDeviceProcessing())
  ,mp_SchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
- ,mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(mp_SchedulerMainController))
 {
     Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
 
     mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
     mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
 
-    mp_SchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
     mp_SchedulerMainController->DataManager(mp_DataManager);
-    dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchdCmdProcessor)->SetIDeviceProcessing(mp_IDeviceProcessing);
+    dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(m_pSchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
     mp_HeatingStrategy = new HeatingStrategy(mp_SchedulerMainController, mp_SchdCmdProcessor, mp_DataManager);
 }
@@ -92,17 +99,14 @@ TestHeatingStrategy::~TestHeatingStrategy()
     delete mp_DataManager;
     mp_DataManager = NULL;
 
+    delete mp_HeatingStrategy;
+    mp_HeatingStrategy = NULL;
+
     delete mp_IDeviceProcessing;
     mp_IDeviceProcessing = NULL;
 
-    delete mp_SchedulerMainController;
-    mp_SchedulerMainController = NULL;
-
-    delete mp_SchdCmdProcessor;
-    mp_SchdCmdProcessor = NULL;
-
-    delete mp_HeatingStrategy;
-    mp_HeatingStrategy = NULL;
+    m_pSchedulerMainController->deleteLater();
+    m_pSchedulerMainController = NULL;
 }
 
 void TestHeatingStrategy::UTAllCase()
