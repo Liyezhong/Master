@@ -32,6 +32,7 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Include/DataStationListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "DataManager/Containers/SWVersions/Include/SWVersionListVerifier.h"
 #include "Global/Include/SystemPaths.h"
 #include "EncryptionDecryption/WriteArchive/Include/WriteArchive.h"
@@ -62,7 +63,8 @@ private:
     DataManager::CDataManager& m_DataManager;                   ///< Store the data manager - pointer
     DataManager::CDashboardDataStationList* mp_StationList;              ///< Store the Station list
     DataManager::CDataReagentList* mp_ReagentList;              ///< Store the reagent list
-    DataManager::CExportConfiguration* mp_ExportConfiguration;  ///< Store export configuration    
+    DataManager::CExportConfiguration* mp_ExportConfiguration;  ///< Store export configuration
+    DataManager::CHimalayaUserSettings* mp_UserSetting;         ///< store user setting xml files
     QString m_CommandValue;                                     ///< Store the command value
     quint32 m_NoOfLogFiles;                                     ///< Store the no of log files value for service export
     QString m_CommandName;                                      ///< Store the command name i.e. either user export or service export
@@ -173,6 +175,16 @@ private:
      */
     /****************************************************************************/
     bool WriteRMSFileData(const QFile &RMSFile, const QStringList StationIDList);
+    /****************************************************************************/
+    /**
+     * \brief convert rms mode to string
+     *
+     * \iparam           mode         rms mode
+     *
+     * \return string for rm mode
+     */
+    /****************************************************************************/
+    QString RMSModeToString(Global::RMSOptions_t mode);
 
     /****************************************************************************/
     /**

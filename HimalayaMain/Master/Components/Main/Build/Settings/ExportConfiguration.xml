@@ -17,6 +17,7 @@
 	  <File Path="InstrumentHistoryArchive.xml" />
 	  <File Path="ServiceParameters.xml" />
 	  <File Path="ServiceHelpText.txt" />
+	  <File Path="RMS_Status.csv" />
       <Group File="Logfiles" />
     </List>
   </ServiceConfig>
@@ -33,6 +34,7 @@
     <UserReport>
       <List Encryption="inactive" Certified="inactive" Compressed="active" PackageType="nonnative">
         <Group File="DailyRun" />
+	  	<File Path="RMS_Status.csv" />
       </List>
     </UserReport>
   </UserConfig>

@@ -87,10 +87,10 @@ const QString TYPEOFIMPORT_LANGUAGE         = "Language"; ///< constant for the 
 // constant for strings
 const QString STRING_UNDEFINED              = "UNDEFINED"; ///< constant for the UNDEFINED string
 const QString STRING_EXPIRED                = "Expired"; ///< constant for the Expired station
-const QString STRING_H                      = "H"; ///< constant string for Heated stations
-const QString STRING_L                      = "L"; ///< constant string for Loading stations
-const QString STRING_R                      = "R"; ///< constant string for regular stations
-const QString STRING_U                      = "U"; ///< constant string for unloading stations
+//const QString STRING_H                      = "H"; ///< constant string for Heated stations
+//const QString STRING_L                      = "L"; ///< constant string for Loading stations
+//const QString STRING_R                      = "R"; ///< constant string for regular stations
+//const QString STRING_U                      = "U"; ///< constant string for unloading stations
 const QString STRING_T                      = "T"; ///< constant string for time
 const QString STRING_SPACE                  = " "; ///< constant string for space
 const QString STRING_NEWLINE                = "\n"; ///< constant string for new line
@@ -115,7 +115,7 @@ const QString CSV_STRING_FORMATVERSION      = "Format Version: 1\nFileName: RMS_
 const QString CSV_STRING_TIMESTAMP          = "TimeStamp: "; ///< constant string for Timestamp
 const QString CSV_STRING_OPERATINGMODE      = "OperatingMode: "; ///< constant string for operating mode
 const QString CSV_STRING_SERIALNUMBER       = "SerialNumber: "; ///< constant string for serial number
-const QString CSV_STRING_COLHEADER          = "Station ID,Reagent,RMS,Remaining slides,Slides max,Vial shelf life,Best before date,Lot No,Exclusive\n"; ///< constant string for the column header
+const QString CSV_STRING_COLHEADER          = "Station ID,Reagent,Status,RMS,Remaining\n"; ///< constant string for the column header
 
 // constants for commands
 const QString COMMAND_MKDIR                 = "mkdir "; ///< constant string for the command 'mkdir'
@@ -146,6 +146,7 @@ ImportExportThreadController::ImportExportThreadController(Global::gSourceType T
     mp_StationList(NULL),
     mp_ReagentList(NULL),
     mp_ExportConfiguration(NULL),
+    mp_UserSetting(NULL),
     m_CommandName(SourceType),
     m_SerialNumber(STRING_UNDEFINED),
     m_DeviceName(STRING_UNDEFINED),
@@ -204,6 +205,7 @@ void ImportExportThreadController::CreateAndInitializeObjects() {
             mp_ReagentList = new DataManager::CDataReagentList();
         }
         *mp_ReagentList = *m_DataManager.GetReagentList();
+         mp_UserSetting = m_DataManager.GetUserSettings();
     }
 
     // get the device configuration so that we can use the device name
@@ -420,15 +422,15 @@ bool ImportExportThreadController::DoPretasks() {
             m_TargetFileName = TargetFileName;
             mp_ExportConfiguration->SetTargetFileName(TargetFileName);
 
-//            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
+            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
 
             // create RMS file
-/*
+
             if (!CreateRMSFile(ExportDirPath + QDir::separator() + FILENAME_RMSSTATUS)) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
+                Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
                 return false;
             }            
-*/
+
             if (!WriteTempExportConfigurationAndFiles()) {
                 return false;
             }
@@ -548,7 +550,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
 bool ImportExportThreadController::CreateRMSFile(const QString FileName) {
     // check whether station list exists or not
     // this is prerequiste to create the RMS file
-    if (mp_StationList != NULL && mp_ReagentList != NULL) {
+    if (mp_StationList != NULL && mp_ReagentList != NULL && mp_UserSetting != NULL) {
         // create the RMS file
         QFile RMSFile(FileName);
         // open the file in write mode
@@ -563,8 +565,7 @@ bool ImportExportThreadController::CreateRMSFile(const QString FileName) {
             // write starting information to the file
             FileData = CSV_STRING_FORMATVERSION + CSV_STRING_TIMESTAMP +
                        QDateTime::currentDateTime().toString(Qt::ISODate).replace(STRING_T, STRING_SPACE) + STRING_NEWLINE +
-                       CSV_STRING_OPERATINGMODE + (m_WorkStationMode ? STRING_WORKSTATION : STRING_STANDALONE) +
-                       STRING_NEWLINE + CSV_STRING_SERIALNUMBER + m_SerialNumber + STRING_NEWLINE + CSV_STRING_COLHEADER;
+                       CSV_STRING_SERIALNUMBER + m_SerialNumber + STRING_NEWLINE + CSV_STRING_COLHEADER;
 
             if (RMSFile.write(qPrintable(FileData)) == -1) {
                 // file will be closed automatically when function is exited because QFile is not a pointer
@@ -591,93 +592,95 @@ bool ImportExportThreadController::CreateRMSFile(const QString FileName) {
 
 /****************************************************************************/
 QStringList ImportExportThreadController::SortedStationIDs() {
-    // need to sort all the station IDs it should be like first heated stations, regular stations
-    // Loading stations and Unloading stations
-    // write the contents of the file
-    QStringList StationIDList;
-    // check whether station list exists or not
-    // this is prerequiste to create sorted station ids
-#ifndef HIMALAYA_IMPORT_EXPORT
-    if (mp_StationList != NULL) {
-        QStringList StringNames;
-        // store the station ID starting letters so it is easy to sort the data
-        StringNames << STRING_H << STRING_R << STRING_L << STRING_U;
+    return QStringList()<<"P1"<<"P2"<<"P3"<<"S1"<<"S2"<<"S3"<<"S4"<<"S5"<<"S6"<<"S7"<<"S8"<<"S9"<<"S10"<<"S11"<<"S12"<<"S13";
+}
 
-        for (int StringCount = 0; StringCount < StringNames.count(); StringCount++) {
-            QStringList SortedIDs;
-            for (int StationCount = 0; StationCount < mp_StationList->GetNumberOfStations(); StationCount++) {
-                DataManager::CDashboardStation* p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetStation(StationCount));
-                if (p_Station != NULL) {
-                    // check the station ID starting letter with the string name
-                    if (p_Station->GetStationID().left(1).compare(StringNames.value(StringCount)) == 0) {
-                        SortedIDs << p_Station->GetStationID();
-                    }
-                }
-            }
-            SortedIDs.sort();
-            StationIDList << SortedIDs;
-            SortedIDs.clear();
-        }
+QString ImportExportThreadController::RMSModeToString(Global::RMSOptions_t mode)
+{
+    QString str = "RMS_OFF";
+    switch (mode)
+    {
+    case Global::RMS_CASSETTES:
+        str = "RMS_CASSETTES";
+        break;
+    case Global::RMS_CYCLES:
+        str = "RMS_CYCLES";
+        break;
+    case Global::RMS_DAYS:
+        str = "RMS_DAYS";
+        break;
+    case Global::RMS_OFF:
+        str = "RMS_OFF";
+        break;
+    case Global::RMS_UNDEFINED:
+        str = "RMS_UNKNOWN";
+        break;
     }
-#endif
-    return StationIDList;
+    return str;
 }
 
 /****************************************************************************/
 bool ImportExportThreadController::WriteRMSFileData(const QFile &RMSFile,
                                                     const QStringList StationIDList) {
-    // check whether station list exists or not
-    // this is prerequiste to create the RMS file
-    Q_UNUSED(RMSFile)
-    Q_UNUSED(StationIDList)
-#ifndef HIMALAYA_IMPORT_EXPORT
-    if (mp_StationList != NULL && mp_ReagentList != NULL) {
+    if (mp_StationList != NULL && mp_ReagentList != NULL && mp_UserSetting != NULL) {
         QString FileData;
-
+        Global::RMSOptions_t RMS_Mode = Global::RMS_UNDEFINED;
         for (int StationIDCount = 0; StationIDCount < StationIDList.count(); StationIDCount++) {
             DataManager::CDashboardStation* p_Station = const_cast<DataManager::CDashboardStation*>
-                    (mp_StationList->GetStation(StationIDList.value(StationIDCount)));
+                    (mp_StationList->GetDashboardStation(StationIDList.value(StationIDCount)));
 
             if (p_Station != NULL) {
-                FileData = p_Station->GetStationID() + DELIMITER_STRING_COMMA;
-                // get the reagent data from the station reagent ID
+                // station id
+                FileData = p_Station->GetDashboardStationID() + DELIMITER_STRING_COMMA;
+                // reagent name
                 DataManager::CReagent* p_Reagent = const_cast<DataManager::CReagent*>
-                        (mp_ReagentList->GetReagent(p_Station->GetReagentID()));
+                        (mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID()));
 
                 if (p_Reagent != NULL) {
-                    FileData += p_Reagent->GetLongName() + DELIMITER_STRING_COMMA;
+                    FileData += p_Reagent->GetReagentName() + DELIMITER_STRING_COMMA;
                 }
                 else {
                     FileData += STRING_MIUNS + DELIMITER_STRING_COMMA;
                 }
-
-                FileData += QString::number(p_Station->GetReagentStatusValue()) + DELIMITER_STRING_COMMA;
-                // get the remaining slides
-                if (p_Reagent != NULL) {
-                    FileData += QString::number(p_Reagent->GetMaxSlides() - p_Station->GetNumberOfActualSlides())
-                            + DELIMITER_STRING_COMMA + QString::number(p_Reagent->GetMaxSlides()) + DELIMITER_STRING_COMMA;
+                // reagent status : empty or full
+                FileData += p_Station->GetDashboardReagentStatus() + DELIMITER_STRING_COMMA;
+                // RMS mode
+                if(p_Reagent != NULL){
+                    QString rgbID = p_Reagent->GetGroupID();
+                    if(rgbID.compare("RG7") == 0 || rgbID.compare("RG8") == 0){// Cleaning program
+                        RMS_Mode = mp_UserSetting->GetModeRMSCleaning();
+                    }
+                    else{
+                        RMS_Mode = mp_UserSetting->GetModeRMSProcessing();
+                    }
+                    FileData += RMSModeToString(RMS_Mode) + DELIMITER_STRING_COMMA;
                 }
-                else {
-                    // if the reagent does not exist then add nothing exists (i.e. "-")
-                    FileData += STRING_MIUNS + DELIMITER_STRING_COMMA + STRING_MIUNS + DELIMITER_STRING_COMMA;
-                }                
-
-                QString ShelfLife = CalculateShelfLife(p_Reagent);
-                // for the loader and unloader station the shelf life is '-'
-                if (p_Station->GetStationID().at(0) == 'U' || p_Station->GetStationID().at(0) == 'L') {
-                    ShelfLife = STRING_MIUNS;
+                else{
+                     FileData += STRING_MIUNS + DELIMITER_STRING_COMMA;
                 }
 
-                // get the vial shelf life, best before date, lot number
-                FileData += ShelfLife + DELIMITER_STRING_COMMA +
-                        ((p_Station->GetBestBeforeDateInString().compare("1900-01-01") == 0)
-                         ? STRING_MIUNS : p_Station->GetBestBeforeDate().toString(FORMAT_DATE))
-                        + DELIMITER_STRING_COMMA + (p_Station->GetLotNumber().compare(STRING_UNDEFINED) == 0 ?
-                                                        STRING_MIUNS + DELIMITER_STRING_COMMA : p_Station->GetLotNumber()
-                                                        + DELIMITER_STRING_COMMA);
-                // get the exclusivenss
-                FileData += (p_Station->IsStationExclusive() ? STRING_YES + STRING_NEWLINE : STRING_NO + STRING_NEWLINE);
-                // write the data in the file
+
+                // get the remaining
+                QString Remaining = STRING_MIUNS;
+                if (p_Station != NULL && p_Reagent != NULL) {
+                    switch (RMS_Mode)
+                    {
+                    case Global::RMS_CASSETTES:
+                        Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentActualCassettes()).arg(p_Reagent->GetMaxCassettes());
+                        break;
+                    case Global::RMS_CYCLES:
+                        Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentActualCycles()).arg(p_Reagent->GetMaxCycles());
+                        break;
+                    case Global::RMS_DAYS:
+                        Remaining = QString("%1/%2").arg(p_Station->GetDashboardReagentExchangeDate().daysTo(QDate::currentDate())).arg(p_Reagent->GetMaxDays());
+                        break;
+                    case Global::RMS_OFF:
+                    case Global::RMS_UNDEFINED:
+                        Remaining = STRING_MIUNS;
+                        break;
+                    }
+                }
+                FileData += Remaining + STRING_NEWLINE;
                 // qprintable is the function which converts the string to byte array
                 if ((const_cast<QFile&>(RMSFile)).write(qPrintable(FileData)) == -1) {
                     return false;
@@ -685,7 +688,6 @@ bool ImportExportThreadController::WriteRMSFileData(const QFile &RMSFile,
             }
         }
     }
-#endif
     return true;
 }
 
