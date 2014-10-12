@@ -203,6 +203,15 @@ private:
     RS_REAGENTCHECK_t   m_RsReagentCheckStep;                                           ///< the Rs_ReagentCheck state step
     bool                m_HasReagent;                                                   ///< wether has reagent
 
+    typedef enum
+    {
+        PSSMABORT_RELEASE_PRESSURE,
+        PSSMABORT_STOP_FILLING,
+        PSSMABORT_STOP_DRAINING,
+        PSSMABORT_FORCE_DRAIN
+    } PSSM_ABORTING_t;
+    PSSM_ABORTING_t m_PssmAbortingSeq;                                                  ///< Sequence of PSSM_ABORTING
+
 private:
     /****************************************************************************/
     /*!
@@ -337,6 +346,13 @@ public:
      */
     /****************************************************************************/
     void SendResumeProgramFinished();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeAborting
+     */
+    /****************************************************************************/
+    void SendResumeAborting();
 
     /****************************************************************************/
     /*!
@@ -956,6 +972,16 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Handle PSSM Aborting work flow
+     *  \param  cmdName - command name
+     *  \param  retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandlePSSMAbortingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetCurrentState
      *  \return SchedulerStateMachine_t from GetCurrentState
      */
@@ -1026,6 +1052,18 @@ private slots:
      */
     /****************************************************************************/
     void OnNotifyResume();
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to enter aborting
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnPSSMAborting();
 signals:
     /****************************************************************************/
     /*!
@@ -1121,6 +1159,13 @@ signals:
     */
    /****************************************************************************/
    void ResumeProgramFinished();
+
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumePssmAborting
+    */
+   /****************************************************************************/
+   void ResumePssmAborting();
 
     /****************************************************************************/
     /*!

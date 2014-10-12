@@ -571,14 +571,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         cmdName = cmd->GetName();
     }
-#if 0
-    //just for testing
-    if (200 ==Scenario)
-    {
-        RaiseError(0, 500010301, 200, false);
-        m_SchedulerMachine->SendErrorSignal();
-    }
-#endif
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
@@ -652,6 +644,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     break;
                 case PSSM_PROGRAM_FINISH:
                     m_SchedulerMachine->SendResumeProgramFinished();
+                    break;
+                case PSSM_ABORTING:
+                    m_SchedulerMachine->SendResumeAborting();
                     break;
                 default:
                     break;
@@ -1086,79 +1081,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
 
         }
-        else if(PSSM_PAUSE_DRAIN == stepState)
-        {
-            if(CTRL_CMD_START == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyResumeDrain();
-                //DequeueNonDeviceCommand();
-                // tell the main controller the program is resuming
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
-                Q_ASSERT(commandPtrFinish);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-            }
-        }
         else if(PSSM_ABORTING == stepState)
         {
              m_CurrentStepState = PSSM_ABORTING;
-            if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALReleasePressure" == cmdName) )
-            {
-                RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-                if(RV_UNDEF != targetPos)
-                {
-                    if((m_PositionRV != targetPos))
-                    {
-                        LogDebug(QString("Aborting program, send cmd to DCL to move RV to %1").arg(targetPos));
-                        CmdRVReqMoveToRVPosition* cmdReq = new CmdRVReqMoveToRVPosition(500, this);
-                        cmdReq->SetRVPosition(targetPos);
-                        m_SchedulerCommandProcessor->pushCmd(cmdReq);
-                    }
-                    else if(PSSM_FILLING == m_CurrentStepState)
-                    {
-                        //if Filling must stop filling
-                        CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, this);
-                        ALStopCmd->SetCmdType(0);
-                        m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
-                    }
-                    else
-                    {
-                        if(m_SchedulerMachine->GetPreviousState() != PSSM_DRAINING)
-                        {
-                            this->Drain();
-                        }
-                        else
-                        {
-                            LogDebug("Already in draining process, abort will happen when draining finished.");
-                        }
-                    }
-                }
-            }
-            else if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALStopCmdExec" == cmdName) )
-            {
-                this->Drain();
-            }
-            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::RVReqMoveToRVPosition" == cmdName))
-            {
-                if(IsRVRightPosition(0))
-                {
-                    this->Drain();
-                }
-            }
-            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::ALDraining" == cmdName))
-            {
-                this->OnStopDrain();
-                m_SchedulerMachine->NotifyAbort();//Aborting --->Aborted
-            }
-            else if( DCL_ERR_FCT_CALL_SUCCESS != retCode && ("Scheduler::ALReleasePressure" == cmdName
-                                                            ||"Scheduler::ALStopCmdExec" == cmdName
-                                                            || "Scheduler::RVReqMoveToRVPosition" == cmdName
-                                                            ||"Scheduler::ALDraining" == cmdName) )
-            {
-                LogDebug("Aborting error");
-                RaiseError(0, retCode, m_CurrentScenario, true);
-                m_SchedulerMachine->SendErrorSignal();
-            }
+             m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
         }
         else if(PSSM_ABORTED == stepState)
         {
@@ -2436,9 +2362,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
             reagentRelated = true;
         }
         break;
-    case PSSM_PAUSE_DRAIN:
-        scenario = 206;
-        break;
     case PSSM_ABORTING:
         scenario = 206;
         break;
@@ -2793,7 +2716,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                     m_SchedulerMachine->SendErrorSignal();
                 }
                 SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-                if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
+                if((currentState & 0xF) == SM_BUSY && currentState != PSSM_PAUSE)
                 {
                     RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
@@ -3672,12 +3595,6 @@ bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemp
     // get target temperature here
     return (m_TempALLevelSensor > targetTemperature);
 }
-
-void SchedulerMainThreadController::Abort()
-{
-    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-}
-
 
 RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString& stationID)
 {

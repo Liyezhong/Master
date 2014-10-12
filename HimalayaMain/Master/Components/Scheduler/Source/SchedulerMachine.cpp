@@ -83,7 +83,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmProgramFinish = QSharedPointer<QFinalState>(new QFinalState(mp_BusyState.data()));
     mp_PssmError = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmPauseDrain = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmAborting = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmAborted = QSharedPointer<QState>(new QState(mp_BusyState.data()));
 
@@ -152,6 +151,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeProgramFinished()), mp_PssmProgramFinish.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumePssmAborting()), mp_PssmAborting.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
@@ -190,6 +190,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmProcessingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
 
+    CONNECTSIGNALSLOT(mp_PssmAborting.data(),entered(), this, OnPSSMAborting());
+
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
     mp_PssmPause->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
@@ -208,9 +210,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmRVMoveToTubeState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
-
-    CONNECTSIGNALSLOT(mp_PssmAborting.data(), entered(), mp_SchedulerThreadController, Abort());
-
 
     // State machines for Error handling
     mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
@@ -345,6 +344,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsReagentCheckStep = FORCE_DRAIN;
     m_HasReagent = false;
+    m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -494,6 +494,11 @@ void CSchedulerStateMachine::SendResumeRVPosChange()
 void CSchedulerStateMachine::SendResumeProgramFinished()
 {
     emit ResumeProgramFinished();
+}
+
+void CSchedulerStateMachine::SendResumeAborting()
+{
+    emit ResumePssmAborting();
 }
 
 void CSchedulerStateMachine::SendErrorSignal()
@@ -679,10 +684,6 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmPause.data()))
         {
             return PSSM_PAUSE;
-        }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmPauseDrain.data()))
-        {
-            return PSSM_PAUSE_DRAIN;
         }
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmAborting.data()))
         {
@@ -1719,6 +1720,97 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
     }
 }
 
+void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+{
+    switch (m_PssmAbortingSeq)
+    {
+    case PSSMABORT_RELEASE_PRESSURE:
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_PssmAbortingSeq = PSSMABORT_STOP_FILLING;
+                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerThreadController);
+                ALStopCmd->SetCmdType(0);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+        break;
+    case PSSMABORT_STOP_FILLING:
+        if ("Scheduler::ALStopCmdExec" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_PssmAbortingSeq = PSSMABORT_STOP_DRAINING;
+                CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerThreadController);
+                ALStopCmd->SetCmdType(1);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+        break;
+    case PSSMABORT_STOP_DRAINING:
+        if ("Scheduler::ALStopCmdExec" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_PssmAbortingSeq = PSSMABORT_FORCE_DRAIN;
+                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent in PSSM_Aborting");
+                CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+                QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
+                RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
+                cmd->SetRVPosition((quint32)(tubePos));
+                cmd->SetDrainPressure(40.0);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+        break;
+    case PSSMABORT_FORCE_DRAIN:
+        if ("Scheduler::IDForceDraining" == cmdName)
+        {
+            m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                this->NotifyAbort();
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 void CSchedulerStateMachine::EnterRcRestart()
 {
     if(false == mp_ProgramSelfTest->IsSelfTestDone())
@@ -1799,6 +1891,12 @@ void CSchedulerStateMachine::OnNotifyResume()
     {
         //should not enter here
     }
+}
+
+void CSchedulerStateMachine::OnPSSMAborting()
+{
+    m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
+    mp_SchedulerThreadController->ReleasePressure();
 }
 
 }
