@@ -213,6 +213,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
 
+    //For Pssm Aborting
+    CONNECTSIGNALSLOT(this, sigOnForceDrain(), mp_SchedulerThreadController, OnBeginDrain());
+    CONNECTSIGNALSLOT(this, sigOnStopForceDrain(), mp_SchedulerThreadController, OnStopDrain());
+
     // State machines for Error handling
     mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
     mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController));
@@ -1776,8 +1780,18 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                 RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
                 cmd->SetRVPosition((quint32)(tubePos));
-                cmd->SetDrainPressure(40.0);
+                if (QFile::exists("TEST_FREDDY"))
+                {
+                    cmd->SetDrainPressure(20.0);
+                }
+                else
+                {
+                    cmd->SetDrainPressure(40.0);
+                }
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+
+                //Notify GUI
+                emit sigOnForceDrain();
             }
             else
             {
@@ -1792,6 +1806,9 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
     case PSSMABORT_FORCE_DRAIN:
         if ("Scheduler::IDForceDraining" == cmdName)
         {
+            //Notify GUI
+            emit sigOnStopForceDrain();
+
             m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {

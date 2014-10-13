@@ -120,6 +120,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsPrecheckMoveRV = false;
 
     m_lastPVTime = 0;
+    m_ProcessingPV = 3; // 0 for Pressure and 1 for Vacuum, 3 for avoiding message to pop up too many times
     m_completionNotifierSent = false;
     m_IsReleasePressureOfSoakFinish = false;
     m_ReleasePressureSucessOfSoakFinish = false;
@@ -835,11 +836,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                             {
                                 if(m_CurProgramStepInfo.isPressure)
                                 {
+                                    m_ProcessingPV = 0;
                                     Pressure();
                                 }else if(m_CurProgramStepInfo.isVacuum)
                                 {
+                                    m_ProcessingPV = 1;
                                     Vaccum();
                                 }
+                                m_lastPVTime = now;
                             }
                             m_IsInSoakDelay = false;
                         }
@@ -850,15 +854,36 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                             {
                                 if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
                                 {
+                                    m_ProcessingPV = 0;
                                     Pressure();
                                 }
                                 else
                                 {
+                                    m_ProcessingPV = 1;
                                     Vaccum();
                                 }
                                 m_lastPVTime = now;
                             }
                         }
+
+                        // Check if Pressure or Vacuum operation reaches abs(25) in 30 seconds
+                        if ((now - m_lastPVTime) > 30*1000 && m_lastPVTime != 0)
+                        {
+                            if (qAbs(m_PressureAL) < 25.0)
+                            {
+                                if (0 == m_ProcessingPV) // for Pressure
+                                {
+                                    m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, m_CurrentScenario, true);
+                                }
+                                else if (1 == m_ProcessingPV)
+                                {
+                                    m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+                                }
+                            }
+                        }
+
                     }
                 }
             }
@@ -2899,7 +2924,11 @@ void SchedulerMainThreadController::ReleasePressure()
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
-    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+    // We only release pressure if neither P or V exists.
+    if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
+    {
+        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+    }
     m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
     m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
@@ -2919,10 +2948,12 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     {
         if(m_CurProgramStepInfo.isPressure)
         {
+            m_ProcessingPV = 0;
             Pressure();
         }
         else
         {
+            m_ProcessingPV = 1;
             Vaccum();
         }
     }
@@ -2981,6 +3012,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     static DryStepsStateMachine CurrentState = CDS_READY;
     static quint64 StepStartTime = 0;
+    static bool warningReport = false;
     CmdRVReqMoveToRVPosition* CmdMvRV = NULL;
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr = NULL;
     Global::tRefType Ref;
@@ -3053,6 +3085,16 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 600000) // drying 10 minutes
         {
             CurrentState = CDS_STOP_HEATING_VACUUM;
+        }
+
+        //Check if pressure reaches negative 25kpa, if no, report out warning message
+        if (QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 120*1000 && warningReport == false)
+        {
+            warningReport = true;
+            if (qAbs(m_PressureAL) < 25.0)
+            {
+                RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+            }
         }
         break;
     case CDS_STOP_HEATING_VACUUM:
@@ -3521,6 +3563,16 @@ void SchedulerMainThreadController::RcDrainAtOnce()
     cmd->SetIgnorePressure(true);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
+    // acknowledge to gui
+    LogDebug("Notice GUI Draining started");
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::OnBeginDrain()
+{
     // acknowledge to gui
     LogDebug("Notice GUI Draining started");
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
