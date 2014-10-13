@@ -484,8 +484,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            LogDebug(QString("Start Program: %1").arg(ProgramName));
-            LogDebug(QString("Start Step: %1").arg(m_CurProgramStepIndex));
+            RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,QStringList()<<ProgramName);
             //m_SchedulerMachine->SendRunSignal();
 
             //send command to main controller to tell the left time
@@ -504,6 +503,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )
             {
+                RaiseEvent(EVENT_SCHEDULER_SET_RV_POSITION,QStringList()<<QString("[%1]").arg(m_ProgramStatusInfor.GetLastRVPosition()));
                 CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
                 cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
                 m_SchedulerCommandProcessor->pushCmd(cmdSet);
@@ -518,7 +518,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 }
                 else
                 {
-                    LogDebug(QString("cleaning program set the rv position to:%1").arg(m_ProgramStatusInfor.GetLastRVPosition()));
                     m_SchedulerMachine->SendRunSignal();
                 }
             }

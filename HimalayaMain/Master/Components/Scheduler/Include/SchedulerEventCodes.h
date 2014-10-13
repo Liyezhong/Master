@@ -35,12 +35,12 @@ const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY = SCHEDULER_BASE_ID +
 const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE = SCHEDULER_BASE_ID + 4; ///< Fail to open the Main Relay %1.
 
 // Action command from GUI or Event Handler
-const quint32 EVENT_SCHEDULER_REC_ACTION_SHUTDOWN = SCHEDULER_BASE_ID + 10; ///< Scheduler received shutdown action.
-const quint32 EVENT_SCHEDULER_REC_ERROR_ACTION = SCHEDULER_BASE_ID + 11; ///< Scheduler received Error recovery action %1.
-const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 12; ///< Scheduler receive action to start/continue the program %1.
-const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 13; ///< Scheduler receive action to pause the program %1.
-const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 14; ///< Scheduler receive action to abort the program %1.
-const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 15; ///< Scheduler receive action to drain the last reagent of the program %1.
+const quint32 EVENT_SCHEDULER_REC_ACTION_SHUTDOWN = SCHEDULER_BASE_ID + 10; ///< User shutdown instrument.
+const quint32 EVENT_SCHEDULER_REC_ERROR_ACTION = SCHEDULER_BASE_ID + 11; ///<  Do recovery action %1.
+const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 12; ///< User start/continue the program %1.
+const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 13; ///< User pause the program %1.
+const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 14; ///< User abort the program %1.
+const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 15; ///< User drain the last reagent of the program %1.
 
 // Self test
 const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 0x0100; ///< Start the Selftest.
@@ -55,6 +55,9 @@ const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 0x0200; ///< S
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
 // 2. IDLE state
 const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Instrument enters the idle state.
+// 3. runing program
+const quint32 EVENT_SCHEDULER_START_PROGRAM = SCHEDULER_BASE_ID + 0x0320; ///< start the program %1
+const quint32 EVENT_SCHEDULER_SET_RV_POSITION = SCHEDULER_BASE_ID + 0x0321; ///< Set the rotary valve position to %1.
 
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H
