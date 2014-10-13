@@ -28,7 +28,8 @@ if [ ! -f $PRIV_KEY ] || [ $IS_SAME -ne 0 ] ; then
 	echo "StrictHostKeyChecking no" >> $SSH_CONFIG
 fi
 
-./himalaya_service -qws
+echo $1
+./himalaya_service $1 -qws
 
 while true
 do
