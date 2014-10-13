@@ -43,11 +43,15 @@ const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 14; ///< S
 const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 15; ///< Scheduler receive action to drain the last reagent of the program %1.
 
 // Self test
-const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 20; ///< Start the Selftest.
+const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 0x0100; ///< Start the Selftest.
 
 
 
 // Pre test
-const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 70; ///< Start the pretest.
+const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 0x0200; ///< Start the pretest.
+
+// running program
+const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
+
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H

@@ -322,6 +322,13 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         //send command to main controller to tell self test OK
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
         {
+            QString ProgramName = "";
+            if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
+            {
+                ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
+            }
+            RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(
+                           m_ProgramStatusInfor.GetStepID()));
             m_SchedulerMachine->EnterPowerFailure();
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
