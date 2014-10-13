@@ -37,15 +37,6 @@ public:
     ~CMovementTest(void);
 
     int Run();
-
-public Q_SLOTS:
-    void Start(void);
-
-private Q_SLOTS:
-    void Succeed(void);
-
-    void Fail(void);
-
 signals:
     void StartRVInitTest();
 

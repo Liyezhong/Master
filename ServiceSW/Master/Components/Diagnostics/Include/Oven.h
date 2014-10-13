@@ -43,7 +43,6 @@ protected:
 
 private Q_SLOTS:
     void StartHeatingTestEmpty(void);
-    void StartHeatingTestWithLiquid(void);
     void StartCoverSensorTest(void);
     
 private:

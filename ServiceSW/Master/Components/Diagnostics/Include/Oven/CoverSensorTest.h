@@ -40,6 +40,9 @@ public:
     ~CCoverSensorTest(void);
 
     int Run(void);
+    int TestCase(QString testStatus);
+protected:
+    virtual int CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value);
 
 private:
     CDiagnosticMessageDlg *dlg;

@@ -41,6 +41,10 @@
 #include "Diagnostics/Include/InitialSystem/RVPreTest.h"
 #include "Diagnostics/Include/InitialSystem/ACVoltageTest.h"
 #include "Diagnostics/Include/InitialSystem/InitialSystemCheck.h"
+#include "Diagnostics/Include/Oven/CoverSensorTest.h"
+#include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
+#include "Diagnostics/Include/RotaryValve/MovementTest.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include <QObject>
 #include <QMessageBox>
 #include <QMainWindow>
@@ -295,6 +299,81 @@ private:
 
 }
 
+class CDiagnosticMessageDlgMock : public CDiagnosticMessageDlg
+{
+    Q_OBJECT
+
+public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent widget
+     */
+    /****************************************************************************/
+    CDiagnosticMessageDlgMock(QWidget *p_Parent=NULL)
+        :CDiagnosticMessageDlg(p_Parent)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To popup message dialog
+     *  \iparam MessageTitle = the dialog title
+     *  \iparam MessageText  = the dialog text
+     *  \iparam Ret = test result for set dialog type
+     */
+    /****************************************************************************/
+    void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To popup waiting dialog
+     *  \iparam MessageTitle = the dialog title
+     *  \iparam MessageText  = the dialog text
+     */
+    /****************************************************************************/
+    void ShowWaitingDialog(QString& MessageTitle, QString& MessageText)
+    {
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief To hide wait dialog
+     */
+    /****************************************************************************/
+    void HideWaitingDialog()
+    {
+    }
+
+    int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, int type = YES_NO)
+    {
+        return YES;
+    }
+};
+
+namespace Oven {
+
+class CCoverSensorTestMock : public CCoverSensorTest
+{
+    Q_OBJECT
+
+public:
+    CCoverSensorTestMock(CDiagnosticMessageDlg *dlg)
+        : CCoverSensorTest(dlg)
+    {
+    }
+
+protected:
+    virtual int CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value)
+    {
+        return CDiagnosticMessageDlg::YES;
+    }
+};
+
+} // namespace Oven
+
 /****************************************************************************/
 /**
  * \brief Test class for Diagnostics class.
@@ -342,6 +421,9 @@ private slots:
     void RVPreTest();
     void ACVoltageTest();
     void OvenPreTest();
+    void CoverSensorTest();
+    void RVMovementTest();
+
 
 }; // end class CTestDiagnostics
 
@@ -394,6 +476,23 @@ void CTestDiagnostics::ACVoltageTest()
     InitialSystem::ACVoltageUT ut;
     QVERIFY(ut.Run() != 1);
 }
+
+/****************************************************************************/
+void CTestDiagnostics::CoverSensorTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Oven::CCoverSensorTestMock ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::RVMovementTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    RotaryValve::CMovementTest ut(&dlg);
+    QVERIFY(ut.Run() != RETURN_OK);
+}
+
 
 /****************************************************************************/
 void CTestDiagnostics::init() {
