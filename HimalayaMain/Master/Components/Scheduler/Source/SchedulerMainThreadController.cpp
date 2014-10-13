@@ -3748,7 +3748,7 @@ quint64 SchedulerMainThreadController::GetOvenHeatingTime()
 quint64 SchedulerMainThreadController::GetOvenHeatingRemainingTime()
 {
     quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }

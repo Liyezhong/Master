@@ -1098,7 +1098,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             {
                 heatingSensor.heatingStartTime = (15 * 3600 - remainTime) * 1000;
             }
-            timeElapse = heatingSensor.heatingStartTime;
+            if(0 == heatingSensor.heatingStartTime)
+            {
+                timeElapse = heatingSensor.heatingStartTime;
+            }
+            else
+            {
+                timeElapse = now - heatingSensor.heatingStartTime;
+            }
         }
         else
         {
