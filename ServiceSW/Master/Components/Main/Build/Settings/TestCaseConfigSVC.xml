@@ -24,7 +24,7 @@
 	</LaSystem>
 	<System>
 		<SSystemSpeaker LowVolume="80" HighVolume="100" />
-		<SSystemFillingNDraining RVTargetTemp="40" XyleneTargetTemp="115" OtherTargetTemp="95" HeatingTimeOut="60" />
+		<SSystemFillingNDraining RVTargetTemp1="80" RVTargetTemp2="40"  XyleneTargetTemp="115" OtherTargetTemp="95" HeatingTimeOut="60" />
 		<SSystemAlarm DetectTimeOut="45" />
 	</System>
 	<Retort>

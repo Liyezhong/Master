@@ -4,8 +4,8 @@
  *  \brief Implementation of System filling and draining test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-29
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-09
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *
@@ -57,12 +57,13 @@ int CFillingNDrainingTest::Run(void)
     qreal RVTempSensor2(0);
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemFillingNDraining");
-    qreal TargetTemp = p_TestCase->GetParameter("RVTargetTemp").toFloat();
+    qreal TargetTemp1 = p_TestCase->GetParameter("RVTargetTemp1").toFloat();
+    qreal TargetTemp2 = p_TestCase->GetParameter("RVTargetTemp2").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
     p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
 
-    if (RVTempSensor1 < TargetTemp || RVTempSensor2 < TargetTemp) {
+    if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
         return Ret;
     }
@@ -71,7 +72,7 @@ int CFillingNDrainingTest::Run(void)
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     Ret = p_DevProc->RVInitialize();
     mp_MessageDlg->HideWaitingDialog();
-    if (Ret == 0) {
+    if (Ret != RETURN_OK) {
         ShowFinishDlg(2);
         return Ret;
     }
@@ -97,7 +98,7 @@ int CFillingNDrainingTest::Run(void)
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     Ret = p_DevProc->RVMovePosition(true, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
-    if (Ret == 0) {
+    if (Ret != RETURN_OK) {
         ShowFinishDlg(3);
         return Ret;
     }
@@ -110,6 +111,7 @@ int CFillingNDrainingTest::Run(void)
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
         p_HeatingDlg = NULL;
+        (void)p_DevProc->LSStopHeating();
         return Ret;
     }
 
@@ -117,6 +119,7 @@ int CFillingNDrainingTest::Run(void)
     p_HeatingDlg = NULL;
 
     if (!HeatingRet) {
+        (void)p_DevProc->LSStopHeating();
         ShowFinishDlg(4);
         return Ret;
     }
@@ -124,10 +127,15 @@ int CFillingNDrainingTest::Run(void)
     Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     QTime TimeNow = QTime::currentTime();
-    Ret = p_DevProc->PumpSucking(120);
+    Ret = p_DevProc->PumpSucking(0);
     int SuckingTime = TimeNow.secsTo(QTime::currentTime());
     mp_MessageDlg->HideWaitingDialog();
-    if (Ret == 0) {
+    (void)p_DevProc->LSStopHeating();
+    if (Ret != RETURN_OK) {
+        Text = "Draining...";
+        mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
+        (void)p_DevProc->PumpDraining(0);
+        mp_MessageDlg->HideWaitingDialog();
         ShowFinishDlg(5);
         return Ret;
     }
@@ -145,7 +153,7 @@ int CFillingNDrainingTest::Run(void)
     Text = "Retort was successfully filled. Start Draining";
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
     TimeNow = QTime::currentTime();
-    Ret = p_DevProc->PumpDraining(60);
+    Ret = p_DevProc->PumpDraining(0);
     int DrainingTime  = TimeNow.secsTo(QTime::currentTime());
     mp_MessageDlg->HideWaitingDialog();
 
@@ -175,7 +183,7 @@ int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
                 "the reagent compatibility in mind and do not cause any cross contamination";
     }
 
-    return mp_MessageDlg->ShowConfirmMessage(FILLINGNDRAINING_TITLE, Text, true);
+    return mp_MessageDlg->ShowConfirmMessage(FILLINGNDRAINING_TITLE, Text, CDiagnosticMessageDlg::OK_ABORT);
 }
 
 void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
@@ -185,7 +193,7 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
     ErrorCode_t Ret = RETURN_ERR_FAIL;
 
     if (RetNum == 1) {
-        Text = "System Filling & Draining Test failed. "\
+        Text = "System Filling & Draining Test failed.<br>"\
                 "Rotary Valve cannot rotate, due to the minimum temperature has "\
                 "not been reached. Please check resistance of temperature "\
                 "sensors, current of heating element and function of ASB3. If no "\
@@ -193,28 +201,28 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
                 "connections in addition. Exchange part accordingly";
     }
     else if (RetNum == 2) {
-        Text = "System Filling & Draining Test failed. "\
+        Text = "System Filling & Draining Test failed.<br>"\
                 "It might work in some minutes when solidified paraffin in "\
                 "the rotary valve is molten. Repeat initializing test again in "\
                 "about 15mins. If it still fails in the second try, exchange "\
                 "rotary valve, reboot the Service Software and repeat this test";
     }
     else if (RetNum == 3) {
-        Text = "System Filling & Draining failed. "\
+        Text = "System Filling & Draining failed.<br>"\
                 "It might work in some minutes when solidified paraffin in "\
                 "the rotary valve is molten. Repeat initializing test again in "\
                 "about 15mins. If it still fails in the second try, exchange "\
                 "rotary valve, reboot the Service Software and repeat this test.";
     }
     else if (RetNum == 4) {
-        Text = "System Filling & Draining Test failed. "\
+        Text = "System Filling & Draining Test failed.<br>"\
                 "Level sensor’s target temperature was not "\
                 "reached in time. Clean level sensor, repeat this "\
                 "test. If still failed, exchange the level sensor";
     }
     else if (RetNum == 5) {
-        Text = "System Filling & Draining Test failed. Level "\
-                "sensor did not detect any liquid within 2mins. "\
+        Text = "System Filling & Draining Test failed.<br>"\
+                "Level sensor did not detect any liquid within 2mins. "\
                 "Clean level sensor, perform Retort_Level Sensor Dection test.";
     }
 

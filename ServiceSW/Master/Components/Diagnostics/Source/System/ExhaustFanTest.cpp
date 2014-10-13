@@ -66,7 +66,7 @@ int CExhaustFanTest::ShowConfirmDlg(int StepNum)
     if (StepNum == 1) {
         Text = "Please disconnected the exhaust hose (if connected), " \
                 "remove the carbon filter and close its cover. "       \
-                "Please verify the fan works. Can you feel an"         \
+                "Please verify the fan works. Can you feel an "         \
                 "airflow out of the instrument?";
     }
     else if (StepNum == 2) {
@@ -84,10 +84,10 @@ void CExhaustFanTest::ShowFinishDlg(int RetNum)
     ErrorCode_t Ret = RETURN_ERR_FAIL;
 
     if (RetNum == 1) {
-        Text = "Exhaust Fan Test failed. Fan is not turning, please check wiring and exchange the fan if necessary.";
+        Text = "Exhaust Fan Test failed.<br> Fan is not turning, please check wiring and exchange the fan if necessary.";
     }
     else if (RetNum == 2) {
-        Text = "Exhaust Fan Test failed. Please check for proper installation, correct wiring to ensure the airflow goes "\
+        Text = "Exhaust Fan Test failed.<br> Please check for proper installation, correct wiring to ensure the airflow goes "\
                 "out of instrument?";
     }
     else if (RetNum == 3) {

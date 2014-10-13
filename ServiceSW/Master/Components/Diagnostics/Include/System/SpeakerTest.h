@@ -4,8 +4,8 @@
  *  \brief Declaration of System speaker test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-09-29
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *

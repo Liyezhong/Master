@@ -4,8 +4,8 @@
  *  \brief Declaration of System filling and draining test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-29
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-09
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *

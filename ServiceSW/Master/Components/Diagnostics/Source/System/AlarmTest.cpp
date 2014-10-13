@@ -4,8 +4,8 @@
  *  \brief Implementation of System alarm test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-09
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *
@@ -122,12 +122,12 @@ int CAlarmTest::ShowConfirmDlg(int StepNum)
     QString Text = "Please Measure and confirm the following resistances:<br>";
 
     if (StepNum == 1) {
-        Text += "Between pin1 and pin2: Less the 10 Ohm<br>"\
-                "Between pin1 and pin3: More than 100 KOhm";
+        Text += "Between pin1 and pin2: Less than 10 Ohm<br>"\
+                "Between pin1 and pin3: More than 100 kOhm";
     }
     else if (StepNum == 2) {
-        Text += "Between pin1 and pin2: More than 100 KOhm<br>"\
-               "Between pin1 and pin3: Less the 10 Ohm";
+        Text += "Between pin1 and pin2: More than 100 kOhm<br>"\
+                "Between pin1 and pin3: Less than 10 Ohm";
     }
 
     return mp_MessageDlg->ShowConfirmMessage(m_DialogTitle, Text);
