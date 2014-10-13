@@ -250,6 +250,7 @@ typedef struct
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
         bool m_IsCleaningProgram;                             ///< cleaning program run or not
+        bool m_CleanAckSentGui;                                ///< flag to indicate if cleaning ack to gui or not
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart

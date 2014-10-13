@@ -124,6 +124,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsReleasePressureOfSoakFinish = false;
     m_ReleasePressureSucessOfSoakFinish = false;
     m_IsCleaningProgram = false;
+    m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
@@ -439,8 +440,9 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
-    if (m_ProgramStatusInfor.IsRetortContaminted())
+    if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
+        m_CleanAckSentGui = true;
         MsgClasses::CmdProgramAcknowledge* commandEnterCleaning(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = GetNewCommandRef();
@@ -458,6 +460,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_CurProgramID = m_NewProgramID.left(sep);
             m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
             m_IsCleaningProgram = true;
+            m_CleanAckSentGui = false;
         }
         else
         {
