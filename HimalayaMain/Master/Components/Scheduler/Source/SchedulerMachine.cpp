@@ -65,6 +65,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Layer two states (for Init state)
     mp_SelfTestState = QSharedPointer<QState>(new QState(mp_InitState.data()));
+    CONNECTSIGNALSLOT(mp_SelfTestState.data(), entered(), this, OnEnterSelftest());
 
     // Layer two states (for Busy state)
     mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -1896,6 +1897,11 @@ void CSchedulerStateMachine::OnPSSMAborting()
 {
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
     mp_SchedulerThreadController->ReleasePressure();
+}
+
+void CSchedulerStateMachine::OnEnterSelfTest()
+{
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_SELFTEST);
 }
 
 }

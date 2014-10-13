@@ -23,7 +23,9 @@
 #include <QStringList>
 #include "Global/Include/EventObject.h"
 #include "../../../Include/HimalayaEventCodes.h"
+#include "Scheduler/Include/SchedulerStateMachineStates.h"
 
+namespace Scheduler{
 const quint32 SCHEDULER_BASE_ID = 0x04010000;  ///<  Base event id of Scheduler
 
 //slave configurations
@@ -40,5 +42,12 @@ const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 13; ///< S
 const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 14; ///< Scheduler receive action to abort the program %1.
 const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 15; ///< Scheduler receive action to drain the last reagent of the program %1.
 
+// Self test
+const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 20; ///< Start the Selftest.
 
+
+
+// Pre test
+const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 70; ///< Start the pretest.
+} //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H
