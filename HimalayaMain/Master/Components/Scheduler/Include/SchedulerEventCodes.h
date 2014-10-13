@@ -48,6 +48,6 @@ const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 20; ///< Star
 
 
 // Pre test
-const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 70; ///< Start the pretest.
+const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 70; ///< Start the pretest.
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H
