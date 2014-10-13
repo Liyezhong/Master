@@ -29,6 +29,7 @@
 #include "Scheduler/Commands/Include/CmdRTSetTemperatureSwitchState.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Include/SchedulerEventCodes.h"
 
 namespace Scheduler{
 /*lint -e534 */
@@ -44,6 +45,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     ,m_StateACVoltageStepCount(0)
     ,m_ASB3SwitchType(0)
     ,m_ASB5SwitchType(0)
+    ,m_IsLoged(0)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
@@ -135,11 +137,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, DeviceControl::Ret
     {
         HandleStateACHeating();
     }
-    else
-    {
-        mp_SchedulerThreadController->LogDebug("In ProgramSelfTest unknown state");
-    }
-
 }
 
 void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
@@ -159,15 +156,16 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 cmd->SetAutoType(AUTO_SWITCH_ENABLE);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB3VOLTAGE_SWITCHAUTO);
             }
             else
             {
                 if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test ASB3 switch state auto, the retCode:%1").arg(retCode));
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
                         m_StateACVoltageStep = SET_VOLTAGE_ASB5_AWITCH;
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB3VOLTAGE_SWITCHAUTO_SUCCESS);
                     }
                     else
                     {
@@ -188,14 +186,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 cmd->SetAutoType(AUTO_SWITCH_ENABLE);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5VOLTAGE_SWITCHAUTO);
             }
             else
             {
                 if("Scheduler::RTSetTemperatureSwitchState" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test ASB5 switch auto, the retCode:%1").arg(retCode));
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SHCEDULER_ASB5VOLTAGE_SWITCHAUTO_SUCESS);
                         m_StateACVoltageStep = START_HEATING_ACMODE;
                     }
                     else
@@ -210,15 +209,17 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             break;
         case START_HEATING_ACMODE:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test start RV temperature, the retCode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_ROTARYVALVE_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_ROTARYVALVE_TEMP_SUCCESS);
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RTBottom");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test start RT temperature, the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTBOTTOM_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     m_StateACVoltageStep = STOP_HEATING_ACMODE;
                     m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTBOTTOM_TEMP_SUCCESS);
                 }
                 else
                 {
@@ -235,17 +236,25 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             }
             break;
         case STOP_HEATING_ACMODE:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RV");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test stop RV temperature,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP_SUCCESS);
                     ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test stop RT temperature,the retCode:%1").arg(ret));
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP);
                     if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                     {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP_SUCCESS);
                         m_StateACVoltageStep = CHECK_VOLTAGE_RANGE;
                     }
                     else
@@ -266,7 +275,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
         case CHECK_VOLTAGE_RANGE:
             m_ASB5SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("Retort");
             m_ASB3SwitchType = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetHeaterSwitchType("RV");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test the ASB5SwithcType:%1,ASB3SwitchType:%2").arg(m_ASB5SwitchType).arg(m_ASB3SwitchType));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5_ASB3_SWITCHTYPE, QStringList()<<QString::number(m_ASB5SwitchType)<<QString::number(m_ASB3SwitchType));
 
             if(0 == m_StateACVoltageStepCount)
             {
@@ -274,10 +283,11 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 if( (1 == m_ASB5SwitchType || 2 == m_ASB5SwitchType) && (m_ASB5SwitchType == m_ASB3SwitchType) )
                 {
                     emit SigDCHeating();
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5_SAME_ASB3);
                 }
                 else
                 {
-                    mp_SchedulerThreadController->LogDebug("Retry the AC voltage switch test");
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_AC_VOLTAGE_TEST);
                     m_StateACVoltageStepCount++;
                 }
                 m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
@@ -292,6 +302,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                         // is the same pass
                         emit SigDCHeating();
                         m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5_SAME_ASB3);
                     }
                     else
                     {
@@ -301,7 +312,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 }
                 else
                 {
-                    mp_SchedulerThreadController->LogDebug("Failed unknow the ASB5 voltage");
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_UNKNOW_ASB5_SWITCHTYPE);
                     SendSignalSelfTestDone(false);
                     m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
                     m_StateACVoltageStepCount = 0;
@@ -319,14 +330,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     cmd->SetAutoType(AUTO_SWITCH_ENABLE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5);
                 }
                 else
                 {
                     if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 220v votage,the recode:%1").arg(retCode));
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
                             emit SigDCHeating();
                         }
                         else
@@ -349,14 +361,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     cmd->SetAutoType(AUTO_SWITCH_ENABLE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5);
                 }
                 else
                 {
                     if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test set the ASB5 to ASB3 110v votage,the recode:%1").arg(retCode));
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
                             emit SigDCHeating();
                         }
                         else
@@ -384,10 +397,11 @@ void CProgramSelfTest::HandleStateDCHeating()
     switch(m_StateDCHeatingStep)
     {
         case STARTHEATING_LATUBE1:
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_TUBE1_TEMP);
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("LA_Tube1");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC start heating LA_Tube1,recode:%1").arg(ret));
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_TUBE1_TEMP_SUCCESS);
                 m_StateDCHeatingStep = STOPHEATING_LATUBE1;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -398,13 +412,20 @@ void CProgramSelfTest::HandleStateDCHeating()
             }
             break;
         case STOPHEATING_LATUBE1:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
+                m_IsLoged = 0;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_TUBE1_TEMP);
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LA_Tube1");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC stop heating LA_Tube1,recode:%1").arg(ret));
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_TUBE1_TEMP_SUCCESS);
                     m_StateDCHeatingStep = STARTHEATING_LATUBE2;
                 }
                 else
@@ -417,9 +438,10 @@ void CProgramSelfTest::HandleStateDCHeating()
             break;
         case STARTHEATING_LATUBE2:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("LA_Tube2");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC start heating LA_Tube2,recode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_TUBE2_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_TUBE2_TEMP_SUCCESS);
                 m_StateDCHeatingStep = STOPHEATING_LATBUBE2;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -431,13 +453,20 @@ void CProgramSelfTest::HandleStateDCHeating()
             }
             break;
         case STOPHEATING_LATBUBE2:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LA_Tube2");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC stop heating LA_Tube2,recode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_TUBE2_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_TUBE2_TEMP_SUCCESS);
                     m_StateDCHeatingStep = STARTHEATING_LEVELSENSOR;
                 }
                 else
@@ -450,9 +479,10 @@ void CProgramSelfTest::HandleStateDCHeating()
             break;
         case STARTHEATING_LEVELSENSOR:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("LevelSensor");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC start heating LevelSensor,recode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_LEVELSENSOR_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_LEVELSENSOR_TEMP_SUCCESS);
                 m_StateDCHeatingStep = STOPHEATING_LEVELSENSOR;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -464,13 +494,20 @@ void CProgramSelfTest::HandleStateDCHeating()
             }
             break;
         case STOPHEATING_LEVELSENSOR:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test in DC stop heating LevelSensor,recode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_LEVELSENSOR_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_LEVELSENSOR_TEMP_SUCCESS);
                     m_StateDCHeatingStep = STARTHEATING_LATUBE1;
                     emit SigPressureSensorPumpValve();
                 }
@@ -499,12 +536,13 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
             {
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PUMP);
             }
             else
             {
                 if("Scheduler::ALPressure" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test in pressure,recode:%1").arg(retCode));
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PUMP_SUCCESS);
                     m_StatePressureStep = STOP_PUMP;
                     m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                     m_StartReq = 0;
@@ -512,21 +550,29 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
             }
             break;
         case STOP_PUMP:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
+
                 if(0 == m_StartReq)
                 {
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_PUMP);
                 }
                 else
                 {
                     if("Scheduler::ALReleasePressure" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test in release pressure,recode:%1").arg(retCode));
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_PUMP_SUCCESS);
                         m_StatePressureStep = START_VALVE1;
                         m_StartReq = 0;
+                        m_IsLoged = 0;
                     }
                 }
             }
@@ -539,14 +585,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE1);
             }
             else
             {
                 if("Scheduler::ALControlValve" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test start vavel1,recode:%1").arg(retCode));
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE1_SUCCESS);
                         m_StatePressureStep = STOP_VALVE1;
                         m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                     }
@@ -561,6 +608,11 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
             }
             break;
         case STOP_VALVE1:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
@@ -571,14 +623,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE1);
                 }
                 else
                 {
                     if("Scheduler::ALControlValve" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test in stop valve1,recode:%1").arg(retCode));
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE1_SUCCESS);
                             m_StatePressureStep = START_VALVE2;
                         }
                         else
@@ -588,6 +641,7 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                             SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
+                        m_IsLoged = 0;
                     }
                 }
             }
@@ -600,14 +654,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                 cmd->SetValveState(VALVE_STATE_OPEN);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE2);
             }
             else
             {
                 if("Scheduler::ALControlValve" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test start valve2,recode:%1").arg(retCode));
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_VALVE2_SUCCESS);
                         m_StatePressureStep = STOP_VALVE2;
                         m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                     }
@@ -622,6 +677,11 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
             }
             break;
         case STOP_VALVE2:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
@@ -632,14 +692,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     cmd->SetValveState(VALVE_STATE_CLOSE);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2);
                 }
                 else
                 {
                     if("Scheduler::ALControlValve" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test stop valve2,recode:%1").arg(retCode));
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2);
                             m_StatePressureStep = START_EXHAUSTFAN;
                         }
                         else
@@ -649,6 +710,7 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                             SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
+                        m_IsLoged = 0;
                     }
                 }
             }
@@ -659,14 +721,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                 CmdALTurnOnFan* cmd = new CmdALTurnOnFan(500, mp_SchedulerThreadController);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_FAN);
             }
             else
             {
                 if("Scheduler::ALTurnOnFan" == cmdName)
                 {
-                    mp_SchedulerThreadController->LogDebug(QString("Self-Test start fan,recode:%1").arg(retCode));
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_FAN_SUCCESS);
                         m_StatePressureStep = STOP_EXHAUSTFAN;
                         m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                     }
@@ -681,6 +744,11 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
             }
             break;
         case STOP_EXHAUSTFAN:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 3 * 1000)
             {
@@ -689,14 +757,15 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     CmdALTurnOffFan* cmd = new CmdALTurnOffFan(500, mp_SchedulerThreadController);
                     mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartReq++;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_FAN);
                 }
                 else
                 {
                     if("Scheduler::ALTurnOffFan" == cmdName)
                     {
-                        mp_SchedulerThreadController->LogDebug(QString("Self-Test stop fan,recode:%1").arg(retCode));
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_FAN_SUCCESS);
                             m_StatePressureStep = START_PUMP;
                             emit SigACHeating();
                         }
@@ -707,6 +776,7 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                             SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
+                        m_IsLoged = 0;
                     }
                 }
             }
@@ -725,9 +795,10 @@ void CProgramSelfTest::HandleStateACHeating()
     {
         case STARTHEATING_RETORTTOP:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RTSide");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RTSide,the retCode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTSIDE_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret )
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTSIDE_TEMP_SUCCESS);
                 m_StateACHeatingStep = STOPHEATING_RETORTOP;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -739,13 +810,20 @@ void CProgramSelfTest::HandleStateACHeating()
             }
             break;
         case STOPHEATING_RETORTOP:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RTSide,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTSIDE_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTSIDE_TEMP_SUCCESS);
                     m_StateACHeatingStep = STARTHEATING_RETORTBOTTOM;
                 }
                 else
@@ -758,9 +836,10 @@ void CProgramSelfTest::HandleStateACHeating()
             break;
         case STARTHEATING_RETORTBOTTOM:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RTBottom");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RTBottom,the retCode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTBOTTOM_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_RETORTBOTTOM_TEMP_SUCCESS);
                 m_StateACHeatingStep = STOPHEATING_RETORTBOTTOM;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -772,13 +851,20 @@ void CProgramSelfTest::HandleStateACHeating()
             }
             break;
         case STOPHEATING_RETORTBOTTOM:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RTBottom,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP_SUCCESS);
                     m_StateACHeatingStep = STARTHEATING_OVENTOP;
                 }
                 else
@@ -791,9 +877,10 @@ void CProgramSelfTest::HandleStateACHeating()
             break;
         case STARTHEATING_OVENTOP:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("OvenTop");
-            mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating OvenTop,the retCode:%1").arg(ret));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_OVENTOP_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_OVENTOP_TEMP_SUCCESS);
                 m_StateACHeatingStep = STOPHEATING_OVENTOP;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }
@@ -805,13 +892,20 @@ void CProgramSelfTest::HandleStateACHeating()
             }
             break;
         case STOPHEATING_OVENTOP:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("OvenTop");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating OvenTop,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_OVENTOP_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_OVENTOP_TEMP_SUCCESS);
                     m_StateACHeatingStep = STARTHEATING_OVENBOTTOM;
                 }
                 else
@@ -823,32 +917,36 @@ void CProgramSelfTest::HandleStateACHeating()
             }
             break;
         case STARTHEATING_OVENBOTTOM:
-            nowTime = QDateTime::currentMSecsSinceEpoch();
-            if(nowTime - m_DelayBeginTime > 5 * 1000)
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("OvenBottom");
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_OVENBOT_TEMP);
+            if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
-                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("OvenBottom");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating OvenBottom,the retCode:%1").arg(ret));
-                if(DCL_ERR_FCT_CALL_SUCCESS == ret)
-                {
-                    m_StateACHeatingStep = STOPHEATING_OVENBOTTOM;
-                    m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                else
-                {
-                    m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
-                }
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_OVENBOT_TEMP_SUCCESS);
+                m_StateACHeatingStep = STOPHEATING_OVENBOTTOM;
+                m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+            }
+            else
+            {
+                m_StateACHeatingStep = STARTHEATING_RETORTTOP;
+                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
+                SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_OVENBOTTOM:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("OvenBottom");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating OvenBottom,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_OVENBOT_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS);
                     m_StateACHeatingStep = STARTHEATING_RV;
                 }
                 else
@@ -860,32 +958,36 @@ void CProgramSelfTest::HandleStateACHeating()
             }
             break;
         case STARTHEATING_RV:
-            nowTime = QDateTime::currentMSecsSinceEpoch();
-            if(nowTime - m_DelayBeginTime > 5 * 1000)
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV");
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP);
+            if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
-                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC start heating RV,the retCode:%1").arg(ret));
-                if(DCL_ERR_FCT_CALL_SUCCESS == ret)
-                {
-                    m_StateACHeatingStep = STOPHEATING_RV;
-                    m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                else
-                {
-                    m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
-                }
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP_SUCCESS);
+                m_StateACHeatingStep = STOPHEATING_RV;
+                m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+            }
+            else
+            {
+                m_StateACHeatingStep = STARTHEATING_RETORTTOP;
+                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
+                SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_RV:
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_5S);
+                m_IsLoged++;
+            }
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_DelayBeginTime > 5 * 1000)
             {
+                m_IsLoged = 0;
                 ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RV");
-                mp_SchedulerThreadController->LogDebug(QString("Self-Test AC stop heating RV,the retCode:%1").arg(ret));
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP);
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP_SUCCESS);
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
                     SendSignalSelfTestDone(true);
                 }
