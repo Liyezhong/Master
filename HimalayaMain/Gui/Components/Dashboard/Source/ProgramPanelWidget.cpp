@@ -188,16 +188,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             {               
                 if (m_IsResumeRun)
                 {
-                    QString strTempProgramId;
-                    if (m_SelectedProgramId.at(0) == 'C')//Cleaning program
-                    {
-                        strTempProgramId = m_SelectedProgramId;
-                        strTempProgramId.append("_");
-                        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-                        strTempProgramId.append(strReagentIDOfLastStep);
-                    }
-
-                    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, 0);
+                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0);
                     ChangeStartButtonToStopState();
                     return;
                 }

@@ -456,9 +456,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
-            int sep = m_NewProgramID.indexOf('_');
-            m_CurProgramID = m_NewProgramID.left(sep);
-            m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
+            m_CurProgramID = m_NewProgramID;
             m_IsCleaningProgram = true;
             m_CleanAckSentGui = false;
         }
@@ -1662,16 +1660,12 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
             {
                 if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
                 {
-                    const CReagent* pLastReagent = pReagentList->GetReagent(m_ReagentIdOfLastStep);
-                    if (!pLastReagent)
-                        return false;
-
                     const CReagent* pCurReagent = pReagentList->GetReagent(reagentID);
-
+                    QString strLastReagentGroupId = m_ProgramStatusInfor.GetLastReagentGroup();
                     //RG7:Cleaning Solvent, RG8:Cleaning Alcohol
                     QStringList list;
                     list << "RG1"<<"RG2"<<"RG3"<<"RG4"<<"RG5";
-                    if (list.contains(pLastReagent->GetGroupID()) && pCurReagent->GetGroupID() == "RG7")
+                    if (list.contains(strLastReagentGroupId) && pCurReagent->GetGroupID() == "RG7")
                     {
                         bSkipCurrentStep = true;
                     }
@@ -2197,17 +2191,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 {
     m_hasParaffin = false;
     this->SendAcknowledgeOK(Ref);
-    QString curProgramID;
-    QString strProgramID = Cmd.GetProgramID();
-    if (strProgramID.at(0) == 'C')
-    {
-        int sep = strProgramID.indexOf('_');
-        curProgramID = strProgramID.left(sep);
-        m_ReagentIdOfLastStep = strProgramID.right(strProgramID.count()- sep -1);//m_ReagentIdOfLastStep used in GetNextProgramStepInformation(...)
-    }
-    else
-        curProgramID = strProgramID;
-
+    QString curProgramID = Cmd.GetProgramID();
     m_CurProgramStepIndex = -1;
     (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
 

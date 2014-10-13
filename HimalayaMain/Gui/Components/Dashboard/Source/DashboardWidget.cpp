@@ -318,29 +318,24 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
-        if (m_HaveSucked)
+        //represent the retort as contaminated status
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
+
+        mp_MessageDlg->SetText(m_strRetortContaminated);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
+        mp_MessageDlg->EnableButton(1, true);//6.6 for test
+
+        m_IsWaitingCleaningProgram = true;
+        if (mp_MessageDlg->exec())
         {
-            //represent the retort as contaminated status
-            ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
-
-            mp_MessageDlg->SetText(m_strRetortContaminated);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
-            mp_MessageDlg->EnableButton(1, true);//6.6 for test
-
-            m_IsWaitingCleaningProgram = true;
-            if (mp_MessageDlg->exec())
-            {
-                //only show Cleaning program in the favorite panel
-                emit AddItemsToFavoritePanel(true);
-            }
+            //only show Cleaning program in the favorite panel
+            emit AddItemsToFavoritePanel(true);
         }
 
         ui->programPanelWidget->ChangeStartButtonToStartState();
-		if (!m_HaveSucked) {
-        	ui->programPanelWidget->EnableStartButton(true);
-		}
+        ui->programPanelWidget->EnableStartButton(true);
         //switch to the dashboard page
         mp_MainWindow->SetTabWidgetIndex();
         emit SwitchToFavoritePanel();
@@ -375,16 +370,6 @@ void CDashboardWidget::OnProgramAborted()
 {
     //progress aborted;
     //aborting time countdown is hidden.
-
-    //save the ReagentIdOfLastStep in case of: user restarts machine at this time
-    if (m_HaveSucked)
-    {
-        const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
-        QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
-        m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
-        emit UpdateUserSetting(*m_pUserSetting);
-    }
-
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
 
@@ -401,7 +386,22 @@ void CDashboardWidget::OnProgramAborted()
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
-        this->TakeOutSpecimenAndWaitRunCleaning();
+        if (!m_HaveSucked)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+            mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                ui->programPanelWidget->ChangeStartButtonToStartState();
+                ui->programPanelWidget->EnableStartButton(true);
+                //switch to the dashboard page
+                mp_MainWindow->SetTabWidgetIndex();
+                emit SwitchToFavoritePanel();
+            }
+        }
     }
 }
 
@@ -421,9 +421,6 @@ void CDashboardWidget::OnProgramCompleted()
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
-            QString reagentID("");
-            m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
-            emit UpdateUserSetting(*m_pUserSetting);
             ui->programPanelWidget->EnableStartButton(false);
             emit AddItemsToFavoritePanel();
             ui->programPanelWidget->ChangeStartButtonToStartState();
@@ -783,16 +780,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
 {
     if (IsOKPreConditionsToRunProgram())
     {
-        QString strTempProgramId(m_SelectedProgramId);
-        if (m_SelectedProgramId.at(0) == 'C')
-        {
-            strTempProgramId.append("_");
-            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-            strTempProgramId.append(strReagentIDOfLastStep);
-        }
         int EndTimeDelta = m_AsapEndDateTime.secsTo(m_EndDateTime);
         int delayTime = EndTimeDelta + m_TimeDelta;
-        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, delayTime);
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, delayTime);
         ui->programPanelWidget->ChangeStartButtonToStopState();
     }
     else
@@ -806,14 +796,7 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
     m_NewSelectedProgramId = selectedProgramId;
     (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(selectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
-    QString strTempProgramId(selectedProgramId);
-    if (selectedProgramId.at(0) == 'C')
-    {
-      strTempProgramId.append("_");
-      QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-      strTempProgramId.append(strReagentIDOfLastStep);
-    }
-    mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);
+    mp_DataConnector->SendProgramSelected(selectedProgramId, m_ParaffinStepIndex);
 }
 
 void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& cmd)
@@ -842,9 +825,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
-                QString reagentID("");
-                m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
-                emit UpdateUserSetting(*m_pUserSetting);
                 emit AddItemsToFavoritePanel();
                 ui->programPanelWidget->ChangeStartButtonToStartState();
                 return;
@@ -1004,7 +984,6 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
     if (m_IsDrainingWhenPrgrmCompleted && !cmd.IsStart() && !cmd.IsSuck() && !cmd.NoCleaningProgram())
     {
         emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-        //this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDrainingWhenPrgrmCompleted = false;
     }
 

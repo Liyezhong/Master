@@ -559,13 +559,14 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     {
         if(m_EnableBlink && m_ReagentExpiredFlag && m_StationSelected)
         {
+            //set expired color only once
             if (m_ExpiredColorRed)
             {
                 m_ExpiredColorRed = false;
             }
             else
             {
-                color.setRgb(240, 175, 82);
+                color.setRgb(255, 0, 0);
                 m_ExpiredColorRed = true;
             }
         }

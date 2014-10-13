@@ -956,12 +956,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
             emit ProgramsUpdated();
-            if (SettingsInterface && SettingsInterface->GetUserSettings())
-            {
-                strReagentIDOfLastStep = SettingsInterface->GetUserSettings()->GetReagentIdOfLastStep();
-                hasRunCleaningProgram = strReagentIDOfLastStep == "";
-                emit ProgramsInitialized(!hasRunCleaningProgram);
-            }
+            emit ProgramsInitialized(false);
             break;
 
         case NetCommands::REAGENT:
