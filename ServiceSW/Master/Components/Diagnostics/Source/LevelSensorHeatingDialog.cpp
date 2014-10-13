@@ -73,6 +73,7 @@ bool CLevelSensorHeatingDialog::StartHeating()
     p_DevProc->LSStartHeating(true, !m_XyleneFlag);
     while (WaitSeconds) {
         if (m_Abort) {
+            (void)p_DevProc->LSStopHeating();
             return false;
         }
         p_DevProc->LSGetTemp(&CurrentTemp);
@@ -87,9 +88,10 @@ bool CLevelSensorHeatingDialog::StartHeating()
     (void)p_DevProc->LSStopHeating();
 
     p_DevProc->LSStartHeating(false, !m_XyleneFlag);
-
+    p_DevProc->Pause(1000);
     while (WaitSeconds) {
         if (m_Abort) {
+            (void)p_DevProc->LSStopHeating();
             return false;
         }
         p_DevProc->LSGetTemp(&CurrentTemp);

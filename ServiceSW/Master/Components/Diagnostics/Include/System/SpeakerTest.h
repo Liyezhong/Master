@@ -29,25 +29,69 @@ namespace Diagnostics {
 
 namespace System {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to system speaker test
+*/
+/****************************************************************************/
 class CSpeakerTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_Parent    = Parent widget
+     */
+    /****************************************************************************/
     CSpeakerTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CSpeakerTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     *  \return 1 means success, other value means failed.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief The function for play sound.
+     *  \iparam Volume = the sound volume.
+     */
+    /****************************************************************************/
     void PlaySound(QString& Volume);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam StepNum = the number workflow step.
+     *  \return reject or accept.
+     */
+    /****************************************************************************/
     int ShowConfirmDlg(int StepNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
 private:
-    QProcess*               mp_SpeakProc;
-    CDiagnosticMessageDlg*  mp_MessageDlg;
+    QProcess*               mp_SpeakProc;       //!< The process to play sound.
+    CDiagnosticMessageDlg*  mp_MessageDlg;      //!< The pointer of message dialog.
 };
 
 } // namespace System

@@ -28,24 +28,61 @@ namespace Diagnostics {
 
 namespace System {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to system filling and draining test
+*/
+/****************************************************************************/
 class CFillingNDrainingTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_Parent    = Parent widget
+     */
+    /****************************************************************************/
     CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CFillingNDrainingTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     *  \return 1 means success, other value means failed.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam StepNum = the number workflow step.
+     *  \return reject or accept.
+     */
+    /****************************************************************************/
     int ShowConfirmDlg(int StepNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
 private:
-    QWidget*                mp_Parent;
-    CDiagnosticMessageDlg*  mp_MessageDlg;
+    QWidget*                mp_Parent;      //!< Parent widget
+    CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.
 };
 
 } // namespace System

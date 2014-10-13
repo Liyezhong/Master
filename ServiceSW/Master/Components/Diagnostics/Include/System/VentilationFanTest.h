@@ -28,22 +28,59 @@ namespace Diagnostics {
 
 namespace System {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to system ventilation fan test
+*/
+/****************************************************************************/
 class CVentilationFanTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_Parent    = Parent widget
+     */
+    /****************************************************************************/
     CVentilationFanTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CVentilationFanTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     *  \return 1 means success, other value means failed.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam StepNum = the number workflow step.
+     *  \return reject or accept.
+     */
+    /****************************************************************************/
     int ShowConfirmDlg(int StepNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 private:
-    CDiagnosticMessageDlg*  mp_MessageDlg;
+    CDiagnosticMessageDlg*  mp_MessageDlg;   //!< The pointer of message dialog.
 };
 
 } // namespace System

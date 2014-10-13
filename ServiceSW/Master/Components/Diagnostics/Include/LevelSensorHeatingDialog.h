@@ -55,8 +55,19 @@ public:
     /****************************************************************************/
     ~CLevelSensorHeatingDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To set this dialog title.
+     *  \iparam Title = the string of title.
+     */
+    /****************************************************************************/
     void SetTitle(QString& Title);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To start heating.
+     */
+    /****************************************************************************/
     bool StartHeating();
 
 protected:
@@ -78,6 +89,15 @@ private Q_SLOTS:
     /****************************************************************************/
     void AbortDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Update UI
+     *  \iparam UsedTime = the used time
+     *  \iparam EDTime   = the Estimated Duration time
+     *  \iparam TargetTem = the heating target temperature.
+     *  \iparam CurrentTemp = the heating current temp.
+     */
+    /****************************************************************************/
     void UpdateUI(int UsedTime, int EDTime, qreal TargetTemp, qreal CurrentTemp);
 
 private:
