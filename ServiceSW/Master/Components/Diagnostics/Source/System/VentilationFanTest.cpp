@@ -53,6 +53,8 @@ int CVentilationFanTest::Run(void)
     }
 
     ShowFinishDlg(RetNum);
+
+    return RETURN_OK;
 }
 
 int CVentilationFanTest::ShowConfirmDlg(int StepNum)

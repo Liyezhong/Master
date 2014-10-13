@@ -27,8 +27,8 @@
 
 namespace Diagnostics {
 
-CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *parent)
-    :MainMenu::CDialogFrame(parent),
+CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *p_Parent)
+    :MainMenu::CDialogFrame(p_Parent),
      mp_Ui(new Ui::CLevelSensorHeatingDialog),
      m_XyleneFlag(XyleneFlag),
      m_Abort(false)
@@ -70,13 +70,13 @@ bool CLevelSensorHeatingDialog::StartHeating()
         ExchangePIDTemp = 90;
     }
 
-    p_DevProc->LSStartHeating(true, !m_XyleneFlag);
+    (void)p_DevProc->LSStartHeating(true, !m_XyleneFlag);
     while (WaitSeconds) {
         if (m_Abort) {
             (void)p_DevProc->LSStopHeating();
             return false;
         }
-        p_DevProc->LSGetTemp(&CurrentTemp);
+        (void)p_DevProc->LSGetTemp(&CurrentTemp);
         if (CurrentTemp >= ExchangePIDTemp) {
             break;
         }
@@ -87,14 +87,14 @@ bool CLevelSensorHeatingDialog::StartHeating()
 
     (void)p_DevProc->LSStopHeating();
 
-    p_DevProc->LSStartHeating(false, !m_XyleneFlag);
+    (void)p_DevProc->LSStartHeating(false, !m_XyleneFlag);
     p_DevProc->Pause(1000);
     while (WaitSeconds) {
         if (m_Abort) {
             (void)p_DevProc->LSStopHeating();
             return false;
         }
-        p_DevProc->LSGetTemp(&CurrentTemp);
+        (void)p_DevProc->LSGetTemp(&CurrentTemp);
         if (CurrentTemp > ExchangePIDTemp) {
             break;
         }

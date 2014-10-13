@@ -45,8 +45,13 @@ CRotaryValve::CRotaryValve(QWidget *parent)
 
 CRotaryValve::~CRotaryValve()
 {
-    delete mp_MessageDlg;
-    delete ui;
+    try {
+        delete mp_MessageDlg;
+        delete ui;
+    }
+    catch (...) {
+
+    }
 }
 
 void CRotaryValve::StartMovementTest(void)

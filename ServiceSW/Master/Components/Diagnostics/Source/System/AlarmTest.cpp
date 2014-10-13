@@ -76,7 +76,7 @@ int CAlarmTest::Run(void)
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
-    p_DevProc->AlarmSetOnOff(m_LocalRemote, true);
+    (void)p_DevProc->AlarmSetOnOff(m_LocalRemote, true);
     Ret = ShowConfirmDlg(1);
 
     if (Ret == 0) {
@@ -84,7 +84,7 @@ int CAlarmTest::Run(void)
         return Ret;
     }
 
-    p_DevProc->AlarmSetOnOff(m_LocalRemote, false);
+    (void)p_DevProc->AlarmSetOnOff(m_LocalRemote, false);
     Ret = ShowConfirmDlg(2);
 
     if (Ret == 0) {
@@ -105,7 +105,7 @@ bool CAlarmTest::CheckAlarmStatus(int TimeOutSec, bool ConnectedFlag)
     qint64 NowTime   = QDateTime::currentMSecsSinceEpoch();
 
     while (NowTime - StartTime < TimeOutSec*1000) {
-        p_DevProc->AlarmGetState(m_LocalRemote, &RetState);
+        (void)p_DevProc->AlarmGetState(m_LocalRemote, &RetState);
         qDebug()<<"RetState:"<<RetState;
         if (RetState == (ConnectedFlag ? 0 : 1)) {
             return true;

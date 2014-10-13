@@ -34,7 +34,7 @@ QString FILLINGNDRAINING_TITLE("System Filling & Draining Test");
 
 CFillingNDrainingTest::CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),
-      mp_Parent(p_Parent),
+      //mp_ParentWidget(p_Parent),
       mp_MessageDlg(p_MessageDlg)
 {
 }
@@ -61,7 +61,7 @@ int CFillingNDrainingTest::Run(void)
     qreal TargetTemp2 = p_TestCase->GetParameter("RVTargetTemp2").toFloat();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
-    p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
+    (void)p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
 
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
@@ -92,7 +92,6 @@ int CFillingNDrainingTest::Run(void)
     qDebug()<<"Bottle Number:"<<BottleNumber;
 
     delete p_SelectDlg;
-    p_SelectDlg = NULL;
 
     Text = QString("Rotary Valve is moving to tube position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
@@ -115,7 +114,6 @@ int CFillingNDrainingTest::Run(void)
     }
 
     delete p_HeatingDlg;
-    p_HeatingDlg = NULL;
 
     if (!HeatingRet) {
         (void)p_DevProc->LSStopHeating();
@@ -215,7 +213,7 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
     }
     else if (RetNum == 4) {
         Text = "System Filling & Draining Test failed.<br>"\
-                "Level sensor’s target temperature was not "\
+                "Level sensor’mp_ParentWidgets target temperature was not "\
                 "reached in time. Clean level sensor, repeat this "\
                 "test. If still failed, exchange the level sensor";
     }

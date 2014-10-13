@@ -31,10 +31,15 @@ CDiagnosticMessageDlg::CDiagnosticMessageDlg(QWidget *p_Parent):
 
 CDiagnosticMessageDlg::~CDiagnosticMessageDlg()
 {
-    if (mp_WaitDlg) {
-        mp_WaitDlg->hide();
-        delete mp_WaitDlg;
-        mp_WaitDlg = NULL;
+    try {
+        if (mp_WaitDlg) {
+            mp_WaitDlg->hide();
+            delete mp_WaitDlg;
+            mp_WaitDlg = NULL;
+        }
+    }
+    catch (...) {
+
     }
 }
 
@@ -54,10 +59,8 @@ void CDiagnosticMessageDlg::ShowMessage(QString& MessageTitle, QString& MessageT
     dlg->setModal(true);
     qDebug()<<MessageText;
 
-    dlg->exec();
-
+    (void)dlg->exec();
     delete dlg;
-    dlg = NULL;
 }
 
 void CDiagnosticMessageDlg::ShowWaitingDialog(QString& MessageTitle, QString& MessageText)
@@ -125,9 +128,7 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& Me
     qDebug()<<MessageText;
 
     int Ret = dlg->exec();
-
     delete dlg;
-    dlg = NULL;
 
     return Ret;
 }

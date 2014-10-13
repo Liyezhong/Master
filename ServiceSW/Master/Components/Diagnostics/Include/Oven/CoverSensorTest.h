@@ -45,7 +45,7 @@ protected:
     virtual int CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value);
 
 private:
-    CDiagnosticMessageDlg *dlg;
+    CDiagnosticMessageDlg *mp_dlg;
 };
 
 } // namespace Oven

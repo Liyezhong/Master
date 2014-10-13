@@ -41,7 +41,7 @@ signals:
     void StartRVInitTest();
 
 private:
-    CDiagnosticMessageDlg *dlg;
+    CDiagnosticMessageDlg *mp_dlg;
 };
 
 } // namespace RotaryValve

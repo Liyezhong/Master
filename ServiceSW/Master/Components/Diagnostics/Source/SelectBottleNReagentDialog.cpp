@@ -37,7 +37,9 @@ namespace Diagnostics {
 /****************************************************************************/
 CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
-    mp_Ui(new Ui::CSelectBottleNReagentDialog)
+    mp_Ui(new Ui::CSelectBottleNReagentDialog),
+    m_BottleNumber(1),
+    m_ReagentGroup(1)
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);

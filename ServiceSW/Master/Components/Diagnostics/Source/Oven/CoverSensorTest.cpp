@@ -37,7 +37,7 @@ namespace Oven {
 
 CCoverSensorTest::CCoverSensorTest(CDiagnosticMessageDlg *dlg)
     : CTestBase()
-    , dlg(dlg)
+    , mp_dlg(dlg)
 {
 }
 
@@ -50,7 +50,7 @@ int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &text,
     DiagnosticsManufacturing::CStatusConfirmDialog confirmDlg;
     Service::ModuleTestStatus status;
     QString key("OvenCoverSensorStatus");
-    status.insert(key, value);
+    (void)status.insert(key, value);
     confirmDlg.SetDialogTitle(title);
     confirmDlg.SetText(text);
     confirmDlg.UpdateOvenLabel(status);
@@ -64,7 +64,7 @@ int CCoverSensorTest::TestCase(QString testStatus)
     int ret;
 
     text = tr("Please %1 the cover sensor manually.").arg(testStatus);
-    ret = dlg->ShowConfirmMessage(title, text,
+    ret = mp_dlg->ShowConfirmMessage(title, text,
                   testStatus == "open" ? CDiagnosticMessageDlg::NEXT_CANCEL : CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
     if (ret == CDiagnosticMessageDlg::CANCEL)
         return RETURN_ERR_FAIL;
@@ -80,7 +80,7 @@ int CCoverSensorTest::TestCase(QString testStatus)
         __OPEN__
     };
 
-    dev->OvenGetCoverSensorState(&status);
+    (void)dev->OvenGetCoverSensorState(&status);
     qDebug() << "cover sensor state : " << status;
 
     text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus.toUpper());
@@ -108,18 +108,18 @@ int CCoverSensorTest::Run(void)
 
     if (TestCase("open") != RETURN_OK) {
         text = tr("Cover sensor test - Failed");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
     if (TestCase("close") != RETURN_OK) {
         text = tr("Cover sensor test - Failed");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
     text = tr("Cover sensor test - Success");
-    dlg->ShowMessage(title, text, RETURN_OK);
+    mp_dlg->ShowMessage(title, text, RETURN_OK);
 
     return RETURN_OK;
 }

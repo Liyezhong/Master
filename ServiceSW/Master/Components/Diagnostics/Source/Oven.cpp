@@ -28,8 +28,8 @@
 
 namespace Diagnostics {
 
-COven::COven(QWidget *parent) :
-    QWidget(parent),
+COven::COven(QWidget *p_Parent) :
+    QWidget(p_Parent),
     ui(new Ui::COven),
     dlg(new CDiagnosticMessageDlg(this))
 {
@@ -48,8 +48,13 @@ COven::COven(QWidget *parent) :
 
 COven::~COven()
 {
-    delete dlg;
-    delete ui;
+    try {
+        delete dlg;
+        delete ui;
+    }
+    catch (...) {
+
+    }
 }
 
 void COven::StartHeatingTestEmpty(void)

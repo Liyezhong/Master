@@ -46,7 +46,7 @@ private Q_SLOTS:
     void Fail(void);
 
 private:
-    CDiagnosticMessageDlg *dlg;
+    CDiagnosticMessageDlg *mp_dlg;
 };
 
 } // namespace Oven

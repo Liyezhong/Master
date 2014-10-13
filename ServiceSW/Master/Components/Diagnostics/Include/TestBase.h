@@ -40,10 +40,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    CTestBase(QWidget *parent=NULL);
+    CTestBase(QWidget *p_Parent=NULL);
 
     /****************************************************************************/
     /*!

@@ -44,10 +44,10 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam MeltingPoint = The default melting point
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CSelectMeltingPointDialog(int MeltingPoint, QWidget *parent = 0);
+    explicit CSelectMeltingPointDialog(int MeltingPoint, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

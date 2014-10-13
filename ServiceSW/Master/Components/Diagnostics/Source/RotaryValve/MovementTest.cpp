@@ -36,7 +36,7 @@ namespace RotaryValve {
 
 CMovementTest::CMovementTest(CDiagnosticMessageDlg *dlg)
     : CTestBase()
-    , dlg(dlg)
+    , mp_dlg(dlg)
 {
 }
 
@@ -59,7 +59,7 @@ int CMovementTest::Run()
               "function to drain the liquid back to the original "
                "position. Thereafter flush the retort if necessary.");
 
-    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+    ret = mp_dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
         return RETURN_ERR_FAIL;
 
@@ -81,13 +81,13 @@ int CMovementTest::Run()
                   "element and function of ASB3. If no root cause "
                   "found, check main relay on ASB15 and cable "
                   "connections in addition. Exchange part accordingly.");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
     // RV initialize
     text = tr("Initializing the rotary valve...");
-    dlg->ShowWaitingDialog(title, text);
+    mp_dlg->ShowWaitingDialog(title, text);
     if (dev->RVInitialize() != RETURN_OK) {
         text = tr("Rotary Valve Movement Test failed. "
                   "It might work in some minutes when "
@@ -96,10 +96,10 @@ int CMovementTest::Run()
                   "about 15mins. If it still fails in the second "
                   "try, exchange rotary valve, reboot the "
                   "Service Software and repeat this test.");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
-    dlg->HideWaitingDialog();
+    mp_dlg->HideWaitingDialog();
 
     // tube position
     size_t pos[] = {
@@ -111,21 +111,21 @@ int CMovementTest::Run()
 
     for (size_t i = 0; i < sizeof(pos)/sizeof(size_t); i++) {
         text = tr(" Rotating Rotary Valve to tube position") + QString().sprintf("%u", pos[i]);
-        dlg->ShowWaitingDialog(title, text);
+        mp_dlg->ShowWaitingDialog(title, text);
         if (dev->RVMovePosition(true, pos[i]) != RETURN_OK) {
             text = tr("Rotary Valve Movement Test failed. "
                       "It might work in some minutes when solidified paraffin in the rotary valve is molten. "
                       "Repeat initializing test again in about 15mins. If it still fails in the second try, "
                       "exchange rotary valve, reboot the Service Software and repeat this test.");
-            dlg->HideWaitingDialog();
-            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+            mp_dlg->HideWaitingDialog();
+            mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
             return RETURN_ERR_FAIL;
         }
     }
 
-    dlg->HideWaitingDialog();
+    mp_dlg->HideWaitingDialog();
     text = tr("Rotary Valve Movement Test successful.");
-    dlg->ShowMessage(title, text, RETURN_OK);
+    mp_dlg->ShowMessage(title, text, RETURN_OK);
     return RETURN_OK;
 }
 

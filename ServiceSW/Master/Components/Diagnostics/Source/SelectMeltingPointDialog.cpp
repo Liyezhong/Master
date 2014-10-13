@@ -26,8 +26,8 @@
 
 namespace Diagnostics {
 
-CSelectMeltingPointDialog::CSelectMeltingPointDialog(int MeltingPoint, QWidget *parent)
-    :MainMenu::CDialogFrame(parent),
+CSelectMeltingPointDialog::CSelectMeltingPointDialog(int MeltingPoint, QWidget *p_Parent)
+    :MainMenu::CDialogFrame(p_Parent),
      mp_Ui(new Ui::CSelectMeltingPointDialog),
      m_MeltingPoint(MeltingPoint)
 {

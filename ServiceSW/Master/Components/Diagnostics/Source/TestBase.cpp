@@ -22,18 +22,23 @@
 
 namespace Diagnostics {
 
-CTestBase::CTestBase(QWidget *parent)
-    :mp_Parent(parent)
+CTestBase::CTestBase(QWidget *p_Parent)
+    :mp_Parent(p_Parent)
 {
     mp_WaitDlg = NULL;
 }
 
 CTestBase::~CTestBase()
 {
-    if (mp_WaitDlg) {
-        mp_WaitDlg->hide();
-        delete mp_WaitDlg;
-        mp_WaitDlg = NULL;
+    try {
+        if (mp_WaitDlg) {
+            mp_WaitDlg->hide();
+            delete mp_WaitDlg;
+            mp_WaitDlg = NULL;
+        }
+    }
+    catch (...) {
+
     }
 }
 
@@ -53,7 +58,7 @@ void CTestBase::ShowMessage(QString &MessageTitle, QString &MessageText, ErrorCo
     dlg->setModal(true);
     qDebug()<<MessageText;
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

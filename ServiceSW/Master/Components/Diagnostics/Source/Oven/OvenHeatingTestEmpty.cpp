@@ -40,8 +40,8 @@
     timer.setSingleShot(true); \
     timer.setInterval(TIMEOUT); \
     timer.start(); \
-    QObject::connect(&timer, SIGNAL(timeout()), QCoreApplication::instance(), SLOT(quit())); \
-    QCoreApplication::exec(); \
+    (void)QObject::connect(&timer, SIGNAL(timeout()), QCoreApplication::instance(), SLOT(quit())); \
+    (void)QCoreApplication::exec(); \
 }
 
 namespace Diagnostics {
@@ -50,7 +50,7 @@ namespace Oven {
 
 CHeatingTestEmpty::CHeatingTestEmpty(CDiagnosticMessageDlg *dlg)
     : CTestBase()
-    , dlg(dlg)
+    , mp_dlg(dlg)
 {
 }
 
@@ -82,7 +82,7 @@ int CHeatingTestEmpty::StartHeating(void)
     qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
-    dev->OvenStopHeating();
+    (void)dev->OvenStopHeating();
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
     qDebug()<<"OvenGetTemp ---- "<<OvenTempSensor1<<"  "<<OvenTempSensor2;
@@ -92,7 +92,7 @@ int CHeatingTestEmpty::StartHeating(void)
                           "Temperature sensors are out of specification. Please "
                           "check resistance of temperature sensors to verify, "
                           "exchange paraffin oven module and repeat this test."));
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
@@ -102,14 +102,14 @@ int CHeatingTestEmpty::StartHeating(void)
         text = QString(tr("Please remove any paraffin bath present in "
                           "the paraffin oven. Then please leave the oven cover"
                           "opened to speed up the cooling process."));
-        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        ret = mp_dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
 
           // if abort
           // return main display
 //        text = QString(tr(""));
-        dlg->ShowWaitingDialog(title, text);
+        mp_dlg->ShowWaitingDialog(title, text);
         // show a waiting dialog
          // wait a few minutes later, read temp
         int t = p_TestCase->GetParameter("t").toInt();
@@ -127,17 +127,17 @@ int CHeatingTestEmpty::StartHeating(void)
         }
 
         if (ret != RETURN_OK) {
-            dlg->HideWaitingDialog();
+            mp_dlg->HideWaitingDialog();
             text = tr("Paraffin Oven Heating Test "
                       "(Empty) failed. ASB5 is damaged."
                       "Exchange it and repeat this test.");
-            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+            mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
             return RETURN_ERR_FAIL;
         }
 
-        dlg->HideWaitingDialog();
+        mp_dlg->HideWaitingDialog();
         text = tr("Please close oven cover.");
-        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        ret = mp_dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
     } else {
@@ -145,7 +145,7 @@ int CHeatingTestEmpty::StartHeating(void)
                   "paraffin baths present in the paraffin oven."
                   "Verify the oven surfaces are dry and clean, "
                   "and the oven cover is closed.");
-        ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+        ret = mp_dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
             return RETURN_ERR_FAIL;
     }
@@ -158,7 +158,7 @@ int CHeatingTestEmpty::StartHeating(void)
               "Current Temperature (Top)(℃ ):"
               "Current Temperature (Bottom 1)(℃ )"
               "Current Temperature (Bottom 2)(℃ )");
-    dlg->ShowWaitingDialog(title, text);
+    mp_dlg->ShowWaitingDialog(title, text);
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
     if (ret != RETURN_OK)
@@ -166,7 +166,7 @@ int CHeatingTestEmpty::StartHeating(void)
 
     OvenTempSensor1 += 10;
     OvenTempSensor2 += 10;
-    dev->OvenStartHeating(OvenTempSensor1, OvenTempSensor2);
+    (void)dev->OvenStartHeating(OvenTempSensor1, OvenTempSensor2);
     int t1 = p_TestCase->GetParameter("t1").toInt();
 
     for (int i = 0; i < t1; i += 5) {
@@ -178,7 +178,7 @@ int CHeatingTestEmpty::StartHeating(void)
             ret = RETURN_OK;
             break;
         }
-        dlg->ShowWaitingDialog(title, text);
+        mp_dlg->ShowWaitingDialog(title, text);
         qDebug() << "OvenGetTemp ---- " << OvenTempSensor1Cur << "  " << OvenTempSensor2Cur;
     }
 
@@ -188,8 +188,8 @@ int CHeatingTestEmpty::StartHeating(void)
                   "Root cause might be damaged ASB5 or Paraffin Oven Module."
                   "Sequentially check resistance of heaters and function of ASB5."
                   "Exchange defective part accordingly and repeat this test.");
-        dlg->HideWaitingDialog();
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->HideWaitingDialog();
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
@@ -206,26 +206,26 @@ int CHeatingTestEmpty::StartHeating(void)
         }
         // todo
         // text =
-        dlg->ShowWaitingDialog(title, text);
+        mp_dlg->ShowWaitingDialog(title, text);
         qDebug() << "OvenGetTemp ---- " << OvenTempSensor1Cur << "  " << OvenTempSensor2Cur;
     }
 
-    dlg->HideWaitingDialog();
+    mp_dlg->HideWaitingDialog();
     if (ret != RETURN_OK) {
         text = tr("Paraffin Oven Heating Test (Empty) failed."
                   "ASB5 is damaged. Exchange it and repeat this test.");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
 
     text = tr("Paraffin Oven Heating Test (Empty) "
               "successful. Please re-insert the paraffin "
               "baths and close the oven cover.");
-    dlg->ShowMessage(title, text, RETURN_OK);
+    mp_dlg->ShowMessage(title, text, RETURN_OK);
     //>>>
 
     // close
-    dev->OvenStopHeating();
+    (void)dev->OvenStopHeating();
 
     p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
 

@@ -56,6 +56,8 @@ int CExhaustFanTest::Run(void)
 
     (void)ServiceDeviceProcess::Instance()->PumpSetFan(0);
     ShowFinishDlg(RetNum);
+
+    return RETURN_OK;
 }
 
 int CExhaustFanTest::ShowConfirmDlg(int StepNum)

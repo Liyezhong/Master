@@ -43,10 +43,10 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam MeltingPoint = The default melting point
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *parent = 0);
+    explicit CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

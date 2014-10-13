@@ -35,7 +35,7 @@ class COven : public QWidget
     Q_OBJECT
     
 public:
-    explicit COven(QWidget *parent = 0);
+    explicit COven(QWidget *p_Parent = 0);
     ~COven();
 
 protected:

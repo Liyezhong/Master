@@ -122,7 +122,7 @@ int ServiceDeviceProcess::AlarmGetState(int LocalRemote, qint32 *RetState)
     if (Results.size()>0) {
         *RetState = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -149,7 +149,7 @@ int ServiceDeviceProcess::MainControlGetCurrent(quint8 SlaveType, quint16 *RetCu
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -176,7 +176,7 @@ int ServiceDeviceProcess::MainControlGetVoltage(quint8 SlaveType, quint16 *RetVo
     if (Results.size()>0) {
         *RetVoltage = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -242,7 +242,7 @@ int ServiceDeviceProcess::OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, 
             *RetTempBottom2 = Results.at(2).toFloat();
         }
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -273,7 +273,7 @@ int ServiceDeviceProcess::OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCur
             *RetCurrentBottom = Results.at(1).toInt();
         }
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -299,7 +299,7 @@ int ServiceDeviceProcess::OvenGetCoverSensorState(qint32 *RetCoverSensorState)
     if (Results.size()>0) {
         *RetCoverSensorState = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -325,7 +325,7 @@ int ServiceDeviceProcess::OvenGetSwitchType(int *RetSwitchType)
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -391,7 +391,7 @@ int ServiceDeviceProcess::RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom
             *RetTempBottom2 = Results.at(2).toFloat();
         }
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -422,7 +422,7 @@ int ServiceDeviceProcess::RetortGetCurrent(quint16 *RetCurrentSide, quint16 *Ret
             *RetCurrentBottom = Results.at(1).toInt();
         }
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -448,7 +448,7 @@ int ServiceDeviceProcess::RetortGetLidLockState(qint32 *RetLidLockState)
     if (Results.size()>0) {
         *RetLidLockState = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -491,7 +491,7 @@ int ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -547,7 +547,7 @@ int ServiceDeviceProcess::LiquidTubeGetTemp(qreal *RetTemp)
     if (Results.size()>0) {
         *RetTemp = Results.at(0).toFloat();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -573,7 +573,7 @@ int ServiceDeviceProcess::LiquidTubeGetCurrent(quint16 *RetCurrent)
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -629,7 +629,7 @@ int ServiceDeviceProcess::AirTubeGetTemp(qreal *RetTemp)
     if (Results.size()>0) {
         *RetTemp = Results.at(0).toFloat();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -655,7 +655,7 @@ int ServiceDeviceProcess::AirTubeGetCurrent(quint16 *RetCurrent)
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -714,7 +714,7 @@ int ServiceDeviceProcess::RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2
             *RetTempSensor2 = Results.at(1).toFloat();
         }
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -740,7 +740,7 @@ int ServiceDeviceProcess::RVGetCurrent(quint16 *RetCurrent)
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -812,7 +812,7 @@ int ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -865,7 +865,7 @@ int ServiceDeviceProcess::LSGetTemp(qreal *RetTemp)
     if (Results.size()>0) {
         *RetTemp = Results.at(0).toFloat();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -889,7 +889,7 @@ int ServiceDeviceProcess::LSGetCurrent(quint16 *RetCurrent)
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -969,7 +969,7 @@ int ServiceDeviceProcess::PumpGetPressure(float *RetPressure)
     if (Results.size()>0) {
         *RetPressure = Results.at(0).toFloat();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -1037,7 +1037,7 @@ int ServiceDeviceProcess::PumpSucking(quint32 DelayTime)
     if (Results.size()>0) {
         Ret = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -1063,7 +1063,7 @@ int ServiceDeviceProcess::PumpDraining(quint32 DelayTime)
     if (Results.size()>0) {
         Ret = Results.at(0).toInt();
     }
-    m_ResultsMap.remove(ReqName);
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }
@@ -1099,7 +1099,7 @@ void ServiceDeviceProcess::Pause(quint32 MilliSeconds)
 void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringList Results)
 {
     if (Results.size()>0) {
-        m_ResultsMap.insert(ReqName, Results);
+        (void)m_ResultsMap.insert(ReqName, Results);
     }
 
     qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
@@ -1108,7 +1108,7 @@ void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringL
 
     if (loop && loop->isRunning()) {
         loop->exit(Error);
-        m_EventLoopMap.remove(ReqName);
+        (void)m_EventLoopMap.remove(ReqName);
 
     }
 }
@@ -1123,7 +1123,7 @@ int ServiceDeviceProcess::GetResponse(QString ReqName, int TimeoutSeconds)
     timer.start();
 
     QEventLoop *loop = new QEventLoop();
-    m_EventLoopMap.insert(ReqName, loop);
+    (void)m_EventLoopMap.insert(ReqName, loop);
     CONNECTSIGNALSLOT(&timer, timeout(), loop, quit());
     ret = loop->exec();
 
