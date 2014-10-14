@@ -20,6 +20,7 @@
 #include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
+#include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
@@ -78,6 +79,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_BottleChkFlag = true;
     m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
+    m_IsLoged = 0;
 }
 
 CProgramPreTest::~CProgramPreTest()
@@ -151,8 +153,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     memset(&reportError4, 0, sizeof(reportError4));
 
 	switch (currentState)
-	{
-    mp_SchedulerThreadController->LogDebug(QString("Pre-Check status is: %1").arg(currentState));
+    {
     case PRETEST_INIT:
         if(mp_SchedulerThreadController->IsCleaningProgram())
         {
@@ -184,20 +185,28 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         break;
     case TEMPSENSORS_CHECKING:
+        if(0 == m_IsLoged)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_CHECK_LEVELSENSOR);
+            m_IsLoged++;
+        }
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
         {
-            mp_SchedulerThreadController->LogDebug("Pre-Test: Temperature checking of sensors passed");
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_CHECK_LEVELSENSOR_SUCCESS);
             emit Wait3SecondsRTCurrent();
-        }
-        else
-        {
-            // Do nothing - Heating Strategy has handled all related error cases.
+            m_IsLoged = 0;
         }
         break;
     case WAIT3S_RT_CURRENT:
+        if(0 == m_IsLoged)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DELAY_3S);
+            m_IsLoged++;
+        }
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_RTTempStartTime) >= 3*1000)
         {
+            m_IsLoged = 0;
             emit RTTemperatureControlOff();
         }
         else
@@ -226,9 +235,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     case RT_TEMCTRL_OFF:
         if (0 == m_RTTempOffSeq)
         {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTSIDE_TEMP);
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
             if (DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTSIDE_TEMP_SUCCESS);
                 m_RTTempOffSeq = 1;
             }
             else
@@ -239,9 +250,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else
         {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP);
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
             if (DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP_SUCCESS);
                 m_RTTempOffSeq = 0;
                 emit RVPositionChecking();
             }
@@ -253,9 +266,9 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         break;
     case RV_POSITION_CHECKING:
-        mp_SchedulerThreadController->LogDebug("Pre-Test: In RV_POSITION_CHECKING");
         if (0 == m_RVPositioinChkSeq)
         {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
             m_RVPositioinChkSeq++;
         }
@@ -265,27 +278,23 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition passed");
-                    m_RVPositioinChkSeq = 0; //reset to initial value
+                    m_RVPositioinChkSeq = 0;
                     emit PressureCalibration();
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION_SUCCESS);
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION);
                 }
                 else
                 {
-                    m_RVPositioinChkSeq = 0; //reset to initial value
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition failed");
+                    m_RVPositioinChkSeq = 0;
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
-            }
-            else
-            {
-                // Do nothing, just wait for the command response.
             }
         }
         break;
     case PRESSURE_CALIBRATION:
         if (0 == m_PressureCalibrationSeq)
         {
-            mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Enter Pressure Calibration"));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_PressureCalibrationSeq++;
         }
@@ -293,44 +302,46 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         {
             if ("Scheduler::ALReleasePressure" == cmdName)
             {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION_SUCCESS);
                 m_PressureCalibrationSeq++;
                 m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
             }
         }
         else if (2 == m_PressureCalibrationSeq)
         {
+            if(0 == m_IsLoged)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_WAIT_20S);
+                m_IsLoged++;
+            }
             if ((QDateTime::currentMSecsSinceEpoch() - m_ReleasePressureTime) >= 20*1000)
             {
+                m_IsLoged = 0;
                 m_PressureCalibrationSeq++;
-            }
-            else
-            {
-                // Do nothing, just wait for time out
             }
         }
         else if (3 == m_PressureCalibrationSeq)
         {
             currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
-            mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Pressure Calibration, current pressure is :%1f").arg(currentPressure));
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_GET_CURRENT_PRESSURE, QStringList()<<QString::number(currentPressure));
             if (qAbs(currentPressure) > 1.5) //Retry, at most 3 times
             {
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter++;
                 if (3 == m_PressureCalibrationCounter)
                 {
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration failed");
                     m_PressureCalibrationSeq = 0;
                     m_PressureCalibrationCounter = 0;
                     mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
                 }
                 else
                 {
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration,  pressure value is too large, retry");
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_PRESSURE_CALIBRATION);
                 }
             }
             else if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
             {
-                mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration passed");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS);
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter = 0;
                 emit PressureSealingChecking();
@@ -340,12 +351,14 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
                 m_PressureCalibrationSeq = 0;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OFFSET_CALIBRATION);
             }
         }
         break;
     case PRESSURE_SEALING_CHECKING:
         if (0 == m_PressureSealingChkSeq)
         {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST);
             CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, mp_SchedulerThreadController);
             cmd->SetThresholdPressure(5.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
@@ -357,24 +370,24 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: IDSealingCheck passed");
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST_SUCCESS);
 					m_PressureSealingChkSeq = 0;
                     emit BottlesChecking();
                 }
                 else
                 {
                     m_PressureSealingChkSeq = 0;
-                    mp_SchedulerThreadController->LogDebug(QString("Pre-Test, Return code is: %1").arg(retCode));
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
-            }
-            else
-            {
-                // Do nothing, just wait for the command response.
             }
         }
         break;
     case BOTTLES_CHECKING:
+        if(0 == m_IsLoged)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK);
+            m_IsLoged++;
+        }
         if (true == m_BottleChkFlag)  // Send out IDBottleCheck command
         {
             if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
@@ -383,7 +396,8 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             }
             else // all the bottle check (for 16 bottles) has been done
             {
-                mp_SchedulerThreadController->LogDebug("Pre-Test: IDBottleCheck passed");
+                m_IsLoged = 0;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
                 m_BottleSeq = 0; //reset
                 emit MoveToTube();
             }
@@ -415,8 +429,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else if(mp_SchedulerThreadController->IsRVRightPosition(0))
         {
-            mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
-            mp_SchedulerThreadController->LogDebug("Pre-Test Done");
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRETEST_SUCCESS);
 			m_MoveToTubeSeq = 0;
             emit TasksDone();
         }
@@ -432,7 +445,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         break;
     default:
-		mp_SchedulerThreadController->LogDebug("Pre-Test: Get the default branch");
         break;
 	}
 }
@@ -451,6 +463,7 @@ void CProgramPreTest::ResetVarList()
     m_BottleChkFlag = true;
     m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
+    m_IsLoged = 0;
 }
 
 }

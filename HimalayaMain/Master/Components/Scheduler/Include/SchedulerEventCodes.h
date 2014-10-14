@@ -45,7 +45,7 @@ const quint32 EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT = SCHEDULER_BASE_ID + 0x0
 
 // Self test
 const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 0x0100; ///< Start the Selftest.
-const quint32 EVENT_SCHEDULER_DELAY_3S = SCHEDULER_BASE_ID + 0x0101; ///< Delay 2 second.
+const quint32 EVENT_SCHEDULER_DELAY_3S = SCHEDULER_BASE_ID + 0x0101; ///< Delay 3 second.
 const quint32 EVENT_SCHEDULER_DELAY_5S = SCHEDULER_BASE_ID + 0x0102; ///< Delay 5 second.
 const quint32 EVENT_SCHEDULER_ASB3VOLTAGE_SWITCHAUTO = SCHEDULER_BASE_ID + 0x0103; ///< Set ASB3 voltage switch to auto.
 const quint32 EVENT_SCHEDULER_ASB3VOLTAGE_SWITCHAUTO_SUCCESS = SCHEDULER_BASE_ID + 0x0104; ///< Set the ASB3 voltage switch to auto successfully.
@@ -106,9 +106,25 @@ const quint32 EVENT_SCHEDULER_START_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP = SCHEDULER_BASE_ID + 0x13B; ///< Stop heating oven bottom.
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0x14C; ///< Stop heating oven bottom successfully.
 
-
 // Pre test
 const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 0x0200; ///< Start the pretest.
+const quint32 EVENT_SCHEDULER_CHECK_LEVELSENSOR = SCHEDULER_BASE_ID + 0x0201; ///< Check the level sensor temperature.
+const quint32 EVENT_SCHEDULER_CHECK_LEVELSENSOR_SUCCESS = SCHEDULER_BASE_ID + 0x202; ///< Check the level sensor temperature passed.
+const quint32 EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION = SCHEDULER_BASE_ID + 0x203; ///< Move RV to initialize position.
+const quint32 EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION_SUCCESS = SCHEDULER_BASE_ID + 0x204; ///< Move RV to initialize position successfully.
+const quint32 EVENT_SCHEDULER_PRESSURE_CALIBRATION = SCHEDULER_BASE_ID + 0x205; ///<  Test pressure calibration.
+const quint32 EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION = SCHEDULER_BASE_ID + 0x206; ///< Calibrate pressure of release pressure.
+const quint32 EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION_SUCCESS = SCHEDULER_BASE_ID + 0x207; ///< Calibrate pressure of release pressure successfully.
+const quint32 EVENT_SCHEDULER_WAIT_20S = SCHEDULER_BASE_ID + 0x208; ///< Wait 20 second.
+const quint32 EVENT_SCHEDULER_GET_CURRENT_PRESSURE = SCHEDULER_BASE_ID + 0x209; ///< Calibrate pressure the current pressure is :%1.
+const quint32 EVENT_SCHEDULER_RETRY_PRESSURE_CALIBRATION = SCHEDULER_BASE_ID + 0x20A; ///< Retry Pressure Calibration the pressure value is too large.
+const quint32 EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS = SCHEDULER_BASE_ID + 0x20B; ///< Calibrate pressure successfully.
+const quint32 EVENT_SCHEDULER_OFFSET_CALIBRATION = SCHEDULER_BASE_ID +  0x20C; ///< Offset the pressure calibration.
+const quint32 EVENT_SCHEDULER_SEALING_TEST = SCHEDULER_BASE_ID + 0x20D; ///< Sealing test.
+const quint32 EVENT_SCHEDULER_SEALING_TEST_SUCCESS = SCHEDULER_BASE_ID + 0x20E; ///< Sealing test successfully.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK = SCHEDULER_BASE_ID + 0x20F; ///< Bottle test.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS = SCHEDULER_BASE_ID + 0x210; ///< Bottle test successfully.
+const quint32 EVENT_SCHEDULER_PRETEST_SUCCESS = SCHEDULER_BASE_ID + 0x211; ///< PreTest success.
 
 // running program
 // 1. Power failudre

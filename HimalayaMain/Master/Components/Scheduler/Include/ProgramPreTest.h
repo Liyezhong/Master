@@ -211,6 +211,7 @@ private:
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
     quint32 m_BottleSeq;                                            //!< Sequence of the bottle
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
+    quint8  m_IsLoged;                                              //!< Wether loged
 private:
     /****************************************************************************/
     /*!
