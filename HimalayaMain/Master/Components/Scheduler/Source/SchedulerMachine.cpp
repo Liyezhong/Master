@@ -1789,7 +1789,7 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 }
                 else
                 {
-                    cmd->SetDrainPressure(40.0);
+                    cmd->SetDrainPressure(30.0);
                 }
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
 
