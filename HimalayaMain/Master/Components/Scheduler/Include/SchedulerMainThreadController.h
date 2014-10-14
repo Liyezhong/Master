@@ -468,74 +468,6 @@ typedef struct
           */
          /****************************************************************************/
          int WhichStepHasNoSafeReagent(const QString& ProgramID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function CreateFunctionModuleStatusList
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *
-          *  \return from CreateFunctionModuleStatusList
-          */
-         /****************************************************************************/
-         bool CreateFunctionModuleStatusList(QList<FunctionModuleStatus_t>* pList);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SetFunctionModuleWork
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
-          *  \param isWorking =  bool type parameter
-          *
-          *  \return from SetFunctionModuleWork
-          */
-         /****************************************************************************/
-         bool SetFunctionModuleWork(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isWorking);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SetFunctionModuleHealth
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
-          *  \param isHealth =  bool type parameter
-          *
-          *  \return from SetFunctionModuleHealth
-          */
-         /****************************************************************************/
-         bool SetFunctionModuleHealth(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isHealth);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SetFunctionModuleStarttime
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
-          *
-          *  \return from SetFunctionModuleStarttime
-          */
-         /****************************************************************************/
-         bool SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function SetFunctionModuleStoptime
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
-          *
-          *  \return from SetFunctionModuleStoptime
-          */
-         /****************************************************************************/
-         bool SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
-
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetFunctionModuleStartworkTime
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
-          *
-          *  \return from GetFunctionModuleStartworkTime
-          */
-         /****************************************************************************/
-         qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
 
          /****************************************************************************/
          /*!
@@ -1152,7 +1084,7 @@ protected:
          *  \return void
          */
         /****************************************************************************/
-        void MoveRV(qint16 type);
+        bool MoveRV(qint16 type);
 
         /****************************************************************************/
         /*!

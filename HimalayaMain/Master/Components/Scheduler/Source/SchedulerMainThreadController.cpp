@@ -486,7 +486,20 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,QStringList()<<ProgramName);
-            //m_SchedulerMachine->SendRunSignal();
+            //start next step
+            QString PVMode = "/";
+            if(m_CurProgramStepInfo.isPressure)
+            {
+                PVMode = "P/";
+            }
+            if(m_CurProgramStepInfo.isVacuum)
+            {
+                PVMode += "V";
+            }
+            RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                       <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                       <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
+                       <<PVMode);
 
             //send command to main controller to tell the left time
             if (m_NewProgramID.at(0) != 'C')
@@ -582,7 +595,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
-        LogDebug(QString("Scheduler received command: ABORT"));
         m_SchedulerMachine->NotifyAbort();
         //tell main controller scheduler is starting to abort
         MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
@@ -996,12 +1008,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_STEP_PROGRAM_FINISH == stepState)
         {
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
-            LogDebug(QString("Program Step Finished"));
+            RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
             (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
-                LogDebug(QString("Start Step %1").arg(m_CurProgramStepIndex));
+                QString PVMode = "/";
+                if(m_CurProgramStepInfo.isPressure)
+                {
+                    PVMode = "P/";
+                }
+                if(m_CurProgramStepInfo.isVacuum)
+                {
+                    PVMode += "V";
+                }
+                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                           <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                           <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
+                           <<PVMode);
                 m_SchedulerMachine->NotifyStepProgramFinished();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -1022,7 +1046,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    LogDebug(QString("All Steps finished."));
                     m_SchedulerMachine->NotifyProgramFinished();
                 }
 
@@ -1037,7 +1060,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             //program finished
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            LogDebug(QString("Program %1 finished!").arg(ProgramName));
+            RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
             m_SchedulerMachine->SendRunComplete();
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
@@ -2281,7 +2304,8 @@ void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, co
 void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd)
 {
     this->SendAcknowledgeOK(Ref);
-    LogDebug(QString("Change the Paraffin melting point from %1 to %2").arg(Cmd.GetLastMeltPoint()).arg(Cmd.GetCurrentMeltPoint()));
+    RaiseEvent(EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT,QStringList()<<QString("[%1]").arg(Cmd.GetLastMeltPoint())
+               <<QString("[%1]").arg(Cmd.GetCurrentMeltPoint()));
     m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
     mp_HeatingStrategy->ResetTheOvenHeating();
 }
@@ -2918,22 +2942,21 @@ void SchedulerMainThreadController::ShutdownRetortHeater()
 
 void SchedulerMainThreadController::ReleasePressure()
 {
-    LogDebug("Send cmd to DCL to let Release Pressure.");
+    RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, this));
 }
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
     // We only release pressure if neither P or V exists.
+    RaiseEvent(EVENT_SCHEDULER_START_PROCESSING);
     if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
     {
+        RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
         m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
     }
     m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
     m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-
-    //m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
 
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
@@ -3019,9 +3042,8 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     switch (CurrentState)
     {
     case CDS_READY:
-        LogDebug(QString("Start the cleaning dry step"));
-        //commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Processing", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Drying Step", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
+        RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Processing", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3104,7 +3126,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         CurrentState = CDS_SUCCESS;
         break;
     case CDS_SUCCESS:
-        qDebug() << "CDS_SUCCESS";
+        RaiseEvent(EVENT_SCHEDULER_FINISHED_DRY_PROCESSING);
         m_SchedulerMachine->NotifyProgramFinished();
         CurrentState = CDS_READY;
         StepStartTime = 0;
@@ -3116,7 +3138,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
 }
 
 
-void SchedulerMainThreadController::MoveRV(qint16 type)
+bool SchedulerMainThreadController::MoveRV(qint16 type)
 {
     /*lint -e593 */
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
@@ -3126,37 +3148,37 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
     {
         //get target position here
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-        LogDebug(QString("Move to RV tube position: %1").arg(targetPos));
+        RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.stationID);
     }
     else if(1 == type) //seal positon
     {
         //get target position here
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-        LogDebug(QString("Move to RV Seal position: %1").arg(targetPos));
+        RaiseEvent(EVENT_SCHEDULER_MOVE_RV_SEALING_POSITION,QStringList()<<m_CurProgramStepInfo.stationID);
     }
     else if(2 == type)
     {
         //get target position here
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-        LogDebug(QString("Move to RV next tube position: %1").arg(targetPos));
+        RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
     }
 
     if(RV_UNDEF != targetPos)
     {
         cmd->SetRVPosition(targetPos);
         m_SchedulerCommandProcessor->pushCmd(cmd);
+        return true;
     }
     else
     {
-       LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-       RaiseError(0, DCL_ERR_INVALID_PARAM, m_CurrentScenario, true);
-       m_SchedulerMachine->SendErrorSignal();
+       LogDebug(QString("Error in MV RV to station: %1").arg(m_CurProgramStepInfo.stationID));
+       return false;
     }
 }
 
 void SchedulerMainThreadController::Fill()
 {
-    LogDebug("Send cmd to DCL to Fill");
+    RaiseEvent(EVENT_SCHEDULER_START_FILLING);
     CmdALFilling* cmd  = new CmdALFilling(500, this);
 
     // only cleaning program need to suck another 2 seconds after level sensor triggering.
@@ -3541,14 +3563,12 @@ void SchedulerMainThreadController::RCDrain()
 
 void SchedulerMainThreadController::Drain()
 {
-    LogDebug("Send cmd to DCL to Drain");
+    RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
-    // acknowledge to gui
-    LogDebug("Notice GUI Draining started");
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
@@ -3594,14 +3614,14 @@ void SchedulerMainThreadController::OnStopDrain()
 
 void SchedulerMainThreadController::Pressure()
 {
-    LogDebug("Send cmd to DCL to Pressure");
+    RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_POSITIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, this));
 }
 
 void SchedulerMainThreadController::HighPressure()
 {
 
-    LogDebug("Send cmd to DCL to Pressure");
+    RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(40));
     CmdALPressure* cmd = new CmdALPressure(500, this);
     cmd->SetTargetPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -3610,7 +3630,7 @@ void SchedulerMainThreadController::HighPressure()
 void SchedulerMainThreadController::Vaccum()
 {
 
-    LogDebug("Send cmd to DCL to Vaccum");
+    RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_NEGATIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, this));
 }
 
@@ -3623,7 +3643,7 @@ void SchedulerMainThreadController::AllStop()
 
 void SchedulerMainThreadController::Pause()
 {
-    LogDebug("Notice GUI program paused");
+    RaiseEvent(EVENT_SCHEDULER_OVEN_PAUSE);
     //update the remaining time for the current step
     m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
@@ -3728,20 +3748,22 @@ quint64 SchedulerMainThreadController::GetOvenHeatingTime()
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-
-    if(QFile::exists("TEST_ISSAC")) // linear agr only for testing
-    {
-        return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
-    }
     quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin(ParaffinMeltPoint);
     quint32 HeatedTime = 0;
-    if(12 * 60 * 60 - StillNeedHeatingTime > 0)
+    QString TotalTime = "12h";
+    if(12 * 60 * 60 >= StillNeedHeatingTime)
     {
         HeatedTime = 12 * 60 * 60 - StillNeedHeatingTime;
     }
-    if(ParaffinMeltPoint > 64 && (15 * 60 * 60 - StillNeedHeatingTime > 0))
+    if(ParaffinMeltPoint > 64 && (15 * 60 * 60 >= StillNeedHeatingTime))
     {
+        TotalTime = "15h";
         HeatedTime = 15 * 60 * 60 - StillNeedHeatingTime;
+    }
+    RaiseEvent(EVENT_SCHEDULER_OVEN_HEATING_TIME,QStringList()<<DataManager::Helper::ConvertSecondsToTimeString(StillNeedHeatingTime)<<TotalTime);
+    if(QFile::exists("TEST_ISSAC")) // linear agr only for testing
+    {
+        return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
     }
     return HeatedTime;
 }
@@ -3791,153 +3813,6 @@ bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QStri
     return (pProgram->GetNumberOfSteps() == (currentStepIndex + 1));
 }
 
-bool SchedulerMainThreadController::CreateFunctionModuleStatusList(QList<FunctionModuleStatus_t>* pList)
-{
-    if(pList)
-    {
-        FunctionModuleStatus_t fmStatus;
-        fmStatus.IsAvialable = true;
-        fmStatus.IsWorking = false;
-        fmStatus.StartTime = 0;
-        fmStatus.StopTime = 0;
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RV_MOTOR;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_PRESSURECTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_FANDO;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_LIDDI;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_LOCKDO;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_LOCKDI;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_REMOTEALARMCTRLDO;
-        pList->push_back(fmStatus);
-        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_LOCALALARMCTRLDO;
-        pList->push_back(fmStatus);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool SchedulerMainThreadController::SetFunctionModuleWork(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isWorking)
-{
-    if(pList)
-    {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        quint32 idx = 0;
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if(fmStatus.FctModID == ID)
-            {
-                fmStatus.IsWorking = isWorking;
-                if(isWorking)
-                {
-                    fmStatus.StartTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                else
-                {
-                    fmStatus.StopTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                (*pList)[idx] = fmStatus;
-                return true;
-            }
-            idx++;
-        }
-    }
-    return false;
-}
-
-bool SchedulerMainThreadController::SetFunctionModuleHealth(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isHealth)
-{
-    if(pList)
-    {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        quint32 idx = 0;
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if(fmStatus.FctModID == ID)
-            {
-                fmStatus.IsHealth = isHealth;
-                (*pList)[idx] = fmStatus;
-                return true;
-            }
-            idx++;
-        }
-    }
-    return false;
-}
-
-bool SchedulerMainThreadController::SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
-{
-    if(pList)
-    {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        quint32 idx = 0;
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if(fmStatus.FctModID == ID)
-            {
-                fmStatus.StartTime = QDateTime::currentMSecsSinceEpoch();
-                (*pList)[idx] = fmStatus;
-                return true;
-            }
-            idx++;
-        }
-    }
-    return false;
-}
-
-bool SchedulerMainThreadController::SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
-{
-    if(pList)
-    {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        quint32 idx = 0;
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if(fmStatus.FctModID == ID)
-            {
-                fmStatus.StopTime = QDateTime::currentMSecsSinceEpoch();
-                (*pList)[idx] = fmStatus;
-                return true;
-            }
-            idx++;
-        }
-    }
-    return false;
-}
-
 HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
 {
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == m_CurErrEventID
@@ -3976,24 +3851,6 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     }
 
     return UNKNOWN;
-}
-
-qint64 SchedulerMainThreadController::GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
-{
-    if(pList)
-    {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if(fmStatus.FctModID == ID)
-            {
-                return fmStatus.StartTime;
-            }
-        }
-    }
-    return 0;
 }
 
 bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenario,qreal HWTemp)
@@ -4236,6 +4093,7 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+    RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
 }
 
 }

@@ -29,18 +29,19 @@ namespace Scheduler{
 const quint32 SCHEDULER_BASE_ID = 0x04010000;  ///<  Base event id of Scheduler
 
 //slave configurations
-const quint32 EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY = SCHEDULER_BASE_ID + 1; ///< Slave boards initialized successfully.
-const quint32 EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE = SCHEDULER_BASE_ID + 2; ///< Error happend during Slaves initializing %1.
-const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY = SCHEDULER_BASE_ID + 3; ///< Main Relay opened successfully.
-const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE = SCHEDULER_BASE_ID + 4; ///< Fail to open the Main Relay %1.
+const quint32 EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x0001; ///< Slave boards initialized successfully.
+const quint32 EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE = SCHEDULER_BASE_ID + 0x0002; ///< Error happend during Slaves initializing %1.
+const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x0003; ///< Main Relay opened successfully.
+const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE = SCHEDULER_BASE_ID + 0x0004; ///< Fail to open the Main Relay %1.
 
 // Action command from GUI or Event Handler
-const quint32 EVENT_SCHEDULER_REC_ACTION_SHUTDOWN = SCHEDULER_BASE_ID + 10; ///< User shutdown instrument.
-const quint32 EVENT_SCHEDULER_REC_ERROR_ACTION = SCHEDULER_BASE_ID + 11; ///<  Do recovery action %1.
-const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 12; ///< User start/continue the program %1.
-const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 13; ///< User pause the program %1.
-const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 14; ///< User abort the program %1.
-const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 15; ///< User drain the last reagent of the program %1.
+const quint32 EVENT_SCHEDULER_REC_ACTION_SHUTDOWN = SCHEDULER_BASE_ID + 0x0010; ///< User shutdown instrument.
+const quint32 EVENT_SCHEDULER_REC_ERROR_ACTION = SCHEDULER_BASE_ID + 0x0011; ///<  Do recovery action %1.
+const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 0x0012; ///< User start/continue the program %1.
+const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 0x0013; ///< User pause the program %1.
+const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 0x0014; ///< User abort the program %1.
+const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 0x0015; ///< User drain the last reagent of the program %1.
+const quint32 EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT = SCHEDULER_BASE_ID + 0x0016; ///< User change the paraffin melting point from %1 to %2.
 
 // Self test
 const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 0x0100; ///< Start the Selftest.
@@ -117,6 +118,25 @@ const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< I
 // 3. runing program
 const quint32 EVENT_SCHEDULER_START_PROGRAM = SCHEDULER_BASE_ID + 0x0320; ///< start the program %1
 const quint32 EVENT_SCHEDULER_SET_RV_POSITION = SCHEDULER_BASE_ID + 0x0321; ///< Set the rotary valve position to %1.
+const quint32 EVENT_SCHEDULER_OVEN_HEATING_TIME = SCHEDULER_BASE_ID + 0x0322; ///< Still need to heat oven for %1 of %2 to melting paraffin.
+const quint32 EVENT_SCHEDULER_OVEN_ABORTING = SCHEDULER_BASE_ID + 0x0323; ///< Aborting program.
+const quint32 EVENT_SCHEDULER_OVEN_ABORTED = SCHEDULER_BASE_ID + 0x0324; ///< Aborted program.
+const quint32 EVENT_SCHEDULER_OVEN_PAUSE = SCHEDULER_BASE_ID + 0x0325; ///< Pause program.
+const quint32 EVENT_SCHEDULER_RELEASE_PREASURE = SCHEDULER_BASE_ID + 0x0326; ///< Release presure.
+const quint32 EVENT_SCHEDULER_DRAINING = SCHEDULER_BASE_ID + 0x0327; ///< Draining.
+const quint32 EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN = SCHEDULER_BASE_ID + 0x0328; ///< Waiting for filling paraffin.
+const quint32 EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING = SCHEDULER_BASE_ID + 0x0329; ///< Heating the level sensor for filling
+const quint32 EVENT_SCHEDULER_START_FILLING = SCHEDULER_BASE_ID + 0x032A; ///< Start filling
+const quint32 EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION = SCHEDULER_BASE_ID + 0x032B; ///< Moveing the rotary valve to the tube position of station %1.
+const quint32 EVENT_SCHEDULER_MOVE_RV_SEALING_POSITION = SCHEDULER_BASE_ID + 0x032C; ///< Moveing the rotary valve to the sealing position of station %1.
+const quint32 EVENT_SCHEDULER_START_PROCESSING = SCHEDULER_BASE_ID + 0x032D; ///< Start processing.
+const quint32 EVENT_SCHEDULER_SET_PRESSURE = SCHEDULER_BASE_ID + 0x032E; ///< Set pressure to %1.
+const quint32 EVENT_SCHEDULER_PROGRAM_STEP_FINISHED = SCHEDULER_BASE_ID + 0x032F; ///< Finished Step %1.
+const quint32 EVENT_SCHEDULER_PROGRAM_STEP_START = SCHEDULER_BASE_ID + 0x0330; ///< Start Step %1(Station %2, %3, %4, %5).
+const quint32 EVENT_SCHEDULER_PROGRAM_FINISHED = SCHEDULER_BASE_ID + 0x0331; ///< Finished Program %1.
+const quint32 EVENT_SCHEDULER_START_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0332; ///< Start the dry processing.
+const quint32 EVENT_SCHEDULER_FINISHED_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0333; ///< Finished the dry processing.
+
 
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H

@@ -71,8 +71,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // Layer two states (for Busy state)
     mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPreTestState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), entered(), this, OnEnterPretest());
     mp_PssmFillingHeatingRVState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    CONNECTSIGNALSLOT(mp_PssmFillingLevelSensorHeatingState.data(), entered(), this, OnEnterHeatingLevelSensor());
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -193,6 +195,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
 
     CONNECTSIGNALSLOT(mp_PssmAborting.data(),entered(), this, OnPSSMAborting());
+    CONNECTSIGNALSLOT(mp_PssmAborted.data(),entered(), this, OnPSSMAborted());
 
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
@@ -1775,7 +1778,7 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 m_PssmAbortingSeq = PSSMABORT_FORCE_DRAIN;
-                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent in PSSM_Aborting");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DRAINING);
                 CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
                 QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                 RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
@@ -1913,8 +1916,14 @@ void CSchedulerStateMachine::OnNotifyResume()
 
 void CSchedulerStateMachine::OnPSSMAborting()
 {
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OVEN_ABORTING);
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
     mp_SchedulerThreadController->ReleasePressure();
+}
+
+void CSchedulerStateMachine::OnPSSMAborted()
+{
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OVEN_ABORTED);
 }
 
 void CSchedulerStateMachine::OnEnterSelfTest()
@@ -1925,5 +1934,14 @@ void CSchedulerStateMachine::OnEnterSelfTest()
 void CSchedulerStateMachine::OnEnterIdleState()
 {
      mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
+}
+
+void CSchedulerStateMachine::OnEnterPretest()
+{
+     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PRETEST);
+}
+void CSchedulerStateMachine::OnEnterHeatingLevelSensor()
+{
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
 }
 }
