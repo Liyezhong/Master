@@ -289,7 +289,7 @@ bool SetConfigRefRunTimeout(quint16 sRefRunTimeout);
 
     bool SetRotationDirection(quint8 direction);
     quint8 GetRotationDirection();
-    qint32 MoveToInitialPosition();
+    qint32 MoveToInitialPosition(bool TubeFlag = false, quint32 Position=0);
 
     qint32 MoveToTubePosition(quint32 Position);
     qint32 MoveToSealPosition(quint32 Position);

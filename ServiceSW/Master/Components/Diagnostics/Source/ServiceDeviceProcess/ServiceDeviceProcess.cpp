@@ -745,11 +745,16 @@ int ServiceDeviceProcess::RVGetCurrent(quint16 *RetCurrent)
     return Ret;
 }
 
-int ServiceDeviceProcess::RVInitialize()
+int ServiceDeviceProcess::RVInitialize(bool TubeFlag, quint32 Position)
 {
     QString ReqName = "RVInitialize";
     QStringList Params;
     Params.clear();
+
+    if (Position != 0) {
+        Params.append(QString("%1").arg(TubeFlag));
+        Params.append(QString("%1").arg(Position));
+    }
 
     emit SendServRequest(ReqName, Params);
 

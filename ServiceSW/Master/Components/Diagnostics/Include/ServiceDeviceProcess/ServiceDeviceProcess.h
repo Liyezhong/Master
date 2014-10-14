@@ -112,7 +112,7 @@ public:
     int RVStopHeating();
     int RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2);
     int RVGetCurrent(quint16 *RetCurrent);
-    int RVInitialize();
+    int RVInitialize(bool TubeFlag=false, quint32 Position=0);
     int RVMovePosition(bool TubeFlag, int Position);
     int RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
     int RVGetHeaterSwitchType(quint8 *RetSwitchType);

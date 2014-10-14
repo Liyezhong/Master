@@ -315,11 +315,28 @@ qint32 WrapperFmStepperMotor::DoReferenceRunWithStepCheck(quint32 LowerLimit, qu
  *  \return true, if the reference run succeeded, else false
  *
  */
-qint32 WrapperFmStepperMotor::MoveToInitialPosition()
+qint32 WrapperFmStepperMotor::MoveToInitialPosition(bool TubeFlag, quint32 Position)
 {
     QString lsCode;
     qint32 RetValue = REFER_RUN_OK;
     bool ParaChange = false;
+
+    // added by Sunny on Oct, 14, 2014
+    if (Position != 0) {
+        quint32 EDPosition = 0;
+        if (TubeFlag) {
+            EDPosition = Position*2-1;
+        }
+        else {
+            EDPosition = Position*2;
+        }
+        Log(QString( "INFO: Set the current RV position:%1, TubeFlag:%d").arg(Position).arg(TubeFlag));
+        SetEDPosition(EDPosition);
+        SetPrevEDPosition(EDPosition);
+        return REFER_RUN_OK;
+    }
+    ////
+
 //reconfig for original position
     if(GetConfigLS2Exists()==0)
     {

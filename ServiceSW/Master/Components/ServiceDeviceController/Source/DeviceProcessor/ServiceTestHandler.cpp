@@ -896,7 +896,14 @@ void ServiceTestHandler::RVInitialize(QString& ReqName, QStringList& Params)
         return ;
     }
 
-    Ret = mp_MotorRV->MoveToInitialPosition();
+    if (Params.size()>0) {
+        bool TubeFlag = Params.at(0).toInt();
+        quint32 Position = Params.at(1).toInt();
+        Ret = mp_MotorRV->MoveToInitialPosition(TubeFlag, Position);
+    }
+    else {
+        Ret = mp_MotorRV->MoveToInitialPosition();
+    }
 
     if (Ret == RV_MOVE_OK) {
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
