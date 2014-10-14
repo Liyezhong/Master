@@ -78,6 +78,11 @@ public:
     virtual void HideWaitingDialog();
 
     virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, int type = YES_NO);
+    QWidget *ParentWidget()
+    {
+        return mp_Parent;
+    }
+
 protected:
     QWidget        *mp_Parent;              //!< Parent widget
     MainMenu::CMessageDlg *mp_WaitDlg;      //!< Wait dialog

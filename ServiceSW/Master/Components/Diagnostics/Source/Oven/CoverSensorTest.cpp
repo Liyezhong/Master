@@ -47,7 +47,8 @@ CCoverSensorTest::~CCoverSensorTest(void)
 
 int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value)
 {
-    DiagnosticsManufacturing::CStatusConfirmDialog confirmDlg;
+    // dlg->ParentWidget() == mp_MainWindow
+    DiagnosticsManufacturing::CStatusConfirmDialog confirmDlg(dlg->ParentWidget());
     Service::ModuleTestStatus status;
     QString key("OvenCoverSensorStatus");
     (void)status.insert(key, value);

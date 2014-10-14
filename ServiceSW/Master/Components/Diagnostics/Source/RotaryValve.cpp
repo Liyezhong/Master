@@ -37,9 +37,9 @@ CRotaryValve::CRotaryValve(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CRotaryValve)
     , m_InitSuccess(true)
-    , mp_MessageDlg(new CDiagnosticMessageDlg(this))
 {
     ui->setupUi(this);
+    mp_MessageDlg = new CDiagnosticMessageDlg(this);
     (void)connect(ui->movementTest, SIGNAL(clicked()), this, SLOT(StartMovementTest()));
 }
 

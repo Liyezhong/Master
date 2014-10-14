@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
+#include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
 
 namespace Diagnostics {
 
@@ -33,7 +34,7 @@ class COven;
 class COven : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit COven(QWidget *p_Parent = 0);
     ~COven();
@@ -44,10 +45,12 @@ protected:
 private Q_SLOTS:
     void StartHeatingTestEmpty(void);
     void StartCoverSensorTest(void);
-    
+    void HeatingTestEmptyClose();
+
 private:
     Ui::COven *ui;
     CDiagnosticMessageDlg *dlg;
+    Oven::CHeatingTestEmpty *heatingTestEmpty;
 
 signals:
     void GuiOvenEmptyHeatingTest();

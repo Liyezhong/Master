@@ -19,7 +19,6 @@
 /****************************************************************************/
 #include <QDebug>
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
-#include "Diagnostics/Include/Oven/OvenHeatingTestWithLiquid.h"
 #include "Diagnostics/Include/Oven/CoverSensorTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
@@ -28,13 +27,13 @@
 
 namespace Diagnostics {
 
-COven::COven(QWidget *p_Parent) :
-    QWidget(p_Parent),
-    ui(new Ui::COven),
-    dlg(new CDiagnosticMessageDlg(this))
+COven::COven(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::COven)
+    , heatingTestEmpty(NULL)
 {
     ui->setupUi(this);
-
+    dlg = new CDiagnosticMessageDlg(this);
     (void)connect(ui->testHeatingEmpty,
                  SIGNAL(clicked()),
                  this,
@@ -51,6 +50,8 @@ COven::~COven()
     try {
         delete dlg;
         delete ui;
+		if (heatingTestEmpty)
+			delete heatingTestEmpty;
     }
     catch (...) {
 
@@ -62,8 +63,21 @@ void COven::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
     qDebug() << "Oven: start heating test empty";
 
-    Oven::CHeatingTestEmpty test(dlg);
-    (void)test.Run();
+    if (heatingTestEmpty)
+        delete heatingTestEmpty;
+    heatingTestEmpty = new Oven::CHeatingTestEmpty(dlg);
+    connect(heatingTestEmpty, SIGNAL(notifyClose()), this, SLOT(HeatingTestEmptyClose()));
+    ui->testHeatingEmpty->setEnabled(false);
+    (void)heatingTestEmpty->Run();
+}
+
+
+void COven::HeatingTestEmptyClose(void)
+{
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
+    qDebug() << "Oven: start heating test empty";
+
+    ui->testHeatingEmpty->setEnabled(true);
 }
 
 void COven::StartCoverSensorTest(void)
