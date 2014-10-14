@@ -81,10 +81,10 @@ void CVentilationFanTest::ShowFinishDlg(int RetNum)
     ErrorCode_t Ret = RETURN_ERR_FAIL;
 
     if (RetNum == 1) {
-        Text = "Ventilation Fan Test failed. Fan is not turning, please check wiring and exchange the fan is necessary.";
+        Text = "Ventilation Fan Test failed.<br>Fan is not turning, please check wiring and exchange the fan is necessary.";
     }
     else if (RetNum == 2) {
-        Text = "Ventilation Fan Test failed. Please check for proper installation, correct wiring to ensure the airflow goes "\
+        Text = "Ventilation Fan Test failed.<br>Please check for proper installation, correct wiring to ensure the airflow goes "\
                 "out of instrument?";
     }
     else if (RetNum == 3) {

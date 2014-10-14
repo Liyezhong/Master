@@ -34,7 +34,6 @@ QString FILLINGNDRAINING_TITLE("System Filling & Draining Test");
 
 CFillingNDrainingTest::CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),
-      //mp_ParentWidget(p_Parent),
       mp_MessageDlg(p_MessageDlg)
 {
 }
@@ -116,7 +115,6 @@ int CFillingNDrainingTest::Run(void)
     delete p_HeatingDlg;
 
     if (!HeatingRet) {
-        (void)p_DevProc->LSStopHeating();
         ShowFinishDlg(4);
         return Ret;
     }

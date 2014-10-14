@@ -81,7 +81,6 @@ private:
     void ShowFinishDlg(int RetNum);
 
 private:
-    //QWidget*                mp_ParentWidget;      //!< Parent widget
     CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.
 };
 

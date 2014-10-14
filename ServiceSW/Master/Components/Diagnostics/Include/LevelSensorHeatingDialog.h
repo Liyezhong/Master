@@ -102,7 +102,7 @@ private Q_SLOTS:
 
 private:
     Ui::CLevelSensorHeatingDialog *mp_Ui;     //!< User interface
-    bool m_XyleneFlag;                       //!< true-Xylene, false-other reagents.
+    bool m_XyleneFlag;                        //!< true-Xylene, false-other reagents.
     bool m_Abort;                             //!< Flag for abort.
 
 };

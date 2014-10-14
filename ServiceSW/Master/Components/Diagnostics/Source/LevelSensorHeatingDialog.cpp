@@ -106,6 +106,7 @@ bool CLevelSensorHeatingDialog::StartHeating()
     accept();
 
     if (WaitSeconds == 0 && CurrentTemp <= ExchangePIDTemp) {
+        (void)p_DevProc->LSStopHeating();
         return false;
     }
 

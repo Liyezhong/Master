@@ -44,6 +44,11 @@
 #include "Diagnostics/Include/Oven/CoverSensorTest.h"
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
 #include "Diagnostics/Include/RotaryValve/MovementTest.h"
+#include "Diagnostics/Include/System/AlarmTest.h"
+#include "Diagnostics/Include/System/ExhaustFanTest.h"
+#include "Diagnostics/Include/System/SpeakerTest.h"
+#include "Diagnostics/Include/System/VentilationFanTest.h"
+#include "Diagnostics/Include/System/FillingNDrainingTest.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include <QObject>
 #include <QMessageBox>
@@ -374,6 +379,25 @@ protected:
 
 } // namespace Oven
 
+namespace System {
+
+class CSpeakerTestMock : public CSpeakerTest
+{
+    Q_OBJECT
+public:
+    CSpeakerTestMock(CDiagnosticMessageDlg* dlg)
+        : CSpeakerTest(dlg)
+    {
+
+    }
+protected:
+    virtual void PlaySound(QString &Volume)
+    {
+    }
+};
+
+}// namespace System
+
 /****************************************************************************/
 /**
  * \brief Test class for Diagnostics class.
@@ -423,6 +447,12 @@ private slots:
     void OvenPreTest();
     void CoverSensorTest();
     void RVMovementTest();
+
+    void SystemAlarmTest();
+    void SystemExhaustFanTest();
+    void SystemVentilationFanTest();
+    void SystemSpeakerTest();
+    void SystemFillingNDrainingTest();
 
 
 }; // end class CTestDiagnostics
@@ -493,6 +523,47 @@ void CTestDiagnostics::RVMovementTest()
     QVERIFY(ut.Run() != RETURN_OK);
 }
 
+/****************************************************************************/
+void CTestDiagnostics::SystemAlarmTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CAlarmTest utRemote("Remote", &dlg);
+    System::CAlarmTest utLocal("Local", &dlg);
+    QVERIFY(utRemote.Run() != RETURN_OK);
+    QVERIFY(utLocal.Run() != RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemExhaustFanTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CExhaustFanTest ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemVentilationFanTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CVentilationFanTest ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemSpeakerTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CSpeakerTestMock ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemFillingNDrainingTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CFillingNDrainingTest ut(&dlg);
+    QVERIFY(ut.Run() != RETURN_OK);
+}
 
 /****************************************************************************/
 void CTestDiagnostics::init() {

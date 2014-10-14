@@ -63,15 +63,16 @@ public:
     /****************************************************************************/
     int Run(void);
 
-private:
+protected:
     /****************************************************************************/
     /*!
      *  \brief The function for play sound.
      *  \iparam Volume = the sound volume.
      */
     /****************************************************************************/
-    void PlaySound(QString& Volume);
+    virtual void PlaySound(QString& Volume);
 
+private:
     /****************************************************************************/
     /*!
      *  \brief To show confirm dialog
