@@ -1527,6 +1527,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SEALING_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    p_TestCase->ResetResult();
     if (CurStep == 1 || CurStep == 2) {
         float TargetPressure(0);
         float Offset(3);
