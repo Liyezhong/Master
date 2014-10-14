@@ -390,6 +390,7 @@ void CDashboardStationItem::DrawStationItemImage()
 void CDashboardStationItem::PrepareCleaningReagentStrip()
 {
     //For Cleaning Reagent, generate the raw image used for BDiagpattern
+#if 0
     QPixmap pix(200, 200);
     pix.fill(Qt::transparent);
 
@@ -406,6 +407,7 @@ void CDashboardStationItem::PrepareCleaningReagentStrip()
     QPixmap img = pix.transformed(m);
     img = img.copy(100, 100, 100, 98);
     m_RawImage4Cleaning = img;
+#endif
 }
 
 void CDashboardStationItem::PrepareReagentName()

@@ -3020,7 +3020,8 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     {
     case CDS_READY:
         LogDebug(QString("Start the cleaning dry step"));
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Processing", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
+        //commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Dry Processing", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Drying Step", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
