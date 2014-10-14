@@ -154,6 +154,8 @@ private:
     void PumpStopCompressor(QString& ReqName, QStringList& Params);
     void PumpSucking(QString& ReqName, QStringList& Params);
     void PumpDraining(QString& ReqName, QStringList& Params);
+    void PumpReadPressureDrift(QString& ReqName, QStringList& Params);
+    void PumpWritePressureDrift(QString& ReqName, QStringList& Params);
 
     void GetSlaveModuleReportError(QString& ReqName, QStringList& Params);
     void Pause(quint32 MillSeconds);

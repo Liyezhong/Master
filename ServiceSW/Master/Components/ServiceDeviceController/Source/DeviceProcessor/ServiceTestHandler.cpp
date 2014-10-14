@@ -1353,6 +1353,39 @@ void ServiceTestHandler::PumpDraining(QString& ReqName, QStringList& Params)
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::PumpReadPressureDrift(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    float Drift = mp_PressPump->ReadPressureDrift();
+
+    Results.append(QString("%1").arg(Drift));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
+void ServiceTestHandler::PumpWritePressureDrift(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    float Drift = Params.at(0).toFloat();
+    mp_PressPump->WritePressureDrift(Drift);
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
 void ServiceTestHandler::GetSlaveModuleReportError(QString& ReqName, QStringList& Params)
 {
     int WaitMSec = 3000;
@@ -1547,6 +1580,12 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     }
     else if (ReqName == "PumpDraining") {
         PumpDraining(ReqName, Params);
+    }
+    else if (ReqName == "PumpReadPressureDrift") {
+        PumpReadPressureDrift(ReqName, Params);
+    }
+    else if (ReqName == "PumpWritePressureDrift") {
+        PumpWritePressureDrift(ReqName, Params);
     }
     // other
     else if (ReqName == "GetSlaveModuleReportError") {

@@ -1068,6 +1068,45 @@ int ServiceDeviceProcess::PumpDraining(quint32 DelayTime)
     return Ret;
 }
 
+int ServiceDeviceProcess::PumpReadPressureDrift(float *RetPressureDrift)
+{
+    QString ReqName = "PumpReadPressureDrift";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetPressureDrift = Results.at(0).toFloat();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::PumpWritePressureDrift(float PressureDrift)
+{
+    QString ReqName = "PumpWritePressureDrift";
+    QStringList Params;
+
+    Params.clear();
+    Params.append(QString("%1").arg(PressureDrift));
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    return Ret;
+}
+
 int ServiceDeviceProcess::GetSlaveModuleReportError(quint8 ErrorCode, const QString &DevName, quint32 SensorName)
 {
     QString ReqName = "GetSlaveModuleReportError";

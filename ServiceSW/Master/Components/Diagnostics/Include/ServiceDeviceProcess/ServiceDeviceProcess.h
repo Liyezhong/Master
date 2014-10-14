@@ -132,6 +132,8 @@ public:
     int PumpStopCompressor();
     int PumpSucking(quint32 DelayTime=0);
     int PumpDraining(quint32 DelayTime=0);
+    int PumpReadPressureDrift(float *RetPressureDrift);
+    int PumpWritePressureDrift(float PressureDrift);
 
     int GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName);
     void Pause(quint32 MillSeconds);
