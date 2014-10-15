@@ -113,7 +113,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
-        ,m_PowerFailureStep(SET_RVPOSITION)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -368,58 +367,53 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 {
     Q_UNUSED(ctrlCmd);
     Q_UNUSED(cmd);
+    bool isCleaningProgram = false;
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
-    if( SET_RVPOSITION == m_PowerFailureStep)
-    {
-        if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario)
-        {
-            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
-        }
-        else if(283 == scenario || 293 == scenario)
-        {
-            m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
-        }
-        else if(284 == scenario || 294 == scenario)
-        {
-            m_CurrentStepState = PSSM_PROCESSING;
-        }
-        else if(285 == scenario || 295 == scenario)
-        {
-            m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
-        }
-        else if(286 == scenario || 296 == scenario)
-        {
-            m_CurrentStepState = PSSM_DRAINING;
-        }
-        else if(287 == scenario || 297 == scenario)
-        {
-            m_CurrentStepState = PSSM_RV_POS_CHANGE;
-        }
 
-        if( (QString::number(scenario).right(1) == "3" || QString::number(scenario).right(1) == "5"
-                  || QString::number(scenario).right(1) == "7"))
-        {
-            RaiseError(0, DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION, scenario, true);
-            m_SchedulerMachine->SendErrorSignal();
-            m_PowerFailureStep = RUN_POWERFAILURE;
-        }
-        else
-        {
-            CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
-            cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
-            m_SchedulerCommandProcessor->pushCmd(cmdSet);
-
-            LogDebug(QString("power failure set the rv position to:%1").arg(m_ProgramStatusInfor.GetLastRVPosition()));
-            RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
-            m_SchedulerMachine->SendErrorSignal();
-        }
-    }
-    else if(RUN_POWERFAILURE == m_PowerFailureStep)
+    if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario)
     {
-        RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
-        m_PowerFailureStep = SET_RVPOSITION;
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
+    else if(203 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
+    }
+    else if(283 == scenario || 293 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
+    }
+    else if(284 == scenario || 294 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_PROCESSING;
+    }
+    else if(285 == scenario || 295 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
+    }
+    else if(286 == scenario || 296 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_DRAINING;
+    }
+    else if(287 == scenario || 297 == scenario)
+    {
+        isCleaningProgram = true;
+        m_CurrentStepState = PSSM_RV_POS_CHANGE;
+    }
+    if(isCleaningProgram)
+    {
+        CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
+        cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
+        m_SchedulerCommandProcessor->pushCmd(cmdSet);
+    }
+
+    RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
+    m_SchedulerMachine->SendErrorSignal();
 }
 
 

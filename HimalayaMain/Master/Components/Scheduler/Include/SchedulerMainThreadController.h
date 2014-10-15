@@ -170,17 +170,6 @@ typedef struct
 
 /****************************************************************************/
 /*!
- * \brief enum for power failure step
- */
-/****************************************************************************/
-typedef enum
-{
-    SET_RVPOSITION,
-    RUN_POWERFAILURE
-}PowerFailureStep_t;
-
-/****************************************************************************/
-/*!
  *  \brief struct for Slave module attributes
  */
 /****************************************************************************/
@@ -265,7 +254,6 @@ typedef struct
         bool m_IsSafeReagentState;                            ///< Scheduler is in RS_Tissue_Protect state
         bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
         bool m_StopFilling;                                   ///< When restart filling, need stop filling
-        PowerFailureStep_t m_PowerFailureStep;                 ///< power failure step
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1065,7 +1053,6 @@ protected:
         {
             RaiseError(0,EventId, m_CurrentScenario, true);
             m_SchedulerMachine->SendErrorSignal();
-
         }
 
         /****************************************************************************/
@@ -1247,14 +1234,6 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
-        /****************************************************************************/
-        /*!
-         * \brief Get power failure step state
-         * \return PowerFailureStep_t
-         */
-        /****************************************************************************/
-        PowerFailureStep_t GetPowerFailureStep() {return m_PowerFailureStep;}
-
 
     public slots:
 

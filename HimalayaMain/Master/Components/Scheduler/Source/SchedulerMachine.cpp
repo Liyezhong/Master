@@ -135,7 +135,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
 	mp_ErrorState->addTransition(this, SIGNAL(sigEnterIdleState()), mp_IdleState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigSelfRcRestart()), mp_InitState.data());
-    mp_ErrorState->addTransition(this, SIGNAL(SigRestartPowerFailure()), mp_PowerFailureState.data());
     CONNECTSIGNALSLOT(this, SigEnterRcRestart(), mp_SchedulerThreadController, OnEnterRcRestart());
     CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
 
@@ -1838,10 +1837,6 @@ void CSchedulerStateMachine::EnterRcRestart()
     {
         mp_ProgramSelfTest->ResetVarList();
         emit SigSelfRcRestart();
-    }
-    else if(RUN_POWERFAILURE == mp_SchedulerThreadController->GetPowerFailureStep())
-    {
-        emit SigRestartPowerFailure();
     }
     else
     {
