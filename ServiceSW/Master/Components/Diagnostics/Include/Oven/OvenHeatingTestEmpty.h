@@ -30,15 +30,14 @@ namespace Diagnostics {
 
 namespace Oven {
 
-class CHeatingTestEmptyThread;
 struct heatingTestStatus {
    int UsedTime;
    int EDTime;
    qreal OvenTempTop;
    qreal OvenTempSensor1;
    qreal OvenTempSensor2;
-   qreal OvenTargetTemp;
 
+   qreal OvenTempTopTarget;
    qreal OvenTempSensor1Target;
    qreal OvenTempSensor2Target;
    qreal TempOffset;
@@ -55,46 +54,15 @@ public:
 
     int Run(void);
 
-signals:
-    void notifyClose(void);
-
 private:
-    void Clean(void);
     void StartPreHeating(void);
 
 private Q_SLOTS:
-    void AbortDialog();
-    void ShowWaitingDialog(QByteArray status);
-    void _ShowWaitingDialog(struct heatingTestStatus *buf);
-
-    void ShowMessageBoxFail(QString msg);
-    void ShowMessageBoxSuccess(QString msg);
+    void ShowWaitingDialog(struct heatingTestStatus *buf);
 
 private:
     CDiagnosticMessageDlg *dlg;
     OvenHeatingTestEmptyTimingDialog *timingDialog;
-    CHeatingTestEmptyThread *heatingTestEmptyThread;
-    QThread Thread;
-};
-
-class CHeatingTestEmptyThread : public QThread
-{
-    Q_OBJECT
-
-public:
-    void run();
-signals:
-    void freshWaitingDlg(QByteArray status);
-    void ShowMessageBoxFail(QString msg);
-    void ShowMessageBoxSuccess(QString msg);
-
-public:
-    struct heatingTestStatus status;
-    int t1;
-    int t2;
-
-private:
-    void sendBuf(struct heatingTestStatus *s);
 };
 
 } // namespace Oven

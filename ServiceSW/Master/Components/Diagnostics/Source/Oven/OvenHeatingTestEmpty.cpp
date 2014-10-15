@@ -42,36 +42,17 @@ CHeatingTestEmpty::CHeatingTestEmpty(CDiagnosticMessageDlg *_dlg)
     : CTestBase()
     , dlg(_dlg)
     , timingDialog(new OvenHeatingTestEmptyTimingDialog(dlg->ParentWidget()))
-    , heatingTestEmptyThread(new CHeatingTestEmptyThread)
 {
-    connect(timingDialog, SIGNAL(rejected()), this, SLOT(AbortDialog()));
-    timingDialog->SetTitle(tr("Paraffin Oven Heating Test (Empty)"));
+
 }
 
 CHeatingTestEmpty::~CHeatingTestEmpty(void)
 {
     try {
         delete timingDialog;
-        delete heatingTestEmptyThread;
     } catch (...) {
         qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete heatingTestEmptyThread & waitDialog, catch error";
     }
-}
-
-void CHeatingTestEmpty::Clean()
-{
-    if (!heatingTestEmptyThread->isFinished()) {
-        heatingTestEmptyThread->terminate();
-        heatingTestEmptyThread->wait();
-    }
-    timingDialog->hide();
-    emit notifyClose();
-}
-
-void CHeatingTestEmpty::AbortDialog()
-{
-    StartPreHeating();
-    Clean();
 }
 
 void CHeatingTestEmpty::StartPreHeating()
@@ -82,45 +63,22 @@ void CHeatingTestEmpty::StartPreHeating()
     OvenPreTest.StartPreHeating(meltPoint);
 }
 
-
-void CHeatingTestEmpty::_ShowWaitingDialog(struct heatingTestStatus *buf)
+void CHeatingTestEmpty::ShowWaitingDialog(struct heatingTestStatus *buf)
 {
     Service::ModuleTestStatus currentStatus;
 
     currentStatus["Duration"] = QTime().addSecs(buf->EDTime).toString("hh:mm:ss");
     currentStatus["UsedTime"] = QTime().addSecs(buf->UsedTime).toString("hh:mm:ss");
+
     currentStatus["CurrentTempTop"] = tr("%1").arg(buf->OvenTempTop);
+    currentStatus["TargetTempTop"] = tr("%1").arg(buf->OvenTempTopTarget);
+
     currentStatus["CurrentTempBottom1"] = tr("%1").arg(buf->OvenTempSensor1);
     currentStatus["CurrentTempBottom2"] = tr("%1").arg(buf->OvenTempSensor2);
-    currentStatus["TargetTempTop"] = tr("%1").arg(buf->OvenTargetTemp);
+
     currentStatus["TargetTempBottom"] = tr("%1").arg(buf->OvenTempSensor1Target);
 
     timingDialog->UpdateLabel(currentStatus);
-}
-
-void CHeatingTestEmpty::ShowWaitingDialog(QByteArray status)
-{
-    if (!timingDialog->isVisible())
-            timingDialog->show();
-    _ShowWaitingDialog((struct heatingTestStatus *)status.constData());
-}
-
-void CHeatingTestEmpty::ShowMessageBoxSuccess(QString msg)
-{
-    QString title(tr("Paraffin Oven Heating Test (Empty)"));
-    timingDialog->hide();
-    dlg->ShowMessage(title, msg, RETURN_OK);
-    StartPreHeating();
-    emit notifyClose();
-}
-
-void CHeatingTestEmpty::ShowMessageBoxFail(QString msg)
-{
-    QString title(tr("Paraffin Oven Heating Test (Empty)"));
-    timingDialog->hide();
-    dlg->ShowMessage(title, msg, RETURN_ERR_FAIL);
-    StartPreHeating();
-    emit notifyClose();
 }
 
 int CHeatingTestEmpty::Run(void)
@@ -130,21 +88,29 @@ int CHeatingTestEmpty::Run(void)
     QString title((tr("Paraffin Oven Heating Test (Empty)")));
     QString text;
     int ret;
+    int i;
+    int t1, t2;
 
     qreal OvenTempTop;
     qreal OvenTempSensor1;
     qreal OvenTempSensor2;
 
+    qreal OvenTempTopCur;
+    qreal OvenTempSensor1Cur;
+    qreal OvenTempSensor2Cur;
+
     qreal OvenTopTargetTemp;
     qreal OvenBottomTargetTemp;
+
+    struct heatingTestStatus status;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("HeatingTestEmpty");
 
     qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
+    timingDialog->SetTitle(tr("Paraffin Oven Heating Test (Empty)"));
 
     (void)dev->OvenStopHeating();
-
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
 
     if (ret != RETURN_OK || qAbs(OvenTempSensor1 - OvenTempSensor2) >= DiffTemp
@@ -154,8 +120,7 @@ int CHeatingTestEmpty::Run(void)
                           "Temperature sensors are out of specification. Please "
                           "check resistance of temperature sensors to verify, "
                           "exchange paraffin oven module and repeat this test."));
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        goto out;
+        goto _fail_;
     }
 
     OvenTopTargetTemp = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
@@ -167,25 +132,22 @@ int CHeatingTestEmpty::Run(void)
                           "opened to speed up the cooling process."));
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
-            goto out;
+            goto _abort_;
 
         qreal TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
         int t = p_TestCase->GetParameter("t").toInt();
-        struct heatingTestStatus status;
         status.UsedTime = 0;
-        status.OvenTargetTemp = OvenTempTop - TempOffset;
+        status.OvenTempTopTarget = OvenTempTop - TempOffset;
         status.OvenTempSensor1Target = OvenTempSensor1 - TempOffset;
         status.OvenTempSensor2Target = OvenTempSensor2 - TempOffset;
+        status.OvenTempSensor1 = OvenTempSensor1;
+        status.OvenTempSensor2 = OvenTempSensor2;
+        status.OvenTempTop = OvenTempTop;
         status.EDTime = t;
 
-        // wait a few minutes
-        int i;
         timingDialog->show();
         for (i = 0; i < t && timingDialog->isVisible(); i++) {
             dev->Pause(1000);
-            qreal OvenTempTopCur;
-            qreal OvenTempSensor1Cur;
-            qreal OvenTempSensor2Cur;
             ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
                 break;
@@ -193,7 +155,7 @@ int CHeatingTestEmpty::Run(void)
             status.OvenTempSensor2 = OvenTempSensor2Cur;
             status.OvenTempTop = OvenTempTopCur;
             status.UsedTime++;
-            this->_ShowWaitingDialog(&status);
+            ShowWaitingDialog(&status);
             if (OvenTempTop - OvenTempTopCur >= TempOffset
                     && OvenTempSensor1 - OvenTempSensor1Cur >= TempOffset
                     && OvenTempSensor2 - OvenTempSensor2Cur >= TempOffset)
@@ -201,21 +163,20 @@ int CHeatingTestEmpty::Run(void)
         }
 
         if (!timingDialog->isVisible())
-           goto out;
+           goto _abort_;
 
         timingDialog->accept();
         if (ret != RETURN_OK || i == t) {
             text = tr("Paraffin Oven Heating Test "
                       "(Empty) failed. ASB5 is damaged."
                       "Exchange it and repeat this test.");
-            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-            goto out;
+            goto _fail_;
         }
 
         text = tr("Please close oven cover.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
-            goto out;
+            goto _abort_;
     } else {
         text = tr("Please make sure there are no "
                   "paraffin baths present in the paraffin oven.<br/>"
@@ -223,62 +184,44 @@ int CHeatingTestEmpty::Run(void)
                   "and the oven cover is closed.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
         if (ret == CDiagnosticMessageDlg::ABORT)
-            goto out;
+            goto _abort_;
     }
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
-    if (ret != RETURN_OK)
-        goto out;
+    if (ret != RETURN_OK) {
+        text = tr("Oven Get Temp error");
+        goto _fail_;
+    }
 
-    heatingTestEmptyThread->status.TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
-    heatingTestEmptyThread->status.TempOffsetRange = p_TestCase->GetParameter("TempOffsetRange").toFloat();
+    status.TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
+    status.TempOffsetRange = p_TestCase->GetParameter("TempOffsetRange").toFloat();
 
-    OvenTempSensor1 += heatingTestEmptyThread->status.TempOffset;
-    OvenTempSensor2 += heatingTestEmptyThread->status.TempOffset;
-    OvenTempTop     += heatingTestEmptyThread->status.TempOffset;
+    OvenTempSensor1 += status.TempOffset;
+    OvenTempSensor2 += status.TempOffset;
+    OvenTempTop     += status.TempOffset;
 
     (void)dev->OvenStartHeating(OvenTempTop, OvenTempSensor1);
 
-    heatingTestEmptyThread->t1 = p_TestCase->GetParameter("t1").toInt();
-    heatingTestEmptyThread->t2 = p_TestCase->GetParameter("t2").toInt();
+    t1 = p_TestCase->GetParameter("t1").toInt();
+    t2 = p_TestCase->GetParameter("t2").toInt();
 
-    heatingTestEmptyThread->status.EDTime = heatingTestEmptyThread->t1 + heatingTestEmptyThread->t2;
-    heatingTestEmptyThread->status.UsedTime = 0;
-    heatingTestEmptyThread->status.OvenTargetTemp = OvenTempTop;
-    heatingTestEmptyThread->status.OvenTempSensor1Target = OvenTempSensor1;
-    heatingTestEmptyThread->status.OvenTempSensor2Target = OvenTempSensor2;
+    status.EDTime = t1 + t2;
+    status.UsedTime = 0;
+    status.OvenTempTopTarget = OvenTempTop;
+    status.OvenTempTop = OvenTempTop;
+    status.OvenTempSensor1Target = OvenTempSensor1;
+    status.OvenTempSensor2Target = OvenTempSensor2;
+    status.OvenTempSensor1 = OvenTempSensor1;
+    status.OvenTempSensor2 = OvenTempSensor2;
 
-    connect(heatingTestEmptyThread, SIGNAL(freshWaitingDlg(QByteArray)), this, SLOT(ShowWaitingDialog(QByteArray)));
-    connect(heatingTestEmptyThread, SIGNAL(ShowMessageBoxFail(QString)), this, SLOT(ShowMessageBoxFail(QString)), Qt::QueuedConnection);
-    connect(heatingTestEmptyThread, SIGNAL(ShowMessageBoxSuccess(QString)), this, SLOT(ShowMessageBoxSuccess(QString)), Qt::QueuedConnection);
+    timingDialog->show();
 
-    heatingTestEmptyThread->start();
-
-    return RETURN_OK;
-
-out:
-    Clean();
-    return RETURN_ERR_FAIL;
-}
-
-void CHeatingTestEmptyThread::run()
-{
-    QString text;
-    int ret;
-    int i;
-
-    qreal OvenTempTopCur;
-    qreal OvenTempSensor1Cur;
-    qreal OvenTempSensor2Cur;
-
-    ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
-
-    for (i = 0; i < t1; i++) {
+    for (i = 0; i < t1 && timingDialog->isVisible(); i++) {
         dev->Pause(1000);
         ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
-        if (OvenTempTopCur >= status.OvenTargetTemp
+        if (OvenTempTopCur >= status.OvenTempTopTarget
                 && OvenTempSensor1Cur >= status.OvenTempSensor1Target
                 && OvenTempSensor2Cur >= status.OvenTempSensor1Target)
             break;
@@ -286,8 +229,11 @@ void CHeatingTestEmptyThread::run()
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
-        sendBuf(&status);
+        ShowWaitingDialog(&status);
     }
+
+    if (i != t1 && !timingDialog->isVisible())
+        goto _abort_;
 
     if (ret != RETURN_OK || i == t1) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. Temperature did "
@@ -295,15 +241,14 @@ void CHeatingTestEmptyThread::run()
                   "Root cause might be damaged ASB5 or Paraffin Oven Module. "
                   "Sequentially check resistance of heaters and function of ASB5. "
                   "Exchange defective part accordingly and repeat this test.").arg(t1/60);
-        emit ShowMessageBoxFail(text);
-        return;
+        goto _fail_;
     }
 
-    qreal OvenTempTop = OvenTempTopCur;
-    qreal OvenTempSensor1 = OvenTempSensor1Cur;
-    qreal OvenTempSensor2 = OvenTempSensor2Cur;
+    OvenTempTop = OvenTempTopCur;
+    OvenTempSensor1 = OvenTempSensor1Cur;
+    OvenTempSensor2 = OvenTempSensor2Cur;
 
-    for (i = 0; i < t2; i++) {
+    for (i = 0; i < t2 && timingDialog->isVisible(); i++) {
         dev->Pause(1000);
         qreal OvenTempSensor1Cur;
         qreal OvenTempSensor2Cur;
@@ -320,26 +265,32 @@ void CHeatingTestEmptyThread::run()
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
-        sendBuf(&status);
+        ShowWaitingDialog(&status);
     }
+
+    if (i != t2 && !timingDialog->isVisible())
+        goto _abort_;
+
+    timingDialog->accept();
 
     if (ret != RETURN_OK) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. "
                   "ASB5 is damaged. Exchange it and repeat this test.");
-        emit ShowMessageBoxFail(text);
-        return;
+        goto _fail_;
     }
 
     text = tr("Paraffin Oven Heating Test (Empty) "
               "successful. Please re-insert the paraffin "
               "baths and close the oven cover.");
-    emit ShowMessageBoxSuccess(text);
-}
 
-void CHeatingTestEmptyThread::sendBuf(struct heatingTestStatus *s)
-{
-    QByteArray sendbuf = QByteArray::fromRawData((const char *)s, sizeof(*s));
-    emit freshWaitingDlg(sendbuf);
+//_ok_:
+_fail_:
+    dlg->ShowMessage(title, text, (ErrorCode_t)ret);
+
+_abort_:
+    dev->OvenStopHeating();
+    StartPreHeating();
+    return ret;
 }
 
 } // namespace Oven

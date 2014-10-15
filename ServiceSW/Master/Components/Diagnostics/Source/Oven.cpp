@@ -31,7 +31,6 @@ namespace Diagnostics {
 COven::COven(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::COven)
-    , heatingTestEmpty(NULL)
 {
     ui->setupUi(this);
     dlg = new CDiagnosticMessageDlg(this);
@@ -51,10 +50,7 @@ COven::~COven()
     try {
         delete dlg;
         delete ui;
-		if (heatingTestEmpty)
-			delete heatingTestEmpty;
-    }
-    catch (...) {
+    } catch (...) {
 
     }
 }
@@ -64,21 +60,8 @@ void COven::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
     qDebug() << "Oven: start heating test empty";
 
-    if (heatingTestEmpty)
-        delete heatingTestEmpty;
-    heatingTestEmpty = new Oven::CHeatingTestEmpty(dlg);
-    connect(heatingTestEmpty, SIGNAL(notifyClose()), this, SLOT(HeatingTestEmptyClose()));
-    ui->testHeatingEmpty->setEnabled(false);
-    (void)heatingTestEmpty->Run();
-}
-
-
-void COven::HeatingTestEmptyClose(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
-    qDebug() << "Oven: start heating test empty";
-
-    ui->testHeatingEmpty->setEnabled(true);
+    Oven::CHeatingTestEmpty test(dlg);
+    (void)test.Run();
 }
 
 void COven::StartCoverSensorTest(void)

@@ -3,15 +3,15 @@
  *
  *  \brief Declaration of Oven test.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-27
- *   $Author:  $ R.Wu
+ *   $Version: $ 1.0
+ *   $Date:    $ 2014-10-14
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
  *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -45,12 +45,10 @@ protected:
 private Q_SLOTS:
     void StartHeatingTestEmpty(void);
     void StartCoverSensorTest(void);
-    void HeatingTestEmptyClose();
 
 private:
     Ui::COven *ui;
     CDiagnosticMessageDlg *dlg;
-    Oven::CHeatingTestEmpty *heatingTestEmpty;
 
 signals:
     void GuiOvenEmptyHeatingTest();
