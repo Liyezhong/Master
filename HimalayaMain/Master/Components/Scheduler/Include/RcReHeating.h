@@ -111,10 +111,18 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  function of CheckTheTemperature
-     *  \return bool
      */
     /****************************************************************************/
-    bool CheckTheTemperature();
+    void CheckTheTemperature();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  function of GetRvPosition
+     *  \param  cmdName = QString
+     *  \param  retCode = DeviceControl::ReturnCode_t
+     */
+    /****************************************************************************/
+    void GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -166,6 +174,34 @@ signals:
     /****************************************************************************/
     void SignalStopDrain();
 
+    /****************************************************************************/
+    /*!
+    *  \brief Signal for start the module temperature sensors
+    */
+   /****************************************************************************/
+   void SigTemperatureControlOn();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal for checking the status of all temperature sensors
+     */
+    /****************************************************************************/
+    void SigTemperatureSensorsChecking();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal get RV position
+     */
+    /****************************************************************************/
+    void SigGetRVPosition();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal to drain current reagent
+     */
+    /****************************************************************************/
+    void SigDrainCurrentReagent();
+
 private:
     /****************************************************************************/
     /*!
@@ -173,19 +209,47 @@ private:
      */
     /****************************************************************************/
     typedef enum{
+        UNDEF,
+        INIT_STATE,
         START_TEMPERATURE,
         CHECK_TEMPERATURE,
+        GET_RV_POSOTION,
         BEGIN_DRAIN
-    }ReHeatingStep_t;
+    }StateList_t;
 
-    SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
-    ReHeatingStep_t                 m_RcReHeatingStep;                  //!< The step of special scenario
+    /****************************************************************************/
+    /*!
+     *  \brief  Get current state
+     *	\return StateList_t
+     */
+    /****************************************************************************/
+    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
+
+    typedef enum
+    {
+        FORCE_DRAIN,
+        BUILD_VACUUM,
+        MOVE_INITIALIZE_POSITION,
+        MOVE_SEALPOSITION,
+        REALSE_PRESSRE
+    }RS_REAGENTCHECK_t;
+
+private:
+    SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller  
+    QSharedPointer<QStateMachine>   mp_StateMachine;                    //!< State machine for Pre-Test
+    QSharedPointer<QState>          mp_Init;                            //!< The init state
+    QSharedPointer<QState>          mp_StartSensorTemp;                 //!< Start all sensor temperature
+    QSharedPointer<QState>          mp_CheckSensorTemp;                 //!< Check all sensor temperature
+    QSharedPointer<QState>          mp_GetRvPosition;                   //!< Get RV position
+    QSharedPointer<QState>          mp_DrainCurrentReagent;             //!< Drain current reagent
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     bool                            m_DrainIsOk;                        //!< is drain OK
+    bool                            m_HasReagent;                       //!< wether has reagent in retort
     int                             m_OvenRemainingTime;                //!< oven remaning time
+    RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
 };
 
 }
