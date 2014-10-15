@@ -211,6 +211,7 @@ public:
     MOCK_METHOD2(ALControlValve, ReturnCode_t(quint8 ValveIndex, quint8 ValveState));
     MOCK_METHOD2(RVSetTemperatureSwitchState, ReturnCode_t(qint8 HeaterVoltage, qint8 AutoType));
     MOCK_METHOD3(RTSetTemperatureSwitchState, ReturnCode_t(RTTempCtrlType_t Type, qint8 HeaterVoltage, qint8 AutoType));
+    MOCK_METHOD1(PerGetRecentAlarmStatus, quint16( qint8 type));
 };
 
 } //namespace

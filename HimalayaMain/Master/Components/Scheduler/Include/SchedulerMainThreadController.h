@@ -495,14 +495,14 @@ typedef struct
 
          /****************************************************************************/
          /*!
-          *  \brief Check if current over range error occurs
+          *  \brief Check if current over range error occurs in slave sensors
           *
-          *    \param Scenario - current scenario
+          *  \param Scenario - current scenario
           *
           *  \return void
           */
          /****************************************************************************/
-         void CheckTempSensorCurrentOverRange(quint32 Scenario);
+         void CheckSlaveSensorCurrentOverRange(quint32 Scenario);
          /****************************************************************************/
          /*!
           *  \brief Enable pause button

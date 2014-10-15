@@ -2587,10 +2587,23 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     // Monitor the sensors' current
     if ("ERROR" != StepID && 0 != Scenario)
     {
-        this->CheckTempSensorCurrentOverRange(Scenario);
+        this->CheckSlaveSensorCurrentOverRange(Scenario);
     }
 
-    // Monitor Slave module's voltage
+    // Monitor local and remote alarm
+    if ("ERROR" != StepID && 0 != Scenario)
+    {
+        if (1 == strctHWMonitor.LocalAlarmStatus)
+        {
+            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+        }
+        if (1 == strctHWMonitor.RemoteAlarmStatus)
+        {
+            RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+        }
+    }
+
+    // Monitor Slave module's voltage and current
     if ("ERROR" != StepID && 0 != Scenario)
     {
         // For voltage related
@@ -3883,7 +3896,7 @@ bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, q
     return true;
 }
 
-void SchedulerMainThreadController::CheckTempSensorCurrentOverRange(quint32 Scenario)
+void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Scenario)
 {
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));

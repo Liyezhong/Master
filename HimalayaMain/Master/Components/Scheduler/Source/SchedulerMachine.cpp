@@ -199,7 +199,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
-    mp_PssmPause->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
 
     mp_PssmInitState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
     mp_PssmPreTestState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());

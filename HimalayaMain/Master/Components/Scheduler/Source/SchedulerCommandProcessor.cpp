@@ -148,6 +148,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.Slave5Current        = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_5);
     strctHWMonitor.Slave15Current       = mp_IDeviceProcessing->IDGetSlaveCurrent(Slave_15);
     strctHWMonitor.OvenHeatingStatus    = mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_BOTTOM) && mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_TOP) ;
+    strctHWMonitor.LocalAlarmStatus     = mp_IDeviceProcessing->PerGetRecentAlarmStatus(0);
+    strctHWMonitor.RemoteAlarmStatus    = mp_IDeviceProcessing->PerGetRecentAlarmStatus(1);
     return strctHWMonitor;
 }
 

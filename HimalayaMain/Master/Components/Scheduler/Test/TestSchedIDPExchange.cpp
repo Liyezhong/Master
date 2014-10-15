@@ -151,6 +151,10 @@ public:
         EXPECT_CALL(*mp_IDeviceProcessing, ALTurnOnFan())
                 .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, PerGetRecentAlarmStatus(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(1));
     }
 
     ~TestSchedIDPExchange()
