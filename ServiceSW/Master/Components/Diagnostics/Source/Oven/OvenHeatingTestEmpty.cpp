@@ -219,7 +219,7 @@ int CHeatingTestEmpty::Run(void)
     OvenTempSensor2 += heatingTestEmptyThread->status.TempOffset;
     OvenTempTop     += heatingTestEmptyThread->status.TempOffset;
 
-    dev->OvenStartHeating(OvenTempTop, OvenTempSensor2);
+    dev->OvenStartHeating(OvenTempTop, OvenTempSensor1);
 
     heatingTestEmptyThread->t1 = p_TestCase->GetParameter("t1").toInt();
     heatingTestEmptyThread->t2 = p_TestCase->GetParameter("t2").toInt();
