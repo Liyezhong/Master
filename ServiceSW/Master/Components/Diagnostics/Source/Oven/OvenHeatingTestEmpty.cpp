@@ -3,9 +3,9 @@
  *
  *  \brief Implementation of Heating test empty.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-29
- *   $Author:  $ R.Wu
+ *   $Version: $ 1.0
+ *   $Date:    $ 2014-10-13
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
@@ -51,8 +51,12 @@ CHeatingTestEmpty::CHeatingTestEmpty(CDiagnosticMessageDlg *_dlg)
 
 CHeatingTestEmpty::~CHeatingTestEmpty(void)
 {
-    delete waitDialog;
-    delete heatingTestEmptyThread;
+    try {
+        delete waitDialog;
+        delete heatingTestEmptyThread;
+    } catch (...) {
+        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete heatingTestEmptyThread & waitDialog, catch error";
+    }
 }
 
 void CHeatingTestEmpty::Clean()
@@ -130,6 +134,8 @@ int CHeatingTestEmpty::Run(void)
 
     qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
+
+    (void)dev->OvenStopHeating();
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
 
@@ -239,8 +245,7 @@ void CHeatingTestEmptyThread::run()
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
     for (i = 0; i < t1; i++) {
-        dev->Pause(1000);
-
+        dev->Pause(1000);        
         ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
