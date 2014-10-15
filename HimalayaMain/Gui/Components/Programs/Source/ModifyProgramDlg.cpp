@@ -200,6 +200,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     m_bIconSelected = false;
     if (p_Program != NULL) {
         m_Program = *(p_Program);
+        m_strLastProgName = m_Program.GetName();
     }
     m_ProgramListClone = *(mp_DataConnector->ProgramList);
     if (m_StepModel.rowCount(QModelIndex()) > 0) {
@@ -256,20 +257,19 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         }
 
         switch (LongName.length()) {
+        case 18:
+        case 19:
         case 20:
             LongName.replace(17, 3, "_cp");
-            break;
-        case 19:
-            LongName.replace(17, 3, "_cp");
-            break;
-        case 18:
-            LongName.replace(17, 3, "_cp");
+            m_strLastProgName.replace(17, 3, "_cp");
             break;
         default:
             LongName.append("_cp");
+            m_strLastProgName.append("_cp");
             break;
         }
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
+
         // Pass a value same as the one passed to SetVisibleRows()
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program,mp_DataConnector->SettingsInterface->GetUserSettings(), mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
@@ -523,7 +523,13 @@ void CModifyProgramDlg::OnSave()
     }
 
     //m_Program.SetName(mp_Ui->btnPrgName->text());
-    m_Program.SetName(m_strLastProgName);
+    if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
+        m_Program.SetName(m_strLastProgName);
+    }
+    else {
+        m_Program.SetName(mp_Ui->btnPrgName->text());
+    }
+
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
@@ -538,8 +544,14 @@ void CModifyProgramDlg::OnSave()
             return;
         }
         //mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
-        mp_NewProgram->SetName(m_strLastProgName);
+        if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
+            mp_NewProgram->SetName(m_strLastProgName);
+        }
+        else {
+            mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+        }
         mp_NewProgram->SetIcon(m_Icon);
+
         emit AddProgram(*mp_NewProgram);
     }
 }
