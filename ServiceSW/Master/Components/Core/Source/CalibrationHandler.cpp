@@ -127,9 +127,9 @@ void CCalibrationHanlder::ServiceCalibation()
             (void)p_Dev->PumpReadPressureDrift(&Drift);
             (void)p_Dev->PumpWritePressureDrift(Pressure + Drift);
         }
-
-        WaitDlg->hide();
     }
+
+    WaitDlg->hide();
 
     MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     MsgDlg->setModal(true);
