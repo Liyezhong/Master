@@ -126,6 +126,16 @@ const quint32 EVENT_SCHEDULER_BOTTLE_CHECK = SCHEDULER_BASE_ID + 0x20F; ///< Bot
 const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS = SCHEDULER_BASE_ID + 0x210; ///< Bottle test successfully.
 const quint32 EVENT_SCHEDULER_PRETEST_SUCCESS = SCHEDULER_BASE_ID + 0x211; ///< PreTest success.
 
+//heating strategy
+const quint32 EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED = SCHEDULER_BASE_ID + 0x250; ///< Initialize the heatingStrategy failed.
+const quint32 EVENT_SCHEDULER_HEATING_RETORTSIDE_PRETEST = SCHEDULER_BASE_ID + 0x251; ///< Start heating retort side in pretest,the target temperature:%1.
+const quint32 EVENT_SCHEDULER_HEATING_RETORTBOT_PRETEST = SCHEDULER_BASE_ID + 0x252; ///< Start heating retort bottom in pretest,the target temperature:%1.
+const quint32 EVENT_SCHEDULER_HEATING_LEVEL_SENSOR = SCHEDULER_BASE_ID + 0x253; ///< Start heating level sensor heating in scenario:%1,the target temperature:%2.
+const quint32 EVENT_SCHEDULER_HEATING_RETORT = SCHEDULER_BASE_ID + 0x254; ///< Start retort(%1) heating in scenario:%2,the target temperature:%3.
+const quint32 EVENT_SCHEDULER_HEATING_OVEN = SCHEDULER_BASE_ID + 0x255; ///< Start wax bath(%1) heating in scenario:%2,the target temperature:%3.
+const quint32 EVENT_SCHEDULER_HEATING_RV = SCHEDULER_BASE_ID + 0x256; ///< Start rotary valve heating in scenario:%1,the target temperature:%2.
+const quint32 EVENT_SCHEDULER_HEATING_LA = SCHEDULER_BASE_ID + 0x257; ///< Start LA system(%1) heating in scenario:%2,the target temperature:%3.
+
 // running program
 // 1. Power failudre
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
