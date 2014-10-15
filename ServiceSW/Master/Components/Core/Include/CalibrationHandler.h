@@ -61,6 +61,9 @@ private:
 
     bool GetCalibrationResponse();
 
+    void ServiceCalibation();
+    void ManufacturingCalibation();
+
 signals:
     /****************************************************************************/
     /**

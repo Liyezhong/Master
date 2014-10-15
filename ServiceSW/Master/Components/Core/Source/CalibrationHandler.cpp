@@ -20,6 +20,7 @@
 
 #include "Core/Include/CalibrationHandler.h"
 #include <QApplication>
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 //#include "Core/Include/CMessageString.h"
 
 namespace Core {
@@ -70,6 +71,109 @@ CCalibrationHanlder::~CCalibrationHanlder()
  */
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
+{
+    if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        ServiceCalibation();
+    } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
+        ManufacturingCalibation();
+    }
+}
+
+void CCalibrationHanlder::ServiceCalibation()
+{
+    Diagnostics::ServiceDeviceProcess* p_Dev = Diagnostics::ServiceDeviceProcess::Instance();
+
+    QString Text;
+    float Pressure(0);
+    float Drift(0);
+    bool  Ret = false;
+
+    MainMenu::CMessageDlg *WaitDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    WaitDlg->HideAllButtons();
+    WaitDlg->SetTitle(QApplication::translate("Core::CCalibrationHanlder",
+                                             "Pressure sensor calibration",
+                                             0, QApplication::UnicodeUTF8));
+    WaitDlg->setModal(true);
+    for (int i = 0; i < 3; ++i) {
+        if (i==0) {
+            Text = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the first calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        else if (i==1) {
+            Text = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the second calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        else if (i==2) {
+            Text = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the third calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        WaitDlg->SetText(Text);
+        WaitDlg->Show();
+
+        (void)p_Dev->PumpSetValve(0, 0);
+        (void)p_Dev->PumpSetValve(1, 0);
+        p_Dev->Pause(20*1000);
+
+        (void)p_Dev->PumpGetPressure(&Pressure);
+        qDebug()<<"Get Pressure:"<<Pressure;
+        if (qAbs(Pressure) < 0.2) {
+            Ret = true;
+            break;
+        }
+        else if (qAbs(Pressure) < 1.5){
+            (void)p_Dev->PumpReadPressureDrift(&Drift);
+            (void)p_Dev->PumpWritePressureDrift(Pressure + Drift);
+        }
+
+        WaitDlg->hide();
+    }
+
+    MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    MsgDlg->setModal(true);
+    MsgDlg->SetButtonText(1, tr("Ok"));
+    MsgDlg->HideButtons();
+    MsgDlg->SetTitle(QApplication::translate("Core::CCalibrationHanlder",
+                                             "Pressure sensor calibration",
+                                             0, QApplication::UnicodeUTF8));
+
+    if (Ret) {
+        Text = QString("Pressure sensor calibration success.");
+        goto Calibation_Finished;
+    }
+    else {
+        Text = QString("Pressure Sensor Calibration failed.<br>"
+                "Please open the instrument and disconnect the tube from the pressure sensor.");
+    }
+
+    MsgDlg->SetText(Text);
+    (void)MsgDlg->exec();
+
+    (void)p_Dev->PumpGetPressure(&Pressure);
+    qDebug()<<"Get Pressure:"<<Pressure;
+    if (qAbs(Pressure) > 1.5) {
+        Text = QString("Pressure Sensor is defective. Please exchange it and repeat this calibration.");
+    }
+    else {
+        Text = QString("Pressure Sensor is functional. Please try to find a blockage in the related hoses "
+                       "and parts of the air system between retort and pump.");
+        if (qAbs(Pressure) > 0.2) {
+            (void)p_Dev->PumpReadPressureDrift(&Drift);
+            (void)p_Dev->PumpWritePressureDrift(Pressure + Drift);
+        }
+    }
+
+Calibation_Finished:
+    MsgDlg->SetText(Text);
+    (void)MsgDlg->exec();
+
+    delete WaitDlg;
+    delete MsgDlg;
+}
+
+void CCalibrationHanlder::ManufacturingCalibation()
 {
     QString Msg;
     MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
