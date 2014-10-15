@@ -35,16 +35,6 @@ using::testing::AtLeast;
 using::testing::_;
 using::testing::Lt;
 
-inline void waitTime(qint8 time)
-{
-    QTime delayTime = QTime::currentTime().addMSecs(time*1000);
-    while (QTime::currentTime() < delayTime)
-    {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    }
-}
-
-
 namespace Scheduler {
 
 /****************************************************************************/
@@ -69,7 +59,6 @@ private slots:
 private:
     Himalaya::HimalayaMasterThreadController*   mp_HMThreadController;
     DataManager::CDataManager*                  mp_DataManager;
-    MockIDeviceProcessing*                      mp_IDeviceProcessing;
     SchedulerMainThreadController*              mp_SchedulerMainController;
     HeatingStrategy*                            mp_HeatingStrategy;
 
@@ -77,18 +66,15 @@ private:
 
 
 TestHeatingStrategy::TestHeatingStrategy()
- :mp_IDeviceProcessing(new MockIDeviceProcessing())
- ,mp_SchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
+    :mp_SchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
 {
     Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
 
     mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
     mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
-
     mp_SchedulerMainController->DataManager(mp_DataManager);
-    dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(m_pSchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
-    mp_HeatingStrategy = new HeatingStrategy(mp_SchedulerMainController, mp_SchdCmdProcessor, mp_DataManager);
+    mp_HeatingStrategy = new HeatingStrategy(mp_SchedulerMainController, mp_SchedulerMainController->GetSchedCommandProcessor(), mp_DataManager);
 }
 
 TestHeatingStrategy::~TestHeatingStrategy()
@@ -101,12 +87,6 @@ TestHeatingStrategy::~TestHeatingStrategy()
 
     delete mp_HeatingStrategy;
     mp_HeatingStrategy = NULL;
-
-    delete mp_IDeviceProcessing;
-    mp_IDeviceProcessing = NULL;
-
-    m_pSchedulerMainController->deleteLater();
-    m_pSchedulerMainController = NULL;
 }
 
 void TestHeatingStrategy::UTAllCase()
@@ -128,84 +108,41 @@ void TestHeatingStrategy::UTAllCase()
     strctHWMonitor.RetortLockStatus = 0;
     qint32 scenario = 0;
 
-    {
-        //test set the temperature
-        scenario = 251;
-        ReturnCode_t ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_FCT_CALL_SUCCESS);
 
-        //Test The current temperature exceeds max temperature for each sensor
-        strctHWMonitor.TempALLevelSensor = 135.0;
-        scenario = 1;
-        ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_DEV_RETORT_LEVELSENSOR_TEMPERATURE_OVERRANGE);
+    //test set the temperature
+    scenario = 251;
+    ReturnCode_t ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_FCT_CALL_SUCCESS);
 
-        strctHWMonitor.TempALLevelSensor = 110.0;
-        strctHWMonitor.TempOvenTop = 133.0;
-        scenario = 4;
-        ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_TSENSORUP_HEATING_OUTOFTARGETRANGE);
+    //Test The current temperature exceeds max temperature for each sensor
+    strctHWMonitor.TempALLevelSensor = 135.0;
+    scenario = 1;
+    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
 
-        strctHWMonitor.TempOvenBottom1 = 133.0;
-        strctHWMonitor.TempOvenTop = 100;
-        scenario = 5;
-        ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_HEATING_OUTOFTARGETRANGE);
+    strctHWMonitor.TempOvenTop = 133.0;
+    scenario = 4;
+    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL);
 
-        strctHWMonitor.TempOvenBottom1 = 99.0;
-        strctHWMonitor.TempALTube1 = 133.0;
-        strctHWMonitor.TempRV1 = 129.0;
-        scenario = 7;
-        ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE);
+    strctHWMonitor.TempOvenBottom1 = 133.0;
+    scenario = 200;
+    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL);
 
-        strctHWMonitor.TempALTube1 = 98.0;
-        strctHWMonitor.TempALTube2 = 133.0;
-        scenario = 8;
-        ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-        ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE);
-    }
+    strctHWMonitor.TempRV1 = 129.0;
+    scenario = 200;
+    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE);
 
+    strctHWMonitor.TempALTube2 = 133.0;
+    scenario = 200;
+    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
+    ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE);
 }
 
 void TestHeatingStrategy::initTestCase()
 {
-    mp_SchedulerMainController->CreateAndInitializeObjects();
-    sleep(1);
-    {
-        //Set google-mock expections
-        EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition())
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, RTStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, RVStartTemperatureControlWithPID(_, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, OvenStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, ALStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
-                .WillRepeatedly(Return(100));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
-    }
-
-    sleep(2);
-    mp_IDeviceProcessing->InitializationFinished();
-    sleep(2);
-    mp_IDeviceProcessing->ConfigurationFinished();
 }
 
 void TestHeatingStrategy::init()
