@@ -38,39 +38,47 @@ namespace Diagnostics {
 
 CRetort::CRetort(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CRetort)
+    mp_Ui(new Ui::CRetort)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->testLidLock,
+    mp_MessageDlg = new CDiagnosticMessageDlg(this);
+
+    (void)connect(mp_Ui->testLidLock,
                   SIGNAL(clicked()),
                   this,
                   SLOT(StartLidLockTest()) );
 
-    (void)connect(ui->testLevelSensorHeating,
+    (void)connect(mp_Ui->testDrainReagent,
                  SIGNAL(clicked()),
                  this,
-                 SLOT(StartLevelSensorHeatingTest()) );
+                 SLOT(StartDrainReagentTest()) );
 
-    (void)connect(ui->testLevelSensorDetecting,
+    (void)connect(mp_Ui->testLevelSensorDetecting,
                  SIGNAL(clicked()),
                  this,
                  SLOT(StartLevelSensorDetectingTest()) );
 
-    (void)connect(ui->testHeatingEmpty,
+    (void)connect(mp_Ui->testHeatingEmpty,
                  SIGNAL(clicked()),
                  this,
                  SLOT(StartHeatingTestEmpty()) );
 
-    (void)connect(ui->testHeatingWithLiquid,
+    (void)connect(mp_Ui->testHeatingWater,
                  SIGNAL(clicked()),
                  this,
-                 SLOT(StartHeatingTestWithLiquid()) );
+                 SLOT(StartHeatingTestWithWater()) );
 }
 
 CRetort::~CRetort()
 {
-    delete ui;
+    try {
+        delete mp_Ui;
+        delete mp_MessageDlg;
+    }
+    catch (...) {
+
+    }
 }
 
 void CRetort::StartLidLockTest(void)
@@ -78,14 +86,14 @@ void CRetort::StartLidLockTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST);
     qDebug() << "Retort: start lid lock test";
 
-    //Retort::CLidLockTest test;
+    Retort::CLidLockTest Test(mp_MessageDlg, this);
 
-    //test.Run();
+    (void)Test.Run();
 }
 
-void CRetort::StartLevelSensorHeatingTest(void)
+void CRetort::StartDrainReagentTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST);
     qDebug() << "Retort: start level sensor heating test";
 
     //Retort::CLevelSensorHeatingTest test;
@@ -121,7 +129,7 @@ void CRetort::StartHeatingTestEmpty(void)
     emit GuiRetortEmptyHeatingTest();
 }
 
-void CRetort::StartHeatingTestWithLiquid(void)
+void CRetort::StartHeatingTestWithWater(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
     qDebug() << "Retort: start heating test with liquid";
@@ -156,7 +164,7 @@ void CRetort::changeEvent(QEvent *p_Event)
     {
     case QEvent::LanguageChange:
     {
-        ui->retranslateUi(this);
+        mp_Ui->retranslateUi(this);
     }
         break;
     default:

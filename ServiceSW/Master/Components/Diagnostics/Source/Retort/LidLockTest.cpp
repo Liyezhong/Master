@@ -21,22 +21,16 @@
 #include "Diagnostics/Include/Retort/LidLockTest.h"
 
 #include <QDebug>
-
-#include "Global/Include/Utils.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-
-#include "ServiceWidget/Include/DlgWizardText.h"
-#include "ServiceWidget/Include/DlgConfirmationStatus.h"
-#include "ServiceWidget/Include/DlgWizard3Buttons.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+#include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
 
 namespace Diagnostics {
 
 namespace Retort {
 
-CLidLockTest::CLidLockTest(void)
-    : CTestBase()
+CLidLockTest::CLidLockTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
+    : CTestBase(p_Parent),
+      mp_MessageDlg(p_MessageDlg)
 {
 }
 
@@ -48,183 +42,93 @@ int CLidLockTest::Run(void)
 {
     qDebug() << "Lid lock test starts!";
 
-    this->FirstManualClose();
+    int Ret = ShowConfirmDlg(1);
+
+    if (Ret == 0) {
+        return Ret;
+    }
+
+    qint32 LidLockState(0);
+    QString StateStr;
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    (void)p_DevProc->RetortGetLidLockState(&LidLockState);
+
+    if (LidLockState == 0) {
+        StateStr = "Close";
+    }
+    else {
+        StateStr = "Open";
+    }
+
+    Ret = ShowLidLockStatusDlg(1, StateStr);
+
+    if (Ret == 1) {
+        (void)ShowConfirmDlg(2);
+        (void)p_DevProc->RetortGetLidLockState(&LidLockState);
+
+        if (LidLockState == 0) {
+            StateStr = "Close";
+        }
+        else {
+            StateStr = "Open";
+        }
+
+        Ret = ShowLidLockStatusDlg(2, StateStr);
+    }
+
+    ShowFinishDlg(Ret);
+
+    return Ret;
 }
 
-void CLidLockTest::FirstManualClose(void)
+int CLidLockTest::ShowConfirmDlg(int StepNum)
 {
-    qDebug() << "Lid lock test: first manual close retort!";
+    QString Title = tr("Retort Lid Lock");
+    QString Text;
+    int DlgType = CDiagnosticMessageDlg::NEXT_CANCEL;
+    if (StepNum == 1) {
+        Text = tr("Please unlock the retort lid.");
+    }
+    else if (StepNum == 2) {
+        Text = tr("Please lock the retort lid.");
+        DlgType = CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE;
+    }
 
-    // inform the customer to manually close the lid
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Lid Lock Test"));
-    dlg->SetText(tr("Please Close the Retort Manually!"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, FirstCheckClose() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
-
-    dlg->exec();
-
-    delete dlg;
+    return mp_MessageDlg->ShowConfirmMessage(Title, Text, DlgType);
 }
 
-void CLidLockTest::FirstCheckClose(void)
+void CLidLockTest::ShowFinishDlg(int RetNum)
 {
-    qDebug() << "Lid lock test: first check lid lock status!";
+    QString Title = tr("Retort Lid Lock");
+    QString Text;
+    ErrorCode_t Ret = RETURN_ERR_FAIL;
 
-    /// \todo: read lock status here **************************/
+    if (RetNum == 0) {
+        Text = Title + tr(" failed.");
+    }
+    else if (RetNum == 1) {
+        Text = Title + tr(" successful.");
+        Ret = RETURN_OK;
+    }
 
-    // ask the customer to confirm the lid lock status
-    MainMenu::CDlgConfirmationStatus *dlg = new MainMenu::CDlgConfirmationStatus;
-    dlg->SetDialogTitle(tr("Lid Lock Test"));
-    dlg->SetText(tr("Does the Retort lid lock status show \"Closed\"?"));
-    dlg->SetStatus(tr("Retort lid lock status: \"Closed\"")); /// \todo change status here **********/
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SecondPressOpen() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
+    mp_MessageDlg->ShowMessage(Title, Text, Ret);
 }
 
-void CLidLockTest::SecondPressOpen(void)
+int CLidLockTest::ShowLidLockStatusDlg(int StepNum, QString& LidLockState)
 {
-    qDebug() << "Lid lock test: second press to open lid lock!";
+    QString Title = tr("Retort Lid Lock");
+    QString ConfirmString = tr("Do you see the retort lid '%1'?").arg(StepNum == 1 ? "Open" : "Close");
 
-    // inform the customer to open the lid
-    MainMenu::CDlgWizard3Buttons *dlg = new MainMenu::CDlgWizard3Buttons;
-    dlg->SetDialogTitle(tr("Lid Lock Test"));
-    dlg->SetText(tr("Please press to open the Retort lid!"));
-    dlg->SetButtonText(tr("Open"));
+    DiagnosticsManufacturing::CStatusConfirmDialog ConfirmDlg(mp_Parent);
+    ConfirmDlg.SetDialogTitle(Title);
+    ConfirmDlg.SetText(ConfirmString);
+    Service::ModuleTestStatus Status;
+    QString Key("LidLockerStatus");
+    Status.insert(Key, LidLockState);
 
-    dlg->DisableNext();
-    //dlg->HideNext();
+    ConfirmDlg.UpdateRetortLabel(Status);
 
-    CONNECTSIGNALSLOT(dlg, ThirdSelected(), this, OpenLidLock() );
-    CONNECTSIGNALSLOT(dlg, ThirdSelected(), dlg, EnableNext() );
-    CONNECTSIGNALSLOT(dlg, accepted(),this, SecondCheckOpen() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLidLockTest::OpenLidLock(void)
-{
-    qDebug() << "Lid lock test: open lid lock from software!";
-
-    /// \todo: open lid lock here **************************/
-}
-
-void CLidLockTest::SecondCheckOpen(void)
-{
-    qDebug() << "Lid lock test: second check lid lock status!";
-
-    /// \todo: read lock status here **************************/
-
-    // ask the customer to confirmt the lid lock status
-    MainMenu::CDlgConfirmationStatus *dlg = new MainMenu::CDlgConfirmationStatus;
-    dlg->SetDialogTitle(tr("Lid Lock - Test"));
-    dlg->SetText(tr("Does the Retort lid lock status show \"Open\"?"));
-    dlg->SetStatus(tr("Retort lid lock status: \"Open\"")); /// \todo change status here **********/
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ThirdManualOpen() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLidLockTest::ThirdManualOpen(void)
-{
-    qDebug() << "Lid lock test: third manual open retort!";
-
-    // inform the customer to close and manually open the lid
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Lid Lock - Test"));
-    dlg->SetText(tr("Please first Close the Retort Manually!"
-                    "\r\n"
-                    "\r\n"
-                    "Then manually Open the Retort!"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ThirdCheckOpen() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLidLockTest::ThirdCheckOpen(void)
-{
-    qDebug() << "Lid lock test: third check lid lock status!";
-
-    /// \todo: read lock status here **************************/
-
-    // ask the customer to confirm the lid lock status
-    MainMenu::CDlgConfirmationStatus *dlg = new MainMenu::CDlgConfirmationStatus;
-    dlg->SetDialogTitle(tr("Lid Lock - Test"));
-    dlg->SetText(tr("Does the Retort lid lock status show \"Open\"?"));
-    dlg->SetStatus(tr("Retort lid lock status: \"Open\"")); /// \todo change status here **********/
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLidLockTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS);
-    qDebug() << "Lid lock test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Lid Lock - Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Lid Lock test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CLidLockTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE);
-    qDebug() << "Lid lock test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Lid Lock - Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Lid Lock test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CLidLockTest::Cancel(void)
-{
-    qDebug() << "Lid lock test canceled!";
+    return !ConfirmDlg.exec();
 }
 
 } // namespace Retort

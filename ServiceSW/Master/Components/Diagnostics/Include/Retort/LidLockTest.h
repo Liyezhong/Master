@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_RETORT_LIDLOCKTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -32,32 +33,33 @@ class CLidLockTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CLidLockTest(void);
+    CLidLockTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
     ~CLidLockTest(void);
 
     int Run(void);
 
-public Q_SLOTS:
-    void FirstManualClose(void);
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam StepNum = the number workflow step.
+     *  \return reject or accept.
+     */
+    /****************************************************************************/
+    int ShowConfirmDlg(int StepNum);
 
-private Q_SLOTS:
-    void FirstCheckClose(void);
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
+    void ShowFinishDlg(int RetNum);
 
-    void SecondPressOpen(void);
+    int ShowLidLockStatusDlg(int StepNum, QString& LidLockState);
 
-    void OpenLidLock(void);
-
-    void SecondCheckOpen(void);
-
-    void ThirdManualOpen(void);
-
-    void ThirdCheckOpen(void);
-
-    void Succeed(void);
-
-    void Fail(void);
-
-    void Cancel(void);
+private:
+    CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.
 };
 
 } // namespace Retort

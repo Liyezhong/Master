@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_RETORT_H
 
 #include <QWidget>
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -34,7 +35,7 @@ class CRetort : public QWidget
     Q_OBJECT
     
 public:
-    explicit CRetort(QWidget *parent = 0);
+    explicit CRetort(QWidget *p_Parent = 0);
     ~CRetort();
 
 protected:
@@ -42,13 +43,14 @@ protected:
 
 private Q_SLOTS:
     void StartLidLockTest(void);
-    void StartLevelSensorHeatingTest(void);
+    void StartDrainReagentTest(void);
     void StartLevelSensorDetectingTest(void);
     void StartHeatingTestEmpty(void);
-    void StartHeatingTestWithLiquid(void);
+    void StartHeatingTestWithWater(void);
     
 private:
-    Ui::CRetort *ui;
+    Ui::CRetort *mp_Ui;
+    CDiagnosticMessageDlg*   mp_MessageDlg;     //!< The pointer message dialog
 
 signals:
     void GuiLevelSensorHeatingTest();
