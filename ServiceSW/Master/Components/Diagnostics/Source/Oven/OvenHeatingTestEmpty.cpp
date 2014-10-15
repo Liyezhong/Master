@@ -139,7 +139,9 @@ int CHeatingTestEmpty::Run(void)
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
 
-    if (ret != RETURN_OK || qAbs(OvenTempSensor1 - OvenTempSensor2) > DiffTemp) {
+    if (ret != RETURN_OK || qAbs(OvenTempSensor1 - OvenTempSensor2) >= DiffTemp
+            || qAbs(OvenTempTop - OvenTempSensor1) >= DiffTemp
+            || qAbs(OvenTempTop - OvenTempSensor2) >= DiffTemp) {
         text = QString(tr("Paraffin Oven Heating Test (Empty) failed.<br/> "
                           "Temperature sensors are out of specification. Please "
                           "check resistance of temperature sensors to verify, "
@@ -148,9 +150,13 @@ int CHeatingTestEmpty::Run(void)
         goto out;
     }
 
+    //-----------------------------------------------------------------------------
+    // ok
+
     OvenTopTargetTemp = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
     OvenBottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
-    if (OvenTempSensor1 >= OvenTopTargetTemp || OvenTempSensor2 >= OvenBottomTargetTemp) {
+    if (OvenTempTop >= OvenTopTargetTemp || OvenTempSensor1 >= OvenBottomTargetTemp
+            || OvenTempSensor2 >= OvenBottomTargetTemp) {
         text = QString(tr("Please remove any paraffin bath present in "
                           "the paraffin oven. Then please leave the oven cover "
                           "opened to speed up the cooling process."));
@@ -161,16 +167,20 @@ int CHeatingTestEmpty::Run(void)
         dlg->ShowWaitingDialog(title, text);
         // show a waiting dialog
          // wait a few minutes later, read temp
+        qreal TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
         int t = p_TestCase->GetParameter("t").toInt();
         int i;
         for (i = 0; i < t; i++) {
             dev->Pause(1000);
+            qreal OvenTempTopCur;
             qreal OvenTempSensor1Cur;
             qreal OvenTempSensor2Cur;
-            ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
+            ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
                 break;
-            if (OvenTempSensor1 - OvenTempSensor1Cur >= 10 && OvenTempSensor2 - OvenTempSensor2Cur >= 10)
+            if (OvenTempTop - OvenTempTopCur >= TempOffset
+                    && OvenTempSensor1 - OvenTempSensor1Cur >= TempOffset
+                    && OvenTempSensor2 - OvenTempSensor2Cur >= TempOffset)
                 break;
         }
 
@@ -207,21 +217,22 @@ int CHeatingTestEmpty::Run(void)
 
     OvenTempSensor1 += heatingTestEmptyThread->status.TempOffset;
     OvenTempSensor2 += heatingTestEmptyThread->status.TempOffset;
+    OvenTempTop     += heatingTestEmptyThread->status.TempOffset;
 
-    dev->OvenStartHeating(OvenTempSensor1, OvenTempSensor2);
+    dev->OvenStartHeating(OvenTempTop, OvenTempSensor2);
 
     heatingTestEmptyThread->t1 = p_TestCase->GetParameter("t1").toInt();
     heatingTestEmptyThread->t2 = p_TestCase->GetParameter("t2").toInt();
 
     heatingTestEmptyThread->status.EDTime = heatingTestEmptyThread->t1 + heatingTestEmptyThread->t2;
     heatingTestEmptyThread->status.UsedTime = 0;
-    heatingTestEmptyThread->status.OvenTargetTemp = OvenTempSensor1;
+    heatingTestEmptyThread->status.OvenTargetTemp = OvenTempTop;
     heatingTestEmptyThread->status.OvenTempSensor1Target = OvenTempSensor1;
     heatingTestEmptyThread->status.OvenTempSensor2Target = OvenTempSensor2;
 
     heatingTestEmptyThread->start();
     connect(heatingTestEmptyThread, SIGNAL(freshWaitingDlg(QByteArray)), this, SLOT(ShowWaitingDialog(QByteArray)));
-    connect(heatingTestEmptyThread, SIGNAL(finished()), this, SLOT(Clean()));
+//    connect(heatingTestEmptyThread, SIGNAL(finished()), this, SLOT(Clean()));
     connect(heatingTestEmptyThread, SIGNAL(ShowMessageBoxFail(QString)), this, SLOT(ShowMessageBoxFail(QString)), Qt::QueuedConnection);
     connect(heatingTestEmptyThread, SIGNAL(ShowMessageBoxSuccess(QString)), this, SLOT(ShowMessageBoxSuccess(QString)), Qt::QueuedConnection);
 
@@ -238,20 +249,22 @@ void CHeatingTestEmptyThread::run()
     int ret;
     int i;
 
-    qreal OvenTempTop;
+    qreal OvenTempTopCur;
     qreal OvenTempSensor1Cur;
     qreal OvenTempSensor2Cur;
 
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
     for (i = 0; i < t1; i++) {
-        dev->Pause(1000);        
-        ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
+        dev->Pause(1000);
+        ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
-        if (OvenTempSensor1Cur >= status.OvenTempSensor1Target && OvenTempSensor2Cur >= status.OvenTempSensor1Target)
+        if (OvenTempTopCur >= status.OvenTargetTemp
+                && OvenTempSensor1Cur >= status.OvenTempSensor1Target
+                && OvenTempSensor2Cur >= status.OvenTempSensor1Target)
             break;
-        status.OvenTempTop = OvenTempTop;
+        status.OvenTempTop = OvenTempTopCur;
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
@@ -266,8 +279,9 @@ void CHeatingTestEmptyThread::run()
                   "Exchange defective part accordingly and repeat this test.").arg(t1/60);
         emit ShowMessageBoxFail(text);
         return;
-    }    
+    }
 
+    qreal OvenTempTop = OvenTempTopCur;
     qreal OvenTempSensor1 = OvenTempSensor1Cur;
     qreal OvenTempSensor2 = OvenTempSensor2Cur;
 
@@ -275,10 +289,11 @@ void CHeatingTestEmptyThread::run()
         dev->Pause(1000);
         qreal OvenTempSensor1Cur;
         qreal OvenTempSensor2Cur;
-        ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
+        ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
-        if (qAbs(OvenTempSensor1Cur - OvenTempSensor1) > status.TempOffsetRange
+        if (qAbs(OvenTempTopCur - OvenTempTop) > status.TempOffsetRange
+                || qAbs(OvenTempSensor1Cur - OvenTempSensor1) > status.TempOffsetRange
                 || qAbs(OvenTempSensor2Cur - OvenTempSensor2) > status.TempOffsetRange) {
             ret = RETURN_ERR_FAIL;
             break;
