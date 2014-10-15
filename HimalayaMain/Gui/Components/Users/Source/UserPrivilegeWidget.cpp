@@ -180,6 +180,7 @@ void CUserPrivilegeWidget::OnBtnAdministratorClicked()
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMaxCharLength(MAX_CHAR_LENGTH);
         mp_KeyBoardWidget->SetMinCharLength(MIN_CHAR_LENGTH);
+        mp_KeyBoardWidget->GetLineEditPtr()->setValidator(NULL);
         mp_KeyBoardWidget->show();
         m_UserLevel = MainMenu::CMainWindow::Admin;
 
