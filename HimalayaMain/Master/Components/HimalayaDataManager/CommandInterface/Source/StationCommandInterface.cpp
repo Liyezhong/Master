@@ -221,9 +221,13 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          }
      }
 
-     //for update the qata in UI
-     SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
-                             new MsgClasses::CmdUpdateStationReagentStatus(10000, Cmd.StationIDs(), Cmd.CassetteCount())));
+     if (mp_MasterThreadController) {
+         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+         //for update the data in UI
+         (void)mp_MasterThreadController->SendCommand(Global::CommandShPtr_t(
+                                                          new MsgClasses::CmdUpdateStationReagentStatus(10000, Cmd.StationIDs(), Cmd.CassetteCount())),
+                                                      mp_MasterThreadController->GetCommandChannel(0)); //avoid lint 534
+     }
 
     /*lint -e534 */
      static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
