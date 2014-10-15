@@ -596,13 +596,13 @@ void CStartup::ServiceGuiInit()
 
     //Diagnostics
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, Service::CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS);
-    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_Display);
-    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControl);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT,  mp_Retort);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN,    mp_Oven);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV,      mp_RotaryValve);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA,      mp_LaSystem);
     mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_SYSTEM,  mp_System);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC,      mp_MainControl);
+    mp_DiagnosticsGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_Display);
 
     mp_MainWindow->AddMenuGroup(mp_SVCDashboardWidget, Service::CMessageString::MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS);
     emit SetSettingsButtonStatus();

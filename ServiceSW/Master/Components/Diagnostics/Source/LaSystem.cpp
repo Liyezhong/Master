@@ -38,20 +38,15 @@ CLaSystem::CLaSystem(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    (void)connect(ui->testHeatingBelt1,
+    (void)connect(ui->testLiquidHeatingTube,
                  SIGNAL(clicked()),
                  this,
-                 SLOT(StartHeatingBelt1Test()) );
+                 SLOT(StartLiquidHeatingTubeTest()) );
 
-    (void)connect(ui->testHeatingBelt2,
-                 SIGNAL(clicked()),
-                 this,
-                 SLOT(StartHeatingBelt2Test()) );
-
-    (void)connect(ui->testAirSystem,
+    (void)connect(ui->testAirHeatingTube,
                   SIGNAL(clicked()),
                   this,
-                  SLOT(StartAirSystemTest()) );
+                  SLOT(StartAirHeatingTubeTest()) );
 }
 
 CLaSystem::~CLaSystem()
@@ -59,7 +54,7 @@ CLaSystem::~CLaSystem()
     delete ui;
 }
 
-void CLaSystem::StartHeatingBelt1Test(void)
+void CLaSystem::StartLiquidHeatingTubeTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
     qDebug() << "L&&A System: start heating belt 1 test";
@@ -71,20 +66,7 @@ void CLaSystem::StartHeatingBelt1Test(void)
     emit GuiTube1HeatingTest();
 }
 
-void CLaSystem::StartHeatingBelt2Test(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST);
-    qDebug() << "L&&A System: start heating belt 2 test";
-
-    //LaSystem::CHeatingBelt2Test test;
-
-    //test.Run();
-
-    emit GuiTube2HeatingTest();
-
-}
-
-void CLaSystem::StartAirSystemTest(void)
+void CLaSystem::StartAirHeatingTubeTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST);
     qDebug() << "L&&A System: start air system test";

@@ -41,9 +41,8 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
-    void StartHeatingBelt1Test(void);
-    void StartHeatingBelt2Test(void);
-    void StartAirSystemTest(void);
+    void StartLiquidHeatingTubeTest(void);
+    void StartAirHeatingTubeTest(void);
     
 private:
     Ui::CLaSystem *ui;
