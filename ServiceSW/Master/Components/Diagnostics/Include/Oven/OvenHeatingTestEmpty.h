@@ -23,7 +23,7 @@
 
 #include "Diagnostics/Include/TestBase.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
-#include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+#include "Diagnostics/Include/Oven/ovenheatingtestemptytimingdialog.h"
 #include <QThread>
 
 namespace Diagnostics {
@@ -58,16 +58,21 @@ public:
 signals:
     void notifyClose(void);
 
-private Q_SLOTS:
-    void AbortDialog(bool status);
-    void ShowWaitingDialog(QByteArray status);
+private:
     void Clean(void);
+    void StartPreHeating(void);
+
+private Q_SLOTS:
+    void AbortDialog();
+    void ShowWaitingDialog(QByteArray status);
+    void _ShowWaitingDialog(struct heatingTestStatus *buf);
+
     void ShowMessageBoxFail(QString msg);
     void ShowMessageBoxSuccess(QString msg);
 
 private:
     CDiagnosticMessageDlg *dlg;
-    DiagnosticsManufacturing::CHeatingTestDialog *waitDialog;
+    OvenHeatingTestEmptyTimingDialog *timingDialog;
     CHeatingTestEmptyThread *heatingTestEmptyThread;
     QThread Thread;
 };
