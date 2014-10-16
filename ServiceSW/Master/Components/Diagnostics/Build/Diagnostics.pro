@@ -31,7 +31,7 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/System/VentilationFanTest.h \
     ../Include/SelectBottleNReagentDialog.h \
     ../Include/LevelSensorHeatingDialog.h \
-    ../Source/Oven/ovenheatingtestemptytimingdialog.h
+    ../Source/Oven/OvenHeatingTestEmptyTimingDialog.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -62,4 +62,4 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/SelectMeltingPointDialog.ui \
     ../Forms/SelectBottleNReagentDialog.ui \
     ../Forms/LevelSensorHeatingDialog.ui \
-    ../Forms/ovenheatingtestemptytimingdialog.ui
+    ../Forms/OvenHeatingTestEmptyTimingDialog.ui

@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file OvenHeatingTestEmptyTimingDialog.h
+ *
+ *  \brief Declaration of Heating test empty Timing Dialog.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-10-13
+ *   $Author:  $ Arthur Li
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #ifndef OVENHEATINGTESTEMPTYTIMINGDIALOG_H
 #define OVENHEATINGTESTEMPTYTIMINGDIALOG_H
 

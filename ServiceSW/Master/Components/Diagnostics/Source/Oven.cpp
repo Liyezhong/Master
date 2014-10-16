@@ -20,7 +20,6 @@
 #include <QDebug>
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
 #include "Diagnostics/Include/Oven/CoverSensorTest.h"
-#include "Diagnostics/Include/Oven/ovenheatingtestemptytimingdialog.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Diagnostics/Include/Oven.h"

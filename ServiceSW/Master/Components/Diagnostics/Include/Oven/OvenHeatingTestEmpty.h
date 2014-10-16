@@ -23,13 +23,12 @@
 
 #include "Diagnostics/Include/TestBase.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
-#include "Diagnostics/Include/Oven/ovenheatingtestemptytimingdialog.h"
+#include "Diagnostics/Include/Oven/OvenHeatingTestEmptyTimingDialog.h"
 #include <QThread>
 
 namespace Diagnostics {
 
 namespace Oven {
-
 struct heatingTestStatus {
    int UsedTime;
    int EDTime;
@@ -49,15 +48,41 @@ class CHeatingTestEmpty : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam _dlg = message dialog
+     */
+    /****************************************************************************/
     CHeatingTestEmpty(CDiagnosticMessageDlg *_dlg);
-    ~CHeatingTestEmpty(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
+    ~CHeatingTestEmpty(void);
+    /****************************************************************************/
+    /*!
+     *  \brief To run test case.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief To start preheating after test case.
+     */
+    /****************************************************************************/
     void StartPreHeating(void);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief To show waiting dialog for test case.
+     */
+    /****************************************************************************/
     void ShowWaitingDialog(struct heatingTestStatus *buf);
 
 private:
