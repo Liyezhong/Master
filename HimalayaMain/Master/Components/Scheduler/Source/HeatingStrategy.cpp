@@ -1789,7 +1789,6 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         {
             if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
             {
-                int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
                 return false;
             }
         }
