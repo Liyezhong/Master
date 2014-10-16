@@ -579,5 +579,126 @@
         <string id="19333641" text1="Upload of the file failed" text2=""/>
         <string id="19333642" text1="Setting the tag failed" text2=""/>
         <string id="19333643" text1="Reporting event failed" text2=""/>
+   		<string id="67174401" text1="Slave boards initialized successfully." text2="" />
+   		<string id="67174402" text1="Error happend during Slaves initializing %1." text2="" />
+   		<string id="67174403" text1="Main Relay opened successfully." text2="" />
+   		<string id="67174404" text1="Fail to open the Main Relay %1." text2="" />
+   		<string id="67174416" text1="User shutdown instrument." text2="" />
+   		<string id="67174417" text1="Do recovery action %1." text2="" />
+   		<string id="67174418" text1="User start the program %1 with the finished time %2." text2="" />
+   		<string id="67174419" text1="User continue the program %1." text2="" />
+   		<string id="67174420" text1="User pause the program %1." text2="" />
+   		<string id="67174421" text1="User abort the program %1." text2="" />
+   		<string id="67174422" text1="User drain the last reagent of the program %1." text2="" />
+   		<string id="67174423" text1="User change the paraffin melting point from %1 to %2." text2="" />
+   		<string id="67174656" text1="Start the Selftest." text2="" />
+   		<string id="67174657" text1="Delay 3 second." text2="" />
+   		<string id="67174658" text1="Delay 5 second." text2="" />
+   		<string id="67174659" text1="Set ASB3 voltage switch to auto." text2="" />
+   		<string id="67174660" text1="Set the ASB3 voltage switch to auto successfully." text2="" />
+   		<string id="67174661" text1="Set the ASB5 voltage switch to auto." text2="" />
+   		<string id="67174662" text1="Set the ASB5 voltage switch to auto successfully." text2="" />
+   		<string id="67174663" text1="Start heating rotary valve." text2="" />
+   		<string id="67174664" text1="Start heating retort bottom." text2="" />
+   		<string id="67174665" text1="Start heating rotary valve successfully." text2="" />
+   		<string id="67174666" text1="Start heating retort bottom successfully." text2="" />
+   		<string id="67174667" text1="Stop heating rotary valve." text2="" />
+   		<string id="67174668" text1="Stop heating retort bottom." text2="" />
+   		<string id="67174669" text1="Stop heating rotary valve successfully." text2="" />
+   		<string id="67174670" text1="Stop heating retort bottom successfully." text2="" />
+   		<string id="67174671" text1="Get the ASB5 SwithcType:%1,ASB3 SwitchType:%2." text2="" />
+   		<string id="67174672" text1="Retry the AC voltage switch test." text2="" />
+   		<string id="67174673" text1="Unknown the ASB5 voltage." text2="" />
+   		<string id="67174674" text1="ASB5 voltage type is same the ASB3, and pass." text2="" />
+   		<string id="67174675" text1="Set the ASB3 voltage with ASB5 voltage." text2="" />
+   		<string id="67174676" text1="Set the ASB3 voltage with ASB5 voltage successfully." text2="" />
+   		<string id="67174677" text1="Start heating liquid tube." text2="" />
+   		<string id="67174678" text1="Start heating liquid tube successfully." text2="" />
+   		<string id="67174679" text1="Stop heating liquid tube." text2="" />
+   		<string id="67174680" text1="Stop heating liquid tube successfully." text2="" />
+   		<string id="67174681" text1="Start heating air tube." text2="" />
+   		<string id="67174682" text1="Start heating air tube successfully." text2="" />
+   		<string id="67174683" text1="Stop heating air tube." text2="" />
+   		<string id="67174684" text1="Stop heating air tube successfully." text2="" />
+   		<string id="67174685" text1="Start heating level sensor." text2="" />
+   		<string id="67174686" text1="Start heating level sensor successfully." text2="" />
+   		<string id="67174687" text1="Stop heating level sensor." text2="" />
+   		<string id="67174688" text1="Stop heating level sensor successfully." text2="" />
+   		<string id="67174689" text1="Start pump." text2="" />
+   		<string id="67174690" text1="Start pump successfully." text2="" />
+   		<string id="67174691" text1="Stop pump." text2="" />
+   		<string id="67174692" text1="Stop pump successfully." text2="" />
+   		<string id="67174693" text1="Start valve1." text2="" />
+   		<string id="67174694" text1="Start valve1 successfully." text2="" />
+   		<string id="67174695" text1="Stop valve1." text2="" />
+   		<string id="67174696" text1="Stop valve1 successfully." text2="" />
+   		<string id="67174697" text1="Start valve2." text2="" />
+   		<string id="67174698" text1="Start valve2 successfully." text2="" />
+   		<string id="67174699" text1="Stop valve2." text2="" />
+   		<string id="67174700" text1="Stop valve2 successfully." text2="" />
+   		<string id="67174701" text1="Start exhaust fan." text2="" />
+   		<string id="67174702" text1="Start exhaust fan successfully." text2="" />
+   		<string id="67174703" text1="Stop exhaust fan." text2="" />
+   		<string id="67174704" text1="Stop exhaust fan successfully." text2="" />
+   		<string id="67174705" text1="Start heating retort side." text2="" />
+   		<string id="67174706" text1="Start heating retort side successfully." text2="" />
+   		<string id="67174707" text1="Stop heating retort side." text2="" />
+   		<string id="67174708" text1="Stop heating retort side successfully." text2="" />
+   		<string id="67174709" text1="Start heating oven top." text2="" />
+   		<string id="67174710" text1="Start heating oven top successfully." text2="" />
+   		<string id="67174711" text1="Stop heating oven top." text2="" />
+   		<string id="67174712" text1="Stop heating oven top successfully." text2="" />
+   		<string id="67174713" text1="Start heating oven bottom." text2="" />
+   		<string id="67174714" text1="Start heating oven bottom successfully." text2="" />
+   		<string id="67174715" text1="Stop heating oven bottom." text2="" />
+   		<string id="67174732" text1="Stop heating oven bottom successfully." text2="" />
+   		<string id="67174912" text1="Start the pretest." text2="" />
+   		<string id="67174913" text1="Check the level sensor temperature." text2="" />
+   		<string id="67174914" text1="Check the level sensor temperature passed." text2="" />
+   		<string id="67174915" text1="Move RV to initialize position." text2="" />
+   		<string id="67174916" text1="Move RV to initialize position successfully." text2="" />
+   		<string id="67174917" text1="Test pressure calibration." text2="" />
+   		<string id="67174918" text1="Calibrate pressure of release pressure." text2="" />
+   		<string id="67174919" text1="Calibrate pressure of release pressure successfully." text2="" />
+   		<string id="67174920" text1="Wait 20 second." text2="" />
+   		<string id="67174921" text1="Calibrate pressure the current pressure is :%1." text2="" />
+   		<string id="67174922" text1="Retry Pressure Calibration the pressure value is too large." text2="" />
+   		<string id="67174923" text1="Calibrate pressure successfully." text2="" />
+   		<string id="67174924" text1="Offset the pressure calibration." text2="" />
+   		<string id="67174925" text1="Sealing test." text2="" />
+   		<string id="67174926" text1="Sealing test successfully." text2="" />
+   		<string id="67174927" text1="Bottle test." text2="" />
+   		<string id="67174928" text1="Bottle test successfully." text2="" />
+   		<string id="67174929" text1="PreTest success." text2="" />
+   		<string id="67174992" text1="Initialize the heatingStrategy failed." text2="" />
+   		<string id="67174993" text1="Start heating retort side in pretest,the target temperature:%1." text2="" />
+   		<string id="67174994" text1="Start heating retort bottom in pretest,the target temperature:%1." text2="" />
+   		<string id="67174995" text1="Start heating level sensor heating in scenario:%1,the target temperature:%2." text2="" />
+   		<string id="67174996" text1="Start retort(%1) heating in scenario:%2,the target temperature:%3." text2="" />
+   		<string id="67174997" text1="Start wax bath(%1) heating in scenario:%2,the target temperature:%3." text2="" />
+   		<string id="67174998" text1="Start rotary valve heating in scenario:%1,the target temperature:%2." text2="" />
+   		<string id="67174999" text1="Start LA system(%1) heating in scenario:%2,the target temperature:%3." text2="" />
+   		<string id="67175168" text1="Detect an unfinished program %1 at step %2." text2="" />
+   		<string id="67175184" text1="Instrument enters the idle state." text2="" />
+   		<string id="67175200" text1="start the program %1" text2="" />
+   		<string id="67175201" text1="Set the rotary valve position to %1." text2="" />
+   		<string id="67175202" text1="Still need to heat oven for %1 of %2 to melting paraffin." text2="" />
+   		<string id="67175203" text1="Aborting program." text2="" />
+   		<string id="67175204" text1="Aborted program." text2="" />
+   		<string id="67175205" text1="Pause program." text2="" />
+   		<string id="67175206" text1="Release presure." text2="" />
+   		<string id="67175207" text1="Draining." text2="" />
+   		<string id="67175208" text1="Waiting for filling paraffin." text2="" />
+   		<string id="67175209" text1="Heating the level sensor for filling" text2="" />
+   		<string id="67175210" text1="Start filling" text2="" />
+   		<string id="67175211" text1="Moveing the rotary valve to the tube position of station %1." text2="" />
+   		<string id="67175212" text1="Moveing the rotary valve to the sealing position of station %1." text2="" />
+   		<string id="67175213" text1="Start processing." text2="" />
+   		<string id="67175214" text1="Set pressure to %1." text2="" />
+   		<string id="67175215" text1="Finished Step %1." text2="" />
+   		<string id="67175216" text1="Start Step %1(Station %2, %3, %4, %5)." text2="" />
+   		<string id="67175217" text1="Finished Program %1." text2="" />
+   		<string id="67175218" text1="Start the dry processing." text2="" />
+   		<string id="67175219" text1="Finished the dry processing." text2="" />
 	</language>
 </strings>

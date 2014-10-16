@@ -869,7 +869,7 @@ protected:
             {
                 ParList << *ite;
             }
-//            Global::EventObject::Instance().RaiseEvent(Event,ParList);
+            Global::EventObject::Instance().RaiseEvent(Event,ParList);
         }
         /****************************************************************************/
         /**
