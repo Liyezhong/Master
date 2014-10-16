@@ -3566,7 +3566,7 @@ void SchedulerMainThreadController::RCDrain()
 {
     LogDebug("Send cmd to DCL to RcDrain");
     CmdALDraining* cmd  = new CmdALDraining(500, this);
-    cmd->SetDelayTime(2000);
+    cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
@@ -3582,7 +3582,7 @@ void SchedulerMainThreadController::Drain()
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
-    cmd->SetDelayTime(2000);
+    cmd->SetDelayTime(5000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
@@ -3596,7 +3596,7 @@ void SchedulerMainThreadController::RcDrainAtOnce()
     LogDebug("Send cmd to DCL to Drain in RC_Drain_AtOnce");
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
-    cmd->SetDelayTime(2000);
+    cmd->SetDelayTime(5000);
     cmd->SetIgnorePressure(true);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 

@@ -367,6 +367,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     {
 
                     }
+                    CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
+                    cmd->SetDelayTime(5000);
                     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALDraining(500, mp_SchedulerController));
                     m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
                     emit Wait8Seconds();
