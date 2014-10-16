@@ -3,9 +3,9 @@
  *
  *  \brief Declaration of RotaryValve test.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-27
- *   $Author:  $ R.Wu
+ *   $Version: $ 0.2
+ *   $Date:    $ 2014-10-11
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
@@ -35,16 +35,31 @@ class CRotaryValve : public QWidget
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = parent widget
+     */
+    /****************************************************************************/
     explicit CRotaryValve(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CRotaryValve();
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief To run movement test case.
+     */
+    /****************************************************************************/
     void StartMovementTest(void);
 
 private:
-    Ui::CRotaryValve *ui;
-    bool              m_InitSuccess;
-    CDiagnosticMessageDlg *mp_MessageDlg;
+    Ui::CRotaryValve *ui;  //!< Rotary valve ui
+    CDiagnosticMessageDlg *mp_MessageDlg; //!< For show message dialog
 };
 
 

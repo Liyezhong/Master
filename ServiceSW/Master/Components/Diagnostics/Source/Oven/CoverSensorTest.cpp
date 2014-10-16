@@ -35,9 +35,9 @@ namespace Diagnostics {
 
 namespace Oven {
 
-CCoverSensorTest::CCoverSensorTest(CDiagnosticMessageDlg *dlg)
+CCoverSensorTest::CCoverSensorTest(CDiagnosticMessageDlg *_dlg)
     : CTestBase()
-    , mp_dlg(dlg)
+    , dlg(_dlg)
 {
 }
 
@@ -48,7 +48,7 @@ CCoverSensorTest::~CCoverSensorTest(void)
 int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value)
 {
     // dlg->ParentWidget() == mp_MainWindow
-    DiagnosticsManufacturing::CStatusConfirmDialog confirmDlg(mp_dlg->ParentWidget());
+    DiagnosticsManufacturing::CStatusConfirmDialog confirmDlg(dlg->ParentWidget());
     Service::ModuleTestStatus status;
     QString key("OvenCoverSensorStatus");
     (void)status.insert(key, value);
@@ -58,17 +58,17 @@ int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &text,
     return !confirmDlg.exec();
 }
 
-int CCoverSensorTest::TestCase(QString testStatus)
+CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
 {
     QString title((tr("Cover Sensor Test")));
     QString text;
     int ret;
 
     text = tr("Please %1 the cover sensor manually.").arg(testStatus);
-    ret = mp_dlg->ShowConfirmMessage(title, text,
+    ret = dlg->ShowConfirmMessage(title, text,
                   testStatus == "open" ? CDiagnosticMessageDlg::NEXT_CANCEL : CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
     if (ret == CDiagnosticMessageDlg::CANCEL)
-        return RETURN_ERR_FAIL;
+        return __CANCEL__;
 
     ServiceDeviceProcess *dev = ServiceDeviceProcess::Instance();
 
@@ -95,9 +95,9 @@ int CCoverSensorTest::TestCase(QString testStatus)
 
     ret = CoverSensorStatusConfirmDlg(title, text, statusStr);
     if (ret == CDiagnosticMessageDlg::NO)
-        return RETURN_ERR_FAIL;
+        return __FAIL__;
 
-    return RETURN_OK;
+    return __OK__;
 }
 
 int CCoverSensorTest::Run(void)
@@ -106,22 +106,31 @@ int CCoverSensorTest::Run(void)
 
     QString title((tr("Cover Sensor Test")));
     QString text;
+    TestCaseRet ret;
 
-    if (TestCase("open") != RETURN_OK) {
-        text = tr("Cover sensor test - Failed");
-        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        return RETURN_ERR_FAIL;
-    }
+    ret = TestCase("open");
+    if (ret == __CANCEL__)
+        goto __cancel__;
+    if (ret == __FAIL__)
+        goto __fail__;
 
-    if (TestCase("close") != RETURN_OK) {
-        text = tr("Cover sensor test - Failed");
-        mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        return RETURN_ERR_FAIL;
-    }
+    ret = TestCase("close");
+    if (ret == __CANCEL__)
+        goto __cancel__;
+    if (ret == __FAIL__)
+        goto __fail__;
 
+__ok__:
     text = tr("Cover sensor test - Success");
-    mp_dlg->ShowMessage(title, text, RETURN_OK);
+    dlg->ShowMessage(title, text, RETURN_OK);
+    return RETURN_OK;
 
+__fail__:
+    text = tr("Cover sensor test - Failed");
+    dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+    return RETURN_ERR_FAIL;
+
+__cancel__:
     return RETURN_OK;
 }
 

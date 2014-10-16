@@ -3,10 +3,6 @@
  *
  *  \brief Declaration of Oven cover sensor test.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
- *
  *   $Version: $ 0.2
  *   $Date:    $ 2014-10-10
  *   $Author:  $ Arthur LI
@@ -31,21 +27,67 @@ namespace Diagnostics {
 
 namespace Oven {
 
+/****************************************************************************/
+/**
+ * \brief This class is a helper to test cover sensor.
+ *
+ */
+/****************************************************************************/
 class CCoverSensorTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
-    CCoverSensorTest(CDiagnosticMessageDlg *dlg);
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam _dlg = message widget
+     */
+    /****************************************************************************/
+    CCoverSensorTest(CDiagnosticMessageDlg *_dlg);
+    /****************************************************************************/
+    /**
+     * \brief Deconstructor.
+     */
+    /****************************************************************************/
     ~CCoverSensorTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run(void);
-    int TestCase(QString testStatus);
+
+private:
+    enum TestCaseRet {
+        __FAIL__,
+        __CANCEL__,
+        __OK__
+    };
+
+    /****************************************************************************/
+    /*!
+     *  \brief To test a case
+     */
+    /****************************************************************************/
+    TestCaseRet TestCase(QString testStatus);
+
 protected:
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam title = dialog title
+     *  \iparam text =  dialog text
+     *  \iparam value = cover sensor status
+     */
+    /****************************************************************************/
     virtual int CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value);
 
 private:
-    CDiagnosticMessageDlg *mp_dlg;
+    CDiagnosticMessageDlg *dlg; //!< For show message dialog
+
 };
 
 } // namespace Oven

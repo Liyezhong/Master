@@ -377,6 +377,22 @@ protected:
     }
 };
 
+class CHeatingTestEmptyMock : public CHeatingTestEmpty
+{
+    Q_OBJECT
+
+public:
+    CHeatingTestEmptyMock(CDiagnosticMessageDlg *dlg)
+        : CHeatingTestEmpty(dlg)
+    {
+    }
+
+protected:
+    virtual void ShowWaitingDialog(struct heatingTestStatus *buf)
+    {
+    }
+};
+
 } // namespace Oven
 
 namespace System {
@@ -447,6 +463,7 @@ private slots:
     void OvenPreTest();
     void CoverSensorTest();
     void RVMovementTest();
+    void HeatingTestEmpty();
 
     void SystemAlarmTest();
     void SystemExhaustFanTest();
@@ -522,6 +539,15 @@ void CTestDiagnostics::RVMovementTest()
     RotaryValve::CMovementTest ut(&dlg);
     QVERIFY(ut.Run() != RETURN_OK);
 }
+
+/****************************************************************************/
+void CTestDiagnostics::HeatingTestEmpty()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Oven::CHeatingTestEmpty ut(&dlg);
+    QVERIFY(ut.Run() != RETURN_OK);
+}
+
 
 /****************************************************************************/
 void CTestDiagnostics::SystemAlarmTest()

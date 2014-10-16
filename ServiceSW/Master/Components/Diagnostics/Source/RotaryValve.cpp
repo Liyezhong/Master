@@ -36,7 +36,6 @@ namespace Diagnostics {
 CRotaryValve::CRotaryValve(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CRotaryValve)
-    , m_InitSuccess(true)
 {
     ui->setupUi(this);
     mp_MessageDlg = new CDiagnosticMessageDlg(this);

@@ -33,15 +33,29 @@ class CMovementTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam dlg = message widget
+     */
+    /****************************************************************************/
     CMovementTest(CDiagnosticMessageDlg *dlg);
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CMovementTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     */
+    /****************************************************************************/
     int Run();
-signals:
-    void StartRVInitTest();
 
 private:
-    CDiagnosticMessageDlg *mp_dlg;
+    CDiagnosticMessageDlg *mp_dlg;  //!< For show message dialog
 };
 
 } // namespace RotaryValve

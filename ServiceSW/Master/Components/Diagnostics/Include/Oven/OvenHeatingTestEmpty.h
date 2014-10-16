@@ -77,17 +77,17 @@ private:
     /****************************************************************************/
     void StartPreHeating(void);
 
-private Q_SLOTS:
+protected:
     /****************************************************************************/
     /*!
      *  \brief To show waiting dialog for test case.
      */
     /****************************************************************************/
-    void ShowWaitingDialog(struct heatingTestStatus *buf);
+    virtual void ShowWaitingDialog(struct heatingTestStatus *buf);
 
 private:
-    CDiagnosticMessageDlg *dlg;
-    OvenHeatingTestEmptyTimingDialog *timingDialog;
+    CDiagnosticMessageDlg *dlg; //!< For show message dialog
+    OvenHeatingTestEmptyTimingDialog *timingDialog;  //!< For show timming message dialog
 };
 
 } // namespace Oven

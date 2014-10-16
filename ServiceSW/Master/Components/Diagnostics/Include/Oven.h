@@ -36,22 +36,46 @@ class COven : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = parent widget
+     */
+    /****************************************************************************/
     explicit COven(QWidget *p_Parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~COven();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief When event has changed, this function will be called to do some event action.
+     *  \iparam p_Event = Upcoming event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief To run heating test empty test case.
+     */
+    /****************************************************************************/
     void StartHeatingTestEmpty(void);
+    /****************************************************************************/
+    /*!
+     *  \brief To run cover sensor test case.
+     */
+    /****************************************************************************/
     void StartCoverSensorTest(void);
 
 private:
-    Ui::COven *ui;
-    CDiagnosticMessageDlg *dlg;
-
-signals:
-    void GuiOvenEmptyHeatingTest();
+    Ui::COven *ui; //!< Oven ui
+    CDiagnosticMessageDlg *dlg; //!< For show message dialog
 };
 
 

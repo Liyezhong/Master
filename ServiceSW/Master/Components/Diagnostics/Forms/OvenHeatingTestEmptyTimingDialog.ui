@@ -139,7 +139,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>waiting</string>
+    <string>Please waiting ...</string>
    </property>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">

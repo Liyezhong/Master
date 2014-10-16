@@ -51,7 +51,7 @@ CHeatingTestEmpty::~CHeatingTestEmpty(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete heatingTestEmptyThread & waitDialog, catch error";
+        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete waitDialog, catch error";
     }
 }
 
@@ -147,7 +147,7 @@ int CHeatingTestEmpty::Run(void)
 
         timingDialog->show();
         for (i = 0; i < t && timingDialog->isVisible(); i++) {
-            dev->Pause(1000);
+            QTime EndTime = QTime().currentTime().addSecs(1);
             ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
                 break;
@@ -160,6 +160,8 @@ int CHeatingTestEmpty::Run(void)
                     && OvenTempSensor1 - OvenTempSensor1Cur >= TempOffset
                     && OvenTempSensor2 - OvenTempSensor2Cur >= TempOffset)
                 break;
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            dev->Pause(MSec);
         }
 
         if (!timingDialog->isVisible())
@@ -217,7 +219,7 @@ int CHeatingTestEmpty::Run(void)
     timingDialog->show();
 
     for (i = 0; i < t1 && timingDialog->isVisible(); i++) {
-        dev->Pause(1000);
+        QTime EndTime = QTime().currentTime().addSecs(1);
         ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
@@ -230,6 +232,8 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
         ShowWaitingDialog(&status);
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        dev->Pause(MSec);
     }
 
     if (i != t1 && !timingDialog->isVisible())
@@ -249,9 +253,7 @@ int CHeatingTestEmpty::Run(void)
     OvenTempSensor2 = OvenTempSensor2Cur;
 
     for (i = 0; i < t2 && timingDialog->isVisible(); i++) {
-        dev->Pause(1000);
-        qreal OvenTempSensor1Cur;
-        qreal OvenTempSensor2Cur;
+        QTime EndTime = QTime().currentTime().addSecs(1);
         ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
@@ -266,6 +268,8 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
         ShowWaitingDialog(&status);
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        dev->Pause(MSec);
     }
 
     if (i != t2 && !timingDialog->isVisible())
