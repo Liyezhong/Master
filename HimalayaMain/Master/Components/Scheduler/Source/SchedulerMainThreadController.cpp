@@ -2156,7 +2156,16 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 
     if (Cmd.ProgramActionType() != DataManager::PROGRAM_START)
     {
-        RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName); //log
+        if(Cmd.DelayTime() > 0) // start new program
+        {
+            QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.DelayTime());
+            RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName
+                       <<EndDateTime.toString()); //log
+        }
+        else
+        {
+            RaiseEvent(EVENT_SCHEDULER_REC_CONTINUE_PROGRAM,QStringList()<<ProgramName); //log
+        }
         return;
     }
     else if(Cmd.ProgramActionType() != DataManager::PROGRAM_PAUSE)

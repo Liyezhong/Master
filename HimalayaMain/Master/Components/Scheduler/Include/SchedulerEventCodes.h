@@ -37,11 +37,12 @@ const quint32 EVENT_SCHEDULER_OPEN_MAIN_RELAY_FAILURE = SCHEDULER_BASE_ID + 0x00
 // Action command from GUI or Event Handler
 const quint32 EVENT_SCHEDULER_REC_ACTION_SHUTDOWN = SCHEDULER_BASE_ID + 0x0010; ///< User shutdown instrument.
 const quint32 EVENT_SCHEDULER_REC_ERROR_ACTION = SCHEDULER_BASE_ID + 0x0011; ///<  Do recovery action %1.
-const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 0x0012; ///< User start/continue the program %1.
-const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 0x0013; ///< User pause the program %1.
-const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 0x0014; ///< User abort the program %1.
-const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 0x0015; ///< User drain the last reagent of the program %1.
-const quint32 EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT = SCHEDULER_BASE_ID + 0x0016; ///< User change the paraffin melting point from %1 to %2.
+const quint32 EVENT_SCHEDULER_REC_START_PROGRAM = SCHEDULER_BASE_ID + 0x0012; ///< User start the program %1 with the finished time %2.
+const quint32 EVENT_SCHEDULER_REC_CONTINUE_PROGRAM = SCHEDULER_BASE_ID + 0x0013; ///< User continue the program %1.
+const quint32 EVENT_SCHEDULER_REC_PAUSE_PROGRAM = SCHEDULER_BASE_ID + 0x0014; ///< User pause the program %1.
+const quint32 EVENT_SCHEDULER_REC_ABORT_PROGRAM = SCHEDULER_BASE_ID + 0x0015; ///< User abort the program %1.
+const quint32 EVENT_SCHEDULER_REC_DRAIN_PROGRAM = SCHEDULER_BASE_ID + 0x0016; ///< User drain the last reagent of the program %1.
+const quint32 EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT = SCHEDULER_BASE_ID + 0x0017; ///< User change the paraffin melting point from %1 to %2.
 
 // Self test
 const quint32 EVENT_SCHEDULER_START_SELFTEST = SCHEDULER_BASE_ID + 0x0100; ///< Start the Selftest.
