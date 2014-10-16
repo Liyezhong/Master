@@ -18,7 +18,7 @@
  */
 /****************************************************************************/
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmptyTimingDialog.h"
-#include "ui_ovenheatingtestemptytimingdialog.h"
+#include "ui_OvenHeatingTestEmptyTimingDialog.h"
 
 OvenHeatingTestEmptyTimingDialog::OvenHeatingTestEmptyTimingDialog(QWidget *parent) :
     MainMenu::CDialogFrame(parent),
