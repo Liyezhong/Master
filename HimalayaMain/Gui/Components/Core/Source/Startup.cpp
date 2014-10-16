@@ -63,6 +63,7 @@ CStartup::CStartup() : QObject()
     mp_Users = new Users::CUserPrivilegeWidget(&m_MainWindow, mp_KeyBoardWidget);
     mp_ScreenSaver = new ScreenSaverWidget();
     mp_SplashWidget = new SplashWidget(&m_MainWindow);
+    mp_SplashWidget->setModal(true);
     (void)MainMenu::CStatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
 
     // Dashboard Signals & Slots

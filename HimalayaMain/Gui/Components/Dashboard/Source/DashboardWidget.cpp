@@ -386,21 +386,18 @@ void CDashboardWidget::OnProgramAborted()
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
-        if (m_HaveSucked)
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+        mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-            mp_MessageDlg->SetText(m_strTakeOutSpecimen);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            {
-                ui->programPanelWidget->ChangeStartButtonToStartState();
-                ui->programPanelWidget->EnableStartButton(true);
-                //switch to the dashboard page
-                mp_MainWindow->SetTabWidgetIndex();
-                emit SwitchToFavoritePanel();
-            }
+            ui->programPanelWidget->ChangeStartButtonToStartState();
+            ui->programPanelWidget->EnableStartButton(true);
+            //switch to the dashboard page
+            mp_MainWindow->SetTabWidgetIndex();
+            emit SwitchToFavoritePanel();
         }
     }
 }

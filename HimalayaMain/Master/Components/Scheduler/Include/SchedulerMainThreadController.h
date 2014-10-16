@@ -225,7 +225,6 @@ typedef struct
         QStringList m_UsedStationIDs;        ///< in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
-        bool m_PauseToBeProcessed;       ///<  Definition/Declaration of variable m_PauseToBeProcessed
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID

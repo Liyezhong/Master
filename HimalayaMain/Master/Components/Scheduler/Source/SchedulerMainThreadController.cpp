@@ -101,7 +101,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_CurReagnetName("")
         , m_CurProgramID("")
         , m_NewProgramID("")
-        , m_PauseToBeProcessed(false)
         , m_ProcessCassetteCount(0)
         , m_OvenLidStatus(0)
         , m_RetortLockStatus(UNDEFINED_VALUE)
@@ -729,18 +728,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
             m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
+
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                EnablePauseButton();
+                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
+            }
+
             if(IsRVRightPosition(1))
             {
-                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
-                {
-                    m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_SEAL);
-                    m_PauseToBeProcessed = false;
-                    //DequeueNonDeviceCommand();
-                }
-                else
-                {
-                    m_SchedulerMachine->NotifyRVMoveToSealReady();
-                }
+                m_SchedulerMachine->NotifyRVMoveToSealReady();
             }
             else
             {
@@ -751,10 +748,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         RaiseError(0, retCode, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
-                }
-                if (CTRL_CMD_PAUSE == ctrlCmd)
-                {
-                    m_PauseToBeProcessed = true;
                 }
             }
         }
@@ -906,17 +899,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_RV_MOVE_TO_TUBE == stepState)
         {
             m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
+
+            if (CTRL_CMD_PAUSE == ctrlCmd)
+            {
+               EnablePauseButton();
+               Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
+            }
+
             if(IsRVRightPosition(0))
             {
-                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
-                {
-                    m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_TUBE);
-                    m_PauseToBeProcessed = false;
-                }
-                else
-                {
-                    m_SchedulerMachine->NotifyRVMoveToTubeReady();
-                }
+                m_SchedulerMachine->NotifyRVMoveToTubeReady();
             }
             else
             {
@@ -928,10 +920,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
-                if (CTRL_CMD_PAUSE == ctrlCmd)
-                {
-                    m_PauseToBeProcessed = true;
-                }
+
             }
         }
         else if(PSSM_DRAINING == stepState)
@@ -973,15 +962,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_RV_POS_CHANGE;
             if(IsRVRightPosition(2))
             {
-                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
-                {
-                    m_SchedulerMachine->NotifyPause(PSSM_RV_POS_CHANGE);
-                    m_PauseToBeProcessed = false;
-                }
-                else
-                {
-                    m_SchedulerMachine->NotifyStepFinished();
-                }
+               m_SchedulerMachine->NotifyStepFinished();
             }
             else
             {
