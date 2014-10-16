@@ -21,7 +21,7 @@
 #ifndef DATAMANAGER_GLOBAL_H
 #define DATAMANAGER_GLOBAL_H
 
-
+#include <QString>
 
 namespace DataManager {
 
@@ -170,6 +170,7 @@ const QString LEICA("leica");
 /*!
  *  \brief  Check if the system is now idle,
  *          which means no processing is running.
+ *  \return idle flag
  */
 /****************************************************************************/
 bool IsSystemIdle(void);

@@ -36,12 +36,14 @@ namespace DataManager {
  *  \brief Constructor
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_GroupNameID(""), m_Color(""),
-                                m_IsCleaningReagentGroup(false),
-                                m_IsParraffinGroup(false),
-                                m_Locked(false),
-                                m_MinTemp(0),
-                                m_MaxTemp(0)
+CReagentGroup::CReagentGroup()
+            :m_GroupID(""), m_GroupName(""),
+            m_GroupNameID(""), m_Color(""),
+            m_IsCleaningReagentGroup(false),
+            m_IsParraffinGroup(false),
+            m_Locked(false),
+            m_MinTemp(0),
+            m_MaxTemp(0)
 
 {
 
@@ -53,9 +55,13 @@ CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_GroupNameID("")
  *  \iparam ID
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_GroupNameID(""),m_Color(""),
-                                                m_IsCleaningReagentGroup(false),
-                                                m_IsParraffinGroup(false)
+CReagentGroup::CReagentGroup(const QString ID)
+    :m_GroupID(ID), m_GroupName(""),
+    m_GroupNameID(""),m_Color(""),
+    m_IsCleaningReagentGroup(false),
+    m_IsParraffinGroup(false),
+    m_Locked(false),
+    m_MinTemp(0),m_MaxTemp(0)
 {
 }
 

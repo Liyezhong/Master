@@ -299,6 +299,9 @@ bool CDashboardStation::DeserializeContent(QXmlStreamReader& XmlStreamReader, bo
 /****************************************************************************/
 CDashboardStation& CDashboardStation::operator=(const CDashboardStation& SourceStation)
 {
+    if (this == &SourceStation) {
+        qDebug() << "CDashboardStation::operator=: SourceStation not valid!";
+    }
     CopyFromOther(SourceStation);
     return (*this);
 }

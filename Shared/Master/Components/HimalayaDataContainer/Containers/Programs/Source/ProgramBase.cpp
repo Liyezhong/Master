@@ -69,7 +69,11 @@ CProgramBase::CProgramBase(const QString ID, const QString Name, const QString L
 /****************************************************************************/
 CProgramBase::~CProgramBase()
 {
-    DeleteAllProgramSteps();
+    try {
+        (void)DeleteAllProgramSteps();
+    }
+    catch(...) {
+    }
 }
 
 /****************************************************************************/

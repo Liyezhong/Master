@@ -299,7 +299,7 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
                 return false;
             }
             //Remove Duplicates from reagent ID list
-            m_ReagentIDList.removeDuplicates();
+            (void)m_ReagentIDList.removeDuplicates();
         }
         else if (XmlStreamReader.isEndElement() && XmlStreamReader.name().toString() == "StepList") {
             //qDebug() << "It has reached the end of the particular Node , Stop reading for this Reagent";

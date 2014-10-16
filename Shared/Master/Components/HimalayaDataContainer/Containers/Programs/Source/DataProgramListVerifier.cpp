@@ -195,7 +195,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             // Reagent is empty
             if(ReagentID.isEmpty())
             {
-                m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
+                (void)m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                     Global::tTranslatableStringList() << p_Program->GetName()
                                     << p_ProgramStep.GetReagentID());
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
@@ -213,7 +213,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                 case 'C':
                     break;
                 default:
-                    m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
+                    (void)m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                         Global::tTranslatableStringList() << p_Program->GetName()
                                         << p_ProgramStep.GetReagentID());
                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
@@ -233,7 +233,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             //ignoring return value of "toInt()"
             (void)(p_ProgramStep.GetStepID().toInt(&IntOk));
             if (!IntOk) {
-                m_ErrorsHash.insert(EVENT_DM_INVALID_STEP_ID,
+                (void)m_ErrorsHash.insert(EVENT_DM_INVALID_STEP_ID,
                                     Global::tTranslatableStringList() << p_Program->GetName()
                                     <<  QString::number(X+1));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_INVALID_STEP_ID,

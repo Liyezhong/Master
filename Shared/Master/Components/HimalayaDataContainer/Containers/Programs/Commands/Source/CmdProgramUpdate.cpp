@@ -24,14 +24,6 @@ namespace MsgClasses {
 
 QString CmdProgramUpdate::NAME = "MsgClasses::CmdProgramUpdate";
 
-/****************************************************************************/
-/*!
- *  \brief   Constructor
- *
- * \param[in]   Timeout              Timeout for command.
- * \param[in]   ProgramDataStream    The changed program.
- */
-/****************************************************************************/
 CmdProgramUpdate::CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream)
     :Command(Timeout),
     m_ProgramByteArray(static_cast< QBuffer *>(ProgramDataStream.device())->data()),
@@ -39,15 +31,7 @@ CmdProgramUpdate::CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataSt
 {
     setIdleStateAllowed(true);
 }
-/****************************************************************************/
-/*!
- *  \brief   Constructor
- *
- * \param[in]   Timeout                  Timeout for command.
- * \param[in]   ProgramDataStream        The program which will be set to white color
- * \param[in]   NextProgramDataStream    The changed program
- */
-/****************************************************************************/
+
 CmdProgramUpdate::CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream, const QDataStream &NextProgramDataStream) :
     Command(Timeout),
     m_ProgramByteArray(static_cast< QBuffer *>(ProgramDataStream.device())->data()),
@@ -57,31 +41,14 @@ CmdProgramUpdate::CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataSt
     setIdleStateAllowed(true);
 }
 
-/****************************************************************************/
-/*!
- * \brief   Constructor for receiving
- */
-/****************************************************************************/
 CmdProgramUpdate::CmdProgramUpdate() : Command(0),m_ProgramColorReplaced(false)
 {
 }
 
-/****************************************************************************/
-/*!
- *  \brief   Destructor
- */
-/****************************************************************************/
 CmdProgramUpdate::~CmdProgramUpdate()
 {
 }
 
-/****************************************************************************/
-/*!
- *  \brief   Get command name
- *
- *  \return  command name as string
- */
-/****************************************************************************/
 QString CmdProgramUpdate::GetName() const
 {
     return NAME;

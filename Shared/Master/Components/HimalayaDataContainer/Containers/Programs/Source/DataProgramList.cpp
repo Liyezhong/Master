@@ -463,7 +463,7 @@ bool CDataProgramList::UpdateProgram(const CProgram* p_Program)
             else {
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGRAM_INVALID_INDEX,
                                                            Global::tTranslatableStringList() << p_Program->GetName());
-                m_ErrorHash.insert(EVENT_DM_PROGRAM_INVALID_INDEX,
+                (void)m_ErrorHash.insert(EVENT_DM_PROGRAM_INVALID_INDEX,
                                    Global::tTranslatableStringList() << p_Program->GetName());
                 SetErrorList(&m_ErrorHash);
                 Result = false;
@@ -514,7 +514,7 @@ bool CDataProgramList::DeleteProgram(const QString ProgramID)
         else {
             Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGRAM_INVALID_INDEX,
                                                        Global::tTranslatableStringList() << ProgramName);
-            m_ErrorHash.insert(EVENT_DM_PROGRAM_INVALID_INDEX,
+            (void)m_ErrorHash.insert(EVENT_DM_PROGRAM_INVALID_INDEX,
                                Global::tTranslatableStringList() << ProgramName);
             SetErrorList(&m_ErrorHash);
             return false;
@@ -534,7 +534,7 @@ bool CDataProgramList::DeleteProgram(const QString ProgramID)
     } else {
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_DELETE_FAILED_ID_NOT_FOUND,
                                                    Global::tTranslatableStringList() << ProgramID);
-        m_ErrorHash.insert(EVENT_DM_PROG_DELETE_FAILED_ID_NOT_FOUND,
+        (void)m_ErrorHash.insert(EVENT_DM_PROG_DELETE_FAILED_ID_NOT_FOUND,
                            Global::tTranslatableStringList() << ProgramID);
         SetErrorList(&m_ErrorHash);
         return false;
@@ -855,7 +855,7 @@ bool CDataProgramList::CheckForUniquePropeties(const CProgram* p_Program, bool e
                                                    << p_Program->GetName(),
                                                    true,
                                                    Global::GUI_MSG_BOX);
-        m_ErrorHash.insert(EVENT_DM_PROG_ID_NOT_UNIQUE,
+        (void)m_ErrorHash.insert(EVENT_DM_PROG_ID_NOT_UNIQUE,
                            Global::tTranslatableStringList() << p_Program->GetID()
                            << p_Program->GetName());
         SetErrorList(&m_ErrorHash);
@@ -866,7 +866,7 @@ bool CDataProgramList::CheckForUniquePropeties(const CProgram* p_Program, bool e
     if (excludeSeft)
     {
         QStringList nameList = m_ProgramListNames;
-        nameList.removeOne(oldProgram->GetName());
+        (void)nameList.removeOne(oldProgram->GetName());
         isHave = nameList.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
     }
     else
@@ -874,7 +874,7 @@ bool CDataProgramList::CheckForUniquePropeties(const CProgram* p_Program, bool e
         isHave = m_ProgramListNames.contains(p_Program->GetName().simplified(), Qt::CaseInsensitive);
     }
     if (isHave) {
-        m_ErrorHash.insert(EVENT_DM_PROG_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << p_Program->GetName().simplified());
+        (void)m_ErrorHash.insert(EVENT_DM_PROG_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << p_Program->GetName().simplified());
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_NAME_NOT_UNIQUE,
                                                    Global::tTranslatableStringList() << p_Program->GetName().simplified(),
                                                    true,

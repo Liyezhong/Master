@@ -61,7 +61,7 @@ public:
      *  \brief  Destructor
      */
     /****************************************************************************/
-    virtual ~CDataStationListVerifier() {}
+    virtual ~CDataStationListVerifier() { mp_DSL = NULL;}
 private:
     CDashboardDataStationList* mp_DSL;                //!< Station Data Container
     ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated

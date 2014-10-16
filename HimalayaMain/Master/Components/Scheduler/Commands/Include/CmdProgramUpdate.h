@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CmdProgramUpdate.h
+/*! \file  Scheduler/Commands/Include/CmdProgramUpdate.h
  *
  *  \brief CmdProgramUpdate command definition.
  *

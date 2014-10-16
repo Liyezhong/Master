@@ -33,6 +33,8 @@
 #include "Global/Include/GlobalEventCodes.h"
 #include <QProcess>
 
+//lint -e1578
+
 namespace ImportExport {
 
 // constants for the different files

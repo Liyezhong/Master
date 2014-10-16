@@ -348,6 +348,10 @@ QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& D
 
 CDashboardDataStationList& CDashboardDataStationList::operator=(const CDashboardDataStationList &SourceDashboardStationList)
 {
+    if (this == &SourceDashboardStationList) {
+        qDebug() << "CDashboardDataStationList::operator=: SourceDashboardStationList not valid!";
+    }
+
     try {
         (void)DeleteAllDashboardStations();
         (void)CopyFromOther(SourceDashboardStationList);
@@ -355,6 +359,7 @@ CDashboardDataStationList& CDashboardDataStationList::operator=(const CDashboard
         (void)DeleteAllDashboardStations();
        //! \todo Inform event Handler
     }
+
     return (*this);
 }
 

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CmdProgramUpdate.h
+/*! \file HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h
  *
  *  \brief CmdProgramUpdate command definition.
  *
@@ -38,12 +38,49 @@ class CmdProgramUpdate : public Global::Command {
     friend QDataStream & operator >> (QDataStream &, CmdProgramUpdate &);
 public:
     static QString NAME;    ///< Command name.
+
+    /****************************************************************************/
+    /*!
+     *  \brief   Constructor
+     *
+     * \param[in]   Timeout              Timeout for command.
+     * \param[in]   ProgramDataStream    The changed program.
+     */
     /****************************************************************************/
     CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream);
+    /****************************************************************************/
+    /*!
+     *  \brief   Constructor
+     *
+     * \param[in]   Timeout                  Timeout for command.
+     * \param[in]   ProgramDataStream        The program which will be set to white color
+     * \param[in]   NextProgramDataStream    The changed program
+     */
+    /****************************************************************************/
     CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataStream,
                      const QDataStream &NextProgramDataStream);
+
+    /****************************************************************************/
+    /*!
+     * \brief   Constructor for receiving
+     */
+    /****************************************************************************/
     CmdProgramUpdate();
+
+    /****************************************************************************/
+    /*!
+     *  \brief   Destructor
+     */
+    /****************************************************************************/
     ~CmdProgramUpdate();
+
+    /****************************************************************************/
+    /*!
+     *  \brief   Get command name
+     *
+     *  \return  command name as string
+     */
+    /****************************************************************************/
     virtual QString GetName() const;
 
     /****************************************************************************/

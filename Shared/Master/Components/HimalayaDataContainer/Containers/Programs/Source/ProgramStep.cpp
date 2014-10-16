@@ -36,7 +36,7 @@ namespace DataManager {
 /****************************************************************************/
 CProgramStep::CProgramStep():
     m_StepID("INVALID"), m_ReagentID("0"),
-    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On")
+    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On"),m_NumberOfSteps(0)
 {
     m_StationIDList.clear();
 }
@@ -49,7 +49,7 @@ CProgramStep::CProgramStep():
 /****************************************************************************/
 CProgramStep::CProgramStep(QString StepID):
     m_StepID(StepID), m_ReagentID("0"),
-    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On")
+    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On"),m_NumberOfSteps(0)
 {
     m_StationIDList.clear();
 }
@@ -57,7 +57,7 @@ CProgramStep::CProgramStep(QString StepID):
 /****************************************************************************/
 /*!
  *  \brief Constructor
- *  \iparam StepID
+ *  \param StepID
  *  \param ReagentID
  *  \param Duration
  *  \param Temperature
@@ -68,7 +68,7 @@ CProgramStep::CProgramStep(QString StepID):
 CProgramStep::CProgramStep(const QString StepID, const QString ReagentID, const QString Duration,
                            const QString Temperature, const QString Pressure, const QString Vacuum):
     m_StepID(StepID), m_ReagentID(ReagentID),m_Duration(Duration),m_Temperature(Temperature),
-    m_Pressure(Pressure), m_Vacuum(Vacuum)
+    m_Pressure(Pressure), m_Vacuum(Vacuum),m_NumberOfSteps(0)
 {
      m_StationIDList.clear();
 }

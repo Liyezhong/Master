@@ -30,7 +30,7 @@ CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut, int lastMe
 }
 
 CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(void)
-    : Command(0)
+    : Command(0), m_LastMeltPoint(0), m_CurrentMeltPoint(0)
 {
 }
 
