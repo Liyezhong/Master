@@ -74,7 +74,7 @@
     <item row="3" column="0">
      <widget class="QLabel" name="labelTargetTempName_bottom1">
       <property name="text">
-       <string>Target Temperature(Bottom1):</string>
+       <string>Target Temperature(Bottom):</string>
       </property>
      </widget>
     </item>

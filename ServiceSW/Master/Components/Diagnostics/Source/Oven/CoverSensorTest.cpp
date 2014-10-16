@@ -64,7 +64,7 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
     QString text;
     int ret;
 
-    text = tr("Please %1 the cover sensor manually.").arg(testStatus);
+    text = tr("Please %1 the oven cover manually.").arg(testStatus);
     ret = dlg->ShowConfirmMessage(title, text,
                   testStatus == "open" ? CDiagnosticMessageDlg::NEXT_CANCEL : CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
     if (ret == CDiagnosticMessageDlg::CANCEL)
@@ -121,12 +121,12 @@ int CCoverSensorTest::Run(void)
         goto __fail__;
 
 __ok__:
-    text = tr("Cover sensor test - Success");
+    text = tr("Cover sensor test successful");
     dlg->ShowMessage(title, text, RETURN_OK);
     return RETURN_OK;
 
 __fail__:
-    text = tr("Cover sensor test - Failed");
+    text = tr("Cover sensor test failed");
     dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
     return RETURN_ERR_FAIL;
 

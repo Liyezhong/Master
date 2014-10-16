@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICS_ROTARYVALVE_INITIALIZINGTEST_H
-#define DIAGNOSTICS_ROTARYVALVE_INITIALIZINGTEST_H
+#ifndef DIAGNOSTICS_ROTARYVALVE_MOVEMENTTEST_H
+#define DIAGNOSTICS_ROTARYVALVE_MOVEMENTTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
@@ -62,4 +62,4 @@ private:
 
 } // namespace Diagnostics
 
-#endif // DIAGNOSTICS_ROTARYVALVE_INITIALIZINGTEST_H
+#endif // DIAGNOSTICS_ROTARYVALVE_MOVEMENTTEST_H
