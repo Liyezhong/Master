@@ -163,7 +163,7 @@ bool CProgramStatusInfor::IsProgramFinished()
     quint32 scenario = GetScenario();
     return  (GetProgramId().isEmpty() ||
             (GetStepID() < 0) ||
-            scenario <= 4 || scenario == 200 || scenario == 203);
+            scenario <= 4);
 }
 
 void CProgramStatusInfor::SetProgramFinished()

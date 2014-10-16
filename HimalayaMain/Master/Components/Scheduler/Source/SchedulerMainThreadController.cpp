@@ -2488,7 +2488,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
             scenario += 80;
         }
     }
-    if(m_ProgramStatusInfor.GetScenario() != scenario)
+    if(m_ProgramStatusInfor.GetScenario() != scenario && scenario > 2)
     {
         m_ProgramStatusInfor.SetScenario(scenario);
     }
