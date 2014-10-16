@@ -1400,7 +1400,7 @@
 		<Event Code="" ErrorID="50331765" ErrorType="INFO" AlarmType="" Name="EVENT_SERVICE_ACTIVECARBONTIME_RESET" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331765" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="50331766" ErrorType="Warning" AlarmType="" Name="EVENT_DEVICE_ALARM_PAUSE_5MINTUES" EventSource="SCHEDULER" LogLevel="High" UserLog="TRUE">
+		<Event Code="" ErrorID="50331766" ErrorType="Warning" AlarmType="AL_DEVICE" Name="EVENT_DEVICE_ALARM_PAUSE_5MINTUES" EventSource="SCHEDULER" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331766" ButtonType="OK" NextStepOnClickOK="1" StatusBar=""/>
 			<Step ID="1" Type="ACT" Action="User_Response_Pause_Alarm"/>
 		</Event>

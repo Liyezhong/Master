@@ -386,7 +386,7 @@ void CDashboardWidget::OnProgramAborted()
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
-        if (!m_HaveSucked)
+        if (m_HaveSucked)
         {
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
