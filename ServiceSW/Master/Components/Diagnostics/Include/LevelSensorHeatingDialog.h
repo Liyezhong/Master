@@ -46,7 +46,7 @@ public:
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *p_Parent = 0);
+    explicit CLevelSensorHeatingDialog(QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
@@ -68,7 +68,7 @@ public:
      *  \brief To start heating.
      */
     /****************************************************************************/
-    bool StartHeating();
+    bool StartHeating(bool XyleneFlag);
 
 protected:
     /****************************************************************************/
@@ -102,7 +102,6 @@ private Q_SLOTS:
 
 private:
     Ui::CLevelSensorHeatingDialog *mp_Ui;     //!< User interface
-    bool m_XyleneFlag;                        //!< true-Xylene, false-other reagents.
     bool m_Abort;                             //!< Flag for abort.
 
 };

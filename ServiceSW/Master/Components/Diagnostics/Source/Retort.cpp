@@ -54,10 +54,10 @@ CRetort::CRetort(QWidget *parent) :
                  this,
                  SLOT(StartDrainReagentTest()) );
 
-    (void)connect(mp_Ui->testLevelSensorDetecting,
+    (void)connect(mp_Ui->testLevelSensorDetection,
                  SIGNAL(clicked()),
                  this,
-                 SLOT(StartLevelSensorDetectingTest()) );
+                 SLOT(StartLevelSensorDetectionTest()) );
 
     (void)connect(mp_Ui->testHeatingEmpty,
                  SIGNAL(clicked()),
@@ -99,22 +99,16 @@ void CRetort::StartDrainReagentTest(void)
     //Retort::CLevelSensorHeatingTest test;
 
     //test.Run();
-
-    emit GuiLevelSensorHeatingTest();
 }
 
-void CRetort::StartLevelSensorDetectingTest(void)
+void CRetort::StartLevelSensorDetectionTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST);
     qDebug() << "Retort: start level sensor detecting test";
 
-    Retort::CLevelSensorDetectingTest test;
+    Retort::CLevelSensorDetectingTest Test(mp_MessageDlg, this);
 
-    CONNECTSIGNALSLOT(&test, StartLevelSensorDetectTest(qint32), this, OnStartLevelSensorDetectTest(qint32));
-
-    test.Run();
-
-    //emit GuiLevelSensorHeatingTest(0, 2);
+    (void)Test.Run();
 }
 
 void CRetort::StartHeatingTestEmpty(void)
@@ -125,8 +119,6 @@ void CRetort::StartHeatingTestEmpty(void)
     //Retort::CHeatingTestEmpty test;
 
     //test.Run();
-
-    emit GuiRetortEmptyHeatingTest();
 }
 
 void CRetort::StartHeatingTestWithWater(void)
@@ -137,17 +129,6 @@ void CRetort::StartHeatingTestWithWater(void)
     //Retort::CHeatingTestWithLiquid test;
 
     //test.Run();
-
-    emit GuiRetortLiquidHeatingTest();
-}
-
-void CRetort::OnStartLevelSensorDetectTest(qint32 Position)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST,
-                                               Global::tTranslatableStringList()<<QString::number(Position));
-    qDebug() << "Retort: start level sensor detecting test with bottle position";
-
-    emit GuiLevelSensorDetectingTest(Position);
 }
 
 /****************************************************************************/

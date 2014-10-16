@@ -35,7 +35,7 @@ namespace Diagnostics {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
+CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, bool ReagentFlag, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSelectBottleNReagentDialog),
     m_BottleNumber(1),
@@ -43,7 +43,7 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
-    this->SetDialogTitle("System Filling && Draining Test");
+
     mp_ButtonGroup = new QButtonGroup();
     mp_ButtonGroup->addButton(mp_Ui->radioButtonXylene, 0);
     mp_ButtonGroup->addButton(mp_Ui->radioButtonOther, 1);
@@ -55,8 +55,13 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(QWidget *p_Parent) :
 
     mp_ScrollWheel->ClearItems();
 
-    for (int i = 0; i < 13; i += 1) {
+    for (int i = 0; i < MaxBottleNum; i += 1) {
         mp_ScrollWheel->AddItem(QString::number(i+1).rightJustified(2, '0'), i);
+    }
+
+    if (!ReagentFlag) {
+        mp_Ui->radioButtonXylene->hide();
+        mp_Ui->radioButtonOther->hide();
     }
 
     mp_ScrollWheel->SetNonContinuous();
@@ -86,6 +91,15 @@ CSelectBottleNReagentDialog::~CSelectBottleNReagentDialog()
     catch (...) {}
 }
 
+void CSelectBottleNReagentDialog::SetTitle(QString& Title)
+{
+    this->SetDialogTitle(Title);
+}
+
+void CSelectBottleNReagentDialog::SetLableText(QString &Text)
+{
+    mp_Ui->label->setText(Text);
+}
 
 /****************************************************************************/
 /*!

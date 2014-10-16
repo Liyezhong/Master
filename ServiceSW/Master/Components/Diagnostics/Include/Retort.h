@@ -44,22 +44,13 @@ protected:
 private Q_SLOTS:
     void StartLidLockTest(void);
     void StartDrainReagentTest(void);
-    void StartLevelSensorDetectingTest(void);
+    void StartLevelSensorDetectionTest(void);
     void StartHeatingTestEmpty(void);
     void StartHeatingTestWithWater(void);
     
 private:
     Ui::CRetort *mp_Ui;
     CDiagnosticMessageDlg*   mp_MessageDlg;     //!< The pointer message dialog
-
-signals:
-    void GuiLevelSensorHeatingTest();
-    void GuiRetortEmptyHeatingTest();
-    void GuiRetortLiquidHeatingTest();
-    void GuiLevelSensorDetectingTest(qint32);
-
-public slots:
-    void OnStartLevelSensorDetectTest(qint32);
 
 };
 

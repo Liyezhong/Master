@@ -62,7 +62,7 @@
     </spacer>
    </item>
    <item row="4" column="1">
-    <widget class="QPushButton" name="testLevelSensorDetecting">
+    <widget class="QPushButton" name="testLevelSensorDetection">
      <property name="text">
       <string>Level Sensor Detection</string>
      </property>

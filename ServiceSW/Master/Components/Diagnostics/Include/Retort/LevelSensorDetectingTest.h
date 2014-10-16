@@ -4,8 +4,8 @@
  *  \brief Declaration of Retort Level Sensor Detecting test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-29
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-16
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *
@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_RETORT_LEVELSENSORDETECTINGTEST_H
 
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -32,44 +33,39 @@ class CLevelSensorDetectingTest : public Diagnostics::CTestBase
     Q_OBJECT
 
 public:
-    CLevelSensorDetectingTest();
+    CLevelSensorDetectingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget* p_Parent);
     ~CLevelSensorDetectingTest(void);
 
     int Run(void);
 
-public Q_SLOTS:
-    void FirstInputBottlePosition(void);
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show confirm dialog
+     *  \iparam StepNum = the number workflow step.
+     *  \return reject or accept.
+     */
+    /****************************************************************************/
+    int ShowConfirmDlg(int StepNum);
 
-private Q_SLOTS:
-    void SecondCheckBottle(qint32 Position);
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
+    void ShowFinishDlg(int RetNum);
 
-    void ThirdSelfTest();
+    void TestRVInitialize();
+    void TestRVMovePosition(bool TubeFlag, int Position);
 
-    void SelfTestSucceed(void);
+    bool TestDraining(int RetCode, int Positon);
 
-    void SelfTestFail(void);
-
-    void ForthCheckLiquid(void);
-
-    void OpenLidLock(void);
-
-    void ForthConfirmResult(void);
-
-    void Succeed(void);
-
-    void Fail(void);
-
-    void FifthDrain(void);
-
-    void SixthDisconnectBottle(void);
-
-    void Cancel(void);
+    bool LevelSensorHeating(bool TempFlag);
 
 private:
-    qint32 m_Position;
-
-signals:
-    void StartLevelSensorDetectTest(qint32);
+    CDiagnosticMessageDlg*  mp_MessageDlg;
+    QString                 m_MessageTitle;
 };
 
 } // namespace Retort

@@ -47,7 +47,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    explicit CSelectBottleNReagentDialog(QWidget *parent = 0);
+    explicit CSelectBottleNReagentDialog(int MaxBottleNum, bool ReagentFlag = true, QWidget *parent = 0);
 
     /****************************************************************************/
     /*!
@@ -74,6 +74,9 @@ public:
     int GetReagentGroup() {
         return m_ReagentGroup;
     }
+
+    void SetTitle(QString& Title);
+    void SetLableText(QString& Text);
 
 protected:
     /****************************************************************************/

@@ -76,11 +76,11 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(mp_Parent);
+    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(13, true, mp_Parent);
+    p_SelectDlg->SetTitle(FILLINGNDRAINING_TITLE);
 
     if ( p_SelectDlg->exec() == 0) {
         delete p_SelectDlg;
-        p_SelectDlg = NULL;
         return Ret;
     }
 
@@ -101,10 +101,10 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(!ReagentGroup, mp_Parent);
+    CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(mp_Parent);
     p_HeatingDlg->SetTitle(FILLINGNDRAINING_TITLE);
 
-    bool HeatingRet = p_HeatingDlg->StartHeating();
+    bool HeatingRet = p_HeatingDlg->StartHeating(!ReagentGroup);
 
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
@@ -170,7 +170,7 @@ int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
         Text = "Be aware that the result of this test is only valid if the Retort_Level Sensor "\
                 "Detection test was successfully performed before! "\
                 "Please verify status of the retort. If there is any reagent or paraffin in the retort, "\
-                "abort this test and change to the “Diagnostic_Retort_Reagent Drain” function to drain the "\
+                "abort this test and change to the 'Diagnostic_Retort_Reagent Drain' function to drain the "\
                 "liquid back to the original position. Thereafter flush the retort if necessary";
     }
     else if (StepNum == 2) {

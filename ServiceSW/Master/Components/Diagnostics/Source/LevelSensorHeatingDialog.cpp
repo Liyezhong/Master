@@ -27,10 +27,9 @@
 
 namespace Diagnostics {
 
-CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(bool XyleneFlag, QWidget *p_Parent)
+CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(QWidget *p_Parent)
     :MainMenu::CDialogFrame(p_Parent),
      mp_Ui(new Ui::CLevelSensorHeatingDialog),
-     m_XyleneFlag(XyleneFlag),
      m_Abort(false)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -52,7 +51,7 @@ void CLevelSensorHeatingDialog::SetTitle(QString& Title)
     this->SetDialogTitle(Title);
 }
 
-bool CLevelSensorHeatingDialog::StartHeating()
+bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
 {
     this->show();
 
@@ -61,7 +60,7 @@ bool CLevelSensorHeatingDialog::StartHeating()
     qreal  CurrentTemp(0);
     int WaitSeconds = 120;
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    if (m_XyleneFlag) {
+    if (XyleneFlag) {
         TargetTemp = 115;
         ExchangePIDTemp = 110;
     }
@@ -70,7 +69,7 @@ bool CLevelSensorHeatingDialog::StartHeating()
         ExchangePIDTemp = 90;
     }
 
-    (void)p_DevProc->LSStartHeating(true, !m_XyleneFlag);
+    (void)p_DevProc->LSStartHeating(true, !XyleneFlag);
     while (WaitSeconds) {
         if (m_Abort) {
             (void)p_DevProc->LSStopHeating();
@@ -82,12 +81,12 @@ bool CLevelSensorHeatingDialog::StartHeating()
         }
         p_DevProc->Pause(1000);
         WaitSeconds--;
-        UpdateUI(120-WaitSeconds, WaitSeconds, TargetTemp, CurrentTemp);
+        UpdateUI(120-WaitSeconds, 120, TargetTemp, CurrentTemp);
     }
 
     (void)p_DevProc->LSStopHeating();
 
-    (void)p_DevProc->LSStartHeating(false, !m_XyleneFlag);
+    (void)p_DevProc->LSStartHeating(false, !XyleneFlag);
     p_DevProc->Pause(1000);
     while (WaitSeconds) {
         if (m_Abort) {
@@ -100,7 +99,7 @@ bool CLevelSensorHeatingDialog::StartHeating()
         }
         p_DevProc->Pause(1000);
         WaitSeconds--;
-        UpdateUI(120-WaitSeconds, WaitSeconds, TargetTemp, CurrentTemp);
+        UpdateUI(120-WaitSeconds, 120, TargetTemp, CurrentTemp);
     }
 
     accept();

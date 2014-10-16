@@ -4,8 +4,8 @@
  *  \brief Implementation of Retort Level Sensor Detecting test.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-29
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-16
+ *   $Author:  $ Dixiong Li
  *
  *  \b Company:
  *
@@ -19,27 +19,20 @@
 /****************************************************************************/
 
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
+#include "Diagnostics/Include/SelectBottleNReagentDialog.h"
+#include "Diagnostics/Include/LevelSensorHeatingDialog.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 #include <QDebug>
-
-#include "Global/Include/Utils.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-#include "MainMenu/Include/WaitDialog.h"
-
-#include "ServiceWidget/Include/DlgWizardInputBottlePosition.h"
-#include "ServiceWidget/Include/DlgWizardText.h"
-#include "ServiceWidget/Include/DlgWizard3Buttons.h"
-#include "ServiceWidget/Include/DlgConfirmationText.h"
-
 
 namespace Diagnostics {
 
 namespace Retort {
 
-CLevelSensorDetectingTest::CLevelSensorDetectingTest(void)
-    : CTestBase()
+CLevelSensorDetectingTest::CLevelSensorDetectingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget* p_Parent)
+    : CTestBase(p_Parent),
+      mp_MessageDlg(p_MessageDlg),
+      m_MessageTitle("Level Sensor Detection Test")
 {
 }
 
@@ -51,271 +44,208 @@ int CLevelSensorDetectingTest::Run(void)
 {
     qDebug() << "Level sensor detecting test starts!";
 
-    this->FirstInputBottlePosition();
+    int Ret(0);
+    QString Text;
+
+    if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
+        return Ret;
+    }
+
+    Text = "Please enter the bottle number of the freshest process xylene";
+    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(11, false, mp_Parent);
+    p_SelectDlg->SetTitle(m_MessageTitle);
+    p_SelectDlg->SetLableText(Text);
+
+    if (p_SelectDlg->exec() == 0) {
+        delete p_SelectDlg;
+        return Ret;
+    }
+
+    int BottleNumber = p_SelectDlg->GetBottleNumber();
+    delete p_SelectDlg;
+
+    ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+
+    TestRVInitialize();
+
+    TestRVMovePosition(true, BottleNumber);
+
+    if (!LevelSensorHeating(true)) {
+        return Ret;
+    }
+
+    Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    int SuckRet = p_DevProc->PumpSucking();
+    mp_MessageDlg->HideWaitingDialog();
+
+    if (!TestDraining(SuckRet, BottleNumber)) {
+        return Ret;
+    }
+
+    TestRVMovePosition(true, 13);
+
+    if (!LevelSensorHeating(false)) {
+        return Ret;
+    }
+
+    Text = QString("Filling retort from the bottle 13 cleaning alcohol.");
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    SuckRet = p_DevProc->PumpSucking(5);
+    mp_MessageDlg->HideWaitingDialog();
+
+    if (!TestDraining(SuckRet, 13)) {
+        return Ret;
+    }
+
+    TestRVInitialize();
+
+    ShowFinishDlg(4);
+
+    return Ret;
 }
 
-void CLevelSensorDetectingTest::FirstInputBottlePosition(void)
+void CLevelSensorDetectingTest::TestRVInitialize()
 {
-    qDebug() << "Level sensor detecting test: first input bottle position!";
-
-    // inform the customer to input the bottle position
-    MainMenu::CDlgWizardInputBottlePosition *dlg =
-            new MainMenu::CDlgWizardInputBottlePosition;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Please input the bottle position "
-                    "you wish to suck the liquid!"));
-    dlg->SetButtonLabel(tr("Bottle position"));
-
-    CONNECTSIGNALSLOT(dlg, AcceptPosition(qint32), this, SecondCheckBottle(qint32));
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
-
-    dlg->exec();
-
-    delete dlg;
+    QString Text = "Rotary Valve is initializing";
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    (void)ServiceDeviceProcess::Instance()->RVInitialize();
+    mp_MessageDlg->HideWaitingDialog();
 }
 
-void CLevelSensorDetectingTest::SecondCheckBottle(qint32 Position)
+void CLevelSensorDetectingTest::TestRVMovePosition(bool TubeFlag, int Position)
 {
-    qDebug() << "Level sensor detecting test: second connect bottle!";
+    QString Text;
+    if (TubeFlag) {
+        Text = QString("Rotary Valve is moving to tube position %1").arg(Position);
 
-    // save position
-    m_Position = Position;
-    /// \todo: check position ***************************************/
-    QString Station("reagent bottle");
-    /// \todo: change Station to "wax bath" according to the position */
-
-    // inform the customer to connect bottle at Position
-    MainMenu::CDlgWizardText *dlg = new MainMenu::CDlgWizardText;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Please check the %1 in position %2 is full").
-                 arg(Station).arg(Position));
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ThirdSelfTest());
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel());
-
-    dlg->exec();
-
-    delete dlg;
+        if (Position == 13) {
+            Text += " cleaning alcohol";
+        }
+    }
+    else {
+        Text = QString("Rotary Valve is moving to sealing position %1").arg(Position);
+    }
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    (void)ServiceDeviceProcess::Instance()->RVMovePosition(TubeFlag, Position);
+    mp_MessageDlg->HideWaitingDialog();
 }
 
-void CLevelSensorDetectingTest::ThirdSelfTest()
+bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
 {
-    qDebug() << "Level sensor detecting test: start detecting!";
+    (void)ServiceDeviceProcess::Instance()->LSStopHeating();
 
+    TestRVMovePosition(false, Positon);
 
-#if 0
-    /// \todo: start detecting function in another thread *****************************/
+    int Ret = ShowConfirmDlg(3);
 
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Testing..."));
-    dlg->SetTimeout(5000); /// \todo: change time out
+    QString Text = "Close the lid and rotate the handle to the closed position.";
+    mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_OK);
 
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
+    TestRVMovePosition(true, Positon);
 
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SelfTestSucceed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, SelfTestFail() );
+    Text = QString("Start draining to the bottle %1").arg(Positon);
+    if (Positon == 13) {
+        Text += " clean alcohol.";
+    }
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    (void)ServiceDeviceProcess::Instance()->PumpDraining();
+    mp_MessageDlg->HideWaitingDialog();
 
-    dlg->exec();
-
-    delete dlg;
-#endif
-
-    emit StartLevelSensorDetectTest(m_Position);
+    if (RetCode == RETURN_OK) {
+        if (Ret == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        if (Ret == 0) {
+            ShowFinishDlg(3);
+        }
+        else {
+            ShowFinishDlg(2);
+        }
+        return false;
+    }
 }
 
-void CLevelSensorDetectingTest::SelfTestSucceed(void)
+bool CLevelSensorDetectingTest::LevelSensorHeating(bool TempFlag)
 {
-    qDebug() << "Level sensor detecting test: self test succeeded!";
+    CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(mp_Parent);
+    p_HeatingDlg->SetTitle(m_MessageTitle);
 
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Level sensor self test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
+    bool HeatingRet = p_HeatingDlg->StartHeating(TempFlag);
 
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
+    if (p_HeatingDlg->result() == 0) {
+        HeatingRet = false;
+    }
+    else if (!HeatingRet) {
+        ShowFinishDlg(1);
+    }
 
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ForthCheckLiquid() );
+    delete p_HeatingDlg;
 
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
+    return HeatingRet;
 }
 
-void CLevelSensorDetectingTest::SelfTestFail(void)
+int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
 {
-    qDebug() << "Level sensor detecting test: self test failed!";
+    QString Text;
+    CDiagnosticMessageDlg::BUTTON_TYPE BtnType = CDiagnosticMessageDlg::OK_ABORT;
+    switch (StepNum) {
+    case 1:
+        Text = "For this test, make sure to use only fresh cleaning "
+                "alcohol in bottle 13. If necessary exchange it";
+        break;
+    case 2:
+        Text = "Make sure the retort is empty and dry. (If not, use "
+                "the“Diagnostic_Retort_Drain Reagent” function first). "
+                "Then close the lid and rotate the handle to the closed position";
+        break;
+    case 3:
+        Text = "Please open the retort lid and confirm liquid level; Does the "
+                "liquid cover the level sensor?";
+        BtnType = CDiagnosticMessageDlg::YES_NO;
+        break;
+    default:
+        qDebug()<<"CLevelSensorDectetingTest: show config message error StepNum:"<<StepNum;
+    }
 
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Level sensor self test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, ForthCheckLiquid() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
+    return mp_MessageDlg->ShowConfirmMessage(m_MessageTitle, Text, BtnType);
 }
 
-void CLevelSensorDetectingTest::ForthCheckLiquid(void)
+void CLevelSensorDetectingTest::ShowFinishDlg(int RetNum)
 {
-    qDebug() << "Level sensor detecting test: forth check liquid level!";
+    QString Text;
+    ErrorCode_t Ret = RETURN_ERR_FAIL;
 
-    // inform the customer to check liquid level in retort
-    MainMenu::CDlgWizard3Buttons *dlg = new MainMenu::CDlgWizard3Buttons;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Please press to open the Retort lid to check "
-                    "if the liquid is over the level sensor!"));
-    dlg->SetButtonText(tr("Open"));
+    switch (RetNum) {
+    case 1:
+        Text = "Retort Level Sensor Heating Test failed.<br> "
+                "Target temperature was not reached in time . Clean level sensor, "
+                "repeat this test. If still failed , exchange the level sensor";
+        break;
+    case 2:
+        Text = " Retort Level Sensor Detection Test failed.<br> "
+                "Clean level sensor, repeat this test. If still failed, exchange the level senor";
+        break;
+    case 3:
+        Text = " Retort Level Sensor Detection Test failed.<br> "
+                "Liquid level did not reach the sensor. Check for insufficient "
+                "reagent level in bottle. Check for blockage reagent line. "
+                "Check for air leakage. Resolve the problem and repeat level sensor detection test ";
+        break;
+    case 4:
+        Text = "Level sensor detection test successful.";
+        Ret = RETURN_OK;
+        break;
+    default:
+        qDebug()<<"CLevelSensorDectetingTest: show finish message error RetNum:"<<RetNum;
+    }
 
-    dlg->DisableNext();
-    //dlg->HideNext();
-
-    CONNECTSIGNALSLOT(dlg, ThirdSelected(), this, OpenLidLock() );
-    CONNECTSIGNALSLOT(dlg, ThirdSelected(), dlg, EnableNext() );
-    CONNECTSIGNALSLOT(dlg, accepted(),this, ForthConfirmResult() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Cancel() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLevelSensorDetectingTest::OpenLidLock(void)
-{
-    qDebug() << "Level sensor detecting test: open lid lock from software!";
-
-    /// \todo: open lid lock here **************************/
-}
-
-void CLevelSensorDetectingTest::ForthConfirmResult(void)
-{
-    qDebug() << "Level sensor detecting test: forth confirm liquid level status!";
-
-    // ask the customer to confirm the lid lock status
-    MainMenu::CDlgConfirmationText *dlg = new MainMenu::CDlgConfirmationText;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Does the liquid cover the level sensor?"));
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLevelSensorDetectingTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS);
-    qDebug() << "Level sensor detecting test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Level sensor detecting test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, FifthDrain() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CLevelSensorDetectingTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE);
-    qDebug() << "Level sensor detecting test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Level sensor detecting test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, FifthDrain() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CLevelSensorDetectingTest::Cancel(void)
-{
-    qDebug() << "Level sensor detecting test canceled!";
-}
-
-void CLevelSensorDetectingTest::FifthDrain(void)
-{
-    qDebug() << "Level sensor detecting test: start draining!";
-
-    /// \todo: start draining function in another thread *****************************/
-
-    // inform the customer of the draining status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetText(tr("Draining..."));
-    dlg->SetTimeout(5000); /// \todo: change time out
-    dlg->HideAbort();
-
-    /// \todo: connect the draining end signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SixthDisconnectBottle() );
-    //CONNECTSIGNALSLOT(dlg, rejected(), this, SixthDisconnectBottle() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CLevelSensorDetectingTest::SixthDisconnectBottle(void)
-{
-    qDebug() << "Level sensor detecting test: disconnect reagent bottle!";
-
-    // display information
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Level Sensor - Detecting Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Please pull out the reagent bottle you have connected!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
+    mp_MessageDlg->ShowMessage(m_MessageTitle, Text, Ret);
 }
 
 } // namespace Retort
