@@ -474,7 +474,7 @@ void CDashboardWidget::OnProgramPaused()
 
 void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
 {
-    ui->programPanelWidget->EnablePauseButton(bEnable);
+    ui->programPanelWidget->ResumePauseRunningStatus(bEnable);
 }
 
 void CDashboardWidget::OnPauseTimeout15Mintues()

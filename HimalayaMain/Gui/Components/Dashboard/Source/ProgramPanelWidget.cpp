@@ -248,6 +248,12 @@ void CProgramPanelWidget::EnableStartButton(bool bEnable)
     ui->startButton->setEnabled(bEnable);
 }
 
+void CProgramPanelWidget::ResumePauseRunningStatus(bool bEnable)
+{
+    ui->pauseButton->setEnabled(bEnable);
+    ui->programRunningPanel->UpdateProgramTimerStatus(bEnable);
+}
+
 void CProgramPanelWidget::EnablePauseButton(bool bEnable)
 {
     ui->pauseButton->setEnabled(bEnable);

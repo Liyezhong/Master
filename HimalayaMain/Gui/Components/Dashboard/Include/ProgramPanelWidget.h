@@ -99,6 +99,16 @@ public:
     void EnableStartButton(bool bEnable);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function ResumePauseRunningStatus
+     *
+     *  \param bEnable = bool type parameter
+     *
+     *  \return from ResumePauseRunningStatus
+     */
+    /****************************************************************************/
+    void ResumePauseRunningStatus(bool bEnable);
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function EnablePauseButton
      *
      *  \param bEnable = bool type parameter
