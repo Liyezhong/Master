@@ -218,7 +218,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         }
         else
         {
-            if (true == mp_SchedulerThreadController->IsRVRightPosition(1))
+            if (true == mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
             {
 
                 m_MoveToSealingSeq = 0;

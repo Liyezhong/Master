@@ -424,10 +424,10 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     case MOVE_TO_TUBE:
         if (0 == m_MoveToTubeSeq)
         {
-            mp_SchedulerThreadController->MoveRV(0);
+            mp_SchedulerThreadController->MoveRV(TUBE_POS);
             m_MoveToTubeSeq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(0))
+        else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRETEST_SUCCESS);
 			m_MoveToTubeSeq = 0;

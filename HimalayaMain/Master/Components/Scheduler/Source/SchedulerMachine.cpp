@@ -388,17 +388,17 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
 {
-    mp_SchedulerThreadController->MoveRV(1);
+    mp_SchedulerThreadController->MoveRV(SEAL_POS);
 }
 
 void CSchedulerStateMachine::OnRVMoveToTube()
 {
-    mp_SchedulerThreadController->MoveRV(0);
+    mp_SchedulerThreadController->MoveRV(TUBE_POS);
 }
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
 {
-    mp_SchedulerThreadController->MoveRV(2);
+    mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS);
 }
 
 /****************************************************************************/
@@ -1264,12 +1264,12 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
             }
             else
             {
-                mp_SchedulerThreadController->MoveRV(1);
+                mp_SchedulerThreadController->MoveRV(SEAL_POS);
                 m_RcFilling = CHECK_SEALING_POS;
             }
         }
     case CHECK_SEALING_POS:
-        if (true == mp_SchedulerThreadController->IsRVRightPosition(1))
+        if (true == mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
         {
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_RcFilling = RELEASE_PRESSURE;
@@ -1400,7 +1400,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
     scenario = mp_SchedulerThreadController->GetCurrentScenario();
     if(273 == scenario)//move seal position
     {
-        if( !mp_SchedulerThreadController->IsRVRightPosition(1) )
+        if( !mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS) )
         {
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_RsPauseStartTime >= 5 * 1000)
@@ -1424,7 +1424,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
     }
     else if(275 == scenario)//move tube position
     {
-        if( !mp_SchedulerThreadController->IsRVRightPosition(0) )
+        if( !mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS) )
         {
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_RsPauseStartTime >= 5 * 1000)
@@ -1448,7 +1448,7 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
     }
     else if(277 == scenario)//move next tube position
     {
-        if( !mp_SchedulerThreadController->IsRVRightPosition(2) )
+        if( !mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS) )
         {
             nowTime = QDateTime::currentMSecsSinceEpoch();
             if(nowTime - m_RsPauseStartTime >= 5 * 1000)
@@ -1682,10 +1682,10 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
     case MOVE_SEALPOSITION:
         if(0 == startReq)
         {
-            mp_SchedulerThreadController->MoveRV(1);
+            mp_SchedulerThreadController->MoveRV(SEAL_POS);
             startReq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(1))
+        else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
         {
             startReq = 0;
             m_RsReagentCheckStep = REALSE_PRESSRE;

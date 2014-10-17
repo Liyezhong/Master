@@ -164,5 +164,12 @@ typedef enum
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
 
+typedef enum{
+    INITIALIZE_POS,
+    TUBE_POS,
+    SEAL_POS,
+    NEXT_TUBE_POS
+}RVPosition_type;
+
 }
 #endif // SCHEDULERSTATEMACHINESTATES_H

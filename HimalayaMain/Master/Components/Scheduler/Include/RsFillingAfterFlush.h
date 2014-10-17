@@ -162,7 +162,7 @@ private slots:
      *  \return	void
      */
     /****************************************************************************/
-    void OnMoveToSealing() { mp_SchedulerThreadController->MoveRV(1);}
+    void OnMoveToSealing() { mp_SchedulerThreadController->MoveRV(SEAL_POS);}
 
 private:
     SchedulerMainThreadController*   mp_SchedulerThreadController;  //!< Pointer to Scheduler Thread Controller

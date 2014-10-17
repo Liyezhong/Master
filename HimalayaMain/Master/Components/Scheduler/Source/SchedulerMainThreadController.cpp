@@ -326,8 +326,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             {
                 ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
             }
-            RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(
-                           m_ProgramStatusInfor.GetStepID()));
+            RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
             m_SchedulerMachine->EnterPowerFailure();
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
@@ -339,7 +338,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
+            (void)this->PrepareProgramStationList(m_ProgramStatusInfor.GetProgramId(), m_ProgramStatusInfor.GetStepID());
+            (void)this->GetNextProgramStepInformation(m_ProgramStatusInfor.GetProgramId(), m_CurProgramStepInfo);
         }
         else
         {
@@ -735,7 +735,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
             }
 
-            if(IsRVRightPosition(1))
+            if(IsRVRightPosition(SEAL_POS))
             {
                 m_SchedulerMachine->NotifyRVMoveToSealReady();
             }
@@ -906,7 +906,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
             }
 
-            if(IsRVRightPosition(0))
+            if(IsRVRightPosition(TUBE_POS))
             {
                 m_SchedulerMachine->NotifyRVMoveToTubeReady();
             }
@@ -960,7 +960,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_RV_POS_CHANGE == stepState)
         {
             m_CurrentStepState = PSSM_RV_POS_CHANGE;
-            if(IsRVRightPosition(2))
+            if(IsRVRightPosition(NEXT_TUBE_POS))
             {
                m_SchedulerMachine->NotifyStepFinished();
             }
@@ -2979,20 +2979,24 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     }
 }
 
-bool SchedulerMainThreadController::IsRVRightPosition(qint16 type)
+bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
 {
     RVPosition_t targetPos = RV_UNDEF;
     bool ret = false;
 
-    if(0 == type )
+    if(INITIALIZE_POS == type)
+    {
+        targetPos = RV_TUBE_1;
+    }
+    else if(TUBE_POS == type )
     {
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
     }
-    else if(1 == type)
+    else if(SEAL_POS == type)
     {
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
     }
-    else if(2 == type)
+    else if(NEXT_TUBE_POS == type)
     {
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
     }
@@ -3000,7 +3004,7 @@ bool SchedulerMainThreadController::IsRVRightPosition(qint16 type)
     if (m_PositionRV == targetPos)
     {
         ret = true;
-        if(1 == type)
+        if(SEAL_POS == type)
         {
             LogDebug(QString("RV hit seal position: %1").arg(targetPos));
         }
@@ -3135,25 +3139,25 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
 }
 
 
-bool SchedulerMainThreadController::MoveRV(qint16 type)
+bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
 {
     /*lint -e593 */
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
     RVPosition_t targetPos = RV_UNDEF;
 
-    if(0 == type ) //tube position
+    if(TUBE_POS == type ) //tube position
     {
         //get target position here
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
         RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.stationID);
     }
-    else if(1 == type) //seal positon
+    else if(SEAL_POS == type) //seal positon
     {
         //get target position here
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
         RaiseEvent(EVENT_SCHEDULER_MOVE_RV_SEALING_POSITION,QStringList()<<m_CurProgramStepInfo.stationID);
     }
-    else if(2 == type)
+    else if(NEXT_TUBE_POS == type)
     {
         //get target position here
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);

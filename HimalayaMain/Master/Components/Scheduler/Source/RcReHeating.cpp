@@ -247,21 +247,23 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
             m_StartReq++;
         }
+        else if(mp_SchedulerThreadController->IsRVRightPosition(INITIALIZE_POS))
+        {
+            if(m_IsNeedRunCleaning)
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
+            }
+            emit TasksDone(true);
+            m_StartReq = 0;
+        }
         else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
         {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                if(m_IsNeedRunCleaning)
-                {
-                    mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
-                }
-                emit TasksDone(true);
-            }
-            else
+            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 emit TasksDone(false);
+                m_StartReq = 0;
             }
-            m_StartReq = 0;
+
         }
     }
     else
@@ -328,39 +330,48 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
             }
-            else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+            else if(mp_SchedulerThreadController->IsRVRightPosition(INITIALIZE_POS))
             {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                if(!m_HasReagent)
                 {
-                    if(!m_HasReagent)
+                    if(m_IsNeedRunCleaning)
                     {
-                        if(m_IsNeedRunCleaning)
-                        {
-                            mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
-                        }
-                        m_RsReagentCheckStep = FORCE_DRAIN;
-                        emit TasksDone(true);
+                        mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
                     }
-                    else
-                    {
-                        m_RsReagentCheckStep = MOVE_SEALPOSITION;
-                    }
+                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    emit TasksDone(true);
                 }
                 else
                 {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    emit TasksDone(false);
+                    m_RsReagentCheckStep = MOVE_SEALPOSITION;
                 }
                 m_StartReq = 0;
+            }
+            else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    emit TasksDone(false);
+                    m_StartReq = 0;
+                }
             }
             break;
         case MOVE_SEALPOSITION:
             if(0 == m_StartReq)
             {
-                mp_SchedulerThreadController->MoveRV(1);
-                m_StartReq++;
+                if( !mp_SchedulerThreadController->MoveRV(SEAL_POS) )
+                {
+                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    emit TasksDone(false);
+                    m_StartReq = 0;
+                }
+                else
+                {
+                    m_StartReq++;
+                }
             }
-            else if(mp_SchedulerThreadController->IsRVRightPosition(1))
+            else if(mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
             {
                 m_StartReq = 0;
                 m_RsReagentCheckStep = REALSE_PRESSRE;
