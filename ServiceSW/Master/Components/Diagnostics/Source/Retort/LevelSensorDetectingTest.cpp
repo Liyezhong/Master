@@ -154,6 +154,7 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
 
     if (RetCode == RETURN_OK) {
         if (Ret == 0) {
+            ShowFinishDlg(2);
             return false;
         }
         else {
@@ -201,7 +202,7 @@ int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
         break;
     case 2:
         Text = "Make sure the retort is empty and dry. (If not, use "
-                "the“Diagnostic_Retort_Drain Reagent” function first). "
+                "the 'Diagnostic_Retort_Drain Reagent' function first). "
                 "Then close the lid and rotate the handle to the closed position";
         break;
     case 3:
@@ -210,7 +211,7 @@ int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
         BtnType = CDiagnosticMessageDlg::YES_NO;
         break;
     default:
-        qDebug()<<"CLevelSensorDectetingTest: show config message error StepNum:"<<StepNum;
+        qDebug()<<"CLevelSensorDectetingTest: show confirm message error StepNum:"<<StepNum;
     }
 
     return mp_MessageDlg->ShowConfirmMessage(m_MessageTitle, Text, BtnType);
