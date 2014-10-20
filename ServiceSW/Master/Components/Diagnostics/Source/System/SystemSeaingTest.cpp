@@ -102,7 +102,7 @@ Create_Pressure_Test:
     p_DevProc->Pause(1000);
     (void)p_DevProc->PumpStopCompressor();
 
-    if (CheckKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
+    if (TestKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
         ShowFinishDlg(3);
         if (!TestCreatePressure(TargetPressure)) {
             TestReleasePressure();
@@ -113,7 +113,7 @@ Create_Pressure_Test:
 
         p_DevProc->Pause(1000);
         (void)p_DevProc->PumpStopCompressor();
-        if (CheckKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
+        if (TestKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
             ShowFinishDlg(5);
         }
         else {
@@ -256,7 +256,7 @@ void CSystemSealingTest::ShowFinishDlg(int RetNum)
     }
 
 
-    mp_MessageDlg->ShowMessage(Title, Text, Ret);
+    mp_MessageDlg->ShowMessage(m_MessageTitle, Text, Ret);
 }
 
 } // namespace System
