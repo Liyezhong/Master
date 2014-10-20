@@ -1,24 +1,24 @@
 /****************************************************************************/
-/*! \file AirSystemTest.cpp
+/*! \file AirHeatingTubeTest.cpp
  *
- *  \brief Implementation of L&A System air system test.
+ *  \brief Implementation of L&A lir heating tube test.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Version: $ 0.2
+ *   $Date:    $ 2014-10-20
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
  *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
  */
 /****************************************************************************/
 
-#include "Diagnostics/Include/LaSystem/AirSystemTest.h"
+#include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
 
 #include <QDebug>
 
@@ -34,23 +34,23 @@ namespace Diagnostics {
 
 namespace LaSystem {
 
-CAirSystemTest::CAirSystemTest(void)
+CAirHeatingTubeTest::CAirHeatingTubeTest(void)
     : CTestBase()
 {
 }
 
-CAirSystemTest::~CAirSystemTest(void)
+CAirHeatingTubeTest::~CAirHeatingTubeTest(void)
 {
 }
 
-int CAirSystemTest::Run(void)
+int CAirHeatingTubeTest::Run(void)
 {
     qDebug() << "Air System test starts!";
 
     this->FirstBuildPressure();
 }
 
-void CAirSystemTest::FirstBuildPressure(void)
+void CAirHeatingTubeTest::FirstBuildPressure(void)
 {
     qDebug() << "Air System test: first build pressure !";
 
@@ -76,7 +76,7 @@ void CAirSystemTest::FirstBuildPressure(void)
     delete dlg;
 }
 
-void CAirSystemTest::SecondReleasePressure(void)
+void CAirHeatingTubeTest::SecondReleasePressure(void)
 {
     qDebug() << "Air System test: second release pressure!";
 
@@ -102,7 +102,7 @@ void CAirSystemTest::SecondReleasePressure(void)
     delete dlg;
 }
 
-void CAirSystemTest::ThirdBuildVaccuum(void)
+void CAirHeatingTubeTest::ThirdBuildVaccuum(void)
 {
     qDebug() << "Air System test: third build vaccuum!";
 
@@ -128,7 +128,7 @@ void CAirSystemTest::ThirdBuildVaccuum(void)
     delete dlg;
 }
 
-void CAirSystemTest::ForthReleaseVaccuum(void)
+void CAirHeatingTubeTest::ForthReleaseVaccuum(void)
 {
     qDebug() << "Air System test: second release vaccuum!";
 
@@ -154,7 +154,7 @@ void CAirSystemTest::ForthReleaseVaccuum(void)
     delete dlg;
 }
 
-void CAirSystemTest::Succeed(void)
+void CAirHeatingTubeTest::Succeed(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS);
     qDebug() << "Air System test succeeded!";
@@ -176,7 +176,7 @@ void CAirSystemTest::Succeed(void)
     /// \todo: log here **************************************/
 }
 
-void CAirSystemTest::Fail(void)
+void CAirHeatingTubeTest::Fail(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE);
     qDebug() << "Air System test failed!";

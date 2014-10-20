@@ -22,6 +22,7 @@
 #define DIAGNOSTICS_LASYSTEM_H
 
 #include <QWidget>
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 namespace Diagnostics {
 
@@ -34,10 +35,27 @@ class CLaSystem : public QWidget
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = parent widget
+     */
+    /****************************************************************************/
     explicit CLaSystem(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CLaSystem();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief When event has changed, this function will be called to do some event action.
+     *  \iparam p_Event = Upcoming event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
@@ -45,11 +63,8 @@ private Q_SLOTS:
     void StartAirHeatingTubeTest(void);
     
 private:
-    Ui::CLaSystem *ui;
-
-signals:
-    void GuiTube1HeatingTest();
-    void GuiTube2HeatingTest();
+    Ui::CLaSystem *ui; //!< L & A ui
+    CDiagnosticMessageDlg *dlg; //!< For show message dialog
 };
 
 

@@ -24,11 +24,12 @@
 
 #include "ui_LaSystem.h"
 
-#include "Diagnostics/Include/LaSystem/HeatingBelt1Test.h"
-#include "Diagnostics/Include/LaSystem/HeatingBelt2Test.h"
-#include "Diagnostics/Include/LaSystem/AirSystemTest.h"
+#include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
+#include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
+
 
 namespace Diagnostics {
 
@@ -37,7 +38,7 @@ CLaSystem::CLaSystem(QWidget *parent) :
     ui(new Ui::CLaSystem)
 {
     ui->setupUi(this);
-
+    dlg = new CDiagnosticMessageDlg(this);
     (void)connect(ui->testLiquidHeatingTube,
                  SIGNAL(clicked()),
                  this,
@@ -59,11 +60,8 @@ void CLaSystem::StartLiquidHeatingTubeTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
     qDebug() << "L&&A System: start heating belt 1 test";
 
-    //LaSystem::CHeatingBelt1Test test;
-
-    //test.Run();
-
-    emit GuiTube1HeatingTest();
+    LaSystem::CLiquidHeatingTubeTest test(dlg);
+    (void)test.Run();
 }
 
 void CLaSystem::StartAirHeatingTubeTest(void)
@@ -74,9 +72,6 @@ void CLaSystem::StartAirHeatingTubeTest(void)
     //LaSystem::CAirSystemTest test;
 
     //test.Run();
-
-    //emit GuiLAHeatingTest(0, 0);
-
 }
 /****************************************************************************/
 /*!
@@ -88,12 +83,9 @@ void CLaSystem::StartAirHeatingTubeTest(void)
 void CLaSystem::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
-    switch (p_Event->type())
-    {
+    switch (p_Event->type()) {
     case QEvent::LanguageChange:
-    {
         ui->retranslateUi(this);
-    }
         break;
     default:
         break;

@@ -1,25 +1,25 @@
 /****************************************************************************/
-/*! \file HeatingBelt2Test.h
+/*! \file AirHeatingTubeTest.h
  *
- *  \brief Declaration of L&A System heating belt 2 test.
+ *  \brief Declaration of L&A air heating tube test.
  *
- *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Version: $ 0.2
+ *   $Date:    $ 2014-10-20
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
  *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICS_LASYSTEM_HEATINGBELT2TEST_H
-#define DIAGNOSTICS_LASYSTEM_HEATINGBELT2TEST_H
+#ifndef DIAGNOSTICS_LASYSTEM_AIRHEATINGTUBETEST_H
+#define DIAGNOSTICS_LASYSTEM_AIRHEATINGTUBETEST_H
 
 #include "Diagnostics/Include/TestBase.h"
 
@@ -27,20 +27,26 @@ namespace Diagnostics {
 
 namespace LaSystem {
 
-class CHeatingBelt2Test : public Diagnostics::CTestBase
+class CAirHeatingTubeTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
-    CHeatingBelt2Test(void);
-    ~CHeatingBelt2Test(void);
+    CAirHeatingTubeTest(void);
+    ~CAirHeatingTubeTest(void);
 
     int Run(void);
 
 public Q_SLOTS:
-    void StartHeating(void);
+    void FirstBuildPressure(void);
 
 private Q_SLOTS:
+    void SecondReleasePressure(void);
+	
+	void ThirdBuildVaccuum(void);
+	
+	void ForthReleaseVaccuum(void);
+
     void Succeed(void);
 
     void Fail(void);
@@ -50,4 +56,5 @@ private Q_SLOTS:
 
 } // namespace Diagnostics
 
-#endif // DIAGNOSTICS_LASYSTEM_HEATINGBELT2TEST_H
+#endif // DIAGNOSTICS_LASYSTEM_AIRHEATINGTUBETEST_H
+
