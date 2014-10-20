@@ -104,20 +104,20 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
 
     quint64 OneHour = 60 * 60 * 1000;
     quint64 TimeLimit = 12 * OneHour;
-    quint64 HeatingTime = ProStatus.GetOvenHeatingTime(54);
+    quint64 HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
     QVERIFY(HeatingTime == TimeLimit/1000);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch();
     ProStatus.UpdateOvenHeatingTime(time - 15 * OneHour,true,true);
     sleep(70);
     ProStatus.UpdateOvenHeatingTime(time - 13 * OneHour,true);
-    HeatingTime = ProStatus.GetOvenHeatingTime(54);
+    HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
     QVERIFY(HeatingTime == TimeLimit/1000);
 
     ProStatus.UpdateOvenHeatingTime(time - 1 * OneHour,true,true);
     sleep(70);
     ProStatus.UpdateOvenHeatingTime(time,true);
-    HeatingTime = ProStatus.GetOvenHeatingTime(54);
+    HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
     QVERIFY(HeatingTime == TimeLimit/1000);
 }
 
