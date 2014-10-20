@@ -194,6 +194,7 @@ private:
     bool m_HaveSucked;
     ProgramStageStatus_t m_ProgramStageStatus;
     ProgramStatus_t m_ProgramStatus;
+    bool m_IsProgramAborted;
 public slots:
     /****************************************************************************/
     /*!

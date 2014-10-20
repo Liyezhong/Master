@@ -52,7 +52,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_TotalCassette(0),
     m_HaveSucked(false),
     m_ProgramStageStatus(Undefined),
-    m_ProgramStatus(Undefined_ProgramStatus)
+    m_ProgramStatus(Undefined_ProgramStatus),
+    m_IsProgramAborted(false)
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -334,6 +335,19 @@ void CDashboardWidget::OnProgramBeginAbort()
 //this function will be invoked after program Abort and completed
 void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
 {
+    if (m_IsProgramAborted)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        QString strTemp;
+        strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+        mp_MessageDlg->SetText(strTemp);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->exec();
+        m_IsProgramAborted = false;
+    }
+
     mp_MessageDlg->SetIcon(QMessageBox::Information);
     mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
     mp_MessageDlg->SetText(m_strTakeOutSpecimen);
@@ -358,7 +372,8 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         }
 
         ui->programPanelWidget->ChangeStartButtonToStartState();
-        ui->programPanelWidget->EnableStartButton(true);
+        ui->programPanelWidget->EnableStartButton(false);
+        ui->programPanelWidget->EnablePauseButton(false);
         //switch to the dashboard page
         mp_MainWindow->SetTabWidgetIndex();
         emit SwitchToFavoritePanel();
@@ -397,32 +412,7 @@ void CDashboardWidget::OnProgramAborted()
     m_CurProgramStepIndex = -1;
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-
-    ui->programPanelWidget->EnableStartButton(false);
-
-    mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->SetTitle(CommonString::strWarning);
-    QString strTemp;
-    strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-    mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
-    if (mp_MessageDlg->exec())
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-        mp_MessageDlg->SetText(m_strTakeOutSpecimen);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-        {
-            ui->programPanelWidget->ChangeStartButtonToStartState();
-            ui->programPanelWidget->EnableStartButton(true);
-            //switch to the dashboard page
-            mp_MainWindow->SetTabWidgetIndex();
-            emit SwitchToFavoritePanel();
-        }
-    }
+    m_IsProgramAborted = true;
     m_ProgramStatus = Undefined_ProgramStatus;
 }
 
