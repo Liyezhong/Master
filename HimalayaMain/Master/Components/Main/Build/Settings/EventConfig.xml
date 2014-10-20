@@ -1155,10 +1155,12 @@
 			<Step ID="0" Type="MSG" StringID="103045163" RDStringID="113045163" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="512050401" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="102050401" RDStringID="112050401" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="102050401" RDStringID="112050401" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+		    <Step ID="1" Type="ACT" Action="Rs_CheckRemoteAlarmStatus"/>
 		</Event>
 		<Event Code="" ErrorID="512050411" ErrorType="WARNING" AlarmType="AL_DEVICE" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="102050411" RDStringID="112050411" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="102050411" RDStringID="112050411" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+		    <Step ID="1" Type="ACT" Action="Rs_CheckLocalalarmStatus"/>
 		</Event>
 		<Event Code="" ErrorID="511040021" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="100020090" RDStringID="110020090" ButtonType="OK" StatusBar="YES"/>

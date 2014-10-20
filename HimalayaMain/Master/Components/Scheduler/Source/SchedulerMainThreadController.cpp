@@ -128,6 +128,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
     m_StopFilling = false;
+    m_CheckRemoteAlarmStatus = true;
+    m_CheckLocalAlarmStatus = true;
 
     (void)m_ProgramStatusInfor.ReadProgramStatusFile();
 }
@@ -271,6 +273,17 @@ void SchedulerMainThreadController::OnTickTimer()
         m_SchedulerCommandProcessor->ShutDownDevice();
         //DequeueNonDeviceCommand();
         return;
+    }
+
+    // For remote alarm and local alarm checking
+    if (CTRL_CMD_RS_CHECKREMOTEALARMSTATUS == newControllerCmd)
+    {
+        m_CheckRemoteAlarmStatus = true;
+    }
+
+    if (CTRL_CMD_RS_CHECKLOCALALARMSTATUS == newControllerCmd)
+    {
+        m_CheckLocalAlarmStatus = true;
     }
 
     SchedulerCommandShPtr_t cmd;
@@ -1611,6 +1624,16 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_RV_MOVETOSEALPOSITION;
         }
+        if (cmd == "rs_checkremotealarmstatus")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RS_CHECKREMOTEALARMSTATUS;
+        }
+        if (cmd == "rs_checklocalalarmstatus")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
+        }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
         {
             QString str = cmd;
@@ -2582,7 +2605,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     // Monitor local and remote alarm
     if ("ERROR" != StepID && 0 != Scenario)
     {
-        bool checkAlarm = true;
         if (QFile::exists("TEST_BEAN"))
         {
             QFile file("TEST_BEAN");
@@ -2597,23 +2619,22 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 {
                     if ("0" == list.at(1))
                     {
-                        checkAlarm = false;
-                    }
-                    if ("1" == list.at(1))
-                    {
-                        checkAlarm = true;
+                        m_CheckRemoteAlarmStatus = false;
                     }
                     break;
                 }
             }
         }
-        if (1 == strctHWMonitor.LocalAlarmStatus & checkAlarm)
-        {
-            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
-        }
-        if (1 == strctHWMonitor.RemoteAlarmStatus & checkAlarm)
+
+        if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
         {
             RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+            m_CheckRemoteAlarmStatus = false;
+        }
+        if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
+        {
+            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+            m_CheckLocalAlarmStatus = false;
         }
     }
 
