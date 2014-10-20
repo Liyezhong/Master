@@ -505,6 +505,23 @@ void ServiceTestHandler::OvenGetSwithType(QString& ReqName, QStringList& Params)
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::OvenTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempOvenTop == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempOvenTop->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
 
 void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Params)
 {
@@ -652,6 +669,22 @@ void ServiceTestHandler::RetortGetHeaterSwitchType(QString& ReqName, QStringList
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::RetortTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempRetortSide == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempRetortSide->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
 
 void ServiceTestHandler::LiquidTubeStartHeating(QString& ReqName, QStringList& Params)
 {
@@ -723,6 +756,23 @@ void ServiceTestHandler::LiquidTubeGetCurrent(QString& ReqName, QStringList& Par
     quint16 RetCurrent = mp_TempTubeLiquid->GetCurrent();
 
     Results.append(QString("%1").arg(RetCurrent));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
+void ServiceTestHandler::LiquidTubeTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempTubeLiquid == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempTubeLiquid->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -802,6 +852,22 @@ void ServiceTestHandler::AirTubeGetCurrent(QString& ReqName, QStringList& Params
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::AirTubeTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempTubeAir == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempTubeAir->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
 
 void ServiceTestHandler::RVStartHeating(QString& ReqName, QStringList& Params)
 {
@@ -977,6 +1043,23 @@ void ServiceTestHandler::RVGetHeaterSwitchType(QString& ReqName, QStringList& Pa
 
     quint8 RetSwitchType = mp_TempRV->GetHeaterSwitchType();
     Results.append(QString("%1").arg(RetSwitchType));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
+void ServiceTestHandler::RVTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempRV == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempRV->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -1178,6 +1261,22 @@ void ServiceTestHandler::LSHeatingLevelSensor(QString &ReqName, QStringList &Par
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::LSTempControlIsOn(QString &ReqName, QStringList &Params)
+{
+    QStringList Results;
+    Results.clear();
+
+    if (mp_TempLSensor == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool isOn = mp_TempLSensor->IsTemperatureControlOn();
+
+    Results.append(QString("%1").arg(isOn));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
 
 void ServiceTestHandler::PumpBuildPressure(QString& ReqName, QStringList& Params)
 {
@@ -1471,6 +1570,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "OvenGetSwithType") {
         OvenGetSwithType(ReqName, Params);
     }
+    else if (ReqName == "OvenTempControlIsOn") {
+        OvenTempControlIsOn(ReqName, Params);
+    }
     // retort
     else if (ReqName == "RetortStartHeating") {
         RetortStartHeating(ReqName, Params);
@@ -1493,6 +1595,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "RetortGetHeaterSwitchType") {
         RetortGetHeaterSwitchType(ReqName, Params);
     }
+    else if (ReqName == "RetortTempControlIsOn") {
+        RetortTempControlIsOn(ReqName, Params);
+    }
     // liquid tube
     else if (ReqName == "LiquidTubeStartHeating") {
         LiquidTubeStartHeating(ReqName, Params);
@@ -1506,6 +1611,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "LiquidTubeGetCurrent") {
         LiquidTubeGetCurrent(ReqName, Params);
     }
+    else if (ReqName == "LiquidTubeTempControlIsOn") {
+        LiquidTubeTempControlIsOn(ReqName, Params);
+    }
     // air tube
     else if (ReqName == "AirTubeStartHeating") {
         AirTubeStartHeating(ReqName, Params);
@@ -1518,6 +1626,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     }
     else if (ReqName == "AirTubeGetCurrent") {
         AirTubeGetCurrent(ReqName, Params);
+    }
+    else if (ReqName == "AirTubeTempControlIsOn") {
+        AirTubeTempControlIsOn(ReqName, Params);
     }
     // Rotary valve
     else if (ReqName == "RVStartHeating") {
@@ -1544,6 +1655,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "RVGetHeaterSwitchType") {
         RVGetHeaterSwitchType(ReqName, Params);
     }
+    else if (ReqName == "RVTempControlIsOn") {
+        RVTempControlIsOn(ReqName, Params);
+    }
     // Level sensor
     else if (ReqName == "LSStartHeating") {
         LSStartHeating(ReqName, Params);
@@ -1559,6 +1673,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     }
     else if (ReqName == "LSHeatingLevelSensor") {
         LSHeatingLevelSensor(ReqName, Params);
+    }
+    else if (ReqName == "LSTempControlIsOn") {
+        LSTempControlIsOn(ReqName, Params);
     }
     // Pump
     else if (ReqName == "PumpBuildPressure") {

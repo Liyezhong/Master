@@ -110,6 +110,7 @@ private:
     void OvenGetCurrent(QString& ReqName, QStringList& Params);
     void OvenGetCoverSensorState(QString& ReqName, QStringList& Params);
     void OvenGetSwithType(QString& ReqName, QStringList& Params);
+    void OvenTempControlIsOn(QString& ReqName, QStringList& Params);
 
     void RetortStartHeating(QString& ReqName, QStringList& Params);
     void RetortStopHeating(QString& ReqName, QStringList& Params);
@@ -118,17 +119,21 @@ private:
     void RetortGetLidLockState(QString& ReqName, QStringList& Params);
     void RetortSetTemperatureSwitchState(QString& ReqName, QStringList& Params);
     void RetortGetHeaterSwitchType(QString& ReqName, QStringList& Params);
+    void RetortTempControlIsOn(QString& ReqName, QStringList& Params);
 
 
     void LiquidTubeStartHeating(QString& ReqName, QStringList& Params);
     void LiquidTubeStopHeating(QString& ReqName, QStringList& Params);
     void LiquidTubeGetTemp(QString& ReqName, QStringList& Params);
     void LiquidTubeGetCurrent(QString& ReqName, QStringList& Params);
+    void LiquidTubeTempControlIsOn(QString& ReqName, QStringList& Params);
 
     void AirTubeStartHeating(QString& ReqName, QStringList& Params);
     void AirTubeStopHeating(QString& ReqName, QStringList& Params);
     void AirTubeGetTemp(QString& ReqName, QStringList& Params);
     void AirTubeGetCurrent(QString& ReqName, QStringList& Params);
+    void AirTubeTempControlIsOn(QString& ReqName, QStringList& Params);
+
 
     void RVStartHeating(QString& ReqName, QStringList& Params);
     void RVStopHeating(QString& ReqName, QStringList& Params);
@@ -138,12 +143,14 @@ private:
     void RVMovePosition(QString& ReqName, QStringList& Params);
     void RVSetTemperatureSwitchState(QString& ReqName, QStringList& Params);
     void RVGetHeaterSwitchType(QString& ReqName, QStringList& Params);
+    void RVTempControlIsOn(QString& ReqName, QStringList& Params);
 
     void LSStartHeating(QString& ReqName, QStringList& Params);
     void LSStopHeating(QString& ReqName, QStringList& Params);
     void LSGetTemp(QString& ReqName, QStringList& Params);
     void LSGetCurrent(QString& ReqName, QStringList& Params);
     void LSHeatingLevelSensor(QString& ReqName, QStringList& Params);
+    void LSTempControlIsOn(QString& ReqName, QStringList& Params);
 
     void PumpBuildPressure(QString& ReqName, QStringList& Params);
     void PumpReleasePressure(QString& ReqName, QStringList& Params);

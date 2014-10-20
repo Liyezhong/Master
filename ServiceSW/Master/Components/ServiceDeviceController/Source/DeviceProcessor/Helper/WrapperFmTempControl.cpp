@@ -978,7 +978,7 @@ bool WrapperFmTempControl::IsOutsideRange()
 /****************************************************************************/
 QString WrapperFmTempControl::GetMainsVoltageState()
 {
-    Log(tr("GetTemperatureControlState"));
+    Log(tr("GetMainsVoltageState"));
     bool ok = HandleErrorCode(m_pTempControl->ReqStatus());
     if (!ok) {
         m_MainsVoltageStatus = TEMPCTRL_VOLTAGE_UNDEF;

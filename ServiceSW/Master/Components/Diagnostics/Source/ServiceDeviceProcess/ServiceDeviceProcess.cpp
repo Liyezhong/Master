@@ -330,6 +330,31 @@ int ServiceDeviceProcess::OvenGetSwitchType(int *RetSwitchType)
     return Ret;
 }
 
+int ServiceDeviceProcess::OvenTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "OvenTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
 int ServiceDeviceProcess::RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom)
 {
     QString ReqName = "RetortStartHeating";
@@ -496,6 +521,31 @@ int ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
     return Ret;
 }
 
+int ServiceDeviceProcess::RetortTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "RetortTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
 
 int ServiceDeviceProcess::LiquidTubeStartHeating(qreal TargetTemp)
 {
@@ -578,6 +628,30 @@ int ServiceDeviceProcess::LiquidTubeGetCurrent(quint16 *RetCurrent)
     return Ret;
 }
 
+int ServiceDeviceProcess::LiquidTubeTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "LiquidTubeTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
 
 int ServiceDeviceProcess::AirTubeStartHeating(qreal TargetTemp)
 {
@@ -660,6 +734,30 @@ int ServiceDeviceProcess::AirTubeGetCurrent(quint16 *RetCurrent)
     return Ret;
 }
 
+int ServiceDeviceProcess::AirTubeTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "AirTubeTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
 
 int ServiceDeviceProcess::RVStartHeating(qreal TargetTemp)
 {
@@ -822,6 +920,31 @@ int ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
     return Ret;
 }
 
+int ServiceDeviceProcess::RVTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "RVTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
 int ServiceDeviceProcess::LSStartHeating(bool QuickFlag, bool WaterFlag)
 {
     QString ReqName = "LSStartHeating";
@@ -909,6 +1032,31 @@ int ServiceDeviceProcess::LSHeatingLevelSensor(bool WaterFlag)
     emit SendServRequest(ReqName, Params);
 
     int Ret = GetResponse(ReqName, 180);
+
+    return Ret;
+}
+
+int ServiceDeviceProcess::LSTempControlIsOn(bool *RetIsOn)
+{
+    QString ReqName = "LSTempControlIsOn";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *RetIsOn = Results.at(0).toInt();
+    }
+    (void)m_ResultsMap.remove(ReqName);
 
     return Ret;
 }

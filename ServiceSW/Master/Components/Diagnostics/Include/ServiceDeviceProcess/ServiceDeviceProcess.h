@@ -88,6 +88,7 @@ public:
     int OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom);
     int OvenGetCoverSensorState(qint32 *RetCoverSensorState);
     int OvenGetSwitchType(int *RetSwithType);
+    int OvenTempControlIsOn(bool *RetIsOn);
 
     int RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom);
     int RetortStopHeating();
@@ -96,17 +97,19 @@ public:
     int RetortGetLidLockState(qint32 *RetLidLockState);
     int RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
     int RetortGetHeaterSwitchType(quint8 *RetSwitchType);
-
+    int RetortTempControlIsOn(bool *RetIsOn);
 
     int LiquidTubeStartHeating(qreal TargetTemp);
     int LiquidTubeStopHeating();
     int LiquidTubeGetTemp(qreal *RetTemp);
     int LiquidTubeGetCurrent(quint16 *RetCurrent);
+    int LiquidTubeTempControlIsOn(bool *RetIsOn);
 
     int AirTubeStartHeating(qreal TargetTemp);
     int AirTubeStopHeating();
     int AirTubeGetTemp(qreal *RetTemp);
     int AirTubeGetCurrent(quint16 *RetCurrent);
+    int AirTubeTempControlIsOn(bool *RetIsOn);
 
     int RVStartHeating(qreal TargetTemp);
     int RVStopHeating();
@@ -116,12 +119,14 @@ public:
     int RVMovePosition(bool TubeFlag, int Position);
     int RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
     int RVGetHeaterSwitchType(quint8 *RetSwitchType);
+    int RVTempControlIsOn(bool *RetIsOn);
 
     int LSStartHeating(bool QuickFlag, bool WaterFlag);
     int LSStopHeating();
     int LSGetTemp(qreal *RetTemp);
     int LSGetCurrent(quint16 *RetCurrent);
     int LSHeatingLevelSensor(bool WaterFlag);
+    int LSTempControlIsOn(bool *RetIsOn);
 
     int PumpBuildPressure(float TargetPressure);
     int PumpReleasePressure();
