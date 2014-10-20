@@ -338,8 +338,16 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            (void)this->PrepareProgramStationList(m_ProgramStatusInfor.GetProgramId(), m_ProgramStatusInfor.GetStepID());
-            (void)this->GetNextProgramStepInformation(m_ProgramStatusInfor.GetProgramId(), m_CurProgramStepInfo);
+
+            QString curProgramID = m_ProgramStatusInfor.GetProgramId();
+            m_CurProgramStepIndex = -1;
+            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);
+            if (m_CurProgramStepIndex != -1)
+            {
+                m_FirstProgramStepIndex = m_CurProgramStepIndex;
+                (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+                m_CurProgramStepIndex = -1;
+            }
         }
         else
         {
@@ -655,8 +663,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
                     break;
-                case PSSM_PROGRAM_FINISH:
-                    m_SchedulerMachine->SendResumeProgramFinished();
+                case PSSM_POWERFAILURE_FINISH:
+                    m_SchedulerMachine->SendRunComplete();
                     break;
                 case PSSM_ABORTING:
                     m_SchedulerMachine->SendResumeAborting();

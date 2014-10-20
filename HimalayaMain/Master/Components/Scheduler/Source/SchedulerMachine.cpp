@@ -153,7 +153,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
-    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProgramFinished()), mp_PssmProgramFinish.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumePssmAborting()), mp_PssmAborting.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
@@ -496,11 +495,6 @@ void CSchedulerStateMachine::SendResumeDraining()
 void CSchedulerStateMachine::SendResumeRVPosChange()
 {
     emit ResumeRVPosChange();
-}
-
-void CSchedulerStateMachine::SendResumeProgramFinished()
-{
-    emit ResumeProgramFinished();
 }
 
 void CSchedulerStateMachine::SendResumeAborting()

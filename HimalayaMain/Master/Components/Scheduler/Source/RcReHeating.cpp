@@ -251,7 +251,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
         {
             if(m_IsNeedRunCleaning)
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
             emit TasksDone(true);
             m_StartReq = 0;
@@ -336,7 +336,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 {
                     if(m_IsNeedRunCleaning)
                     {
-                        mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
+                        mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
                     }
                     m_RsReagentCheckStep = FORCE_DRAIN;
                     emit TasksDone(true);
@@ -435,7 +435,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
             emit SignalStopDrain();
             if(m_IsNeedRunCleaning)
             {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROGRAM_FINISH);
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {

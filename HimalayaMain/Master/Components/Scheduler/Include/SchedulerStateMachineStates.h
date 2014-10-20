@@ -27,6 +27,7 @@ namespace Scheduler{
 #define L2_PRO_ABORTING                       (0xF)
 #define L2_PRO_ABORTED                        (0x10)
 #define L2_PRO_CLEANING_DRY_STEP              (0x11)
+#define L2_PRO_POWERFAILURE_FINISH            (0x12)
 
 #define L2_ERR_WAIT                                 (0x1)
 #define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
@@ -84,6 +85,7 @@ typedef enum
     PSSM_ABORTING = ((L2_PRO_ABORTING << 8) | L1_BUSY),
     PSSM_ABORTED = ((L2_PRO_ABORTED << 8) | L1_BUSY),
     PSSM_CLEANING_DRY_STEP = ((L2_PRO_CLEANING_DRY_STEP << 8) | L1_BUSY),
+    PSSM_POWERFAILURE_FINISH = ((L2_PRO_POWERFAILURE_FINISH << 8) | L1_BUSY),
      // Layer two states (for SM_ERROR)
     SM_ERR_WAIT = ((L2_ERR_WAIT << 8) | L1_ERROR),
     SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN = ((L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN << 8) | L1_ERROR),
