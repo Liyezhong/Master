@@ -29,6 +29,7 @@
 #include "Diagnostics/Include/System/AlarmTest.h"
 #include "Diagnostics/Include/System/ExhaustFanTest.h"
 #include "Diagnostics/Include/System/VentilationFanTest.h"
+#include "Diagnostics/Include/System/SystemSealingTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -99,9 +100,10 @@ CSystem::~CSystem()
 void CSystem::StartSealingTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
-
     qDebug() << "System: start sealing test";
 
+    System::CSystemSealingTest SystemSealingTest(mp_MessageDlg, this);
+    (void)SystemSealingTest.Run();
 }
 
 void CSystem::StartFillingNDrainingTest(void)
