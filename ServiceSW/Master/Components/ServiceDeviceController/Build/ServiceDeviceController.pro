@@ -19,7 +19,6 @@ HEADERS +=  ../Include/*.h \
 SOURCES +=  ../Source/*.cpp \
             ../Source/Commands/*.cpp \
             ../Source/DeviceProcessor/*.cpp \
-            ../Source/DeviceProcessor/Helper/*.cpp \
-    ../Source/Commands/CmdLSensorDetectingTest.cpp
+            ../Source/DeviceProcessor/Helper/*.cpp
 
 

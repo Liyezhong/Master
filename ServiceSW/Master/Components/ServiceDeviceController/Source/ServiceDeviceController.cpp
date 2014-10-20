@@ -30,7 +30,6 @@
 #include "Application/Include/Application.h"
 
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
-#include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
 #include <Core/Include/CMessageString.h>
 
 namespace DeviceControl {

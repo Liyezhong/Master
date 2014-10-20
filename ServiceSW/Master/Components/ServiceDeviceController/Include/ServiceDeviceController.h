@@ -32,16 +32,8 @@
 
 #include <ServiceDeviceController/Include/Commands/CmdReturnMessage.h>
 #include <ServiceDeviceController/Include/Commands/CmdGetDataContainers.h>
-#if 0
-#include <ServiceDeviceController/Include/Commands/CmdGetDeviceCANID.h>
-#include <ServiceDeviceController/Include/Commands/CmdGetDeviceFirmwareInfo.h>
-#endif
 
-#include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
 #include <ServiceDeviceController/Include/Commands/CmdAbortTest.h>
-#include <ServiceDeviceController/Include/Commands/CmdHeatingTest.h>
-#include <ServiceDeviceController/Include/Commands/CmdRotaryValveTest.h>
-#include <ServiceDeviceController/Include/Commands/CmdLSensorDetectingTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdModuleManufacturingTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdServiceTest.h>
 
@@ -106,33 +98,7 @@ public:
      */
     /****************************************************************************/
     void OnSDC_AbortTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdAbortTest &Cmd);
-    /****************************************************************************/
-    /**
-     * \brief Command of type CmdHeatingTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnSDC_HeatingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdHeatingTest &Cmd);
-    /****************************************************************************/
-    /**
-     * \brief Command of type CmdRotaryValveTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnSDC_RotaryValveTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdRotaryValveTest &Cmd);
-    /****************************************************************************/
-    /**
-     * \brief Command of type CmdLSensorDetectingTest received.
-     *
-     * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnSDC_LSensorDetectingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdLSensorDetectingTest &Cmd);
+
     /****************************************************************************/
     /**
      * \brief Returns a new Command Reference.
@@ -160,17 +126,6 @@ public:
     /****************************************************************************/
     virtual void GetUnInitializedDevices(QList<quint32> &);
     /****************************************************************************/
-
-    /****************************************************************************/
-    /**
-     * \brief Command of type CmdCalibrateDevice received.
-     *
-     * \iparam       Ref                 Reference of command.
-     * \iparam       Cmd                 Command.
-     */
-    /****************************************************************************/
-    void OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd);
-
 
     /****************************************************************************/
     /**
