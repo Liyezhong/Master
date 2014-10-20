@@ -340,14 +340,10 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             QString curProgramID = m_ProgramStatusInfor.GetProgramId();
-            m_CurProgramStepIndex = -1;
-            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);
-            if (m_CurProgramStepIndex != -1)
-            {
-                m_FirstProgramStepIndex = m_CurProgramStepIndex;
-                (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-                m_CurProgramStepIndex = -1;
-            }
+            m_CurProgramID = curProgramID;
+            m_FirstProgramStepIndex = m_ProgramStatusInfor.GetStepID();
+            (void)this->PrepareProgramStationList(curProgramID, m_ProgramStatusInfor.GetStepID());
+            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
         }
         else
         {
@@ -475,6 +471,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_IsCleaningProgram = false;
         }
         m_ProgramStatusInfor.SetProgramID(m_CurProgramID);
+        m_ProgramStatusInfor.SetStationList(m_StationList);
 
         (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)

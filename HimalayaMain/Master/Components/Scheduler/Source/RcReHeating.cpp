@@ -214,26 +214,36 @@ void CRcReHeating::CheckTheTemperature()
     }
     else
     {
-        if(0 == m_StartReq)
-        {
-            m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime() * 1000;
-        }
-        m_StartReq++;
-        if(2 == m_StartReq)
-        {
-            m_StartReq = 0;
-        }
-        if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
+        if(QFile::exists("TEST_GINA"))
         {
             if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
             {
                 emit SigGetRVPosition();
             }
-            else
+        }
+        else
+        {
+            if(0 == m_StartReq)
             {
-                emit TasksDone(false);
+                m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime() * 1000;
             }
-            m_StartReq = 0;
+            m_StartReq++;
+            if(2 == m_StartReq)
+            {
+                m_StartReq = 0;
+            }
+            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
+            {
+                if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
+                {
+                    emit SigGetRVPosition();
+                }
+                else
+                {
+                    emit TasksDone(false);
+                }
+                m_StartReq = 0;
+            }
         }
     }
 }
