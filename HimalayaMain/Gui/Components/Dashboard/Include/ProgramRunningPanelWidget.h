@@ -114,7 +114,10 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
-
+        void OnCurrentProgramStepInforUpdated(const QString& stepName,
+                                              int stepRemainingTime,
+                                              int totalRemainingTime,
+                                              int stepIndex);
         /****************************************************************************/
         /*!
          *  \brief Update Program Timer's Status

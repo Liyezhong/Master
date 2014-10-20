@@ -26,10 +26,10 @@ QString CmdRecoveryFromPowerFailure::NAME = "MsgClasses::CmdRecoveryFromPowerFai
 
 CmdRecoveryFromPowerFailure::CmdRecoveryFromPowerFailure(int timeout, const QString& ProgramID,
                                                          int StepIndex, int Scenario, int RemainingTime,
-                                                         QString RgbID, const QList<QString>& StationList) :
+                                                         const QString& ReagentGroupID, const QList<QString>& StationList) :
     Command(timeout),
     m_ProgramID(ProgramID), m_StepIndex(StepIndex),m_Scenario(Scenario),
-    m_RemainingTime(RemainingTime),m_LastReagentGroupID(RgbID),m_StationList(StationList)
+    m_RemainingTime(RemainingTime),m_LastReagentGroupID(ReagentGroupID),m_StationList(StationList)
 {
 }
 

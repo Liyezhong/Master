@@ -852,8 +852,9 @@ bool CDashboardStationItem::IsReagentExpired()
     return m_ReagentExpiredFlag;
 }
 
-void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_t containerStatus)
+void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_t containerStatus, const QString& reagentGroupID)
 {
+    m_CurrentReagentColorValue = reagentGroupID;
     m_ContainerStatusType = containerStatus;//?
     if (DataManager::CONTAINER_STATUS_CONTAMINATED == containerStatus)
     {

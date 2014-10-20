@@ -122,9 +122,9 @@ void CContainerPanelWidget::RetranslateUI()
     m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
 }
 
-void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType)
+void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID)
 {
-    mp_DashboardScene->UpdateRetortStatus(retortStatusType);
+    mp_DashboardScene->UpdateRetortStatus(retortStatusType, reagentGroupID);
 }
 
 void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)

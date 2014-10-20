@@ -193,7 +193,7 @@ public:
      *  \return from SetContainerStatus
      */
     /****************************************************************************/
-    void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
+    void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus, const QString& reagentGroupID = "");
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetContainerRetortLockedStatus

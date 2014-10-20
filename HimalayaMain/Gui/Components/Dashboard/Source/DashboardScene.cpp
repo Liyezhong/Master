@@ -1023,9 +1023,16 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
     }
 }
 
-void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType)
+void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID)
 {
-    mp_DashboardStationRetort->SetContainerStatus(retortStatusType);
+    if (!reagentGroupID.isEmpty())
+    {
+        DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(reagentGroupID);
+
+        m_CurrentReagentColorValue = p_ReagentGroup->GetGroupColor();
+        (void)m_CurrentReagentColorValue.prepend("#");
+    }
+    mp_DashboardStationRetort->SetContainerStatus(retortStatusType, m_CurrentReagentColorValue);
 }
 
 void CDashboardScene::UpdateRetortLockedStatus(bool locked)

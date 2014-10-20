@@ -50,7 +50,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_IsDrainingWhenPrgrmCompleted(false),
     m_bIsFirstStepFixation(false),
     m_TotalCassette(0),
-    m_HaveSucked(false)
+    m_HaveSucked(false),
+    m_ProgramStageStatus(Undefined),
+    m_ProgramStatus(Undefined_ProgramStatus)
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -176,13 +178,33 @@ CDashboardWidget::~CDashboardWidget()
 void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
-    if (cmd.CurProgramStepIndex() >=1 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
-        ui->programPanelWidget->EnableStartButton(false);
+        if ((cmd.CurProgramStepIndex() < 3) && (m_ProgramStageStatus == Enabled))
+        {
+            ui->programPanelWidget->EnablePauseButton(true);
+        }
+
+        if (cmd.CurProgramStepIndex() > 2)
+        {
+            ui->programPanelWidget->EnablePauseButton(false);
+        }
+
+        if (m_CurProgramStepIndex == 0)
+        {
+            ui->programPanelWidget->EnableStartButton(true);
+        }
+        else
+        {
+            ui->programPanelWidget->EnableStartButton(false);
+        }
     }
-    if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    else//supervisor
     {
-          ui->programPanelWidget->EnablePauseButton(false);
+         if (m_ProgramStageStatus == Enabled)
+         {
+            ui->programPanelWidget->EnablePauseButton(true);
+         }
     }
 }
 
@@ -306,6 +328,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     //Todo:20, Abort time, will be given a rough value later;
     emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
     ui->programPanelWidget->EnableStartButton(false);
+    m_ProgramStatus = Aborting;
 }
 
 //this function will be invoked after program Abort and completed
@@ -319,7 +342,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     if (mp_MessageDlg->exec())
     {
         //represent the retort as contaminated status
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, "");
 
         mp_MessageDlg->SetText(m_strRetortContaminated);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
@@ -400,6 +423,7 @@ void CDashboardWidget::OnProgramAborted()
             emit SwitchToFavoritePanel();
         }
     }
+    m_ProgramStatus = Undefined_ProgramStatus;
 }
 
 void CDashboardWidget::OnProgramCompleted()
@@ -431,6 +455,7 @@ void CDashboardWidget::OnProgramCompleted()
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
+    m_ProgramStatus = Undefined_ProgramStatus;
 }
 
 void CDashboardWidget::OnProgramRunBegin()
@@ -461,7 +486,7 @@ void CDashboardWidget::OnProgramRunBegin()
         else
             ui->programPanelWidget->EnableStartButton(true);//enable stop button
     }
-
+    m_ProgramStatus = ProgramRunning;
     ui->programPanelWidget->IsResumeRun(true);
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
 }
@@ -470,10 +495,42 @@ void CDashboardWidget::OnProgramPaused()
 {
     ui->programPanelWidget->EnableStartButton(true);//enable Abort button
     ui->programPanelWidget->ChangeStartButtonToStartState();
+    m_ProgramStatus = Paused;
 }
 
 void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
 {
+    if (bEnable)
+    {
+        m_ProgramStageStatus = Enabled;
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+        {
+            if (m_CurProgramStepIndex < 3)
+            {
+                ui->programPanelWidget->EnablePauseButton(true);
+            }
+        }
+        else
+        {
+            ui->programPanelWidget->EnablePauseButton(true);
+        }
+    }
+    else
+    {
+        m_ProgramStageStatus = Disabled;
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+        {
+            if (m_CurProgramStepIndex < 3)
+            {
+                ui->programPanelWidget->EnablePauseButton(false);
+            }
+        }
+        else
+        {
+            ui->programPanelWidget->EnablePauseButton(false);
+        }
+    }
+
     ui->programPanelWidget->ResumePauseRunningStatus(bEnable);
 }
 
@@ -804,7 +861,7 @@ void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryF
     QString scenarioID = QString::number(cmd.GetScenario());
     if ('4' == scenarioID.at(scenarioID.count() - 1))
     {
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_FULL);
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_FULL, cmd.GetLastReagentGroupID());
     }
 }
 
@@ -997,68 +1054,56 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
 /****************************************************************************/
 void CDashboardWidget::OnUserRoleChanged()
 {
-#if 0
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
-        ui->programPanelWidget->EnablePauseButton(false);//in fact, it will disable pause button when running
-    }
-    else if ((m_ProcessRunning || m_IsDrainingWhenPrgrmCompleted) && (m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-                                  m_CurrentUserRole == MainMenu::CMainWindow::Service)) {
-        ui->programPanelWidget->EnablePauseButton(true);
-
-    }
-
-    if (m_IsDrainingWhenPrgrmCompleted == true && m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
-         ui->programPanelWidget->EnableStartButton(false); // disable abort button
-    }
-#endif
-
-    if (!m_NewSelectedProgramId.isEmpty() && m_NewSelectedProgramId.at(0) == 'C')
-        return;
-
-    // the matrix:
-    /*
-     *  user role               1st step        2nd~3rd step	after 3steps        Comment
-        --------------------------------------------------------------------------------------------------------------
-        Standard User
-                                Pause enable	Pause enable	Pause disable       the last step's draining,Pause&Abort is disable
-                                Abort enable	Abort disable	Abort disable       the last step's draining,Pause&Abort is disable
-
-        Supervisor& Service
-                                Pause enable	Pause enable	Pause enable        the last step's draining,Pause&Abort is disable
-                                Abort enable	Abort enable	Abort enable        the last step's draining,Pause&Abort is disable
-
-     * */
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
-        switch (m_CurProgramStepIndex) {
-        case 0:
-            ui->programPanelWidget->EnablePauseButton(true);
-            ui->programPanelWidget->EnableStartButton(true);
-            break;
-
-        case 1:
-        case 2:
-            ui->programPanelWidget->EnablePauseButton(true);
-            ui->programPanelWidget->EnableStartButton(false);
-            break;
-
-        default:
-            ui->programPanelWidget->EnablePauseButton(false);
-            ui->programPanelWidget->EnableStartButton(false);
-            break;
-        }
-
-    }
-    else if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)) {
-            ui->programPanelWidget->EnablePauseButton(true);
-            ui->programPanelWidget->EnableStartButton(true);
-    }
+    if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
+    return;
 
     if (m_IsDrainingWhenPrgrmCompleted == true) {
         ui->programPanelWidget->EnablePauseButton(false);
         ui->programPanelWidget->EnableStartButton(false);
+        return;
     }
+
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        if (m_ProgramStatus == ProgramRunning)
+        {
+            if (m_CurProgramStepIndex < 3)
+            {
+                if (m_ProgramStageStatus == Enabled)
+                {
+                    ui->programPanelWidget->EnablePauseButton(true);
+                }
+             }
+            else// >3rd step
+            {
+                if (m_ProgramStageStatus == Disabled)
+                {
+                    ui->programPanelWidget->EnablePauseButton(false);
+                }
+            }
+
+            //Abort
+            if (m_CurProgramStepIndex == 0)
+            {
+                ui->programPanelWidget->EnableStartButton(true);
+            }
+            else
+            {
+                ui->programPanelWidget->EnableStartButton(false);
+            }
+        }
+    }
+    else //Supervior or service
+    {
+        if (m_ProgramStatus == ProgramRunning)
+        {
+            ui->programPanelWidget->EnablePauseButton(true);
+            ui->programPanelWidget->EnableStartButton(true);
+        }
+    }
+
+
 }
 
 void CDashboardWidget::OnProcessStateChanged()

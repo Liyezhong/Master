@@ -1858,6 +1858,7 @@ void CDataConnector::RecoveryFromPowerFailureHandler(Global::tRefType Ref, const
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     emit RecoveryFromPowerFailure(Command);
+    emit ProgramSelfTestFailed();
 }
 
 void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)

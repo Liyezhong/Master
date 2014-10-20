@@ -51,14 +51,14 @@ public:
      *  \param StepIndex =  step index
      *  \param Scenario  =  Scenario
      *  \param RemainingTime = remain time
-     *  \param RgbID    =   color id
+     *  \param ReagentGroupID    =   color id
      *  \param StationList = station list
      *
      *  \return from CmdCurrentProgramStepInfor
      */
     /****************************************************************************/
     CmdRecoveryFromPowerFailure(int timeout, const QString& ProgramID, int StepIndex,
-                                int Scenario, int RemainingTime, QString RgbID, const QList<QString>& StationList);
+                                int Scenario, int RemainingTime, const QString& ReagentGroupID, const QList<QString>& StationList);
     ~CmdRecoveryFromPowerFailure();
     virtual QString GetName() const;
 

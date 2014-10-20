@@ -117,6 +117,25 @@ void CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClass
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
 }
 
+void CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated(const QString& stepName,
+                                                                  int stepRemainingTime,
+                                                                  int totalRemainingTime,
+                                                                  int stepIndex)
+{
+
+    ui->lblReagentName->setText(stepName);
+    QString timeStr = Core::CGlobalHelper::TimeToString(stepRemainingTime, true);
+    ui->lblStepTime->setText(timeStr);
+    m_CurStepRemainingTime = m_CurRemainingTime = stepRemainingTime;
+    m_CurProgramStepIndex = stepIndex;
+
+    m_curRemainingTimeTotal = m_remainingTimeTotal = totalRemainingTime;
+    ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
+
+    m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(m_curRemainingTimeTotal);
+    UpdateDateTime();
+}
+
 
 void CProgramRunningPanelWidget::UpdateProgress()
 {

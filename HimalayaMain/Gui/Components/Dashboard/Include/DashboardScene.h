@@ -89,11 +89,12 @@ public:
      *  \brief  Definition/Declaration of function UpdateRetortStatus
      *
      *  \param retortStatusType = DataManager::ContainerStatusType_t type parameter
+     *  \param reagentGroupID = reagent Group ID
      *
      *  \return from UpdateRetortStatus
      */
     /****************************************************************************/
-    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
+    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateRetortLockedStatus

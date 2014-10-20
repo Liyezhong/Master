@@ -51,6 +51,19 @@ class CDashboardWidget : public QWidget
     Q_OBJECT
     
 public:
+    typedef enum {
+        Undefined,
+        Enabled,
+        Disabled
+    } ProgramStageStatus_t;
+
+    typedef enum {
+        Undefined_ProgramStatus,
+        ProgramRunning,
+        Paused,
+        Aborting
+    } ProgramStatus_t;
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CDashboardWidget
@@ -179,6 +192,8 @@ private:
     bool m_bIsFirstStepFixation;
     quint32 m_TotalCassette;
     bool m_HaveSucked;
+    ProgramStageStatus_t m_ProgramStageStatus;
+    ProgramStatus_t m_ProgramStatus;
 public slots:
     /****************************************************************************/
     /*!

@@ -250,7 +250,6 @@ void CProgramPanelWidget::EnableStartButton(bool bEnable)
 
 void CProgramPanelWidget::ResumePauseRunningStatus(bool bEnable)
 {
-    ui->pauseButton->setEnabled(bEnable);
     ui->programRunningPanel->UpdateProgramTimerStatus(bEnable);
 }
 
@@ -305,6 +304,9 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
     ui->programRunningPanel->SetPanelIcon(strIconName);
     QString selectedProgramName = mp_ProgramList->GetProgram(selectedProgramId)->GetName();
     ui->programRunningPanel->SetPanelTitle(selectedProgramName);
+
+    ui->programRunningPanel->OnCurrentProgramStepInforUpdated(selectedProgramName, 0,
+                                                              cmd.GetRemainingTime(), cmd.GetStepIndex());
 }
 
 void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType)
