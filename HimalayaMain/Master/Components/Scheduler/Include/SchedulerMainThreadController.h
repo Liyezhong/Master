@@ -154,7 +154,8 @@ typedef enum
     RETORT,
     OVEN,
     RV,
-    ASB5
+    ASB5,
+    FAN
 } HeaterType_t;
 
 /****************************************************************************/
@@ -254,7 +255,7 @@ typedef struct
         bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
         bool m_StopFilling;                                   ///< When restart filling, need stop filling
         bool m_CheckRemoteAlarmStatus;                        ///< flag to check m_CheckRemoteAlarmStatus
-        bool m_CheckLocalAlarmStatus;                         ///< flag to check m_CheckRemoteAlarmStatus
+        bool m_CheckLocalAlarmStatus;                         ///< flag to check m_CheckLocalAlarmStatus
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

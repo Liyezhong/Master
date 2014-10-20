@@ -3314,6 +3314,19 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
             return true;
         }
         break;
+    case FAN:
+    {
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+        SchedulerCommandShPtr_t pResHeatingCmd;
+        PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOnFan");
+        ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+        (void)pResHeatingCmd->GetResult(retCode);
+        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+        {
+            return true;
+        }
+    }
+        break;
     default:
         return true;
     }
@@ -3372,6 +3385,19 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
         {
             return true;
         }
+        break;
+    case FAN:
+    {
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+        SchedulerCommandShPtr_t pResHeatingCmd;
+        PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOnFan");
+        ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+        (void)pResHeatingCmd->GetResult(retCode);
+        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+        {
+            return true;
+        }
+    }
         break;
     default:
         return true;
@@ -3580,6 +3606,14 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= interval*1000)
         {
             LogDebug("Oven Bottom out of range");
+            return false;
+        }
+        break;
+    case FAN:
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(PRESS_FAN_OUT_OF_RANGE, "LA", AL_FAN);
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= interval*1000)
+        {
+            LogDebug("Fan current out of range");
             return false;
         }
         break;
@@ -3900,6 +3934,10 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     else if (DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == m_CurErrEventID)
     {
         return ASB5;
+    }
+    else if (DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN == m_CurErrEventID)
+    {
+        return FAN;
     }
 
     return UNKNOWN;

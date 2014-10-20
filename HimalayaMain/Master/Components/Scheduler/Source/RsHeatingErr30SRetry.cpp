@@ -202,6 +202,10 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
                 qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube2;
                 ret = mp_SchedulerController->GetHeatingStrategy()->CheckLASensorStatus("LATube2",HWTemp);
             }
+            else if (heaterType == FAN)
+            {
+                // Do nothing, we need NOT check temperature in this case
+            }
             else
             {
                 ret = mp_SchedulerController->CheckSensorTempOverange();
