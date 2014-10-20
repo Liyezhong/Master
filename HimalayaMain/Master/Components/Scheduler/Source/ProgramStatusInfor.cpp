@@ -318,10 +318,11 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, 
 bool CProgramStatusInfor::IsRetortContaminted()
 {
     QString ReagentGroup = GetLastReagentGroup();
-    return ((!ReagentGroup.isEmpty()) &&
+    return !ReagentGroup.isEmpty();
+    /*return ((!ReagentGroup.isEmpty()) &&
             (ReagentGroup.compare("RG2") != 0) &&   //water
             (ReagentGroup.compare("RG7") != 0) &&   //Cleaning Solvent
-            (ReagentGroup.compare("RG8") != 0));    //Cleaning Alcohol
+            (ReagentGroup.compare("RG8") != 0));*/    //Cleaning Alcohol
 }
 void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
 {
