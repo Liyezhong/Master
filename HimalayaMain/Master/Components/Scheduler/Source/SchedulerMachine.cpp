@@ -1782,7 +1782,7 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                 RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
                 cmd->SetRVPosition((quint32)(tubePos));
-                if (QFile::exists("TEST_FREDDY"))
+                if (QFile::exists("TEST_BEAN"))
                 {
                     cmd->SetDrainPressure(20.0);
                 }

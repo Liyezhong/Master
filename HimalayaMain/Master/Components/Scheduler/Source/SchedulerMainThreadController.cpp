@@ -2577,11 +2577,36 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     // Monitor local and remote alarm
     if ("ERROR" != StepID && 0 != Scenario)
     {
-        if (1 == strctHWMonitor.LocalAlarmStatus)
+        bool checkAlarm = true;
+        if (QFile::exists("TEST_BEAN"))
+        {
+            QFile file("TEST_BEAN");
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream in(&file);
+            QString line = in.readLine();
+            while (!line.isNull())
+            {
+                line = line.trimmed();
+                QStringList list = line.split("=");
+                if ("ENABLE_ALARM" == list.at(0))
+                {
+                    if ("0" == list.at(1))
+                    {
+                        checkAlarm = false;
+                    }
+                    if ("1" == list.at(1))
+                    {
+                        checkAlarm = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if (1 == strctHWMonitor.LocalAlarmStatus & checkAlarm)
         {
             RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
         }
-        if (1 == strctHWMonitor.RemoteAlarmStatus)
+        if (1 == strctHWMonitor.RemoteAlarmStatus & checkAlarm)
         {
             RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
         }
@@ -3950,11 +3975,9 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     }
     if (reportError8.instanceID != 0)
     {
-#if 0
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
-#endif
     }
 
     if (reportError9.instanceID != 0)
