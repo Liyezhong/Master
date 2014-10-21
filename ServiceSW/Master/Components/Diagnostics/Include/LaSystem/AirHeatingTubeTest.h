@@ -22,36 +22,59 @@
 #define DIAGNOSTICS_LASYSTEM_AIRHEATINGTUBETEST_H
 
 #include "Diagnostics/Include/TestBase.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
+#include "Diagnostics/Include/LaSystem/LaTimingDialog.h"
 
 namespace Diagnostics {
 
 namespace LaSystem {
+
+struct airHeatingStatus {
+   int UsedTime;
+   int EDTime;
+   QString TargetTemp;
+   qreal CurrentTemp;
+};
 
 class CAirHeatingTubeTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
-    CAirHeatingTubeTest(void);
-    ~CAirHeatingTubeTest(void);
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam _dlg = message dialog
+     */
+    /****************************************************************************/
+    CAirHeatingTubeTest(CDiagnosticMessageDlg *_dlg);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
+    ~CAirHeatingTubeTest(void);
+    /****************************************************************************/
+    /*!
+     *  \brief To run test case.
+     */
+    /****************************************************************************/
     int Run(void);
 
-public Q_SLOTS:
-    void FirstBuildPressure(void);
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief To show waiting dialog for test case.
+     */
+    /****************************************************************************/
+    void ShowWaitingDialog(struct airHeatingStatus *buf);
 
-private Q_SLOTS:
-    void SecondReleasePressure(void);
-	
-	void ThirdBuildVaccuum(void);
-	
-	void ForthReleaseVaccuum(void);
+private:
+    CDiagnosticMessageDlg *dlg; //!< For show message dialog
+    LaTimingDialog *timingDialog;  //!< For show timming message dialog
 
-    void Succeed(void);
-
-    void Fail(void);
 };
-
 } // namespace LaSystem
 
 } // namespace Diagnostics

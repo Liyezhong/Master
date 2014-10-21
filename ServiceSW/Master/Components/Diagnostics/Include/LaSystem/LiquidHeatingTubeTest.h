@@ -30,7 +30,7 @@ namespace Diagnostics {
 
 namespace LaSystem {
 
-struct HeatingStatus {
+struct liquidHeatingStatus {
    int UsedTime;
    int EDTime;
    QString TargetTemp;
@@ -69,11 +69,12 @@ private:
      *  \brief To show waiting dialog for test case.
      */
     /****************************************************************************/
-    void ShowWaitingDialog(struct HeatingStatus *buf);
+    void ShowWaitingDialog(struct liquidHeatingStatus *buf);
 
 private:
     CDiagnosticMessageDlg *dlg; //!< For show message dialog
     LaTimingDialog *timingDialog;  //!< For show timming message dialog
+
 };
 
 } // namespace LaSystem

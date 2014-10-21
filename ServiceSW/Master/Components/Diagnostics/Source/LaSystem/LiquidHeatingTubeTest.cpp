@@ -17,19 +17,12 @@
  *
  */
 /****************************************************************************/
-
-#include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
-#include "Diagnostics/Include/LaSystem/LaTimingDialog.h"
-
 #include <QDebug>
-
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
-#include "MainMenu/Include/MessageDlg.h"
-#include "MainMenu/Include/WaitDialog.h"
+#include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
 
-#include "ServiceWidget/Include/DlgWizardText.h"
 
 namespace Diagnostics {
 
@@ -52,7 +45,7 @@ CLiquidHeatingTubeTest::~CLiquidHeatingTubeTest(void)
 }
 
 
-void CLiquidHeatingTubeTest::ShowWaitingDialog(struct HeatingStatus *status)
+void CLiquidHeatingTubeTest::ShowWaitingDialog(struct liquidHeatingStatus *status)
 {
     Service::ModuleTestStatus refresh;
 
@@ -72,7 +65,7 @@ int CLiquidHeatingTubeTest::Run(void)
     QString title((tr("Liquid Heating Tube Test")));
     QString text;
     int ret, i;
-    struct HeatingStatus heatingStatus;
+    struct liquidHeatingStatus heatingStatus;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("LiquidHeatingTest");
 
@@ -199,11 +192,10 @@ int CLiquidHeatingTubeTest::Run(void)
     else
         text = tr("Liquid Heating Tube Test is successful.");
 
-//__ok__:
+__ok__:
 __fail__:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
 __abort__:
-    dev->LiquidTubeStopHeating();
     return ret;
 }
 

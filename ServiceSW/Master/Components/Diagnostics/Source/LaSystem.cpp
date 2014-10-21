@@ -58,7 +58,7 @@ CLaSystem::~CLaSystem()
 void CLaSystem::StartLiquidHeatingTubeTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
-    qDebug() << "L&&A System: start heating belt 1 test";
+    qDebug() << "Start Liquid heating tube test";
 
     LaSystem::CLiquidHeatingTubeTest test(dlg);
     (void)test.Run();
@@ -67,11 +67,10 @@ void CLaSystem::StartLiquidHeatingTubeTest(void)
 void CLaSystem::StartAirHeatingTubeTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST);
-    qDebug() << "L&&A System: start air system test";
+    qDebug() << "Start Air heating tube test";
 
-    //LaSystem::CAirSystemTest test;
-
-    //test.Run();
+    LaSystem::CAirHeatingTubeTest test(dlg);
+    (void)test.Run();
 }
 /****************************************************************************/
 /*!

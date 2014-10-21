@@ -17,185 +17,188 @@
  *
  */
 /****************************************************************************/
-
-#include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
-
 #include <QDebug>
-
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
-
-#include "MainMenu/Include/MessageDlg.h"
-#include "MainMenu/Include/WaitDialog.h"
-
-#include "ServiceWidget/Include/DlgWizardText.h"
+#include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
 
 namespace Diagnostics {
 
 namespace LaSystem {
 
-CAirHeatingTubeTest::CAirHeatingTubeTest(void)
+CAirHeatingTubeTest::CAirHeatingTubeTest(CDiagnosticMessageDlg *_dlg)
     : CTestBase()
+    , dlg(_dlg)
+    , timingDialog(new LaTimingDialog(dlg->ParentWidget()))
 {
 }
 
 CAirHeatingTubeTest::~CAirHeatingTubeTest(void)
 {
+    try {
+        delete timingDialog;
+    } catch (...) {
+        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete timingDialog, catch error";
+    }
+}
+
+
+void CAirHeatingTubeTest::ShowWaitingDialog(struct airHeatingStatus *status)
+{
+    Service::ModuleTestStatus refresh;
+
+    refresh["Duration"] = QTime().addSecs(status->EDTime).toString("hh:mm:ss");
+    refresh["UsedTime"] = QTime().addSecs(status->UsedTime).toString("hh:mm:ss");
+
+    refresh["TargetTemp"] = status->TargetTemp;
+    refresh["CurrentTemp"] = tr("%1").arg(status->CurrentTemp);
+
+    timingDialog->UpdateLabel(refresh);
 }
 
 int CAirHeatingTubeTest::Run(void)
 {
-    qDebug() << "Air System test starts!";
+    qDebug() << "air heating tube test";
 
-    this->FirstBuildPressure();
-}
+    QString title((tr("Air Heating Tube Test")));
+    QString text;
+    int ret, i;
+    struct airHeatingStatus heatingStatus;
 
-void CAirHeatingTubeTest::FirstBuildPressure(void)
-{
-    qDebug() << "Air System test: first build pressure !";
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("AirHeatingTest");
 
-    /// \todo: start building pressure in another thread **********************/
+    qreal roomTempMin = p_TestCase->GetParameter("RoomTempMin").toFloat();
+    qreal roomTempMax = p_TestCase->GetParameter("RoomTempMax").toFloat();
 
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Air System Test"));
-    dlg->SetText(tr("Building Pressure..."));
-    dlg->HideAbort();
-    dlg->SetTimeout(5000); /// \todo: change time out
+    text = tr("Please check room temperature.<br/>"
+             "Is it within %1\260C-%2\260C ?").arg(roomTempMin).arg(roomTempMax);
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::YES_NO);
+    if (ret == CDiagnosticMessageDlg::NO) {
+       text = tr("Test has to be aborted. Please inform the "
+                 "user that the Instrument is operated out of the "
+                 "operating temperature range of  %1\260C-%2\260C.").arg(roomTempMin).arg(roomTempMax);
+       dlg->ShowMessage(title, text, RETURN_OK);
+       return RETURN_OK;
+    }
 
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
+    text = tr("Please look into the retort to identify if it is empty. If yes, click"
+              "OK to continue. If no, look at the reagent bottles to identify from which bottle the "
+              "reagent came from. Then abort this test and change to the "
+              "\"Diagnostic_Retort_Drain Reagent\" function to drain the Air back to"
+              "the original position. Thereafter flush the retort if necessary.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+    if (ret == CDiagnosticMessageDlg::ABORT)
+        return RETURN_OK;
 
-    CONNECTSIGNALSLOT(dlg, accepted(), this, SecondReleasePressure() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
+    ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
-    dlg->exec();
+    qreal currentTemp;
+    qreal tempMaintainRangeMin = p_TestCase->GetParameter("AirTempMaintainRangeMin").toFloat();
+    qreal tempMaintainRangeMax = p_TestCase->GetParameter("AirTempMaintainRangeMax").toFloat();
+    qreal AirTempAbove = p_TestCase->GetParameter("AirTempAbove").toFloat();
+    int AirRepeatTime = p_TestCase->GetParameter("AirRepeatTime").toInt();
+    int AirMaintainTime = p_TestCase->GetParameter("AirMaintainTime").toInt();
 
-    delete dlg;
-}
+    (void)dev->AirTubeStopHeating();
 
-void CAirHeatingTubeTest::SecondReleasePressure(void)
-{
-    qDebug() << "Air System test: second release pressure!";
+    qreal AirTargetTemp = p_TestCase->GetParameter("AirTargetTemp").toFloat();
+    (void)dev->AirTubeStartHeating(AirTargetTemp);
 
-    /// \todo: start releasing pressure in another thread *********************/
+    //-------------------------------------------------------------------------------
+    qreal AirCurrentTemp;
+    (void)dev->AirTubeGetTemp(&AirCurrentTemp);
 
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Air System Test"));
-    dlg->SetText(tr("Releasing Pressure..."));
-    dlg->HideAbort();
-    dlg->SetTimeout(5000); /// \todo: change time out
+    qreal AirCurrentTempMin = p_TestCase->GetParameter("AirCurrentTempMin").toFloat();
+    qreal AirCurrentTempMax = p_TestCase->GetParameter("AirCurrentTempMax").toFloat();
+    if (AirCurrentTemp < AirCurrentTempMin || AirCurrentTemp > AirCurrentTempMax) {
+        text = tr("Air Heating Tube Test failed.<br/>"
+                  "Please check Air heating tube, cables "
+                  "and connections and ASB15 board. "
+                  "Replace the defective part accordingly.");
+            goto __fail__;
+    }
 
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
+    if (AirCurrentTemp < AirTempAbove) {
+        heatingStatus.UsedTime = 0;
+        heatingStatus.EDTime = AirRepeatTime + AirMaintainTime;
+        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+        (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
+        timingDialog->show();
+        this->ShowWaitingDialog(&heatingStatus);
 
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ThirdBuildVaccuum() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
+        for (i = 0; i < AirRepeatTime && timingDialog->isVisible(); i++) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
+            if ((ret = dev->AirTubeGetTemp(&currentTemp)) != RETURN_OK)
+                break;
+            if (currentTemp >= AirTempAbove) {
+                break;
+            }
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            dev->Pause(MSec);
+            heatingStatus.UsedTime++;
+            heatingStatus.CurrentTemp = currentTemp;
+            this->ShowWaitingDialog(&heatingStatus);
+        }
 
-    dlg->exec();
+        if (!timingDialog->isVisible())
+            goto __abort__;
+        if (ret != RETURN_OK || i == AirRepeatTime) {
+            // fail
+            text = tr("Air Heating Tube Test failed.<br/>"
+                      "Please check Air heating tube, cables "
+                      "and connections and ASB15 board. "
+                      "Replace the defective part accordingly.");
+            timingDialog->accept();
+            goto __fail__;
+        }
+    }
 
-    delete dlg;
-}
+    // temp > 78
+    if (!timingDialog->isVisible()) {
+        heatingStatus.UsedTime = 0;
+        heatingStatus.EDTime = AirMaintainTime;
+        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
 
-void CAirHeatingTubeTest::ThirdBuildVaccuum(void)
-{
-    qDebug() << "Air System test: third build vaccuum!";
+        (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
+        timingDialog->show();
+        this->ShowWaitingDialog(&heatingStatus);
+    }
 
-    /// \todo: start building vaccuum in another thread ***********************/
+    for (i = 0; i < AirMaintainTime && timingDialog->isVisible(); i++) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+        if ((ret = dev->AirTubeGetTemp(&currentTemp)) != RETURN_OK)
+            break;
+        if (currentTemp < AirCurrentTempMin || currentTemp > AirCurrentTempMax) {
+            ret = RETURN_ERR_FAIL;
+            break;
+        }
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        dev->Pause(MSec);
+        heatingStatus.UsedTime++;
+        heatingStatus.CurrentTemp = currentTemp;
+        this->ShowWaitingDialog(&heatingStatus);
+    }
 
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Air System Test"));
-    dlg->SetText(tr("Building Vaccuum..."));
-    dlg->HideAbort();
-    dlg->SetTimeout(5000); /// \todo: change time out
+    if (!timingDialog->isVisible())
+        goto __abort__;
+    timingDialog->accept();
+    if (ret != RETURN_ERR_FAIL)
+        text = tr("Air Heating Tube Test failed.<br/>"
+                  "Please check Air heating tube, cables "
+                  "and connections and ASB15 board. "
+                  "Replace the defective part accordingly.");
+    else
+        text = tr("Air Heating Tube Test is successful.");
 
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, ForthReleaseVaccuum() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CAirHeatingTubeTest::ForthReleaseVaccuum(void)
-{
-    qDebug() << "Air System test: second release vaccuum!";
-
-    /// \todo: start releasing vaccuum in another thread *********************/
-
-    // inform the customer of the test running status
-    MainMenu::CWaitDialog *dlg = new MainMenu::CWaitDialog;
-    dlg->SetDialogTitle(tr("Air System Test"));
-    dlg->SetText(tr("Releasing Vaccuum..."));
-    dlg->HideAbort();
-    dlg->SetTimeout(5000); /// \todo: change time out
-
-    /// \todo: connect the test success signal with waiting dialog accept slot */
-    // (void)connect(TEST, SIGNAL(SUCCESS_SIGNAL()), dlg, SLOT(accept()) );
-    /// \todo: connect the test failure signal with waiting dialog reject slot */
-    // (void)connect(TEST, SIGNAL(FAILURE_SIGNAL()), dlg, SLOT(reject()) );
-
-    CONNECTSIGNALSLOT(dlg, accepted(), this, Succeed() );
-    CONNECTSIGNALSLOT(dlg, rejected(), this, Fail() );
-
-    dlg->exec();
-
-    delete dlg;
-}
-
-void CAirHeatingTubeTest::Succeed(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS);
-    qDebug() << "Air System test succeeded!";
-
-    // display success message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Air System Test"));
-    dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText(tr("Air tystem test SUCCEEDED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
-}
-
-void CAirHeatingTubeTest::Fail(void)
-{
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE);
-    qDebug() << "Air System test failed!";
-
-    // display failure message
-    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg;
-    dlg->SetTitle(tr("Air System Test"));
-    dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText(tr("Air system test FAILED!"));
-    dlg->HideButtons();
-    dlg->SetButtonText(1, tr("OK"));
-
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
-
-    dlg->exec();
-
-    delete dlg;
-
-    /// \todo: log here **************************************/
+//__ok__:
+__fail__:
+    dlg->ShowMessage(title, text, (ErrorCode_t)ret);
+__abort__:
+    dev->AirTubeStopHeating();
+    return ret;
 }
 
 } // namespace LaSystem
