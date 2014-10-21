@@ -102,8 +102,6 @@ int CAirHeatingTubeTest::Run(void)
     int AirRepeatTime = p_TestCase->GetParameter("AirRepeatTime").toInt();
     int AirMaintainTime = p_TestCase->GetParameter("AirMaintainTime").toInt();
 
-    (void)dev->AirTubeStopHeating();
-
     qreal AirTargetTemp = p_TestCase->GetParameter("AirTargetTemp").toFloat();
     (void)dev->AirTubeStartHeating(AirTargetTemp);
 
