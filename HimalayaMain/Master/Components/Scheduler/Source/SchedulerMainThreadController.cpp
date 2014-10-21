@@ -2619,14 +2619,17 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             {
                 line = line.trimmed();
                 QStringList list = line.split("=");
-                if ("ENABLE_ALARM" == list.at(0))
+                if ("ENABLE_ALARM" == static_cast<QString>(list.at(0)))
                 {
-                    if ("0" == list.at(1))
+
+                    if ("0" == static_cast<QString>(list.at(1)))
                     {
                         m_CheckRemoteAlarmStatus = false;
+                        m_CheckLocalAlarmStatus = false;
                     }
                     break;
                 }
+                line = in.readLine();
             }
         }
 
@@ -3322,7 +3325,7 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
     {
         m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
         SchedulerCommandShPtr_t pResHeatingCmd;
-        PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOnFan");
+        PopDeviceControlCmdQueue(pResHeatingCmd, "Scheduler::ALTurnOffFan");
         ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
         (void)pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -4043,9 +4046,11 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     }
     if (reportError8.instanceID != 0)
     {
+#if 0
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
+#endif
     }
 
     if (reportError9.instanceID != 0)
