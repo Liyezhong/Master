@@ -1039,7 +1039,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(m_IsCleaningProgram)
                 { // need run cleaning dry step
                     m_SchedulerMachine->NotifyEnterCleaningDryStep();
-                    m_ProgramStatusInfor.SetLastReagentGroup("");// set Retort to clean
                 }
                 else
                 {
@@ -3187,6 +3186,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     case CDS_SUCCESS:
         RaiseEvent(EVENT_SCHEDULER_FINISHED_DRY_PROCESSING);
         m_SchedulerMachine->NotifyProgramFinished();
+        m_ProgramStatusInfor.SetLastReagentGroup("");// set Retort to clean
         CurrentState = CDS_READY;
         StepStartTime = 0;
         break;

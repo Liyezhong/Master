@@ -195,14 +195,21 @@ void CRcReHeating::CheckTheTemperature()
     {
         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
         {
-            if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
+            emit SigGetRVPosition();
+        }
+        else
+        {
+            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_RV_SENSOR2_TEMP * 1000)
             {
-                emit TasksDone(true);
+                emit TasksDone(false);
             }
-            else
-            {
-                emit SigGetRVPosition();
-            }
+        }
+    }
+    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
+    {
+        if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
+        {
+            emit TasksDone(true);//cleaning just judge the RV sensor2 temperature
         }
         else
         {
@@ -438,25 +445,34 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         m_StartReq ++;
         emit SignalDrain();
     }
-    else
+    else if ("Scheduler::IDForceDraining" == cmdName)
     {
-        if ("Scheduler::IDForceDraining" == cmdName)
+        emit SignalStopDrain();
+        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
         {
-            emit SignalStopDrain();
+            m_DrainIsOk = true;
+        }
+        else
+        {
+            m_DrainIsOk = false;
+        }
+        m_StartReq++;
+    }
+    else if(2 == m_StartReq)
+    {
+        if(m_DrainIsOk)
+        {
             if(m_IsNeedRunCleaning)
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                emit TasksDone(true);
-            }
-            else
-            {
-                emit TasksDone(false);
-            }
-            m_StartReq = 0;
+            emit TasksDone(true);
         }
+        else
+        {
+            emit TasksDone(false);
+        }
+        m_StartReq = 0;
     }
 }
 
