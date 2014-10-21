@@ -423,6 +423,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     }
     if(isCleaningProgram)
     {
+        m_IsCleaningProgram = isCleaningProgram;
         CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
         cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
         m_SchedulerCommandProcessor->pushCmd(cmdSet);
