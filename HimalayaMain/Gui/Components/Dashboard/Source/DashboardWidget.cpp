@@ -421,7 +421,7 @@ void CDashboardWidget::OnProgramCompleted()
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
 
-    if (m_SelectedProgramId.at(0) == 'C')
+    if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(CommonString::strInforMsg);
