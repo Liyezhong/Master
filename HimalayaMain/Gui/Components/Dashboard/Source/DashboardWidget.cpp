@@ -846,8 +846,8 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
 void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& cmd)
 {
     ui->programPanelWidget->SwitchToProgramRunningStatus(cmd);
-    QString strProgramID = cmd.GetProgramID();
-    emit ProgramSelected(strProgramID, const_cast<QList<QString>&>(cmd.GetStationList()));
+    m_SelectedProgramId = cmd.GetProgramID();
+    emit ProgramSelected(m_SelectedProgramId, const_cast<QList<QString>&>(cmd.GetStationList()));
     QString scenarioID = QString::number(cmd.GetScenario());
     if ('4' == scenarioID.at(scenarioID.count() - 1))
     {
