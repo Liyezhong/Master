@@ -208,7 +208,8 @@ private:
         PSSMABORT_RELEASE_PRESSURE,
         PSSMABORT_STOP_FILLING,
         PSSMABORT_STOP_DRAINING,
-        PSSMABORT_FORCE_DRAIN
+        PSSMABORT_FORCE_DRAIN,
+        PSSMABORT_MOVE_NEXTTUBE
     } PSSM_ABORTING_t;
     PSSM_ABORTING_t m_PssmAbortingSeq;                                                  ///< Sequence of PSSM_ABORTING
 

@@ -1805,10 +1805,10 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
             //Notify GUI
             emit sigOnStopForceDrain();
 
-            m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                this->NotifyAbort();
+                 m_PssmAbortingSeq = PSSMABORT_MOVE_NEXTTUBE;
+                mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS);
             }
             else
             {
@@ -1818,6 +1818,26 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
         else
         {
             // Do nothing, just wait
+        }
+        break;
+    case PSSMABORT_MOVE_NEXTTUBE:
+        if(mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS))
+        {
+          this->NotifyAbort();
+        }
+        else
+        {
+            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
+                else
+                {
+                    // Do nothing, just wait
+                }
+            }
         }
         break;
     default:
