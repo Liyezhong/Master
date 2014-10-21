@@ -1189,6 +1189,7 @@ void HimalayaMasterThreadController::RequestDayRunLogFileNames(QString FolderPat
 void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCommands::CmdSystemState &Cmd,
                       Threads::CommandChannel&)
 {
+    Q_UNUSED(Cmd)
     //EventHandler::CrisisEventHandler::Instance().currentSysState(Cmd.m_StateId);
 }
 

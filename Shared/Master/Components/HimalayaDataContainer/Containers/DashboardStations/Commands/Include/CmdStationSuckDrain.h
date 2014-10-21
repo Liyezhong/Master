@@ -88,7 +88,7 @@ public:
      *  \return from NoCleaningProgram
      */
     /****************************************************************************/
-    inline const bool NoCleaningProgram()const {return m_NoCleaningProgram;}
+    inline bool NoCleaningProgram()const {return m_NoCleaningProgram;}
 private:
     CmdStationSuckDrain(const CmdStationSuckDrain &);                     ///< Not implemented.
     const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.

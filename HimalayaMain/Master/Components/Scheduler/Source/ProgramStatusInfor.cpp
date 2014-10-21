@@ -187,7 +187,7 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
     {
         Slices = value.split(",");
     }
-    bool ok = false;
+    //bool ok = false;
     quint64 Start = 0;
     quint64 End = 0;
     for(int i = 0; i < Slices.length() / 2;)

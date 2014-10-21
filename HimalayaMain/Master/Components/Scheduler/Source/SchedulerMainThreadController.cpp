@@ -215,6 +215,7 @@ void SchedulerMainThreadController::DevProcDestroyed()
 
 void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& DeviceType)
 {
+    Q_UNUSED(ReturnCode)
     //send command
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(3000, ModuleInfo, DeviceType, false)));
 }
@@ -436,6 +437,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 
 void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+    Q_UNUSED(ctrlCmd)
     m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(), m_CurProgramStepInfo.reagentGroup);
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
@@ -459,6 +461,7 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+    Q_UNUSED(cmd)
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
