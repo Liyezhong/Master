@@ -35,7 +35,8 @@
 #include "Programs/Include/ModifyProgramIconDlg.h"
 
 namespace Programs {
-    #define MAX_PROGRAM_STEPS 50 //!< Maximum number of program steps
+    //#define MAX_PROGRAM_STEPS 50 //!< Maximum number of program steps
+    #define MAX_PROGRAM_STEPS 14 //!< Maximum number of program steps
     #define MAX_LONGNAME_LENGTH 20  //!< Maximum length program long name
     #define MIN_LONGNAME_LENGTH 1   //!< Manimum length program long name
     #define MAX_SHORTNAME_LENGTH 3  //!< Maximum length program short name
