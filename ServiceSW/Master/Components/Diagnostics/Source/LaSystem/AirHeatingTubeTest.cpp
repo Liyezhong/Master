@@ -20,8 +20,6 @@
 #include <QDebug>
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
-#include "Global/Include/Utils.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
 
@@ -119,6 +117,7 @@ int CAirHeatingTubeTest::Run(void)
             goto __fail__;
     }
 
+    timingDialog->SetTitle(title);
     if (AirCurrentTemp < AirTempAbove) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = AirRepeatTime + AirMaintainTime;

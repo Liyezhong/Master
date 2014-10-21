@@ -64,4 +64,6 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/SelectBottleNReagentDialog.ui \
     ../Forms/LevelSensorHeatingDialog.ui \
     ../Forms/OvenHeatingTestEmptyTimingDialog.ui \
-    ../Forms/LaTimingDialog.ui
+    ../Forms/LaTimingDialog.ui \
+    ../Forms/RetortTimingDialog.ui \
+    ../Forms/RetortInputDialog.ui

@@ -29,7 +29,7 @@
 #include "Diagnostics/Include/Retort/LevelSensorHeatingTest.h"
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
-#include "Diagnostics/Include/Retort/RetortHeatingTestWithLiquid.h"
+#include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -116,19 +116,17 @@ void CRetort::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST);
     qDebug() << "Retort: start heating test empty";
 
-    //Retort::CHeatingTestEmpty test;
-
-    //test.Run();
+    Retort::CHeatingTestEmpty test(mp_MessageDlg);
+    (void)test.Run();
 }
 
 void CRetort::StartHeatingTestWithWater(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
-    qDebug() << "Retort: start heating test with liquid";
+//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
+    qDebug() << "Retort: start heating test with water";
 
-    //Retort::CHeatingTestWithLiquid test;
-
-    //test.Run();
+    Retort::CHeatingTestWithWater test(mp_MessageDlg);
+    (void)test.Run();
 }
 
 /****************************************************************************/
@@ -141,12 +139,9 @@ void CRetort::StartHeatingTestWithWater(void)
 void CRetort::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
-    switch (p_Event->type())
-    {
+    switch (p_Event->type()) {
     case QEvent::LanguageChange:
-    {
         mp_Ui->retranslateUi(this);
-    }
         break;
     default:
         break;

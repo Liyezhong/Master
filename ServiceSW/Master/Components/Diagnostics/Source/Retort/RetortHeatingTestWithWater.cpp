@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file RetortHeatingTestEmpty.cpp
+/*! \file RetortHeatingTestWithWater.cpp
  *
- *  \brief Implementation of Retort Heating test empty.
+ *  \brief Implementation of Retort Heating test with water.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2014-10-21
@@ -22,21 +22,23 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
+#include "Diagnostics/Include/LevelSensorHeatingDialog.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
+#include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"
+#include "Diagnostics/Include/Retort/RetortInputDialog.h"
 
 namespace Diagnostics {
 
 namespace Retort {
 
-CHeatingTestEmpty::CHeatingTestEmpty(CDiagnosticMessageDlg *_dlg)
+CHeatingTestWithWater::CHeatingTestWithWater(CDiagnosticMessageDlg *_dlg)
     : CTestBase()
     , dlg(_dlg)
     , timingDialog(new RetortTimingDialog(dlg->ParentWidget()))
 {
 }
 
-CHeatingTestEmpty::~CHeatingTestEmpty(void)
+CHeatingTestWithWater::~CHeatingTestWithWater(void)
 {
     try {
         delete timingDialog;
@@ -45,7 +47,7 @@ CHeatingTestEmpty::~CHeatingTestEmpty(void)
     }
 }
 
-void CHeatingTestEmpty::ShowWaitingDialog(struct HeatingStatus *status, bool isShow)
+void CHeatingTestWithWater::ShowWaitingDialog(struct HeatingStatus *status, bool isShow)
 {
     Service::ModuleTestStatus refresh;
 
@@ -63,24 +65,34 @@ void CHeatingTestEmpty::ShowWaitingDialog(struct HeatingStatus *status, bool isS
         timingDialog->show();
 }
 
-int CHeatingTestEmpty::Run(void)
+int CHeatingTestWithWater::Run(void)
 {
     qDebug() << "Retort Heating test empty starts!";    
 
-    QString title((tr("Retort Heating Test (Empty)")));
+    QString title((tr("Retort Heating Test (with Water)")));
     QString text;
     int ret, i;
     struct HeatingStatus heatingStatus;
+    RetortInputDialog inputDialog(dlg->ParentWidget());
+    QString tempExternal;
 
-    text = tr("Please confirm the retort is empty and dry. "
-              "(If not, use the \" Diagnostic_Retort_Drain "
-              "Reagen\" function first). Close retort lid and "
-              "rotate lock to closed position.");
+    text = tr("Please perform Retort Heating Test (Empty).<br/>"
+              "This will save time eventually. For this test, you will need a "
+              "calibrated external thermometer.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
         return RETURN_OK;
 
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestEmpty");
+    text = tr(" Please put reagent bottle with water to reagent "
+              "bottle position 13. And confirm the retort is empty and "
+              "dry. (If not, use the \"Diagnostic_Retort_Drain "
+              "Reagent\" function first). Close retort lid and rotate lock "
+              "to closed position.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+    if (ret == CDiagnosticMessageDlg::ABORT)
+        return RETURN_OK;
+
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestWithWater");
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
     qreal retortTempSide;
@@ -94,7 +106,7 @@ int CHeatingTestEmpty::Run(void)
 
     ret = dev->RetortGetTemp(&retortTempSide, &retortTempBottom1, &retortTempBottom2);
     if (ret != RETURN_OK || qAbs(retortTempBottom1 - retortTempBottom2) >= diffTemp) {
-        text = tr("Retort Heating Test(Empty) failed.<br/>"
+        text = tr("Retort Heating Test(with Water) failed.<br/>"
                   "Detection of Retort temperature failed. Sequentially check resistance of temperature "
                   "sensor, function of ASB5 and retort heating elements. Exchange "
                   "ASB5 or retort accordingly and repeat this test.");
@@ -110,7 +122,7 @@ int CHeatingTestEmpty::Run(void)
 
     if (ret != RETURN_OK) {
         (void)dev->RetortStopHeating();
-        text = tr(" Retort Heating Test(Empty) failed.<br/>"
+        text = tr("Retort Heating Test(with Water) failed.<br/>"
                   "Current of heating elements is out of specifications. "
                   "Sequentially check function of ASB5 and retort heating elements. "
                   "Exchange ASB5 or retort accordingly and repeat this test.");
@@ -118,13 +130,38 @@ int CHeatingTestEmpty::Run(void)
         return RETURN_ERR_FAIL;
     }
 
+    //-----
+    CLevelSensorHeatingDialog HeatingDlg(dlg->ParentWidget());
+    bool HeatingRet = HeatingDlg.StartHeating(false);
+    if (!HeatingDlg.result())
+        return RETURN_OK;
+    if (!HeatingRet) {
+        text = tr("Retort Level Sensor Heating Test failed.<br/>"
+                  "Target temperature was not reached in time. Please "
+                  "perform Level Sensor Detection Test.");
+        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        return RETURN_ERR_FAIL;
+    }
+
+    (void)dev->RVInitialize();
+    (void)dev->RVMovePosition(true, 13);
+    (void)dev->PumpSucking();
+    (void)dev->RVMovePosition(false, 13);
+
+    //-----
+
     int t1 = p_TestCase->GetParameter("t1").toInt();
-    int t2 = p_TestCase->GetParameter("t2").toInt();
     qreal tempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
 
+    (void)dev->RetortStopHeating();
+    retortSideTargetTemp = p_TestCase->GetParameter("RetortSideTargetTemp1").toFloat();
+    retortBottomTargetTemp = p_TestCase->GetParameter("RetortBottomTargetTemp1").toFloat();
+    (void)dev->RetortStartHeating(retortSideTargetTemp, retortBottomTargetTemp);
+
     timingDialog->SetTitle(title);
+
     heatingStatus.UsedTime = 0;
-    heatingStatus.EDTime = t1 + t2;
+    heatingStatus.EDTime = t1;
     heatingStatus.RetortTempTarget = tr("%1 ~ %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
     (void)dev->RetortGetTemp(&retortTempSide, &retortTempBottom1, &retortTempBottom2);
     heatingStatus.RetortTempSide = retortTempSide;
@@ -132,24 +169,11 @@ int CHeatingTestEmpty::Run(void)
     heatingStatus.RetortTempSensor2 = retortTempBottom2;
     this->ShowWaitingDialog(&heatingStatus, true);
 
-    int count = t2; // keep 1 mins
-    for (i = 0; i < t1 + t2 && timingDialog->isVisible(); i++) {
+    for (i = 0; i < t1 && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
-        if (retortTempSide > (retortSideTargetTemp + tempOffset)
-                || retortTempBottom1 > retortBottomTargetTemp + tempOffset
-                || retortTempBottom2 > retortBottomTargetTemp + tempOffset) {
-            ret = RETURN_ERR_FAIL;
-            break;
-        }
-        if (retortTempSide >= retortSideTargetTemp
-                && retortTempBottom1 >= retortBottomTargetTemp
-                && retortTempBottom2 >= retortBottomTargetTemp) {
-            if (!--count)
-                break;
-        }
         int MSec = QTime().currentTime().msecsTo(EndTime);
         dev->Pause(MSec);
         heatingStatus.UsedTime++;
@@ -162,21 +186,54 @@ int CHeatingTestEmpty::Run(void)
     if (!timingDialog->isVisible())
         return RETURN_OK;
     timingDialog->accept();
-    if (ret != RETURN_OK || i == t1) {
-        // fail
-        text = tr("Retort Heating Test (Empty) failed.<br/>"
-                  "Sequentially check resistance of "
-                  "temperature sensor, function of ASB5 "
-                  "and retort. Exchange part accordingly "
-                  "and repeat this test.");
-        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        return RETURN_ERR_FAIL;
+    text = tr("Retort Heating Test (with Water) failed.<br/>"
+              "Sequentially check resistance of temperature "
+              "sensor, function of ASB5 and retort. Exchange "
+              "part accordingly and repeat this test.");
+    if ((ret = dev->RetortGetTemp(&retortTempSide,
+                     &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
+        goto __fail__;
+    if ((retortTempSide > (retortSideTargetTemp + tempOffset) || retortTempSide < retortSideTargetTemp))
+        goto __fail__;
+    if (retortTempBottom1 > retortBottomTargetTemp + tempOffset || retortTempBottom1 < retortBottomTargetTemp)
+        goto __fail__;
+    if (retortTempBottom2 > retortBottomTargetTemp + tempOffset || retortTempBottom2 < retortBottomTargetTemp)
+        goto __fail__;
+
+    inputDialog.SetTitle(title);
+
+    for (;;) {
+        inputDialog.exec();
+        ret = inputDialog.getEdit(tempExternal);
+        if (ret == 0)
+            break;
+        if (ret == 1) {
+            text = tr("Edit box cannot be empty!");
+            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        }
+        if (ret == 2) {
+             text = tr("The input value is different!");
+            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        }
     }
 
-    text = tr("Retort Heating Test (Empty) successful.");
-    dlg->ShowMessage(title, text, RETURN_OK);
+    if (tempExternal.toFloat() < retortSideTargetTemp
+            || tempExternal.toFloat() > retortSideTargetTemp + tempOffset) {
+        text = tr("Retort Heating Test (with Water) failed.<br/>"
+                  "Exchange the retort module and repeat this test.");
+        ret = RETURN_ERR_FAIL;
+        goto __fail__;
+    } else {
+        text = tr("Retort Heating Test (with Water) successfully completed.");
+        ret = RETURN_OK;
+        goto __ok__;
+    }
 
-    return RETURN_OK;
+__ok__:
+__fail__:
+    dlg->ShowMessage(title, text, (ErrorCode_t)ret);
+__abort__:
+    return ret;
 }
 
 

@@ -120,6 +120,7 @@ int CLiquidHeatingTubeTest::Run(void)
             goto __fail__;
     }
 
+    timingDialog->SetTitle(title);
     if (liquidCurrentTemp < liquidTempAbove) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = liquidRepeatTime + liquidMaintainTime;

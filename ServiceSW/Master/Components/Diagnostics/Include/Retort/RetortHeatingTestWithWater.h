@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file HeatingTestEmpty.h
+/*! \file HeatingTestWithLiquid.h
  *
- *  \brief Declaration of Retort Heating test empty.
+ *  \brief Declaration of Retort heating test with water.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2014-10-21
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICS_RETORT_HEATINGTESTEMPTY_H
-#define DIAGNOSTICS_RETORT_HEATINGTESTEMPTY_H
+#ifndef DIAGNOSTICS_RETORT_HEATINGTESTWITHWATER_H
+#define DIAGNOSTICS_RETORT_HEATINGTESTWITHWATER_H
 
 #include "Diagnostics/Include/TestBase.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
@@ -46,8 +46,7 @@ struct HeatingStatus {
 };
 #endif
 
-
-class CHeatingTestEmpty : public Diagnostics::CTestBase
+class CHeatingTestWithWater : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
@@ -58,14 +57,14 @@ public:
      *  \iparam _dlg = message dialog
      */
     /****************************************************************************/
-    CHeatingTestEmpty(CDiagnosticMessageDlg *_dlg);
+    CHeatingTestWithWater(CDiagnosticMessageDlg *_dlg);
 
     /****************************************************************************/
     /*!
      *  \brief Destructor
      */
     /****************************************************************************/
-    ~CHeatingTestEmpty(void);
+    ~CHeatingTestWithWater(void);
     /****************************************************************************/
     /*!
      *  \brief To run test case.
@@ -90,4 +89,4 @@ private:
 
 } // namespace Diagnostics
 
-#endif // DIAGNOSTICS_RETORT_HEATINGTESTEMPTY_H
+#endif // DIAGNOSTICS_RETORT_HEATINGTESTWITHWATER_H

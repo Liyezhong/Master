@@ -31,6 +31,8 @@
 		<SSystemSealing RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure1="42" TargetPressure2="-42" PressureDiff="5" KeepDuration="60" />
 	</System>
 	<Retort>
+		<RetortHeatingTestEmpty RetortSideTargetTemp="70" RetortBottomTargetTemp="70" RetortDiffTemp="20" TempOffset="10" t="3" t1="960" t2="60"/>
+		<RetortHeatingTestWithWater RetortSideTargetTemp="95" RetortBottomTargetTemp="95" RetortSideTargetTemp1="50" RetortBottomTargetTemp1="50" RetortDiffTemp="20" TempOffset="6" t="3" t1="3600"/>
 	</Retort>
 	<Global>
 		<SGlobal PMeltingPoint="0" RetortCondition="0" />
