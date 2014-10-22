@@ -191,7 +191,7 @@ bool CRcReHeating::StartHeatingSensor()
 
 void CRcReHeating::CheckTheTemperature()
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257))
+    if(200 == m_LastScenario || 260 == m_LastScenario || 283 == m_LastScenario || 293 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257))
     {
         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
         {
@@ -205,7 +205,7 @@ void CRcReHeating::CheckTheTemperature()
             }
         }
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
+    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297 && 283 != m_LastScenario && 293 != m_LastScenario) )
     {
         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
         {
@@ -303,15 +303,23 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 if ("Scheduler::IDForceDraining" == cmdName)
                 {
-                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    if(283 == m_LastScenario || 293 == m_LastScenario)
                     {
-                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                        m_HasReagent = false;
+                        emit TasksDone(true);
+                        m_RsReagentCheckStep = BUILD_VACUUM;
                     }
                     else
                     {
-                        m_RsReagentCheckStep = BUILD_VACUUM;
-                        m_HasReagent = true;
+                        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                        {
+                            m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                            m_HasReagent = false;
+                        }
+                        else
+                        {
+                            m_RsReagentCheckStep = BUILD_VACUUM;
+                            m_HasReagent = true;
+                        }
                     }
                     m_StartReq = 0;
                 }
