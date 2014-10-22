@@ -355,9 +355,16 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 
             QString curProgramID = m_ProgramStatusInfor.GetProgramId();
             m_CurProgramID = curProgramID;
-            m_FirstProgramStepIndex = m_ProgramStatusInfor.GetStepID();
-            (void)this->PrepareProgramStationList(curProgramID, m_ProgramStatusInfor.GetStepID());
-            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
+            m_CurProgramStepIndex = -1;
+            //just get the m_CurProgramStepIndex
+            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);
+            if (m_CurProgramStepIndex != -1)
+            {
+                m_FirstProgramStepIndex = m_CurProgramStepIndex;
+                (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+                m_CurProgramStepIndex = -1;
+                (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
+            }
         }
         else
         {
@@ -387,7 +394,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     bool isCleaningProgram = false;
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
 
-    if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario)
+    if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario || 283 == scenario || 293 == scenario)
     {
         isCleaningProgram = true;
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
@@ -396,11 +403,6 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     {
         isCleaningProgram = true;
         m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
-    }
-    else if(283 == scenario || 293 == scenario)
-    {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
     }
     else if(284 == scenario || 294 == scenario)
     {
@@ -489,8 +491,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         }
         m_ProgramStatusInfor.SetProgramID(m_CurProgramID);
         m_ProgramStatusInfor.SetStationList(m_StationList);
-
         (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+        m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+
         if(m_CurProgramStepIndex != -1)
         {
             //send command to main controller to tell program is starting
@@ -1012,6 +1015,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1)
             {
+                m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
                 //start next step
                 QString PVMode = "/";
                 if(m_CurProgramStepInfo.isPressure)
@@ -4190,7 +4194,6 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
     RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
 }
 
