@@ -110,7 +110,7 @@ int CMovementTest::Run()
     };
 
     for (size_t i = 0; i < sizeof(pos)/sizeof(size_t); i++) {
-        text = tr(" Rotating Rotary Valve to tube position") + QString().sprintf("%u", pos[i]);
+        text = tr(" Rotating Rotary Valve to tube position ") + QString().sprintf("%u", pos[i]);
         mp_dlg->ShowWaitingDialog(title, text);
         if (dev->RVMovePosition(true, pos[i]) != RETURN_OK) {
             text = tr("Rotary Valve Movement Test failed. "

@@ -19,9 +19,10 @@
 /****************************************************************************/
 #ifndef RETORTINPUTDIALOG_H
 #define RETORTINPUTDIALOG_H
-
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "Core/Include/ServiceDefines.h"
+
 #include <QDialog>
 
 namespace Ui {
@@ -63,7 +64,16 @@ public:
      */
     /****************************************************************************/
     int getEdit(QString &text);
-    
+private slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief To do Ok action.
+     */
+    /****************************************************************************/
+    void clickOk(void);
+private:
+    void ShowMessage(QString title, QString  text);
 private:
     Ui::RetortInputDialog *ui;
 };

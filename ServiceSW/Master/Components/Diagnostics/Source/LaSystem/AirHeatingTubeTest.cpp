@@ -121,7 +121,7 @@ int CAirHeatingTubeTest::Run(void)
     if (AirCurrentTemp < AirTempAbove) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = AirRepeatTime + AirMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
         (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
         this->ShowWaitingDialog(&heatingStatus);
@@ -157,7 +157,7 @@ int CAirHeatingTubeTest::Run(void)
     if (!timingDialog->isVisible()) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = AirMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
 
         (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
@@ -182,7 +182,7 @@ int CAirHeatingTubeTest::Run(void)
     if (!timingDialog->isVisible())
         goto __abort__;
     timingDialog->accept();
-    if (ret != RETURN_ERR_FAIL)
+    if (ret != RETURN_OK)
         text = tr("Air Heating Tube Test failed.<br/>"
                   "Please check Air heating tube, cables "
                   "and connections and ASB15 board. "

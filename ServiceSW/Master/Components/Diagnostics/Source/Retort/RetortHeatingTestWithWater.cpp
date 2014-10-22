@@ -130,8 +130,18 @@ int CHeatingTestWithWater::Run(void)
         return RETURN_ERR_FAIL;
     }
 
+    // RV initialize
+    text = tr("Initializing the rotary valve...");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->RVInitialize();
+    text = tr("Rotating Rotary Valve to tube position 13");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->RVMovePosition(true, 13);
+    dlg->HideWaitingDialog();
+
     //-----
     CLevelSensorHeatingDialog HeatingDlg(dlg->ParentWidget());
+    HeatingDlg.SetTitle(title);
     bool HeatingRet = HeatingDlg.StartHeating(false);
     if (!HeatingDlg.result())
         return RETURN_OK;
@@ -142,13 +152,27 @@ int CHeatingTestWithWater::Run(void)
         dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
-
-    (void)dev->RVInitialize();
-    (void)dev->RVMovePosition(true, 13);
+    text = tr("Start filling");
+    dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpSucking();
+    text = tr("Rotating Rotary Valve to sealing position 13");
+    dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(false, 13);
+    dlg->HideWaitingDialog();
 
     //-----
+    text = tr("Please put ht calibrated external thermometer into retort, and then close the retort lid lock.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+    if (ret == CDiagnosticMessageDlg::ABORT) {
+        text = tr("Rotating Rotary Valve to tube position 13");
+        dlg->ShowWaitingDialog(title, text);
+        (void)dev->RVMovePosition(false, 13);
+        text = tr("Start filling");
+        dlg->ShowWaitingDialog(title, text);
+        dev->PumpDraining();
+        dlg->HideWaitingDialog();
+        return RETURN_OK;
+    }
 
     int t1 = p_TestCase->GetParameter("t1").toInt();
     qreal tempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
@@ -156,13 +180,13 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->RetortStopHeating();
     retortSideTargetTemp = p_TestCase->GetParameter("RetortSideTargetTemp1").toFloat();
     retortBottomTargetTemp = p_TestCase->GetParameter("RetortBottomTargetTemp1").toFloat();
-    (void)dev->RetortStartHeating(retortSideTargetTemp, retortBottomTargetTemp);
+    (void)dev->RetortStartHeating(retortSideTargetTemp + 7, retortBottomTargetTemp + 2);
 
     timingDialog->SetTitle(title);
 
     heatingStatus.UsedTime = 0;
     heatingStatus.EDTime = t1;
-    heatingStatus.RetortTempTarget = tr("%1 ~ %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
+    heatingStatus.RetortTempTarget = tr("%1 - %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
     (void)dev->RetortGetTemp(&retortTempSide, &retortTempBottom1, &retortTempBottom2);
     heatingStatus.RetortTempSide = retortTempSide;
     heatingStatus.RetortTempSensor1 = retortTempBottom1;
@@ -202,20 +226,16 @@ int CHeatingTestWithWater::Run(void)
 
     inputDialog.SetTitle(title);
 
-    for (;;) {
-        inputDialog.exec();
-        ret = inputDialog.getEdit(tempExternal);
-        if (ret == 0)
-            break;
-        if (ret == 1) {
-            text = tr("Edit box cannot be empty!");
-            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        }
-        if (ret == 2) {
-             text = tr("The input value is different!");
-            dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
-        }
-    }
+    inputDialog.exec();
+    inputDialog.getEdit(tempExternal);
+    //==================
+    text = tr("Rotating Rotary Valve to tube position 13");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->RVMovePosition(false, 13);
+    text = tr("Start filling");
+    dlg->ShowWaitingDialog(title, text);
+    dev->PumpDraining();
+    dlg->HideWaitingDialog();
 
     if (tempExternal.toFloat() < retortSideTargetTemp
             || tempExternal.toFloat() > retortSideTargetTemp + tempOffset) {

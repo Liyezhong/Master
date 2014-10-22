@@ -25,7 +25,7 @@ RetortInputDialog::RetortInputDialog(QWidget *parent) :
     ui(new Ui::RetortInputDialog)
 {
     ui->setupUi(this);
-    connect(ui->ok, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(ui->ok, SIGNAL(clicked()), this, SLOT(clickOk()));
 }
 
 RetortInputDialog::~RetortInputDialog()
@@ -40,12 +40,37 @@ void RetortInputDialog::SetTitle(QString Title)
 
 int RetortInputDialog::getEdit(QString &text)
 {
-    if (!ui->lineEdit->text().length() || !ui->lineEdit_2->text().length())
-        return 1;
-    if (ui->lineEdit->text() != ui->lineEdit_2->text())
-        return 2;
 
     text = ui->lineEdit->text();
 
     return 0;
+}
+
+void RetortInputDialog::clickOk()
+{
+    if (!ui->lineEdit->text().length() || !ui->lineEdit_2->text().length()) {
+        ShowMessage(tr("Retort Heating Test (with Water)"), tr("Edit box cannot be empty!"));
+        return;
+    }
+    if (ui->lineEdit->text() != ui->lineEdit_2->text()) {
+        ShowMessage(tr("Retort Heating Test (with Water)"),tr("The input value is different!"));
+        return;
+    }
+
+    accept();
+}
+
+void RetortInputDialog::ShowMessage(QString title, QString text)
+{
+    MainMenu::CMessageDlg dlg(this);
+    dlg.SetTitle(title);
+
+    dlg.SetIcon(QMessageBox::Critical);
+
+    dlg.SetText(text);
+    dlg.HideButtons();
+    dlg.SetButtonText(1, "OK");
+    dlg.setModal(true);
+
+    (void)dlg.exec();
 }

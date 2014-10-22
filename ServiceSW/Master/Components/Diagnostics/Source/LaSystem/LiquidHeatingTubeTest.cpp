@@ -53,7 +53,7 @@ void CLiquidHeatingTubeTest::ShowWaitingDialog(struct liquidHeatingStatus *statu
     refresh["UsedTime"] = QTime().addSecs(status->UsedTime).toString("hh:mm:ss");
 
     refresh["TargetTemp"] = status->TargetTemp;
-    refresh["CurrentTemp"] = tr("%1").arg(status->CurrentTemp);
+    refresh["CurrentTemp"] = QString().sprintf("%.02f", status->CurrentTemp);
 
     timingDialog->UpdateLabel(refresh);
 }
@@ -124,7 +124,7 @@ int CLiquidHeatingTubeTest::Run(void)
     if (liquidCurrentTemp < liquidTempAbove) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = liquidRepeatTime + liquidMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
         (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
         this->ShowWaitingDialog(&heatingStatus);
@@ -160,7 +160,7 @@ int CLiquidHeatingTubeTest::Run(void)
     if (!timingDialog->isVisible()) {
         heatingStatus.UsedTime = 0;
         heatingStatus.EDTime = liquidMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 ~ %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
 
         (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
@@ -185,7 +185,7 @@ int CLiquidHeatingTubeTest::Run(void)
     if (!timingDialog->isVisible())
         goto __abort__;
     timingDialog->accept();
-    if (ret != RETURN_ERR_FAIL)
+    if (ret != RETURN_OK)
         text = tr("Liquid Heating Tube Test failed.<br/>"
                   "Please check liquid heating tube, cables "
                   "and connections and ASB15 board. "
