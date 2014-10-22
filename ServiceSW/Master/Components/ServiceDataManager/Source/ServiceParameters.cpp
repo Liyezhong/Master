@@ -32,8 +32,8 @@ namespace DataManager {
 /****************************************************************************/
 CServiceParameters::CServiceParameters()  : CDataContainerBase(),
     m_Version(1),
-    m_ProxyIPAddress("000.000.000.001"),
     m_DataVerificationMode(true),
+    m_ProxyIPAddress("000.000.000.001"),
     m_UserName(""),
     m_FileName(""),
     m_TestReportFolderPath(""),
@@ -59,8 +59,8 @@ CServiceParameters::~CServiceParameters() {
 /****************************************************************************/
 CServiceParameters::CServiceParameters(const CServiceParameters& ServiceParameters) : CDataContainerBase(),
     m_Version(1),
-    m_ProxyIPAddress("000.000.000.001"),
     m_DataVerificationMode(true),
+    m_ProxyIPAddress("000.000.000.001"),
     m_UserName(""),
     m_FileName(""),
     m_TestReportFolderPath(""),

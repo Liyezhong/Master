@@ -30,8 +30,8 @@
 namespace DiagnosticsManufacturing {
 
 CSelectSealingDialog::CSelectSealingDialog(QWidget *p_Parent):
-    mp_Ui(new Ui::CSelectSealingDialog),
-    MainMenu::CDialogFrame(p_Parent)
+    MainMenu::CDialogFrame(p_Parent),
+    mp_Ui(new Ui::CSelectSealingDialog)
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);

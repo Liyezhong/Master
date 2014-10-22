@@ -123,11 +123,11 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;           //!< Base Table widget
     QStandardItemModel m_Model;                     //!< Model for the table
     ServiceDataManager::CModule* mp_Module;         //!< Module information
-    QString m_OvenSNString;                         //!< Stores serial number of Oven module
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Keyboard widget
     CTestCaseReporter* mp_TestReporter;             //!< Test report generation object
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Information dialog
     MainMenu::CWaitDialog *mp_WaitDlg;              //!< Waiting dialog
+    QString m_OvenSNString;                         //!< Stores serial number of Oven module
     QString m_FinalTestResult;                      //!< Stores Final test result
     bool m_TestFlag;                                //!< ture if have test case finished
 

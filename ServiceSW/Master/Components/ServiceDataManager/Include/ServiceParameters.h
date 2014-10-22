@@ -333,13 +333,13 @@ public:
 
 private:
     int m_Version;                                  //!< Stores the version number of the file
+    bool m_DataVerificationMode;                    //!< Store the Date verification mode flag
+
     QString m_ProxyIPAddress;                       //!< Proxy IP address
     QString m_UserName;                             //!< User name
+    QString m_FileName;                             //!< Store the file name
     QString m_TestReportFolderPath;                 //!< Test report folder path
     QString m_FirmwarefolderPath;                   //!< Firmware folder path
-
-    bool m_DataVerificationMode;                    //!< Store the Date verification mode flag
-    QString m_FileName;                             //!< Store the file name
 
     /****************************************************************************/
     /*!

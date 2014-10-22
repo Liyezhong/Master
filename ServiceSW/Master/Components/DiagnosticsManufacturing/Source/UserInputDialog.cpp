@@ -109,7 +109,7 @@ void CUserInputDialog::SetText(QString Text)
 /****************************************************************************/
 void CUserInputDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 {
-
+    Q_UNUSED(Status);
 }
 
 

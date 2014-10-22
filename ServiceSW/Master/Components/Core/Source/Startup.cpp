@@ -49,10 +49,10 @@ namespace Core {
  */
 /****************************************************************************/
 CStartup::CStartup() : QObject(),
-    m_SelfTestFinished(false),
     mp_ManaufacturingDiagnosticsHandler(NULL),
-    mp_LogContentDlg(NULL),
+    m_SelfTestFinished(false),
     mp_USBKeyValidator(NULL),
+    mp_LogContentDlg(NULL),
     mp_SystemLogContentDlg(NULL),
     m_CurrentUserMode(""),
     m_DeviceName(""),
