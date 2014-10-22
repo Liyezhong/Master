@@ -35,7 +35,6 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/System/SystemSealingTest.h \
     ../Include/System/LiquidHoseTest.h \
     ../Include/System/LiquidHoseTestDlg.h
->>>>>>> S:System Liquid hose test
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -72,5 +71,5 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/OvenHeatingTestEmptyTimingDialog.ui \
     ../Forms/LaTimingDialog.ui \
     ../Forms/RetortTimingDialog.ui \
-    ../Forms/RetortInputDialog.ui
+    ../Forms/RetortInputDialog.ui \
     ../Forms/LiquidHoseTestDlg.ui
