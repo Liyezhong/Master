@@ -277,7 +277,6 @@ void CInitialSystem::UpdateRVHeatingStatus()
 {
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
     QString TargetTempS1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest")->GetParameter("PreHeatingTargetTemp");
-    QString TargetTempS2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->GetParameter("PMeltingPoint");
     qreal CurrentTempS1(0);
     qreal CurrentTempS2(0);
     quint16 RVCurrent(0);
@@ -286,13 +285,11 @@ void CInitialSystem::UpdateRVHeatingStatus()
     (void)p_DevProc->RVGetCurrent(&RVCurrent);
 
     mp_Ui->rvTargetTempS1Label->setText(tr("Target Temperature(Sensor1)(\260C):"));
-    mp_Ui->rvTargetTempS2Label->setText(tr("Target Temperature(Sensor2)(\260C):"));
     mp_Ui->rvCurTempS1Label->setText(tr("Current Temperature(Sensor1)(\260C):"));
     mp_Ui->rvCurTempS2Label->setText(tr("Current Temperature(Sensor2)(\260C):"));
     mp_Ui->rvCurrentLabel->setText(tr("Rotary valve Current(mA):"));
 
     mp_Ui->rvTargetTempS1Value->setText(TargetTempS1);
-    mp_Ui->rvTargetTempS2Value->setText(TargetTempS2);
     mp_Ui->rvCurTempS1Value->setText(QString::number(CurrentTempS1));
     mp_Ui->rvCurTempS2Value->setText(QString::number(CurrentTempS2));
     mp_Ui->rvCurrentValue->setText(QString::number(RVCurrent));
