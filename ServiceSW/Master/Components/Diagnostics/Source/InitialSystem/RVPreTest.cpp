@@ -62,7 +62,7 @@ int CRVPreTest::Run(void)
     if (Ret != RETURN_OK || qAbs(RVTempSensor1-RVTempSensor2)>DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
 

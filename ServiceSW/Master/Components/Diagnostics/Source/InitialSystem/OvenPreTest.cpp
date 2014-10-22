@@ -63,7 +63,7 @@ int COvenPreTest::Run(void)
     if (Ret != RETURN_OK || qAbs(OvenTempSensor1-OvenTempSensor2) > DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     qreal TopTargetTemp    = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();

@@ -62,7 +62,7 @@ int CLTubePreTest::Run(void)
     if (Ret != RETURN_OK || (LTubeTempSensor) >= RangeTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     qreal LTubeTargetTemp = p_TestCase->GetParameter("LTubeTargetTemp").toFloat();

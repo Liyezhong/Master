@@ -91,7 +91,7 @@ void CLiquidHoseTestDlg::RunTest()
         mp_Ui->labelStatus->setText(QString("Rotary Valve is moving to tube position %1").arg(BottleNumber));
         (void)p_DevProc->RVMovePosition(true, BottleNumber);
 
-        mp_Ui->labelStatus->setText("Keep pressure for 10 seconds");
+        mp_Ui->labelStatus->setText(QString("Keep pressure for %1 seconds").arg(DurationTime));
         p_DevProc->Pause(DurationTime*1000);
 
         mp_Ui->labelStatus->setText("Record Pressure value");
@@ -117,19 +117,19 @@ void CLiquidHoseTestDlg::RunTest()
     m_BottleNumberList.clear();
 
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
-    if (!CreatePressureRet) {
+
+    if (m_Abort) {
+        delete this;
+    }
+    else if (!CreatePressureRet) {
         QString Title = "Liquid Hose Test";
         QString Text  = "Liquid Hose Test failed.<br>"
                 "Target pressure could not be reached. Please "
                 "perform System Sealing Test to diagnose the reason. Then repeat this test";
         CDiagnosticMessageDlg* p_Dlg = new CDiagnosticMessageDlg(this);
         p_Dlg->ShowMessage(Title, Text, RETURN_ERR_FAIL);
-
         delete p_Dlg;
-    }
-    if (m_Abort) {
-        delete this;
-    }
+    }    
 }
 
 void CLiquidHoseTestDlg::AddBottleNumber(int BottleNumber)

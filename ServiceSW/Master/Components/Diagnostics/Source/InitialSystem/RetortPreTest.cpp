@@ -65,7 +65,7 @@ int CRetortPreTest::Run(void)
     if (Ret != RETURN_OK || qAbs(RetortTempBottom1-RetortTempBottom2) > DiffTemp) {
         ShowWaitingMessage(false);
         ShowFailMessage(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     qreal RetortTargetTemp    = p_TestCase->GetParameter("RetortTargetTemp").toFloat();
