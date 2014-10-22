@@ -35,18 +35,18 @@ namespace Diagnostics {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, bool ReagentFlag, QWidget *p_Parent) :
+CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSelectBottleNReagentDialog),
     m_BottleNumber(1),
-    m_ReagentGroup(1)
+    m_Option(1)
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
 
     mp_ButtonGroup = new QButtonGroup();
-    mp_ButtonGroup->addButton(mp_Ui->radioButtonXylene, 0);
-    mp_ButtonGroup->addButton(mp_Ui->radioButtonOther, 1);
+    mp_ButtonGroup->addButton(mp_Ui->radioButton1, 0);
+    mp_ButtonGroup->addButton(mp_Ui->radioButton2, 1);
 
     mp_ScrollWheel = new MainMenu::CScrollWheel;
 
@@ -59,15 +59,10 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, bool 
         mp_ScrollWheel->AddItem(QString::number(i+1).rightJustified(2, '0'), i);
     }
 
-    if (!ReagentFlag) {
-        mp_Ui->radioButtonXylene->hide();
-        mp_Ui->radioButtonOther->hide();
-    }
-
     mp_ScrollWheel->SetNonContinuous();
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->widget->SetThreeDigitMode(true);
-    mp_Ui->radioButtonOther->setChecked(true);
+    mp_Ui->radioButton2->setChecked(true);
     mp_Ui->widget->SetSubtitle("bottle number", 0);
 
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
@@ -91,6 +86,28 @@ CSelectBottleNReagentDialog::~CSelectBottleNReagentDialog()
     catch (...) {}
 }
 
+void CSelectBottleNReagentDialog::SetRadioButtonVisible(bool Visible)
+{
+    if (Visible) {
+        mp_Ui->radioButton1->show();
+        mp_Ui->radioButton2->show();
+    }
+    else {
+        mp_Ui->radioButton1->hide();
+        mp_Ui->radioButton2->hide();
+    }
+}
+
+void CSelectBottleNReagentDialog::SetScrollWheelVisible(bool Visible)
+{
+    if (Visible) {
+        mp_Ui->widget->show();
+    }
+    else{
+        mp_Ui->widget->hide();
+    }
+}
+
 void CSelectBottleNReagentDialog::SetTitle(QString& Title)
 {
     this->SetDialogTitle(Title);
@@ -99,6 +116,12 @@ void CSelectBottleNReagentDialog::SetTitle(QString& Title)
 void CSelectBottleNReagentDialog::SetLableText(QString &Text)
 {
     mp_Ui->label->setText(Text);
+}
+
+void CSelectBottleNReagentDialog::SetRadioButtonText(QString &Button1, QString &Button2)
+{
+    mp_Ui->radioButton1->setText(Button1);
+    mp_Ui->radioButton2->setText(Button2);
 }
 
 /****************************************************************************/
@@ -144,7 +167,7 @@ void CSelectBottleNReagentDialog::OnAbort()
 
 void CSelectBottleNReagentDialog::OnRadioBtnSelected(int radioBtnIndex)
 {   
-    m_ReagentGroup = radioBtnIndex;
+    m_Option = radioBtnIndex;
 }
 
 } // end namespace Diagnostics

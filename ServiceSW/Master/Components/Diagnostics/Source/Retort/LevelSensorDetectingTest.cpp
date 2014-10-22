@@ -52,7 +52,8 @@ int CLevelSensorDetectingTest::Run(void)
     }
 
     Text = "Please enter the bottle number of the freshest process xylene";
-    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(11, false, mp_Parent);
+    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(11, mp_Parent);
+    p_SelectDlg->SetRadioButtonVisible(false);
     p_SelectDlg->SetTitle(m_MessageTitle);
     p_SelectDlg->SetLableText(Text);
 

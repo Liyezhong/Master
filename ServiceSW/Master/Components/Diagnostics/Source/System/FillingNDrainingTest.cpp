@@ -76,7 +76,7 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(13, true, mp_Parent);
+    CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(13, mp_Parent);
     p_SelectDlg->SetTitle(FILLINGNDRAINING_TITLE);
 
     if ( p_SelectDlg->exec() == 0) {
@@ -84,7 +84,7 @@ int CFillingNDrainingTest::Run(void)
         return Ret;
     }
 
-    int ReagentGroup = p_SelectDlg->GetReagentGroup();
+    int ReagentGroup = p_SelectDlg->GetOption();
     int BottleNumber = p_SelectDlg->GetBottleNumber();
 
     qDebug()<<"Reagent Group:"<<ReagentGroup;

@@ -30,6 +30,7 @@
 #include "Diagnostics/Include/System/ExhaustFanTest.h"
 #include "Diagnostics/Include/System/VentilationFanTest.h"
 #include "Diagnostics/Include/System/SystemSealingTest.h"
+#include "Diagnostics/Include/System/LiquidHoseTest.h"
 #include "Global/Include/Utils.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -119,6 +120,9 @@ void CSystem::StartLiquidHoseTest(void)
 {
     //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST);
     qDebug() << "System: start liquid hose test";
+
+    System::CLiquidHoseTest LiquidHoseTest(mp_MessageDlg, this);
+    (void)LiquidHoseTest.Run();
 }
 
 void CSystem::StartSpeakerTest(void)

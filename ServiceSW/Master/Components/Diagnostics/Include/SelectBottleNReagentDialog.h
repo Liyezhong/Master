@@ -47,7 +47,7 @@ public:
      *  \iparam parent = Parent widget
      */
     /****************************************************************************/
-    explicit CSelectBottleNReagentDialog(int MaxBottleNum, bool ReagentFlag = true, QWidget *parent = 0);
+    explicit CSelectBottleNReagentDialog(int MaxBottleNum, QWidget *parent = 0);
 
     /****************************************************************************/
     /*!
@@ -67,17 +67,20 @@ public:
     }
     /****************************************************************************/
     /*!
-     *  \brief To get selected reagent group
-     *  \return the 0-Xylene, 1-Other Reagents.
+     *  \brief To get selected radio button option
+     *  \return Index of the radio button.
      */
     /****************************************************************************/
-    int GetReagentGroup() {
-        return m_ReagentGroup;
+    int GetOption() {
+        return m_Option;
     }
+
+    void SetRadioButtonVisible(bool Visible);
+    void SetScrollWheelVisible(bool Visible);
 
     void SetTitle(QString& Title);
     void SetLableText(QString& Text);
-
+    void SetRadioButtonText(QString& Button1, QString& Button2);
 protected:
     /****************************************************************************/
     /*!
@@ -117,7 +120,7 @@ private:
 
     QButtonGroup* mp_ButtonGroup;             //!< redio button group
     int m_BottleNumber;                       //!< Desired bottle number selected by user.
-    int m_ReagentGroup;                       //!< Reagent group (1-xylene, 2-Other Reagents).
+    int m_Option;                             //!< Radio button option (1-xylene, 2-Other Reagents).
 
 };
 

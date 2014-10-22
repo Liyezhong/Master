@@ -197,7 +197,7 @@ int CSystemSealingTest::ShowConfirmDlg(int StepNum)
     QString Text = "Please confirm the retort is empty and dry. Please check sealing surfaces on retort "
                 "and lid. Close retort lid and rotate lock to closed position.";
 
-    return mp_MessageDlg->ShowConfirmMessage(m_MessageTitle, Text);
+    return mp_MessageDlg->ShowConfirmMessage(m_MessageTitle, Text, CDiagnosticMessageDlg::OK_ABORT);
 }
 
 void CSystemSealingTest::ShowFinishDlg(int RetNum)

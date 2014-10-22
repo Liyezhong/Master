@@ -31,7 +31,11 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/System/VentilationFanTest.h \
     ../Include/SelectBottleNReagentDialog.h \
     ../Include/LevelSensorHeatingDialog.h \
-    ../Include/System/SystemSealingTest.h
+    ../Source/Oven/OvenHeatingTestEmptyTimingDialog.h \
+    ../Include/System/SystemSealingTest.h \
+    ../Include/System/LiquidHoseTest.h \
+    ../Include/System/LiquidHoseTestDlg.h
+>>>>>>> S:System Liquid hose test
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -52,7 +56,9 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/System/VentilationFanTest.cpp \
     ../Source/SelectBottleNReagentDialog.cpp \
     ../Source/LevelSensorHeatingDialog.cpp \
-    ../Source/System/SystemSeaingTest.cpp
+    ../Source/System/SystemSeaingTest.cpp \
+    ../Source/System/LiquidHoseTest.cpp \
+    ../Source/System/LiquidHoseTestDlg.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \
@@ -67,3 +73,4 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/LaTimingDialog.ui \
     ../Forms/RetortTimingDialog.ui \
     ../Forms/RetortInputDialog.ui
+    ../Forms/LiquidHoseTestDlg.ui
