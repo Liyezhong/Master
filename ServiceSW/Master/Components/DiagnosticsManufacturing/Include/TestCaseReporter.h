@@ -98,16 +98,16 @@ private:
     /****************************************************************************/
     void WriteReportFile(QTextStream& TextStream);
 
+    QString m_ModuleName;                            //!< Stores module name
     Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
+    NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
     QSet<Service::ModuleTestCaseID> m_TestCaseList;  //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
-    QString m_ModuleName;                            //!< Stores module name
     QString m_SerialNumber;                          //!< Stores serial number
     QString m_ReportDir;                             //!< The server report folder
     MainMenu::CMessageDlg *mp_MessageDlg;            //!< Information dialog
     MainMenu::CWaitDialog *mp_WaitDlg;               //!< Waiting dialog
     MainMenu::CMainWindow *mp_Parent;                //!< Parent widget
-    NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
 };
 
 } // end namespace DiagnosticsManufacturing

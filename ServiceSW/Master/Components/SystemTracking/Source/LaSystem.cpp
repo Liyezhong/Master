@@ -46,9 +46,9 @@ const QString SUBMODULE_FAN("Exhaust Fan");                  //!< name of exhaus
 CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
                            QWidget *p_Parent)
     : QWidget(p_Parent)
+    , mp_Ui(new Ui::CLaSystemConfiguration)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
-    , mp_Ui(new Ui::CLaSystemConfiguration)
 {
     mp_Ui->setupUi(this);
 

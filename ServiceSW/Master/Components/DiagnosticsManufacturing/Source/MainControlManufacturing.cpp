@@ -50,9 +50,9 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CMainControlManufacturing)
     , mp_Module(NULL)
-    , mp_EboxModule(NULL)
-    , m_FinalTestResult("NA")
     , m_EboxSNString("040/XXXX")
+    , m_FinalTestResult("NA")
+    , mp_EboxModule(NULL)
     , m_TestFlag(true)
 {
     mp_Ui->setupUi(this);

@@ -29,8 +29,8 @@
 namespace DiagnosticsManufacturing {
 
 CSelect110v220vDialog::CSelect110v220vDialog(int DefaultVoltage, QWidget *p_Parent):
-    m_SelectedVoltage(DefaultVoltage),
     mp_Ui(new Ui::CSelect110v220vDialog),
+    m_SelectedVoltage(DefaultVoltage),
     MainMenu::CDialogFrame(p_Parent)
 {
     mp_Ui->setupUi(GetContentFrame());

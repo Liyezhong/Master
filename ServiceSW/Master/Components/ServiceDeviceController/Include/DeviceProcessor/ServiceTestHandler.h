@@ -42,7 +42,7 @@ class WrapperFmPressureControl;
 
 namespace DeviceControl {
 
-class DeviceControl::IDeviceProcessing;
+//class DeviceControl::IDeviceProcessing;
 
 typedef enum {
     RETURN_OK = 1,

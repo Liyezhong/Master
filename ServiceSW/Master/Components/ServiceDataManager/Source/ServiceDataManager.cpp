@@ -52,6 +52,8 @@ CServiceDataManager::CServiceDataManager(Threads::ServiceMasterThreadController 
     m_IsInitialized(false),
     mp_MasterThreadController(p_ServiceMasterThreadController)
 {
+    Q_UNUSED(Path);
+
     quint32 ReturnCode = InitDataContainer();
     if (ReturnCode != 0) {
         Global::EventObject::Instance().RaiseEvent(ReturnCode);

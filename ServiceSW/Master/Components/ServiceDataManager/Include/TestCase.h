@@ -114,7 +114,7 @@ private:
      * \brief Default constructor.
      */
     /****************************************************************************/
-    CTestCase(QString ModuleName, QString CaseName, bool Status = false);
+    CTestCase(QString ModuleName, QString CaseName);
 
     /****************************************************************************/
     /**

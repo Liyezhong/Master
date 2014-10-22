@@ -44,12 +44,12 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
     , m_MessageDlg(false)
     , m_Archive(true)
     , mp_ModuleList(0)
-    , mp_SettingsInterface(0)
     , m_CurrentTabIndex(0)
+    , mp_SettingsInterface(0)
     , mp_ModuleListArchive(NULL)
     , mp_DeviceConfigurationInterface(NULL)
-    , mp_ServiceParameters(NULL)
     , m_Language(PlatformService::DEUTSCH)
+    , mp_ServiceParameters(NULL)
 {
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
 
@@ -322,6 +322,8 @@ void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType,
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_WARN);
             break;
+        default:
+            break;
         }
         mp_MessageDlg->SetText(MessageText);
     }
@@ -458,6 +460,9 @@ void CServiceGUIConnector::SendEventReportCommand(const quint32 EventCode,
 {
     Q_UNUSED(EventKey);
     Q_UNUSED(EventStatus);
+    Q_UNUSED(EventCode);
+    Q_UNUSED(EventStringList);
+    Q_UNUSED(AltStringUsage);
 
 }
 
@@ -471,6 +476,9 @@ void CServiceGUIConnector::SendEventReportCommand(const quint32 EventCode,
 /****************************************************************************/
 void CServiceGUIConnector::OnEventReportAck(NetCommands::ClickedButton_t ClickedButton, Global::tRefType CmdRef, quint64 EventKey)
 {
+    Q_UNUSED(ClickedButton);
+    Q_UNUSED(CmdRef);
+    Q_UNUSED(EventKey);
     //m_NetworkObject.SendAckToMaster(CmdRef, NetCommands::CmdAcknEventReport(EventKey, ClickedButton));
 }
 

@@ -67,8 +67,8 @@ void ServiceTestHandler::Destroy()
 
 /****************************************************************************/
 ServiceTestHandler::ServiceTestHandler(DeviceControl::IDeviceProcessing &iDevProc)
-    : m_IsConfigured(false),
-      m_rIdevProc(iDevProc)
+    : m_rIdevProc(iDevProc),
+      m_IsConfigured(false)
 {
     mp_Utils = NULL;
 
@@ -414,6 +414,8 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::OvenStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     bool Ret(true);
     QStringList Results;
     Results.clear();
@@ -435,6 +437,8 @@ void ServiceTestHandler::OvenStopHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::OvenGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -456,6 +460,8 @@ void ServiceTestHandler::OvenGetTemp(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::OvenGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -475,6 +481,8 @@ void ServiceTestHandler::OvenGetCurrent(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::OvenGetCoverSensorState(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_DIOven == NULL) {
@@ -491,6 +499,8 @@ void ServiceTestHandler::OvenGetCoverSensorState(QString& ReqName, QStringList& 
 
 void ServiceTestHandler::OvenGetSwithType(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_DIOven == NULL) {
@@ -507,6 +517,8 @@ void ServiceTestHandler::OvenGetSwithType(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::OvenTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -554,6 +566,8 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
 
 void ServiceTestHandler::RetortStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     bool Ret(true);
@@ -573,6 +587,8 @@ void ServiceTestHandler::RetortStopHeating(QString& ReqName, QStringList& Params
 
 void ServiceTestHandler::RetortGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -594,6 +610,8 @@ void ServiceTestHandler::RetortGetTemp(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::RetortGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -614,6 +632,8 @@ void ServiceTestHandler::RetortGetCurrent(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::RetortGetLidLockState(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_DIRetortLid == NULL ) {
@@ -654,6 +674,8 @@ void ServiceTestHandler::RetortSetTemperatureSwitchState(QString& ReqName, QStri
 
 void ServiceTestHandler::RetortGetHeaterSwitchType(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -671,6 +693,8 @@ void ServiceTestHandler::RetortGetHeaterSwitchType(QString& ReqName, QStringList
 
 void ServiceTestHandler::RetortTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -711,6 +735,8 @@ void ServiceTestHandler::LiquidTubeStartHeating(QString& ReqName, QStringList& P
 
 void ServiceTestHandler::LiquidTubeStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     bool Ret(true);
@@ -731,6 +757,8 @@ void ServiceTestHandler::LiquidTubeStopHeating(QString& ReqName, QStringList& Pa
 
 void ServiceTestHandler::LiquidTubeGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_TempTubeLiquid == NULL) {
@@ -746,6 +774,8 @@ void ServiceTestHandler::LiquidTubeGetTemp(QString& ReqName, QStringList& Params
 
 void ServiceTestHandler::LiquidTubeGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_TempTubeLiquid == NULL) {
@@ -762,6 +792,8 @@ void ServiceTestHandler::LiquidTubeGetCurrent(QString& ReqName, QStringList& Par
 
 void ServiceTestHandler::LiquidTubeTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -803,6 +835,8 @@ void ServiceTestHandler::AirTubeStartHeating(QString& ReqName, QStringList& Para
 
 void ServiceTestHandler::AirTubeStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     bool Ret(true);
@@ -822,6 +856,8 @@ void ServiceTestHandler::AirTubeStopHeating(QString& ReqName, QStringList& Param
 
 void ServiceTestHandler::AirTubeGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_TempTubeAir == NULL) {
@@ -838,6 +874,8 @@ void ServiceTestHandler::AirTubeGetTemp(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::AirTubeGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     if (mp_TempTubeAir == NULL) {
@@ -854,6 +892,8 @@ void ServiceTestHandler::AirTubeGetCurrent(QString& ReqName, QStringList& Params
 
 void ServiceTestHandler::AirTubeTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -895,6 +935,8 @@ void ServiceTestHandler::RVStartHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::RVStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
     bool Ret(true);
@@ -916,6 +958,8 @@ void ServiceTestHandler::RVStopHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::RVGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -938,6 +982,8 @@ void ServiceTestHandler::RVGetTemp(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::RVGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1003,6 +1049,7 @@ void ServiceTestHandler::RVMovePosition(QString& ReqName, QStringList& Params)
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
+        Results.append(QString("%1").arg(Ret));
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
     }
 }
@@ -1033,6 +1080,8 @@ void ServiceTestHandler::RVSetTemperatureSwitchState(QString& ReqName, QStringLi
 
 void ServiceTestHandler::RVGetHeaterSwitchType(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1049,6 +1098,8 @@ void ServiceTestHandler::RVGetHeaterSwitchType(QString& ReqName, QStringList& Pa
 
 void ServiceTestHandler::RVTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1122,6 +1173,8 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::LSStopHeating(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1142,6 +1195,8 @@ void ServiceTestHandler::LSStopHeating(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::LSGetTemp(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1159,6 +1214,8 @@ void ServiceTestHandler::LSGetTemp(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::LSGetCurrent(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1263,6 +1320,8 @@ void ServiceTestHandler::LSHeatingLevelSensor(QString &ReqName, QStringList &Par
 
 void ServiceTestHandler::LSTempControlIsOn(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1307,6 +1366,8 @@ void ServiceTestHandler::PumpBuildPressure(QString& ReqName, QStringList& Params
 
 void ServiceTestHandler::PumpReleasePressure(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1349,6 +1410,8 @@ void ServiceTestHandler::PumpSetPressure(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::PumpGetPressure(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1410,6 +1473,8 @@ void ServiceTestHandler::PumpSetValve(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::PumpStopCompressor(QString& ReqName, QStringList& Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 
@@ -1461,6 +1526,8 @@ void ServiceTestHandler::PumpDraining(QString& ReqName, QStringList& Params)
 
 void ServiceTestHandler::PumpReadPressureDrift(QString &ReqName, QStringList &Params)
 {
+    Q_UNUSED(Params);
+
     QStringList Results;
     Results.clear();
 

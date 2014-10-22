@@ -45,9 +45,9 @@ const QString SUBMODULE_VENTFAN("Ventilation Fan");  //!< name of ventilation fa
 CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                            QWidget *p_Parent)
     : QWidget(p_Parent)
-    , mp_DateConnector(&DataConnector)
-    , mp_ModuleList(NULL)
     , mp_Ui(new Ui::CMainControlConfiguration)
+    , mp_ModuleList(NULL)
+    , mp_DateConnector(&DataConnector)
 {
     mp_Ui->setupUi(this);
 

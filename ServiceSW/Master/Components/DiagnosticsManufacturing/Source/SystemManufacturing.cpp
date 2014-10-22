@@ -51,8 +51,8 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CSystemManufacturing)
-    , mp_DeviceConfiguration(NULL)
     , m_SystemSNString("")
+    , mp_DeviceConfiguration(NULL)
     , m_FinalTestResult("NA")
     , m_TestFlag(false)
 {

@@ -175,7 +175,7 @@ void CStatusConfirmDialog::BlgProcessProgress(bool IsBlgProcessStarted)
 /****************************************************************************/
 void CStatusConfirmDialog::HideAbort(bool HideFlag)
 {
-
+    Q_UNUSED(HideFlag);
     //m_AbortButtonVisible = false;
 }
 

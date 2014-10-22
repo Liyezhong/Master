@@ -41,8 +41,8 @@ const QString SUBMODULE_MOTOR("Motor");           //!< name of motor submodule
 CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)
     : QWidget(p_Parent)
-    , mp_DateConnector(&DataConnector)
     , mp_Ui(new Ui::CRotaryValveConfiguration)
+    , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);

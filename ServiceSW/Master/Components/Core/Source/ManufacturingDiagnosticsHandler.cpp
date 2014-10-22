@@ -230,9 +230,9 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
         dlg->HideButtonsOneAndTwo();
         dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
     }
-    if (Index == 1 && Id == Service::OVEN_COVER_SENSOR ||
-            Index == 1 && Id == Service::RETORT_LID_LOCK ||
-            Index == 2 && Id == Service::RETORT_HEATING_WITH_WATER ) {
+    if ((Index == 1 && Id == Service::OVEN_COVER_SENSOR) ||
+            (Index == 1 && Id == Service::RETORT_LID_LOCK) ||
+            (Index == 2 && Id == Service::RETORT_HEATING_WITH_WATER) ) {
         dlg->EnableButton(1, false);
     }
 
@@ -378,6 +378,8 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Posit
 
 bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Position)
 {
+    Q_UNUSED(Position);
+
     DiagnosticsManufacturing::CPressureInputDialog *p_Dlg = new DiagnosticsManufacturing::CPressureInputDialog(Service::ROTARY_VALVE_SEALING_FUNCTION, mp_MainWindow);
 
     (void)p_Dlg->exec();
@@ -448,6 +450,8 @@ void CManufacturingDiagnosticsHandler::PerformManufDisplayTests(const QList<Serv
 //            FailureId = EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS;
             mp_DisplayManuf->DoBasicColorTest();
             break;
+        default:
+            break;
         }
     }
 
@@ -488,6 +492,8 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
             EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS;
+            break;
+        default:
             break;
         }
 
@@ -1263,6 +1269,8 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
 
 void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
+    Q_UNUSED(TestCaseList);
+
     Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
@@ -1286,6 +1294,8 @@ void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service
 
 void CManufacturingDiagnosticsHandler::PerformOperationTimeReset(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
+    Q_UNUSED(TestCaseList);
+
     Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
 
     emit PerformManufacturingTest(Id);

@@ -75,9 +75,9 @@ private:
     Ui::CLogContentDlg *mp_Ui;         //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;    //!< Table for the log content information
     QStandardItemModel *mp_Model;              //!< Model for the log content dialog table
+    CLogFilter *mp_LogFilter;          //!< Log Filter to get the models for table widget.
     QStringList m_HeaderLabels;         //!< Header tables for the table widget
     QList<int> m_Columns;              //!< Columns for the table widget
-    CLogFilter *mp_LogFilter;          //!< Log Filter to get the models for table widget.
 };
 
 }   // end namespace LogViewer

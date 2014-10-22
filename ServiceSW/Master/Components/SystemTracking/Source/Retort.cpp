@@ -42,8 +42,8 @@ const QString SUBMODULE_LEVELSENSOR("Level Sensor");  //!< name of level sensor 
 CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
                  QWidget *p_Parent)
     : QWidget(p_Parent)
-    , mp_DateConnector(&DataConnector)
     , mp_Ui(new Ui::CRetortConfiguration)
+    , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);

@@ -193,7 +193,7 @@ int CLiquidHeatingTubeTest::Run(void)
     else
         text = tr("Liquid Heating Tube Test is successful.");
 
-__ok__:
+//__ok__:
 __fail__:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
 __abort__:

@@ -34,8 +34,8 @@ ServiceDataContainer::ServiceDataContainer(Threads::ServiceMasterThreadControlle
     m_IsInitialized(false),
     mp_ServiceMasterThreadController(p_MasterThreadController),
     DeviceConfigurationInterface(NULL),
-    SettingsInterface(NULL),
     ModuleList(NULL),
+    SettingsInterface(NULL),
     ServiceParameters(NULL)
 {
     if (!InitContainers()) {

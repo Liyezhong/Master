@@ -63,8 +63,10 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     , m_EventLoggerMaxFileSize(0)
     , m_DayEventLoggerMaxFileCount(0)
     , m_MaxAdjustedTimeOffset(0)
-    , m_ExportTargetFileName("")
     , m_RebootCount(0)
+    , m_ExportTargetFileName("")
+    , mp_EventThreadController(NULL)
+    , mp_DeviceThreadController(NULL)
     , m_CommandChannelDataLogging(this,
                                   "DataLogging",
                                   Global::EVENTSOURCE_DATALOGGER)
@@ -75,11 +77,9 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
                                    "DeviceController",
                                    Global::EVENTSOURCE_NONE)
     , m_CommandChannelExport(this, "Export", Global::EVENTSOURCE_EXPORT)
-    , mp_EventThreadController(NULL)
-    , mp_DeviceThreadController(NULL)
     , mp_ServiceDataManager(NULL)
-    , mp_ImportExportHandler(NULL)
     , mp_GUIStartup(startUp)
+    , mp_ImportExportHandler(NULL)
 {
     // register the metytype for gSourceType
     qRegisterMetaType<Global::gSourceType>("Global::gSourceType");
@@ -425,6 +425,7 @@ void ServiceMasterThreadController::CreateBasicControllersAndThreads() {
 }
 /****************************************************************************/
 void ServiceMasterThreadController::DestroyControllersAndThreads(const bool BasicThreadController) {
+    Q_UNUSED(BasicThreadController);
 }
 /****************************************************************************/
 void ServiceMasterThreadController::InitiateShutdown(){

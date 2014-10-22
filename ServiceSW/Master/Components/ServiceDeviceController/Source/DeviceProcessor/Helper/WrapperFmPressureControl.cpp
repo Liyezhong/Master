@@ -149,6 +149,9 @@ void WrapperFmPressureControl::OnSetPressure(quint32 /*InstanceID*/, ReturnCode_
 /****************************************************************************/
 void WrapperFmPressureControl::OnSetValve(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 ValveIndex, quint8 ValveState)
 {
+    Q_UNUSED(ValveIndex);
+    Q_UNUSED(ValveState);
+
     qint32 ret = 1;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
@@ -165,6 +168,8 @@ void WrapperFmPressureControl::OnSetValve(quint32 /*InstanceID*/, ReturnCode_t R
 
 void WrapperFmPressureControl::OnSetFan(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 FanState)
 {
+    Q_UNUSED(FanState);
+
     qint32 ret = 1;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
@@ -600,7 +605,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     QList<float> PressureBuf;
     int levelSensorState = 0xFF;
     bool stop = false;
-    bool WarnShowed = false;
+//    bool WarnShowed = false;
     bool StopInsufficientCheck =false;
     QDateTime beforeSucking = QDateTime::currentDateTime();
 
@@ -1910,6 +1915,8 @@ QString WrapperFmPressureControl::GetMainsVoltageState()
 /****************************************************************************/
 void WrapperFmPressureControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCode, quint8 State)
 {
+    Q_UNUSED(ReturnCode);
+
     Log(tr("New Level Sensor State is: %1").arg(State));
     qDebug()<< "WrapperFmPressureControl::OnLevelSensorState -----"<< State;
     if(State == 1)
@@ -1923,6 +1930,8 @@ void WrapperFmPressureControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCo
 
 void WrapperFmPressureControl::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
 {
+    Q_UNUSED(ErrorTime);
+
     //Log(tr("Pressure control get error: %1 %2 %3 %4").arg(InstanceID).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
     Log(tr("Pressure control get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4").arg(GetNameByInstanceID(InstanceID)).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
 }

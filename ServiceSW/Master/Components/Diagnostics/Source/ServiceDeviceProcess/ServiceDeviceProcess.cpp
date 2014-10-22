@@ -874,6 +874,19 @@ int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
 
     int Ret = GetResponse(ReqName, 300);
 
+    if (Ret == RETURN_ERR_FAIL) {
+        QStringList Results = m_ResultsMap.value(ReqName);
+        qDebug()<<"Results = "<<Results;
+
+        if (Results.size()>0) {
+
+            Ret = Results.at(0).toInt();
+        }
+        (void)m_ResultsMap.remove(ReqName);
+
+        return Ret;
+    }
+
     return Ret;
 }
 

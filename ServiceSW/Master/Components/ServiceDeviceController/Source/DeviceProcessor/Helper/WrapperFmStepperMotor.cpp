@@ -3730,6 +3730,7 @@ quint8 WrapperFmStepperMotor::GetConfigPos1StopDir()
 
 void WrapperFmStepperMotor::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
 {
+    Q_UNUSED(ErrorTime);
     Log(tr("Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4").arg(InstanceID).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
 }
 

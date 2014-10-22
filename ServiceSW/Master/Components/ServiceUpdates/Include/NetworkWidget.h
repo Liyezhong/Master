@@ -116,13 +116,13 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;                 //!< Reference to Keyboard widget
     ButtonType_t m_ButtonType;                              //!< Button Type
+    IPType_t           m_IpType;                            //!< Ip Type
     QString m_Password;                                     //!< String to hold Password
     MainMenu::CMessageDlg *mp_MessageDlg;                   //!< Message dialog object.
     QString m_ProxyIp;                                    //!< To store the proxy Ip address
     QString m_ServerIp;                                    //!< To Store the server Ip address
     MainMenu::CBaseTable *mp_TableWidget;                   //!< Base Table widget
     QStandardItemModel m_Model;                             //!< Model for the table
-    IPType_t           m_IpType;                            //!< Ip Type
 
     /****************************************************************************/
     /*!

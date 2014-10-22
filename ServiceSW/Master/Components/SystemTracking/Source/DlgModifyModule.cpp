@@ -30,8 +30,8 @@ CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
                                    bool HasBoard,
                                    QWidget *p_Parent)
     : MainMenu::CDialogFrame(p_Parent)
-    , mp_Module(&Module)
     , mp_Ui(new Ui::CDlgModifyModule)
+    , mp_Module(&Module)
 {
     mp_Ui->setupUi(GetContentFrame());
 

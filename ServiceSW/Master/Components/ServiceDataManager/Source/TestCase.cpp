@@ -22,7 +22,7 @@
 
 namespace DataManager {
 
-CTestCase::CTestCase(QString ModuleName, QString CaseName, bool Status):
+CTestCase::CTestCase(QString ModuleName, QString CaseName):
     m_ModuleName(ModuleName),
     m_CaseName(CaseName),
     m_Status(-1)

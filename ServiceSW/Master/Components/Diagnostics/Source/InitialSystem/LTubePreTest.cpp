@@ -70,7 +70,7 @@ int CLTubePreTest::Run(void)
 
     Ret = p_DevProc->LiquidTubeStartHeating(LTubeTargetTemp);
 
-    Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", 0);
+    Ret = p_DevProc->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", 1);
 
     (void)p_DevProc->LiquidTubeStopHeating();
 

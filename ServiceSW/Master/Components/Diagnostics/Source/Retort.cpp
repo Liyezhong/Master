@@ -26,7 +26,6 @@
 
 #include "Global/Include/Utils.h"
 #include "Diagnostics/Include/Retort/LidLockTest.h"
-#include "Diagnostics/Include/Retort/LevelSensorHeatingTest.h"
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"

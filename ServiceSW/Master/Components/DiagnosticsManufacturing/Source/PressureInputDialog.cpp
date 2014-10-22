@@ -106,7 +106,7 @@ void CPressureInputDialog::SetText(QString Text)
 /****************************************************************************/
 void CPressureInputDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 {
-
+    Q_UNUSED(Status);
 }
 
 

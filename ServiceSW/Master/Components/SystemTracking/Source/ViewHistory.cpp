@@ -42,8 +42,8 @@ CViewHistory::CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget 
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CViewHistory)
     , mp_TableWidget(new MainMenu::CBaseTable)
-    , mp_DataConnector(p_DataConnector)
     , mp_Model(new QStandardItemModel)
+    , mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(this);
 

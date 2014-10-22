@@ -68,6 +68,9 @@ void CModuleCommandInterface::RegisterCommands()
 void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const MsgClasses::CmdModuleListUpdate &Cmd,
                                                   Threads::CommandChannel &AckCommandChannel)
 {
+    Q_UNUSED(Ref);
+    Q_UNUSED(AckCommandChannel);
+
     qDebug()<<"CModuleCommandInterface::ModuleUpdateHandler "<<m_ModuleCount;
     DataManager::CModule* Module = new CModule();   
 
@@ -89,6 +92,7 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
 
 void CModuleCommandInterface::RearrangeModuleListInfo(CModuleDataList *InstrumentHistory)
 {
+    Q_UNUSED(InstrumentHistory);
     // code to be added
 }
 

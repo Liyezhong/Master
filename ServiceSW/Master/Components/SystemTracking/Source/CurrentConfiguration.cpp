@@ -32,9 +32,9 @@ namespace SystemTracking {
  */
 /****************************************************************************/
 CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent) :
-    mp_DataConnector(p_DataConnector),
+    mp_Ui(new Ui::CCurrentConfiguration),
     QWidget(p_Parent),
-    mp_Ui(new Ui::CCurrentConfiguration)
+    mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(this);
 

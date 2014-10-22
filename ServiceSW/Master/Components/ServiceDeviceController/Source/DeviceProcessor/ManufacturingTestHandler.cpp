@@ -44,8 +44,8 @@ namespace DeviceControl {
 
 /****************************************************************************/
 ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
-    : m_IsConfigured(false)
-    , m_rIdevProc(iDevProc)
+    : m_rIdevProc(iDevProc),
+      m_IsConfigured(false)
 {
     m_UserAbort = false;
     mp_Utils = NULL;
@@ -238,6 +238,9 @@ bool ManufacturingTestHandler::IsInitialized()
 /****************************************************************************/
 void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseId)
 {   
+    Q_UNUSED(id);
+    Q_UNUSED(Ref);
+
     if(!IsInitialized()) {
         Initialize();
     }
@@ -743,7 +746,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     p_TestCase->AddResult("TargetTemp", target);
 
     QString usedTime;
-    qint32  keepSec  = 0, progStat = 1;
+    //qint32  keepSec  = 0;
+    qint32 progStat = 1;
     while (!m_UserAbort && waitSec) {
         QTime EndTime = QTime().currentTime().addSecs(1);
 
@@ -1950,7 +1954,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     qreal DepartureLow =  p_TestCase->GetParameter("DepartureLow").toDouble();
     qreal DepartureHigh =  p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal MinTargetTemp = TargetTemp + DepartureLow;
-    qreal MaxTargetTemp = TargetTemp + DepartureHigh;
+//    qreal MaxTargetTemp = TargetTemp + DepartureHigh;
 
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
@@ -2114,7 +2118,6 @@ qint32 ManufacturingTestHandler::TestRVSelectingAndSealing(Service::ModuleTestCa
 qint32 ManufacturingTestHandler::TestRVHeatingStation()
 {
     quint32 WaitSec(0);
-    quint32 WaitSecSensor1(0);
     quint32 SumSec(0);
     qint32  RVStatus(-1);
     qreal   CurrentTempSensor1(0), CurrentTempSensor2(0);
@@ -2128,7 +2131,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    QTime DurationTimeSensor1 = QTime::fromString(p_TestCase->GetParameter("Sensor1Duration"), "hh:mm:ss");
+//    QTime DurationTimeSensor1 = QTime::fromString(p_TestCase->GetParameter("Sensor1Duration"), "hh:mm:ss");
     QTime DurationTimeSensor2 = QTime::fromString(p_TestCase->GetParameter("Sensor2Duration"), "hh:mm:ss");
 
     qreal TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp").toDouble();
@@ -2140,7 +2143,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     Service::ModuleTestStatus Status;
 
-    WaitSecSensor1 = DurationTimeSensor1.hour()*60*60 + DurationTimeSensor1.minute()*60 + DurationTimeSensor1.second();
+//    quint32 WaitSecSensor1 = DurationTimeSensor1.hour()*60*60 + DurationTimeSensor1.minute()*60 + DurationTimeSensor1.second();
 
     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second() + 60;
 

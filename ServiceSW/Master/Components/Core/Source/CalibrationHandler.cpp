@@ -281,6 +281,10 @@ bool CCalibrationHanlder::GetCalibrationResponse()
 /****************************************************************************/
 bool CCalibrationHanlder::PerformCalibration(QString& Title, QString& GBox, QString& Instr)
 {
+    Q_UNUSED(Title);
+    Q_UNUSED(GBox);
+    Q_UNUSED(Instr);
+
     QTimer timer;
     timer.setSingleShot(true);
     timer.setInterval(30000);
@@ -387,6 +391,7 @@ void CCalibrationHanlder::RefreshCalibrationMessagetoMain(const Service::ModuleT
 /****************************************************************************/
 void CCalibrationHanlder::EnableCalibrationGroup(bool Status)
 {
+    Q_UNUSED(Status);
 }
 
 /****************************************************************************/

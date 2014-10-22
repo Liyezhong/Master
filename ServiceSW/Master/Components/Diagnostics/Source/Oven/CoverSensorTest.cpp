@@ -120,7 +120,7 @@ int CCoverSensorTest::Run(void)
     if (ret == __FAIL__)
         goto __fail__;
 
-__ok__:
+//__ok__:
     text = tr("Cover sensor test successful");
     dlg->ShowMessage(title, text, RETURN_OK);
     return RETURN_OK;

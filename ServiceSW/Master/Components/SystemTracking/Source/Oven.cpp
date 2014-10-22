@@ -41,8 +41,8 @@ const QString SUBMODULE_COVERSENSOR("Cover Sensor"); //!< name of cover sensor s
 COven::COven(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)
     : QWidget(p_Parent)
-    , mp_DataConnector(&DataConnector)
     , mp_Ui(new Ui::COvenConfiguration)
+    , mp_DataConnector(&DataConnector)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);

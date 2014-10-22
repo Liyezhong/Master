@@ -49,16 +49,16 @@ namespace Core {
  */
 /****************************************************************************/
 CStartup::CStartup() : QObject(),
+    m_SelfTestFinished(false),
+    mp_ManaufacturingDiagnosticsHandler(NULL),
     mp_LogContentDlg(NULL),
+    mp_USBKeyValidator(NULL),
     mp_SystemLogContentDlg(NULL),
+    m_CurrentUserMode(""),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
-    m_CurrentUserMode(""),
-    mp_ManaufacturingDiagnosticsHandler(NULL),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL),
-    m_SelfTestFinished(false),
-    mp_USBKeyValidator(NULL)
+    mp_SealingStatusDlg(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -1009,6 +1009,8 @@ void CStartup::RefreshTestStatus4RetortLevelSensorHeating(Service::ModuleTestCas
 
 void CStartup::RefreshTestStatus4RetortLevelSensorDetecting(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &status)
 {
+    Q_UNUSED(Id);
+
     qDebug() << "RefreshTestStatus4RetortLevelSensorDetecting";
 
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
@@ -1144,6 +1146,8 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
 
 void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    Q_UNUSED(Status);
+
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
@@ -1236,6 +1240,8 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
 
 void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    Q_UNUSED(Status);
+
     //QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     //DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
@@ -1268,6 +1274,8 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
 
 void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    Q_UNUSED(Id);
+
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
     mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
 }
@@ -1316,6 +1324,8 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
 
 void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    Q_UNUSED(Id);
+
     if (Status.value("CurrentStatus") == "HideMessage") {
         mp_ManaufacturingDiagnosticsHandler->HideMessage();
     }
@@ -1331,6 +1341,8 @@ void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, co
 
 void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    Q_UNUSED(Id);
+
     int Index = Status.value("Index").toInt();
     if (Status.value("Result") == "true") {
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);

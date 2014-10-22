@@ -42,8 +42,8 @@ namespace DeviceControl {
 
 /****************************************************************************/
 DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
-    : m_IsConfigured(false)
-    , m_rIdevProc(iDevProc)
+    : m_rIdevProc(iDevProc)
+    ,  m_IsConfigured(false)
     , mp_ManufacturingTestHandler(NULL)
     , mp_ServicecTestHandler(NULL)
 {
@@ -128,6 +128,9 @@ bool DeviceProcessor::IsInitialized()
 /****************************************************************************/
 void DeviceProcessor::OnAbortTest(Global::tRefType Ref, quint32 id)
 {
+    Q_UNUSED(Ref);
+    Q_UNUSED(id);
+
     qDebug()<<"DeviceProcessor::OnAbortTest";
     if(!IsInitialized()){
         Initialize();

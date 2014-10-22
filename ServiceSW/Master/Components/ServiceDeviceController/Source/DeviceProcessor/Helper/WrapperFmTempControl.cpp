@@ -751,6 +751,11 @@ void WrapperFmTempControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCode, 
 
 void WrapperFmTempControl::OnSetTempPid(quint32, ReturnCode_t ReturnCode, quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime)
 {
+    Q_UNUSED(MaxTemperature);
+    Q_UNUSED(ControllerGain);
+    Q_UNUSED(ResetTime);
+    Q_UNUSED(DerivativeTime);
+
     qint32 ret = 1;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
@@ -764,12 +769,16 @@ void WrapperFmTempControl::OnSetTempPid(quint32, ReturnCode_t ReturnCode, quint1
 
 void WrapperFmTempControl::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
 {
+    Q_UNUSED(ErrorTime);
+
     Log(tr("Temp control get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4").arg(GetNameByInstanceID(InstanceID)).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
 }
 #endif
 
 void WrapperFmTempControl::OnTemperatureRange(quint32 InstanceID, ReturnCode_t ReturnCode, bool InRange, qreal Temperature)
 {
+    Q_UNUSED(ReturnCode);
+
     if(InRange)
     {
         Log(tr("Temp control temp in range, Instance ID: %1, temperature is: %2").arg(GetNameByInstanceID(InstanceID)).arg(Temperature));
@@ -1020,6 +1029,9 @@ bool WrapperFmTempControl::SetTemperatureSwitchState(qint8 SwitchState, qint8 Au
 
 void WrapperFmTempControl::OnSetSwitchState(quint32, ReturnCode_t ReturnCode, qint8 SwitchState, qint8 AutoSwitch)
 {
+    Q_UNUSED(SwitchState);
+    Q_UNUSED(AutoSwitch);
+
     qint32 ret = 1;
     if (!HandleErrorCode(ReturnCode)) {
         ret = UNDEFINED;
