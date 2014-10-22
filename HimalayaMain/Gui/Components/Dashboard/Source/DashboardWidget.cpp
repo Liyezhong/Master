@@ -184,6 +184,9 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     return;
 
+    if (m_ProgramStatus != ProgramRunning)
+     return;
+
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
     if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
@@ -335,6 +338,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     //Todo:20, Abort time, will be given a rough value later;
     emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
     ui->programPanelWidget->EnableStartButton(false);
+    ui->programPanelWidget->EnablePauseButton(false);
     m_ProgramStatus = Aborting;
 }
 
