@@ -167,6 +167,8 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdParaffinMeltPointChanged,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnParaffinMeltPointChanged, this);
+    RegisterAcknowledgeForProcessing<Global::AckOKNOK, SchedulerMainThreadController>
+            (&SchedulerMainThreadController::OnAcknowledge, this);
 
 }
 
@@ -264,6 +266,12 @@ void SchedulerMainThreadController::OnPowerFail(const Global::PowerFailStages Po
     Q_UNUSED(PowerFailStage)
 }
 
+/****************************************************************************/
+void SchedulerMainThreadController::OnAcknowledge(Global::tRefType Ref, const Global::AckOKNOK &Ack)
+{
+    Q_UNUSED(Ref)
+    Q_UNUSED(Ack)
+}
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();

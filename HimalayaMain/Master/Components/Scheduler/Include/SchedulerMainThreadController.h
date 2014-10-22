@@ -36,6 +36,7 @@
 #include "DataManager/Helper/Include/Types.h"
 #include "Scheduler/Include/ProgramStatusInfor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
+#include "Global/Include/Commands/AckOKNOK.h"
 
 using namespace DeviceControl;
 
@@ -709,6 +710,15 @@ protected:
         /****************************************************************************/
         virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 
+         /****************************************************************************/
+         /**
+          * \brief Handler for acknowledge processing
+          *
+          * \iparam   Ref                 Acknowledge Command reference.
+          * \iparam   Ack                 Command.
+          */
+         /****************************************************************************/
+         void OnAcknowledge(Global::tRefType Ref, const Global::AckOKNOK &Ack);
         /****************************************************************************/
         /**
          *  \brief Called when a local/remote alarm raises.
