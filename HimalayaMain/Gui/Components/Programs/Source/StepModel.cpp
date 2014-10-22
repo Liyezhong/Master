@@ -215,7 +215,10 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                     return Core::CGlobalHelper::TimeToString(Step->GetDurationInSeconds());
                 }
                 else {
-                    return mp_DashboardStationNameList.at(Index.row());
+                    if (Index.row() <= mp_DashboardStationNameList.count()-1)
+                        return mp_DashboardStationNameList.at(Index.row());
+                    else
+                        return QVariant();
                 }
             }
             case 3:

@@ -2310,7 +2310,8 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
                                                                                 costedTimeBeforeParaffin,
                                                                                 whichStep,
                                                                                 GetSecondsForMeltingParaffin(),
-                                                                                m_StationList));
+                                                                                m_StationList,
+                                                                                m_FirstProgramStepIndex));
     Q_ASSERT(commandPtr);
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
@@ -4201,6 +4202,15 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+}
+
+void SchedulerMainThreadController::OnPreTestDone()
+{
+    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PRETEST_DONE;
+    MsgClasses::CmdProgramAcknowledge* commandPreTest(new MsgClasses::CmdProgramAcknowledge(5000, type));
+    Q_ASSERT(commandPreTest);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPreTest));
 }
 
 }

@@ -157,7 +157,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumePssmAborting()), mp_PssmAborting.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
+
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
+    CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), exited(), mp_SchedulerThreadController, OnPreTestDone());
+
 
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());

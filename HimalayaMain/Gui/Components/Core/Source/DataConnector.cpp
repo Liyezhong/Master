@@ -1807,6 +1807,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit TakeoutSpecimenWaitRunCleaning();
         }
         break;
+        case DataManager::PROGRAM_PRETEST_DONE:
+        {
+            emit PreTestDone();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

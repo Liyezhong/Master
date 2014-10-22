@@ -24,7 +24,8 @@ CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *p):
     mp_UserSettings(NULL),
     m_DateTimeStr(""),
     m_selectedProgramId(""),
-    m_isAborting(false)
+    m_isAborting(false),
+    m_firstProgramStepIndex(-1)
 {
     qDebug()<<"CProgramRunningPanelWidget::CProgramRunningPanelWidget  m_remainingTimeTotal = "<<m_remainingTimeTotal;
 
@@ -269,10 +270,13 @@ void CProgramRunningPanelWidget::UpdateDateTime()
     ui->lblEndtime->setText(DateTimeStr);
 }
 
-void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList)
+void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime,
+                                                 bool bProgramStartReady, bool bIsFirstStepFixation,
+                                                 QList<QString>& selectedStationList, int firstProgramStepIndex)
 {
     m_selectedProgramId = programId;
     m_selectedStationList = selectedStationList;
+    m_firstProgramStepIndex = firstProgramStepIndex;
     Q_UNUSED(bProgramStartReady);
     Q_UNUSED(bIsFirstStepFixation);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
@@ -349,6 +353,10 @@ void CProgramRunningPanelWidget::OnProgramDetail()
     const DataManager::CProgram* pProgram = pStartup->DataConnector()->ProgramList ->GetProgram(m_selectedProgramId);
     Q_ASSERT(pProgram);
     QList<QString> stationNameList;
+    for (int i = 0; i < m_firstProgramStepIndex; i++)
+    {
+        stationNameList.append("");
+    }
     GetStationNameList(stationNameList);
 
 

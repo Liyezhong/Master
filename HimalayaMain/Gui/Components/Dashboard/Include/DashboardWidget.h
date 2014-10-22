@@ -372,9 +372,12 @@ private slots:
      *  \param bProgramStartReady = whether program start is ready or not
      *  \param bIsFirstStepFixation = the first program step is fixation reagent
      *  \param selectedStationList = the selected stations
+     *  \param firstProgramStepIndex = the first program step index
      */
     /****************************************************************************/
-    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
+    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady,
+                         bool bIsFirstStepFixation, QList<QString>& selectedStationList,
+                         int firstProgramStepIndex);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateSelectedStationList

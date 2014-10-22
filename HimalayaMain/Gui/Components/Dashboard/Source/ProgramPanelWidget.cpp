@@ -40,13 +40,13 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
 
     CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->favoriteProgramsPanel, SendAsapDateTime(int, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
                       ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
-                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
+                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
                       this, OnProgramSelected(QString&, int, bool, bool, QList<QString>&));
 
     CONNECTSIGNALSLOT(this, UndoProgramSelection(),
@@ -141,7 +141,8 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramTimerStatus(bool), ui->programRunningPanel, UpdateProgramTimerStatus(bool));
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList)
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation,
+                                            QList<QString>& selectedStationList)
 {
     Q_UNUSED(bIsFirstStepFixation);
     m_SelectedProgramId = ProgramId;
@@ -288,10 +289,10 @@ void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_
     if (DataManager::PROGRAM_START== ProgramActionType)
     {
         ui->stackedWidget->setCurrentIndex(1);
-        ui->programRunningPanel->EnableProgramDetailButton(m_SelectedProgramId.at(0) != 'C');
         QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(m_SelectedProgramId)->GetIcon() + ".png";
         ui->programRunningPanel->SetPanelIcon(strIconName);
         ui->programRunningPanel->SetPanelTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
+        ui->programRunningPanel->EnableProgramDetailButton(false);
     }
 }
 
@@ -299,14 +300,18 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
 {
     QString selectedProgramId = cmd.GetProgramID();
     ui->stackedWidget->setCurrentIndex(1);
-    ui->programRunningPanel->EnableProgramDetailButton(selectedProgramId.at(0) != 'C');
     QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(selectedProgramId)->GetIcon() + ".png";
     ui->programRunningPanel->SetPanelIcon(strIconName);
     QString selectedProgramName = mp_ProgramList->GetProgram(selectedProgramId)->GetName();
     ui->programRunningPanel->SetPanelTitle(selectedProgramName);
-
+    ui->programRunningPanel->EnableProgramDetailButton(true);
     ui->programRunningPanel->OnCurrentProgramStepInforUpdated(selectedProgramName, 0,
                                                               cmd.GetRemainingTime(), cmd.GetStepIndex());
+}
+
+void CProgramPanelWidget::OnPreTestDone()
+{
+    ui->programRunningPanel->EnableProgramDetailButton(true);
 }
 
 void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType)

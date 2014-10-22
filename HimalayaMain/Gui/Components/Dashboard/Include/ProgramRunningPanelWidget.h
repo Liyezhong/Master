@@ -155,7 +155,9 @@ namespace Dashboard {
          *  \brief  Definition/Declaration of slot ProgramSelected
          */
         /****************************************************************************/
-        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
+        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady,
+                             bool bIsFirstStepFixation, QList<QString>& selectedStationList,
+                             int firstProgramStepIndex);
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot UpdateEndDateTime
@@ -235,6 +237,7 @@ namespace Dashboard {
         QList<QString> m_selectedStationList;       ///<  Definition/Declaration of variable m_selectedStationList
         int m_CurProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex
         bool m_isAborting;       ///<  Definition/Declaration of variable m_isAborting
+        int m_firstProgramStepIndex;   ///< the first Program Step Index
     };
 }
 

@@ -738,6 +738,13 @@ signals:
      */
     /****************************************************************************/
     void RecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal PreTestDone, Get the notification of pretest from Master
+     *
+     */
+    /****************************************************************************/
+    void PreTestDone();
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);

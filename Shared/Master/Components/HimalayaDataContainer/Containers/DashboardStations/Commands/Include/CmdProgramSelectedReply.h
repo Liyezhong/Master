@@ -53,6 +53,7 @@ public:
      *  \param whichStepHasNoSafeReagent
      *  \param SecondsMeltParaffin
      *  \param stationList
+     *  \param firstProgramStepIndex
      *
      *  \return from CmdProgramSelectedReply
      */
@@ -62,7 +63,8 @@ public:
                       int costedTimeBeforeParaffin,
                       int whichStepHasNoSafeReagent,
                       quint32 SecondsMeltParaffin,
-                      QList<QString>& stationList);
+                      QList<QString>& stationList,
+                      int firstProgramStepIndex);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
     /****************************************************************************/
@@ -115,6 +117,15 @@ public:
     /****************************************************************************/
     inline int GetSecondsForMeltingParaffin()const {return m_SecondsForMelting;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get the first program step index
+     *
+     *  \return step index
+     */
+    /****************************************************************************/
+    inline int GetFirstProgramStepIndex()const {return m_firstProgramStepIndex;}
+
     
 private:
     CmdProgramSelectedReply(const CmdProgramSelectedReply &);                     ///< Not implemented.
@@ -126,6 +137,7 @@ private:
     int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
     int m_SecondsForMelting;   ///< total seconds for melting paraffin.
     QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+    int m_firstProgramStepIndex;        ///< for show the detail of CleaningPropram
 }; // end class CmdProgramSelectedReply
 
 /****************************************************************************/
@@ -152,6 +164,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelectedR
     {
         Stream << Cmd.m_StationList.at(i);
     }
+    Stream << Cmd.m_firstProgramStepIndex;
     return Stream;
 }
 
@@ -182,6 +195,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelectedReply &
         Stream >> stationID;
         Cmd.m_StationList.push_back(stationID);
     }
+    Stream >> Cmd.m_firstProgramStepIndex;
     return Stream;
 }
 } // end namespace MsgClasses

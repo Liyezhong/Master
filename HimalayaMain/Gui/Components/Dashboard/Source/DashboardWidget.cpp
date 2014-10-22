@@ -81,8 +81,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(ui->programPanelWidget, RequestAsapDateTime(),
                         this, RequestAsapDateTime());
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
-                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, bool, QList<QString>&));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
 
     CONNECTSIGNALSIGNAL(this, UndoProgramSelection(),
                        ui->programPanelWidget, UndoProgramSelection());
@@ -150,6 +150,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
+    CONNECTSIGNALSLOT(mp_DataConnector, PreTestDone(),
+                      ui->programPanelWidget, OnPreTestDone());
+
     CONNECTSIGNALSLOT(this, SwitchToFavoritePanel(),
                       ui->programPanelWidget, SwitchToFavoritePanel());
 
@@ -178,6 +181,9 @@ CDashboardWidget::~CDashboardWidget()
 
 void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
+    if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
+    return;
+
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
     if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
@@ -432,7 +438,7 @@ void CDashboardWidget::OnProgramCompleted()
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
-            ui->programPanelWidget->EnableStartButton(false);
+            ui->programPanelWidget->EnablePauseButton(false);
             emit AddItemsToFavoritePanel();
             ui->programPanelWidget->ChangeStartButtonToStartState();
 
@@ -539,7 +545,7 @@ void CDashboardWidget::OnUnselectProgram()
         int asapEndTime = 0;
 
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList, 0);
         emit UpdateSelectedStationList(m_StationList);
         emit UndoProgramSelection();
     }
@@ -944,7 +950,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_AsapEndDateTime = m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
     m_bIsFirstStepFixation = IsFixationInFirstStep();
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList);
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList, cmd.GetFirstProgramStepIndex());
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
 }

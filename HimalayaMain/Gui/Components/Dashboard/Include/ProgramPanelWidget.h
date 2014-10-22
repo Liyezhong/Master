@@ -213,9 +213,12 @@ signals:
      *  \param bProgramStartReady = ProgramStart is ready
      *  \param bIsFirstStepFixation = whether the first step is fixation or not
      *  \param selectedStationList = store the used station IDs for the current selected program
+     *  \param firstProgramStepIndex = the first program step index
      */
     /****************************************************************************/
-    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
+    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady,
+                         bool bIsFirstStepFixation, QList<QString>& selectedStationList,
+                         int firstProgramStepIndex);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramActionStopped
@@ -258,6 +261,14 @@ signals:
      */
     /****************************************************************************/
     void CheckPreConditionsToRunProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CheckPreConditionsToRunProgram
+     *
+     */
+    /****************************************************************************/
+    void PreTestDone();
+
 protected:
     /****************************************************************************/
     /*!
@@ -290,7 +301,8 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramSelected
      */
     /****************************************************************************/
-    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
+    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady,
+                           bool bIsFirstStepFixation, QList<QString>& selectedStationList);
 
     /****************************************************************************/
     /*!
@@ -318,6 +330,12 @@ private slots:
      */
     /****************************************************************************/
     void OnUpdatePanelProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnPreTestDone
+     */
+    /****************************************************************************/
+    void OnPreTestDone();
 private:
     /****************************************************************************/
     /*!
