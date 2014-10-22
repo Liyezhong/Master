@@ -1486,6 +1486,8 @@ void CSchedulerStateMachine::HandleRsPauseWorkFlow(ControlCommandType_t ctrlCmd)
 
 void CSchedulerStateMachine::HandleRsRVWaitingTempUpWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
+    Q_UNUSED(cmdName)
+    Q_UNUSED(retCode)
     qint64 nowTime = 0;
     switch(m_RsRVWaitingTempUp)
     {

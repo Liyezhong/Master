@@ -35,6 +35,7 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
 #include "Scheduler/Include/ProgramStatusInfor.h"
+#include "Scheduler/Include/HeatingStrategy.h"
 
 using namespace DeviceControl;
 

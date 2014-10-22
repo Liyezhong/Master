@@ -76,8 +76,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     m_strCancel(tr("Cancel")),
     m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
     m_strEnterValidName(tr("Please enter a valid Program Name")),
-    m_strLastProgName(tr("")),
     m_strSeclectIcon(tr("Please select a Program Icon")),
+    m_strLastProgName(tr("")),
     m_bIconSelected(false)
 
 {

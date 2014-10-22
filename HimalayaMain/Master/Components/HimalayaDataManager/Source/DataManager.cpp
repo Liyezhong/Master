@@ -40,8 +40,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_StationCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL),
-    mp_ModuleCommandInterface(NULL)
+    mp_ModuleCommandInterface(NULL),
+    mp_ProgramCommandInterface(NULL)
 {
     quint32 ReturnCode  = InitializeDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -55,8 +55,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_StationCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL),
-    mp_ModuleCommandInterface(NULL)
+    mp_ModuleCommandInterface(NULL),
+    mp_ProgramCommandInterface(NULL)
 {
     Q_UNUSED(Path)
     quint32 ReturnCode = InitializeDataContainer();

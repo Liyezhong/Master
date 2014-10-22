@@ -101,9 +101,9 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_CurReagnetName("")
         , m_CurProgramID("")
         , m_NewProgramID("")
-        , m_ProcessCassetteCount(0)
         , m_OvenLidStatus(0)
         , m_RetortLockStatus(UNDEFINED_VALUE)
+        , m_ProcessCassetteCount(0)
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
@@ -2953,7 +2953,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
 {
     /*lint -e574 */
-    if (bottleSeq >= m_ProgramStationList.size())
+    if (bottleSeq >= (quint32)m_ProgramStationList.size())
     {
         return false;
     }

@@ -948,8 +948,8 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 
     QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
     (void)DataStream.device()->reset();
-    bool hasRunCleaningProgram  = true;
-    QString strReagentIDOfLastStep("");
+    //bool hasRunCleaningProgram  = true;
+    //QString strReagentIDOfLastStep("");
     switch (Command.GetFileType()) {
 
         case NetCommands::PROGRAM:

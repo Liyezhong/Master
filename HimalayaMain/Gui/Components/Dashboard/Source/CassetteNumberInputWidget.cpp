@@ -10,9 +10,9 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QWidget
     MainMenu::CDialogFrame(pParent, pMainWindow),
     ui(new Ui::CCassetteNumberInputWidget),
     m_CassetteNumber(0),
-    m_CurrentTotalCassette(0),
     m_strWarning(tr("Warning")),
-    m_strOK(tr("OK"))
+    m_strOK(tr("OK")),
+    m_CurrentTotalCassette(0)
 
 {
     ui->setupUi(this);
