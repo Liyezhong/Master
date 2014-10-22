@@ -677,6 +677,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
                     break;
+                case PSSM_CLEANING_DRY_STEP:
+                    m_SchedulerMachine->SendResumeDryStep();
+                    break;
                 case PSSM_POWERFAILURE_FINISH:
                     m_SchedulerMachine->SendRunComplete();
                     break;
@@ -3127,7 +3130,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
                 RaiseError(0, retCode, m_CurrentScenario, true);
                 CurrentState = CDS_READY;
                 m_SchedulerMachine->SendErrorSignal();
-//                m_SchedulerMachine->NotifyProgramFinished();
                 StepStartTime = 0;
             }
         }
@@ -3151,7 +3153,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
                 RaiseError(0, retCode, m_CurrentScenario, true);
                 CurrentState = CDS_READY;
                 m_SchedulerMachine->SendErrorSignal();
-//                m_SchedulerMachine->NotifyProgramFinished();
                 StepStartTime = 0;;
             }
             else
