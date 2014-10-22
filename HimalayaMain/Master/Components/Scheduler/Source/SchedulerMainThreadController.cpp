@@ -4059,11 +4059,9 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     }
     if (reportError8.instanceID != 0)
     {
-#if 0
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
         RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
-#endif
     }
 
     if (reportError9.instanceID != 0)

@@ -191,7 +191,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         }
         else
         {
-            bool ret = false;
+            bool ret = true;
             if (heaterType == LATUBE1)
             {
                 qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
