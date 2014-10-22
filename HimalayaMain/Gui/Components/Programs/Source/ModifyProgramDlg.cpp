@@ -923,27 +923,23 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
         }
     }
     else {
-        //User clicked edit button in program dialog.
-        // Check if new Program step is being added to the selected Program else update the program step
-        if (AddNewProgramStep) {
-            m_RowIndex = m_Program.GetNumberOfSteps();
-            QString stepID = m_Program.GetNextFreeStepID(true);
-            quint16 stepNum = m_RowIndex + stepID.toInt();
-            p_ProgramStep->SetStepID(QString::number(stepNum));
-            //p_ProgramStep->SetStepID(m_Program.GetNextFreeStepID(true));
-            (void) m_Program.AddProgramStep(m_RowIndex, p_ProgramStep);
-            (void) m_Program.UpdateProgramStep(p_ProgramStep); //jeff@dbg;
+           //User clicked edit button in program dialog.
+           // Check if new Program step is being added to the selected Program else update the program step
+           if (AddNewProgramStep) {
+               p_ProgramStep->SetStepID(m_Program.GetNextFreeStepID(true));
+               (void) m_Program.AddProgramStep(m_RowIndex, p_ProgramStep);
 
-            m_StepModel.SetProgram(&m_Program,mp_DataConnector->SettingsInterface->GetUserSettings(), mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
-            m_StepModel.SetModifyProgramDlgPtr(this);
-            mp_TableWidget->setModel(&m_StepModel);
-            ResetButtons(m_Program, false);
-            qDebug() << "After new step button clicked. m_RowIndex = " << m_RowIndex << "\n";
-        }
-        else {
-            (void) m_Program.UpdateProgramStep(p_ProgramStep);
-        }
-    }
+               m_StepModel.SetProgram(&m_Program,mp_DataConnector->SettingsInterface->GetUserSettings(), mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
+               m_StepModel.SetModifyProgramDlgPtr(this);
+               mp_TableWidget->setModel(&m_StepModel);
+               ResetButtons(m_Program, false);
+               m_RowIndex = m_Program.GetNumberOfSteps();
+               qDebug() << "After new step button clicked. m_RowIndex = " << m_RowIndex << "\n";
+           }
+           else {
+               (void) m_Program.UpdateProgramStep(p_ProgramStep);
+           }
+       }
 }
 
 /****************************************************************************/
