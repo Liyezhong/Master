@@ -143,6 +143,28 @@ int CInitialSystemCheck::Run(void)
 
 void CInitialSystemCheck::RetortPreHeating()
 {
+    QString Text = "This function will heat the retort to melt excessive paraffin. "
+            "Please visually observe the paraffin melting status in retort. As soon "
+            "the sides of paraffin block are molten , remove the block manually and "
+            "ensure that existing specimen are provided to the customer . Then "
+            "change to the“Diagnostic_Retort_Reagent Drain” function and drain "
+            "remaining paraffin back to original paraffin bath. Thereafter flush the retort";
+
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
+
+    dlg->SetTitle("Retort");
+    dlg->SetIcon(QMessageBox::Question);
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(1, tr("Ok"));
+    dlg->SetButtonText(3, tr("Abort"));
+
+    if (dlg->exec() == 0) {
+        delete dlg;
+        return;
+    }
+    delete dlg;
+
     CRetortPreTest *RetortPreTest = new CRetortPreTest(mp_Parent);
     RetortPreTest->StartPreHeating(m_ParaffinMeltPoint);
     emit RefreshHeatingStatus(Service::INITIAL_RETORT);
@@ -163,7 +185,7 @@ void CInitialSystemCheck::ConfirmParaffinBath(void)
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
 
     dlg->SetTitle(MSG_TITLE);
-    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetIcon(QMessageBox::Question);
     dlg->SetText(Text);
     dlg->HideCenterButton();
     dlg->SetButtonText(1, tr("Yes"));
