@@ -578,6 +578,8 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
             OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS;
             ASBIndex = 15;
             break;
+        default:
+            break;
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
@@ -805,6 +807,8 @@ Sealing_Test_Twice:
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_STATION_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_STATION_TEST_SUCCESS;
             break;
+        default:
+            break;
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
@@ -928,7 +932,8 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
             FailureId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST_SUCCESS;
             break;
-
+        default:
+            break;
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
@@ -1163,6 +1168,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 Result = GetTestResponse();
             }
             break;
+        default:
+            break;
         }
 
         if (!NextFlag) {
@@ -1234,7 +1241,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
             HideMessage();
-
+        default:
             break;
         }
 
