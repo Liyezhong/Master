@@ -26,6 +26,7 @@
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Commands/Include/CmdALPressure.h"
 
 namespace Scheduler{
 
@@ -34,6 +35,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     ,m_LastScenario(0)
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
+    ,m_StartPressureTime(0)
     ,m_IsNeedRunCleaning(false)
     ,m_DrainIsOk(false)
     ,m_HasReagent(false)
@@ -288,38 +290,47 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
         switch(m_RsReagentCheckStep)
         {
         case FORCE_DRAIN:
-            if (0 == m_StartReq)
+            if(0 == m_StartReq)
             {
-                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent");
-                CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
-                cmd->SetDrainIsMoveRV(false);
-                cmd->SetRVPosition(0);
-                cmd->SetDrainPressure(30.0);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                CmdALPressure* CmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
+                CmdPressure->SetTargetPressure(40.0);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdPressure);
+                m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
                 m_StartReq++;
-                m_HasReagent = false;
             }
             else if(1 == m_StartReq)
             {
-                if ("Scheduler::IDForceDraining" == cmdName)
+                if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60 * 1000)
                 {
-                    if(283 == m_LastScenario || 293 == m_LastScenario)
+                    m_StartReq++;
+                    m_HasReagent = false;
+                }
+            }
+            else if(2 == m_StartReq)
+            {
+                if(283 == m_LastScenario || 293 == m_LastScenario)
+                {
+                    if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 3.0)
                     {
                         emit TasksDone(true);
-                        m_RsReagentCheckStep = BUILD_VACUUM;
                     }
                     else
                     {
-                        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                            m_HasReagent = false;
-                        }
-                        else
-                        {
-                            m_RsReagentCheckStep = BUILD_VACUUM;
-                            m_HasReagent = true;
-                        }
+                        m_RsReagentCheckStep = BUILD_VACUUM;
+                        m_HasReagent = true;
+                    }
+                }
+                else
+                {
+                    if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 3.0)
+                    {
+                        m_HasReagent = false;
+                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                    }
+                    else
+                    {
+                        m_RsReagentCheckStep = BUILD_VACUUM;
+                        m_HasReagent = true;
                     }
                     m_StartReq = 0;
                 }
@@ -368,7 +379,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 }
                 else
                 {
-                    m_RsReagentCheckStep = MOVE_SEALPOSITION;
+                    m_RsReagentCheckStep = MOVE_TUBEPOSITION;
                 }
                 m_StartReq = 0;
             }
@@ -382,10 +393,10 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 }
             }
             break;
-        case MOVE_SEALPOSITION:
+        case MOVE_TUBEPOSITION:
             if(0 == m_StartReq)
             {
-                if( !mp_SchedulerThreadController->MoveRV(SEAL_POS) )
+                if( !mp_SchedulerThreadController->MoveRV(TUBE_POS) )
                 {
                     m_RsReagentCheckStep = FORCE_DRAIN;
                     emit TasksDone(false);
@@ -396,7 +407,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                     m_StartReq++;
                 }
             }
-            else if(mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
+            else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
             {
                 m_StartReq = 0;
                 m_RsReagentCheckStep = REALSE_PRESSRE;

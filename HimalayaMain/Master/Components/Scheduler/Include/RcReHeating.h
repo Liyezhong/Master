@@ -230,7 +230,7 @@ private:
         FORCE_DRAIN,
         BUILD_VACUUM,
         MOVE_INITIALIZE_POSITION,
-        MOVE_SEALPOSITION,
+        MOVE_TUBEPOSITION,
         REALSE_PRESSRE
     }RS_REAGENTCHECK_t;
 
@@ -245,6 +245,7 @@ private:
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
+    qint64                          m_StartPressureTime;                //!< the start pressure time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     bool                            m_DrainIsOk;                        //!< is drain OK
     bool                            m_HasReagent;                       //!< wether has reagent in retort
