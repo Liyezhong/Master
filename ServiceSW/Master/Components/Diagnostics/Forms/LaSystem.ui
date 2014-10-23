@@ -17,7 +17,7 @@
    <item row="1" column="1">
     <widget class="QPushButton" name="testLiquidHeatingTube">
      <property name="text">
-      <string>Liquid Heating Tube</string>
+      <string>Liquid Heating Tube Test</string>
      </property>
     </widget>
    </item>
@@ -89,7 +89,7 @@
    <item row="3" column="1">
     <widget class="QPushButton" name="testAirHeatingTube">
      <property name="text">
-      <string>Air Heating Tube</string>
+      <string>Air Heating Tube Test</string>
      </property>
     </widget>
    </item>
