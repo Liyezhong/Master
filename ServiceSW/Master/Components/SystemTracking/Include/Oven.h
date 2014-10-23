@@ -174,6 +174,7 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;                //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;  //!< Current list of modules
     QStringList  m_SubModuleNames;                       //!< Store Updated sub moudule names
+    bool         m_ModifiedModule;                       //!< Flag of module has been modified
 };
 
 

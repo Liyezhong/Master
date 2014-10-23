@@ -218,8 +218,14 @@ void CLaSystem::ModifyFan(void)
 void CLaSystem::OnFinalizeConfiguration(void)
 {
     QString Text = QApplication::translate("SystemTracking::CLaSystem",
-                                           "Do you want to finalize the configuration for the L&A System?",
-                                                       0, QApplication::UnicodeUTF8);
+                                           "Do you want to overwrite the configuration of the "
+                                           "following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
+
     ConfirmModuleConfiguration(Text);
 }
 
@@ -233,8 +239,13 @@ void CLaSystem::CurrentTabChanged(int Index)
 void CLaSystem::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::CLaSystem",
-                                           "L&A System Module has been modified. Do you want to finalize the configuration?",
-                                           0, QApplication::UnicodeUTF8);
+                                           "L&A System Module has been modified. Do you want to overwrite the configuration "
+                                           "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
 
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
@@ -251,7 +262,6 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
 
     mp_MessageDlg->SetText(Text);
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->show();
 
     int Result = mp_MessageDlg->exec();
 
@@ -289,9 +299,10 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CLaSystem",
                                              "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->show();
     }
+    m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
@@ -347,6 +358,9 @@ void CLaSystem::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+        mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CLaSystem",
+                                                        "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->setModal(true);
     }
 }
 

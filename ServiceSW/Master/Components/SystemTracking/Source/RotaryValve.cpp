@@ -44,6 +44,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
     , mp_Ui(new Ui::CRotaryValveConfiguration)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
+    , m_ModifiedModule(false)
 {
     mp_Ui->setupUi(this);
 
@@ -208,6 +209,8 @@ void CRotaryValve::ModifyRotaryValve(void)
     (void)dlg->exec();
 
     delete dlg;
+
+    m_ModifiedModule = true;
 }
 
 void CRotaryValve::ModifyHeater(void)
@@ -229,8 +232,18 @@ void CRotaryValve::ModifyMotor(void)
 void CRotaryValve::OnFinalizeConfiguration(void)
 {
     QString Text = QApplication::translate("SystemTracking::CRotaryValve",
-                                           "Do you want to finalize the configuration for the Rotary valve?",
-                                                       0, QApplication::UnicodeUTF8);
+                                           "Do you want to overwrite the configuration of the "
+                                           "following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_ROTARYVALVE);
+    }
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
+
     ConfirmModuleConfiguration(Text);
 }
 
@@ -244,8 +257,17 @@ void CRotaryValve::CurrentTabChanged(int Index)
 void CRotaryValve::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::CRotaryValve",
-                                           "Rotary valve Module has been modified. Do you want to finalize the configuration?",
-                                           0, QApplication::UnicodeUTF8);
+                                           "Rotary valve Module has been modified. Do you want to overwrite the configuration "
+                                           "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_ROTARYVALVE);
+    }
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
 
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
@@ -262,7 +284,6 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
 
     mp_MessageDlg->SetText(Text);
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->show();
 
     int Result = mp_MessageDlg->exec();
 
@@ -300,9 +321,11 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CRotaryValve",
                                              "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->show();
     }
+    m_ModifiedModule = false;
+    m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
@@ -358,6 +381,9 @@ void CRotaryValve::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+        mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CRotaryValve",
+                                                        "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->setModal(true);
     }
 }
 

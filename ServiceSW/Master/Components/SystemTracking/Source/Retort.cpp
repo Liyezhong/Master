@@ -45,6 +45,7 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
     , mp_Ui(new Ui::CRetortConfiguration)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
+    , m_ModifiedModule(false)
 {
     mp_Ui->setupUi(this);
 
@@ -198,6 +199,8 @@ void CRetort::ModifyRetort(void)
     (void)dlg->exec();
 
     delete dlg;
+
+    m_ModifiedModule = true;
 }
 
 void CRetort::ModifyHeater(void)
@@ -227,8 +230,17 @@ void CRetort::ModifyLevelSensor(void)
 void CRetort::OnFinalizeConfiguration(void)
 {
     QString Text = QApplication::translate("SystemTracking::CRetort",
-                                           "Do you want to finalize the configuration for the Retort?",
-                                                       0, QApplication::UnicodeUTF8);
+                                           "Do you want to overwrite the configuration of the "
+                                           "following module or submodules?", 0, QApplication::UnicodeUTF8);
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_RETORT);
+    }
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
     ConfirmModuleConfiguration(Text);
 }
 
@@ -242,9 +254,17 @@ void CRetort::CurrentTabChanged(int Index)
 void CRetort::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::CRetort",
-                                           "Retort Module has been modified. Do you want to finalize the configuration?",
-                                           0, QApplication::UnicodeUTF8);
+                                           "Retort Module has been modified. Do you want to overwrite the configuration "
+                                           "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
 
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_RETORT);
+    }
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
     }
@@ -260,7 +280,6 @@ void CRetort::ConfirmModuleConfiguration(QString& Text)
 
     mp_MessageDlg->SetText(Text);
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->show();
 
     int Result = mp_MessageDlg->exec();
 
@@ -298,9 +317,11 @@ void CRetort::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CRetort",
                                              "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->show();
     }
+    m_ModifiedModule = false;
+    m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
@@ -356,6 +377,9 @@ void CRetort::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+        mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CRetort",
+                                                        "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->setModal(true);
     }
 }
 

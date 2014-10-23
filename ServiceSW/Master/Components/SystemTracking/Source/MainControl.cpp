@@ -199,8 +199,14 @@ void CMainControl::OnFinalizeConfiguration(void)
 {
     //save config to file
     QString Text = QApplication::translate("SystemTracking::CMainControl",
-                                           "Do you want to finalize the configuration for the Main Control?",
-                                                       0, QApplication::UnicodeUTF8);
+                                           "Do you want to overwrite the configuration of the "
+                                           "following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
+
     ConfirmModuleConfiguration(Text);
 }
 
@@ -214,9 +220,13 @@ void CMainControl::CurrentTabChanged(int Index)
 void CMainControl::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::CMainControl",
-                                           "Main Control Module has been modified. Do you want to finalize the configuration?",
-                                           0, QApplication::UnicodeUTF8);
+                                           "Main Control Module has been modified. Do you want to overwrite the configuration "
+                                           "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
 
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
     }
@@ -232,7 +242,6 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
 
     mp_MessageDlg->SetText(Text);
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->show();
 
     int Result = mp_MessageDlg->exec();
 
@@ -270,9 +279,10 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
                                              "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->show();
     }
+    m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
@@ -338,6 +348,9 @@ void CMainControl::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+        mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CMainControl",
+                                                        "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->setModal(true);
     }
 }
 

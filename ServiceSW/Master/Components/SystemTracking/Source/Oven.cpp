@@ -44,6 +44,7 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
     , mp_Ui(new Ui::COvenConfiguration)
     , mp_DataConnector(&DataConnector)
     , mp_ModuleList(NULL)
+    , m_ModifiedModule(false)
 {
     mp_Ui->setupUi(this);
 
@@ -173,6 +174,8 @@ void COven::ModifyOven(void)
     (void)dlg->exec();
 
     delete dlg;
+
+    m_ModifiedModule = true;
 }
 
 void COven::ModifyHeater(void)
@@ -194,8 +197,19 @@ void COven::ModifyCoverSensor(void)
 void COven::OnFinalizeConfiguration(void)
 {
     QString Text = QApplication::translate("SystemTracking::COven",
-                                           "Do you want to finalize the configuration for the Oven?",
-                                                       0, QApplication::UnicodeUTF8);
+                                           "Do you want to overwrite the configuration of the "
+                                           "following module or submodules?", 0, QApplication::UnicodeUTF8);
+
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_OVEN);
+    }
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
+
     ConfirmModuleConfiguration(Text);
 }
 
@@ -209,9 +223,17 @@ void COven::CurrentTabChanged(int Index)
 void COven::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::COven",
-                                           "Oven Module has been modified. Do you want to finalize the configuration?",
-                                           0, QApplication::UnicodeUTF8);
+                                           "Oven Module has been modified. Do you want to overwrite the configuration "
+                                           "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
 
+    if (m_ModifiedModule) {
+        Text.append("<br>");
+        Text.append(MODULE_OVEN);
+    }
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        Text.append("<br>");
+        Text.append(m_SubModuleNames.at(i));
+    }
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
     }
@@ -227,7 +249,6 @@ void COven::ConfirmModuleConfiguration(QString& Text)
 
     mp_MessageDlg->SetText(Text);
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->show();
 
     int Result = mp_MessageDlg->exec();
 
@@ -265,9 +286,11 @@ void COven::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("SystemTracking::COven",
                                              "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->show();
     }
+    m_ModifiedModule = false;
+    m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
@@ -323,6 +346,9 @@ void COven::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+        mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::COven",
+                                                        "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->setModal(true);
     }
 }
 
