@@ -88,7 +88,7 @@
             <nodeindex>0</nodeindex>
             <functionmodules>
                 <functionmodule type="pressure_control" key="pressurectrl" name="pressurectrl" interface="1">
-                    <configuration pressure_tolerance="2" sampling_period="200" fan_current_gain="120" fan_current="300"  fan_threshold="200" current_gain="1241" pump_current="600" pump_threshold="500"/>
+                    <configuration pressure_tolerance="2" sampling_period="200" fan_current_gain="124" fan_current="240"  fan_threshold="160" current_gain="1241" pump_current="600" pump_threshold="500"/>
                     <pid_controllers>
                         <pid_controller max_pressure="60" min_pressure="-60" controller_gain="40" reset_time="20000" derivative_time="0"/>
                     </pid_controllers>

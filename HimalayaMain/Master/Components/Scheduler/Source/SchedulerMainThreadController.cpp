@@ -2696,12 +2696,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-        if (strctHWMonitor.Slave15Current > m_SlaveAttrList[2].CurrentMax5VDC)
-        {
-            LogDebug(QString("slave 15 5V current is: %1").arg(strctHWMonitor.Slave15Current));
-            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
-        }
 
     }
 
@@ -3924,8 +3918,7 @@ bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QStri
 HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
 {
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == m_CurErrEventID
-            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == m_CurErrEventID
-            || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == m_CurErrEventID)
+            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == m_CurErrEventID)
     {
         return LEVELSENSOR;
     }

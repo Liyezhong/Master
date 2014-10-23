@@ -346,10 +346,6 @@
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect" NextStepOnFail="3" NextStepOnSuccess="3"/>
 			<Step ID="3" Type="MSG" StringID="103050012" RDStringID="113050012" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="513050021" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="103050021" RDStringID="113050021" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-		</Event>
 		<Event Code="" ErrorID="513050301" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103050301" RDStringID="113050301" ButtonType="OK" StatusBar="YES"/>

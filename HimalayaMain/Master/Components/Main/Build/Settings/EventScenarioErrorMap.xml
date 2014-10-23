@@ -143,7 +143,6 @@
  <group name="Main Control">
        <event id="500050001"    name="EVENT_MC_DC_5V_ASB3_OutofRange"/>
        <event id="500050011"    name="EVENT_MC_DC_5V_ASB5_OutofRange"/>
-       <event id="500050021"    name="EVENT_MC_DC_5V_ASB15_OutofRange"/>
        <event id="500050301"    name="EVENT_MC_Voltage_24V_ASB3_OutofRange"/>
        <event id="500050311"    name="EVENT_MC_Voltage_24V_ASB5_OutofRange"/>
        <event id="500050321"    name="EVENT_MC_Voltage_24V_ASB15_OutofRange"/>
@@ -1443,11 +1442,6 @@
             <scenario type="single" id="003"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
-        </error>
-    </event>
-    <event eventid="500050021">
-        <error errorid="513050021">
-            <scenario type="all"/>
         </error>
     </event>
     <event eventid="500050301">

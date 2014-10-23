@@ -464,8 +464,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 
     //Firstly, check if the event id is related with Level Sensor or not
     if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == EventId
-            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == EventId
-            || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == EventId)
+            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == EventId)
     {
         m_IsLevelSensorRelated = true;
     }
@@ -505,7 +504,6 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
             || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == EventId
             || DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE == EventId
             || DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE == EventId
-            || DCL_ERR_DEV_MC_DC_5V_ASB15_OUTOFRANGE == EventId
             || DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE == EventId)
     {
         IsRTRVOVenError = true;
