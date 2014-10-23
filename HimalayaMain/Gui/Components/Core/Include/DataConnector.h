@@ -82,6 +82,7 @@
 namespace MsgClasses
 {
     class CmdProgramAcknowledge;
+    class CmdProgramAborted;
     class CmdLockStatus;
 }
 
@@ -605,9 +606,10 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramAborted
+     *  \param  IsRetortContaminated = is retort contaminated?
      */
     /****************************************************************************/
-    void ProgramAborted();
+    void ProgramAborted(bool IsRetortContaminated);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramBeginAbort
@@ -828,6 +830,17 @@ private:
      */
     /****************************************************************************/
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ProgramAbortedHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdProgramAborted type parameter
+     *
+     *  \return from ProgramAbortedHandler
+     */
+    /****************************************************************************/
+    void ProgramAbortedHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAborted& Command);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function StationParaffinBathStatusHandler

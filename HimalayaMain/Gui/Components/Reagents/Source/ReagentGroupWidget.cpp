@@ -44,6 +44,7 @@ CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
     mp_TableWidget->SetVisibleRows(8);
     m_ReagentGroupModel.SetVisibleRowCount(8);
     mp_TableWidget->horizontalHeader()->show();
+    mp_TableWidget->setFocusPolicy(Qt::ClickFocus);
     ResizeHorizontalSection();
 
     CONNECTSIGNALSLOT(this, UpdateReagentGroupList(), &m_ReagentGroupModel, UpdateReagentGroupList());
@@ -168,7 +169,7 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
     mp_ReagentGroup = mp_ReagentGroupList->GetReagentGroup(Id);
     if (mp_ReagentGroup) {
-
+        mp_TableWidget->selectRow(Index.row());
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
@@ -178,6 +179,7 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
             else {
                 //Edit Mode
                 mp_Ui->btnEdit->setEnabled(true);
+
             }
 
         }

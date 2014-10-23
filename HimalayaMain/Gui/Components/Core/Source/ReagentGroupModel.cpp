@@ -27,7 +27,7 @@
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "Programs/Include/ProgramWidget.h"
-#include "Application/Include/LeicaStyle.h"
+
 
 
 namespace Core {
@@ -276,6 +276,9 @@ void CReagentGroupModel::SetUserSettings(DataManager::CUserSettings *p_UserSetti
 /****************************************************************************/
 Qt::ItemFlags CReagentGroupModel::flags(const QModelIndex &Index) const
 {
+    if (Index.column() == 1) {
+        return Qt::ItemIsEnabled;
+    }
     if (mp_ReagentGroupList) {
         if (m_ShowCleaningReagent)
         {

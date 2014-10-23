@@ -43,7 +43,7 @@ CParametersWidget::CParametersWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(
     Palette.setColor(QPalette::Highlight, Qt::transparent);
     Palette.setColor(QPalette::HighlightedText, Qt::black);
     mp_Ui->parameterList->setPalette(Palette);
-
+    mp_Ui->parameterList->setCurrentRow(0);
     CONNECTSIGNALSIGNAL(mp_Ui->parameterList, currentRowChanged(int), this, CurrentRowChanged(int))
 }
 

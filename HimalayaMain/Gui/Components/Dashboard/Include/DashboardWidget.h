@@ -61,7 +61,9 @@ public:
         Undefined_ProgramStatus,
         ProgramRunning,
         Paused,
-        Aborting
+        Aborting,
+        Completed,
+        Aborted
     } ProgramStatus_t;
 
     /****************************************************************************/
@@ -167,8 +169,8 @@ private:
     QString m_strPromptProgramDelay;
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
+    QString m_strProgramWillComplete;
     QString m_strProgramComplete;
-    QString m_strCleaningProgramComplete;
     QString m_strTissueProtectPassed;
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
@@ -194,7 +196,7 @@ private:
     bool m_HaveSucked;
     ProgramStageStatus_t m_ProgramStageStatus;
     ProgramStatus_t m_ProgramStatus;
-    bool m_IsProgramAborted;
+    bool m_IsProgramAbortedOrCompleted;
 public slots:
     /****************************************************************************/
     /*!
@@ -257,9 +259,10 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramAborted
+     *  \param  IsRetortContaminated = is retort contaminated?
      */
     /****************************************************************************/
-    void OnProgramAborted();
+    void OnProgramAborted(bool IsRetortContaminated);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramBeginAbort

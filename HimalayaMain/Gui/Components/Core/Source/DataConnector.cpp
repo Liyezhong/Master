@@ -24,6 +24,7 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
@@ -111,7 +112,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     // Dashboard Command Handlers
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAcknowledge>(&CDataConnector::ProgramAcknowledgeHandler, this);
-
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAborted>(&CDataConnector::ProgramAbortedHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSuckDrain>(&CDataConnector::StationParaffinBathStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
@@ -1733,12 +1734,6 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              emit ProgramWillComplete();
         }
         break;
-        case DataManager::PROGRAM_ABORT_FINISHED:
-        {
-             emit ProgramAborted();
-             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
-        }
-        break;
         case DataManager::PROGRAM_ABORT_BEGIN:
         {
              emit ProgramBeginAbort();
@@ -1817,6 +1812,13 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             qDebug() << "Do Nothing";
         }
     }
+}
+
+void CDataConnector::ProgramAbortedHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAborted& Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit ProgramAborted(Command.IsRetortContaminated());
+    (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
 }
 
 void CDataConnector::ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command)

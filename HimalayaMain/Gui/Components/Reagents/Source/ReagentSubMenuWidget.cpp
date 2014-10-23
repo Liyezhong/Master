@@ -23,7 +23,7 @@ CReagentSubMenuWidget::CReagentSubMenuWidget(QWidget *p_Parent) : MainMenu::CPan
     Palette.setColor(QPalette::Highlight, Qt::transparent);
     Palette.setColor(QPalette::HighlightedText, Qt::black);
     mp_Ui->ReagentSubMenulist->setPalette(Palette);
-
+    mp_Ui->ReagentSubMenulist->setCurrentRow(0);
     CONNECTSIGNALSIGNAL(mp_Ui->ReagentSubMenulist, currentRowChanged(int), this, CurrentRowChanged(int))
 
 }

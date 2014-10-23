@@ -367,7 +367,8 @@ private slots:
     void UpdateDashboardStation(const QString& strStationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of UpdateDashboardSceneReagentsForProgram
+     *  \brief  Definition/Declaration of UpdateDashboardSceneReagentsForProgram,
+     *          it can show all pipes and stations
      */
     /****************************************************************************/
     void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);

@@ -79,6 +79,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "Scheduler/Commands/Include/CmdSystemState.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h"
@@ -357,6 +358,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramSelectedReply>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdCurrentProgramStepInfor>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramAcknowledge>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdProgramAborted>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdParaffinMeltPointChanged>(&m_CommandChannelSchedulerMain);

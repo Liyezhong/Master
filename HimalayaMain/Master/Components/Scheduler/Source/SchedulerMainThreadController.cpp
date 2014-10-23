@@ -53,6 +53,7 @@
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
@@ -1157,10 +1158,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              m_CurrentStepState = PSSM_ABORTED;
             //program finished
             AllStop();
-            LogDebug("Program aborted!");
+
             m_SchedulerMachine->SendRunComplete();
             // tell the main controller the program has been aborted
-            MsgClasses::CmdProgramAcknowledge* commandPtrAbortFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_FINISHED));
+            MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
             Q_ASSERT(commandPtrAbortFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
@@ -1168,14 +1169,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //update station/reagent using times
             UpdateStationReagentStatus();
 
-            //send command to main controller to tell the left time
-            QTime leftTime(0,0,0);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
-            LogDebug("SchedulerMainThreadController::HandleRunState send command Program aborted!");
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             m_CurProgramStepIndex = -1;
+            LogDebug("Program aborted!");
         }
     }
 
@@ -2097,9 +2092,8 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
-        QString reagent;
-        reagent = pProgramStep->GetReagentID();
-        if (reagent == "L8")
+
+        if ("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
         {
             leftTime += 10 * 60;
         }
