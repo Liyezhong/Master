@@ -207,7 +207,8 @@ void CRcReHeating::CheckTheTemperature()
             }
         }
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297 && 283 != m_LastScenario && 293 != m_LastScenario) )
+    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297 && 283 != m_LastScenario && 293 != m_LastScenario
+                                      && 285 != m_LastScenario && 295 != m_LastScenario && 287 != m_LastScenario && 297 != m_LastScenario) )
     {
         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
         {
@@ -331,14 +332,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 {
                     if(!m_HasReagent)
                     {
-                        if(283 == m_LastScenario || 293 == m_LastScenario)
-                        {
-                            emit TasksDone(true);
-                        }
-                        else
-                        {
-                            m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                        }
+                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
                     }
                     else
                     {
