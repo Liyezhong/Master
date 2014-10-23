@@ -433,6 +433,8 @@ void CStartup::LoadCommonComponenetsTwo()
 /****************************************************************************/
 void CStartup::GuiInit()
 {
+    qDebug()<<"CStartup::GuiInit ---- m_DeviceName="<<m_DeviceName;
+
     mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
@@ -763,8 +765,11 @@ void CStartup::UpdateParameters()
     {
         //m_WindowStatusResetTimer.setInterval(mp_ServiceConnector->GetServiceParameters()->GetSystemLogOffTime());
         m_WindowStatusResetTimer.setInterval(60000);
-        //m_DeviceName = mp_ServiceConnector->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
-        m_DeviceName = "HISTOCORE PRIMARIS";
+        m_DeviceName = mp_ServiceConnector->GetDeviceConfigInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
+
+        qDebug()<<"CStartup::UpdateParameters-------- get device name:"<< m_DeviceName;
+
+        m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
     }
     emit SetDeviceName(m_DeviceName);
 }
