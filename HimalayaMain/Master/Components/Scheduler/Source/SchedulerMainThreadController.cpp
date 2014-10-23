@@ -3136,6 +3136,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
+                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
                 CurrentState = CDS_WAIT_HIT_TEMPERATURE;
             }
             else

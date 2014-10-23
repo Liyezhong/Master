@@ -43,6 +43,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     ,m_DelayBeginTime(0)
     ,m_StartReq(0)
     ,m_StateACVoltageStepCount(0)
+    ,m_IsSelfTestDone(false)
     ,m_ASB3SwitchType(0)
     ,m_ASB5SwitchType(0)
     ,m_IsLoged(0)

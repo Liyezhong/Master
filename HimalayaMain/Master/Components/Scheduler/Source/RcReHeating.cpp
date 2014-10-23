@@ -293,7 +293,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             if(0 == m_StartReq)
             {
                 CmdALPressure* CmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
-                CmdPressure->SetTargetPressure(40.0);
+                CmdPressure->SetTargetPressure(30.0);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdPressure);
                 m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
                 m_StartReq++;
@@ -308,29 +308,39 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             }
             else if(2 == m_StartReq)
             {
-                if(283 == m_LastScenario || 293 == m_LastScenario)
+                if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 5.0)
                 {
-                    if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 3.0)
-                    {
-                        emit TasksDone(true);
-                    }
-                    else
-                    {
-                        m_RsReagentCheckStep = BUILD_VACUUM;
-                        m_HasReagent = true;
-                    }
+                    m_HasReagent = false;
                 }
                 else
                 {
-                    if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 3.0)
+                    m_HasReagent = true;
+                }
+                m_StartReq++;
+            }
+            else if(3 == m_StartReq)
+            {
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                m_StartReq++;
+            }
+            else if(4 == m_StartReq)
+            {
+                if("Scheduler::ALReleasePressure" == cmdName)
+                {
+                    if(!m_HasReagent)
                     {
-                        m_HasReagent = false;
-                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                        if(283 == m_LastScenario || 293 == m_LastScenario)
+                        {
+                            emit TasksDone(true);
+                        }
+                        else
+                        {
+                            m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                        }
                     }
                     else
                     {
                         m_RsReagentCheckStep = BUILD_VACUUM;
-                        m_HasReagent = true;
                     }
                     m_StartReq = 0;
                 }
