@@ -84,6 +84,14 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  function of SetReagentID
+     *  \param  ReagentID - QString
+     */
+    /****************************************************************************/
+    inline void SetReagentID(const QString& ReagentID) { m_LastReagentID = ReagentID;}
+
+    /****************************************************************************/
+    /*!
      *  \brief  function of SetNeedRunCleaning
      *  \param  value = bool
      *  \return void
@@ -132,6 +140,14 @@ private:
      */
     /****************************************************************************/
     void ProcessDraining(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  function of GetBasePressure
+     *  \return qreal
+     */
+    /****************************************************************************/
+    qreal GetBasePressure();
 
     /****************************************************************************/
     /*!
@@ -251,6 +267,7 @@ private:
     bool                            m_HasReagent;                       //!< wether has reagent in retort
     int                             m_OvenRemainingTime;                //!< oven remaning time
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
+    QString                         m_LastReagentID;                    //!< last reagent ID
 };
 
 }

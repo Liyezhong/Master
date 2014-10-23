@@ -292,6 +292,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
         case FORCE_DRAIN:
             if(0 == m_StartReq)
             {
+                mp_SchedulerThreadController->LogDebug("reagent check build pressure.");
                 CmdALPressure* CmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
                 CmdPressure->SetTargetPressure(30.0);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdPressure);
@@ -308,7 +309,8 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             }
             else if(2 == m_StartReq)
             {
-                if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 5.0)
+                mp_SchedulerThreadController->LogDebug(QString("get the current pressure is:%1").arg(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL));
+                if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 5.0) //2 * GetBasePressure())
                 {
                     m_HasReagent = false;
                 }
@@ -505,5 +507,26 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
     }
 }
 
+qreal CRcReHeating::GetBasePressure()
+{
+    qreal baseline = 1.0;
+    if((m_LastReagentID == "RG1")||(m_LastReagentID == "RG2"))
+    {
+        baseline = 1.33;
+    }
+    else if((m_LastReagentID == "RG3")||(m_LastReagentID == "RG4")||(m_LastReagentID == "RG8"))
+    {
+        baseline = 1.05;
+    }
+    else if((m_LastReagentID == "RG5")||(m_LastReagentID == "RG7"))
+    {
+        baseline = 1.14;
+    }
+    else if((m_LastReagentID == "RG6"))
+    {
+        baseline = 0.53;
+    }
+    return baseline;
+}
 
 }

@@ -401,7 +401,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     Q_UNUSED(cmd);
     bool isCleaningProgram = false;
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
-
+    m_CurrentScenario = scenario;
     if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario || 283 == scenario || 293 == scenario)
     {
         isCleaningProgram = true;
@@ -1315,12 +1315,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
             LogDebug("Go to RcReHeating");
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), false);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), false);
         }
         else if (CTRL_CMD_RC_REHEATING_CLEANING == ctrlCmd)
         {
             LogDebug("Go to RcReHeating_Clean");
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), true);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), true);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {

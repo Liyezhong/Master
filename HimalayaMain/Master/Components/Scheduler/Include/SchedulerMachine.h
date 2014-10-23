@@ -737,7 +737,7 @@ public:
      *  \param  NeedRunCleaning = bool
      */
     /****************************************************************************/
-    void EnterRcReHeating(quint32 Scenario, bool NeedRunCleaning = false);
+    void EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedRunCleaning = false);
 
     /****************************************************************************/
     /*!

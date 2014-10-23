@@ -980,13 +980,14 @@ void CSchedulerStateMachine::EnterRcCheckRTLock()
     emit SigEnterRcCheckRTLock();
 }
 
-void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, bool NeedRunCleaning)
+void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedRunCleaning)
 {
     if(NeedRunCleaning)
     {
         mp_RcReHeating->SetNeedRunCleaning(NeedRunCleaning);
     }
     mp_RcReHeating->SetScenario(Scenario);
+    mp_RcReHeating->SetReagentID(ReagentID);
     emit SigRcReHeating();
 }
 
