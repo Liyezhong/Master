@@ -592,25 +592,22 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
 
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
-
-            qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
-            qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED.arg(ASBIndex)
-                    .arg(Voltage).arg(Current);
-
-            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
-            qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_OK.arg(ASBIndex)
-                    .arg(Voltage).arg(Current);
-
-            qDebug()<<"Show MessageBox " << ASBIndex;
-            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
-            qDebug()<<"End Show MessageBox "<<ASBIndex;
         }
+
+        qreal Voltage      = p_TestCase->GetResult().value("Voltage").toDouble();
+        qreal Current      = p_TestCase->GetResult().value("Current").toDouble();
+        QString VoltageRet = p_TestCase->GetResult().value("VoltageRet");
+        QString CurrentRet = p_TestCase->GetResult().value("CurrentRet");
+
+        QString Text = Service::CMessageString::MSG_DIAGNOSTICS_ASB_OUTPUT_RESULT.arg(ASBIndex)
+                .arg(VoltageRet).arg(Voltage).arg(CurrentRet).arg(Current);
+
+        qDebug()<<"Show MessageBox " << ASBIndex;
+        mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        qDebug()<<"End Show MessageBox "<<ASBIndex;
         mp_MainControlManuf->SetTestResult(Id, Result);
     }
     mp_MainControlManuf->EnableButton(true);

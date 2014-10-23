@@ -1907,7 +1907,7 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-
+    p_TestCase->ResetResult();
     qreal Voltage = p_TestCase->GetParameter("Voltage").toDouble();
     qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
     qreal VolLow = Voltage - Voltage*VoltageTolerance;
@@ -1918,14 +1918,28 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
     p_TestCase->AddResult("Voltage", QString("%1").arg(ActualVoltage));
     p_TestCase->AddResult("Current", QString("%1").arg(ActualCurrent));
 
+    if (ActualVoltage>=VolLow && ActualVoltage<=VolHigh) {
+        p_TestCase->AddResult("VoltageRet", Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
+    }
+    else {
+        p_TestCase->AddResult("VoltageRet", Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
+    }
+
+    if (ActualCurrent>=CurrentLow && ActualCurrent<= CurrentHigh) {
+        p_TestCase->AddResult("CurrentRet", Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
+    }
+    else {
+        p_TestCase->AddResult("CurrentRet", Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
+    }
+
     if (ActualVoltage>=VolLow && ActualVoltage<= VolHigh &&
             ActualCurrent>=CurrentLow && ActualCurrent<= CurrentHigh) {
-
         return 0;
     }
     else {
         return 1;
     }
+
 }
 
 qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t Id)

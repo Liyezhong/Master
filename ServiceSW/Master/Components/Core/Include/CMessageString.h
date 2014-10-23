@@ -89,8 +89,7 @@ public:
 	static QString MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!<Please check if the exhaust fan is runing and check if the air flow direction is out of device.
 	static QString MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!<Please check if the ventilation fan is runing and check if the air flow direction is out of device
 	static QString MSG_DIAGNOSTICS_ADJUST_LID_LOCK;                   //!<Please adjust retort lid lock assembly then re-test...
-	static QString MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED;          //!<ASB %1 DC output voltage is failed (%2 V). <br>and current is failed (%3 mA).
-	static QString MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_OK;              //!<ASB %1 DC output voltage is Ok (%2 V). <br>and current is Ok (%3 mA).
+    static QString MSG_DIAGNOSTICS_ASB_OUTPUT_RESULT;                 //!<ASB %1 DC output voltage is %2 (%3 V). <br>and current is %4 (%5 mA).
 	static QString MSG_DIAGNOSTICS_TEST_COVER_SENSOR;                 //!<Open the retort lid. do you see water cover the level sensor?
 	static QString MSG_DIAGNOSTICS_RV_SELECT_TEST;                    //!<Rotary valve selecting test in progress...
 	static QString MSG_DIAGNOSTICS_RV_SEALINT_TEST;                   //!<Rotary valve sealing test in progress...
