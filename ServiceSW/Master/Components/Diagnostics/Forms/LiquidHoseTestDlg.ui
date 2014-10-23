@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
-    <height>458</height>
+    <width>528</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="frameShape">
-         <enum>QFrame::Box</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
          <string>Bottle
@@ -34,7 +34,7 @@ Number</string>
       <item row="0" column="1">
        <widget class="QLabel" name="label_2">
         <property name="frameShape">
-         <enum>QFrame::Box</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
          <string>Recorded
@@ -45,7 +45,7 @@ Pressure</string>
       <item row="0" column="2">
        <widget class="QLabel" name="label_3">
         <property name="frameShape">
-         <enum>QFrame::Box</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
          <string>Test
@@ -236,27 +236,30 @@ Result</string>
          <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
-         <string>Bottle Number</string>
+         <string>Bottle
+Number</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_26">
         <property name="frameShape">
-         <enum>QFrame::Box</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
-         <string>Recorded Pressure</string>
+         <string>Recorded
+Pressure</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="label_27">
         <property name="frameShape">
-         <enum>QFrame::WinPanel</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="text">
-         <string>Test Result</string>
+         <string>Test
+Result</string>
         </property>
        </widget>
       </item>
@@ -435,8 +438,8 @@ Result</string>
     <widget class="QLabel" name="label_49">
      <property name="text">
       <string>Leak: Search for a leakage, a bottle improperly inserted or a loose bottle cap.
-Restriction: Search for a restriction or blockage in the reagent lines or in the connectors of bottles of
-paraffin baths. Then repeat this test.</string>
+Restriction: Search for a restriction or blockage in the reagent lines or in the
+connectors of bottles or paraffin baths. Then repeat this test.</string>
      </property>
     </widget>
    </item>
