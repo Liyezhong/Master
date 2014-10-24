@@ -734,6 +734,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnterRcReHeating
      *  \param  Scenario = qint32
+     *  \param  ReagentID = QString
      *  \param  NeedRunCleaning = bool
      */
     /****************************************************************************/
