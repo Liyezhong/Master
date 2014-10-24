@@ -529,14 +529,19 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                        <<PVMode);
 
             //send command to main controller to tell the left time
+            QString strStep;
             if (m_NewProgramID.at(0) != 'C')
             {
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "Precheck...", m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                strStep = "Precheck...";
             }
+            else
+                strStep= m_CurReagnetName;
+
+            quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, strStep, m_CurProgramStepIndex, leftSeconds));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
@@ -4070,15 +4075,6 @@ void SchedulerMainThreadController::DisablePauseButton()
 {
     if (!m_IsCleaningProgram)
         EnablePauseButton(false);
-}
-
-void SchedulerMainThreadController::EnablePause()
-{
-
-}
-
-void SchedulerMainThreadController::DisablePause()
-{
 }
 
 void SchedulerMainThreadController::EnablePauseButton(bool bEnable)

@@ -172,10 +172,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmRVMoveToSealState.data(), entered(), this, OnRVMoveToSeal());
     mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigRVMoveToSealReady()), mp_PssmProcessingState.data());
     CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, OnEnterPssmProcessing());
-    CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, EnablePause());
 
     mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
-    CONNECTSIGNALSLOT(this, sigProcessingFinished(), mp_SchedulerThreadController, DisablePause());
     CONNECTSIGNALSLOT(mp_PssmProcessingSRState.data(), entered(), mp_SchedulerThreadController, SendTissueProtectMsg());
     mp_PssmProcessingSRState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, OnRVMoveToTube());
