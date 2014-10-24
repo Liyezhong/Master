@@ -225,7 +225,7 @@ int CHeatingTestWithWater::Run(void)
         goto __fail__;
 
     inputDialog.SetTitle(title);
-    inputDialog.exec();
+    (void)inputDialog.exec();
     inputDialog.getEdit(tempExternal);
 
     text = tr("Rotating Rotary Valve to tube position 13");
@@ -251,7 +251,6 @@ int CHeatingTestWithWater::Run(void)
 __ok__:
 __fail__:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
-__abort__:
     return ret;
 }
 

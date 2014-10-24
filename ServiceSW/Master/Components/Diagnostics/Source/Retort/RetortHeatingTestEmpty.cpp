@@ -125,7 +125,7 @@ int CHeatingTestEmpty::Run(void)
     timingDialog->SetTitle(title);
     heatingStatus.UsedTime = 0;
     heatingStatus.EDTime = t1 + t2;
-    heatingStatus.RetortTempTarget = tr("%1 ~ %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
+    heatingStatus.RetortTempTarget = tr("%1 - %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
     (void)dev->RetortGetTemp(&retortTempSide, &retortTempBottom1, &retortTempBottom2);
     heatingStatus.RetortTempSide = retortTempSide;
     heatingStatus.RetortTempSensor1 = retortTempBottom1;
