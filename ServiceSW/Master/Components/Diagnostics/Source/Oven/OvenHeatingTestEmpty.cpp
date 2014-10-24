@@ -69,8 +69,10 @@ void CHeatingTestEmpty::ShowWaitingDialog(struct heatingTestStatus *buf, bool is
 
     currentStatus["Duration"] = QTime().addSecs(buf->EDTime).toString("hh:mm:ss");
     currentStatus["UsedTime"] = QTime().addSecs(buf->UsedTime).toString("hh:mm:ss");
-
-    currentStatus["TargetTempTopRange"] = tr("%1 - %2").arg(buf->OvenTempTopTarget + buf->TempOffsetRangeMin)
+    if (buf->TempOffsetRangeMax == 0)
+        currentStatus["TargetTempTopRange"] = tr("%1").arg(buf->OvenTempTopTarget);
+    else
+        currentStatus["TargetTempTopRange"] = tr("%1-%2").arg(buf->OvenTempTopTarget + buf->TempOffsetRangeMin)
                                                        .arg(buf->OvenTempTopTarget + buf->TempOffsetRangeMax);
     currentStatus["CurrentTempTop"] = tr("%1").arg(buf->OvenTempTop);
     currentStatus["CurrentTempBottom1"] = tr("%1").arg(buf->OvenTempSensor1);
@@ -113,8 +115,6 @@ int CHeatingTestEmpty::Run(void)
     qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
     timingDialog->SetTitle(tr("Paraffin Oven Heating Test (Empty)"));
-    timingDialog->show();
-    dev->Pause(1000);
 
     (void)dev->OvenStopHeating();
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
@@ -153,6 +153,8 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor2 = OvenTempSensor2;
         status.OvenTempTop = OvenTempTop;
         status.EDTime = t;
+        status.TempOffsetRangeMax = 0;
+        status.TempOffsetRangeMin = 0;
 
         ShowWaitingDialog(&status, true);
         count = 60;
