@@ -149,7 +149,14 @@ int CHeatingTestEmpty::Run(void)
                 && retortTempBottom2 >= retortBottomTargetTemp) {
             if (!--count)
                 break;
+        } else {
+            if (i >= t1) {
+                ret = RETURN_ERR_FAIL;
+                break;
+            }
+            count = t2;
         }
+
         int MSec = QTime().currentTime().msecsTo(EndTime);
         dev->Pause(MSec);
         heatingStatus.UsedTime++;
@@ -162,7 +169,7 @@ int CHeatingTestEmpty::Run(void)
     if (!timingDialog->isVisible())
         return RETURN_OK;
     timingDialog->accept();
-    if (ret != RETURN_OK || i == t1) {
+    if (ret != RETURN_OK || count > 0) {
         // fail
         text = tr("Retort Heating Test (Empty) failed.<br/>"
                   "Sequentially check resistance of "

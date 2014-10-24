@@ -41,10 +41,11 @@ void OvenHeatingTestEmptyTimingDialog::SetTitle(QString Title)
 void OvenHeatingTestEmptyTimingDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 {
     ui->labelUsedTime->setText(Status.value("UsedTime"));
+    ui->labelDuration->setText(Status.value("Duration"));
+
+    ui->labelTargetTemp->setText(Status.value("TargetTempTopRange"));
+
     ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
     ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
     ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
-    ui->labelDuration->setText(Status.value("Duration"));
-    ui->labelTargetTemp->setText(Status.value("TargetTempTop"));
-    ui->labelTargetTempName_bottom->setText(Status.value("TargetTempBottom"));
 }

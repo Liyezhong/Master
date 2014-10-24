@@ -40,7 +40,8 @@ struct heatingTestStatus {
    qreal OvenTempSensor1Target;
    qreal OvenTempSensor2Target;
    qreal TempOffset;
-   qreal TempOffsetRange;
+   qreal TempOffsetRangeMin;
+   qreal TempOffsetRangeMax;
 };
 
 class CHeatingTestEmpty : public Diagnostics::CTestBase
@@ -83,7 +84,7 @@ protected:
      *  \brief To show waiting dialog for test case.
      */
     /****************************************************************************/
-    virtual void ShowWaitingDialog(struct heatingTestStatus *buf);
+    virtual void ShowWaitingDialog(struct heatingTestStatus *buf, bool isShow = false);
 
 private:
     CDiagnosticMessageDlg *dlg; //!< For show message dialog

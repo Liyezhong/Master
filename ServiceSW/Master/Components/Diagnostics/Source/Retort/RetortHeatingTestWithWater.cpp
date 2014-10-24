@@ -225,16 +225,15 @@ int CHeatingTestWithWater::Run(void)
         goto __fail__;
 
     inputDialog.SetTitle(title);
-
     inputDialog.exec();
     inputDialog.getEdit(tempExternal);
-    //==================
+
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(false, 13);
     text = tr("Start filling");
     dlg->ShowWaitingDialog(title, text);
-    dev->PumpDraining();
+    (void)dev->PumpDraining();
     dlg->HideWaitingDialog();
 
     if (tempExternal.toFloat() < retortSideTargetTemp

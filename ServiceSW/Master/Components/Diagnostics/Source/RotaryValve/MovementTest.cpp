@@ -96,6 +96,7 @@ int CMovementTest::Run()
                   "about 15mins. If it still fails in the second "
                   "try, exchange rotary valve, reboot the "
                   "Service Software and repeat this test.");
+        mp_dlg->HideWaitingDialog();
         mp_dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }

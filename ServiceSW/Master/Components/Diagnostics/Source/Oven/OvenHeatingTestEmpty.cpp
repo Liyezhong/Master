@@ -63,22 +63,23 @@ void CHeatingTestEmpty::StartPreHeating()
     OvenPreTest.StartPreHeating(meltPoint);
 }
 
-void CHeatingTestEmpty::ShowWaitingDialog(struct heatingTestStatus *buf)
+void CHeatingTestEmpty::ShowWaitingDialog(struct heatingTestStatus *buf, bool isShow)
 {
     Service::ModuleTestStatus currentStatus;
 
     currentStatus["Duration"] = QTime().addSecs(buf->EDTime).toString("hh:mm:ss");
     currentStatus["UsedTime"] = QTime().addSecs(buf->UsedTime).toString("hh:mm:ss");
 
+    currentStatus["TargetTempTopRange"] = tr("%1 - %2").arg(buf->OvenTempTopTarget + buf->TempOffsetRangeMin)
+                                                       .arg(buf->OvenTempTopTarget + buf->TempOffsetRangeMax);
     currentStatus["CurrentTempTop"] = tr("%1").arg(buf->OvenTempTop);
-    currentStatus["TargetTempTop"] = tr("%1").arg(buf->OvenTempTopTarget);
-
     currentStatus["CurrentTempBottom1"] = tr("%1").arg(buf->OvenTempSensor1);
     currentStatus["CurrentTempBottom2"] = tr("%1").arg(buf->OvenTempSensor2);
 
-    currentStatus["TargetTempBottom"] = tr("%1").arg(buf->OvenTempSensor1Target);
-
     timingDialog->UpdateLabel(currentStatus);
+
+    if (isShow)
+        timingDialog->show();
 }
 
 int CHeatingTestEmpty::Run(void)
@@ -100,8 +101,11 @@ int CHeatingTestEmpty::Run(void)
     qreal OvenTempSensor2Cur;
 
     qreal OvenTopTargetTemp;
-    qreal OvenBottomTargetTemp;
-
+//    qreal OvenBottomTargetTemp;
+    qreal max;
+    int count;
+    qreal targetTempRangeMin;
+    qreal targetTempRangeMax;
     struct heatingTestStatus status;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("HeatingTestEmpty");
@@ -109,6 +113,8 @@ int CHeatingTestEmpty::Run(void)
     qreal DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toFloat();
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
     timingDialog->SetTitle(tr("Paraffin Oven Heating Test (Empty)"));
+    timingDialog->show();
+    dev->Pause(1000);
 
     (void)dev->OvenStopHeating();
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
@@ -124,9 +130,12 @@ int CHeatingTestEmpty::Run(void)
     }
 
     OvenTopTargetTemp = p_TestCase->GetParameter("OvenTopTargetTemp").toFloat();
-    OvenBottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
-    if (OvenTempTop >= OvenTopTargetTemp || OvenTempSensor1 >= OvenBottomTargetTemp
-            || OvenTempSensor2 >= OvenBottomTargetTemp) {
+//    OvenBottomTargetTemp = p_TestCase->GetParameter("OvenBottomTargetTemp").toFloat();
+
+    max = OvenTempTop > OvenTempSensor1 ? OvenTempTop : OvenTempSensor1;
+    max = max > OvenTempSensor2 ? max : OvenTempSensor2;
+
+    if (max >= OvenTopTargetTemp) {
         text = QString(tr("Please remove any paraffin bath present in "
                           "the paraffin oven. Then please leave the oven cover "
                           "opened to speed up the cooling process."));
@@ -137,16 +146,17 @@ int CHeatingTestEmpty::Run(void)
         qreal TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
         int t = p_TestCase->GetParameter("t").toInt();
         status.UsedTime = 0;
-        status.OvenTempTopTarget = OvenTempTop - TempOffset;
-        status.OvenTempSensor1Target = OvenTempSensor1 - TempOffset;
-        status.OvenTempSensor2Target = OvenTempSensor2 - TempOffset;
+        status.OvenTempTopTarget = max - TempOffset;
+        status.OvenTempSensor1Target = max - TempOffset;
+        status.OvenTempSensor2Target = max - TempOffset;
         status.OvenTempSensor1 = OvenTempSensor1;
         status.OvenTempSensor2 = OvenTempSensor2;
         status.OvenTempTop = OvenTempTop;
         status.EDTime = t;
 
-        timingDialog->show();
-        for (i = 0; i < t && timingDialog->isVisible(); i++) {
+        ShowWaitingDialog(&status, true);
+        count = 60;
+        for (i = 0; i < t + 60 && timingDialog->isVisible(); i++) {
             QTime EndTime = QTime().currentTime().addSecs(1);
             ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
@@ -156,10 +166,19 @@ int CHeatingTestEmpty::Run(void)
             status.OvenTempTop = OvenTempTopCur;
             status.UsedTime++;
             ShowWaitingDialog(&status);
-            if (OvenTempTop - OvenTempTopCur >= TempOffset
-                    && OvenTempSensor1 - OvenTempSensor1Cur >= TempOffset
-                    && OvenTempSensor2 - OvenTempSensor2Cur >= TempOffset)
-                break;
+            if (max - OvenTempTopCur >= TempOffset
+                    && max - OvenTempSensor1Cur >= TempOffset
+                    && max - OvenTempSensor2Cur >= TempOffset) {
+                if (!count--)
+                    break;
+            } else {
+                if (i >= t) {
+                    ret = RETURN_ERR_FAIL;
+                    break;
+                }
+                count = 60;
+            }
+
             int MSec = QTime().currentTime().msecsTo(EndTime);
             dev->Pause(MSec);
         }
@@ -168,7 +187,7 @@ int CHeatingTestEmpty::Run(void)
            goto _abort_;
 
         timingDialog->accept();
-        if (ret != RETURN_OK || i == t) {
+        if (ret != RETURN_OK || count > 0) {
             text = tr("Paraffin Oven Heating Test "
                       "(Empty) failed. ASB5 is damaged."
                       "Exchange it and repeat this test.");
@@ -195,38 +214,51 @@ int CHeatingTestEmpty::Run(void)
         goto _fail_;
     }
 
+    max = OvenTempTop > OvenTempSensor1 ? OvenTempTop : OvenTempSensor1;
+    max = max > OvenTempSensor2 ? max : OvenTempSensor2;
+
     status.TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
-    status.TempOffsetRange = p_TestCase->GetParameter("TempOffsetRange").toFloat();
+    status.TempOffsetRangeMin = p_TestCase->GetParameter("TempOffsetRangeMin").toFloat();
+    status.TempOffsetRangeMax = p_TestCase->GetParameter("TempOffsetRangeMax").toFloat();
 
-    OvenTempSensor1 += status.TempOffset;
-    OvenTempSensor2 += status.TempOffset;
-    OvenTempTop     += status.TempOffset;
-
-    (void)dev->OvenStartHeating(OvenTempTop, OvenTempSensor1);
+    (void)dev->OvenStartHeating(max + status.TempOffset, max + status.TempOffset);
 
     t1 = p_TestCase->GetParameter("t1").toInt();
     t2 = p_TestCase->GetParameter("t2").toInt();
 
     status.EDTime = t1 + t2;
     status.UsedTime = 0;
-    status.OvenTempTopTarget = OvenTempTop;
+    status.OvenTempTopTarget = max + status.TempOffset;
+    status.OvenTempSensor1Target = max + status.TempOffset;
+    status.OvenTempSensor2Target = max + status.TempOffset;
     status.OvenTempTop = OvenTempTop;
-    status.OvenTempSensor1Target = OvenTempSensor1;
-    status.OvenTempSensor2Target = OvenTempSensor2;
     status.OvenTempSensor1 = OvenTempSensor1;
     status.OvenTempSensor2 = OvenTempSensor2;
 
-    timingDialog->show();
-
-    for (i = 0; i < t1 && timingDialog->isVisible(); i++) {
+    ShowWaitingDialog(&status, true);
+    count = t2;
+    targetTempRangeMin = status.OvenTempTopTarget + status.TempOffsetRangeMin;
+    targetTempRangeMax = status.OvenTempTopTarget + status.TempOffsetRangeMax;
+    for (i = 0; i < t1 + t2 && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
         ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
         if (ret != RETURN_OK)
             break;
-        if (OvenTempTopCur >= status.OvenTempTopTarget
-                && OvenTempSensor1Cur >= status.OvenTempSensor1Target
-                && OvenTempSensor2Cur >= status.OvenTempSensor1Target)
-            break;
+
+        if (OvenTempTopCur >= targetTempRangeMin && OvenTempTopCur <= targetTempRangeMax
+           && OvenTempSensor1Cur >= targetTempRangeMin && OvenTempSensor1Cur <= targetTempRangeMax
+           && OvenTempSensor2Cur >= targetTempRangeMin && OvenTempSensor2Cur <= targetTempRangeMax) {
+            if (!count--)
+                break;
+        } else {
+            if (i >= t1) {
+                ret = RETURN_ERR_FAIL;
+                break;
+            }
+            if (count != t2)
+                count = t2;
+        }
+
         status.OvenTempTop = OvenTempTopCur;
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
@@ -236,10 +268,11 @@ int CHeatingTestEmpty::Run(void)
         dev->Pause(MSec);
     }
 
-    if (i != t1 && !timingDialog->isVisible())
+    if (!timingDialog->isVisible())
         goto _abort_;
 
-    if (ret != RETURN_OK || i == t1) {
+    timingDialog->accept();
+    if (ret != RETURN_OK) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. Temperature did "
                   "not reach TM[current temperature +10\260C ] within %1 mins?. "
                   "Root cause might be damaged ASB5 or Paraffin Oven Module. "
@@ -247,39 +280,10 @@ int CHeatingTestEmpty::Run(void)
                   "Exchange defective part accordingly and repeat this test.").arg(t1/60);
         goto _fail_;
     }
-
-    OvenTempTop = OvenTempTopCur;
-    OvenTempSensor1 = OvenTempSensor1Cur;
-    OvenTempSensor2 = OvenTempSensor2Cur;
-
-    for (i = 0; i < t2 && timingDialog->isVisible(); i++) {
-        QTime EndTime = QTime().currentTime().addSecs(1);
-        ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
-        if (ret != RETURN_OK)
-            break;
-        if (qAbs(OvenTempTopCur - OvenTempTop) > status.TempOffsetRange
-                || qAbs(OvenTempSensor1Cur - OvenTempSensor1) > status.TempOffsetRange
-                || qAbs(OvenTempSensor2Cur - OvenTempSensor2) > status.TempOffsetRange) {
-            ret = RETURN_ERR_FAIL;
-            break;
-        }
-        status.OvenTempTop = OvenTempTop;
-        status.OvenTempSensor1 = OvenTempSensor1Cur;
-        status.OvenTempSensor2 = OvenTempSensor2Cur;
-        status.UsedTime++;
-        ShowWaitingDialog(&status);
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
-    }
-
-    if (i != t2 && !timingDialog->isVisible())
-        goto _abort_;
-
-    timingDialog->accept();
-
-    if (ret != RETURN_OK) {
-        text = tr("Paraffin Oven Heating Test (Empty) failed. "
+    if (count > 0) {
+        text = tr("Paraffin Oven Heating Test (Empty) failed. <br/>"
                   "ASB5 is damaged. Exchange it and repeat this test.");
+        ret = RETURN_ERR_FAIL;
         goto _fail_;
     }
 
