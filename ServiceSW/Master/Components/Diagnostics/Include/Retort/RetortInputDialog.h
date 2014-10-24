@@ -22,13 +22,20 @@
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "Core/Include/ServiceDefines.h"
-
+#include <KeyBoard/Include/KeyBoard.h>
 #include <QDialog>
 
 namespace Ui {
 class RetortInputDialog;
 }
 
+
+/****************************************************************************/
+/**
+ * \brief This dialog is started, when the user has to wait for the result of
+ *        a background process.
+ */
+/****************************************************************************/
 class RetortInputDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
@@ -63,8 +70,22 @@ public:
      *  \iparam text = the string of edit.
      */
     /****************************************************************************/
-    int getEdit(QString &text);
+    void getEdit(QString &text);
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when OK is clicked
+     *  \iparam EnteredString = Stores line edit string
+     */
+    /****************************************************************************/
+    void OnOkClicked(QString EnteredString);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function hides the keyboard when Esc is clicked
+     */
+    /****************************************************************************/
+    void OnESCClicked();
 
     /****************************************************************************/
     /*!
@@ -74,8 +95,28 @@ private slots:
     void clickOk(void);
 private:
     void ShowMessage(QString title, QString  text);
+protected:
+    bool eventFilter(QObject *p_Object, QEvent *p_Event);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To connect key board signal and slots.
+     */
+    /****************************************************************************/
+    void ConnectKeyBoardSignalSlots();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To disconnect key board signal and slots.
+     */
+    /****************************************************************************/
+    void DisconnectKeyBoardSignalSlots();
+
 private:
-    Ui::RetortInputDialog *ui;
+    Ui::RetortInputDialog *ui; //!< Retort Dialog ui
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
+    QString m_LineEditString;                   //!< Stores user input value
+    QString title; //!< dialog title
 };
 
 #endif // RETORTINPUTDIALOG_H

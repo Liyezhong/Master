@@ -218,10 +218,7 @@ int CHeatingTestWithWater::Run(void)
         return RETURN_OK;
     }
     timingDialog->accept();
-    text = tr("Retort Heating Test (with Water) failed.<br/>"
-              "Sequentially check resistance of temperature "
-              "sensor, function of ASB5 and retort. Exchange "
-              "part accordingly and repeat this test.");
+
     if ((ret = dev->RetortGetTemp(&retortTempSide,
                      &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
         goto __fail__;
@@ -265,10 +262,13 @@ __fail__:
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
     dlg->HideWaitingDialog();
-    dlg->ShowMessage(title, text, (ErrorCode_t)ret);
-    return ret;
+    text = tr("Retort Heating Test (with Water) failed.<br/>"
+              "Sequentially check resistance of temperature "
+              "sensor, function of ASB5 and retort. Exchange "
+              "part accordingly and repeat this test.");
+    dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+    return RETURN_ERR_FAIL;
 }
-
 
 } // namespace Retort
 
