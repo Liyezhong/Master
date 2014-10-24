@@ -66,6 +66,7 @@
 #include <HimalayaEventCodes.h>
 #include <HimalayaProcessExitCodes.h>
 #include <EventHandler/Include/EventHandlerEventCodes.h>
+#include <EventHandler/Include/StateHandler.h>
 #include <NetCommands/Include/CmdCriticalActionCheck.h>
 #include <NetCommands/Include/CmdCriticalActionStatus.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
@@ -282,7 +283,9 @@ void HimalayaMasterThreadController::OnGoReceived() {
         }
     }
     Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_START, Global::FmtArgs() << SerialNumber << DeviceName, true);
-
+    EventHandler::StateHandler::Instance().setStateToSoftSwitchMonitorState();
+    EventHandler::StateHandler::Instance().setInitState();
+    InitializeGUI();
 }
 
 /************************************************************************************************************************************/

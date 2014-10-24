@@ -25,7 +25,7 @@ SUBDIRS  = \
            ../../../../Platform/Master/Components/Threads/Build/Threads.pro \
            ../../../../Platform/Master/Components/NetCommands/Build/NetCommands.pro \
            ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
-           ../../../../Platform/Master/Components/GPIOManager/Build/GPIOManager.pro \
+#           ../../../../Platform/Master/Components/GPIOManager/Build/GPIOManager.pro \
            ../../../../Platform/Master/Components/ExportController/Build/ExportController.pro \
            ../../../../Platform/Master/Components/HeartBeatManager/Build/HeartBeatManager.pro \
             ../../../../Platform/Master/Components/SWUpdateManager/Build/SWUpdateManager.pro \
