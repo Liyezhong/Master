@@ -102,6 +102,9 @@ void CLiquidHoseTestDlg::RunTest()
 
         UpdateLabel(i, BottleNumber, RecordPressure);
 
+        if (i == m_BottleNumberList.count()) {
+            break;
+        }
         mp_Ui->labelStatus->setText(QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber));
         (void)p_DevProc->RVMovePosition(false, BottleNumber);
     }
