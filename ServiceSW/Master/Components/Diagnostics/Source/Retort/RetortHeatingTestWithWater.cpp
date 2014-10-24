@@ -207,8 +207,16 @@ int CHeatingTestWithWater::Run(void)
         this->ShowWaitingDialog(&heatingStatus);
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        text = tr("Rotating Rotary Valve to tube position 13");
+        dlg->ShowWaitingDialog(title, text);
+        (void)dev->RVMovePosition(false, 13);
+        text = tr("Start Draining");
+        dlg->ShowWaitingDialog(title, text);
+        (void)dev->PumpDraining();
+        dlg->HideWaitingDialog();
         return RETURN_OK;
+    }
     timingDialog->accept();
     text = tr("Retort Heating Test (with Water) failed.<br/>"
               "Sequentially check resistance of temperature "
@@ -231,7 +239,7 @@ int CHeatingTestWithWater::Run(void)
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(false, 13);
-    text = tr("Start filling");
+    text = tr("Start Draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
     dlg->HideWaitingDialog();
@@ -241,15 +249,22 @@ int CHeatingTestWithWater::Run(void)
         text = tr("Retort Heating Test (with Water) failed.<br/>"
                   "Exchange the retort module and repeat this test.");
         ret = RETURN_ERR_FAIL;
-        goto __fail__;
     } else {
         text = tr("Retort Heating Test (with Water) successfully completed.");
         ret = RETURN_OK;
-        goto __ok__;
     }
 
-__ok__:
+    dlg->ShowMessage(title, text, (ErrorCode_t)ret);
+    return ret;
+
 __fail__:
+    text = tr("Rotating Rotary Valve to tube position 13");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->RVMovePosition(false, 13);
+    text = tr("Start Draining");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->PumpDraining();
+    dlg->HideWaitingDialog();
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
     return ret;
 }
