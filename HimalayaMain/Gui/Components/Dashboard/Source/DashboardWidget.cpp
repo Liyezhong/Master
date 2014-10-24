@@ -348,7 +348,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     if (m_ProgramStatus == Completed ||
         m_ProgramStatus == Aborted)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->SetTitle(CommonString::strWarning);
         QString strTemp;
         if (m_ProgramStatus == Completed)
@@ -471,7 +471,7 @@ void CDashboardWidget::OnProgramCompleted()
 
     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->SetTitle(CommonString::strInforMsg);
         QString strTemp;
         strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
@@ -1046,7 +1046,7 @@ void CDashboardWidget::RetranslateUI()
     m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is completed successfully!", 0, QApplication::UnicodeUTF8);
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
-    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired, please replace fresh reagents! You can't operate this program.", 0, QApplication::UnicodeUTF8);
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     //m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the total number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
@@ -1115,10 +1115,7 @@ void CDashboardWidget::OnUserRoleChanged()
              }
             else// >3rd step
             {
-                if (m_ProgramStageStatus == Disabled)
-                {
-                    ui->programPanelWidget->EnablePauseButton(false);
-                }
+                ui->programPanelWidget->EnablePauseButton(false);
             }
 
             //Abort
