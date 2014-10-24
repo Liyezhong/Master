@@ -223,7 +223,7 @@ void COven::CurrentTabChanged(int Index)
 void COven::ConfirmModuleConfiguration()
 {
     QString Text = QApplication::translate("SystemTracking::COven",
-                                           "Oven Module has been modified. Do you want to overwrite the configuration "
+                                           "Paraffin Oven Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
 
     if (m_ModifiedModule) {

@@ -32,25 +32,34 @@ namespace Ui {
 
 namespace System {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to system Liquid hose test dialog
+*/
+/****************************************************************************/
 class CLiquidHoseTestDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
+    /****************************************************************************/
+    /*!
+    *   \brief The struct of Label group
+    */
+    /****************************************************************************/
     struct LabelGroup {
         LabelGroup(QLabel* label1, QLabel*label2, QLabel*label3) {
             bottleLabel   = label1;
             pressureLabel = label2;
             resultLabel   = label3;
         }
-        QLabel* bottleLabel;
-        QLabel* pressureLabel;
-        QLabel* resultLabel;
+        QLabel* bottleLabel;        //!< label of the bottle number.
+        QLabel* pressureLabel;      //!< label of the pressure value.
+        QLabel* resultLabel;        //!< label of the test result.
     };
 public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -63,14 +72,35 @@ public:
     /****************************************************************************/
     virtual ~CLiquidHoseTestDlg();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To run this test.
+     */
+    /****************************************************************************/
     void RunTest();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Add bottle number to test list.
+     *  \iparam BottleNumber = the number of the bottle.
+     */
+    /****************************************************************************/
     void AddBottleNumber(int BottleNumber);
 
 private slots:
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of the Abort.
+     */
+    /****************************************************************************/
     void OnAbort();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of the OK.
+     */
+    /****************************************************************************/
     void OnOk();
 protected:
     /****************************************************************************/
@@ -90,17 +120,39 @@ private:
     /****************************************************************************/
     void InitLableGroup();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Update label status.
+     *  \iparam Index = the label index.
+     *  \iparam BottleNumber = the value of the bottle number.
+     *  \iparam Pressure     = the value of the pressure.
+     */
+    /****************************************************************************/
     void UpdateLabel(int Index, int BottleNumber, float Pressure);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To create pressure and show status to GUI.
+     *  \iparam TargetPressure = the target pressure.
+     *  \iparam TimeOut        = the sec of the time out.
+     *  \return true or false.
+     */
+    /****************************************************************************/
     bool CreatePressure(float TargetPressure, int TimeOut);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get record pressure.
+     *  \iparam RecordTime = the record times.
+     */
+    /****************************************************************************/
     float GetRecordPressure(int RecordTime);
 
 private:
     Ui::CLiquidHoseTestDlg *mp_Ui;        //!< User interface
     QList<LabelGroup*> m_LabelGroups;     //!< label group
-    QList<int> m_BottleNumberList;
-    int m_Index;
+    QList<int> m_BottleNumberList;        //!< store the bottle number
+    int m_Index;                          //!< store the lable index.
     bool m_Abort;                         //!< Flag for abort.
 
 };

@@ -28,14 +28,38 @@ namespace Diagnostics {
 
 namespace Retort {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to retort lid lock test
+*/
+/****************************************************************************/
 class CLidLockTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_Parent    = Parent widget
+     */
+    /****************************************************************************/
     CLidLockTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent=NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CLidLockTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     *  \return 1 means success, other value means failed.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
@@ -56,6 +80,14 @@ private:
     /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show lid lock status.
+     *  \iparam StepNum = the number test step.
+     *  \iparam LidLockState = the state of the lid lock.
+     *  \return reject or accept
+     */
+    /****************************************************************************/
     int ShowLidLockStatusDlg(int StepNum, QString& LidLockState);
 
 private:

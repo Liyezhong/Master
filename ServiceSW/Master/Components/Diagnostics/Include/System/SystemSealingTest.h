@@ -80,9 +80,32 @@ private:
     /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To create pressure and show status to GUI.
+     *  \iparam TargetPressure = the target pressure.
+     *  \return true or false.
+     */
+    /****************************************************************************/
     bool TestCreatePressure(float TargetPressure);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To release pressure and show status to GUI.
+     *  \iparam StopCompressorFlag = true if need to stop compressor.
+     */
+    /****************************************************************************/
     void TestReleasePressure(bool StopCompressorFlag=true);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To keep pressure and show status to GUI.
+     *  \iparam TargetPressure = the target pressure.
+     *  \iparam DiffPressure   = the diff pressure.
+     *  \iparam KeepDuration   = keep duration time.
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool TestKeepPressure(float TargetPressure, float DiffPressure, int KeepDuration);
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.

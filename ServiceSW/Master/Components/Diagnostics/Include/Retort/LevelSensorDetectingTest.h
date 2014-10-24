@@ -28,14 +28,38 @@ namespace Diagnostics {
 
 namespace Retort {
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to retort level sensor detection test
+*/
+/****************************************************************************/
 class CLevelSensorDetectingTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_Parent    = Parent widget
+     */
+    /****************************************************************************/
     CLevelSensorDetectingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget* p_Parent);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CLevelSensorDetectingTest(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief The function for test start run
+     *  \return 1 means success, other value means failed.
+     */
+    /****************************************************************************/
     int Run(void);
 
 private:
@@ -56,16 +80,44 @@ private:
     /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Initialize RV and show status On GUI.
+     */
+    /****************************************************************************/
     void TestRVInitialize();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To move RV position and show status on GUI.
+     *  \iparam TubeFlag = flag for tube or sealing
+     *  \iparam Position = The number RV position.
+     */
+    /****************************************************************************/
     void TestRVMovePosition(bool TubeFlag, int Position);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To draining from position and show status on GUI.
+     *  \iparam RetCode = The code of the last step result
+     *  \iparam Position = The number RV position.
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool TestDraining(int RetCode, int Positon);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To heating level sensor and show status on GUI.
+     *  \iparam TempFlag = flag for Xylene;
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool LevelSensorHeating(bool TempFlag);
 
 private:
-    CDiagnosticMessageDlg*  mp_MessageDlg;
-    QString                 m_MessageTitle;
+    CDiagnosticMessageDlg*  mp_MessageDlg;      //!< The pointer of message dialog.
+    QString                 m_MessageTitle;     //!< The message dialog title string.
 };
 
 } // namespace Retort
