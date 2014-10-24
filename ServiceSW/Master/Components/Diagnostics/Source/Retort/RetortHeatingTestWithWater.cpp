@@ -166,10 +166,10 @@ int CHeatingTestWithWater::Run(void)
     if (ret == CDiagnosticMessageDlg::ABORT) {
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
-        (void)dev->RVMovePosition(false, 13);
-        text = tr("Start filling");
+        (void)dev->RVMovePosition(true, 13);
+        text = tr("Start draining");
         dlg->ShowWaitingDialog(title, text);
-        dev->PumpDraining();
+        (void)dev->PumpDraining();
         dlg->HideWaitingDialog();
         return RETURN_OK;
     }
@@ -210,8 +210,8 @@ int CHeatingTestWithWater::Run(void)
     if (!timingDialog->isVisible()) {
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
-        (void)dev->RVMovePosition(false, 13);
-        text = tr("Start Draining");
+        (void)dev->RVMovePosition(true, 13);
+        text = tr("Start draining");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->PumpDraining();
         dlg->HideWaitingDialog();
@@ -239,7 +239,7 @@ int CHeatingTestWithWater::Run(void)
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(false, 13);
-    text = tr("Start Draining");
+    text = tr("Start draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
     dlg->HideWaitingDialog();
@@ -260,8 +260,8 @@ int CHeatingTestWithWater::Run(void)
 __fail__:
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(false, 13);
-    text = tr("Start Draining");
+    (void)dev->RVMovePosition(true, 13);
+    text = tr("Start draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
     dlg->HideWaitingDialog();
