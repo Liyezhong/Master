@@ -201,6 +201,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             {
                 if(CheckPreConditionsToAbortProgram()) {
                     ui->pauseButton->setEnabled(false);
+                    ui->programRunningPanel->EnableProgramDetailButton(false);
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
 
