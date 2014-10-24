@@ -138,9 +138,14 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
 
     TestRVMovePosition(false, Positon);
 
+     QString Text = "Releasing pressure...";
+     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    (void)ServiceDeviceProcess::Instance()->PumpReleasePressure();
+    mp_MessageDlg->HideWaitingDialog();
+
     int Ret = ShowConfirmDlg(3);
 
-    QString Text = "Close the lid and rotate the handle to the closed position.";
+    Text = "Close the lid and rotate the handle to the closed position.";
     mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_OK);
 
     TestRVMovePosition(true, Positon);

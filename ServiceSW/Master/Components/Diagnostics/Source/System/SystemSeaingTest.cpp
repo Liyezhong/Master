@@ -128,6 +128,9 @@ Create_Pressure_Test:
         goto Create_Pressure_Test;
     }
 
+    Text = "System Sealing Test successful.";
+    mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_OK);
+
     return RETURN_OK;
 }
 
