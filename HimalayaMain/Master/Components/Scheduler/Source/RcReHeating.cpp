@@ -38,7 +38,6 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     ,m_StartPressureTime(0)
     ,m_IsNeedRunCleaning(false)
     ,m_DrainIsOk(false)
-    ,m_HasReagent(false)
     ,m_OvenRemainingTime(0)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
 {
@@ -193,8 +192,10 @@ bool CRcReHeating::StartHeatingSensor()
 
 void CRcReHeating::CheckTheTemperature()
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario || 283 == m_LastScenario || 293 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257))
+    if(200 == m_LastScenario || 260 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257)
+           || 203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
     {
+        //for normal program and cleaning program
         if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
         {
             emit SigGetRVPosition();
@@ -207,23 +208,9 @@ void CRcReHeating::CheckTheTemperature()
             }
         }
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297 && 283 != m_LastScenario && 293 != m_LastScenario
-                                      && 285 != m_LastScenario && 295 != m_LastScenario && 287 != m_LastScenario && 297 != m_LastScenario) )
+    else if(271 <= m_LastScenario && m_LastScenario <= 277)
     {
-        if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
-        {
-            emit TasksDone(true);//cleaning just judge the RV sensor2 temperature
-        }
-        else
-        {
-            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_RV_SENSOR2_TEMP * 1000)
-            {
-                emit TasksDone(false);
-            }
-        }
-    }
-    else
-    {
+        // for parrafin program
         if(QFile::exists("TEST_GINA"))
         {
             if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
@@ -256,11 +243,16 @@ void CRcReHeating::CheckTheTemperature()
             }
         }
     }
+    else
+    {
+        mp_SchedulerThreadController->LogDebug(QString("Invalid scenario in power failure"));
+        emit TasksDone(false);
+    }
 }
 
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario)
+    if(200 == m_LastScenario || 260 == m_LastScenario || 203 == m_LastScenario)
     {
         if (0 == m_StartReq)
         {
@@ -283,7 +275,6 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 emit TasksDone(false);
                 m_StartReq = 0;
             }
-
         }
     }
     else
@@ -295,49 +286,31 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 mp_SchedulerThreadController->LogDebug("reagent check build pressure.");
                 CmdALPressure* CmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
-                CmdPressure->SetTargetPressure(30.0);
+                CmdPressure->SetTargetPressure(40.0);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdPressure);
                 m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
                 m_StartReq++;
             }
             else if(1 == m_StartReq)
             {
-                if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60 * 1000)
+                if("Scheduler::ALPressure" == cmdName)
                 {
                     m_StartReq++;
-                    m_HasReagent = false;
                 }
             }
             else if(2 == m_StartReq)
             {
-                mp_SchedulerThreadController->LogDebug(QString("get the current pressure is:%1").arg(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL));
-                if(qAbs(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) < 5.0) //2 * GetBasePressure())
+                if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60 * 1000)
                 {
-                    m_HasReagent = false;
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                    m_StartReq++;
                 }
-                else
-                {
-                    m_HasReagent = true;
-                }
-                m_StartReq++;
             }
             else if(3 == m_StartReq)
             {
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                m_StartReq++;
-            }
-            else if(4 == m_StartReq)
-            {
                 if("Scheduler::ALReleasePressure" == cmdName)
                 {
-                    if(!m_HasReagent)
-                    {
-                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                    }
-                    else
-                    {
-                        m_RsReagentCheckStep = BUILD_VACUUM;
-                    }
+                    m_RsReagentCheckStep = BUILD_VACUUM;
                     m_StartReq = 0;
                 }
             }
@@ -374,19 +347,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             }
             else if(mp_SchedulerThreadController->IsRVRightPosition(INITIALIZE_POS))
             {
-                if(!m_HasReagent)
-                {
-                    if(m_IsNeedRunCleaning)
-                    {
-                        mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
-                    }
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    emit TasksDone(true);
-                }
-                else
-                {
-                    m_RsReagentCheckStep = MOVE_TUBEPOSITION;
-                }
+                m_RsReagentCheckStep = MOVE_TUBEPOSITION;
                 m_StartReq = 0;
             }
             else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)

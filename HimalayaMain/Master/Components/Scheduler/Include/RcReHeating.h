@@ -264,7 +264,6 @@ private:
     qint64                          m_StartPressureTime;                //!< the start pressure time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     bool                            m_DrainIsOk;                        //!< is drain OK
-    bool                            m_HasReagent;                       //!< wether has reagent in retort
     int                             m_OvenRemainingTime;                //!< oven remaning time
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
     QString                         m_LastReagentID;                    //!< last reagent ID

@@ -339,7 +339,6 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
-
         LogDebug("Self test is done");
         //send command to main controller to tell self test OK
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
@@ -361,19 +360,6 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-            QString curProgramID = m_ProgramStatusInfor.GetProgramId();
-            m_CurProgramID = curProgramID;
-            m_CurProgramStepIndex = -1;
-            //just get the m_CurProgramStepIndex
-            (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);
-            if (m_CurProgramStepIndex != -1)
-            {
-                m_FirstProgramStepIndex = m_CurProgramStepIndex;
-                (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-                m_CurProgramStepIndex = -1;
-                (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
-            }
         }
         else
         {
@@ -400,45 +386,31 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 {
     Q_UNUSED(ctrlCmd);
     Q_UNUSED(cmd);
-    bool isCleaningProgram = false;
+
+    QString curProgramID = m_ProgramStatusInfor.GetProgramId();
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
+    m_CurProgramID = curProgramID;
     m_CurrentScenario = scenario;
-    if(281 == scenario || 282 == scenario || 291 == scenario || 292 == scenario || 283 == scenario || 293 == scenario)
+
+    m_CurProgramStepIndex = -1;
+    (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//just get the m_CurProgramStepIndex
+    if (m_CurProgramStepIndex != -1)
     {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+        m_FirstProgramStepIndex = m_CurProgramStepIndex;
+        (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+        m_CurProgramStepIndex = -1;
+        (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
     }
-    else if(203 == scenario)
+
+    if(203 == scenario)
     {
-        isCleaningProgram = true;
+        m_IsCleaningProgram = true;
         m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
     }
-    else if(284 == scenario || 294 == scenario)
+    else if(281 <= scenario && scenario <= 297)
     {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_PROCESSING;
-    }
-    else if(285 == scenario || 295 == scenario)
-    {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
-    }
-    else if(286 == scenario || 296 == scenario)
-    {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_DRAINING;
-    }
-    else if(287 == scenario || 297 == scenario)
-    {
-        isCleaningProgram = true;
-        m_CurrentStepState = PSSM_RV_POS_CHANGE;
-    }
-    if(isCleaningProgram)
-    {
-        m_IsCleaningProgram = isCleaningProgram;
-        CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
-        cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
-        m_SchedulerCommandProcessor->pushCmd(cmdSet);
+        m_IsCleaningProgram = true;
+        m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
 
     RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
@@ -698,6 +670,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeDryStep();
                     break;
                 case PSSM_POWERFAILURE_FINISH:
+                    if(200 == m_ProgramStatusInfor.GetScenario() || 211 == m_ProgramStatusInfor.GetScenario())
+                    {
+                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                        Q_ASSERT(commandPtrFinish);
+                        Global::tRefType Ref = GetNewCommandRef();
+                        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                    }
                     m_SchedulerMachine->SendRunComplete();
                     break;
                 case PSSM_ABORTING:
