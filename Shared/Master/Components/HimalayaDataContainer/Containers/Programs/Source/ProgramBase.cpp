@@ -21,6 +21,7 @@
 #include <QDebug>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramBase.h"
+#include "Global/Include/UITranslator.h"
 
 namespace DataManager {
 
@@ -302,30 +303,21 @@ bool CProgramBase::MoveProgramStep(qint32 FromIndex, qint32 ToIndex)
 
 QString CProgramBase::GetName()const
 {
-//    if(!m_NameID.isEmpty())
-//    {
-//        bool ok = false;
-//        quint32 strid = m_NameID.toUInt(&ok);
-//        if(ok && strid > 0)
-//        {
-//            return Helper::TranslateString(strid);
-//        }
-//    }
-   return m_Name;
+    bool ok = false;
+    if(!GetNameID().isEmpty())
+    {
+        quint32 strid = GetNameID().toUInt(&ok);
+        if(ok)
+        {
+            return Global::UITranslator::TranslatorInstance().Translate(
+                    Global::TranslatableString(strid));
+        }
+    }
+    return m_Name;
 }
 
 void CProgramBase::SetName(const QString Value)
 {
-//    if(!m_NameID.isEmpty())
-//    {
-//        bool ok = false;
-//        quint32 strid = m_NameID.toUInt(&ok);
-//        if(ok && strid > 0)
-//        {
-//            m_Name = Helper::TranslateString(strid);
-//            return;
-//        }
-//    }
     m_Name = Value;
 }
 

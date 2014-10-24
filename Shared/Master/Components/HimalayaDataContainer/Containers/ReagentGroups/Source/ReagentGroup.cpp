@@ -29,6 +29,7 @@
 #include "Global/Include/EventObject.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
+#include "Global/Include/UITranslator.h"
 namespace DataManager {
 
 /****************************************************************************/
@@ -320,5 +321,18 @@ CReagentGroup& CReagentGroup::operator=(const CReagentGroup& SourceReagentGroup)
     }
     return *this;
 }
-
+QString CReagentGroup::GetReagentGroupName() const
+{
+    bool ok = false;
+    if(!GetGroupNameID().isEmpty())
+    {
+        quint32 strid = GetGroupNameID().toUInt(&ok);
+        if(ok)
+        {
+            return Global::UITranslator::TranslatorInstance().Translate(
+                    Global::TranslatableString(strid));
+        }
+    }
+    return m_GroupName;
+}
 }//End of namespace DataManager

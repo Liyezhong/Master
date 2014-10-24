@@ -24,6 +24,7 @@
 
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"
+#include "Global/Include/UITranslator.h"
 
 namespace DataManager {
 
@@ -207,7 +208,7 @@ public:
      *  \return Name String
      */
     /****************************************************************************/
-    QString GetReagentName() const {return m_Name;}
+    QString GetReagentName() const;
 
     /****************************************************************************/
     /*!

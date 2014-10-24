@@ -19,7 +19,7 @@
 		<string id="50331658" text1="Paraffin_de" text2=""/>
 		<string id="50331659" text1="Cleaning Solvent_de" text2=""/>
 		<string id="50331660" text1="Cleaning Alcohol_de" text2=""/>
-		<!--string id="50331661" text1="Formalin_de" text2=""/-->
+		<string id="50331661" text1="Formalin_de" text2=""/>
 		<string id="50331662" text1="Ethanol 70%_de" text2=""/>
 		<string id="50331663" text1="Ethanol 80%_de" text2=""/>
 		<string id="50331664" text1="Ethanol 90%_de" text2=""/>
@@ -557,5 +557,7 @@
         <string id="34013216" text1="" text2=""/>
         <string id="34013217" text1="" text2=""/>
         <string id="34078721" text1="" text2=""/>
+        <string id="67175424" text1="Prechecking" text2=""/>
+        <string id="67175425" text1="Dry processing" text2=""/>
     </language>
 </strings>

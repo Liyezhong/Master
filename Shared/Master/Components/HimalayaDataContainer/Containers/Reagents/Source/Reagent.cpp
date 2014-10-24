@@ -357,6 +357,20 @@ void CReagent::ResetLastErrors()
     }
     m_ListOfErrors.clear();
 }
+QString CReagent::GetReagentName() const
+{
+    bool ok = false;
+    if(IsLeicaReagent())
+    {
+        quint32 strid = GetReagentNameID().toUInt(&ok);
+        if(ok)
+        {
+            return Global::UITranslator::TranslatorInstance().Translate(
+                    Global::TranslatableString(strid));
+        }
+    }
+    return m_Name;
+}
 
 }  // namespace DataManager
 

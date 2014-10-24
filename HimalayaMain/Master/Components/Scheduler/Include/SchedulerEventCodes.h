@@ -165,5 +165,9 @@ const quint32 EVENT_SCHEDULER_START_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0332;
 const quint32 EVENT_SCHEDULER_FINISHED_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0333; ///< Finished the dry processing.
 
 
+/// strings
+const quint32 STR_SCHEDULER_PRECHECK = SCHEDULER_BASE_ID + 0x0400; ///< Prechecking
+const quint32 STR_SCHEDULER_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0401; ///< Dry processing
+
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H

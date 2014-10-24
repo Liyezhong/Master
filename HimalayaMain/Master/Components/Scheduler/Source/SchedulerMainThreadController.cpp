@@ -67,6 +67,7 @@
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
+#include "Global/Include/UITranslator.h"
 #ifdef GOOGLE_MOCK
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
 #endif
@@ -505,6 +506,13 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             if (m_NewProgramID.at(0) != 'C')
             {
                 strStep = "Precheck...";
+                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
+                                                                                                              Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
+                                                                                                              m_CurProgramStepIndex, leftSeconds));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             }
             else
                 strStep= m_CurReagnetName;
@@ -3089,7 +3097,8 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     {
     case CDS_READY:
         RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
-        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, "Drying step", m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
+        commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
+                                                                m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

@@ -133,7 +133,7 @@ public:
      *  \return Name String
      */
     /****************************************************************************/
-    QString GetReagentGroupName() const {return m_GroupName;}
+    QString GetReagentGroupName() const;
 
     /****************************************************************************/
     /*!

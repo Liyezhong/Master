@@ -213,101 +213,101 @@ const quint32 STR_DM_REAGENT_Cleaningxylene	= 50331670;	///< Cleaning xylene
 
 const quint32 STR_DM_REAGENT_Cleaningalcohol	= 50331671;	///< Cleaning alcohol
 
-const quint32 STR_SCHDEULER_MAIN_CONTROLLER_STATE	= 50331674;	///< Scheduler main controller state: %1
+//const quint32 STR_SCHDEULER_MAIN_CONTROLLER_STATE	= 50331674;	///< Scheduler main controller state: %1
 
-const quint32 STR_INIT	= 50331675;	///< INIT
+//const quint32 STR_INIT	= 50331675;	///< INIT
 
-const quint32 STR_IDLE	= 50331676;	///< IDLE
+//const quint32 STR_IDLE	= 50331676;	///< IDLE
 
-const quint32 STR_RUN	= 50331677;	///< RUN
+//const quint32 STR_RUN	= 50331677;	///< RUN
 
-const quint32 STR_ERROR	= 50331678;	///< ERROR
+//const quint32 STR_ERROR	= 50331678;	///< ERROR
 
-const quint32 STR_UNEXPECTED_STATE	= 50331679;	///< unexpected state
+//const quint32 STR_UNEXPECTED_STATE	= 50331679;	///< unexpected state
 
-const quint32 STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND	= 50331680;	///< Scheduler receive action command from GUI: %1
+//const quint32 STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND	= 50331680;	///< Scheduler receive action command from GUI: %1
 
-const quint32 STR_PROGRAM_STEP_STATE	= 50331681;	///< Current program step state: %1
+//const quint32 STR_PROGRAM_STEP_STATE	= 50331681;	///< Current program step state: %1
 
-const quint32 STR_START_PROGRAM	= 50331682;	///< Start program %1
+//const quint32 STR_START_PROGRAM	= 50331682;	///< Start program %1
 
-const quint32 STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME	= 50331683;	///< Program name %1 current step %2 current reagent %3 left time %4s
+//const quint32 STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME	= 50331683;	///< Program name %1 current step %2 current reagent %3 left time %4s
 
-const quint32 STR_FINISH_PROGRAM	= 50331684;	///< Finish program %1
+//const quint32 STR_FINISH_PROGRAM	= 50331684;	///< Finish program %1
 
-const quint32 STR_PROGRAM_STEP_STATE_START	= 50331685;	///< step initializing
+//const quint32 STR_PROGRAM_STEP_STATE_START	= 50331685;	///< step initializing
 
-const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_1	= 50331686;	///< heating level sensor 1
+//const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_1	= 50331686;	///< heating level sensor 1
 
-const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_2	= 50331687;	///< heating level sensor 2
+//const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_2	= 50331687;	///< heating level sensor 2
 
-const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_FILL	= 50331688;	///< moving to tube to fill
+//const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_FILL	= 50331688;	///< moving to tube to fill
 
-const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_DRAIN	= 50331689;	///< moving to tube to draing
+//const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_DRAIN	= 50331689;	///< moving to tube to draing
 
-const quint32 STR_PROGRAM_STEP_STATE_FILL	= 50331690;	///< filling
+//const quint32 STR_PROGRAM_STEP_STATE_FILL	= 50331690;	///< filling
 
-const quint32 STR_PROGRAM_STEP_STATE_SEAL	= 50331691;	///< sealing
+//const quint32 STR_PROGRAM_STEP_STATE_SEAL	= 50331691;	///< sealing
 
-const quint32 STR_PROGRAM_STEP_STATE_SOAK	= 50331692;	///< soaking
+//const quint32 STR_PROGRAM_STEP_STATE_SOAK	= 50331692;	///< soaking
 
-const quint32 STR_PROGRAM_STEP_STATE_DRAIN	= 50331693;	///< draining
+//const quint32 STR_PROGRAM_STEP_STATE_DRAIN	= 50331693;	///< draining
 
-const quint32 STR_PROGRAM_STEP_STATE_READY_TO_DRAIN	= 50331694;	///< ready to drain
+//const quint32 STR_PROGRAM_STEP_STATE_READY_TO_DRAIN	= 50331694;	///< ready to drain
 
-const quint32 STR_PROGRAM_STEP_STATE_FINISH	= 50331695;	///< finished
+//const quint32 STR_PROGRAM_STEP_STATE_FINISH	= 50331695;	///< finished
 
-const quint32 STR_PROGRAM_STEP_STATE_ERROR	= 50331696;	///< Error
+//const quint32 STR_PROGRAM_STEP_STATE_ERROR	= 50331696;	///< Error
 
-const quint32 STR_PROGRAM_STEP_STATE_PAUSE	= 50331697;	///< pause
+//const quint32 STR_PROGRAM_STEP_STATE_PAUSE	= 50331697;	///< pause
 
-const quint32 STR_PROGRAM_STEP_STATE_PAUSE_DRAIN	= 50331698;	///< pause during drain
+//const quint32 STR_PROGRAM_STEP_STATE_PAUSE_DRAIN	= 50331698;	///< pause during drain
 
-const quint32 STR_PROGRAM_STEP_STATE_ABORTED	= 50331699;	///< aborted
+//const quint32 STR_PROGRAM_STEP_STATE_ABORTED	= 50331699;	///< aborted
 
-const quint32 STR_PROGRAM_STEP_STATE_ABORTING	= 50331700;	///< aborting
+//const quint32 STR_PROGRAM_STEP_STATE_ABORTING	= 50331700;	///< aborting
 
-const quint32 STR_PROGRAM_STEP_STATE_UNKNOWN	= 50331701;	///< unknown
+//const quint32 STR_PROGRAM_STEP_STATE_UNKNOWN	= 50331701;	///< unknown
 
-const quint32 STR_PROGRAM_SELFTEST_START	= 50331702;	///< start selftest
+//const quint32 STR_PROGRAM_SELFTEST_START	= 50331702;	///< start selftest
 
-const quint32 STR_PROGRAM_SELFTEST_CHECK_TEMP_PRESSURE	= 50331703;	///< checking temperature and pressure
+//const quint32 STR_PROGRAM_SELFTEST_CHECK_TEMP_PRESSURE	= 50331703;	///< checking temperature and pressure
 
-const quint32 STR_PROGRAM_SELFTEST_CHECK_BOTTLE	= 50331704;	///< checking bottle %1
+//const quint32 STR_PROGRAM_SELFTEST_CHECK_BOTTLE	= 50331704;	///< checking bottle %1
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT	= 50331705;	///< bottle check result: %1
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT	= 50331705;	///< bottle check result: %1
 
-const quint32 STR_PROGRAM_SELFTEST_FINISH	= 50331706;	///< selftest finished
+//const quint32 STR_PROGRAM_SELFTEST_FINISH	= 50331706;	///< selftest finished
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK	= 50331707;	///< Ok
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK	= 50331707;	///< Ok
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL	= 50331708;	///< not full
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL	= 50331708;	///< not full
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE	= 50331709;	///< blockage
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE	= 50331709;	///< blockage
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY	= 50331710;	///< empty
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY	= 50331710;	///< empty
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR	= 50331711;	///< error
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR	= 50331711;	///< error
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT	= 50331712;	///< timeout
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT	= 50331712;	///< timeout
 
-const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED	= 50331713;	///< unexpected
+//const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED	= 50331713;	///< unexpected
 
-const quint32 STR_PROGRAM_COMMAND_START_PROGRAM	= 50331714;	///< start program
+//const quint32 STR_PROGRAM_COMMAND_START_PROGRAM	= 50331714;	///< start program
 
-const quint32 STR_PROGRAM_COMMAND_PAUSE_PROGRAM	= 50331715;	///< pause program
+//const quint32 STR_PROGRAM_COMMAND_PAUSE_PROGRAM	= 50331715;	///< pause program
 
-const quint32 STR_PROGRAM_COMMAND_ABORT_PROGRAM	= 50331716;	///< abort program
+//const quint32 STR_PROGRAM_COMMAND_ABORT_PROGRAM	= 50331716;	///< abort program
 
-const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331717;	///< drain
+//const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331717;	///< drain
 
 const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331718;	///< Please call the service engineer for maintenance!
 
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING	= 50331719;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
-const quint32 STR_EXECUTE_COMMAND	= 50331720;	///< Scheduler execute command %1
+//const quint32 STR_EXECUTE_COMMAND	= 50331720;	///< Scheduler execute command %1
 
-const quint32 STR_EXECUTE_COMMAND_RESULT	= 50331721;	///< Scheduler execute command %1 result %2
+//const quint32 STR_EXECUTE_COMMAND_RESULT	= 50331721;	///< Scheduler execute command %1 result %2
 
 
 const quint32 EVENT_IMPORT_TAMPERED_ARCHIVE_FILE	= 50331759;	///< Import failed. Archive file is tampered
