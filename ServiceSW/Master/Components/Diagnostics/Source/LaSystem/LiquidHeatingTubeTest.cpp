@@ -40,12 +40,11 @@ CLiquidHeatingTubeTest::~CLiquidHeatingTubeTest(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete timingDialog, catch error";
     }
 }
 
 
-void CLiquidHeatingTubeTest::ShowWaitingDialog(struct liquidHeatingStatus *status)
+void CLiquidHeatingTubeTest::RefreshWaitingDialog(struct liquidHeatingStatus *status)
 {
     Service::ModuleTestStatus refresh;
 
@@ -127,7 +126,7 @@ int CLiquidHeatingTubeTest::Run(void)
         heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
         (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
 
         for (i = 0; i < liquidRepeatTime && timingDialog->isVisible(); i++) {
             QTime EndTime = QTime().currentTime().addSecs(1);
@@ -140,7 +139,7 @@ int CLiquidHeatingTubeTest::Run(void)
             dev->Pause(MSec);
             heatingStatus.UsedTime++;
             heatingStatus.CurrentTemp = currentTemp;
-            this->ShowWaitingDialog(&heatingStatus);
+            this->RefreshWaitingDialog(&heatingStatus);
         }
 
         if (!timingDialog->isVisible())
@@ -164,7 +163,7 @@ int CLiquidHeatingTubeTest::Run(void)
 
         (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     for (i = 0; i < liquidMaintainTime && timingDialog->isVisible(); i++) {
@@ -179,7 +178,7 @@ int CLiquidHeatingTubeTest::Run(void)
         dev->Pause(MSec);
         heatingStatus.UsedTime++;
         heatingStatus.CurrentTemp = currentTemp;
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     if (!timingDialog->isVisible())

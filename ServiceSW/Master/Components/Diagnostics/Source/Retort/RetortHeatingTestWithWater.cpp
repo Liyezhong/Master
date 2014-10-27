@@ -43,11 +43,10 @@ CHeatingTestWithWater::~CHeatingTestWithWater(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete timingDialog, catch error";
     }
 }
 
-void CHeatingTestWithWater::ShowWaitingDialog(struct HeatingStatus *status, bool isShow)
+void CHeatingTestWithWater::RefreshWaitingDialog(struct HeatingStatus *status, bool isShow)
 {
     Service::ModuleTestStatus refresh;
 
@@ -191,7 +190,7 @@ int CHeatingTestWithWater::Run(void)
     heatingStatus.RetortTempSide = retortTempSide;
     heatingStatus.RetortTempSensor1 = retortTempBottom1;
     heatingStatus.RetortTempSensor2 = retortTempBottom2;
-    this->ShowWaitingDialog(&heatingStatus, true);
+    this->RefreshWaitingDialog(&heatingStatus, true);
 
     for (i = 0; i < t1 && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
@@ -204,7 +203,7 @@ int CHeatingTestWithWater::Run(void)
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     if (!timingDialog->isVisible()) {

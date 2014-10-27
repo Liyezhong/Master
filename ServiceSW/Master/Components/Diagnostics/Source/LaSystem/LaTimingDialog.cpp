@@ -25,7 +25,7 @@ LaTimingDialog::LaTimingDialog(QWidget *parent) :
     ui(new Ui::LaTimingDialog)
 {
     ui->setupUi(this);
-    connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
+    (void)connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 LaTimingDialog::~LaTimingDialog()

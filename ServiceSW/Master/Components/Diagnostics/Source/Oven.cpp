@@ -26,7 +26,7 @@
 #include "ui_Oven.h"
 
 namespace Diagnostics {
-
+// lint -e578
 COven::COven(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::COven)

@@ -25,7 +25,7 @@ OvenHeatingTestEmptyTimingDialog::OvenHeatingTestEmptyTimingDialog(QWidget *pare
     ui(new Ui::OvenHeatingTestEmptyTimingDialog)
 {
     ui->setupUi(this);
-    connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
+    (void)connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 OvenHeatingTestEmptyTimingDialog::~OvenHeatingTestEmptyTimingDialog()

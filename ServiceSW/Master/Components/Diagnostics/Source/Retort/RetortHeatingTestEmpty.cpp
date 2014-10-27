@@ -41,11 +41,10 @@ CHeatingTestEmpty::~CHeatingTestEmpty(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete timingDialog, catch error";
     }
 }
 
-void CHeatingTestEmpty::ShowWaitingDialog(struct HeatingStatus *status, bool isShow)
+void CHeatingTestEmpty::RefreshWaitingDialog(struct HeatingStatus *status, bool isShow)
 {
     Service::ModuleTestStatus refresh;
 
@@ -130,7 +129,7 @@ int CHeatingTestEmpty::Run(void)
     heatingStatus.RetortTempSide = retortTempSide;
     heatingStatus.RetortTempSensor1 = retortTempBottom1;
     heatingStatus.RetortTempSensor2 = retortTempBottom2;
-    this->ShowWaitingDialog(&heatingStatus, true);
+    this->RefreshWaitingDialog(&heatingStatus, true);
 
     int count = t2; // keep 1 mins
     for (i = 0; i < t1 + t2 && timingDialog->isVisible(); i++) {
@@ -163,7 +162,7 @@ int CHeatingTestEmpty::Run(void)
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     if (!timingDialog->isVisible())

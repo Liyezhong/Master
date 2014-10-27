@@ -39,7 +39,7 @@ CMovementTest::CMovementTest(CDiagnosticMessageDlg *dlg)
     , mp_dlg(dlg)
 {
 }
-
+ //lint -e1540
 CMovementTest::~CMovementTest(void)
 {
 }

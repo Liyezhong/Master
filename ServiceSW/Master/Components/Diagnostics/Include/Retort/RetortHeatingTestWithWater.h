@@ -78,7 +78,7 @@ private:
      *  \brief To show waiting dialog for test case.
      */
     /****************************************************************************/
-    void ShowWaitingDialog(struct HeatingStatus *buf, bool isShow = false);
+    void RefreshWaitingDialog(struct HeatingStatus *buf, bool isShow = false);
 
 private:
     CDiagnosticMessageDlg *dlg; //!< For show message dialog

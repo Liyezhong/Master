@@ -69,7 +69,7 @@ private:
      *  \brief To show waiting dialog for test case.
      */
     /****************************************************************************/
-    void ShowWaitingDialog(struct liquidHeatingStatus *buf);
+    void RefreshWaitingDialog(struct liquidHeatingStatus *buf);
 
 private:
     CDiagnosticMessageDlg *dlg; //!< For show message dialog

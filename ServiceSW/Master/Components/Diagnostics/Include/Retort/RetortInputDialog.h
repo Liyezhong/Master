@@ -116,7 +116,7 @@ private:
     Ui::RetortInputDialog *ui; //!< Retort Dialog ui
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
     QString m_LineEditString;                   //!< Stores user input value
-    QString title; //!< dialog title
+    QString _title; //!< dialog title
 };
 
 #endif // RETORTINPUTDIALOG_H

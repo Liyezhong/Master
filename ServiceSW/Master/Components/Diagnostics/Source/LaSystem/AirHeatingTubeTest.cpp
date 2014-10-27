@@ -39,12 +39,11 @@ CAirHeatingTubeTest::~CAirHeatingTubeTest(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete timingDialog, catch error";
     }
 }
 
 
-void CAirHeatingTubeTest::ShowWaitingDialog(struct airHeatingStatus *status)
+void CAirHeatingTubeTest::RefreshWaitingDialog(struct airHeatingStatus *status)
 {
     Service::ModuleTestStatus refresh;
 
@@ -124,7 +123,7 @@ int CAirHeatingTubeTest::Run(void)
         heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
         (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
 
         for (i = 0; i < AirRepeatTime && timingDialog->isVisible(); i++) {
             QTime EndTime = QTime().currentTime().addSecs(1);
@@ -137,7 +136,7 @@ int CAirHeatingTubeTest::Run(void)
             dev->Pause(MSec);
             heatingStatus.UsedTime++;
             heatingStatus.CurrentTemp = currentTemp;
-            this->ShowWaitingDialog(&heatingStatus);
+            this->RefreshWaitingDialog(&heatingStatus);
         }
 
         if (!timingDialog->isVisible())
@@ -161,7 +160,7 @@ int CAirHeatingTubeTest::Run(void)
 
         (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
         timingDialog->show();
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     for (i = 0; i < AirMaintainTime && timingDialog->isVisible(); i++) {
@@ -176,7 +175,7 @@ int CAirHeatingTubeTest::Run(void)
         dev->Pause(MSec);
         heatingStatus.UsedTime++;
         heatingStatus.CurrentTemp = currentTemp;
-        this->ShowWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);
     }
 
     if (!timingDialog->isVisible())
@@ -194,7 +193,7 @@ int CAirHeatingTubeTest::Run(void)
 __fail__:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
 __abort__:
-    dev->AirTubeStopHeating();
+    (void)dev->AirTubeStopHeating();
     return ret;
 }
 

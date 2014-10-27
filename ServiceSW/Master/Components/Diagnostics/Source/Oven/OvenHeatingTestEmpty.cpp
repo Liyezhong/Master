@@ -51,7 +51,6 @@ CHeatingTestEmpty::~CHeatingTestEmpty(void)
     try {
         delete timingDialog;
     } catch (...) {
-        qDebug() << __FILE__ << ":" << __FUNCTION__ << __LINE__ << "delete waitDialog, catch error";
     }
 }
 
@@ -63,7 +62,7 @@ void CHeatingTestEmpty::StartPreHeating()
     OvenPreTest.StartPreHeating(meltPoint);
 }
 
-void CHeatingTestEmpty::ShowWaitingDialog(struct heatingTestStatus *buf, bool isShow)
+void CHeatingTestEmpty::RefreshWaitingDialog(struct heatingTestStatus *buf, bool isShow)
 {
     Service::ModuleTestStatus currentStatus;
 
@@ -156,7 +155,7 @@ int CHeatingTestEmpty::Run(void)
         status.TempOffsetRangeMax = 0;
         status.TempOffsetRangeMin = 0;
 
-        ShowWaitingDialog(&status, true);
+        RefreshWaitingDialog(&status, true);
         count = 60;
         for (i = 0; i < t + 60 && timingDialog->isVisible(); i++) {
             QTime EndTime = QTime().currentTime().addSecs(1);
@@ -167,7 +166,7 @@ int CHeatingTestEmpty::Run(void)
             status.OvenTempSensor2 = OvenTempSensor2Cur;
             status.OvenTempTop = OvenTempTopCur;
             status.UsedTime++;
-            ShowWaitingDialog(&status);
+            RefreshWaitingDialog(&status);
             if (max - OvenTempTopCur >= TempOffset
                     && max - OvenTempSensor1Cur >= TempOffset
                     && max - OvenTempSensor2Cur >= TempOffset) {
@@ -237,7 +236,7 @@ int CHeatingTestEmpty::Run(void)
     status.OvenTempSensor1 = OvenTempSensor1;
     status.OvenTempSensor2 = OvenTempSensor2;
 
-    ShowWaitingDialog(&status, true);
+    RefreshWaitingDialog(&status, true);
     count = t2;
     targetTempRangeMin = status.OvenTempTopTarget + status.TempOffsetRangeMin;
     targetTempRangeMax = status.OvenTempTopTarget + status.TempOffsetRangeMax;
@@ -265,7 +264,7 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
-        ShowWaitingDialog(&status);
+        RefreshWaitingDialog(&status);
         int MSec = QTime().currentTime().msecsTo(EndTime);
         dev->Pause(MSec);
     }
@@ -298,7 +297,7 @@ _fail_:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
 
 _abort_:
-    dev->OvenStopHeating();
+    (void)dev->OvenStopHeating();
     StartPreHeating();
     return ret;
 }

@@ -25,7 +25,7 @@ RetortTimingDialog::RetortTimingDialog(QWidget *parent) :
     ui(new Ui::RetortTimingDialog)
 {
     ui->setupUi(this);
-    connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
+    (void)connect(ui->abort, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 RetortTimingDialog::~RetortTimingDialog()

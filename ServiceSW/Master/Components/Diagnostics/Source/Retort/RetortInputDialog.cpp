@@ -20,6 +20,8 @@
 #include "Diagnostics/Include/Retort/RetortInputDialog.h"
 #include "ui_RetortInputDialog.h"
 
+//lint -e1512
+//lint -e1527
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9.]{1,5}$"; //!< Reg expression for the validator
 
 RetortInputDialog::RetortInputDialog(QWidget *parent) :
@@ -28,7 +30,7 @@ RetortInputDialog::RetortInputDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setModal(true);
-    connect(ui->ok, SIGNAL(clicked()), this, SLOT(clickOk()));
+    (void)connect(ui->ok, SIGNAL(clicked()), this, SLOT(clickOk()));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
     ui->lineEdit->installEventFilter(this);
@@ -47,7 +49,7 @@ RetortInputDialog::~RetortInputDialog()
 void RetortInputDialog::SetTitle(QString Title)
 {
     this->SetDialogTitle(Title);
-    title = Title;
+    _title = Title;
 }
 
 void RetortInputDialog::getEdit(QString &text)
@@ -106,7 +108,7 @@ bool RetortInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
     {
         ConnectKeyBoardSignalSlots();
         mp_KeyBoardWidget->setModal(true);
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(title);
+        mp_KeyBoardWidget->SetKeyBoardDialogTitle(_title);
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMinCharLength(1);

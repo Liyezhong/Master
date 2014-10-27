@@ -40,7 +40,7 @@ CCoverSensorTest::CCoverSensorTest(CDiagnosticMessageDlg *_dlg)
     , dlg(_dlg)
 {
 }
-
+//lint -e1540
 CCoverSensorTest::~CCoverSensorTest(void)
 {
 }
