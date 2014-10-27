@@ -101,26 +101,26 @@ CRcReHeating::StateList_t CRcReHeating::GetCurrentState(QSet<QAbstractState*> st
 
 void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario)
-    {
-        mp_SchedulerThreadController->LogDebug("reheating for 200 and 260 step");
-    }
-    else if(211 <= m_LastScenario && m_LastScenario <= 257)
-    {
-        mp_SchedulerThreadController->LogDebug("reheating for reagent step");
-    }
-    else if(271 <= m_LastScenario && m_LastScenario <= 277)
-    {
-        mp_SchedulerThreadController->LogDebug("reheating for paraffin step");
-    }
-    else
-    {
-        mp_SchedulerThreadController->LogDebug("reheating for cleaning program step");
-    }
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     switch(currentState)
     {
         case INIT_STATE:
+            if(200 == m_LastScenario || 260 == m_LastScenario)
+            {
+                mp_SchedulerThreadController->LogDebug("reheating for 200 and 260 step");
+            }
+            else if(211 <= m_LastScenario && m_LastScenario <= 257)
+            {
+                mp_SchedulerThreadController->LogDebug("reheating for reagent step");
+            }
+            else if(271 <= m_LastScenario && m_LastScenario <= 277)
+            {
+                mp_SchedulerThreadController->LogDebug("reheating for paraffin step");
+            }
+            else
+            {
+                mp_SchedulerThreadController->LogDebug("reheating for cleaning program step");
+            }
             emit SigTemperatureControlOn();
         case START_TEMPERATURE:
             if(true == StartHeatingSensor())

@@ -1423,7 +1423,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RC_REHEATING == currentState)
     {
-        LogDebug("In RcReHeating");
         m_SchedulerMachine->HandleRcReHeatingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_REAGENTCHECK == currentState)
