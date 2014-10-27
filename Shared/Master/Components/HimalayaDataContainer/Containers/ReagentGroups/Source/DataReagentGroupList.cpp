@@ -746,20 +746,20 @@ bool CDataReagentGroupList::DeleteAllReagentGroups()
 
 void CDataReagentGroupList::UpdateOnLanguageChanged()
 {
-//   QWriteLocker Locker(mp_ReadWriteLock);
-//   for (qint32 I = 0; I < m_ReagentGroupsList.count(); I++) {
-//       CReagentGroup *p_ReagentGroup = GetReagentGroup(I);
-//       if(p_ReagentGroup && !p_ReagentGroup->GetGroupNameID().isEmpty()){
-//           bool ok = false;
-//           quint32 strid = p_ReagentGroup->GetGroupNameID().toUInt(&ok);
-//           if(ok && strid > 0)
-//           {
-//               p_ReagentGroup->SetReagentGroupName(Global::UITranslator::TranslatorInstance().Translate(
-//                                                       Global::TranslatableString(strid)));
-//           }
-//       }
-//   }
-// //  Write();
+   QWriteLocker Locker(mp_ReadWriteLock);
+   for (qint32 I = 0; I < m_ReagentGroupsList.count(); I++) {
+       CReagentGroup *p_ReagentGroup = GetReagentGroup(I);
+       if(p_ReagentGroup && !p_ReagentGroup->GetGroupNameID().isEmpty()){
+           bool ok = false;
+           quint32 strid = p_ReagentGroup->GetGroupNameID().toUInt(&ok);
+           if(ok && strid > 0)
+           {
+               p_ReagentGroup->SetReagentGroupName(Global::UITranslator::TranslatorInstance().Translate(
+                                                       Global::TranslatableString(strid)));
+           }
+       }
+   }
+   (void)Write();
 }
 
 }//End of namespace DataManager

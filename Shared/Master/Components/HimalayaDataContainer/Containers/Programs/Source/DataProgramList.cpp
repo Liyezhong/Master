@@ -109,20 +109,20 @@ void CDataProgramList::Init()
 
 void CDataProgramList::UpdateOnLanguageChanged()
 {
-//   QWriteLocker Locker(mp_ReadWriteLock);
-//   for (qint32 I = 0; I < m_ProgramList.count(); I++) {
-//       CProgram *p_Program = GetProgram(I);
-//       if(!p_Program->GetNameID().isEmpty()){
-//           bool ok = false;
-//           quint32 strid = p_Program->GetNameID().toUInt(&ok);
-//           if(ok && strid > 0)
-//           {
-//               p_Program->SetName(Global::UITranslator::TranslatorInstance().Translate(
-//                                      Global::TranslatableString(strid)));
-//           }
-//       }
-//   }
-////   (void)Write();
+   QWriteLocker Locker(mp_ReadWriteLock);
+   for (qint32 I = 0; I < m_ProgramList.count(); I++) {
+       CProgram *p_Program = GetProgram(I);
+       if(!p_Program->GetNameID().isEmpty()){
+           bool ok = false;
+           quint32 strid = p_Program->GetNameID().toUInt(&ok);
+           if(ok && strid > 0)
+           {
+               p_Program->SetName(Global::UITranslator::TranslatorInstance().Translate(
+                                      Global::TranslatableString(strid)));
+           }
+       }
+   }
+   (void)Write();
 }
 
 /****************************************************************************/

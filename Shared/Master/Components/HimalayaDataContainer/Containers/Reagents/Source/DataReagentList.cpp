@@ -1025,18 +1025,18 @@ bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent)
 
 void CDataReagentList::UpdateOnLanguageChanged()
 {
-//   for (qint32 I = 0; I < m_ReagentList.count(); I++) {
-//       CReagent *p_Reagent = GetReagent(I);
-//       if(p_Reagent && !p_Reagent->GetReagentNameID().isEmpty()){
-//           bool ok = false;
-//           quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
-//           if(ok && strid > 0)
-//           {
-//               p_Reagent->SetReagentName(Global::UITranslator::TranslatorInstance().Translate(
-//                                             Global::TranslatableString(strid)));
-//           }
-//       }
-//   }
-// //  Write();
+    for (qint32 I = 0; I < m_ReagentList.count(); I++) {
+        CReagent *p_Reagent = GetReagent(I);
+        if(p_Reagent && !p_Reagent->GetReagentNameID().isEmpty()){
+            bool ok = false;
+            quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
+            if(ok && strid > 0)
+            {
+                p_Reagent->SetReagentName(Global::UITranslator::TranslatorInstance().Translate(
+                                              Global::TranslatableString(strid)));
+            }
+        }
+    }
+    (void)Write();
 }
 } // namespace DataManager
