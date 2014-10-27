@@ -55,8 +55,21 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidg
 
     mp_ScrollWheel->ClearItems();
 
+    QString ItemStr;
     for (int i = 0; i < MaxBottleNum; i += 1) {
-        mp_ScrollWheel->AddItem(QString::number(i+1).rightJustified(2, '0'), i);
+        if (i == 13) {
+            ItemStr = "P1";
+        }
+        else if (i == 14) {
+            ItemStr = "P2";
+        }
+        else if (i == 15) {
+            ItemStr = "P3";
+        }
+        else {
+            ItemStr = QString::number(i+1).rightJustified(2, '0');
+        }
+        mp_ScrollWheel->AddItem(ItemStr, i);
     }
 
     mp_ScrollWheel->SetNonContinuous();

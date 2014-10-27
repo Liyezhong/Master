@@ -45,7 +45,7 @@ CLiquidHoseTestDlg::CLiquidHoseTestDlg(QWidget *p_Parent):
 
     mp_Ui->okBtn->setEnabled(false);
 
-    CONNECTSIGNALSLOT(mp_Ui->okBtn, clicked(), this, OnOk());
+    CONNECTSIGNALSLOT(mp_Ui->okBtn, clicked(), this, accept());
     CONNECTSIGNALSLOT(mp_Ui->abortBtn, clicked(), this, OnAbort());
 }
 
@@ -120,7 +120,6 @@ void CLiquidHoseTestDlg::RunTest()
     m_BottleNumberList.clear();
 
     if (m_Abort) {
-        delete this;
         return;
     }
 
@@ -134,7 +133,8 @@ void CLiquidHoseTestDlg::RunTest()
         CDiagnosticMessageDlg* p_Dlg = new CDiagnosticMessageDlg(this);
         p_Dlg->ShowMessage(Title, Text, RETURN_ERR_FAIL);
         delete p_Dlg;
-    }    
+    }
+    (void)this->exec();
 }
 
 void CLiquidHoseTestDlg::AddBottleNumber(int BottleNumber)
@@ -146,12 +146,6 @@ void CLiquidHoseTestDlg::OnAbort()
 {
     m_Abort = true;
     reject();
-}
-
-void CLiquidHoseTestDlg::OnOk()
-{
-    accept();
-    delete this;
 }
 
 bool CLiquidHoseTestDlg::CreatePressure(float TargetPressure, int TimeOut)

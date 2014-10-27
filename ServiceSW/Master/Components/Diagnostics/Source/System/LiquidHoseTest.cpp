@@ -66,8 +66,13 @@ int CLiquidHoseTest::Run(void)
     CLiquidHoseTestDlg* p_TestDlg = new CLiquidHoseTestDlg(mp_Parent);
 
     if (Option == 0) {
+        delete p_SelectDlg;
+        p_SelectDlg = NULL;
+        p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
         p_SelectDlg->SetScrollWheelVisible(true);
         p_SelectDlg->SetRadioButtonVisible(false);
+        p_SelectDlg->SetTitle(m_MessageTitle);
+        p_SelectDlg->SetLableText(Text);
 
         if (p_SelectDlg->exec() == 0) {
             delete p_SelectDlg;
@@ -86,7 +91,7 @@ int CLiquidHoseTest::Run(void)
     p_TestDlg->RunTest();
 
     delete p_SelectDlg;
-    //delete p_TestDlg;
+    delete p_TestDlg;
 
     return Ret;
 }
