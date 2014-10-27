@@ -158,7 +158,7 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
     (void)ServiceDeviceProcess::Instance()->PumpDraining();
     mp_MessageDlg->HideWaitingDialog();
 
-    if (RetCode == RETURN_OK) {
+    if (RetCode == 1) {  //sucking success.
         if (Ret == 0) {
             ShowFinishDlg(2);
             return false;

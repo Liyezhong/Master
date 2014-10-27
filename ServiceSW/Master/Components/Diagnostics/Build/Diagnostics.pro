@@ -55,9 +55,9 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/System/VentilationFanTest.cpp \
     ../Source/SelectBottleNReagentDialog.cpp \
     ../Source/LevelSensorHeatingDialog.cpp \
-    ../Source/System/SystemSeaingTest.cpp \
     ../Source/System/LiquidHoseTest.cpp \
-    ../Source/System/LiquidHoseTestDlg.cpp
+    ../Source/System/LiquidHoseTestDlg.cpp \
+    ../Source/System/SystemSealingTest.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \

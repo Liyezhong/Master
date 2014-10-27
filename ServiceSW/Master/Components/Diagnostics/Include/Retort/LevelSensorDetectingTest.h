@@ -45,7 +45,7 @@ public:
      *  \iparam p_Parent    = Parent widget
      */
     /****************************************************************************/
-    CLevelSensorDetectingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget* p_Parent);
+    CLevelSensorDetectingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget* p_Parent=NULL);
 
     /****************************************************************************/
     /*!

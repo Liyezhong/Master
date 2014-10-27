@@ -49,6 +49,10 @@
 #include "Diagnostics/Include/System/SpeakerTest.h"
 #include "Diagnostics/Include/System/VentilationFanTest.h"
 #include "Diagnostics/Include/System/FillingNDrainingTest.h"
+#include "Diagnostics/Include/System/SystemSealingTest.h"
+#include "Diagnostics/Include/System/LiquidHoseTest.h"
+#include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
+#include "Diagnostics/Include/Retort/LidLockTest.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include <QObject>
 #include <QMessageBox>
@@ -352,7 +356,7 @@ public:
     {
     }
 
-    int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, int type = YES_NO)
+    int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type = YES_NO)
     {
         return YES;
     }
@@ -470,6 +474,11 @@ private slots:
     void SystemVentilationFanTest();
     void SystemSpeakerTest();
     void SystemFillingNDrainingTest();
+    void SystemSealingTest();
+    void SystemLiquidHoseTest();
+
+    void RetortLidLockTest();
+    void RetortLevelSensorDetectionTest();
 
 
 }; // end class CTestDiagnostics
@@ -589,6 +598,39 @@ void CTestDiagnostics::SystemFillingNDrainingTest()
     CDiagnosticMessageDlgMock dlg;
     System::CFillingNDrainingTest ut(&dlg);
     QVERIFY(ut.Run() != RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemSealingTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CSystemSealingTest ut(&dlg);
+
+    QVERIFY(ut.Run() != RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::SystemLiquidHoseTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    System::CLiquidHoseTest ut(&dlg);
+    //QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::RetortLevelSensorDetectionTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Retort::CLevelSensorDetectingTest ut(&dlg);
+    //QVERIFY(ut.Run() == RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::RetortLidLockTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Retort::CLidLockTest ut(&dlg);
+    //QVERIFY(ut.Run() == RETURN_OK);
 }
 
 /****************************************************************************/
