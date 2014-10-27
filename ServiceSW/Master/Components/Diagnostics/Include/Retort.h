@@ -30,15 +30,38 @@ namespace Ui {
 class CRetort;
 }
 
+/****************************************************************************/
+/**
+ * \brief This widget provides options to perform Retort module tests
+ */
+/****************************************************************************/
 class CRetort : public QWidget
 {
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = parent widget
+     */
+    /****************************************************************************/
     explicit CRetort(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CRetort();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief When event has changed, this function will be called to do some event action.
+     *  \iparam p_Event = Upcoming event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
@@ -49,7 +72,7 @@ private Q_SLOTS:
     void StartHeatingTestWithWater(void);
     
 private:
-    Ui::CRetort *mp_Ui;
+    Ui::CRetort *mp_Ui;                         //!< User Interface
     CDiagnosticMessageDlg*   mp_MessageDlg;     //!< The pointer message dialog
 
 };

@@ -33,8 +33,8 @@
 
 namespace Diagnostics {
 
-CRotaryValve::CRotaryValve(QWidget *parent)
-    : QWidget(parent)
+CRotaryValve::CRotaryValve(QWidget *p_Parent)
+    : QWidget(p_Parent)
     , ui(new Ui::CRotaryValve)
 {
     ui->setupUi(this);

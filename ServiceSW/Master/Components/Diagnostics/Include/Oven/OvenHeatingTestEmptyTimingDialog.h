@@ -36,10 +36,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit OvenHeatingTestEmptyTimingDialog(QWidget *parent = 0);
+    explicit OvenHeatingTestEmptyTimingDialog(QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

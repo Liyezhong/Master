@@ -36,10 +36,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit LaTimingDialog(QWidget *parent = 0);
+    explicit LaTimingDialog(QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

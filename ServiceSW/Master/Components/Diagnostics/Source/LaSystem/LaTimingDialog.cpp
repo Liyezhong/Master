@@ -20,8 +20,8 @@
 #include "Diagnostics/Include/LaSystem/LaTimingDialog.h"
 #include "ui_LaTimingDialog.h"
 
-LaTimingDialog::LaTimingDialog(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+LaTimingDialog::LaTimingDialog(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     ui(new Ui::LaTimingDialog)
 {
     ui->setupUi(this);

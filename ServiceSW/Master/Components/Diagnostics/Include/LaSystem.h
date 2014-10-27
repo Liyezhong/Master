@@ -30,6 +30,11 @@ namespace Ui {
 class CLaSystem;
 }
 
+/****************************************************************************/
+/**
+ * \brief This widget provides options to perform L&A system module tests
+ */
+/****************************************************************************/
 class CLaSystem : public QWidget
 {
     Q_OBJECT
@@ -41,7 +46,7 @@ public:
      *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/
-    explicit CLaSystem(QWidget *parent = 0);
+    explicit CLaSystem(QWidget *p_Parent = 0);
     /****************************************************************************/
     /*!
      *  \brief Deconstructor

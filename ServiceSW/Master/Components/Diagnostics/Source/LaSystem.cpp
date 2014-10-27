@@ -33,8 +33,8 @@
 
 namespace Diagnostics {
 
-CLaSystem::CLaSystem(QWidget *parent) :
-    QWidget(parent),
+CLaSystem::CLaSystem(QWidget *p_Parent) :
+    QWidget(p_Parent),
     ui(new Ui::CLaSystem)
 {
     ui->setupUi(this);

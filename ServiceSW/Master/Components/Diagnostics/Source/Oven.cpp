@@ -27,8 +27,8 @@
 
 namespace Diagnostics {
 // lint -e578
-COven::COven(QWidget *parent)
-    : QWidget(parent)
+COven::COven(QWidget *p_Parent)
+    : QWidget(p_Parent)
     , ui(new Ui::COven)
 {
     ui->setupUi(this);

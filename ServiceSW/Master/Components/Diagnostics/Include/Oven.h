@@ -31,6 +31,11 @@ namespace Ui {
 class COven;
 }
 
+/****************************************************************************/
+/**
+ * \brief This widget provides options to perform Oven module tests
+ */
+/****************************************************************************/
 class COven : public QWidget
 {
     Q_OBJECT

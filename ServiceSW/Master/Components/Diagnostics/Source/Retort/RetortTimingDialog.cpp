@@ -20,8 +20,8 @@
 #include "Diagnostics/Include/Retort/RetortTimingDialog.h"
 #include "ui_RetortTimingDialog.h"
 
-RetortTimingDialog::RetortTimingDialog(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+RetortTimingDialog::RetortTimingDialog(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     ui(new Ui::RetortTimingDialog)
 {
     ui->setupUi(this);

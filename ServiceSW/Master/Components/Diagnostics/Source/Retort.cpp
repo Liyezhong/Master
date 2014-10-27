@@ -35,8 +35,8 @@
 
 namespace Diagnostics {
 
-CRetort::CRetort(QWidget *parent) :
-    QWidget(parent),
+CRetort::CRetort(QWidget *p_Parent) :
+    QWidget(p_Parent),
     mp_Ui(new Ui::CRetort)
 {
     mp_Ui->setupUi(this);

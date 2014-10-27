@@ -20,8 +20,8 @@
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmptyTimingDialog.h"
 #include "ui_OvenHeatingTestEmptyTimingDialog.h"
 
-OvenHeatingTestEmptyTimingDialog::OvenHeatingTestEmptyTimingDialog(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+OvenHeatingTestEmptyTimingDialog::OvenHeatingTestEmptyTimingDialog(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     ui(new Ui::OvenHeatingTestEmptyTimingDialog)
 {
     ui->setupUi(this);

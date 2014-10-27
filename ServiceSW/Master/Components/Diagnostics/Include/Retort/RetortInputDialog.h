@@ -44,10 +44,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit RetortInputDialog(QWidget *parent = 0);
+    explicit RetortInputDialog(QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

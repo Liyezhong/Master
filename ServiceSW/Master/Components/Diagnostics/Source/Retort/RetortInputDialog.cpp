@@ -24,8 +24,8 @@
 //lint -e1527
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9.]{1,5}$"; //!< Reg expression for the validator
 
-RetortInputDialog::RetortInputDialog(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+RetortInputDialog::RetortInputDialog(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     ui(new Ui::RetortInputDialog)
 {
     ui->setupUi(this);

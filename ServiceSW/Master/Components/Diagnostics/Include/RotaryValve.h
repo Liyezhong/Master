@@ -30,6 +30,11 @@ namespace Ui {
 class CRotaryValve;
 }
 
+/****************************************************************************/
+/**
+ * \brief This widget provides options to perform Rotary valve module tests
+ */
+/****************************************************************************/
 class CRotaryValve : public QWidget
 {
     Q_OBJECT
@@ -38,10 +43,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = parent widget
+     *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/
-    explicit CRotaryValve(QWidget *parent = 0);
+    explicit CRotaryValve(QWidget *p_Parent = 0);
     /****************************************************************************/
     /*!
      *  \brief Deconstructor
