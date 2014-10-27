@@ -517,13 +517,14 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             }
             else
+            {
                 strStep= m_CurReagnetName;
-
-            quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, strStep, m_CurProgramStepIndex, leftSeconds));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, strStep, m_CurProgramStepIndex, leftSeconds));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            }
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
