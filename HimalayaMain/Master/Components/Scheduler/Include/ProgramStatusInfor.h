@@ -136,6 +136,20 @@ public:
     quint32 GetScenario();
     /****************************************************************************/
     /*!
+     *  \brief SetPressureDriftOffset
+     *  \param PressureDriftOffset - qreal
+     */
+    /****************************************************************************/
+    void SetPressureDriftOffset(qreal PressureDriftOffset);
+    /****************************************************************************/
+    /*!
+     *  \brief Get GetPressureDriftOffset
+     *  \return qreal from GetPressureDriftOffset
+     */
+    /****************************************************************************/
+    qreal GetPressureDriftOffset();
+    /****************************************************************************/
+    /*!
      *  \brief program is finished or not
      *  \return true - program finished, false - not finished
      */

@@ -443,7 +443,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
         cmd->SetRVPosition((quint32)(tubePos));
         cmd->SetDrainPressure(40.0);
-        cmd->SetReagentGrpID(m_LastReagentID);
+        cmd->SetReagentGrpID(GetReagentID());
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
         m_StartReq ++;
         emit SignalDrain();
@@ -479,26 +479,22 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
     }
 }
 
-qreal CRcReHeating::GetBasePressure()
+QString CRcReHeating::GetReagentID()
 {
-    qreal baseline = 1.0;
-    if((m_LastReagentID == "RG1")||(m_LastReagentID == "RG2"))
+    QString ReagentID;
+    if(281 <= m_LastScenario && m_LastScenario <= 287)
     {
-        baseline = 1.33;
+        ReagentID = "RG7";
     }
-    else if((m_LastReagentID == "RG3")||(m_LastReagentID == "RG4")||(m_LastReagentID == "RG8"))
+    else if(291 <= m_LastScenario && m_LastScenario <= 297)
     {
-        baseline = 1.05;
+        ReagentID = "RG8";
     }
-    else if((m_LastReagentID == "RG5")||(m_LastReagentID == "RG7"))
+    else
     {
-        baseline = 1.14;
+        ReagentID = m_LastReagentID;
     }
-    else if((m_LastReagentID == "RG6"))
-    {
-        baseline = 0.53;
-    }
-    return baseline;
+    return ReagentID;
 }
 
 }

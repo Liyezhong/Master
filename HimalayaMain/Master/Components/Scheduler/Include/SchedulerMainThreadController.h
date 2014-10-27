@@ -992,6 +992,21 @@ protected:
         qint64 GetPreTestTime();
 
         /****************************************************************************/
+        /**
+         *  \brief Get the pressure offset for powerfailure
+         *  \return from qreal
+         */
+        /****************************************************************************/
+        qreal GetLastPressureOffset();
+
+        /****************************************************************************/
+        /**
+         *  \brief Set the pressure offset for powerfailure
+         */
+        /****************************************************************************/
+        void SetLastPressureOffset(qreal pressureOffset);
+
+        /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetCurProgramID
          *

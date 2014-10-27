@@ -158,6 +158,27 @@ quint32 CProgramStatusInfor::GetScenario()
     return scen;
 }
 
+void CProgramStatusInfor::SetPressureDriftOffset(qreal PressureDriftOffset)
+{
+    SetStatus("LastPressureDriftOffset", QString::number(PressureDriftOffset));
+}
+
+qreal CProgramStatusInfor::GetPressureDriftOffset()
+{
+    QString value = GetStatus("LastPressureDriftOffset");
+    bool ok = false;
+    qreal pre = 0.0;
+    if(!value.isEmpty())
+    {
+        pre = value.toFloat(&ok);
+    }
+    if(!ok)
+    {
+        pre = 0.0;
+    }
+    return pre;
+}
+
 bool CProgramStatusInfor::IsProgramFinished()
 {
     quint32 scenario = GetScenario();

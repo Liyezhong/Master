@@ -350,6 +350,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
+                mp_SchedulerThreadController->SetLastPressureOffset(m_PressureDriftOffset);
                 m_PressureCalibrationSeq = 0;
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OFFSET_CALIBRATION);
             }

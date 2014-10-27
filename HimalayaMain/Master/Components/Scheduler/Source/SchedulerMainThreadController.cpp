@@ -388,6 +388,11 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     Q_UNUSED(ctrlCmd);
     Q_UNUSED(cmd);
 
+    if(m_SchedulerCommandProcessor != NULL)
+    {
+        m_SchedulerCommandProcessor->ALSetPressureDrift(m_ProgramStatusInfor.GetPressureDriftOffset());
+    }
+
     QString curProgramID = m_ProgramStatusInfor.GetProgramId();
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
     int StepID = m_ProgramStatusInfor.GetStepID();
@@ -4187,6 +4192,16 @@ void SchedulerMainThreadController::OnPreTestDone()
     Q_ASSERT(commandPreTest);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPreTest));
+}
+
+qreal SchedulerMainThreadController::GetLastPressureOffset()
+{
+    return m_ProgramStatusInfor.GetPressureDriftOffset();
+}
+
+void SchedulerMainThreadController::SetLastPressureOffset(qreal pressureOffset)
+{
+    m_ProgramStatusInfor.SetPressureDriftOffset(pressureOffset);
 }
 
 }
