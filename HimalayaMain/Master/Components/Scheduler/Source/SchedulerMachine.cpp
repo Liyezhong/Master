@@ -1788,7 +1788,32 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 cmd->SetRVPosition((quint32)(tubePos));
                 if (QFile::exists("TEST_BEAN"))
                 {
-                    cmd->SetDrainPressure(20.0);
+                    QFile file("TEST_BEAN");
+                    file.open(QIODevice::ReadOnly | QIODevice::Text);
+                    QTextStream in(&file);
+
+                    while (!in.atEnd())
+                    {
+                        QString line = in.readLine().trimmed();
+                        QStringList list = line.split("=");
+                        if (list.size() != 2)
+                        {
+                            continue;
+                        }
+                        QString leftStr = static_cast<QString>(list.at(0));
+                        leftStr = leftStr.trimmed();
+                        if ("LOWER_PRESSURE" == leftStr)
+                        {
+                            QString rightStr = static_cast<QString>(list.at(1));
+                            rightStr = rightStr.trimmed();
+                            if ("1" == rightStr)
+                            {
+                                cmd->SetDrainPressure(20.0);
+                            }
+                            break;
+                        }
+                    }
+                    file.close();
                 }
                 else
                 {

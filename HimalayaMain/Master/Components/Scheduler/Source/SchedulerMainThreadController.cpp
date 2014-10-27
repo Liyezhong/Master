@@ -2615,23 +2615,30 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             QFile file("TEST_BEAN");
             file.open(QIODevice::ReadOnly | QIODevice::Text);
             QTextStream in(&file);
-            QString line = in.readLine();
-            while (!line.isNull())
-            {
-                line = line.trimmed();
-                QStringList list = line.split("=");
-                if ("ENABLE_ALARM" == static_cast<QString>(list.at(0)))
-                {
 
-                    if ("0" == static_cast<QString>(list.at(1)))
+            while (!in.atEnd())
+            {
+                QString line = in.readLine().trimmed();
+                QStringList list = line.split("=");
+                if (list.size() != 2)
+                {
+                    continue;
+                }
+                QString leftStr = static_cast<QString>(list.at(0));
+                leftStr = leftStr.trimmed();
+                if ("ENABLE_ALARM" == leftStr)
+                {
+                    QString rightStr = static_cast<QString>(list.at(1));
+                    rightStr = rightStr.trimmed();
+                    if ("0" == rightStr)
                     {
                         m_CheckRemoteAlarmStatus = false;
                         m_CheckLocalAlarmStatus = false;
                     }
                     break;
                 }
-                line = in.readLine();
             }
+            file.close();
         }
 
         if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
