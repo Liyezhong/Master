@@ -351,8 +351,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcPressureSeq = 0;
     m_RcPressureDelayTime = 0;
     m_RcRestart_AtDrain = STOP_DRAINING;
-    m_RsReagentCheckStep = FORCE_DRAIN;
-    m_HasReagent = false;
+    m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
 }
 
@@ -1591,46 +1590,11 @@ void CSchedulerStateMachine::HandleRcReHeatingWorkFlow(const QString& cmdName,  
     mp_RcReHeating->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, bool needDrain)
+void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
 {
     static qint32 startReq = 0;
-    switch(m_RsReagentCheckStep)
+    switch(m_RsMoveToPSeal)
     {
-    case FORCE_DRAIN:
-        if(needDrain)
-        {
-            if (0 == startReq)
-            {
-                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to force Drain current reagent");
-                CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
-                cmd->SetDrainIsMoveRV(false);
-                cmd->SetRVPosition(0);
-                cmd->SetDrainPressure(30.0);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                startReq++;
-            }
-            else if(1 == startReq)
-            {
-                if ("Scheduler::IDForceDraining" == cmdName)
-                {
-                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                    {
-                        m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                        m_HasReagent = true;
-                    }
-                    else
-                    {
-                        m_RsReagentCheckStep = BUILD_VACUUM;
-                    }
-                    startReq = 0;
-                }
-            }
-        }
-        else
-        {
-            m_RsReagentCheckStep = BUILD_VACUUM;
-        }
-        break;
     case BUILD_VACUUM:
         if(0 == startReq)
         {
@@ -1644,11 +1608,11 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         {
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                m_RsMoveToPSeal = MOVE_INITIALIZE_POSITION;
             }
             else
             {
-                m_RsReagentCheckStep = FORCE_DRAIN;
+                m_RsMoveToPSeal = BUILD_VACUUM;
                 OnTasksDone(false);
             }
             startReq = 0;
@@ -1665,19 +1629,11 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                if(m_HasReagent)
-                {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    OnTasksDone(true);
-                }
-                else
-                {
-                    m_RsReagentCheckStep = MOVE_SEALPOSITION;
-                }
+                m_RsMoveToPSeal = MOVE_SEALPOSITION;
             }
             else
             {
-                m_RsReagentCheckStep = FORCE_DRAIN;
+                m_RsMoveToPSeal = BUILD_VACUUM;
                 OnTasksDone(false);
             }
             startReq = 0;
@@ -1692,7 +1648,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
         else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
         {
             startReq = 0;
-            m_RsReagentCheckStep = REALSE_PRESSRE;
+            m_RsMoveToPSeal = REALSE_PRESSRE;
         }
         else
         {
@@ -1700,7 +1656,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
+                    m_RsMoveToPSeal = BUILD_VACUUM;
                     OnTasksDone(false);
                 }
             }
@@ -1723,7 +1679,7 @@ void CSchedulerStateMachine::HandleRsReagentWorkFlow(const QString& cmdName,  De
                 OnTasksDone(false);
             }
             startReq = 0;
-            m_RsReagentCheckStep = FORCE_DRAIN;
+            m_RsMoveToPSeal = BUILD_VACUUM;
         }
         break;
     default:

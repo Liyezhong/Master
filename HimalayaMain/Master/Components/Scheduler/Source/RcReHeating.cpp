@@ -443,6 +443,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
         cmd->SetRVPosition((quint32)(tubePos));
         cmd->SetDrainPressure(40.0);
+        cmd->SetReagentGrpID(m_LastReagentID);
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
         m_StartReq ++;
         emit SignalDrain();

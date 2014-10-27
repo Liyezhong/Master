@@ -194,14 +194,12 @@ private:
 
     typedef enum
     {
-        FORCE_DRAIN,
         BUILD_VACUUM,
         MOVE_INITIALIZE_POSITION,
         MOVE_SEALPOSITION,
         REALSE_PRESSRE
-    }RS_REAGENTCHECK_t;
-    RS_REAGENTCHECK_t   m_RsReagentCheckStep;                                           ///< the Rs_ReagentCheck state step
-    bool                m_HasReagent;                                                   ///< wether has reagent
+    }RS_MOVESEAL_t;
+    RS_MOVESEAL_t   m_RsMoveToPSeal;                                           ///< the RsMoveToPSealp3.5 state step
 
     typedef enum
     {
@@ -967,11 +965,9 @@ public:
      *  \brief  Handle RsReagentCheck for power failure
      *  \param cmdName - command name
      *  \param retCode - return code
-     *  \param needDrain - bool value
      */
     /****************************************************************************/
-    void HandleRsReagentWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode, bool needDrain);
-
+    void HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
     /****************************************************************************/
     /*!
      *  \brief  Handle PSSM Aborting work flow

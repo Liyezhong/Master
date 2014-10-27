@@ -139,10 +139,10 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetDrainIsMoveRV
      *
-     *  \return bool from GetDrainPressure
+     *  \return QString from GetDrainPressure
      */
     /****************************************************************************/
-    bool GetDrainIsMoveRV(){return m_IsMoveRv;}
+    QString GetReagentGrpID(){return m_ReagentGrpID;}
     /***************************l*************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetDrainIsMoveRV
@@ -152,7 +152,7 @@ public:
      *  \return from SetDrainPressure
      */
     /****************************************************************************/
-    void SetDrainIsMoveRV(bool flag){m_IsMoveRv = flag;}
+    void SetReagentGrpID(QString ReagentGrpID){m_ReagentGrpID = ReagentGrpID;}
 
 private:
     CmdIDForceDraining();                                                    ///< Not implemented.
@@ -163,7 +163,7 @@ private:
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
     mutable quint32 m_RVPosition;       ///<  Definition/Declaration of variable m_DelayTime
     mutable float  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
-    mutable bool   m_IsMoveRv;              ///< Defiinition/Declaration of variable m_IsMoveRv
+    mutable QString   m_ReagentGrpID;              ///< Defiinition/Declaration of variable m_ReagentGrpID
 	
 };
 

@@ -339,7 +339,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
     }
     else if  ("Scheduler::IDForceDraining" == cmdName)
     {
-        scmd->SetResult(mp_IDeviceProcessing->IDForceDraining(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainIsMoveRV() ));
+        scmd->SetResult(mp_IDeviceProcessing->IDForceDraining(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetReagentGrpID() ));
     }
 	else if  ("Scheduler::ALFilling" == cmdName)
 	{
