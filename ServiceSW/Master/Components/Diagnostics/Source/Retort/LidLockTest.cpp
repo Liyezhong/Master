@@ -85,16 +85,16 @@ int CLidLockTest::ShowConfirmDlg(int StepNum)
 {
     QString Title = tr("Retort Lid Lock");
     QString Text;
-    int DlgType = CDiagnosticMessageDlg::NEXT_CANCEL;
+    CDiagnosticMessageDlg::BUTTON_TYPE BtnType = CDiagnosticMessageDlg::NEXT_CANCEL;
     if (StepNum == 1) {
         Text = tr("Please unlock the retort lid.");
     }
     else if (StepNum == 2) {
         Text = tr("Please lock the retort lid.");
-        DlgType = CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE;
+        BtnType = CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE;
     }
 
-    return mp_MessageDlg->ShowConfirmMessage(Title, Text, DlgType);
+    return mp_MessageDlg->ShowConfirmMessage(Title, Text, BtnType);
 }
 
 void CLidLockTest::ShowFinishDlg(int RetNum)
@@ -124,7 +124,7 @@ int CLidLockTest::ShowLidLockStatusDlg(int StepNum, QString& LidLockState)
     ConfirmDlg.SetText(ConfirmString);
     Service::ModuleTestStatus Status;
     QString Key("LidLockerStatus");
-    Status.insert(Key, LidLockState);
+    (void)Status.insert(Key, LidLockState);
 
     ConfirmDlg.UpdateRetortLabel(Status);
 

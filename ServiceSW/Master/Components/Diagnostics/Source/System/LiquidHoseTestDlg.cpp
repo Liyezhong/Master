@@ -74,7 +74,7 @@ void CLiquidHoseTestDlg::RunTest()
 
     this->show();
     mp_Ui->labelStatus->setText("Rotary Valve is moving to sealing position 1");
-    p_DevProc->RVMovePosition(false, 1);
+    (void)p_DevProc->RVMovePosition(false, 1);
     (void)p_DevProc->PumpSetFan(1);
     for (int i = 0; i < m_BottleNumberList.count(); ++i) {
         if (!CreatePressure(TargetPressure, TimeOut)) {
@@ -119,12 +119,14 @@ void CLiquidHoseTestDlg::RunTest()
     mp_Ui->okBtn->setEnabled(true);
     m_BottleNumberList.clear();
 
-    mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
-
     if (m_Abort) {
         delete this;
+        return;
     }
-    else if (!CreatePressureRet) {
+
+    mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
+
+    if (!CreatePressureRet) {
         QString Title = "Liquid Hose Test";
         QString Text  = "Liquid Hose Test failed.<br>"
                 "Target pressure could not be reached. Please "
@@ -185,7 +187,7 @@ float CLiquidHoseTestDlg::GetRecordPressure(int RecordTime)
         if (m_Abort) {
             break;
         }
-        ServiceDeviceProcess::Instance()->PumpGetPressure(&Pressure);
+        (void)ServiceDeviceProcess::Instance()->PumpGetPressure(&Pressure);
         ServiceDeviceProcess::Instance()->Pause(1000);
         PressureSum += Pressure;
         WaitSec--;

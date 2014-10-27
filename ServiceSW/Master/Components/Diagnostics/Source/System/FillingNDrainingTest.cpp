@@ -108,7 +108,6 @@ int CFillingNDrainingTest::Run(void)
 
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
-        p_HeatingDlg = NULL;
         return Ret;
     }
 

@@ -36,6 +36,21 @@ class CDiagnosticMessageDlg : public QObject
     Q_OBJECT
 
 public:
+    enum BUTTON_TYPE {
+        YES_NO = 0,
+        OK_ABORT = 1,
+        NEXT_CANCEL = 2,
+        NEXT_CANCEL_DISABLE = 3,
+
+        NEXT = 1,
+        CANCEL = 0,
+
+        OK = 1,
+        ABORT = 0,
+
+        YES = 1,
+        NO = 0
+    };
     /****************************************************************************/
     /*!
      *  \brief Constructor
@@ -77,7 +92,7 @@ public:
     /****************************************************************************/
     virtual void HideWaitingDialog();
 
-    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, int type = YES_NO);
+    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type = YES_NO);
     QWidget *ParentWidget()
     {
         return mp_Parent;
@@ -87,22 +102,6 @@ protected:
     QWidget        *mp_Parent;              //!< Parent widget
     MainMenu::CMessageDlg *mp_WaitDlg;      //!< Wait dialog
 
-public:
-    enum BUTTON_TYPE {
-        YES_NO = 0,
-        OK_ABORT = 1,
-        NEXT_CANCEL = 2,
-        NEXT_CANCEL_DISABLE = 3,
-
-        NEXT = 1,
-        CANCEL = 0,
-
-        OK = 1,
-        ABORT = 0,
-
-        YES = 1,
-        NO = 0
-    };
 };
 
 }

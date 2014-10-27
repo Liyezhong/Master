@@ -152,7 +152,6 @@ private:
     Ui::CLiquidHoseTestDlg *mp_Ui;        //!< User interface
     QList<LabelGroup*> m_LabelGroups;     //!< label group
     QList<int> m_BottleNumberList;        //!< store the bottle number
-    int m_Index;                          //!< store the lable index.
     bool m_Abort;                         //!< Flag for abort.
 
 };

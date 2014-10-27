@@ -94,7 +94,7 @@ void CDiagnosticMessageDlg::HideWaitingDialog()
     }
 }
 
-int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& MessageText, int type)
+int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type)
 {
     qDebug()<<"CDiagnosticMessageDlg::ShowConfirmMessage title="<<MessageTitle<<"  MessageText="<<MessageText;
 
