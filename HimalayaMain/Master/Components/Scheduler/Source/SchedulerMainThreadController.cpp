@@ -390,18 +390,20 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 
     QString curProgramID = m_ProgramStatusInfor.GetProgramId();
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
+    int StepID = m_ProgramStatusInfor.GetStepID();
+    if(-1 == StepID)
+    {
+        StepID = 0;
+    }
+
     m_CurProgramID = curProgramID;
     m_CurrentScenario = scenario;
+    m_FirstProgramStepIndex = 0;
 
-    m_CurProgramStepIndex = -1;
-    (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//just get the m_CurProgramStepIndex
-    if (m_CurProgramStepIndex != -1)
-    {
-        m_FirstProgramStepIndex = m_CurProgramStepIndex;
-        (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-        m_CurProgramStepIndex = -1;
-        (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
-    }
+    (void)this->PrepareProgramStationList(curProgramID, 0);
+
+    m_CurProgramStepIndex = StepID - 1;
+    (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
 
     if(203 == scenario)
     {
