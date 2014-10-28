@@ -41,6 +41,7 @@
 #include "Diagnostics/Include/System/LiquidHoseTest.h"
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
 #include "Diagnostics/Include/Retort/LidLockTest.h"
+#include "Diagnostics/Include/MainControl/ASBTest.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
 #include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
@@ -410,6 +411,25 @@ protected:
 
 }// namespace System
 
+namespace MainControl {
+
+class CASBTestMock : public CASBTest
+{
+    Q_OBJECT
+public:
+    CASBTestMock(HimSlaveType_t SlaveType)
+        : CASBTest(SlaveType)
+    {
+
+    }
+protected:
+    virtual void ShowMessage(QString &MessageTitle, QString &MessageText, ErrorCode_t Ret)
+    {
+
+    }
+};
+}
+
 /****************************************************************************/
 /**
  * \brief Test class for Diagnostics class.
@@ -470,6 +490,8 @@ private slots:
     void LAAirHeatingTubeTest();
     void LALiquidHeatingTubeTest();
 
+
+    void MainControlASBTest();
 
 
 }; // end class CTestDiagnostics
@@ -629,6 +651,25 @@ void CTestDiagnostics::RetortHeatingTestEmpty()
     CDiagnosticMessageDlgMock dlg;
     Retort::CHeatingTestEmpty ut(&dlg);
     QVERIFY(ut.Run() != RETURN_OK);
+}
+
+/****************************************************************************/
+void CTestDiagnostics::MainControlASBTest()
+{
+    MainControl::CASBTestMock ASB3Test(Slave_3);
+    MainControl::CASBTestMock ASB5Test(Slave_5);
+    MainControl::CASBTestMock ASB15Test(Slave_15);
+    ASB3Test.Run();
+    ASB5Test.Run();
+    ASB15Test.Run();
+}
+
+/****************************************************************************/
+void CTestDiagnostics::init() {
+}
+
+/****************************************************************************/
+void CTestDiagnostics::cleanup() {
 }
 
 void CTestDiagnostics::RetortHeatingTestEmptyWithWater()
