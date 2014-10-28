@@ -116,13 +116,6 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
 
 void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    static int i = 0;
-    if(0 == i)
-    {
-        SendSignalSelfTestDone(true);
-        i++;
-    }
-    return;
     StateList_t currentState = GetCurrentState(mp_StateMachine->configuration());
 
     if(SELFTEST_INIT == currentState)
