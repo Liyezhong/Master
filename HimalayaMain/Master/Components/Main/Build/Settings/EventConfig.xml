@@ -615,7 +615,8 @@
 			<Step ID="0" Type="MSG" StringID="102020090" RDStringID="112020090" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="512020092" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="102020092" RDStringID="112020092" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="102020092" RDStringID="112020092" ButtonType="YES_NO" NextStepOnClickYES="1" StatusBar="YES"/>
+			<Step ID="1" Type="ACT" Action="open_oven_change_heating_paraffin"/>
 		</Event>
 		<Event Code="" ErrorID="511040022" ErrorType="INFO" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="101040022" RDStringID="111040022" ButtonType="OK" StatusBar="YES"/>

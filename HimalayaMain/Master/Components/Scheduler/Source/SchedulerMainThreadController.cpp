@@ -297,6 +297,12 @@ void SchedulerMainThreadController::OnTickTimer()
         m_CheckLocalAlarmStatus = true;
     }
 
+    if (CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN == newControllerCmd)
+    {
+        m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
+        mp_HeatingStrategy->ResetTheOvenHeating();
+    }
+
     SchedulerCommandShPtr_t cmd;
     (void)PopDeviceControlCmdQueue(cmd);
 
@@ -1645,6 +1651,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
         }
+        if (cmd == "open_oven_change_heating_paraffin")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN;
+        }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
         {
             QString str = cmd;
@@ -2769,7 +2780,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                  || (Scenario >= 281 && Scenario <= 297) )
             {
                 LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(Scenario));
-                //RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
+                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
             }
             if(Scenario >= 271 && Scenario <= 277)
             {
@@ -2784,14 +2795,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-            if ("ERROR" != StepID)
-            {
-                MsgClasses::CmdProgramAcknowledge* CmdOvenCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::OVEN_COVER_OPEN);
-                Q_ASSERT(CmdOvenCoverOpen);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(CmdOvenCoverOpen));
-            }
         }
         if ( (m_OvenLidStatus == 1) && (strctHWMonitor.OvenLidStatus == 0) )
         {
