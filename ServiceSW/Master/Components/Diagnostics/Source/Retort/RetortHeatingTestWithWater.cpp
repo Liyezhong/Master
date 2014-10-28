@@ -142,12 +142,15 @@ int CHeatingTestWithWater::Run(void)
     CLevelSensorHeatingDialog HeatingDlg(dlg->ParentWidget());
     HeatingDlg.SetTitle(title);
     bool HeatingRet = HeatingDlg.StartHeating(false);
-    if (!HeatingDlg.result())
+    if (!HeatingDlg.result()) {
+        (void)dev->RetortStopHeating();
         return RETURN_OK;
+    }
     if (!HeatingRet) {
         text = tr("Retort Level Sensor Heating Test failed.<br/>"
                   "Target temperature was not reached in time. Please "
                   "perform Level Sensor Detection Test.");
+        (void)dev->RetortStopHeating();
         dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }
@@ -163,6 +166,7 @@ int CHeatingTestWithWater::Run(void)
     text = tr("Please put ht calibrated external thermometer into retort, and then close the retort lid lock.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT) {
+        (void)dev->RetortStopHeating();
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->RVMovePosition(true, 13);
@@ -207,6 +211,7 @@ int CHeatingTestWithWater::Run(void)
     }
 
     if (!timingDialog->isVisible()) {
+        (void)dev->RetortStopHeating();
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->RVMovePosition(true, 13);
@@ -254,6 +259,7 @@ int CHeatingTestWithWater::Run(void)
     return ret;
 
 __fail__:
+    (void)dev->RetortStopHeating();
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(true, 13);
