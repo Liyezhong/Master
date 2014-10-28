@@ -76,7 +76,7 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidg
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->widget->SetThreeDigitMode(true);
     mp_Ui->radioButton2->setChecked(true);
-    mp_Ui->widget->SetSubtitle("bottle number", 0);
+    mp_Ui->widget->SetSubtitle("Bottle Number", 0);
 
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
 

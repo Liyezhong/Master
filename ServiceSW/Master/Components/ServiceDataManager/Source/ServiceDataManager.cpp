@@ -137,7 +137,8 @@ quint32 CServiceDataManager::InitDataContainer()
                     <<  FilenameServiceParameters;
          return EVENT_DM_PROCESS_SETTINGS_CONF_READ_FAILED;
     }
-
+    //mp_MasterThreadController->SetSerialNumber(mp_ServiceDataContainer->DeviceConfigurationInterface->
+    //GetDeviceConfiguration()->GetValue("SERIALNUMBER"));// set serial number to log file.
     mp_ModuleCommandInterface = new CModuleCommandInterface(this, mp_MasterThreadController, mp_ServiceDataContainer);
 
     qDebug() << "CServiceDataManager::InitDataContainer successful !!!";

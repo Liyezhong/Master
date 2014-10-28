@@ -97,8 +97,15 @@ int CASBTest::Run(void)
 
     QString Text = QString("ASB%1 DC output voltage is %2 (%3V/range %4~%5V), ")
             .arg(SlaveType).arg(VoltageResult).arg(VoltageV).arg(VoltageRangeLow).arg(VoltageRangeHigh);
-    QString CurrentText = QString("and current is %1 (%2mA/range %3~%4mA)").
+
+    QString CurrentText;
+    if (SlaveType == Slave_15) {
+        CurrentText = QString("and current is %1 (%2mA)").arg(CurrentResult).arg(Current);
+    }
+    else {
+        CurrentText = QString("and current is %1 (%2mA/range %3~%4mA)").
             arg(CurrentResult).arg(Current).arg(CurrentRangeLow).arg(CurrentRangeHigh);
+    }
     Text.append(CurrentText);
 
     QString Title = QString("ASB%1").arg(SlaveType);
