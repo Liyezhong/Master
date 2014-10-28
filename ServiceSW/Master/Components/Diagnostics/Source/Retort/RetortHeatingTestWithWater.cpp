@@ -159,8 +159,11 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->PumpSucking();
     text = tr("Rotating Rotary Valve to sealing position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(false, 13);
-    dlg->HideWaitingDialog();
+    (void)dev->RVMovePosition(false, 13);    
+    text = tr("Release pressure...");
+    dlg->ShowWaitingDialog(title, text);
+    (void)dev->PumpReleasePressure();
+     dlg->HideWaitingDialog();
 
     //-----
     text = tr("Please put ht calibrated external thermometer into retort, and then close the retort lid lock.");
@@ -239,7 +242,7 @@ int CHeatingTestWithWater::Run(void)
 
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(false, 13);
+    (void)dev->RVMovePosition(true, 13);
     text = tr("Start draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
