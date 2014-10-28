@@ -464,8 +464,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
-        m_UsedStationIDs.clear();
-
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
@@ -509,10 +507,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                        <<PVMode);
 
             //send command to main controller to tell the left time
-            QString strStep;
             if (m_NewProgramID.at(0) != 'C')
             {
-                strStep = "Precheck...";
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
                 MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
                                                                                                               Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
@@ -523,9 +519,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             }
             else
             {
-                strStep= m_CurReagnetName;
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, strStep, m_CurProgramStepIndex, leftSeconds));
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -568,6 +563,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::UpdateStationReagentStatus()
 {
+    m_UsedStationIDs.clear();
+    m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
     MsgClasses::CmdUpdateStationReagentStatus* commandPtr = NULL;
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
     if (m_CurProgramID.at(0) == 'C')//process cleaning reagent
@@ -588,7 +585,6 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
         else
         {
             commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, m_ProcessCassetteCount);//toDo: 100, should get the actual number
-            m_ProcessCassetteCount = 0; // clear cassette when program finished or aborted.
         }
     }
 
@@ -1019,7 +1015,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_STEP_PROGRAM_FINISH == stepState)
         {
-            m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
+            UpdateStationReagentStatus();
+
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
             (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1)
@@ -1076,7 +1073,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->SendRunComplete();
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
-            UpdateStationReagentStatus();
             if(m_IsCleaningProgram)
             {
                 m_IsCleaningProgram = false;
@@ -1167,7 +1163,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
 
             //update station/reagent using times
-            UpdateStationReagentStatus();
+            if(m_ProgramStatusInfor.IsRetortContaminted())
+            {
+                UpdateStationReagentStatus();
+            }
 
             m_CurProgramStepIndex = -1;
             LogDebug("Program aborted!");
@@ -2254,7 +2253,6 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
 
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
 {
-    //m_ProcessCassetteCount = Cmd.CassetteCount();
     m_ProcessCassetteCount += Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
 }
@@ -2290,6 +2288,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         whichStep = WhichStepHasNoSafeReagent(curProgramID);
     }
 
+    m_ProcessCassetteCount = 0;
     m_CurrentBottlePosition.ReagentGrpId = "";
     m_CurrentBottlePosition.RvPos = RV_UNDEF;
     //send back the proposed program end time
