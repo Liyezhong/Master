@@ -342,7 +342,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
     {
         LogDebug("Self test is done");
         //send command to main controller to tell self test OK
-        if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        if(!m_ProgramStatusInfor.IsProgramFinished() && m_ProgramStatusInfor.GetErrorFlag() == 0)//power failure
         {
             QString ProgramName = "";
             if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
@@ -364,6 +364,10 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         }
         else
         {
+            if(m_ProgramStatusInfor.GetErrorFlag() == 1)
+            {
+                m_ProgramStatusInfor.SetErrorFlag(0);
+            }
             m_SchedulerMachine->SendSchedulerInitComplete();
             MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
             Q_ASSERT(commandPtr);
@@ -1204,6 +1208,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
+            m_ProgramStatusInfor.SetErrorFlag(0);
             LogDebug("Go to RC_Restart");
             m_SchedulerMachine->EnterRcRestart();
         }
@@ -4147,6 +4152,7 @@ bool SchedulerMainThreadController::ConstructSlaveModuleAttrList(QString moduleN
 
 void SchedulerMainThreadController::OnSystemError()
 {
+    m_ProgramStatusInfor.SetErrorFlag(1);
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_EEEOR;
     MsgClasses::CmdProgramAcknowledge* commandPtrSystemError(new MsgClasses::CmdProgramAcknowledge(5000, type));
     Q_ASSERT(commandPtrSystemError);

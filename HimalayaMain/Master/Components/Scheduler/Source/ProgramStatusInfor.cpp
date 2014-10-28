@@ -113,6 +113,22 @@ int CProgramStatusInfor::GetStepID()
     return step;
 }
 
+void CProgramStatusInfor::SetErrorFlag(int ErrFlag)
+{
+    SetStatus("ErrorFlag", QString::number(ErrFlag));
+}
+
+int CProgramStatusInfor::GetErrorFlag()
+{
+    bool ok = false;
+    int flag = 0;
+    if(!GetStatus("ErrorFlag").isEmpty())
+    {
+        flag = GetStatus("ErrorFlag").toInt(&ok);
+    }
+    return flag;
+}
+
 void CProgramStatusInfor::SetStationList(const QList<QString>&  List)
 {
     QString Value = "";
