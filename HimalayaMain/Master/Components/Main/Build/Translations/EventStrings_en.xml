@@ -679,7 +679,8 @@
    		<string id="67174998" text1="Start rotary valve heating in scenario:%1,the target temperature:%2." text2="" />
    		<string id="67174999" text1="Start LA system(%1) heating in scenario:%2,the target temperature:%3." text2="" />
    		<string id="67175168" text1="Detect an unfinished program %1 at step %2." text2="" />
-   		<string id="67175184" text1="Instrument enters the idle state." text2="" />
+   		<string id="67175184" text1="Scheduler enters the idle state." text2="" />
+   		<string id="67175185" text1="Scheduler enters the error state." text2="" />
    		<string id="67175200" text1="start the program %1" text2="" />
    		<string id="67175201" text1="Set the rotary valve position to %1." text2="" />
    		<string id="67175202" text1="Still need to heat oven for %1 of %2 to melting paraffin." text2="" />

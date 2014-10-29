@@ -37,6 +37,7 @@
 #include "Scheduler/Include/ProgramStatusInfor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Global/Include/Commands/AckOKNOK.h"
+#include "Scheduler/Include/SchedulerLogging.h"
 
 using namespace DeviceControl;
 

@@ -1446,10 +1446,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         LogDebug("In Rs_Rv_MoveToPosition3.5");
         m_SchedulerMachine->HandleRsMoveToPSeal(cmdName, retCode);
     }
-    else
-    {
-        LogDebug(QString("In ERROR state unknown currentState: %1").arg(currentState));
-    }
+//    else
+//    {
+//        LogDebug(QString("In ERROR state unknown currentState: %1").arg(currentState));
+//    }
 }
 
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
@@ -2598,7 +2598,8 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
 
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    LogDebug(strctHWMonitor.toLogString());
+    //LogDebug(strctHWMonitor.toLogString());  //log to event logging file
+    SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString()); // log to Sensor data file
     m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
 
     if("ERROR" == StepID)

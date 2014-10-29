@@ -273,6 +273,7 @@ void HimalayaMasterThreadController::OnPowerFail(const Global::PowerFailStages P
 void HimalayaMasterThreadController::OnGoReceived() {
     CreateAndInitializeObjects();
     MasterThreadController::OnGoReceived();
+    Scheduler::SchedulerLogging::getInstance().InitLog(m_SerialNumber,mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
     DataManager::CDeviceConfigurationInterface *deviceConfigInterface = mp_DataManager->GetDeviceConfigurationInterface();
     QString SerialNumber;
     QString DeviceName;

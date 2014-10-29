@@ -141,7 +141,8 @@ const quint32 EVENT_SCHEDULER_HEATING_LA = SCHEDULER_BASE_ID + 0x257; ///< Start
 // 1. Power failudre
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
 // 2. IDLE state
-const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Instrument enters the idle state.
+const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Scheduler enters the idle state.
+const quint32 EVENT_SCHEDULER_IN_ERROR_STATE = SCHEDULER_BASE_ID + 0x0311; ///< Scheduler enters the Error state.
 // 3. runing program
 const quint32 EVENT_SCHEDULER_START_PROGRAM = SCHEDULER_BASE_ID + 0x0320; ///< start the program %1
 const quint32 EVENT_SCHEDULER_SET_RV_POSITION = SCHEDULER_BASE_ID + 0x0321; ///< Set the rotary valve position to %1.

@@ -1095,6 +1095,16 @@ private slots:
     void OnEnterIdleState();
     /****************************************************************************/
     /*!
+     *  \brief  Slot to enter error state
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnEnterErrorState();
+    /****************************************************************************/
+    /*!
      *  \brief  Slot to enter pretest
      *
      *  \param  void
