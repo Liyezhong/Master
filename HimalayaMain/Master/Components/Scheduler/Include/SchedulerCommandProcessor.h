@@ -111,7 +111,8 @@ typedef struct
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
                 QString("RV1(%1)RV2(%2)RVp(%3)").arg(TempRV1).arg(TempRV2).arg(PositionRV) +
                 QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)").arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2)+
-                QString("LocalAlarm(%1)RemoteAlarm(%2)").arg(LocalAlarmStatus).arg(RemoteAlarmStatus);
+                QString("RTSideCurrent(%1)RTBottomCurrent(%2)OvenTop(%3)OvenBottom(%4)ALLSCurrent(%5)ALTube1Current(%6)ALTube2Current(%7)RVTempCurrent(%8)")
+                .arg(CurrentRTSide).arg(CurrentRTBottom).arg(CurrentOvenTop).arg(CurrentOvenBottom).arg(CurrentLALevelSensor).arg(CurrentLATube1).arg(CurrentLATube2).arg(CurrentRVTemp);
     }
 } HardwareMonitor_t;
 
