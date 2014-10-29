@@ -268,6 +268,7 @@ void CRcReHeating::CheckTheTemperature()
 
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
+    qreal CurrentPressure = 0.0;
     if(200 == m_LastScenario || 260 == m_LastScenario || 203 == m_LastScenario)
     {
         if (0 == m_StartReq)
@@ -344,14 +345,34 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                    m_StartReq++;
+                    m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
                 }
                 else
                 {
                     m_RsReagentCheckStep = FORCE_DRAIN;
+                    m_StartReq = 0;
                     emit TasksDone(false);
                 }
-                m_StartReq = 0;
+            }
+            else if(2 == m_StartReq)
+            {
+                CurrentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
+                if( -5 < CurrentPressure && CurrentPressure <= -1)
+                {
+                    mp_SchedulerThreadController->LogDebug(QString("Build vaccum success, the pressure:%1").arg(CurrentPressure));
+                    m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
+                    m_StartReq = 0;
+                }
+                else
+                {
+                    if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 5 * 1000)
+                    {
+                        m_StartReq = 0;
+                        m_RsReagentCheckStep = FORCE_DRAIN;
+                        emit TasksDone(false);
+                    }
+                }
             }
             break;
         case MOVE_INITIALIZE_POSITION:
