@@ -21,6 +21,7 @@
 #define DIAGNOSTICS_SYSTEM_LIQUIDHOSETESTDLG_H
 
 #include "MainMenu/Include/DialogFrame.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include <QList>
 #include <QLabel>
 
@@ -60,10 +61,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
+     *  \iparam p_Message = The pointer of message dlg.
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CLiquidHoseTestDlg(QWidget *p_Parent = 0);
+    explicit CLiquidHoseTestDlg(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
@@ -144,6 +146,7 @@ private:
 
 private:
     Ui::CLiquidHoseTestDlg *mp_Ui;        //!< User interface
+    CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.
     QList<LabelGroup*> m_LabelGroups;     //!< label group
     QList<int> m_BottleNumberList;        //!< store the bottle number
     bool m_Abort;                         //!< Flag for abort.

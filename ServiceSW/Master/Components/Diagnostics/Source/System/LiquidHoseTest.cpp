@@ -63,7 +63,7 @@ int CLiquidHoseTest::Run(void)
 
     int Option = p_SelectDlg->GetOption();
 
-    CLiquidHoseTestDlg* p_TestDlg = new CLiquidHoseTestDlg(mp_Parent);
+    CLiquidHoseTestDlg* p_TestDlg = new CLiquidHoseTestDlg(mp_MessageDlg, mp_Parent);
 
     if (Option == 0) { //Particular single bottle test
         delete p_SelectDlg;

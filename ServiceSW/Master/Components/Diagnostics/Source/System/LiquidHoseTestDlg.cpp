@@ -31,9 +31,10 @@ namespace Diagnostics {
 
 namespace System {
 
-CLiquidHoseTestDlg::CLiquidHoseTestDlg(QWidget *p_Parent):
+CLiquidHoseTestDlg::CLiquidHoseTestDlg(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent):
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CLiquidHoseTestDlg),
+    mp_MessageDlg(p_MessageDlg),
     m_Abort(false)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -67,7 +68,6 @@ void CLiquidHoseTestDlg::RunTest()
     float RecordPressure(0);
     QString MsgTitle = "Liquid Hose Test";
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
-    CDiagnosticMessageDlg* p_MsgDlg = new CDiagnosticMessageDlg(this);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemLiquidHose");
     float TargetPressure = p_TestCase->GetParameter("TargetPressure").toFloat();
     int TimeOut          = p_TestCase->GetParameter("TimeOut").toInt();
@@ -123,7 +123,7 @@ void CLiquidHoseTestDlg::RunTest()
 
     QString Text = "Releasing pressure...";
     if (m_Abort) {
-        p_MsgDlg->ShowWaitingDialog(MsgTitle, Text);
+        mp_MessageDlg->ShowWaitingDialog(MsgTitle, Text);
     }
     else {
         mp_Ui->labelStatus->setText(Text);
@@ -138,8 +138,7 @@ void CLiquidHoseTestDlg::RunTest()
     m_BottleNumberList.clear();
 
     if (m_Abort) {
-        p_MsgDlg->HideWaitingDialog();
-        delete p_MsgDlg;
+        mp_MessageDlg->HideWaitingDialog();
         return;
     }
 
@@ -149,11 +148,10 @@ void CLiquidHoseTestDlg::RunTest()
         Text  = "Liquid Hose Test failed.<br>"
                 "Target pressure could not be reached. Please "
                 "perform System Sealing Test to diagnose the reason. Then repeat this test.";
-        p_MsgDlg->ShowMessage(MsgTitle, Text, RETURN_ERR_FAIL);
+        mp_MessageDlg->ShowMessage(MsgTitle, Text, RETURN_ERR_FAIL);
 
     }
 
-    delete p_MsgDlg;
     (void)this->exec();
 }
 
