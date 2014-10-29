@@ -66,7 +66,7 @@ public:
     void UpdateLabel(const Service::ModuleTestStatus &Status);
     
 private:
-    Ui::RetortTimingDialog *ui;
+    Ui::RetortTimingDialog *ui; //!< Retort Dialog ui
 };
 
 #endif // OVENHEATINGTESTEMPTYTIMINGDIALOG_H

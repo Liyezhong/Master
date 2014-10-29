@@ -94,8 +94,31 @@ private slots:
     /****************************************************************************/
     void clickOk(void);
 private:
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show a message dialog.
+     *  \iparam title = dialog title
+     *  \iparam text = dialog text
+     */
+    /****************************************************************************/
     void ShowMessage(QString title, QString  text);
-protected:
+protected:    
+
+    /****************************************************************************/
+    /*!
+     *  \brief Filters all mouse events
+     *
+     *      There can be a small period of time in which the wait dialog is not
+     *      displayed. This is required so that the wait dialog does not have to
+     *      be displayed everytime network communication takes place.
+     *
+     *  \iparam p_Object = Object that is watched
+     *  \iparam p_Event = Current event
+     *
+     *  \return True if an event should be filtered
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
     /****************************************************************************/
