@@ -113,21 +113,23 @@ int CHeatingTestWithWater::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    (void)dev->RetortStartHeating(retortSideTargetTemp + 7, retortBottomTargetTemp + 2);
+    DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
+    qreal retortTargetTemp1 = p_TestCase1->GetParameter("RetortTargetTemp").toFloat();
+    (void)dev->RetortStartHeating(retortTargetTemp1 + 7, retortTargetTemp1 + 2);
     text = tr("Start heating retort...");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
     dlg->HideWaitingDialog();
 
+    (void)dev->RetortStopHeating();
     if (ret != RETURN_OK) {
-        (void)dev->RetortStopHeating();
         text = tr("Retort Heating Test(with Water) failed.<br/>"
                   "Current of heating elements is out of specifications. "
                   "Sequentially check function of ASB5 and retort heating elements. "
                   "Exchange ASB5 or retort accordingly and repeat this test.");
         dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
-    }
+    }    
 
     // RV initialize
     text = tr("Initializing the rotary valve...");
@@ -138,7 +140,6 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->RVMovePosition(true, 13);
     dlg->HideWaitingDialog();
 
-    //-----
     CLevelSensorHeatingDialog HeatingDlg(dlg->ParentWidget());
     HeatingDlg.SetTitle(title);
     bool HeatingRet = HeatingDlg.StartHeating(false);
@@ -157,6 +158,7 @@ int CHeatingTestWithWater::Run(void)
     text = tr("Start filling");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpSucking();
+    (void)dev->LSStopHeating();
     text = tr("Rotating Rotary Valve to sealing position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(false, 13);    
@@ -165,11 +167,9 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->PumpReleasePressure();
      dlg->HideWaitingDialog();
 
-    //-----
     text = tr("Please put ht calibrated external thermometer into retort, and then close the retort lid lock.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT) {
-        (void)dev->RetortStopHeating();
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->RVMovePosition(true, 13);
@@ -182,8 +182,8 @@ int CHeatingTestWithWater::Run(void)
 
     int t1 = p_TestCase->GetParameter("t1").toInt();
     qreal tempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
+    qreal tempOffset1 = p_TestCase->GetParameter("TempOffset1").toFloat();
 
-    (void)dev->RetortStopHeating();
     retortSideTargetTemp = p_TestCase->GetParameter("RetortSideTargetTemp1").toFloat();
     retortBottomTargetTemp = p_TestCase->GetParameter("RetortBottomTargetTemp1").toFloat();
     (void)dev->RetortStartHeating(retortSideTargetTemp + 7, retortBottomTargetTemp + 2);
@@ -192,7 +192,7 @@ int CHeatingTestWithWater::Run(void)
 
     heatingStatus.UsedTime = 0;
     heatingStatus.EDTime = t1;
-    heatingStatus.RetortTempTarget = tr("%1 - %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset);
+    heatingStatus.RetortTempTarget = tr("%1 - %2").arg(retortSideTargetTemp).arg(retortSideTargetTemp + tempOffset1);
     (void)dev->RetortGetTemp(&retortTempSide, &retortTempBottom1, &retortTempBottom2);
     heatingStatus.RetortTempSide = retortTempSide;
     heatingStatus.RetortTempSensor1 = retortTempBottom1;
@@ -229,11 +229,11 @@ int CHeatingTestWithWater::Run(void)
     if ((ret = dev->RetortGetTemp(&retortTempSide,
                      &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
         goto __fail__;
-    if ((retortTempSide > (retortSideTargetTemp + tempOffset) || retortTempSide < retortSideTargetTemp))
+    if ((retortTempSide > (retortSideTargetTemp + tempOffset1) || retortTempSide < retortSideTargetTemp))
         goto __fail__;
-    if (retortTempBottom1 > retortBottomTargetTemp + tempOffset || retortTempBottom1 < retortBottomTargetTemp)
+    if (retortTempBottom1 > retortBottomTargetTemp + tempOffset1 || retortTempBottom1 < retortBottomTargetTemp)
         goto __fail__;
-    if (retortTempBottom2 > retortBottomTargetTemp + tempOffset || retortTempBottom2 < retortBottomTargetTemp)
+    if (retortTempBottom2 > retortBottomTargetTemp + tempOffset1 || retortTempBottom2 < retortBottomTargetTemp)
         goto __fail__;
 
     inputDialog.SetTitle(title);

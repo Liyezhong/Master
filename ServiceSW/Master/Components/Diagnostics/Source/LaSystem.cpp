@@ -52,6 +52,7 @@ CLaSystem::CLaSystem(QWidget *p_Parent) :
 
 CLaSystem::~CLaSystem()
 {
+    delete dlg;
     delete ui;
 }
 
