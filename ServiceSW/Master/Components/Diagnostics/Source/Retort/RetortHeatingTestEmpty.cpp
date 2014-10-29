@@ -101,11 +101,15 @@ int CHeatingTestEmpty::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    (void)dev->RetortStartHeating(retortSideTargetTemp + 7, retortBottomTargetTemp + 2);
+    DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
+    qreal retortTargetTemp1 = p_TestCase1->GetParameter("RetortTargetTemp").toFloat();
+    (void)dev->RetortStartHeating(retortTargetTemp1 + 7, retortTargetTemp1 + 2);
     text = tr("Start heating retort...");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
     dlg->HideWaitingDialog();
+
+    (void)dev->LSStopHeating();
 
     if (ret != RETURN_OK) {
         (void)dev->RetortStopHeating();
@@ -164,6 +168,8 @@ int CHeatingTestEmpty::Run(void)
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
         this->RefreshWaitingDialog(&heatingStatus);
     }
+
+    (void)dev->RetortStopHeating();
 
     if (!timingDialog->isVisible())
         return RETURN_OK;
