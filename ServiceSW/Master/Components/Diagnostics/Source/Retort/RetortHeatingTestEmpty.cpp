@@ -108,11 +108,9 @@ int CHeatingTestEmpty::Run(void)
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
     dlg->HideWaitingDialog();
-
-    (void)dev->LSStopHeating();
+    (void)dev->RetortStopHeating();
 
     if (ret != RETURN_OK) {
-        (void)dev->RetortStopHeating();
         text = tr(" Retort Heating Test(Empty) failed.<br/>"
                   "Current of heating elements is out of specifications. "
                   "Sequentially check function of ASB5 and retort heating elements. "
@@ -121,6 +119,7 @@ int CHeatingTestEmpty::Run(void)
         return RETURN_ERR_FAIL;
     }
 
+    (void)dev->RetortStartHeating(retortSideTargetTemp + 7, retortBottomTargetTemp + 2);
     int t1 = p_TestCase->GetParameter("t1").toInt();
     int t2 = p_TestCase->GetParameter("t2").toInt();
     qreal tempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
