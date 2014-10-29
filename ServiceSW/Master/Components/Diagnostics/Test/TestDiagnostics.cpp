@@ -664,14 +664,6 @@ void CTestDiagnostics::MainControlASBTest()
     ASB15Test.Run();
 }
 
-/****************************************************************************/
-void CTestDiagnostics::init() {
-}
-
-/****************************************************************************/
-void CTestDiagnostics::cleanup() {
-}
-
 void CTestDiagnostics::RetortHeatingTestEmptyWithWater()
 {
     CDiagnosticMessageDlgMock dlg;
