@@ -22,18 +22,6 @@
 #include <QtTest/QTest>
 #include <QDebug>
 #include <MainMenu/Include/MainWindow.h>
-//#include <Diagnostics/Include/Agitator.h>
-//#include <Diagnostics/Include/AirExhaust.h>
-//#include <Diagnostics/Include/Consumables.h>
-//#include <Diagnostics/Include/CoverHood.h>
-//#include "Diagnostics/Include/Display.h"
-//#include <Diagnostics/Include/DrawerLoader.h>
-//#include <Diagnostics/Include/DrawerUnloader.h>
-//#include <Diagnostics/Include/HeatedCuvettes.h>
-//#include <Diagnostics/Include/Oven.h>
-//#include <Diagnostics/Include/SoftSwitch.h>
-//#include <Diagnostics/Include/WaterStations.h>
-//#include <Diagnostics/Include/XMovement.h>
 #include "Diagnostics/Include/InitialSystem/LTubePreTest.h"
 #include "Diagnostics/Include/InitialSystem/MainsRelayTest.h"
 #include "Diagnostics/Include/InitialSystem/OvenPreTest.h"
@@ -54,6 +42,10 @@
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
 #include "Diagnostics/Include/Retort/LidLockTest.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
+#include "Diagnostics/Include/LaSystem/AirHeatingTubeTest.h"
+#include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
+#include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
+#include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"
 #include <QObject>
 #include <QMessageBox>
 #include <QMainWindow>
@@ -451,13 +443,6 @@ private slots:
     /****************************************************************************/
     void cleanupTestCase();
 
-    /****************************************************************************/
-    /**
-     * \brief Test Diagnostics Menu object
-     */
-    /****************************************************************************/
-    void utTestDiagnostics();
-
     void LTubePreTest();
     void MainsRelayTest();
 
@@ -479,6 +464,12 @@ private slots:
 
     void RetortLidLockTest();
     void RetortLevelSensorDetectionTest();
+    void RetortHeatingTestEmpty();
+    void RetortHeatingTestEmptyWithWater();
+
+    void LAAirHeatingTubeTest();
+    void LALiquidHeatingTubeTest();
+
 
 
 }; // end class CTestDiagnostics
@@ -633,6 +624,35 @@ void CTestDiagnostics::RetortLidLockTest()
     //QVERIFY(ut.Run() == RETURN_OK);
 }
 
+void CTestDiagnostics::RetortHeatingTestEmpty()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Retort::CHeatingTestEmpty ut(&dlg);
+    QVERIFY(ut.Run() != RETURN_OK);
+}
+
+void CTestDiagnostics::RetortHeatingTestEmptyWithWater()
+{
+    CDiagnosticMessageDlgMock dlg;
+    Retort::CHeatingTestWithWater ut(&dlg);
+    QVERIFY(ut.Run() != RETURN_OK);
+}
+
+
+void CTestDiagnostics::LALiquidHeatingTubeTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    LaSystem::CLiquidHeatingTubeTest ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
+void CTestDiagnostics::LAAirHeatingTubeTest()
+{
+    CDiagnosticMessageDlgMock dlg;
+    LaSystem::CAirHeatingTubeTest ut(&dlg);
+    QVERIFY(ut.Run() == RETURN_OK);
+}
+
 /****************************************************************************/
 void CTestDiagnostics::init() {
 }
@@ -643,89 +663,6 @@ void CTestDiagnostics::cleanup() {
 
 /****************************************************************************/
 void CTestDiagnostics::cleanupTestCase() {
-}
-
-
-//int CTestDiagnostics::eventLoop() {
-
-//    QTimer timer;
-//    qint32 ret;
-//    quint32 interval = 1000 * 3 * 60 * 60; // for GUI test
-//    timer.setSingleShot(true);
-//    timer.setInterval(interval);
-//    timer.start();
-//    CONNECTSIGNALSLOT(&timer, timeout(), &m_LoopTest, quit());
-//    ret = m_LoopTest.exec();
-//}
-
-/****************************************************************************/
-void CTestDiagnostics::utTestDiagnostics() {
-//    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
-
-//    Diagnostics::CAgitator *p_Agitator = new Diagnostics::CAgitator(p_MainWindow);
-
-//    Diagnostics::CAirExhaust *p_AirExhaust = new Diagnostics::CAirExhaust(p_MainWindow);
-
-//    Diagnostics::CConsumables *p_Consumables = new Diagnostics::CConsumables(p_MainWindow);
-
-//    Diagnostics::CCoverHood *p_Coverhood = new Diagnostics::CCoverHood(p_MainWindow);
-
-//    Diagnostics::CDisplay *p_Display = new Diagnostics::CDisplay(p_MainWindow);
-
-//    Diagnostics::CDrawerLoader *p_DrawerLoader = new Diagnostics::CDrawerLoader(p_MainWindow);
-
-//    Diagnostics::CDrawerUnloader *p_DrawerUnloader = new Diagnostics::CDrawerUnloader(p_MainWindow);
-
-//    Diagnostics::CHeatedCuvettes *p_HeatedCuvettes = new Diagnostics::CHeatedCuvettes(p_MainWindow);
-
-//    Diagnostics::COven *p_Oven = new Diagnostics::COven(p_MainWindow);
-
-//    Diagnostics::CSoftSwitch *p_Softswitch = new Diagnostics::CSoftSwitch(p_MainWindow);
-
-//    Diagnostics::CWaterStation *p_WaterStation = new Diagnostics::CWaterStation(p_MainWindow);
-
-//    Diagnostics::CXMovement *p_XAxis = new Diagnostics::CXMovement(p_MainWindow);
-
-//    p_Agitator->ReferenceRun();
-//    p_Agitator->TestAgitatorSpeed();
-
-//    p_AirExhaust->AirFlowStatusDialog(QString("Air flow status dialog"), false);
-
-//    p_Consumables->DisplayCANID();
-//    p_Consumables->DisplayFirmwareInfo();
-//    p_Consumables->KitInformation();
-//    p_Consumables->BottleInformation();
-
-//    p_Coverhood->DisplayStatus();
-//    p_Coverhood->HoodStatusDialog("Cover Hood Status", true);
-
-//     p_Display->DoBasicColorTest();
-//     eventLoop();
-
-//    p_DrawerLoader->AddItem("1", "Drawer loader reference run");
-//    p_DrawerLoader->TestRun();
-
-//    p_DrawerUnloader->AddItem("1", "Teach drawer");
-//    p_DrawerUnloader->TestRun();
-
-//    p_HeatedCuvettes->AddItem("2", "Maximum temperature test");
-//    p_HeatedCuvettes->TestRun();
-
-//    p_Oven->AddItem("2", "Photo Sensor test");
-//    p_Oven->TestRun();
-
-//    p_Softswitch->SoftSwitchTest();
-//    p_Softswitch->LEDTest();
-
-//    p_WaterStation->AddItem("1", "Water valves test");
-//    p_WaterStation->WaterValvesTest();
-//    p_WaterStation->DrainSensorTest();
-
-//    p_XAxis->MoveYZArmLeft();
-//    p_XAxis->MoveYZArmRight();
-//    p_XAxis->XLeftReferenceRun();
-//    p_XAxis->XRightReferenceRun();
-
 }
 
 } // end namespace Diagnostics
