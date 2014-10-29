@@ -65,7 +65,9 @@ void CLiquidHoseTestDlg::RunTest()
     int BottleNumber;
     bool CreatePressureRet = true;
     float RecordPressure(0);
+    QString MsgTitle = "Liquid Hose Test";
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
+    CDiagnosticMessageDlg* p_MsgDlg = new CDiagnosticMessageDlg(this);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemLiquidHose");
     float TargetPressure = p_TestCase->GetParameter("TargetPressure").toFloat();
     int TimeOut          = p_TestCase->GetParameter("TimeOut").toInt();
@@ -92,7 +94,16 @@ void CLiquidHoseTestDlg::RunTest()
         (void)p_DevProc->RVMovePosition(true, BottleNumber);
 
         mp_Ui->labelStatus->setText(QString("Keep pressure for %1 seconds").arg(DurationTime));
-        p_DevProc->Pause(DurationTime*1000);
+        for (int j = 0; j < DurationTime; ++j) {
+            p_DevProc->Pause(1000);
+            if (m_Abort) {
+                break;
+            }
+        }
+
+        if (m_Abort) {
+            break;
+        }
 
         mp_Ui->labelStatus->setText("Record Pressure value");
         RecordPressure = GetRecordPressure(RecordTime);
@@ -109,7 +120,14 @@ void CLiquidHoseTestDlg::RunTest()
         (void)p_DevProc->RVMovePosition(false, BottleNumber);
     }
 
-    mp_Ui->labelStatus->setText("Releasing pressure...");
+
+    QString Text = "Releasing pressure...";
+    if (m_Abort) {
+        p_MsgDlg->ShowWaitingDialog(MsgTitle, Text);
+    }
+    else {
+        mp_Ui->labelStatus->setText(Text);
+    }
     (void)p_DevProc->PumpSetFan(0);
     (void)p_DevProc->PumpSetValve(1, 0);
     (void)p_DevProc->PumpSetValve(2, 0);
@@ -120,20 +138,22 @@ void CLiquidHoseTestDlg::RunTest()
     m_BottleNumberList.clear();
 
     if (m_Abort) {
+        p_MsgDlg->HideWaitingDialog();
+        delete p_MsgDlg;
         return;
     }
 
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
 
-    if (!CreatePressureRet) {
-        QString Title = "Liquid Hose Test";
-        QString Text  = "Liquid Hose Test failed.<br>"
+    if (!CreatePressureRet) {       
+        Text  = "Liquid Hose Test failed.<br>"
                 "Target pressure could not be reached. Please "
-                "perform System Sealing Test to diagnose the reason. Then repeat this test";
-        CDiagnosticMessageDlg* p_Dlg = new CDiagnosticMessageDlg(this);
-        p_Dlg->ShowMessage(Title, Text, RETURN_ERR_FAIL);
-        delete p_Dlg;
+                "perform System Sealing Test to diagnose the reason. Then repeat this test.";
+        p_MsgDlg->ShowMessage(MsgTitle, Text, RETURN_ERR_FAIL);
+
     }
+
+    delete p_MsgDlg;
     (void)this->exec();
 }
 

@@ -170,11 +170,11 @@ int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
                 "Detection test was successfully performed before! "\
                 "Please verify status of the retort. If there is any reagent or paraffin in the retort, "\
                 "abort this test and change to the 'Diagnostic_Retort_Reagent Drain' function to drain the "\
-                "liquid back to the original position. Thereafter flush the retort if necessary";
+                "liquid back to the original position. Thereafter flush the retort if necessary.";
     }
     else if (StepNum == 2) {
         Text = "If you want to test with different reagents, please keep "\
-                "the reagent compatibility in mind and do not cause any cross contamination";
+                "the reagent compatibility in mind and do not cause any cross contamination.";
     }
 
     return mp_MessageDlg->ShowConfirmMessage(FILLINGNDRAINING_TITLE, Text, CDiagnosticMessageDlg::OK_ABORT);
@@ -192,14 +192,14 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
                 "not been reached. Please check resistance of temperature "\
                 "sensors, current of heating element and function of ASB3. If no "\
                 "root cause found, check main relay on ASB15 and cable "\
-                "connections in addition. Exchange part accordingly";
+                "connections in addition. Exchange part accordingly.";
     }
     else if (RetNum == 2) {
         Text = "System Filling & Draining Test failed.<br>"\
                 "It might work in some minutes when solidified paraffin in "\
                 "the rotary valve is molten. Repeat initializing test again in "\
                 "about 15mins. If it still fails in the second try, exchange "\
-                "rotary valve, reboot the Service Software and repeat this test";
+                "rotary valve, reboot the Service Software and repeat this test.";
     }
     else if (RetNum == 3) {
         Text = "System Filling & Draining failed.<br>"\
@@ -212,7 +212,7 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
         Text = "System Filling & Draining Test failed.<br>"\
                 "Level sensor’mp_ParentWidgets target temperature was not "\
                 "reached in time. Clean level sensor, repeat this "\
-                "test. If still failed, exchange the level sensor";
+                "test. If still failed, exchange the level sensor.";
     }
     else if (RetNum == 5) {
         Text = "System Filling & Draining Test failed.<br>"\

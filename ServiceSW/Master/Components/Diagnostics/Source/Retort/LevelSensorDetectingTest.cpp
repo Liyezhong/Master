@@ -204,12 +204,12 @@ int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
     switch (StepNum) {
     case 1:
         Text = "For this test, make sure to use only fresh cleaning "
-                "alcohol in bottle 13. If necessary exchange it";
+                "alcohol in bottle 13. If necessary exchange it.";
         break;
     case 2:
         Text = "Make sure the retort is empty and dry. (If not, use "
                 "the 'Diagnostic_Retort_Drain Reagent' function first). "
-                "Then close the lid and rotate the handle to the closed position";
+                "Then close the lid and rotate the handle to the closed position.";
         break;
     case 3:
         Text = "Please open the retort lid and confirm liquid level; Does the "
@@ -232,17 +232,17 @@ void CLevelSensorDetectingTest::ShowFinishDlg(int RetNum)
     case 1:
         Text = "Retort Level Sensor Heating Test failed.<br> "
                 "Target temperature was not reached in time . Clean level sensor, "
-                "repeat this test. If still failed , exchange the level sensor";
+                "repeat this test. If still failed , exchange the level sensor.";
         break;
     case 2:
         Text = " Retort Level Sensor Detection Test failed.<br> "
-                "Clean level sensor, repeat this test. If still failed, exchange the level senor";
+                "Clean level sensor, repeat this test. If still failed, exchange the level senor.";
         break;
     case 3:
         Text = " Retort Level Sensor Detection Test failed.<br> "
                 "Liquid level did not reach the sensor. Check for insufficient "
                 "reagent level in bottle. Check for blockage reagent line. "
-                "Check for air leakage. Resolve the problem and repeat level sensor detection test ";
+                "Check for air leakage. Resolve the problem and repeat level sensor detection test.";
         break;
     case 4:
         Text = "Level sensor detection test successful.";
