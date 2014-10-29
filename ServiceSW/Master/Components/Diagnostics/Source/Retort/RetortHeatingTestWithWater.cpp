@@ -240,6 +240,7 @@ int CHeatingTestWithWater::Run(void)
     (void)inputDialog.exec();
     inputDialog.getEdit(tempExternal);
 
+    (void)dev->RetortStopHeating();
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->RVMovePosition(true, 13);
