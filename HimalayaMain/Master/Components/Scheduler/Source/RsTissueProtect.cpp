@@ -266,8 +266,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else if (1 == m_MoveToTubeSeq)
         {
-            RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
-            if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            if( mp_SchedulerController->IsRVRightPosition(TUBE_POS) )
             {
                 m_MoveToTubeSeq = 0;
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Tube state, move to tube success");
@@ -287,8 +286,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else if (2 == m_MoveToTubeSeq)
         {
-            RVPosition_t targetPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
-            if (targetPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            if( mp_SchedulerController->IsRVRightPosition(INITIALIZE_POS) )
             {
                 this->OnMoveToTube();
                 m_MoveToTubeSeq = 0; //rollback to move to tube
@@ -419,8 +417,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else
         {
-            RVPosition_t sealPos = mp_SchedulerController->GetRVSealPositionByStationID(m_StationID);
-            if (sealPos == mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            if( mp_SchedulerController->IsRVRightPosition(SEAL_POS) )
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal passed");
                 emit ReleasePressure();
@@ -444,7 +441,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
             }
-            mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
+            //mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
             emit TasksDone(true);
         }
         else
@@ -595,6 +592,7 @@ void CRsTissueProtect::OnMoveToTube()
     {
         return;
     }
+    mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
     RVPosition_t RVPos = mp_SchedulerController->GetRVTubePositionByStationID(m_StationID);
     mp_SchedulerController->LogDebug(QString("In OnMoveToTube, tube position is %1").arg(RVPos));
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerController);

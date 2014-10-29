@@ -3536,6 +3536,7 @@ void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID
     cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
+    m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, StationID, true, true, false));
     Q_ASSERT(commandPtr);
