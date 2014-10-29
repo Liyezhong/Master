@@ -554,6 +554,29 @@ public:
         m_EventLogFileName = FileName;
     }
 
+    /****************************************************************************/
+    /**
+     * \brief Sets the remote care request.
+     *
+     * \iparam       Flag    Flag for remote care request
+     *
+     */
+    /****************************************************************************/
+    void SetRemoteCareRequest(bool Flag) {
+        m_RemoteCareRequest = Flag;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Set the list of CSV file to import the package.
+     *
+     * \iparam       FileList    List of files
+     */
+    /****************************************************************************/
+    void SetCSVFileList(QStringList FileList) {
+//        m_CSVFileList = FileList;
+    }
+
 signals:
     /****************************************************************************/
     /**

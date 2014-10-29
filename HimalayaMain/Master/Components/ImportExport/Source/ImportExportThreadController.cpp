@@ -242,7 +242,6 @@ void ImportExportThreadController::OnGoReceived() {
         m_ThreadInitialized = true;
         CreateRequiredDirectories();
 
-
         if (!m_CommandName.contains(COMMAND_NAME_IMPORT)) {
             bool ErrorInThreadExecution = true;
             // write the files in settings directory
@@ -1482,6 +1481,11 @@ bool ImportExportThreadController::MountDevice(bool IsImport, QString FileExtens
     QString FileName("");
     if (IsImport) {
         FileName = m_DeviceName + DELIMITER_STRING_UNDERSCORE + FileExtensionName;
+    }
+
+    // for the remote care export we need not require to Mount the device
+    if (!IsImport && m_RemoteCareRequest) {
+        return true;
     }
 
     // check for the file existence in the mounted device.

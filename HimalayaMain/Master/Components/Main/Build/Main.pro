@@ -31,6 +31,7 @@ PLATFORM_COMPONENTS = DataLogging \
                       EncryptionDecryption \
                       Threads \
                       PasswordManager \
+#                      GPIOManager \
                       RemoteCareController \
                       HeartBeatManager \
                       RemoteCareManager \

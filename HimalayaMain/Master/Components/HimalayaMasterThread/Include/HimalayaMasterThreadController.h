@@ -137,6 +137,7 @@ private:
     bool                            m_ExportProcessIsFinished;              ///< Store export process flag value
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value
     bool                            m_RemoteCareExportRequest;              ///< Request received from export
+    bool                            m_RemoteCareExportRequestInitiated;     //!< Request received from export and initiated
 
     bool m_Simulation;  ///<  Enable/disable simulation thread controller. \todo Remove later
     ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
@@ -202,7 +203,7 @@ private:
                         Threads::CommandChannel &AckCommandChannel) {
         if (!m_ImportExportThreadIsRunning) {
 
-            if (m_RemoteCareExportRequest) {
+            if (!m_RemoteCareExportRequest) {
                 // check the current user action state
                 if (m_CurrentUserActionState != NORMAL_USER_ACTION_STATE) {
                     SendImportExportAckNOK(Ref, AckCommandChannel, CommandData::NAME);
@@ -216,6 +217,7 @@ private:
                     m_CurrentUserActionState = EXPORT_STATE;
                 }                
             }
+            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE, Global::FmtArgs() << "Import/Export is started");
 
             // save the command channel, so that once the work is completed then ack can be sent to the same channel
             mp_ImportExportAckChannel = &AckCommandChannel;
@@ -223,8 +225,6 @@ private:
             // store the command reference so that once Export process is finished then
             // this reference need to be sent to the acknowledgement channel
             m_ImportExportCommandRef = Ref;
-
-
             m_ImportExportThreadIsRunning = true;
 
             // create and connect scheduler controller
@@ -232,12 +232,22 @@ private:
                     = new ImportExport::ImportExportThreadController(Threads::THREAD_ID_IMPORTEXPORT, *mp_DataManager,
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
-            p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
+
+            p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName() + GetSerialNumber());
+            p_ImportExportThreadController->SetRemoteCareRequest(m_RemoteCareExportRequest);
+
+            // All CSV files are saved in settings folder
+            p_ImportExportThreadController->SetCSVFileList(GetEventStringFileList().
+                                                           replaceInStrings(Global::SystemPaths::Instance().
+                                                                            GetSettingsPath() + QDir::separator(), ""));
+            m_RemoteCareExportRequestInitiated = m_RemoteCareExportRequest;
 
             RegisterImportExportSignalAndSlots(p_ImportExportThreadController, CommandData::NAME);
         } else {
             // send negative acknowledge
-            SendAcknowledgeNOK(Ref, AckCommandChannel, "Thread is already running");
+            SendAcknowledgeNOK(Ref, AckCommandChannel,
+                               Global::UITranslator::TranslatorInstance().
+                               Translate(Global::TranslatableString(EVENT_IMPORTEXPORT_THREADRUNNING), true));
         }
     }
     /****************************************************************************/
@@ -824,38 +834,40 @@ private slots:
                 CONNECTSIGNALSLOT(this,
                                   DayRunLogDirectoryName(const QString &), p_ImportExportThreadController,
                                   SetDayRunLogFilesDirectoryName(const QString &));
-
-//                // connect the siganl slot mechanism to set directory name.
-//                CONNECTSIGNALSIGNAL(p_ImportExportThreadController,
-//                                    Export(QString), this, RemoteCareExportFinished(QString));
             }
 
             // connect the siganl slot mechanism to create the containers for the Import.
             CONNECTSIGNALSLOT(p_ImportExportThreadController,
                               ThreadFinished(const bool, QStringList, quint32, bool, bool), this,
                               ImportExportThreadFinished(const bool, QStringList , quint32, bool, bool));
-        }
-        catch (...){
-            m_ImportExportThreadIsRunning = false;
-            if (m_RemoteCareExportRequest) {
-                SendImportExportAckNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel,
-                                       Global::UITranslator::TranslatorInstance().Translate(Global::TranslatableString(EVENT_IMPORTEXPORT_SIGNALSLOTERROR), true));
 
-                m_CurrentUserActionState = NORMAL_USER_ACTION_STATE;
-            }
-            else {
-                m_RemoteCareExportRequest = false;
-                // emit a siganl with empty string
-                emit RemoteCareExportFinished("");
-            }
+            //ImportExportThreadController->setDataContainer(&mp_DataManager);
+            AddAndConnectController(p_ImportExportThreadController, &m_CommandChannelImportExport,
+                                    Threads::THREAD_ID_IMPORTEXPORT);
+            // start the export process
+            StartSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
+
             return;
         }
+        CATCHALL();
 
-        //ImportExportThreadController->setDataContainer(&mp_DataManager);
-        AddAndConnectController(p_ImportExportThreadController, &m_CommandChannelImportExport,
-                                Threads::THREAD_ID_IMPORTEXPORT);
-        // start the export process
-        StartSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
+        m_ImportExportThreadIsRunning = false;
+        if (!m_RemoteCareExportRequest) {
+            if (CommandName.contains("Import")) {
+                SendImportExportAckNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel,
+                                       Global::UITranslator::TranslatorInstance().Translate(Global::TranslatableString(EVENT_IMPORT_FAILED), true));
+            }
+            else {
+                SendImportExportAckNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel,
+                                       Global::UITranslator::TranslatorInstance().Translate(Global::TranslatableString(Global::EVENT_EXPORT_FAILED), true));
+            }
+
+            SetUserActionState(NORMAL_USER_ACTION_STATE);
+        }
+        else {
+            m_RemoteCareExportRequest = false;
+            m_RemoteCareExportRequestInitiated = false;
+        }
     }
 
 }; // end class HimalayaMasterThreadController

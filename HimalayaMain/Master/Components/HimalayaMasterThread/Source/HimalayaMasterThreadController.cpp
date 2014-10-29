@@ -115,6 +115,7 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
     m_RemoteCareExportRequest(false),
+    m_RemoteCareExportRequestInitiated(false),
  // m_Simulation(true),
     m_Simulation(false),
     m_ProgramStartableManager(this),
@@ -668,13 +669,20 @@ void HimalayaMasterThreadController::SendStateChange(QString state) {
 /****************************************************************************/
 void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, int ExitCode) {
     Q_UNUSED(Name)
+
     // first clear the process
     StopSpecificThreadController(Threads::THREAD_ID_EXPORT);
     // second clear the thread
+
     StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS) {
         // raise the event code
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
+
+        if (m_RemoteCareExportRequestInitiated) {
+            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE, Global::FmtArgs() << "Send signal to RemoteCareController");
+            emit RemoteCareExportFinished("");
+        }
         // send acknowledgement to GUI
         /*lint -e613 */
         SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
@@ -777,10 +785,11 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
     }
 
     m_ExportProcessIsFinished = true;
-    // enable the timer slot to destroy the objects after one second
+    if (!m_RemoteCareExportRequestInitiated) {
+        SetUserActionState(NORMAL_USER_ACTION_STATE);
+    }
+    m_RemoteCareExportRequestInitiated = false;
     RemoveAndDestroyObjects();
-//    QTimer::singleShot(1000, this, SLOT(RemoveAndDestroyObjects()));
-
 }
 
 /****************************************************************************/
@@ -857,10 +866,10 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
                         // remove the DE
                         LanguageName.truncate(LanguageName.lastIndexOf('_'));
 
-                        QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
-                        if (!SendLanguageFileToGUI(LanguageFileName)) {
-                            /// need to inform the event handler
-                        }
+//                        QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
+//                        if (!SendLanguageFiExportleToGUI(LanguageFileName)) {
+//                            /// need to inform the event handler
+//                        }
                     }
                 }
             }
@@ -883,6 +892,13 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
+
+    if (!m_RemoteCareExportRequestInitiated) {
+        SetUserActionState(NORMAL_USER_ACTION_STATE);
+    }
+
+    m_RemoteCareExportRequestInitiated = false;
+
     // clear the thread
     StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     // enable the timer slot to destroy the objects after one second
@@ -1301,6 +1317,7 @@ void HimalayaMasterThreadController::RemoteCareExportData(const quint8 &NoOfLogF
     // create dummy channel because "ImportExportDataFileHandler" function uses these arguments
     Threads::CommandChannel DummyChannel(this, "Dummy", Global::EVENTSOURCE_NONE);
     ImportExportDataFileHandler(0, *p_Command, DummyChannel);
+    m_RemoteCareExportRequest = false;
     // delete the created command
     delete p_Command;
 }
