@@ -120,7 +120,6 @@ void CLiquidHoseTestDlg::RunTest()
         (void)p_DevProc->RVMovePosition(false, BottleNumber);
     }
 
-
     QString Text = "Releasing pressure...";
     if (m_Abort) {
         mp_MessageDlg->ShowWaitingDialog(MsgTitle, Text);
@@ -149,7 +148,6 @@ void CLiquidHoseTestDlg::RunTest()
                 "Target pressure could not be reached. Please "
                 "perform System Sealing Test to diagnose the reason. Then repeat this test.";
         mp_MessageDlg->ShowMessage(MsgTitle, Text, RETURN_ERR_FAIL);
-
     }
 
     (void)this->exec();
