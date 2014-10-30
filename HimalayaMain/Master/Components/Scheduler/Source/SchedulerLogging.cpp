@@ -36,7 +36,7 @@ SchedulerLogging::~SchedulerLogging(){}
 
 
 
-void SchedulerLogging::InitLog(QString serialNumber, QString SWVersion)
+void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVersion)
 {
     m_serialNumber = serialNumber;
     m_SWVersion = SWVersion;
@@ -53,7 +53,7 @@ void SchedulerLogging::InitLog(QString serialNumber, QString SWVersion)
 }
 
 
-void SchedulerLogging::logSensorData(QString message)
+void SchedulerLogging::logSensorData(const QString& message)
 {
     if (mp_DayEventLogger) {
         mp_DayEventLogger->CheckNewFile();

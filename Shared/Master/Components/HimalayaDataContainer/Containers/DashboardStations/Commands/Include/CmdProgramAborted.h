@@ -61,12 +61,12 @@ public:
      *  \return from AcknownedgeType
      */
     /****************************************************************************/
-    inline bool IsRetortContaminated() const {return m_IsRetortContaminated;}
+    bool IsRetortContaminated() const {return m_IsRetortContaminated;}
  private:
     CmdProgramAborted(const CmdProgramAborted &);                     ///< Not implemented.
     const CmdProgramAborted & operator = (const CmdProgramAborted &); ///< Not implemented.
 private:
-    bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
+    bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
     
 }; // end class CmdProgramAborted
 

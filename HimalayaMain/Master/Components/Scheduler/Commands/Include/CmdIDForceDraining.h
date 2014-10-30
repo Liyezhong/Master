@@ -147,12 +147,12 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetDrainIsMoveRV
      *
-     *  \param flag - bool
+     *  \param ReagentGrpID - reagent group ID
      *
      *  \return from SetDrainPressure
      */
     /****************************************************************************/
-    void SetReagentGrpID(QString ReagentGrpID){m_ReagentGrpID = ReagentGrpID;}
+    void SetReagentGrpID(const QString& ReagentGrpID){m_ReagentGrpID = ReagentGrpID;}
 
 private:
     CmdIDForceDraining();                                                    ///< Not implemented.

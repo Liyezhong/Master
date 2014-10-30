@@ -56,20 +56,23 @@ public:
 
     /****************************************************************************/
     /**
-     * \brief Initializes logging process
-     * \brief serialNumber the serial number of Instrument
+     * \brief   Initializes logging process
+     *
+     * \param   serialNumber - the serial number of Instrument
+     * \param   SWVersion - software version
      */
     /****************************************************************************/
-    void InitLog(QString serialNumber,QString SWVersion);
+    void InitLog(const QString& serialNumber,const QString& SWVersion);
 
     /****************************************************************************/
     /**
      * \brief log sensor data
+     *
      * \param message string of sensor value.
      *
      */
     /****************************************************************************/
-    void logSensorData(QString message);
+    void logSensorData(const QString& message);
 
 
 private:
