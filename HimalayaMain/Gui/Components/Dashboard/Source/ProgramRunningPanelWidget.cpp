@@ -91,8 +91,7 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
    ui->lblReagentName->setVisible(true);
    if (DataManager::PROGRAM_ABORT == ProgramActionType)
    {
-        ui->lblReagentName->setVisible(false);
-        ui->reagentLabel->setText(m_strAborting);//only show the first label
+        ui->lblReagentName->setText(m_strAborting);//only show the first label
 
         ui->lblStepTime->setVisible(false);
         ui->stepTimeLabel->setVisible(false);
@@ -103,7 +102,6 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
    else if (DataManager::PROGRAM_START == ProgramActionType)
    {
        m_isAborting = false;
-       ui->reagentLabel->setText(QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Reagent:", 0, QApplication::UnicodeUTF8));
    }
 }
 
