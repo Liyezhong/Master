@@ -708,7 +708,7 @@
    		<string id="67175217" text1="Finished Program %1." text2="" />
    		<string id="67175218" text1="Start the dry processing." text2="" />
    		<string id="67175219" text1="Finished the dry processing." text2="" />
-        <string id="67175424" text1="Prechecking" text2=""/>
-        <string id="67175425" text1="Dry processing" text2=""/>
+        <string id="67175424" text1="prechecking" text2=""/>
+        <string id="67175425" text1="drying process" text2=""/>
 	</language>
 </strings>
