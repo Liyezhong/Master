@@ -504,7 +504,7 @@ void HimalayaMasterThreadController::SendXML() {
     if (!mp_DataManager)
         return;
 
-    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(6000, false)), m_CommandChannelGui);
 
     QByteArray *p_ByteArray = new QByteArray();
     p_ByteArray->clear();
@@ -518,7 +518,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDashboardDataStationList *p_StationList = mp_DataManager->GetStationList();
     if (p_StationList) {
         XmlStream << *p_StationList;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
     }
 
     // send reagent group list in xml ---------------------------------
@@ -527,7 +527,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentGroupList *p_ReagentGroupList = mp_DataManager->GetReagentGroupList() ;
     if (p_ReagentGroupList) {
         XmlStream << *p_ReagentGroupList;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -535,7 +535,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentList *p_ReagentList = mp_DataManager->GetReagentList() ;
     if (p_ReagentList) {
         XmlStream << *p_ReagentList;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -544,7 +544,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CReagentGroupColorList *p_ReagentGroupColorList = mp_DataManager->GetReagentGroupColorList() ;
     if (p_ReagentGroupColorList) {
         XmlStream << *p_ReagentGroupColorList;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -552,7 +552,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
     if (p_SettingsInterface) {
         XmlStream << *p_SettingsInterface;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -562,7 +562,7 @@ void HimalayaMasterThreadController::SendXML() {
 
        if (p_ProgramList) {
            XmlStream << *p_ProgramList;
-           (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
+           (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
        }
 
     if (p_SettingsInterface) {
@@ -590,7 +590,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigurationInterface ) {
         XmlStream << *p_DeviceConfigurationInterface;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
     }
 
     QByteArray EventData;
@@ -957,7 +957,7 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
                     QDataStream LangDataStream(&File);
                     LangDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
                     // send the command to GUI
-                    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream,CurrentLanguage)),
+                    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(10000, LangDataStream,CurrentLanguage)),
                                 m_CommandChannelGui);
                 }
             }

@@ -239,7 +239,7 @@ void ProgramStartableManager::UpdateGUI() const {
     if (mp_HimalayaMasterThreadController) {
         ProgramSequeneStream << *mp_ProgramSequenceList;
         mp_ProgramSequenceList->Write();
-        mp_HimalayaMasterThreadController->SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM_SEQUENCE , ProgramSequeneStream)),
+        mp_HimalayaMasterThreadController->SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(10000, NetCommands::PROGRAM_SEQUENCE , ProgramSequeneStream)),
                                                        mp_HimalayaMasterThreadController->GetCommandChannel(Himalaya::GUI));
     }
 */
