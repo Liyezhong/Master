@@ -147,8 +147,6 @@ void CUserPrivilegeWidget::OnBtnUserClicked()
 
     m_UserLevel = MainMenu::CMainWindow::Operator;
     if (mp_MainWindow) {
-        mp_MainWindow->SetUserRole(m_UserLevel);
-        mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Operator);
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_USER_ACTIVITY_OPERATOR_LOGIN);
 
         // set user role to be operator.
