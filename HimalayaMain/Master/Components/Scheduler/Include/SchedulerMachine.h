@@ -759,7 +759,7 @@ public:
      *  \param retCode - return code
      */
     /****************************************************************************/
-    void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode); 
+    void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!

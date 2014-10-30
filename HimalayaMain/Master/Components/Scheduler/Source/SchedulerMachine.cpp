@@ -142,6 +142,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // Sate machines for Run handling
     mp_ProgramPreTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
+    CONNECTSIGNALSLOT(this, sigAbort(), mp_ProgramPreTest.data(), OnRecvAbort());
 
     // Run Handling related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
@@ -158,6 +159,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumePssmAborting()), mp_PssmAborting.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
+    mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksAborted()), mp_PssmAborted.data());
 
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), exited(), mp_SchedulerThreadController, OnPreTestDone());
@@ -203,7 +205,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmPause->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborting.data());
 
     mp_PssmInitState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
-    mp_PssmPreTestState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
+    //mp_PssmPreTestState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());
     mp_PssmAborting->addTransition(this, SIGNAL(sigAbort()), mp_PssmAborted.data());

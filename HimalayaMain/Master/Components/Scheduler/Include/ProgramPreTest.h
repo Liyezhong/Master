@@ -23,6 +23,7 @@
 #include <QStateMachine>
 #include <QSharedPointer>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Scheduler/Include/SchedulerStateMachineStates.h"
 
 namespace Scheduler{
 
@@ -74,6 +75,15 @@ public:
      */
     /****************************************************************************/
     void ResetVarList();
+
+public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for receiving ABORT control command
+     *
+     */
+    /****************************************************************************/
+    void OnRecvAbort() { m_IsAbortRecv = true; }
 
 signals:
 
@@ -161,11 +171,19 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal for tasks done
+     *  \brief signal for moving to tube when current program is cleaning program
      *
      */
     /****************************************************************************/
     void CleaningMoveToTube();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to indicate that tasks were aborted
+     *
+     */
+    /****************************************************************************/
+    void TasksAborted();
 
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
@@ -211,7 +229,8 @@ private:
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
     quint32 m_BottleSeq;                                            //!< Sequence of the bottle
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
-    quint8  m_IsLoged;                                              //!< Wether loged
+    quint8  m_IsLoged;                                              //!< Whether loged
+    bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received
 private:
     /****************************************************************************/
     /*!

@@ -80,6 +80,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
+    m_IsAbortRecv = false;
 }
 
 CProgramPreTest::~CProgramPreTest()
@@ -151,6 +152,18 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     memset(&reportError3, 0, sizeof(reportError3));
     ReportError_t reportError4;
     memset(&reportError4, 0, sizeof(reportError4));
+
+    //Firstly, we need check if CTRL_CMD_ABORT has been received
+    if (m_IsAbortRecv)
+    {
+        if (PRETEST_INIT == currentState || RT_TEMCTRL_ON == currentState
+                || TEMPSENSORS_CHECKING == currentState || WAIT3S_RT_CURRENT == currentState
+                || RT_TEMCTRL_OFF == currentState || PRESSURE_CALIBRATION == currentState)
+        {
+            emit TasksAborted();
+            return;
+        }
+    }
 
 	switch (currentState)
     {
@@ -276,6 +289,12 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         {
             if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
             {
+                if (m_IsAbortRecv)
+                {
+                    m_RVPositioinChkSeq = 0;
+                    emit TasksAborted();
+                    break;
+                }
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_RVPositioinChkSeq = 0;
@@ -369,6 +388,12 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         {
             if ("Scheduler::IDSealingCheck" == cmdName)
             {
+                if (m_IsAbortRecv)
+                {
+                    m_PressureSealingChkSeq = 0;
+                    emit TasksAborted();
+                    break;
+                }
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST_SUCCESS);
@@ -400,7 +425,15 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 m_IsLoged = 0;
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
                 m_BottleSeq = 0; //reset
-                emit MoveToTube();
+                if (m_IsAbortRecv)
+                {
+                    emit TasksAborted();
+                    break;
+                }
+                else
+                {
+                    emit MoveToTube();
+                }
             }
         }
         else // Wait for command response
@@ -411,7 +444,15 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 {
                     m_BottleSeq = 0; //reset
                     m_BottleChkFlag = true; //reset
-                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                    if (m_IsAbortRecv)
+                    {
+                        emit TasksAborted();
+                        break;
+                    }
+                    else
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                    }
                 }
                 else
                 {
@@ -432,6 +473,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRETEST_SUCCESS);
 			m_MoveToTubeSeq = 0;
+            if (m_IsAbortRecv)
+            {
+                emit TasksAborted();
+                break;
+            }
             emit TasksDone();
         }
         else
@@ -440,6 +486,11 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
+                    if (m_IsAbortRecv)
+                    {
+                        emit TasksAborted();
+                        break;
+                    }
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
@@ -465,6 +516,7 @@ void CProgramPreTest::ResetVarList()
     m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
+    m_IsAbortRecv = false;
 }
 
 }
