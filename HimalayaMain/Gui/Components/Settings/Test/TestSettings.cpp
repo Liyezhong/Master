@@ -342,7 +342,7 @@ void CTestSettings::utTestSettingsWidget() {
     sysSetupWgt->showEvent(new QShowEvent);
     sysSetupWgt->OnProcessStateChanged();
     sysSetupWgt->OnUserRoleChanged();
-    sysSetupWgt->OnApply();
+    //sysSetupWgt->OnApply();
     DataManager::CUserSettings us8;
     sysSetupWgt->TemperatureChanged(us8);
     delete sysSetupWgt;
