@@ -680,6 +680,12 @@
    		<string id="67174998" text1="Start rotary valve heating in scenario:%1,the target temperature:%2." text2="" />
    		<string id="67174999" text1="Start LA system(%1) heating in scenario:%2,the target temperature:%3." text2="" />
    		<string id="67175168" text1="Detect an unfinished program %1 at step %2." text2="" />
+   		<string id="67175169" text1="Reheating for 200 and 260 step." text2="" />
+   		<string id="67175170" text1="Reheating for reagent step." text2="" />
+   		<string id="67175171" text1="Reheating for paraffin step." text2="" />
+   		<string id="67175172" text1="Power failure back to sensor 281." text2="" />
+   		<string id="67175173" text1="Power failure back to sensor 291." text2="" />
+   		<string id="67175174" text1="Power failure back to RC_restart." text2="" />
    		<string id="67175184" text1="Scheduler enters the idle state." text2="" />
    		<string id="67175185" text1="Scheduler enters the error state." text2="" />
    		<string id="67175200" text1="start the program %1" text2="" />

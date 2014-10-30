@@ -1986,6 +1986,13 @@ bool HeatingStrategy::CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor)
      return true;
     }
 
+    if(!isEffectiveTemp(strctHWMonitor.TempRTSide) || !isEffectiveTemp(strctHWMonitor.TempRTBottom1) || !isEffectiveTemp(strctHWMonitor.TempRTBottom2)
+            || !isEffectiveTemp(strctHWMonitor.TempOvenTop) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom1) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom2)
+            || !isEffectiveTemp(strctHWMonitor.TempRV2) || !isEffectiveTemp(strctHWMonitor.TempALTube1) )
+    {
+        return false;
+    }
+
     return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
          &&(strctHWMonitor.TempRTBottom2>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenTop>=userInputMeltingPoint)
          &&(strctHWMonitor.TempOvenBottom1>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenBottom2>=userInputMeltingPoint)

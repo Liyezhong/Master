@@ -22,6 +22,7 @@
 #include "Global/Include/Utils.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
+#include "Scheduler/Include/SchedulerEventCodes.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
@@ -107,19 +108,27 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
         case INIT_STATE:
             if(200 == m_LastScenario || 260 == m_LastScenario)
             {
-                mp_SchedulerThreadController->LogDebug("reheating for 200 and 260 step");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
             }
             else if(211 <= m_LastScenario && m_LastScenario <= 257)
             {
-                mp_SchedulerThreadController->LogDebug("reheating for reagent step");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
             }
             else if(271 <= m_LastScenario && m_LastScenario <= 277)
             {
-                mp_SchedulerThreadController->LogDebug("reheating for paraffin step");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP);
             }
-            else
+            else if(281 <= m_LastScenario && m_LastScenario <= 287)
             {
-                mp_SchedulerThreadController->LogDebug("reheating for cleaning program step");
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_281);
+            }
+            else if(291 <= m_LastScenario && m_LastScenario <= 297)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_291);
+            }
+            else if(203 == m_LastScenario)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP);
             }
             emit SigTemperatureControlOn();
         case START_TEMPERATURE:
@@ -208,11 +217,19 @@ bool CRcReHeating::StartHeatingSensor()
 
 void CRcReHeating::CheckTheTemperature()
 {
+    qreal tmperature = 0.0;
+
     if(200 == m_LastScenario || 260 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257)
            || 203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
     {
         //for normal program and cleaning program
-        if(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2 > RV_SENSOR2_TEMP)
+        tmperature = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2;
+        if(!mp_SchedulerThreadController->GetHeatingStrategy()->isEffectiveTemp(tmperature))
+        {
+            emit TasksDone(false);
+            return;
+        }
+        if(tmperature > RV_SENSOR2_TEMP)
         {
             emit SigGetRVPosition();
         }
@@ -232,6 +249,10 @@ void CRcReHeating::CheckTheTemperature()
             if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
             {
                 emit SigGetRVPosition();
+            }
+            else
+            {
+                emit TasksDone(false);
             }
         }
         else

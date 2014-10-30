@@ -140,6 +140,13 @@ const quint32 EVENT_SCHEDULER_HEATING_LA = SCHEDULER_BASE_ID + 0x257; ///< Start
 // running program
 // 1. Power failudre
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP = SCHEDULER_BASE_ID + 0x0301; ///< Reheating for 200 and 260 step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP = SCHEDULER_BASE_ID + 0x0302; ///< Reheating for reagent step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP = SCHEDULER_BASE_ID + 0x0303; ///< Reheating for paraffin step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_281 = SCHEDULER_BASE_ID + 0x0304; ///< Power failure back to sensor 281.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_291 = SCHEDULER_BASE_ID + 0x0305; ///< Power failure back to sensor 291.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP = SCHEDULER_BASE_ID + 0x0306; ///< Power failure back to RC_restart.
+
 // 2. IDLE state
 const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Scheduler enters the idle state.
 const quint32 EVENT_SCHEDULER_IN_ERROR_STATE = SCHEDULER_BASE_ID + 0x0311; ///< Scheduler enters the Error state.
