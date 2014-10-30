@@ -118,13 +118,13 @@ int CMainsRelayTest::Run(void)
                 return RETURN_OK;
             }
             else {
-                ShowFailMessage(2);
+                ShowFailMessage(1);
                 return RETURN_ERR_FAIL;
             }
         }
         else {
             ShowWaitingMessage(false);
-            ShowFailMessage(1);
+            ShowFailMessage(2);
             return RETURN_ERR_FAIL;
         }
     }
