@@ -39,11 +39,13 @@ int CVentilationFanTest::Run(void)
 {
     qDebug() << "Ventilation fan Test starts!";
 
+    ErrorCode_t RetCode = RETURN_ERR_FAIL;
     int Ret = ShowConfirmDlg(1);
     int RetNum = 1;
 
     if (Ret == 1) {
         RetNum = 3;
+        RetCode = RETURN_OK;
     }
     else {
         Ret = ShowConfirmDlg(2);
@@ -54,7 +56,7 @@ int CVentilationFanTest::Run(void)
 
     ShowFinishDlg(RetNum);
 
-    return RETURN_OK;
+    return RetCode;
 }
 
 int CVentilationFanTest::ShowConfirmDlg(int StepNum)

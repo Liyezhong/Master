@@ -55,11 +55,17 @@ CRotaryValve::~CRotaryValve()
 
 void CRotaryValve::StartMovementTest(void)
 {
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST);
     qDebug() << "Rotary Valve: start movement test";
 
     RotaryValve::CMovementTest test(mp_MessageDlg);
-    (void)test.Run();
+
+    if (test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_FAILURE);
+    }
 }
 
 } // namespace Diagnostics

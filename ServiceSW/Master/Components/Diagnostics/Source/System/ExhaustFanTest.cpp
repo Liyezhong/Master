@@ -41,11 +41,13 @@ int CExhaustFanTest::Run(void)
 
     (void)ServiceDeviceProcess::Instance()->PumpSetFan(1);
 
+    ErrorCode_t RetCode = RETURN_ERR_FAIL;
     int Ret = ShowConfirmDlg(1);
     int RetNum = 1;
 
     if (Ret == 1) {
-        RetNum = 3;
+        RetNum  = 3;
+        RetCode = RETURN_OK;
     }
     else {
         Ret = ShowConfirmDlg(2);
@@ -57,7 +59,8 @@ int CExhaustFanTest::Run(void)
     (void)ServiceDeviceProcess::Instance()->PumpSetFan(0);
     ShowFinishDlg(RetNum);
 
-    return RETURN_OK;
+
+    return RetCode;
 }
 
 int CExhaustFanTest::ShowConfirmDlg(int StepNum)

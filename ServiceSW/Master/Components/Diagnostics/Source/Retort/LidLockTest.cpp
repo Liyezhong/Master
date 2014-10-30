@@ -45,7 +45,7 @@ int CLidLockTest::Run(void)
     int Ret = ShowConfirmDlg(1);
 
     if (Ret == 0) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     qint32 LidLockState(0);
@@ -78,7 +78,11 @@ int CLidLockTest::Run(void)
 
     ShowFinishDlg(Ret);
 
-    return Ret;
+    if (Ret == 0) {
+        return RETURN_ERR_FAIL;
+    }
+
+    return RETURN_OK;
 }
 
 int CLidLockTest::ShowConfirmDlg(int StepNum)

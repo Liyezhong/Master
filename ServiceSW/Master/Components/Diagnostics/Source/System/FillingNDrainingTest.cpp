@@ -49,7 +49,7 @@ int CFillingNDrainingTest::Run(void)
     int Ret = 0;
 
     if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     qreal RVTempSensor1(0);
@@ -64,7 +64,7 @@ int CFillingNDrainingTest::Run(void)
 
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     QString Text = "Rotary valve is initializing...";
@@ -73,7 +73,7 @@ int CFillingNDrainingTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
     if (Ret != RETURN_OK) {
         ShowFinishDlg(2);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(13, mp_Parent);
@@ -81,7 +81,7 @@ int CFillingNDrainingTest::Run(void)
 
     if ( p_SelectDlg->exec() == 0) {
         delete p_SelectDlg;
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     int ReagentGroup = p_SelectDlg->GetOption();
@@ -98,7 +98,7 @@ int CFillingNDrainingTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
     if (Ret != RETURN_OK) {
         ShowFinishDlg(3);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(mp_Parent);
@@ -108,14 +108,14 @@ int CFillingNDrainingTest::Run(void)
 
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     delete p_HeatingDlg;
 
     if (!HeatingRet) {
         ShowFinishDlg(4);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
@@ -131,7 +131,7 @@ int CFillingNDrainingTest::Run(void)
         (void)p_DevProc->PumpDraining(0);
         mp_MessageDlg->HideWaitingDialog();
         ShowFinishDlg(5);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber);
@@ -158,7 +158,7 @@ int CFillingNDrainingTest::Run(void)
 
     mp_MessageDlg->ShowMessage(FILLINGNDRAINING_TITLE, Text, RETURN_OK);
 
-    return Ret;
+    return RETURN_OK;
 }
 
 int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)

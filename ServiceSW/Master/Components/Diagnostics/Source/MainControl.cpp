@@ -68,7 +68,12 @@ void CMainControl::StartASB3Test(void)
 
     MainControl::CASBTest Test(Slave_3, this);
 
-    (void)Test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_FAILURE);
+    }
 }
 
 void CMainControl::StartASB5Test(void)
@@ -78,7 +83,12 @@ void CMainControl::StartASB5Test(void)
 
     MainControl::CASBTest Test(Slave_5, this);
 
-    (void)Test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE);
+    }
 }
 
 void CMainControl::StartASB15Test(void)
@@ -88,7 +98,12 @@ void CMainControl::StartASB15Test(void)
 
     MainControl::CASBTest Test(Slave_15, this);
 
-    (void)Test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_FAILURE);
+    }
 }
 /****************************************************************************/
 /*!

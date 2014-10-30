@@ -60,7 +60,7 @@ int CAlarmTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
     if (!CheckStatus) {
         ShowFinishDlg(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     WaitText = QString("Please create a shortcut between pin4 and pin5 on the ") + m_AlarmFlag.toLower()
@@ -71,7 +71,7 @@ int CAlarmTest::Run(void)
 
     if (!CheckStatus) {
         ShowFinishDlg(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
@@ -81,7 +81,7 @@ int CAlarmTest::Run(void)
 
     if (Ret == 0) {
         ShowFinishDlg(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     (void)p_DevProc->AlarmSetOnOff(m_LocalRemote, false);
@@ -89,12 +89,12 @@ int CAlarmTest::Run(void)
 
     if (Ret == 0) {
         ShowFinishDlg(1);
+        return RETURN_ERR_FAIL;
     }
     else {
         ShowFinishDlg(2);
+        return RETURN_OK;
     }
-
-    return Ret;
 }
 
 bool CAlarmTest::CheckAlarmStatus(int TimeOutSec, bool ConnectedFlag)

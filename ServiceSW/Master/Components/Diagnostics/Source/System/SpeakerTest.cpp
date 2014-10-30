@@ -64,18 +64,20 @@ int CSpeakerTest::Run(void)
     int Ret = ShowConfirmDlg(1);
     if (Ret == 0) {
         ShowFinishDlg(FinishFlag);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     PlaySound(HighVolume);
     Ret = ShowConfirmDlg(2);
 
+    ErrorCode_t RetCode = RETURN_ERR_FAIL;
     if (Ret == 1) {
         FinishFlag = 2;
+        RetCode = RETURN_OK;
     }
     ShowFinishDlg(FinishFlag);
 
-    return Ret;
+    return RetCode;
 }
 
 void CSpeakerTest::PlaySound(QString& Volume)

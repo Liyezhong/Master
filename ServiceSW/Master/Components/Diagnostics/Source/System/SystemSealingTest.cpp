@@ -61,7 +61,7 @@ int CSystemSealingTest::Run(void)
 
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     QString Text = "Rotary valve is initializing...";
@@ -70,7 +70,7 @@ int CSystemSealingTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
     if (Ret != RETURN_OK) {
         ShowFinishDlg(2);
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = "Rotary Valve is moving to sealing position 1";
@@ -96,7 +96,7 @@ Create_Pressure_Test:
             ShowFinishDlg(5);
         }
 
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     p_DevProc->Pause(1000);
@@ -108,7 +108,7 @@ Create_Pressure_Test:
             TestReleasePressure();
 
             ShowFinishDlg(6);
-            return Ret;
+            return RETURN_ERR_FAIL;
         }
 
         p_DevProc->Pause(1000);
@@ -120,7 +120,7 @@ Create_Pressure_Test:
             ShowFinishDlg(4);
         }
 
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     if (TargetPressure > 0) {

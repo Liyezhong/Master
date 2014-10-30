@@ -44,7 +44,7 @@ int CLiquidHoseTest::Run(void)
 
     int Ret(0);
     if (ShowConfirmDlg(1) == 0) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     QString Text = "Please select an option and press OK to continue.";
@@ -58,7 +58,7 @@ int CLiquidHoseTest::Run(void)
 
     if (p_SelectDlg->exec() == 0) {
         delete p_SelectDlg;
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     int Option = p_SelectDlg->GetOption();
@@ -75,7 +75,7 @@ int CLiquidHoseTest::Run(void)
 
         if (p_SelectDlg->exec() == 0) {
             delete p_SelectDlg;
-            return Ret;
+            return RETURN_ERR_FAIL;
         }
 
         int BottleNum = p_SelectDlg->GetBottleNumber();
@@ -87,12 +87,17 @@ int CLiquidHoseTest::Run(void)
         }
     }
 
-    p_TestDlg->RunTest();
+    bool TestRet = p_TestDlg->RunTest();
 
     delete p_SelectDlg;
     delete p_TestDlg;
 
-    return Ret;
+    if (TestRet) {
+        return RETURN_OK;
+    }
+    else {
+        return RETURN_ERR_FAIL;
+    }
 }
 
 int CLiquidHoseTest::ShowConfirmDlg(int StepNum)

@@ -87,12 +87,17 @@ void CRetort::StartLidLockTest(void)
 
     Retort::CLidLockTest Test(mp_MessageDlg, this);
 
-    (void)Test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE);
+    }
 }
 
 void CRetort::StartDrainReagentTest(void)
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST);
     qDebug() << "Retort: start level sensor heating test";
 
     //Retort::CLevelSensorHeatingTest test;
@@ -107,7 +112,12 @@ void CRetort::StartLevelSensorDetectionTest(void)
 
     Retort::CLevelSensorDetectingTest Test(mp_MessageDlg, this);
 
-    (void)Test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE);
+    }
 }
 
 void CRetort::StartHeatingTestEmpty(void)
@@ -116,16 +126,26 @@ void CRetort::StartHeatingTestEmpty(void)
     qDebug() << "Retort: start heating test empty";
 
     Retort::CHeatingTestEmpty test(mp_MessageDlg);
-    (void)test.Run();
+    if (test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_FAILURE);
+    }
 }
 
 void CRetort::StartHeatingTestWithWater(void)
 {
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
     qDebug() << "Retort: start heating test with water";
 
     Retort::CHeatingTestWithWater test(mp_MessageDlg);
-    (void)test.Run();
+    if (test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE);
+    }
 }
 
 /****************************************************************************/

@@ -48,7 +48,7 @@ int CLevelSensorDetectingTest::Run(void)
     QString Text;
 
     if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = "Please enter the bottle number of the freshest process xylene";
@@ -59,7 +59,7 @@ int CLevelSensorDetectingTest::Run(void)
 
     if (p_SelectDlg->exec() == 0) {
         delete p_SelectDlg;
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     int BottleNumber = p_SelectDlg->GetBottleNumber();
@@ -72,7 +72,7 @@ int CLevelSensorDetectingTest::Run(void)
     TestRVMovePosition(true, BottleNumber);
 
     if (!LevelSensorHeating(true)) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
@@ -81,13 +81,13 @@ int CLevelSensorDetectingTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
 
     if (!TestDraining(SuckRet, BottleNumber)) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     TestRVMovePosition(true, 13);
 
     if (!LevelSensorHeating(false)) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     Text = QString("Filling retort from the bottle 13 cleaning alcohol.");
@@ -96,14 +96,14 @@ int CLevelSensorDetectingTest::Run(void)
     mp_MessageDlg->HideWaitingDialog();
 
     if (!TestDraining(SuckRet, 13)) {
-        return Ret;
+        return RETURN_ERR_FAIL;
     }
 
     TestRVInitialize();
 
     ShowFinishDlg(4);
 
-    return Ret;
+    return RETURN_OK;
 }
 
 void CLevelSensorDetectingTest::TestRVInitialize()

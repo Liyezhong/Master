@@ -61,7 +61,7 @@ CLiquidHoseTestDlg::~CLiquidHoseTestDlg()
     catch (...) {}
 }
 
-void CLiquidHoseTestDlg::RunTest()
+bool CLiquidHoseTestDlg::RunTest()
 {
     int BottleNumber;
     bool CreatePressureRet = true;
@@ -138,7 +138,7 @@ void CLiquidHoseTestDlg::RunTest()
 
     if (m_Abort) {
         mp_MessageDlg->HideWaitingDialog();
-        return;
+        return false;
     }
 
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
@@ -151,6 +151,8 @@ void CLiquidHoseTestDlg::RunTest()
     }
 
     (void)this->exec();
+
+    return CreatePressureRet;
 }
 
 void CLiquidHoseTestDlg::AddBottleNumber(int BottleNumber)
