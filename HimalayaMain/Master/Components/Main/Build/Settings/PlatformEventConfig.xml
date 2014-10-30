@@ -226,7 +226,7 @@
 		<Event Code="" ErrorID="17236008" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_XML_READ_FAILED" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17236008" ButtonType="" StatusBar="No"/>
 		</Event>
-		<Event Code="" ErrorID="17760274" ErrorType="info" AlarmType="No" Name="EVENT_DM_SETTINGS_UPDATE_FAILED" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17760274" ErrorType="Info" AlarmType="No" Name="EVENT_DM_SETTINGS_UPDATE_FAILED" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17760274" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235985" ErrorType="Info" AlarmType="No" Name="EVENT_DM_SETTINGS_VERIFICATION_FAILED" LogLevel="Low" UserLog="FALSE">
@@ -1137,6 +1137,9 @@
 		</Event>
 		<Event Code="" ErrorID="19333643" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_SUBMITEVENT_POST" LogLevel="High" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19333643" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333720" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_CONNECTED_ENTERPRISE_SERVE" LogLevel="Low" UserLog="FALSE">
+			<Step ID="0" Type="MSG" StringID="19333720" ButtonType="" StatusBar=""/>
 		</Event>
 
 

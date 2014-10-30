@@ -579,6 +579,7 @@
         <string id="19333641" text1="Upload of the file failed" text2=""/>
         <string id="19333642" text1="Setting the tag failed" text2=""/>
         <string id="19333643" text1="Reporting event failed" text2=""/>
+        <string id="19333720" text1="RCA is connected to web server" text2=""/>
    		<string id="67174401" text1="Slave boards initialized successfully." text2="" />
    		<string id="67174402" text1="Error happend during Slaves initializing %1." text2="" />
    		<string id="67174403" text1="Main Relay opened successfully." text2="" />
