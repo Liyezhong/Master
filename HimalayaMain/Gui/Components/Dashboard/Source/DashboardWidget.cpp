@@ -349,7 +349,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         m_ProgramStatus == Aborted)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetTitle(CommonString::strInforMsg);
         QString strTemp;
         if (m_ProgramStatus == Completed)
         {
