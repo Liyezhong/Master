@@ -167,7 +167,7 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->PumpReleasePressure();
      dlg->HideWaitingDialog();
 
-    text = tr("Please put ht calibrated external thermometer into retort, and then close the retort lid lock.");
+    text = tr("Please put the calibrated external thermometer into retort, and then close the retort lid lock.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT) {
         text = tr("Rotating Rotary Valve to tube position 13");
