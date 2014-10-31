@@ -566,17 +566,6 @@ public:
         m_RemoteCareRequest = Flag;
     }
 
-    /****************************************************************************/
-    /**
-     * \brief Set the list of CSV file to import the package.
-     *
-     * \iparam       FileList    List of files
-     */
-    /****************************************************************************/
-    void SetCSVFileList(QStringList FileList) {
-//        m_CSVFileList = FileList;
-    }
-
 signals:
     /****************************************************************************/
     /**

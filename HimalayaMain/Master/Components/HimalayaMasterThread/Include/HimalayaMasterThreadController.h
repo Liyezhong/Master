@@ -233,13 +233,9 @@ private:
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
 
-            p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName() + GetSerialNumber());
+            p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
             p_ImportExportThreadController->SetRemoteCareRequest(m_RemoteCareExportRequest);
 
-            // All CSV files are saved in settings folder
-            p_ImportExportThreadController->SetCSVFileList(GetEventStringFileList().
-                                                           replaceInStrings(Global::SystemPaths::Instance().
-                                                                            GetSettingsPath() + QDir::separator(), ""));
             m_RemoteCareExportRequestInitiated = m_RemoteCareExportRequest;
 
             RegisterImportExportSignalAndSlots(p_ImportExportThreadController, CommandData::NAME);

@@ -683,10 +683,11 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
         if (m_RemoteCareExportRequestInitiated) {
             Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE, Global::FmtArgs() << "Send signal to RemoteCareController");
             emit RemoteCareExportFinished("");
+        } else {
+            // send acknowledgement to GUI
+            /*lint -e613 */
+            SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
         }
-        // send acknowledgement to GUI
-        /*lint -e613 */
-        SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     else {
         quint32 EventCode = Global::EVENT_EXPORT_FAILED;
