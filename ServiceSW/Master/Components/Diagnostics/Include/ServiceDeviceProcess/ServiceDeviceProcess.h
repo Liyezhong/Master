@@ -34,7 +34,8 @@ namespace Diagnostics {
 typedef enum {
     RETURN_OK = 1,
     RETURN_ERR_NULL_POINTER = -1,
-    RETURN_ERR_FAIL = -2
+    RETURN_ERR_FAIL = -2,
+    RETURN_ABORT = -3
 } ErrorCode_t;
 
 /****************************************************************************/

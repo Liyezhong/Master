@@ -172,11 +172,12 @@ bool CTestCaseReporter::SendReportFile()
         Msg = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
         goto Send_Finished;
     }
-
+/*
     if (!mp_IEClient->PerformAccessRightsCheck(m_ReportDir)) {
         Msg = Service::CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;
         goto Send_Finished;
     }
+*/
     if (QFile::exists(m_TestReportFile)) {
         QString ReportPath = m_ReportDir;
         if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {

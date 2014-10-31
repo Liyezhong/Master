@@ -44,7 +44,6 @@ int CLevelSensorDetectingTest::Run(void)
 {
     qDebug() << "Level sensor detecting test starts!";
 
-    int Ret(0);
     QString Text;
 
     if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
