@@ -1125,10 +1125,8 @@ void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::ShutdownHandler(Global::tRefType Ref, const Global::CmdShutDown &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
-    Q_UNUSED(Cmd)
     SendAcknowledgeOK(Ref, AckCommandChannel);
-    //! \todo Call initiate Shutdown
-    InitiateShutdown();
+    InitiateShutdown(Cmd.GetReboot());
 }
 
 void HimalayaMasterThreadController::PrepareShutdownHandler(Global::tRefType Ref,
