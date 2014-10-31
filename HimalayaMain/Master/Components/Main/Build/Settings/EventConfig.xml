@@ -14,6 +14,9 @@
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>
 			<Step ID="5" Type="MSG" StringID="100000000" ButtonType="OK" StatusBar="YES"/>
 		</Event>
+		<Event Code="" ErrorID="520070004" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="100000000" ButtonType="OK" StatusBar="YES"/>
+		</Event>
 		<Event Code="" ErrorID="513010300" ErrorType="ERROR" AlarmType="AL_REMOTE"  LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="4" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnClickOk="2" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES"/>

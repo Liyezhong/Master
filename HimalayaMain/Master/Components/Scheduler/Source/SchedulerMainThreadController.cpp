@@ -348,15 +348,23 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
     {
         LogDebug("Self test is done");
         //send command to main controller to tell self test OK
-        if(!m_ProgramStatusInfor.IsProgramFinished() && m_ProgramStatusInfor.GetErrorFlag() == 0)//power failure
+        if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
         {
-            QString ProgramName = "";
-            if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
+            if(m_ProgramStatusInfor.GetErrorFlag() == 1)
             {
-                ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
+                RaiseError(0, DCL_ERR_DEV_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
+                m_SchedulerMachine->SendErrorSignal();
             }
-            RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
-            m_SchedulerMachine->EnterPowerFailure();
+            else
+            {
+                QString ProgramName = "";
+                if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
+                {
+                    ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
+                }
+                RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+                m_SchedulerMachine->EnterPowerFailure();
+            }
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
@@ -370,10 +378,6 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         }
         else
         {
-            if(m_ProgramStatusInfor.GetErrorFlag() == 1)
-            {
-                m_ProgramStatusInfor.SetErrorFlag(0);
-            }
             m_SchedulerMachine->SendSchedulerInitComplete();
             MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
             Q_ASSERT(commandPtr);
@@ -932,6 +936,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (PSSM_PROCESSING_SR == stepState)
         {
+            m_ProgramStatusInfor.SetErrorFlag(0);
             m_CurrentStepState = PSSM_PROCESSING_SR;
             if(CTRL_CMD_DRAIN_SR == ctrlCmd)
             {

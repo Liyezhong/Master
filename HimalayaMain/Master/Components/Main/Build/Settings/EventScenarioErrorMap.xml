@@ -145,6 +145,7 @@
   </group>
  <group name="Internal">
        <event id="500070001"    name="EVENT_TISSUE_PROTECT_REPORT"/>
+       <event id="500060200"    name="DCL_ERR_DEV_POWERFAILURE_AFTER_ERRHANDLING_FAILED"/>
   </group>
 </eventlist>
 
@@ -162,6 +163,11 @@
         <error errorid="520070003">
             <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="277"/>
+        </error>
+    </event>
+    <event eventid="500060200">
+        <error errorid="520070004">
+            <scenario type="all"/>
         </error>
     </event>
     <event eventid="500050501">
