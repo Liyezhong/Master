@@ -2911,7 +2911,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     (void)mp_TempOvenTop->StopTemperatureControl();
 
     (void)mp_DigitalOutputMainRelay->SetLow();
-
+#if 0 // Disabled by Sunny on Oct, 31, 2014.
     quint8 ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
     quint8 ASB5SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
 
@@ -2924,7 +2924,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
             RetVal = -1;
         }
     }
-
+#endif
     (void)mp_TempRV->SetTemperatureSwitchState(-1, 0);
     (void)mp_TempRetortSide->SetTemperatureSwitchState(-1, 0);
 
