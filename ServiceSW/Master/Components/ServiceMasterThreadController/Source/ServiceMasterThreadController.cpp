@@ -1487,15 +1487,18 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
         emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_REACHABLE, Color);
-        if(IEClient->PerformHostReachableTest())
-        {
-            emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , true);
-            qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Successful for ip "<<IPAddress;
-        }
-        else
-        {
-            emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , false);
-            qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
+        for(int i=0; i<3; i++) {
+            if(IEClient->PerformHostReachableTest())
+            {
+                emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , true);
+                qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Successful for ip "<<IPAddress;
+                break;
+            }
+            else if (i==2)
+            {
+                emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , false);
+                qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
+            }
         }
 
         emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS, Color);

@@ -168,11 +168,23 @@ bool CTestCaseReporter::SendReportFile()
         return false;
     }
 
+//    system("date");
+    for(int i=0; i<3; i++) {
+        if (mp_IEClient->PerformHostReachableTest()) {
+            break;
+        }
+        else if (i==2) {
+            Msg = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
+            goto Send_Finished;
+        }
+    }
+//    system("date");
+/*
     if (!mp_IEClient->PerformHostReachableTest()) {
         Msg = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
         goto Send_Finished;
     }
-/*
+
     if (!mp_IEClient->PerformAccessRightsCheck(m_ReportDir)) {
         Msg = Service::CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;
         goto Send_Finished;
@@ -197,6 +209,7 @@ bool CTestCaseReporter::SendReportFile()
     else {
         Msg = Service::CMessageString::MSG_DIAGNOSTICS_REPORT_FILE_NOT_EXISTS;
     }
+//    system("date");
 
 Send_Finished:
 
