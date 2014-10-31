@@ -64,6 +64,8 @@ int CLiquidHeatingTubeTest::Run(void)
     QString title((tr("Liquid Heating Tube Test")));
     QString text;
     int ret, i;
+    bool isAbove;
+    int count;
     struct liquidHeatingStatus heatingStatus;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("LiquidHeatingTest");
@@ -120,66 +122,57 @@ int CLiquidHeatingTubeTest::Run(void)
     }
 
     timingDialog->SetTitle(title);
-    if (liquidCurrentTemp < liquidTempAbove) {
-        heatingStatus.UsedTime = 0;
-        heatingStatus.EDTime = liquidRepeatTime + liquidMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
-        (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
-        timingDialog->show();
-        this->RefreshWaitingDialog(&heatingStatus);
 
-        for (i = 0; i < liquidRepeatTime && timingDialog->isVisible(); i++) {
-            QTime EndTime = QTime().currentTime().addSecs(1);
-            if ((ret = dev->LiquidTubeGetTemp(&currentTemp)) != RETURN_OK)
-                break;
-            if (currentTemp >= liquidTempAbove) {
-                break;
-            }
-            int MSec = QTime().currentTime().msecsTo(EndTime);
-            dev->Pause(MSec);
-            heatingStatus.UsedTime++;
-            heatingStatus.CurrentTemp = currentTemp;
-            this->RefreshWaitingDialog(&heatingStatus);
-        }
+    heatingStatus.UsedTime = 0;
+    heatingStatus.EDTime = liquidRepeatTime + liquidMaintainTime;
+    heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+    (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
+    timingDialog->show();
+    this->RefreshWaitingDialog(&heatingStatus);
 
-        if (!timingDialog->isVisible())
-            goto __abort__;
-        if (ret != RETURN_OK || i == liquidRepeatTime) {
-            // fail
-            text = tr("Liquid Heating Tube Test failed.<br/>"
-                      "Please check liquid heating tube, cables "
-                      "and connections and ASB15 board. "
-                      "Replace the defective part accordingly.");
-            timingDialog->accept();
-            goto __fail__;
-        }
-    }
-
-    // temp > 78
-    if (!timingDialog->isVisible()) {
-        heatingStatus.UsedTime = 0;
-        heatingStatus.EDTime = liquidMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
-
-        (void)dev->LiquidTubeGetTemp(&heatingStatus.CurrentTemp);
-        timingDialog->show();
-        this->RefreshWaitingDialog(&heatingStatus);
-    }
-
-    for (i = 0; i < liquidMaintainTime && timingDialog->isVisible(); i++) {
+    count = liquidMaintainTime;
+    isAbove = false;
+    for (i = 0; i < (liquidRepeatTime + liquidMaintainTime) && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
+
         if ((ret = dev->LiquidTubeGetTemp(&currentTemp)) != RETURN_OK)
             break;
-        if (currentTemp < liquidCurrentTempMin || currentTemp > liquidCurrentTempMax) {
+        if (currentTemp >= liquidTempAbove)
+            isAbove = true;
+        if (currentTemp >= liquidTempAbove && !count)
+            break;
+        if (i == liquidRepeatTime && !isAbove) {
             ret = RETURN_ERR_FAIL;
             break;
         }
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+        if (currentTemp >= liquidCurrentTempMin && currentTemp <= liquidCurrentTempMax) {
+            if (count > 0)
+                count--;
+        } else {
+            if (count != liquidMaintainTime)
+                count = liquidMaintainTime;
+        }
+
         heatingStatus.UsedTime++;
         heatingStatus.CurrentTemp = currentTemp;
         this->RefreshWaitingDialog(&heatingStatus);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        dev->Pause(MSec);
     }
+
+    if (!timingDialog->isVisible())
+        goto __abort__;
+    if (ret != RETURN_OK || i == liquidRepeatTime) {
+        // fail
+        text = tr("Liquid Heating Tube Test failed.<br/>"
+                  "Please check liquid heating tube, cables "
+                  "and connections and ASB15 board. "
+                  "Replace the defective part accordingly.");
+        timingDialog->accept();
+        goto __fail__;
+    }
+
 
     if (!timingDialog->isVisible())
         goto __abort__;

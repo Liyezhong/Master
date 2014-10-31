@@ -63,6 +63,8 @@ int CAirHeatingTubeTest::Run(void)
     QString title((tr("Air Heating Tube Test")));
     QString text;
     int ret, i;
+    bool isAbove;
+    int count;
     struct airHeatingStatus heatingStatus;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("AirHeatingTest");
@@ -117,65 +119,43 @@ int CAirHeatingTubeTest::Run(void)
     }
 
     timingDialog->SetTitle(title);
-    if (AirCurrentTemp < AirTempAbove) {
-        heatingStatus.UsedTime = 0;
-        heatingStatus.EDTime = AirRepeatTime + AirMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
-        (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
-        timingDialog->show();
-        this->RefreshWaitingDialog(&heatingStatus);
 
-        for (i = 0; i < AirRepeatTime && timingDialog->isVisible(); i++) {
-            QTime EndTime = QTime().currentTime().addSecs(1);
-            if ((ret = dev->AirTubeGetTemp(&currentTemp)) != RETURN_OK)
-                break;
-            if (currentTemp >= AirTempAbove) {
-                break;
-            }
-            int MSec = QTime().currentTime().msecsTo(EndTime);
-            dev->Pause(MSec);
-            heatingStatus.UsedTime++;
-            heatingStatus.CurrentTemp = currentTemp;
-            this->RefreshWaitingDialog(&heatingStatus);
-        }
+    heatingStatus.UsedTime = 0;
+    heatingStatus.EDTime = AirRepeatTime + AirMaintainTime;
+    heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
+    (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
+    timingDialog->show();
+    this->RefreshWaitingDialog(&heatingStatus);
 
-        if (!timingDialog->isVisible())
-            goto __abort__;
-        if (ret != RETURN_OK || i == AirRepeatTime) {
-            // fail
-            text = tr("Air Heating Tube Test failed.<br/>"
-                      "Please check Air heating tube, cables "
-                      "and connections and ASB15 board. "
-                      "Replace the defective part accordingly.");
-            timingDialog->accept();
-            goto __fail__;
-        }
-    }
-
-    // temp > 78
-    if (!timingDialog->isVisible()) {
-        heatingStatus.UsedTime = 0;
-        heatingStatus.EDTime = AirMaintainTime;
-        heatingStatus.TargetTemp = tr("%1 - %2").arg(tempMaintainRangeMin).arg(tempMaintainRangeMax);
-
-        (void)dev->AirTubeGetTemp(&heatingStatus.CurrentTemp);
-        timingDialog->show();
-        this->RefreshWaitingDialog(&heatingStatus);
-    }
-
-    for (i = 0; i < AirMaintainTime && timingDialog->isVisible(); i++) {
+    count = AirMaintainTime;
+    isAbove = false;
+    for (i = 0; i < (AirRepeatTime + AirMaintainTime) && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
+
         if ((ret = dev->AirTubeGetTemp(&currentTemp)) != RETURN_OK)
             break;
-        if (currentTemp < AirCurrentTempMin || currentTemp > AirCurrentTempMax) {
+        if (currentTemp >= AirTempAbove)
+            isAbove = true;
+        if (currentTemp >= AirTempAbove && !count)
+            break;
+        if (i == AirRepeatTime && !isAbove) {
             ret = RETURN_ERR_FAIL;
             break;
         }
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+        if (currentTemp >= AirCurrentTempMin && currentTemp <= AirCurrentTempMax) {
+            if (count > 0)
+                count--;
+        } else {
+            if (count != AirMaintainTime)
+                count = AirMaintainTime;
+        }
+
         heatingStatus.UsedTime++;
         heatingStatus.CurrentTemp = currentTemp;
         this->RefreshWaitingDialog(&heatingStatus);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        dev->Pause(MSec);
     }
 
     if (!timingDialog->isVisible())
