@@ -139,7 +139,7 @@ int CLiquidHeatingTubeTest::Run(void)
             break;
         if (currentTemp >= liquidTempAbove)
             isAbove = true;
-        if (currentTemp >= liquidTempAbove && !count)
+        if (isAbove && !count)
             break;
         if (i == liquidRepeatTime && !isAbove) {
             ret = RETURN_ERR_FAIL;
