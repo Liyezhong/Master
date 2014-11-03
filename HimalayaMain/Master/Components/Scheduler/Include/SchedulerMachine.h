@@ -210,7 +210,7 @@ private:
         PSSMABORT_MOVE_NEXTTUBE
     } PSSM_ABORTING_t;
     PSSM_ABORTING_t m_PssmAbortingSeq;                                                  ///< Sequence of PSSM_ABORTING
-    bool    m_WorkaroundChecking;                                                       ///< workaround for checking
+    bool    m_EnableWorkaround;                                                         ///< Enable workaround or not
 
 private:
     /****************************************************************************/

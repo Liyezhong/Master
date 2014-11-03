@@ -137,7 +137,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
     (void)m_ProgramStatusInfor.ReadProgramStatusFile();
 
-    m_WorkaroundChecking = Global::Workaroundchecking("ENABLE_ALARM");
+    m_EnableWorkaround = Global::Workaroundchecking("ENABLE_ALARM");
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -2645,12 +2645,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor local and remote alarm
-    if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus && m_WorkaroundChecking)
+    if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus && (false == m_EnableWorkaround))
     {
         RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
         m_CheckRemoteAlarmStatus = false;
     }
-    if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus && m_WorkaroundChecking)
+    if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus && (false == m_EnableWorkaround))
     {
         RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
         m_CheckLocalAlarmStatus = false;
