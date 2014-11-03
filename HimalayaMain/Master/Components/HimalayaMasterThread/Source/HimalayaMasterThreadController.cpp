@@ -805,7 +805,6 @@ void HimalayaMasterThreadController::RemoveAndDestroyObjects() {
         // reset the falgs, so nothing is executing
         m_ExportProcessIsFinished = false;
         m_ImportExportThreadIsRunning = false;
-
     }
 }
 
@@ -1306,6 +1305,8 @@ void HimalayaMasterThreadController::SendFileSelectionToGUI(QStringList FileList
 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::RemoteCareExportData(const quint8 &NoOfLogFiles) {
+    if (m_ImportExportThreadIsRunning)
+        return;
     m_RemoteCareExportRequest = true;
     // remote care only requests for service export
     // add all data in bytearray
