@@ -1305,8 +1305,6 @@ void HimalayaMasterThreadController::SendFileSelectionToGUI(QStringList FileList
 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::RemoteCareExportData(const quint8 &NoOfLogFiles) {
-    if (m_ImportExportThreadIsRunning)
-        return;
     m_RemoteCareExportRequest = true;
     // remote care only requests for service export
     // add all data in bytearray
