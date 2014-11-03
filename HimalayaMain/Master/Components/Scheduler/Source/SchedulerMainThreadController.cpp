@@ -76,6 +76,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include <unistd.h>
 #include <Global/Include/SystemPaths.h>
+#include "Global/Include/Utils.h"
 #include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
 
 using namespace DataManager;
@@ -132,8 +133,11 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_StopFilling = false;
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
+    m_PssmStepFinSeq = 0;
 
     (void)m_ProgramStatusInfor.ReadProgramStatusFile();
+
+    m_WorkaroundChecking = Global::Workaroundchecking("ENABLE_ALARM");
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -1030,49 +1034,54 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_STEP_PROGRAM_FINISH == stepState)
         {
-            UpdateStationReagentStatus();
-
-            RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
-            (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-            if(m_CurProgramStepIndex != -1)
+            if (0 == m_PssmStepFinSeq)
             {
-                m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
-                //start next step
-                QString PVMode = "/";
-                if(m_CurProgramStepInfo.isPressure)
-                {
-                    PVMode = "P/";
-                }
-                if(m_CurProgramStepInfo.isVacuum)
-                {
-                    PVMode += "V";
-                }
-                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
-                           <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                           <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
-                           <<PVMode);
-                m_SchedulerMachine->NotifyStepProgramFinished();
-                //send command to main controller to tell the left time
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-
-//                QTime leftTime(0,0,0);
-//                leftTime = leftTime.addSecs(leftSeconds);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                UpdateStationReagentStatus();
+                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
+                m_PssmStepFinSeq++;
             }
-            else
+            else if (1 == m_PssmStepFinSeq)
             {
-                if(m_IsCleaningProgram)
-                { // need run cleaning dry step
-                    m_SchedulerMachine->NotifyEnterCleaningDryStep();
+                (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+                if(m_CurProgramStepIndex != -1)
+                {
+                    m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+                    //start next step
+                    QString PVMode = "/";
+                    if(m_CurProgramStepInfo.isPressure)
+                    {
+                        PVMode = "P/";
+                    }
+                    if(m_CurProgramStepInfo.isVacuum)
+                    {
+                        PVMode += "V";
+                    }
+                    RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                               <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                               <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
+                               <<PVMode);
+                    m_SchedulerMachine->NotifyStepProgramFinished();
+                    //send command to main controller to tell the left time
+                    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+
+                    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+                    Q_ASSERT(commandPtr);
+                    Global::tRefType Ref = GetNewCommandRef();
+                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                 }
                 else
                 {
-                    m_SchedulerMachine->NotifyProgramFinished();
-                }
+                    if(m_IsCleaningProgram)
+                    { // need run cleaning dry step
+                        m_SchedulerMachine->NotifyEnterCleaningDryStep();
+                    }
+                    else
+                    {
+                        m_SchedulerMachine->NotifyProgramFinished();
+                    }
 
+                }
+                m_PssmStepFinSeq = 0;
             }
         }
         else if(PSSM_CLEANING_DRY_STEP == stepState)
@@ -2027,6 +2036,11 @@ void SchedulerMainThreadController::SendCoverLidOpenMsg()
     }
 }
 
+void SchedulerMainThreadController::OnEnterPssMStepFin()
+{
+    m_PssmStepFinSeq = 0;
+}
+
 /**
  * @brief Check which step has no safe reagent in a program.
  * @param ProgramID The the program Id, which to be checked.
@@ -2631,50 +2645,17 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor local and remote alarm
-    if ("ERROR" != StepID && 0 != Scenario)
+    if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus && m_WorkaroundChecking)
     {
-        if (QFile::exists("TEST_BEAN"))
-        {
-            QFile file("TEST_BEAN");
-            file.open(QIODevice::ReadOnly | QIODevice::Text);
-            QTextStream in(&file);
-
-            while (!in.atEnd())
-            {
-                QString line = in.readLine().trimmed();
-                QStringList list = line.split("=");
-                if (list.size() != 2)
-                {
-                    continue;
-                }
-                QString leftStr = static_cast<QString>(list.at(0));
-                leftStr = leftStr.trimmed();
-                if ("ENABLE_ALARM" == leftStr)
-                {
-                    QString rightStr = static_cast<QString>(list.at(1));
-                    rightStr = rightStr.trimmed();
-                    if ("0" == rightStr)
-                    {
-                        m_CheckRemoteAlarmStatus = false;
-                        m_CheckLocalAlarmStatus = false;
-                    }
-                    break;
-                }
-            }
-            file.close();
-        }
-
-        if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
-        {
-            RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
-            m_CheckRemoteAlarmStatus = false;
-        }
-        if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
-        {
-            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
-            m_CheckLocalAlarmStatus = false;
-        }
+        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+        m_CheckRemoteAlarmStatus = false;
     }
+    if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus && m_WorkaroundChecking)
+    {
+        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+        m_CheckLocalAlarmStatus = false;
+    }
+
 
     // Monitor Slave module's voltage and current
     if ("ERROR" != StepID && 0 != Scenario)

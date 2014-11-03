@@ -254,11 +254,13 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
-        bool m_IsSafeReagentState;                            ///< Scheduler is in RS_Tissue_Protect state
-        bool m_CmdDrainSR_Click;                              ///< CTRL_CMD_DRAIN_SR was clicked
-        bool m_StopFilling;                                   ///< When restart filling, need stop filling
-        bool m_CheckRemoteAlarmStatus;                        ///< flag to check m_CheckRemoteAlarmStatus
-        bool m_CheckLocalAlarmStatus;                         ///< flag to check m_CheckLocalAlarmStatus
+        bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
+        bool    m_CmdDrainSR_Click;                           ///< CTRL_CMD_DRAIN_SR was clicked
+        bool    m_StopFilling;                                ///< When restart filling, need stop filling
+        bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
+        bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
+        bool    m_WorkaroundChecking;                         ///< workaround for checking
+        qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1414,6 +1416,14 @@ protected:
          */
         /****************************************************************************/
         void SendCoverLidOpenMsg();
+
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Slot for entering PSSM_STEP_FIN stage
+         */
+        /****************************************************************************/
+        void OnEnterPssMStepFin();
     };
 
 } // EONS ::Scheduler

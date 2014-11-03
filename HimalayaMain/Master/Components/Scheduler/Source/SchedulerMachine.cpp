@@ -192,6 +192,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigStepProgramFinished()),mp_PssmFillingHeatingRVState.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigEnterDryStep()), mp_PssmCleaningDryStep.data());
+    CONNECTSIGNALSLOT(mp_PssmStepFinish.data(), entered(), mp_SchedulerThreadController, OnEnterPssMStepFin());
+
     mp_PssmCleaningDryStep->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     mp_PssmProcessingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
@@ -356,6 +358,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
+    m_WorkaroundChecking = Global::Workaroundchecking("LOWER_PRESSURE");
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -1745,34 +1748,9 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                 RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
                 cmd->SetRVPosition((quint32)(tubePos));
-                if (QFile::exists("TEST_BEAN"))
+                if (m_WorkaroundChecking)
                 {
-                    QFile file("TEST_BEAN");
-                    file.open(QIODevice::ReadOnly | QIODevice::Text);
-                    QTextStream in(&file);
-
-                    while (!in.atEnd())
-                    {
-                        QString line = in.readLine().trimmed();
-                        QStringList list = line.split("=");
-                        if (list.size() != 2)
-                        {
-                            continue;
-                        }
-                        QString leftStr = static_cast<QString>(list.at(0));
-                        leftStr = leftStr.trimmed();
-                        if ("LOWER_PRESSURE" == leftStr)
-                        {
-                            QString rightStr = static_cast<QString>(list.at(1));
-                            rightStr = rightStr.trimmed();
-                            if ("1" == rightStr)
-                            {
-                                cmd->SetDrainPressure(20.0);
-                            }
-                            break;
-                        }
-                    }
-                    file.close();
+                    cmd->SetDrainPressure(20.0);
                 }
                 else
                 {
