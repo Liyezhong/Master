@@ -138,7 +138,7 @@ int CAirHeatingTubeTest::Run(void)
             isAbove = true;
         if (isAbove && !count)
             break;
-        if (i == AirRepeatTime && !isAbove) {
+        if (i >= AirRepeatTime && !isAbove) {
             ret = RETURN_ERR_FAIL;
             break;
         }

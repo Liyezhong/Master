@@ -141,7 +141,7 @@ int CLiquidHeatingTubeTest::Run(void)
             isAbove = true;
         if (isAbove && !count)
             break;
-        if (i == liquidRepeatTime && !isAbove) {
+        if (i >= liquidRepeatTime && !isAbove) {
             ret = RETURN_ERR_FAIL;
             break;
         }
@@ -165,19 +165,7 @@ int CLiquidHeatingTubeTest::Run(void)
 
     if (!timingDialog->isVisible())
         goto __abort__;
-    if (ret != RETURN_OK || i == liquidRepeatTime) {
-        // fail
-        text = tr("Liquid Heating Tube Test failed.<br/>"
-                  "Please check liquid heating tube, cables "
-                  "and connections and ASB15 board. "
-                  "Replace the defective part accordingly.");
-        timingDialog->accept();
-        goto __fail__;
-    }
 
-
-    if (!timingDialog->isVisible())
-        goto __abort__;
     timingDialog->accept();
     if (ret != RETURN_OK)
         text = tr("Liquid Heating Tube Test failed.<br/>"
