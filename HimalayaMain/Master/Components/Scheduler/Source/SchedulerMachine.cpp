@@ -39,6 +39,7 @@
 #include "Scheduler/Include/RsFillingAfterFlush.h"
 #include "Scheduler/Include/RsTissueProtect.h"
 #include "Scheduler/Include/RcReHeating.h"
+#include "EventHandler/Include/StateHandler.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -62,6 +63,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_IdleState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     CONNECTSIGNALSLOT(mp_IdleState.data(), entered(), this, OnEnterIdleState());
     mp_BusyState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
+    CONNECTSIGNALSLOT(mp_BusyState.data(), entered(), this, OnEnterBusyState());
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     CONNECTSIGNALSLOT(mp_ErrorState.data(), entered(), this, OnEnterErrorState());
 
@@ -1914,12 +1916,18 @@ void CSchedulerStateMachine::OnEnterSelfTest()
 
 void CSchedulerStateMachine::OnEnterIdleState()
 {
-     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
+    EventHandler::StateHandler::Instance().setActivityUpdate(false,0);
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
 }
 
 void CSchedulerStateMachine::OnEnterErrorState()
 {
      mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_ERROR_STATE);
+}
+
+void CSchedulerStateMachine::OnEnterBusyState()
+{
+    EventHandler::StateHandler::Instance().setActivityUpdate(true,0);
 }
 
 void CSchedulerStateMachine::OnEnterPretest()

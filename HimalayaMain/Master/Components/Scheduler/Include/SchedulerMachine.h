@@ -1106,6 +1106,16 @@ private slots:
     void OnEnterErrorState();
     /****************************************************************************/
     /*!
+     *  \brief  Slot to enter busy state
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnEnterBusyState();
+    /****************************************************************************/
+    /*!
      *  \brief  Slot to enter pretest
      *
      *  \param  void
