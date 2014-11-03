@@ -42,7 +42,6 @@ int CLiquidHoseTest::Run(void)
 {
     qDebug() << "Liquid Hose Test starts!";
 
-    int Ret(0);
     if (ShowConfirmDlg(1) == 0) {
         return RETURN_ERR_FAIL;
     }

@@ -230,8 +230,8 @@ void CLevelSensorDetectingTest::ShowFinishDlg(int RetNum)
     switch (RetNum) {
     case 1:
         Text = "Retort Level Sensor Heating Test failed.<br> "
-                "Target temperature was not reached in time . Clean level sensor, "
-                "repeat this test. If still failed , exchange the level sensor.";
+                "Target temperature was not reached in time. Clean level sensor, "
+                "repeat this test. If still failed, exchange the level sensor.";
         break;
     case 2:
         Text = " Retort Level Sensor Detection Test failed.<br> "

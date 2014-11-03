@@ -20,5 +20,8 @@
         <file>Images/AirHeatingTubeGlow.png</file>
         <file>Images/AirHeatingTubeDisabled.png</file>
         <file>Images/AirHeatingTube.png</file>
+	<file>Images/Fan.png</file>
+	<file>Images/FanDisabled.png</file>
+	<file>Images/FanGlow.png</file>
     </qresource>
 </RCC>

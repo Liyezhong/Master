@@ -27,8 +27,12 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *parent) :
     m_pOven = CreatePart("Oven", QPoint(7, 70));
     m_pRotaryValve = CreatePart("RotaryValve", QPoint(219, 154));
 
-    m_pAirHeatingTube = CreatePart("AirHeatingTube", QPoint(488, 50));
+    m_pAirHeatingTube = CreatePart("AirHeatingTube", QPoint(489, 50));
     m_pHeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
+    m_pFan = CreatePart("Fan", QPoint(266, 25));
+    m_pWaxTrap = CreatePart("WaxTrap", QPoint(666, 109));
+
+    CONNECTSIGNALSLOT(m_pRetort, PartSelected(), this, RetortSelected());
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
@@ -59,3 +63,12 @@ void CSVCDashboardWidget::paintEvent(QPaintEvent* pPaintEvent)
     QWidget::paintEvent(pPaintEvent);
 }
 
+void CSVCDashboardWidget::RetortSelected()
+{
+    qDebug()<<"retort selected.";
+
+    CGraphicsItemPart::PartStatus Status = m_pRetort->Status();
+
+    qDebug()<<"get retort status:"<<Status;
+
+}

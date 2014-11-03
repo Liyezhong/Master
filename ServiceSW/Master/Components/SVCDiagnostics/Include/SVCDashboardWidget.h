@@ -31,9 +31,11 @@ private:
     CGraphicsItemPart * m_pRotaryValve;
     CGraphicsItemPart * m_pHeatingTube;
     CGraphicsItemPart * m_pAirHeatingTube;
+    CGraphicsItemPart * m_pFan;
+    CGraphicsItemPart * m_pWaxTrap;
 
 private slots:
-
+    void RetortSelected();
 };
 
 }//end of namespace
