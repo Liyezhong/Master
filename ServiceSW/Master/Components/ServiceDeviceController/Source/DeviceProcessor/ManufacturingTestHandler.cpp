@@ -530,7 +530,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
         CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
         CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
-        mp_Utils->Pause(200);
+//        mp_Utils->Pause(200);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
         if ( CurrentTempTop >= MinTargetTemp &&
