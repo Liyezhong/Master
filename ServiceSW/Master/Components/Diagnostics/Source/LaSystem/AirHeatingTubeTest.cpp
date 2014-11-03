@@ -142,12 +142,14 @@ int CAirHeatingTubeTest::Run(void)
             ret = RETURN_ERR_FAIL;
             break;
         }
-        if (currentTemp >= AirCurrentTempMin && currentTemp <= AirCurrentTempMax) {
+        if (isAbove && currentTemp >= tempMaintainRangeMin && currentTemp <= tempMaintainRangeMax) {
             if (count > 0)
                 count--;
         } else {
-            if (count != AirMaintainTime)
+            if (count != AirMaintainTime) {
                 count = AirMaintainTime;
+                isAbove = false;
+            }
         }
 
         heatingStatus.UsedTime++;

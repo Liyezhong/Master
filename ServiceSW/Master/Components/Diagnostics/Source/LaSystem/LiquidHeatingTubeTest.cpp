@@ -145,12 +145,14 @@ int CLiquidHeatingTubeTest::Run(void)
             ret = RETURN_ERR_FAIL;
             break;
         }
-        if (currentTemp >= liquidCurrentTempMin && currentTemp <= liquidCurrentTempMax) {
+        if (isAbove && currentTemp >= tempMaintainRangeMin && currentTemp <= tempMaintainRangeMax) {
             if (count > 0)
                 count--;
         } else {
-            if (count != liquidMaintainTime)
+            if (count != liquidMaintainTime) {
                 count = liquidMaintainTime;
+                isAbove = false;
+            }
         }
 
         heatingStatus.UsedTime++;
