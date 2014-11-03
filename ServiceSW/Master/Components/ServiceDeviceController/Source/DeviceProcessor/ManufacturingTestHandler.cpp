@@ -496,7 +496,9 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         p_TestCase->AddResult("OutOfRange", "1");
         p_TestCase->SetStatus(false);
 
-        QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+        //QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+        QString TargetTempStr = QString(">= %1").arg(TargetTemp+DepartureLow);
+
 
         QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
 
@@ -564,7 +566,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         (void)Status.insert("CurrentTempBottom1", BottomValue1);
         (void)Status.insert("CurrentTempBottom2", BottomValue2);
         if (WaitSec == SumSec) {
-            QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+            //QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+            QString TargetTempStr = QString(">= %1").arg(TargetTemp+DepartureLow);
 
             (void)Status.insert("TargetTemp", TargetTempStr);
 
