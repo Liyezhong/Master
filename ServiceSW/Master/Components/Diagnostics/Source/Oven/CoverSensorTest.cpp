@@ -66,7 +66,7 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
 
     text = tr("Please %1 the oven cover manually.").arg(testStatus);
     ret = dlg->ShowConfirmMessage(title, text,
-                  testStatus == "open" ? CDiagnosticMessageDlg::NEXT_CANCEL : CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
+                  testStatus == "Open" ? CDiagnosticMessageDlg::NEXT_CANCEL : CDiagnosticMessageDlg::NEXT_CANCEL_DISABLE);
     if (ret == CDiagnosticMessageDlg::CANCEL)
         return __CANCEL__;
 
@@ -84,14 +84,14 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
     (void)dev->OvenGetCoverSensorState(&status);
     qDebug() << "cover sensor state : " << status;
 
-    text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus.toUpper());
+    text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus);
 
     if (status == __OPEN__)
-        statusStr = tr("OPEN");
+        statusStr = tr("Open");
     else if (status == __CLOSE__)
-        statusStr = tr("CLOSE");
+        statusStr = tr("Close");
     else
-        statusStr = tr("ERROR");
+        statusStr = tr("Error");
 
     ret = CoverSensorStatusConfirmDlg(title, text, statusStr);
     if (ret == CDiagnosticMessageDlg::NO)
@@ -108,13 +108,13 @@ int CCoverSensorTest::Run(void)
     QString text;
     TestCaseRet ret;
 
-    ret = TestCase("open");
+    ret = TestCase("Open");
     if (ret == __CANCEL__)
         goto __cancel__;
     if (ret == __FAIL__)
         goto __fail__;
 
-    ret = TestCase("close");
+    ret = TestCase("Close");
     if (ret == __CANCEL__)
         goto __cancel__;
     if (ret == __FAIL__)
