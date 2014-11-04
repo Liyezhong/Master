@@ -25,14 +25,20 @@ private:
     CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos);
     void paintEvent(QPaintEvent *p_PaintEvent);
     Ui::CSVCDashboardWidget *ui;
-    QGraphicsScene *m_pScene;
-    CGraphicsItemPart * m_pRetort;
-    CGraphicsItemPart * m_pOven;
-    CGraphicsItemPart * m_pRotaryValve;
-    CGraphicsItemPart * m_pHeatingTube;
-    CGraphicsItemPart * m_pAirHeatingTube;
-    CGraphicsItemPart * m_pFan;
-    CGraphicsItemPart * m_pWaxTrap;
+    QGraphicsScene *mp_Scene;
+    CGraphicsItemPart* mp_Retort;
+    CGraphicsItemPart* mp_Oven;
+    CGraphicsItemPart* mp_RotaryValve;
+    CGraphicsItemPart* mp_HeatingTube;
+    CGraphicsItemPart* mp_AirHeatingTube;
+    CGraphicsItemPart* mp_Fan;
+    CGraphicsItemPart* mp_WaxTrap;
+    CGraphicsItemPart* mp_Pump;
+    CGraphicsItemPart* mp_GV1;
+    CGraphicsItemPart* mp_GV2;
+    CGraphicsItemPart* mp_Pressure;
+    CGraphicsItemPart* mp_RFV1;
+    CGraphicsItemPart* mp_Filter;
 
 private slots:
     void RetortSelected();

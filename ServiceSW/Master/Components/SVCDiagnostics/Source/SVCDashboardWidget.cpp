@@ -2,6 +2,7 @@
 #include "ui_SVCDashboardWidget.h"
 #include <QPainter>
 #include <Global/Include/Utils.h>
+#include <QPushButton>
 #include <QGraphicsScene>
 #include "SVCDiagnostics/Include/GraphicsItemPart.h"
 
@@ -17,28 +18,41 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *parent) :
     //ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-    m_pScene = new QGraphicsScene(ui->graphicsView);
-    m_pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    m_pScene->setSceneRect(0, 0, 772, 490);
-    m_pScene->setBackgroundBrush(QImage(":/Images/SVCDiagnosticsBackground.png"));
-    ui->graphicsView->setScene(m_pScene);
+    mp_Scene = new QGraphicsScene(ui->graphicsView);
+    mp_Scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    mp_Scene->setSceneRect(0, 0, 772, 490);
+    mp_Scene->setBackgroundBrush(QImage(":/Images/SVCDiagnosticsBackground.png"));
+    ui->graphicsView->setScene(mp_Scene);
 
-    m_pRetort = CreatePart("Retort", QPoint(406, 30));
-    m_pOven = CreatePart("Oven", QPoint(7, 70));
-    m_pRotaryValve = CreatePart("RotaryValve", QPoint(219, 154));
+    mp_Retort = CreatePart("Retort", QPoint(406, 30));
+    mp_Oven = CreatePart("Oven", QPoint(7, 70));
+    mp_RotaryValve = CreatePart("RotaryValve", QPoint(219, 154));
 
-    m_pAirHeatingTube = CreatePart("AirHeatingTube", QPoint(489, 50));
-    m_pHeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
-    m_pFan = CreatePart("Fan", QPoint(266, 25));
-    m_pWaxTrap = CreatePart("WaxTrap", QPoint(666, 109));
+    mp_AirHeatingTube = CreatePart("AirHeatingTube", QPoint(489, 50));
+    mp_HeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
 
-    CONNECTSIGNALSLOT(m_pRetort, PartSelected(), this, RetortSelected());
+    mp_Fan = CreatePart("Fan", QPoint(266, 20));
+    mp_WaxTrap = CreatePart("WaxTrap", QPoint(666, 109));
+    mp_Pump = CreatePart("Pump", QPoint(404, 288));
+    mp_GV1 = CreatePart("GV1", QPoint(485, 192));
+    mp_GV2 = CreatePart("GV2", QPoint(640, 245));
+
+    mp_Pressure = CreatePart("Pressure", QPoint(615,75));
+    mp_RFV1 = CreatePart("RFV1", QPoint(606, 160));
+
+    mp_Filter = CreatePart("Filter", QPoint(269, 80));
+
+    CONNECTSIGNALSLOT(mp_Retort, PartSelected(), this, RetortSelected());
+
+    //QPushButton* SelectBtn = new QPushButton;
+    //SelectBtn->setObjectName("selectBtn");
+    //SelectBtn->setText("");
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
 {
     delete ui;
-    delete m_pScene;
+    delete mp_Scene;
 }
 
 CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos)
@@ -49,7 +63,7 @@ CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, c
     CGraphicsItemPart* pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
                                              QPixmap(disabledImg),
                                              QPixmap(glowImg));
-    m_pScene->addItem(pGraphicsItemPart);
+    mp_Scene->addItem(pGraphicsItemPart);
     pGraphicsItemPart->setPos(pos);
     return pGraphicsItemPart;
 }
@@ -67,7 +81,7 @@ void CSVCDashboardWidget::RetortSelected()
 {
     qDebug()<<"retort selected.";
 
-    CGraphicsItemPart::PartStatus Status = m_pRetort->Status();
+    CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
 
     qDebug()<<"get retort status:"<<Status;
 
