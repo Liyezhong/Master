@@ -71,7 +71,6 @@ int CMainsRelayTest::Run(void)
 
     qDebug()<<"MainsRelayOn Get Current : "<<Current;
 
-    (void)p_DevProc->RVStopHeating();
 
     if (Current>=SwitchOnCurrentLow && Current<=SwitchOnCurrentHigh) {
         (void)p_DevProc->MainRelaySetOnOff(false);
@@ -79,6 +78,7 @@ int CMainsRelayTest::Run(void)
         p_DevProc->Pause(1000);
         (void)p_DevProc->RVGetCurrent(&Current);
         qDebug()<<"MainsRelayOff Get Current : "<<Current;
+        (void)p_DevProc->RVStopHeating();
 
         ShowWaitingMessage(false);
 
@@ -91,6 +91,7 @@ int CMainsRelayTest::Run(void)
         }
     }
     else {
+        (void)p_DevProc->RVStopHeating();
 
         (void)p_DevProc->OvenStartHeating(OvenTopTargetTemp, 0);
 
@@ -100,8 +101,7 @@ int CMainsRelayTest::Run(void)
 
         qDebug()<<"MainsRelayOn Get slave5 Current : "<<Current;
 
-        (void)p_DevProc->OvenStopHeating();
-        (void)p_DevProc->MainRelaySetOnOff(false);
+         (void)p_DevProc->MainRelaySetOnOff(false);
 
         qDebug()<<"Initial System Check: Mains Relay test after oven top heating get current:---"<<Current;
 
@@ -111,6 +111,7 @@ int CMainsRelayTest::Run(void)
             (void)p_DevProc->OvenGetCurrent(&Current, NULL);
             qDebug()<<"MainsRelayOff Get slave5 Current : "<<Current;
 
+            (void)p_DevProc->OvenStopHeating();
 
             ShowWaitingMessage(false);
 
@@ -123,6 +124,8 @@ int CMainsRelayTest::Run(void)
             }
         }
         else {
+            (void)p_DevProc->OvenStopHeating();
+
             ShowWaitingMessage(false);
             ShowFailMessage(2);
             return RETURN_ERR_FAIL;
