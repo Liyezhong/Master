@@ -356,7 +356,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         {
             if(m_ProgramStatusInfor.GetErrorFlag() == 1)
             {
-                RaiseError(0, DCL_ERR_DEV_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
+                RaiseError(0, DCL_ERR_DEVRR_DEV_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
                 m_SchedulerMachine->SendErrorSignal();
             }
             else
