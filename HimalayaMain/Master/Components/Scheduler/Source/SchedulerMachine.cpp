@@ -360,7 +360,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
-    m_EnableWorkaround = Global::Workaroundchecking("LOWER_PRESSURE");
+    m_EnableWorkaround = Global::Workaroundchecking("NORMAL_PRESSURE");
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
