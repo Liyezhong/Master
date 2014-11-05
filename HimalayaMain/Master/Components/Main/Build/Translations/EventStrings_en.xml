@@ -710,5 +710,89 @@
    		<string id="67175219" text1="Finished the dry processing." text2="" />
         <string id="67175424" text1="prechecking" text2=""/>
         <string id="67175425" text1="drying process" text2=""/>
+        <string id="67175936" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>
+        <string id="67175937" text1="Bottle check: Pressure cannot build up. Potential reasons include: 1. sealing issure such as retort lid; 2. RV malpositioned on tube position instead of sealing position;" text2=""/>
+        <string id="67175938" text1="Bottle check: Station no. %1  detected as empty. Other potential reasons are a leakage or missing bottle. Please check the station, check if the retort lid is locked correctly and recover the error! " text2=""/>
+        <string id="67175939" text1="Bottle check: Station no. %1  detected as  Insufficient. Other potential reason is  leakage.  Please check the station, check if the retort lid is locked correctly and recover the error! " text2=""/>
+        <string id="67175940" text1="Air System: Pressure did not reach target value during pre-test. The pressure reached max. %1 kPa. " text2=""/>
+        <string id="67175941" text1="Station no. %1 is filled with an insufficent amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level." text2=""/>
+        <string id="67175942" text1="Station no. %1 is filled with an insufficent amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level. Station no. %1 is filling with an insufficent amount of reagent (retry)." text2=""/>
+        <string id="67175943" text1="Draining of retort to station %1 failed during processing! The max pressure is %2Kpa. Draining of retort to station %1 failed during retry! The max pressure is %2Kpa. " text2=""/>
+        <string id="67175944" text1="Filling of retort from station failed during processing! Filling time exceeds 4 minutes. Tube to this station is likely to be restricted or blocked, (potentially by paraffin). Check bottle connector for any blockage and check tube inside bottle for kinks. If no fault found there, please use the station cleaning program. This will flush the tube to this station using the cleaning xylene bottle first, followed by the cleaning alcohol bottle." text2=""/>
+        <string id="67175945" text1="Filling time of station exceeds 4 minutes during processing. Tube to this station is likely to be restricted or blocked, (potentially by paraffin). Check bottle connector for any blockage and check tube inside bottle for kinks. If no fault found there, please use the station cleaning program. This will flush the tube to this station using the cleaning xylene bottle first, followed by the cleaning alcohol bottle." text2=""/>
+        <string id="67175946" text1="The user opened the paraffin oven cover during a paraffin step. This could potentially have caused the paraffin to solidify. If the paraffin bath was removed, this could have caused a filling or draining error." text2=""/>
+        <string id="67175947" text1="Retort: Overflow occurred during reagent filling. This happened in a non-paraffin step. Please check the level sensor status and check if the air system (wax-trap, air tubes) is still in normal condition." text2=""/>
+        <string id="67175948" text1="Please close retort lid and confirm by clicking the retry button. Please check the lidlock for mechanical blockages or any residue. Also check the lidlock sensor for proper function and adjustment." text2=""/>
+        <string id="67175949" text1="Bottle check: Station no. %1  detected as restricted or blocked during pretest/bottle check." text2=""/>
+        <string id="67175950" text1="Retort heating: Temperature Sensor 1 out of range. This occured during pre- test." text2=""/>
+        <string id="67175951" text1="Retort heating: Temperature Sensor 1 out of range. This occured during self test at process start or during cleaning steps. " text2=""/>
+        <string id="67175952" text1="Retort heating: Temperature Sensor 1 out of range. This occured during processing." text2=""/>
+        <string id="67175951" text1="Retort heating: Temperature Sensor 1 out of range. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175953" text1="Retort heating: Temperature Sensor 1 provides no signal. This occured during pre- test." text2=""/>
+        <string id="67175954" text1="Retort heating: Temperature Sensor 1 provides no signal. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175955" text1="Retort heating: Temperature Sensor 2 out of range. This occured during pre- test." text2=""/>
+        <string id="67175956" text1="Retort heating: Temperature Sensor 2 out of range. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175957" text1="Retort heating: Temperature Sensor 2 out of range. This occured during processing." text2=""/>
+        <string id="67175958" text1="Retort heating: Temperature Sensor 2 provides no signal. This occured during pre- test." text2=""/>
+        <string id="67175959" text1="Retort heating: Temperature Sensor 2 provides no signal. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175960" text1="Retort heating: Temperature Sensor 3 out of range. This occured during pre- test." text2=""/>
+        <string id="67175961" text1="Retort heating: Temperature Sensor 3 out of range. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175962" text1="Retort heating: Temperature Sensor 3 out of range. This occured during processing." text2=""/>
+        <string id="67175963" text1="Retort heating: Temperature Sensor 3 provides no signal. This occured during pre- test." text2=""/>
+        <string id="67175964" text1="Retort heating: Temperature Sensor 3 provides no signal. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175965" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during pre- test." text2=""/>
+        <string id="67175966" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175967" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during processing." text2=""/>
+        <string id="67175968" text1="Paraffin oven heating: Top sensor is out of range." text2=""/>
+        <string id="67175969" text1="Paraffin oven heating:  Bottom sensor 1 is out of range." text2=""/>
+        <string id="67175970" text1="Paraffin oven heating: Bottom sensor 2 is out of range." text2=""/>
+        <string id="67175971" text1="RotaryValve: Cannot get the original position! " text2=""/>
+        <string id="67175972" text1="RotaryValve: Moving from tube position failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step. " text2=""/>
+        <string id="67175973" text1="RotaryValve: Moving from tube position failed before or after protocol." text2=""/>
+        <string id="67175974" text1="RotaryValve: Temperature of Rotary valve sensor 1 is out of range during pre-test." text2=""/>
+        <string id="67175975" text1="RotaryValve: Temperature of Rotary valve sensor 1 is out of range before or after protocol." text2=""/>
+        <string id="67175976" text1="RotaryValve: Temperature of Rotary valve sensor 2 is out of range during pre-test." text2=""/>
+        <string id="67175977" text1="RotaryValve: Temperature of Rotary valve sensor 2 out of range." text2=""/>
+        <string id="67175978" text1="RotaryValve: Heating current of Rotary valve is out of range during pre-test." text2=""/>
+        <string id="67175979" text1="RotaryValve: Heating current of Rotary valve is out of range before or after protocol." text2=""/>
+        <string id="67175980" text1="RotaryValve: Value of Rotary Valve temperature sensor2 is less than 30 degree C. Please check the heating function of Rotary Valve." text2=""/>
+        <string id="67175981" text1="RotaryValve: The Rotary valve lost its current position, during moving. This occured during cleaning steps." text2=""/>
+        <string id="67175982" text1="The Rotary valve lost current position, during moving." text2=""/>
+        <string id="67175983" text1="Pressure Sensor: Incorrect zero-value during pre-test. Please check zero-value at ambient pressure. If it is abnormal (>1.5Kpa), please retry with open retort lid. If still abnormal, exchange the pressure sensor." text2=""/>
+        <string id="67175984" text1="Pressure Sensor: The pressure value during processing is out of the range [-100, +100]Kpa. Please check function of pressure sensor and exchange if necessary." text2=""/>
+        <string id="67175985" text1="Exhaust system: Exhaust fan does not work due to no or insufficient current flow.  Please check voltage on according connector. If proper voltage is present, exchange exhaust fan." text2=""/>
+        <string id="67175986" text1="Heated reagent tube: The temperature  is lower than the melting point at %1 ℃." text2=""/>
+        <string id="67175987" text1="Heated air tube: The temperature during  is lower than the melting point at %1 ℃." text2=""/>
+        <string id="67175988" text1="Heated reagent tube: The temperature  is out of range at %1℃." text2=""/>
+        <string id="67175989" text1="Heated air tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
+        <string id="67175990" text1="Retort or Oven heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
+        <string id="67175991" text1="Retort or Waxbath heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
+        <string id="67175992" text1="Paraffin oven heating: Top sensor cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175993" text1="Paraffin oven heating: Bottom Sensor 1 cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175994" text1="Paraffin oven heating: Bottom Sensor 2 cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175995" text1="Paraffin oven heating: Top sensor cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175996" text1="Paraffin oven heating: Bottom sensor 1 cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175997" text1="Paraffin oven heating: Bottom sensor 2 cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
+        <string id="67175998" text1="RotaryValve: Moving from tube position %1 to %2, lower limiter is %3, internal steps is %4." text2=""/>
+        <string id="67175999" text1="RotaryValve: Moving from tube position %1 to %2 failed before or after processing tissue. Lower limiter is %3, internal steps is %4." text2=""/>
+        <string id="67176000" text1="RotaryValve: Temperature Sensor 2 of Rotary Valve cannot reach the target temperature before start of paraffin process step. Please check the heating function of Rotary Valve." text2=""/>
+        <string id="67176001" text1="RotaryValve: The Rotary valve lost its current position, during moving from position %1 to position %2. This occured during pre-test or processing." text2=""/>
+        <string id="67176002" text1="RotaryValve: The Rotary valve lost  its current position, during moving from position %1 to position %2. This occured during cleaning steps." text2=""/>
+        <string id="67176003" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 4 minutes." text2=""/>
+        <string id="67176004" text1="Heated reagent tube: The tube cannot heat to target temperature in 15min. Please perform self-test and confirm the tube status." text2=""/>
+        <string id="67176005" text1="Voltage monitoring: DC 5V error." text2=""/>
+        <string id="67176006" text1="Voltage monitoring: DC 24V error." text2=""/>
+        <string id="67176007" text1="Air System: Releasing of pressure has failed during processing. Residual pressure is existent inside retort and/or air module. " text2=""/>
+        <string id="67176008" text1="Retort heating: Retort heating can not get to target temperature in 15 minutes. " text2=""/>
+        <string id="67176009" text1="Paraffin Oven: The user opened the paraffin oven cover during processing. This could potentially have caused the paraffin to solidify." text2=""/>
+        <string id="67176010" text1="Paraffin Oven: The user opened the paraffin oven cover before or after processing and potentially refilled paraffin." text2=""/>
+        <string id="67176011" text1="Air System: Pressure did not reach target value. The pressure reached max. %1 kPa. " text2=""/>
+        <string id="67176012" text1="Air System: Vacuum did not reach target value. The vacuum reached max. %1 kPa. " text2=""/>
+        <string id="67176013" text1="Remote / Local Alarm: Please check the connection of the external remote alarm system." text2=""/>
+        <string id="67176014" text1="Remote / Local Alarm: Please check the connection of the external local alarm system." text2=""/>
+        <string id="67176015" text1="Air System: Pressure did not reach target value during processing. The pressure reached max. %1 kPa." text2=""/>
+        <string id="67176016" text1="Air System: Vacuum did not reach target value during processing. The vacuum reached max. %1 kPa. " text2=""/>
+        <string id="67176017" text1="Filling of retort from station no. 1% failed during processing! Filling time exceeds 2 minutes." text2=""/>
+        <string id="67176018" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 2 minutes. " text2=""/>
 	</language>
 </strings>
