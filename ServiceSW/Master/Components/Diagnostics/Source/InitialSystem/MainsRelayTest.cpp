@@ -71,11 +71,10 @@ int CMainsRelayTest::Run(void)
 
     qDebug()<<"MainsRelayOn Get Current : "<<Current;
 
-
     if (Current>=SwitchOnCurrentLow && Current<=SwitchOnCurrentHigh) {
         (void)p_DevProc->MainRelaySetOnOff(false);
 
-        p_DevProc->Pause(1000);
+        p_DevProc->Pause(3000);
         (void)p_DevProc->RVGetCurrent(&Current);
         qDebug()<<"MainsRelayOff Get Current : "<<Current;
         (void)p_DevProc->RVStopHeating();
@@ -107,7 +106,7 @@ int CMainsRelayTest::Run(void)
 
         if (Current>=SwitchOnCurrentLow && Current<=SwitchOnCurrentHigh) {
 
-            p_DevProc->Pause(1000);
+            p_DevProc->Pause(3000);
             (void)p_DevProc->OvenGetCurrent(&Current, NULL);
             qDebug()<<"MainsRelayOff Get slave5 Current : "<<Current;
 
