@@ -2,6 +2,7 @@
 #define SVCDASHBOARDWIDGET_H
 
 #include <QWidget>
+#include <QPushButton>
 #include <QTimer>
 
 class QGraphicsScene;
@@ -22,7 +23,7 @@ public:
     ~CSVCDashboardWidget();
     
 private:
-    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos);
+    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos, bool Clickable = true);
     void paintEvent(QPaintEvent *p_PaintEvent);
     Ui::CSVCDashboardWidget *ui;
     QGraphicsScene *mp_Scene;
@@ -38,7 +39,14 @@ private:
     CGraphicsItemPart* mp_GV2;
     CGraphicsItemPart* mp_Pressure;
     CGraphicsItemPart* mp_RFV1;
+
     CGraphicsItemPart* mp_Filter;
+    CGraphicsItemPart* mp_Connect1;
+    CGraphicsItemPart* mp_Connect2;
+    CGraphicsItemPart* mp_Connect3;
+
+    QPushButton* mp_SelectBtn;
+    QPushButton* mp_ValveInfoBtn;
 
 private slots:
     void RetortSelected();

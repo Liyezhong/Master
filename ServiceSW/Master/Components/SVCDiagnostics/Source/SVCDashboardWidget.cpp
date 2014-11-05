@@ -2,7 +2,6 @@
 #include "ui_SVCDashboardWidget.h"
 #include <QPainter>
 #include <Global/Include/Utils.h>
-#include <QPushButton>
 #include <QGraphicsScene>
 #include "SVCDiagnostics/Include/GraphicsItemPart.h"
 
@@ -40,29 +39,61 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *parent) :
     mp_Pressure = CreatePart("Pressure", QPoint(615,75));
     mp_RFV1 = CreatePart("RFV1", QPoint(606, 160));
 
-    mp_Filter = CreatePart("Filter", QPoint(269, 80));
+    mp_Filter = CreatePart("Filter", QPoint(269, 80), false);
+    mp_Connect1 = CreatePart("ConnectPart", QPoint(500, 256), false);
+    mp_Connect2 = CreatePart("ConnectPart", QPoint(569, 256), false);
+    mp_Connect3 = CreatePart("ConnectPart", QPoint(517, 360), false);
 
     CONNECTSIGNALSLOT(mp_Retort, PartSelected(), this, RetortSelected());
 
-    //QPushButton* SelectBtn = new QPushButton;
-    //SelectBtn->setObjectName("selectBtn");
-    //SelectBtn->setText("");
+    QFont Font;
+    Font.setPointSize(10);
+    mp_SelectBtn    = new QPushButton(ui->graphicsView);
+    mp_ValveInfoBtn = new QPushButton(ui->graphicsView);
+//    QLabel *SelectBtn = new QLabel;
+    //SelectBtn->move(QPoint(115, 210));
+    mp_SelectBtn->setGeometry(131, 215, 102, 36);
+    mp_SelectBtn->setFont(Font);
+    //mp_SelectBtn->setObjectName("selectBtn");
+    mp_SelectBtn->setText(tr("Select Position"));
+    mp_SelectBtn->setBackgroundRole(QPalette::Shadow);
+
+    mp_ValveInfoBtn->setGeometry(380, 420, 180, 40);
+    Font.setPointSize(13);
+    mp_ValveInfoBtn->setFont(Font);
+    mp_ValveInfoBtn->setText(tr("Valve State Info"));
+    //QGraphicsProxyWidget* ProBtn = mp_Scene->addWidget(SelectBtn);
+    //SelectBtn->
+    //ProBtn->setGeometry(0,0, 160, 154);
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
 {
-    delete ui;
-    delete mp_Scene;
+    try {
+        delete ui;
+        delete mp_Scene;
+        delete mp_SelectBtn;
+        delete mp_ValveInfoBtn;
+    }
+    catch (...) {
+
+    }
 }
 
-CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos)
+CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos, bool Clickable)
 {
     QString normalImg = ":/Images/" + partResName + ".png";
-    QString disabledImg = ":/Images/" + partResName + "Disabled.png";
-    QString glowImg = ":/Images/" + partResName + "Glow.png";
-    CGraphicsItemPart* pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
-                                             QPixmap(disabledImg),
-                                             QPixmap(glowImg));
+    CGraphicsItemPart* pGraphicsItemPart = NULL;
+    if (Clickable) {
+        QString disabledImg = ":/Images/" + partResName + "Disabled.png";
+        QString glowImg = ":/Images/" + partResName + "Glow.png";
+        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
+                                                QPixmap(disabledImg),
+                                                QPixmap(glowImg));
+    }
+    else {
+        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg));
+    }
     mp_Scene->addItem(pGraphicsItemPart);
     pGraphicsItemPart->setPos(pos);
     return pGraphicsItemPart;

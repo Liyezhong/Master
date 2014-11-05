@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
+    <width>538</width>
     <height>462</height>
    </rect>
   </property>
@@ -38,7 +38,7 @@ Number</string>
         </property>
         <property name="text">
          <string>Recorded
-Pressure</string>
+Pressure(kPa)</string>
         </property>
        </widget>
       </item>
@@ -248,7 +248,7 @@ Number</string>
         </property>
         <property name="text">
          <string>Recorded
-Pressure</string>
+Pressure(kPa)</string>
         </property>
        </widget>
       </item>

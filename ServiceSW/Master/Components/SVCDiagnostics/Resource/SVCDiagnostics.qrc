@@ -36,5 +36,6 @@
         <file>Images/RFV1.png</file>
         <file>Images/RFV1Glow.png</file>
         <file>Images/Filter.png</file>
+        <file>Images/ConnectPart.png</file>
     </qresource>
 </RCC>
