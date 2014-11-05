@@ -220,7 +220,7 @@ void ImportExportThreadController::CreateAndInitializeObjects() {
         p_DeviceConfiguration = p_DeviceInterface->GetDeviceConfiguration();
 
         if (p_DeviceConfiguration != NULL) {
-            m_DeviceName = p_DeviceConfiguration->GetValue("DeviceName");
+            m_DeviceName = p_DeviceConfiguration->GetValue("DeviceName").replace(QRegExp("\\s"),"");
             m_SerialNumber = p_DeviceConfiguration->GetValue("SerialNumber");
             m_WorkStationMode = p_DeviceConfiguration->GetBoolValue("WorkstationMode");
         }
