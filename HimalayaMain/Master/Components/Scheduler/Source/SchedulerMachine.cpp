@@ -383,7 +383,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
     if (false == flag)
     {
-        Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_TISSUE_PROTECT_REPORT, 0, true);
+        Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, true);
         emit sigEnterIdleState();
     }
     else
