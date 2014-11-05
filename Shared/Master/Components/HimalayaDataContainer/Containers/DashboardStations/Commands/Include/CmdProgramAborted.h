@@ -51,7 +51,7 @@ public:
      *  \return from CmdProgramAborted
      */
     /****************************************************************************/
-    CmdProgramAborted(int Timeout, bool IsRetortContaminated);
+    CmdProgramAborted(int Timeout, bool IsContaminated);
     ~CmdProgramAborted();
     virtual QString GetName() const;
     /****************************************************************************/

@@ -336,7 +336,7 @@ QString CDataContainer::GetReagentName(QString ReagentID)
         }
     }
 
-    return NULL;
+    return QString("");
 }
 
 }// namespace DataManager

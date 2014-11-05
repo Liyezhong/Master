@@ -24,9 +24,9 @@ namespace MsgClasses {
 QString CmdProgramAborted::NAME = "MsgClasses::CmdProgramAborted";
 
 
-CmdProgramAborted::CmdProgramAborted(int Timeout, bool IsRetortContaminated) :
+CmdProgramAborted::CmdProgramAborted(int Timeout, bool IsContaminated) :
     Command(Timeout),
-    m_IsRetortContaminated(IsRetortContaminated)
+    m_IsRetortContaminated(IsContaminated)
 {
 }
 

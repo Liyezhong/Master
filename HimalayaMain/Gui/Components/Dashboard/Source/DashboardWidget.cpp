@@ -468,7 +468,7 @@ void CDashboardWidget::OnProgramCompleted()
 {
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
-
+    m_IsDrainingWhenPrgrmCompleted = false;
     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -1073,11 +1073,7 @@ void CDashboardWidget::RequestAsapDateTime()
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
 {
-    if (m_IsDrainingWhenPrgrmCompleted && !cmd.IsStart() && !cmd.IsSuck() && !cmd.NoCleaningProgram())
-    {
-        emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-        m_IsDrainingWhenPrgrmCompleted = false;
-    }
+   
 
     if (cmd.IsSuck() && cmd.IsStart())
     {
@@ -1095,7 +1091,7 @@ void CDashboardWidget::OnUserRoleChanged()
     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     return;
 
-    if (m_IsDrainingWhenPrgrmCompleted == true) {
+    if (m_IsDrainingWhenPrgrmCompleted) {
         ui->programPanelWidget->EnablePauseButton(false);
         ui->programPanelWidget->EnableStartButton(false);
         return;
