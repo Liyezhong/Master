@@ -46,7 +46,7 @@ public:
      *  \brief  Definition/Declaration of function CmdProgramAborted
      *
      *  \param Timeout = int type parameter
-     *  \param IsRetortContaminated =  Retort is Contaminated?
+     *  \param IsContaminated =  Retort is Contaminated?
      *
      *  \return from CmdProgramAborted
      */
