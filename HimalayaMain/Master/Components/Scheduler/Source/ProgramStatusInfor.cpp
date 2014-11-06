@@ -373,7 +373,6 @@ void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
     {
         Cmd = QString("echo %1:%2 >> %3").arg(key).arg(value).arg("../Settings/ProgramStatus.txt");
     }
-    qDebug()<<Cmd;
 //    FlushFile();
     system(Cmd.toStdString().c_str());
     (void)m_Status.insert(key,value);
