@@ -4052,6 +4052,7 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
 
     if (reportError9.instanceID != 0)
     {
+        LogDebug(QString("In RV heating, the curren:%1 over range").arg(reportError9.errorData));
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
