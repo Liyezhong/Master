@@ -181,5 +181,8 @@ const quint32 STR_SCHEDULER_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0401; ///< Dr
 /// Place holder for Service string for Error Handling
 /// SCHEDULER_BASE_ID + 0x0600 ~ SCHEDULER_BASE_ID + 0x06ff
 
+/// Place holder for stringID for Error Handling
+/// SCHEDULER_BASE_ID + 0x0700 ~ SCHEDULER_BASE_ID + 0x07ff
+
 } //end of Scheduler namespace
 #endif // SCHEDULEREVENTCODES_H

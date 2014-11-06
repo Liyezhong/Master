@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
         <language name="en">
-		<string id="103010000" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103010300" text1="Level sensor failed, please open retort lid and clean level sensor by recommend tool in user manual page XX, then close retort lid and press &quot;retry&quot; button." text2=""/>
-		<string id="103010312" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103015312" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015332" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015336" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015337" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="113015337" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>
-		<string id="103010462" text1="Please close retort lid and confirm the retry button." text2=""/>
-		<string id="103015462" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103020050" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103020060" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103020070" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103030001" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103030011" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103030012" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="101030021" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="101030022" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103030091" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103030092" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103040005" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103040006" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103040020" text1="Pressure test failed! Please remove paraffin residual at the sealing ring as well as on the upper part of the retort and closed the retort by confirming." text2=""/>
-		<string id="103045020" text1="Retry failed, Error ID %1! Please call for sevice and remove the specimen!" text2=""/>
-		<string id="103040163" text1="The station no X is filled insufficent! Please check filling level and correct them." text2=""/>
-		<string id="103040203" text1="Draining of Retort has failed! Please remove paraffin residual at the sealing ring as well as on the upper part of the retort and closed the retort by confirming &quot;OK&quot; button." text2=""/>
-		<string id="113040203" text1="Draining of retort to station 1% failed during cleaning! The max pressure is 2%Kpa. Potential reasons are sealing issues and malpositioning of rotary valve. Check for leakages on retort lid seal (e.g. through paraffin residues). Also check proper positioning of rotary valve." text2=""/>
-		<string id="103045203" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 		<string id="16843520" text1="Sound files for alarm are missing" text2=""/>
 		<string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
 		<string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
@@ -740,9 +712,9 @@
         <string id="67175962" text1="Retort heating: Temperature Sensor 3 out of range. This occured during processing." text2=""/>
         <string id="67175963" text1="Retort heating: Temperature Sensor 3 provides no signal. This occured during pre- test." text2=""/>
         <string id="67175964" text1="Retort heating: Temperature Sensor 3 provides no signal. This occured during self test at process start or during cleaning steps." text2=""/>
-        <string id="67175965" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during pre- test." text2=""/>
-        <string id="67175966" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during self test at process start or during cleaning steps." text2=""/>
-        <string id="67175967" text1="Retort heating: Self calibration of Temperature Sensor 1 & 2 failed. This occured during processing." text2=""/>
+        <string id="67175965" text1="Retort heating: Self calibration of Temperature Sensor 1 and 2 failed. This occured during pre- test." text2=""/>
+        <string id="67175966" text1="Retort heating: Self calibration of Temperature Sensor 1 and 2 failed. This occured during self test at process start or during cleaning steps." text2=""/>
+        <string id="67175967" text1="Retort heating: Self calibration of Temperature Sensor 1 and 2 failed. This occured during processing." text2=""/>
         <string id="67175968" text1="Paraffin oven heating: Top sensor is out of range." text2=""/>
         <string id="67175969" text1="Paraffin oven heating:  Bottom sensor 1 is out of range." text2=""/>
         <string id="67175970" text1="Paraffin oven heating: Bottom sensor 2 is out of range." text2=""/>
@@ -794,5 +766,34 @@
         <string id="67176016" text1="Air System: Vacuum did not reach target value during processing. The vacuum reached max. %1 kPa. " text2=""/>
         <string id="67176017" text1="Filling of retort from station no. 1% failed during processing! Filling time exceeds 2 minutes." text2=""/>
         <string id="67176018" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 2 minutes. " text2=""/>
+
+        <string id="67176192" text1="Error ID %1!  Draining time more than 2 minutes." text2=""/>
+        <string id="67176193" text1="Error ID %1!  Filling time more than 2 minutes." text2=""/>
+        <string id="67176194" text1="Error ID %1!  Sealing failed in dry scenario." text2=""/>
+        <string id="67176195" text1="Error ID %1!  Sealing failed in processing scenario." text2=""/>
+        <string id="67176196" text1="Error ID %1!  Wax bath oven cover open." text2=""/>
+        <string id="67176197" text1="Error ID %1! AC Voltage is not stable." text2=""/>
+        <string id="67176198" text1="Bottle check failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176199" text1="Bottle %1 seems to be insufficent filled. Please check bottle according to user manual. After that press &quot;Retry&quot; button." text2=""/>
+        <string id="67176200" text1="Draining of Retort has failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176201" text1="Error ID %1! Please call service!" text2=""/>
+        <string id="67176202" text1="Error ID %1! Exhaust system failed! Please inform service!" text2=""/>
+        <string id="67176203" text1="Error ID %1! Please call service!" text2=""/>
+        <string id="67176204" text1="Error ID %1! Please remove and protect the specimen. Please call service!" text2=""/>
+        <string id="67176205" text1="Error ID %1! Please restart the instrument as first option,if the problem occur again, Please call service!" text2=""/>
+        <string id="67176206" text1="Level sensor failed, please open retort lid and clean level sensor as recommend in the user manual, then close retort lid and press &quot;retry&quot; button." text2=""/>
+        <string id="67176207" text1="Local alarm system not connected! Please connect the device with local alarm system" text2=""/>
+        <string id="67176208" text1="Please close paraffin oven cover!" text2=""/>
+        <string id="67176209" text1="Please close the retort lid and confirm &quot;Retry&quot; button." text2=""/>
+        <string id="67176210" text1="Pressure test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
+        <string id="67176212" text1="The station no %1 is filled insufficent! Please check filling level, correct them and then press &quot;Retry&quot; button." text2=""/>
+        <string id="67176213" text1="Vacuum test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176214" text1="Power failure time is more than %1 minutes. Before power failure the protocol is in %2 step. Please remove the specimen and abort the protocol.Before start another protocol, please run cleaning protocol." text2=""/>
+        <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
+	<string id="67176216" text1="Tell user 300 seconds waiting time out, instrument are auto re-heating and filling safety reagents" text2=""/>
+	<string id="67176217" text1="Power failure failed! Please call service!" text2=""/>
+	<string id="67176218" text1="Error ID %1! Please call for service!The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+	<string id="67176219" text1="Error ID %1! Please call for service! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 	</language>
 </strings>
