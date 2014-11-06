@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file SVCLabel.h
  *
- *  \brief Custom button definition.
+ *  \brief Custom label definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2014-11-02
@@ -34,6 +34,7 @@ public:
 public:
     void setPos(int x, int y);
     void setPos(QPoint pos);
+    void setSize(int width, int height);
     void setText(const QString &text);
 
 private:

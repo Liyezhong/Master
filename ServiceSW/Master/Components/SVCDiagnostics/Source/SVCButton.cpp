@@ -54,3 +54,9 @@ void SVCButton::setPos(QPoint pos)
 {
     setGeometry(QRect(pos.x(), pos.y(), width, height));
 }
+
+void SVCButton::setSize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+}

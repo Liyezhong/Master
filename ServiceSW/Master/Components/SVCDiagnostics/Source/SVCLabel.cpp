@@ -65,5 +65,9 @@ void SVCLabel::setText(const QString &text)
     QLabel::setText("  " + text);
 }
 
-
+void SVCLabel::setSize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+}
 

@@ -34,6 +34,7 @@ public:
 public:
     void setPos(int x, int y);
     void setPos(QPoint pos);
+    void setSize(int width, int height);
 
 private:
     int width;
