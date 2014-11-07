@@ -195,6 +195,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportFillingTimeOut2Min(),this, OnReportFillingTimeOut2Min());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportDrainingTimeOut2Min(),this, OnReportDrainingTimeOut2Min());
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
                      this, ResetActiveCarbonFilterLifetime());
 
@@ -249,6 +250,15 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
     {
         RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
     }
+}
+
+void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
+{
+    LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
+             .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
+#if 0
+    RaiseError(0, DCL_ERR_DEV_INTER_SW_ERROR, m_CurrentScenario, true);
+#endif
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -1211,12 +1221,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             retCode = DCL_ERR_UNDEFINED;
         }
         cmdName = cmd->GetName();
-
-        // During HandleErrorState, we need also record the commands recevied from DeviceControl
-        RecvCommand_t recvCommand;
-        recvCommand.retCode = retCode;
-        recvCommand.cmdName = cmdName;
-        m_RecvCommandList.push_back(recvCommand);
     }
 
     if (CTRL_CMD_DRAIN_SR == ctrlCmd)
@@ -2645,15 +2649,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor local and remote alarm
-    if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus && (false == m_EnableWorkaround))
+    if (true == m_EnableWorkaround)
     {
-        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
-        m_CheckRemoteAlarmStatus = false;
-    }
-    if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus && (false == m_EnableWorkaround))
-    {
-        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
-        m_CheckLocalAlarmStatus = false;
+        if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
+        {
+            RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+            m_CheckRemoteAlarmStatus = false;
+        }
+        if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
+        {
+            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+            m_CheckLocalAlarmStatus = false;
+        }
     }
 
 

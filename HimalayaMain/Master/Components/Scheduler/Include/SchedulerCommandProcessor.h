@@ -304,6 +304,18 @@ signals:
     /****************************************************************************/
     void ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& deviceType);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Forward error information to IDeviceProcessing
+     *
+     *  \iparam instanceID = Instance identifier of this function module instance
+     *  \iparam usErrorGroup = Error group
+     *  \iparam usErrorID = Error ID
+     *  \iparam usErrorData = Additional error information
+     *  \iparam timeStamp = Error time
+     */
+    /****************************************************************************/
+    void ReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
 public slots:
     /****************************************************************************/
     /**

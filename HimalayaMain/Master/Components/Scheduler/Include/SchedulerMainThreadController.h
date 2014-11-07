@@ -246,7 +246,6 @@ typedef struct
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
-        QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
         bool m_hasParaffin;                                   ///< the program has paraffin
         bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
         bool m_ReleasePressureSucessOfSoakFinish;             ///< release pressure sucess
@@ -691,6 +690,19 @@ private slots:
           */
          /****************************************************************************/
          void OnPreTestDone();
+
+         /****************************************************************************/
+         /*!
+          *  \brief  Slot for reporting error from DeviceControl
+          *
+          *  \iparam instanceID = Instance identifier of this function module instance
+          *  \iparam usErrorGroup = Error group
+          *  \iparam usErrorID = Error ID
+          *  \iparam usErrorData = Additional error information
+          *  \iparam timeStamp = Error time
+          */
+         /****************************************************************************/
+         void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
 protected:
 
         /****************************************************************************/
@@ -863,9 +875,12 @@ protected:
                 {
                     m_CurErrEventID = EventID;
                 }
-                // For filling and draining states, we need clean up the command list container at first.
-                QVector<RecvCommand_t> emptyVector;
-                m_RecvCommandList.swap(emptyVector);
+                // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
+                if (EventID < 0x1000)
+                {
+                    LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
+                    EventID = DCL_ERR_DEV_INTER_SW_ERROR;
+                }
 
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
@@ -1218,14 +1233,6 @@ protected:
          */
         /****************************************************************************/
         void StopFillRsTissueProtect(const QString& StationID);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Get the command list from Device Control
-         *  \return Reference of received command list
-         */
-        /****************************************************************************/
-        QVector<RecvCommand_t> GetRecvCommandList() { return m_RecvCommandList; }
 
         /****************************************************************************/
         /*!

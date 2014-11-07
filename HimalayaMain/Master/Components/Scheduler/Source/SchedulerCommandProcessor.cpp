@@ -172,8 +172,8 @@ void SchedulerCommandProcessor<DP>::run4Slot()
                       this, DevProcConfigurationAckn(quint32, ReturnCode_t));
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(quint32, ReturnCode_t),
                       this, DevProcStartNormalOpModeAckn(quint32, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(quint32, quint16, quint16, quint16, const QDateTime &),
-                      this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportError(quint32, quint16, quint16, quint16, QDateTime),
+                      this, ReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDestroyFinished(), this, DeviceProcessDestroyed());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportFillingTimeOut2Min(), this, ReportFillingTimeOut2Min());
