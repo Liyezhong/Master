@@ -144,14 +144,25 @@
        <event id="500060100"    name="EVENT_PowerFailure"/>
   </group>
  <group name="Internal">
-       <event id="500070001"    name="EVENT_TISSUE_PROTECT_REPORT"/>
-       <event id="500060200"    name="DCL_ERR_DEV_POWERFAILURE_AFTER_ERRHANDLING_FAILED"/>
+       <event id="500070001"    name="EVENT_INTER_TISSUE_PROTECT_REPORT"/>
+       <event id="500070200"    name="EVENT_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED"/>
+       <event id="500070300"    name="EVENT_INTER_SW_ERROR"/>
   </group>
 </eventlist>
 
 <correspondinglist>
     <event eventid="500070001">
         <error errorid="520070001">
+            <scenario type="all"/>
+        </error>
+    </event>
+    <event eventid="500070200">
+        <error errorid="520070200">
+            <scenario type="all"/>
+        </error>
+    </event>
+    <event eventid="500070300">
+        <error errorid="520070300">
             <scenario type="all"/>
         </error>
     </event>
@@ -163,11 +174,6 @@
         <error errorid="520070003">
             <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="277"/>
-        </error>
-    </event>
-    <event eventid="500060200">
-        <error errorid="520070004">
-            <scenario type="all"/>
         </error>
     </event>
     <event eventid="500050501">
