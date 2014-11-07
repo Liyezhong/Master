@@ -439,7 +439,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
 
-    RaiseError(0, DCL_ERR_DEV_INTER_POWERFAILURE, scenario, true);
+    RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
     m_SchedulerMachine->SendErrorSignal();
 }
 

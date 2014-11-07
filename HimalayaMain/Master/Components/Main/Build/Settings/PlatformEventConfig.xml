@@ -1141,9 +1141,5 @@
 		<Event Code="" ErrorID="19333720" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_CONNECTED_ENTERPRISE_SERVE" LogLevel="Low" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19333720" ButtonType="" StatusBar=""/>
 		</Event>
-
-
-
-
 	</Source>
 </EventConfigure>

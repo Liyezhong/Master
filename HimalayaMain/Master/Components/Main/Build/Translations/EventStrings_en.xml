@@ -795,5 +795,6 @@
 	<string id="67176217" text1="Power failure failed! Please call service!" text2=""/>
 	<string id="67176218" text1="Error ID %1! Please call for service!The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 	<string id="67176219" text1="Error ID %1! Please call for service! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+	<string id="67176220" text1="SW encountered fatal error and will exit" text2=""/>
 	</language>
 </strings>

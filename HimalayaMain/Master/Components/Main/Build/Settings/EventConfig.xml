@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
 	<Source Name="Himalaya">
-		<Event Code="" ErrorID="520070002" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="520060002" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RC_ReHeating" NextStepOnFail="2" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="ACT" Action="RC_Restart"/>
 			<Step ID="2" Type="MSG" StringID="67176217" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="520070003" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="520070200" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176214" ButtonType="OK" NextStepOnTimeOut="1" TimeOut="5m" NextStepOnClickOK="3" StatusBar="YES"/>
 			<Step ID="1" Type="MSG" StringID="67176216" ButtonType="" StatusBar="" NextStepOnTimeOut="2" TimeOut="1s"/>
 			<Step ID="2" Type="ACT" Action="RC_ReHeating" NextStepOnFail="6" NextStepOnSuccess="4"/>
@@ -14,6 +14,10 @@
 			<Step ID="4" Type="ACT" Action="RS_Tissue_Protect"/>
 			<Step ID="5" Type="ACT" Action="RC_Restart"/>
 			<Step ID="6" Type="MSG" StringID="67176217" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="520070300" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="Main">
+			<Step ID="0" Type="MSG" StringID="67176220" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="1" Type="ACT" Action="RS_SWExit"/>
 		</Event>
 		<Event Code="" ErrorID="520070004" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176217" ButtonType="OK" StatusBar="YES"/>
