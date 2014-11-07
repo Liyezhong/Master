@@ -301,12 +301,18 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
 {
     QString selectedProgramId = cmd.GetProgramID();
     ui->stackedWidget->setCurrentIndex(1);
-    QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(selectedProgramId)->GetIcon() + ".png";
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(selectedProgramId);
+    if (!pProgram)
+        return;
+    QString strIconName = ":/HimalayaImages/Icons/Program/"+ pProgram->GetIcon() + ".png";
     ui->programRunningPanel->SetPanelIcon(strIconName);
-    QString selectedProgramName = mp_ProgramList->GetProgram(selectedProgramId)->GetName();
+
+    QString selectedProgramName = pProgram->GetName();
     ui->programRunningPanel->SetPanelTitle(selectedProgramName);
     ui->programRunningPanel->EnableProgramDetailButton(true);
-    ui->programRunningPanel->OnCurrentProgramStepInforUpdated(selectedProgramName, 0,
+    QString strReagentID = pProgram->GetProgramStep(cmd.GetStepIndex())->GetReagentID();
+    const DataManager::CReagent *p_Reagent = mp_DataConnector->ReagentList->GetReagent(strReagentID);
+    ui->programRunningPanel->OnCurrentProgramStepInforUpdated(p_Reagent->GetReagentName(), 0,
                                                               cmd.GetRemainingTime(), cmd.GetStepIndex());
 }
 
