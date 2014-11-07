@@ -138,7 +138,7 @@ void CDataManagementWidget::DisplaySelectionDialog(QStringList FileList)
                           QStringList() << "Service" << "User");
     FileSelection.SetFileList(FileList);
     FileSelection.setModal(true);
-    FileSelection.SetFileSelectionPanelSize(800, 600);
+    FileSelection.SetFileSelectionPanelSize(870, 600);
     (void) FileSelection.exec();
 }
 
