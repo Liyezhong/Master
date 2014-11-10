@@ -62,6 +62,7 @@ public:
         m_pSchedulerMainController->DataManager(mp_DataManager);
         dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(m_pSchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
+        sleep(2);
         //Set google-mock expections
         EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
   //              .Times(AtLeast(1))
@@ -124,7 +125,7 @@ public:
 
         EXPECT_CALL(*mp_IDeviceProcessing, GetSensorCurrent(_,_))
                 .Times(AtLeast(1))
-                .WillRepeatedly(Return(2400));
+                .WillRepeatedly(Return(190));
 
         EXPECT_CALL(*mp_IDeviceProcessing, IDGetSlaveVoltage(_))
                 .Times(AtLeast(1))
@@ -132,7 +133,7 @@ public:
 
         EXPECT_CALL(*mp_IDeviceProcessing, IDGetSlaveCurrent(_))
                 .Times(AtLeast(1))
-                .WillRepeatedly(Return(2400));
+                .WillRepeatedly(Return(0));
 
         EXPECT_CALL(*mp_IDeviceProcessing, OvenGetHeatingStatus(_))
                 .Times(AtLeast(1))
@@ -154,7 +155,7 @@ public:
 
         EXPECT_CALL(*mp_IDeviceProcessing, PerGetRecentAlarmStatus(_))
                 .Times(AtLeast(1))
-                .WillRepeatedly(Return(1));
+                .WillRepeatedly(Return(0));
     }
 
     ~TestSchedIDPExchange()
@@ -218,7 +219,7 @@ void TestSchedIDPExchange::UTAll()
     mp_IDeviceProcessing->InitializationFinished();
     waitTime(2);
     mp_IDeviceProcessing->ConfigurationFinished();
-    waitTime(10);
+    waitTime(20);
     emit SendStop();
 }
 

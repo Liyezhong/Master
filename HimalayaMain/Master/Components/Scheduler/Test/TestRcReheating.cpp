@@ -1,10 +1,10 @@
 // ================================================================================================
 /*! @file TestHeatingStrategy.cpp
  *
- *  @brief Implementation of class Scheduler::TestHeatingStrategy.
+ *  @brief Implementation of class Scheduler::TestRcReheating.
  *
  *  $Version:   $ 0.1
- *  $Date:      $ 09.05.2014
+ *  $Date:      $ 2014-11-5
  *  $Author:    $ Shufa Li
  *
  *  @b Company:
@@ -20,13 +20,12 @@
 #include <QTest>
 #include <gmock/gmock.h>
 
-#include "Scheduler/Include/HeatingStrategy.h"
-
-#include "HimalayaMasterThread/Include/ThreadIDs.h"
+#include "Scheduler/Include/RcReHeating.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "HimalayaMasterThread/Include/ThreadIDs.h"
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 
@@ -37,16 +36,51 @@ using::testing::Lt;
 
 namespace Scheduler {
 
-/****************************************************************************/
-/**
- * \brief Test class for TestHeatingStrategy class.
- */
-/****************************************************************************/
-class TestHeatingStrategy : public QObject {
+class CMockRcReheating : public CRcReHeating{
     Q_OBJECT
 public:
-    TestHeatingStrategy();
-    ~TestHeatingStrategy();
+    CMockRcReheating(SchedulerMainThreadController* SchedController)
+        :CRcReHeating(SchedController)
+    {
+    }
+
+    void EmitSigTemperatureControlOn()
+    {
+        emit SigTemperatureControlOn();
+    }
+
+    void EmitSigTemperatureSensorsChecking()
+    {
+        emit SigTemperatureSensorsChecking();
+    }
+
+    void EmitSigGetRVPosition()
+    {
+        emit SigGetRVPosition();
+    }
+
+    void EmitSigDrainCurrentReagent()
+    {
+        emit SigDrainCurrentReagent();
+    }
+
+    void EmitTaskDone(bool flag)
+    {
+        emit TasksDone(flag);
+    }
+
+    ~CMockRcReheating()
+    {
+    }
+
+
+};
+
+class TestRcReheating : public QObject {
+    Q_OBJECT
+public:
+    TestRcReheating();
+    ~TestRcReheating();
 
 private slots:
     void initTestCase();
@@ -57,15 +91,15 @@ private slots:
     void UTAllCase();
 private:
     Himalaya::HimalayaMasterThreadController*   mp_HMThreadController;
-    DataManager::CDataManager*                  mp_DataManager;
     SchedulerMainThreadController*              mp_SchedulerMainController;
-    HeatingStrategy*                            mp_HeatingStrategy;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
+    DataManager::CDataManager*                  mp_DataManager;
+    CMockRcReheating*                           mp_ReHeating;
 
-}; // end class TestHeatingStrategy
+}; // end class TestRcReheating
 
 
-TestHeatingStrategy::TestHeatingStrategy()
+TestRcReheating::TestRcReheating()
     :mp_IDeviceProcessing(new MockIDeviceProcessing())
     ,mp_SchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
 {
@@ -74,13 +108,12 @@ TestHeatingStrategy::TestHeatingStrategy()
     mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
     mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
     mp_SchedulerMainController->DataManager(mp_DataManager);
-
     dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
-    mp_HeatingStrategy = new HeatingStrategy(mp_SchedulerMainController, mp_SchedulerMainController->GetSchedCommandProcessor(), mp_DataManager);
+    mp_ReHeating = new CMockRcReheating(mp_SchedulerMainController);
 }
 
-TestHeatingStrategy::~TestHeatingStrategy()
+TestRcReheating::~TestRcReheating()
 {
     delete mp_HMThreadController;
     mp_HMThreadController = NULL;
@@ -88,69 +121,45 @@ TestHeatingStrategy::~TestHeatingStrategy()
     delete mp_DataManager;
     mp_DataManager = NULL;
 
-    delete mp_HeatingStrategy;
-    mp_HeatingStrategy = NULL;
-
     delete mp_IDeviceProcessing;
     mp_IDeviceProcessing = NULL;
+
+    delete mp_ReHeating;
+    mp_ReHeating = NULL;
 }
 
-void TestHeatingStrategy::UTAllCase()
+void TestRcReheating::UTAllCase()
 {
-    HardwareMonitor_t strctHWMonitor;
-    strctHWMonitor.TempRTBottom1 = 0.0;
-    strctHWMonitor.TempRTBottom2 = 0.0;
-    strctHWMonitor.TempOvenBottom1 = 0.0;
-    strctHWMonitor.TempOvenBottom2 = 0.0;
-    strctHWMonitor.PressureAL = 0.0;
-    strctHWMonitor.TempALLevelSensor = 0.0;
-    strctHWMonitor.TempALTube1 = 0.0;
-    strctHWMonitor.TempALTube2 = 0.0;
-    strctHWMonitor.TempRV1 = 0.0;
-    strctHWMonitor.TempRV2 = 0.0;
-    strctHWMonitor.TempRTSide = 0.0;
-    strctHWMonitor.TempOvenTop = 0.0;
-    strctHWMonitor.OvenLidStatus = 0;
-    strctHWMonitor.RetortLockStatus = 0;
-    qint32 scenario = 0;
+    if(mp_ReHeating)
+    {
+        mp_ReHeating->SetScenario(200);
+        quint32 scenario = mp_ReHeating->GetScenario();
+        QVERIFY(scenario == 200);
 
-    //test set the temperature
-    scenario = 251;
-    ReturnCode_t ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-    ASSERT_EQ(ret, DCL_ERR_FCT_CALL_SUCCESS);
+        mp_ReHeating->SetNeedRunCleaning(false);
+        bool ret = mp_ReHeating->GetNeedRunCleaning();
+        QVERIFY(!ret);
 
-    //Test The current temperature exceeds max temperature for each sensor
-//    strctHWMonitor.TempALLevelSensor = 135.0;
-//    scenario = 1;
-//    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-//    ASSERT_EQ(ret, DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
+        mp_ReHeating->SetReagentID("RG1");
+        QString tmp = mp_ReHeating->GetReagentID();
+        QCOMPARE(tmp, QString("RG1"));
 
-//    ResetTheSensor(strctHWMonitor);
-//    strctHWMonitor.TempOvenTop = 133.0;
-//    scenario = 4;
-//    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-//    ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL);
+        mp_ReHeating->EmitSigTemperatureControlOn();
+        mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
+        //usleep(500);
 
-//    ResetTheSensor(strctHWMonitor);
-//    strctHWMonitor.TempOvenBottom1 = 133.0;
-//    scenario = 200;
-//    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-//    ASSERT_EQ(ret, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL);
+        mp_ReHeating->EmitSigTemperatureSensorsChecking();
+        mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
 
-//    ResetTheSensor(strctHWMonitor);
-//    strctHWMonitor.TempRV1 = 129.0;
-//    scenario = 200;
-//    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-//    ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE);
+        mp_ReHeating->EmitSigGetRVPosition();
+        mp_ReHeating->HandleWorkFlow("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
 
-//    ResetTheSensor(strctHWMonitor);
-//    strctHWMonitor.TempALTube2 = 133.0;
-//    scenario = 200;
-//    ret = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, scenario);
-//    ASSERT_EQ(ret, DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE);
+        mp_ReHeating->EmitSigDrainCurrentReagent();
+        mp_ReHeating->HandleWorkFlow("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
+    }
 }
 
-void TestHeatingStrategy::initTestCase()
+void TestRcReheating::initTestCase()
 {
     mp_SchedulerMainController->CreateAndInitializeObjects();
     sleep(1);
@@ -190,30 +199,30 @@ void TestHeatingStrategy::initTestCase()
     mp_IDeviceProcessing->ConfigurationFinished();
 }
 
-void TestHeatingStrategy::init()
+void TestRcReheating::init()
 {
 }
 
-void TestHeatingStrategy::cleanup()
+void TestRcReheating::cleanup()
 {
 }
 
-void TestHeatingStrategy::cleanupTestCase()
+void TestRcReheating::cleanupTestCase()
 {
 }
 
 } // end namespace Scheduler
 
-//QTEST_MAIN(Scheduler::TestHeatingStrategy)
+//QTEST_MAIN(Scheduler::TestRcReheating)
 
 int main(int argc, char*argv[])
 {
     ::testing::GTEST_FLAG(throw_on_failure) = true;
     ::testing::InitGoogleMock(&argc, argv);
     QCoreApplication app(argc, argv);
-    Scheduler::TestHeatingStrategy tc;
+    Scheduler::TestRcReheating tc;
     return QTest::qExec(&tc, argc, argv);
 }
 
-#include "TestHeatingStrategy.moc"
+#include "TestRcReheating.moc"
 

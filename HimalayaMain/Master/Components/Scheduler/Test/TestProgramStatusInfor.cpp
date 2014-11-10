@@ -102,6 +102,12 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     ProStatus.SetProgramID("");
     QVERIFY(ProStatus.IsProgramFinished());
 
+    ProStatus.SetLastReagentGroup("RG1");
+    QCOMPARE(ProStatus.GetLastReagentGroup(), QString("RG1"));
+
+    ProStatus.SetErrorFlag(0);
+    QVERIFY(ProStatus.GetErrorFlag()==0);
+
     quint64 OneHour = 60 * 60 * 1000;
     quint64 TimeLimit = 12 * OneHour;
     quint64 HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
