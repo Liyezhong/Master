@@ -170,9 +170,7 @@ public:
     CProgramSettings* ProgramSettings;         ///<! container for ProgramSettings
     CInstrumentHistory *InstrumentHistory;                //!< Container for Instrument History
     IVerifierInterface* SpecialVerifierGroupA; //!< Special verifier for group A
-    IVerifierInterface* SpecialVerifierGroupB; //!< Special verifier for group B
     IVerifierInterface* SpecialVerifierGroupC; //!< Special verifier for group C
-    IVerifierInterface* SpecialVerifierGroupD; //!< Special verifier for group D
 };
 
 } // namespace DataManager

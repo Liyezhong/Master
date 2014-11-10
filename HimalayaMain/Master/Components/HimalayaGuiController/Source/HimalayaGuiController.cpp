@@ -79,7 +79,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h>
-#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h>
 
 
@@ -359,8 +358,6 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterExternalMessage<MsgClasses::CmdQuitAppShutdown, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdQuitAppShutdown>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdownReply, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdQuitAppShutdownReply>,this);
     //SW Update
     RegisterExternalMessage<NetCommands::CmdSWUpdate, HimalayaGui::HimalayaGuiController>
                 (&HimalayaGuiController::ForwardCmdFromExternalProcess<NetCommands::CmdSWUpdate>, this);

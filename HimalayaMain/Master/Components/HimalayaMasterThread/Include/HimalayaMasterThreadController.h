@@ -47,8 +47,6 @@
 #include <NetCommands/Include/CmdGuiInit.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
 #include <DeviceControl/Include/Interface/IDeviceProcessing.h>
-
-#include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
 #include <HimalayaDataManager/Include/DataManager.h>
 #include <HimalayaMasterThread/Include/ThreadIDs.h>
 #include <Threads/Include/PlatformThreadIDs.h>
@@ -140,7 +138,6 @@ private:
     bool                            m_RemoteCareExportRequestInitiated;     //!< Request received from export and initiated
 
     bool m_Simulation;  ///<  Enable/disable simulation thread controller. \todo Remove later
-    ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel             m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                             m_ControllerCreationFlag;               ///< True if controllers are created, False if not
     CurrentUserActionState_t         m_CurrentUserActionState;               ///< This variable holds the current idle state- e.g. BLG, ImportExport
@@ -467,16 +464,6 @@ protected:
      */
     /****************************************************************************/
     virtual void InitiateShutdown(bool Reboot = false);
-
-    /****************************************************************************/
-    /**
-     * \brief
-     *
-     * \iparam CommandChannel
-     *
-     */
-    /****************************************************************************/
-    virtual void SendContainersTo(Threads::CommandChannel &CommandChannel);
 
     /****************************************************************************/
     /*!

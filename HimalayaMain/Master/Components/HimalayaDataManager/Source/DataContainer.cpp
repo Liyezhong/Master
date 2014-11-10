@@ -33,7 +33,6 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupA.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"
-#include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaSettingsVerifier.h"
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 
@@ -50,9 +49,7 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
     ProgramSettings(NULL),
     InstrumentHistory(NULL),
     SpecialVerifierGroupA(NULL),
-    SpecialVerifierGroupB(NULL),
-    SpecialVerifierGroupC(NULL),
-    SpecialVerifierGroupD(NULL)
+    SpecialVerifierGroupC(NULL)
 {
     if (!InitializeContainers()) {
         qDebug() << "CDataContainer::Constructor / InitContainers failed";
@@ -140,16 +137,9 @@ bool CDataContainer::InitializeContainers()
         SpecialVerifierGroupC = new CSpecialVerifierGroupC(ReagentList, SettingsInterface);
     }
 
-    /*if (SpecialVerifierGroupD == NULL) {
-        SpecialVerifierGroupD = new CSpecialVerifierGroupD(StationList, StationMatrix);
-    }
-*/
-
     (void)ProgramList->AddVerifier(SpecialVerifierGroupA);
     // add required special verifiers for the station list
     (void)StationList->AddVerifier(SpecialVerifierGroupA);
-    (void)StationList->AddVerifier(SpecialVerifierGroupD);
-
     (void)SettingsInterface->AddVerifier(SpecialVerifierGroupC);
 
 
@@ -170,9 +160,7 @@ bool CDataContainer::DeinitializeContainers()
     delete ReagentGroupColorList;
     delete InstrumentHistory;
     delete SpecialVerifierGroupA;
-    delete SpecialVerifierGroupB;
     delete SpecialVerifierGroupC;
-    delete SpecialVerifierGroupD;
     delete ProgramSettings;
 
     return true;

@@ -68,7 +68,6 @@ inline bool operator <(const FunctionKey_t& key1,const FunctionKey_t& key2)
 /****************************************************************************/
 class CProgramSettings: public CDataContainerBase
 {
-    friend class CProgramSettingsVerifier;
 
 public:
     CProgramSettings();

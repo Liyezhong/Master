@@ -118,8 +118,6 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdQuitAppShutdownReply>(&CDataConnector::AppQuitSystemShutdownReplyHandler, this);
-
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdLanguageFile>(&CDataConnector::LanguageFileHandler, this);
@@ -1844,20 +1842,6 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
         {
             mp_MesgBoxManager->EnableOKButton();
         }
-    }
-}
-
-void CDataConnector::AppQuitSystemShutdownReplyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)
-{
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    if (DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN == Command.QuitAppShutdownActionType())
-    {
-        mp_MessageDlg->SetTitle(m_strInformation);
-        mp_MessageDlg->SetText(m_strTurnOffSwitch);
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->HideButtonsOneAndTwo();
-        mp_MessageDlg->show();
     }
 }
 

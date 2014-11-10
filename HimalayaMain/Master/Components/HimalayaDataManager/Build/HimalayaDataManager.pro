@@ -6,8 +6,6 @@ TARGET = HimalayaDataManager
 INCLUDEPATH += ../../../../../../Platform/Common/Components
 
 HEADERS +=  ../Include/*.h \
-            ../CommandInterface/Include/*.h \
-            ../Commands/Include/*.h
+            ../CommandInterface/Include/*.h
 SOURCES +=  ../Source/*.cpp \
-            ../CommandInterface/Source/*.cpp \
-            ../Commands/Source/*.cpp
+            ../CommandInterface/Source/*.cpp

@@ -50,7 +50,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
-#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
 #include <NetCommands/Include/CmdSWUpdate.h>
 
@@ -874,17 +873,6 @@ private:
      */
     /****************************************************************************/
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdLockStatus & Command);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function AppQuitSystemShutdownRelyHandler
-     *
-     *  \param Ref = Global::tRefType type parameter
-     *  \param Command =  MsgClasses::CmdQuitAppShutdownReply type parameter
-     *
-     *  \return from AppQuitSystemShutdownRelyHandler
-     */
-    /****************************************************************************/
-    void AppQuitSystemShutdownReplyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
     void RecoveryFromPowerFailureHandler(Global::tRefType Ref, const MsgClasses::CmdRecoveryFromPowerFailure & Command);
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);

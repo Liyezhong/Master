@@ -43,7 +43,6 @@
 #include <HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h>
 
 #include <DataManager/Containers/Stations/Include/StationBase.h>
-#include <HimalayaDataManager/Commands/Include/CmdStationDataContainer.h>
 #include <NetCommands/Include/CmdExternalProcessState.h>
 #include <DeviceCommandProcessor/Include/Commands/CmdDeviceProcessingInit.h>
 #include <DeviceCommandProcessor/Include/Commands/CmdDeviceProcessingCleanup.h>
@@ -82,7 +81,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
@@ -118,7 +116,6 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_RemoteCareExportRequestInitiated(false),
  // m_Simulation(true),
     m_Simulation(false),
-    m_ProgramStartableManager(this),
     m_AuthenticatedLevel(Global::OPERATOR),
     m_ControllerCreationFlag(false),
     m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
@@ -192,8 +189,6 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
                       this, SWUpdateProgress(bool));
     CONNECTSIGNALSLOT(this, UpdateSoftwareFromRC(), mp_SWUpdateManager, OnSWUpdateFromRC());
 
-    //Initialize program Startable manager
-    m_ProgramStartableManager.Init();
     //Initialize objects in Master and base threads.
     SetSWVersion(mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
     MasterThreadController::CreateAndInitializeObjects();
@@ -366,9 +361,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdParaffinMeltPointChanged>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdUpdateProgramEndTime>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdRecoveryFromPowerFailure>(&m_CommandChannelGui);
-    //RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdownReply>(&m_CommandChannelGui);
-
-//    RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
     // -> Datalogging
     RegisterCommandForRouting<NetCommands::CmdDayRunLogRequest>(&m_CommandChannelDataLogging);    
@@ -609,16 +601,6 @@ void HimalayaMasterThreadController::SendXML() {
 bool HimalayaMasterThreadController::IsCommandAllowed(const Global::CommandShPtr_t &Cmd) {
 
     return EventHandler::StateHandler::Instance().isAllowed(Cmd);
-}
-
-
-void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &rCommandChannel) {
-    Q_ASSERT(mp_DataManager);
-    if (!mp_DataManager)
-        return;
-
-    (void)SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
-                                                                                *mp_DataManager->GetReagentList())), rCommandChannel);
 }
 
 
