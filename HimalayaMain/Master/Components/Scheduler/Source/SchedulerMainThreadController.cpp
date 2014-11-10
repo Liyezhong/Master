@@ -75,8 +75,9 @@
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include <unistd.h>
-#include <Global/Include/SystemPaths.h>
+#include "Global/Include/SystemPaths.h"
 #include "Global/Include/Utils.h"
+#include "Global/Include/Commands/CmdShutDown.h"
 #include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
 
 using namespace DataManager;
@@ -291,6 +292,15 @@ void SchedulerMainThreadController::OnAcknowledge(Global::tRefType Ref, const Gl
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
+
+    if (CTRL_CMD_RS_SWEXIT == newControllerCmd)
+    {
+        //send shutdown command to MasterThreadController
+        SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new Global::CmdShutDown(true)));
+        m_TickTimer.stop();
+        m_SchedulerCommandProcessor->ShutDownDevice();
+        return;
+    }
 
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
@@ -1663,9 +1673,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_RV_MOVETOSEALPOSITION;
         }
-        if(cmd == "rs_swexit")
-        {
-        }
         if (cmd == "rs_checkremotealarmstatus")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -1697,6 +1704,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             case -1:
                 return  CTRL_CMD_ALARM_ALL_OFF;
             }
+        }
+        if(cmd == "rs_swexit")
+        {
+            return CTRL_CMD_RS_SWEXIT;
         }
     }
     return CTRL_CMD_UNKNOWN;
