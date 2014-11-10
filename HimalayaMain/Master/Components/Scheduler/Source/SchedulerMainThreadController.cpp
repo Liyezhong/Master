@@ -137,7 +137,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
     (void)m_ProgramStatusInfor.ReadProgramStatusFile();
 
-    m_EnableWorkaround = Global::Workaroundchecking("ENABLE_ALARM");
+    m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -1659,6 +1659,9 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_RV_MOVETOSEALPOSITION;
         }
+        if(cmd == "rs_swexit")
+        {
+        }
         if (cmd == "rs_checkremotealarmstatus")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -2649,7 +2652,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor local and remote alarm
-    if (true == m_EnableWorkaround)
+    if (false == m_DisableAlarm)
     {
         if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
         {
@@ -4059,7 +4062,7 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
 
     if (reportError9.instanceID != 0)
     {
-        LogDebug(QString("In RV heating, the curren:%1 over range").arg(reportError9.errorData));
+        LogDebug(QString("In RV heating error state, the current is :%1").arg(reportError9.errorData));
         RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }

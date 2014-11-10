@@ -258,7 +258,7 @@ typedef struct
         bool    m_StopFilling;                                ///< When restart filling, need stop filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
-        bool    m_EnableWorkaround;                           ///< enable workaround or not
+        bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
 
     private:

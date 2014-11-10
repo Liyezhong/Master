@@ -361,7 +361,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
-    m_EnableWorkaround = Global::Workaroundchecking("LOWER_PRESSURE");
+    m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -1751,7 +1751,7 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
                 QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
                 RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
                 cmd->SetRVPosition((quint32)(tubePos));
-                if (m_EnableWorkaround)
+                if (m_EnableLowerPressure)
                 {
                     cmd->SetDrainPressure(20.0);
                 }
