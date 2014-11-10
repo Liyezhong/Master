@@ -23,26 +23,41 @@
 SVCButton::SVCButton(bool isBig, QWidget *parent)
     : QPushButton(parent)
 {
+    QFont Font;
+    Font.setWeight(QFont::Black);
     if (isBig) {
-        setStyleSheet("QPushButton { background: url(:/Images/Button2) }"); // big background
+        Font.setPointSize(14);
+        setFont(Font);
+        setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }"); // big background
         width = 194;
         height = 44;
     } else {
-        setStyleSheet("QPushButton { background: url(:/Images/Button1) }"); // little
+        Font.setPointSize(9);
+        setFont(Font);
+        setStyleSheet("QPushButton { border-image: url(:/Images/Button1) }"); // little
         width = 97;
-        height = 26;
+        height = 28;
     }
-    setFont(QFont("WenQuanYi Zen Hei", 12, QFont::Bold));
+    //setAutoFillBackground(true);
+    setFocusPolicy(Qt::NoFocus);
 }
 
 SVCButton::SVCButton(const QString &text, bool isBig, QWidget *parent)
     : QPushButton(text, parent)
 {
-    if (isBig)
-        setStyleSheet("QPushButton { background: url(:/Images/Button2) }"); // big background
-    else
-        setStyleSheet("QPushButton { background: url(:/Images/Button1) }"); // little
-    setFont(QFont("WenQuanYi Zen Hei", 12, QFont::Bold));
+    QFont Font;
+    Font.setWeight(QFont::Bold);
+    if (isBig) {
+        Font.setPointSize(14);
+        setFont(Font);
+        setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }"); // big background
+    }
+    else {
+        Font.setPointSize(9);
+        setFont(Font);
+        setStyleSheet("QPushButton { border-image: url(:/Images/Button1) }"); // little
+   }
+   setFocusPolicy(Qt::NoFocus);
 }
 
 void SVCButton::setPos(int x, int y)

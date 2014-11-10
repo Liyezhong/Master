@@ -35,7 +35,7 @@ public:
     void setPos(int x, int y);
     void setPos(QPoint pos);
     void setSize(int width, int height);
-    void setText(const QString &text);
+    //void setText(const QString &text);
 
 private:
     int width;

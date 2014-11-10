@@ -38,8 +38,9 @@
         <file>Images/Filter.png</file>
         <file>Images/ConnectPart.png</file>
         <file>Images/Label2.png</file>
-        <file>Images/Lable1.png</file>
+        <file>Images/Label1.png</file>
         <file>Images/Button2.png</file>
         <file>Images/Button1.png</file>
+        <file>Images/Line1.png</file>
     </qresource>
 </RCC>

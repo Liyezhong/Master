@@ -24,26 +24,27 @@ SVCLabel::SVCLabel(bool isBig, QWidget *parent, Qt::WindowFlags f)
 	: QLabel(parent, f)
 {
     if (isBig) {
-        setStyleSheet("QLabel { background: url(:/Images/Label2) }"); // big background
+        setStyleSheet("QLabel { border-image: url(:/Images/Label2) }"); // big background
         width = 95;
         height = 14;
     } else {
-        setStyleSheet("QLabel { background: url(:/Images/Label1) }"); // little
+        setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
         width = 40;
         height = 14;
     }
-    setFont(QFont("WenQuanYi Zen Hei", 9, QFont::Bold));
+    //setAlignment(Qt::AlignHCenter);
+    setFont(QFont("WenQuanYi Zen Hei", 8, QFont::Bold));
 }
 
 SVCLabel::SVCLabel(const QString &text, bool isBig, QWidget *parent, Qt::WindowFlags f)
 	: QLabel(text, parent, f)
 {
     if (isBig) {
-        setStyleSheet("QLabel { background: url(:/Images/Label2) }"); // big background
+        setStyleSheet("QLabel { border-image: url(:/Images/Label2) }"); // big background
         width = 95;
         height = 14;
     } else {
-        setStyleSheet("QLabel { background: url(:/Images/Label1) }"); // little
+        setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
         width = 40;
         height = 14;
     }
@@ -60,11 +61,12 @@ void SVCLabel::setPos(QPoint pos)
     setGeometry(QRect(pos.x(), pos.y(), width, height));
 }
 
+/*
 void SVCLabel::setText(const QString &text)
 {
     QLabel::setText("  " + text);
 }
-
+*/
 void SVCLabel::setSize(int width, int height)
 {
     this->width = width;
