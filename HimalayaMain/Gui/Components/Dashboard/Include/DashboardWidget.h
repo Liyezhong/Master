@@ -174,6 +174,7 @@ private:
     QString m_strTissueProtectPassed;
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
+    QString m_PowerFailureBoxTitle;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
@@ -255,6 +256,13 @@ private slots:
      */
     /****************************************************************************/
     void OnRetortCoverOpen();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnPowerFailureMsg
+     */
+    /****************************************************************************/
+    void OnPowerFailureMsg();
 
     /****************************************************************************/
     /*!

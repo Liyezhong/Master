@@ -153,6 +153,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PreTestDone(),
                       ui->programPanelWidget, OnPreTestDone());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, PowerFailureMsg(),
+                      this, OnPowerFailureMsg());
+
     CONNECTSIGNALSLOT(this, SwitchToFavoritePanel(),
                       ui->programPanelWidget, SwitchToFavoritePanel());
 
@@ -327,6 +330,22 @@ void CDashboardWidget::OnRetortCoverOpen()
     if (mp_MessageDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_RETORT_COVER_OPEN);
+        return;
+    }
+}
+
+void CDashboardWidget::OnPowerFailureMsg()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Critical);
+    mp_MessageDlg->SetTitle(CommonString::strOK);
+    QString strTemp(m_PowerFailureBoxTitle);
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+
+    if (mp_MessageDlg->exec())
+    {
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_POWER_FAILURE_MSG);
         return;
     }
 }
@@ -1037,7 +1056,7 @@ void CDashboardWidget::RetranslateUI()
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Porgam will be delayed for some mintues in the first step as the paraffin is not melted completly. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
-    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, please take out of tissues", 0, QApplication::UnicodeUTF8);
+    m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover was opened, please close it and then click \"Yes\"", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click \"OK\"", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
@@ -1051,6 +1070,7 @@ void CDashboardWidget::RetranslateUI()
     //m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the total number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
+    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Tell user 300 seconds waiting time out, instrument are auto re-heating and filling safety reagents", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)

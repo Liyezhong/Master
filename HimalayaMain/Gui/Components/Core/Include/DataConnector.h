@@ -604,6 +604,13 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal PowerFailureMsg
+     */
+    /****************************************************************************/
+    void PowerFailureMsg();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal ProgramAborted
      *  \param  IsRetortContaminated = is retort contaminated?
      */

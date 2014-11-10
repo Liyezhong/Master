@@ -1518,6 +1518,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RETORT_COVER_OPEN;
         }
+        if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_POWER_FAILURE_MSG)
+        {
+            return CTRL_CMD_POWER_FAILURE_MEG;
+        }
     }
 
     NetCommands::CmdSystemAction* pCmdSystemAction = dynamic_cast<NetCommands::CmdSystemAction*>(pt.GetPointerToUserData());
@@ -4209,6 +4213,14 @@ qreal SchedulerMainThreadController::GetLastPressureOffset()
 void SchedulerMainThreadController::SetLastPressureOffset(qreal pressureOffset)
 {
     m_ProgramStatusInfor.SetPressureDriftOffset(pressureOffset);
+}
+
+void SchedulerMainThreadController::SendPowerFailureMsg()
+{
+    MsgClasses::CmdProgramAcknowledge* CmdPowerFailureMsg = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::POWER_FAILURE_MSG);
+    Q_ASSERT(CmdPowerFailureMsg);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(CmdPowerFailureMsg));
 }
 
 }

@@ -38,6 +38,7 @@ namespace DataManager {
         PROGRAM_DRAIN_SR,
         PROGRAM_OVEN_COVER_OPEN,
         PROGRAM_RETORT_COVER_OPEN,
+        PROGRAM_POWER_FAILURE_MSG,
         PROGRAM_UNDEFINED
     } ProgramActionType_t;
 /****************************************************************************/
@@ -96,7 +97,9 @@ typedef enum  {
         RETORT_COVER_OPERN,
         TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING,
 
-        PROGRAM_PRETEST_DONE
+        PROGRAM_PRETEST_DONE,
+
+        POWER_FAILURE_MSG
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

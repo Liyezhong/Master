@@ -793,8 +793,6 @@
         <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
 	<string id="67176216" text1="Tell user 300 seconds waiting time out, instrument are auto re-heating and filling safety reagents" text2=""/>
 	<string id="67176217" text1="Power failure failed! Please call service!" text2=""/>
-	<string id="67176218" text1="Error ID %1! Please call for service!The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-	<string id="67176219" text1="Error ID %1! Please call for service! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-	<string id="67176220" text1="SW encountered fatal error and will exit" text2=""/>
+	<string id="67176218" text1="SW encountered fatal error and will exit" text2=""/>
 	</language>
 </strings>

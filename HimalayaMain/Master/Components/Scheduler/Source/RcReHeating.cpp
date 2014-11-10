@@ -106,6 +106,10 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
     switch(currentState)
     {
         case INIT_STATE:
+            if(!m_IsNeedRunCleaning)
+            {
+                mp_SchedulerThreadController->SendPowerFailureMsg();
+            }
             if(200 == m_LastScenario || 260 == m_LastScenario)
             {
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);

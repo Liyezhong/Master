@@ -1279,6 +1279,13 @@ protected:
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function SendPowerFailureMsg
+         */
+        /****************************************************************************/
+        void SendPowerFailureMsg();
+
     public slots:
 
         /****************************************************************************/

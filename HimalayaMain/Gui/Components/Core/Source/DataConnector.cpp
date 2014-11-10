@@ -1805,6 +1805,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit PreTestDone();
         }
         break;
+        case DataManager::POWER_FAILURE_MSG:
+        {
+            emit PowerFailureMsg();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";
