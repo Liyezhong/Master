@@ -38,7 +38,7 @@ SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareController/Test/TestRemoteCareController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareManager/Test/TestRemoteCareManager.pro
-
+SUBDIRS += $${PLATFORM}/Master/Components/NetworkComponents/Test/NetworkComponentsTest.pro
 
 
 CONFIG += ordered
