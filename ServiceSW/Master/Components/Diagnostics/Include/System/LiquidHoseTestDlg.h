@@ -145,11 +145,20 @@ private:
     /****************************************************************************/
     float GetRecordPressure(int RecordTime);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show finished dialog.
+     *  \iparam RetNum = The number return code.
+     */
+    /****************************************************************************/
+    void ShowFinishDlg(int RetNum);
+
 private:
     Ui::CLiquidHoseTestDlg *mp_Ui;        //!< User interface
     CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.
     QList<LabelGroup*> m_LabelGroups;     //!< label group
     QList<int> m_BottleNumberList;        //!< store the bottle number
+    QString    m_MessageTitle;            //!< The message dialog title.
     bool m_Abort;                         //!< Flag for abort.
 
 };

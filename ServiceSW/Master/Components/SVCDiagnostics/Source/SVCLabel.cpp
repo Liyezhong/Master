@@ -48,7 +48,7 @@ SVCLabel::SVCLabel(const QString &text, bool isBig, QWidget *parent, Qt::WindowF
         width = 40;
         height = 14;
     }
-    setFont(QFont("WenQuanYi Zen Hei", 9, QFont::Bold));
+    setFont(QFont("WenQuanYi Zen Hei", 8, QFont::Bold));
 }
 
 void SVCLabel::setPos(int x, int y)

@@ -10,9 +10,12 @@
 
 TARGET = SVCDiagnostics
 
-HEADERS += ../Include/*.h      # header file location
-SOURCES += ../Source/*.cpp     # source file location
-FORMS   += ../Forms/*.ui      # form file location
+HEADERS += ../Include/*.h \      # header file location
+    ../Include/SVCTargetTempSelectionDlg.h
+SOURCES += ../Source/*.cpp \     # source file location
+    ../Source/SVCTargetTempSelectionDlg.cpp
+FORMS   += ../Forms/*.ui \      # form file location
+    ../Forms/CSVCTargetTempSelectionDlg.ui
 RESOURCES *= ../Resource/SVCDiagnostics.qrc # resource file location
 
 

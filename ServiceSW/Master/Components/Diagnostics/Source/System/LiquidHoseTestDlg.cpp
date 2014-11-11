@@ -35,12 +35,13 @@ CLiquidHoseTestDlg::CLiquidHoseTestDlg(CDiagnosticMessageDlg* p_MessageDlg, QWid
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CLiquidHoseTestDlg),
     mp_MessageDlg(p_MessageDlg),
+    m_MessageTitle("Liquid Hose Test"),
     m_Abort(false)
 {
     mp_Ui->setupUi(GetContentFrame());
 
     this->setModal(true);
-    this->SetDialogTitle("Liquid Hose Test");
+    this->SetDialogTitle(m_MessageTitle);
 
     InitLableGroup();
 
@@ -73,6 +74,24 @@ bool CLiquidHoseTestDlg::RunTest()
     int TimeOut          = p_TestCase->GetParameter("TimeOut").toInt();
     int DurationTime     = p_TestCase->GetParameter("KeepDuration").toInt();
     int RecordTime       = p_TestCase->GetParameter("RecordTime").toInt();
+    qreal TargetTemp1    = p_TestCase->GetParameter("RVTargetTemp1").toFloat();
+    qreal TargetTemp2    = p_TestCase->GetParameter("RVTargetTemp2").toFloat();
+    qreal RVTempSensor1(0);
+    qreal RVTempSensor2(0);
+
+    if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
+        ShowFinishDlg(1);
+        return false;
+    }
+
+    QString Text = "Rotary valve is initializing...";
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+    int Ret = p_DevProc->RVInitialize();
+    mp_MessageDlg->HideWaitingDialog();
+    if (Ret != RETURN_OK) {
+        ShowFinishDlg(2);
+        return false;
+    }
 
     this->show();
     mp_Ui->labelStatus->setText("Rotary Valve is moving to sealing position 1");
@@ -120,7 +139,7 @@ bool CLiquidHoseTestDlg::RunTest()
         (void)p_DevProc->RVMovePosition(false, BottleNumber);
     }
 
-    QString Text = "Releasing pressure...";
+    Text = "Releasing pressure...";
     if (m_Abort) {
         mp_MessageDlg->ShowWaitingDialog(MsgTitle, Text);
     }
@@ -144,10 +163,7 @@ bool CLiquidHoseTestDlg::RunTest()
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
 
     if (!CreatePressureRet) {       
-        Text  = "Liquid Hose Test failed.<br>"
-                "Target pressure could not be reached. Please "
-                "perform System Sealing Test to diagnose the reason. Then repeat this test.";
-        mp_MessageDlg->ShowMessage(MsgTitle, Text, RETURN_ERR_FAIL);
+        ShowFinishDlg(3);
     }
 
     (void)this->exec();
@@ -271,6 +287,35 @@ void CLiquidHoseTestDlg::InitLableGroup()
     m_LabelGroups.push_back(new LabelGroup(mp_Ui->bottle14, mp_Ui->pressure14, mp_Ui->result14));
     m_LabelGroups.push_back(new LabelGroup(mp_Ui->bottle15, mp_Ui->pressure15, mp_Ui->result15));
     m_LabelGroups.push_back(new LabelGroup(mp_Ui->bottle16, mp_Ui->pressure16, mp_Ui->result16));
+}
+
+void CLiquidHoseTestDlg::ShowFinishDlg(int RetNum)
+{
+    QString Text;
+    if (RetNum == 1) {
+        Text = " Liquid Hose Test failed.<br>" \
+                "Rotary Valve cannot rotate, due to the minimum " \
+                "temperature has not been reached. Please check " \
+                "resistance of temperature sensors, current of heating " \
+                "element and function of ASB3. If no root cause " \
+                "found, check main relay on ASB15 and cable " \
+                "connections in addition. Exchange part accordingly";
+    }
+    else if (RetNum == 2) {
+        Text = "Liquid Hose Test failed.<br>" \
+                "It might work in some minutes when " \
+                "solidified paraffin in the rotary valve is " \
+                "molten. Repeat initializing test again in " \
+                "about 15mins. If it still fails in the second " \
+                "try, exchange rotary valve, reboot the " \
+                "Service Software and repeat this test.";
+    }
+    else if (RetNum == 3) {
+        Text  = "Liquid Hose Test failed.<br>" \
+                "Target pressure could not be reached. Please " \
+                "perform System Sealing Test to diagnose the reason. Then repeat this test.";
+    }
+    mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_ERR_FAIL);
 }
 
 } // namespace System

@@ -21,6 +21,7 @@
 #include "Diagnostics/Include/System/LiquidHoseTest.h"
 #include "Diagnostics/Include/System/LiquidHoseTestDlg.h"
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include <QDebug>
 namespace Diagnostics {

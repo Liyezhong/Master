@@ -4,6 +4,9 @@
 #include <Global/Include/Utils.h>
 #include <QGraphicsScene>
 #include "SVCDiagnostics/Include/GraphicsItemPart.h"
+#include "SVCDiagnostics/Include/SVCButton.h"
+#include "SVCDiagnostics/Include/SVCLabel.h"
+
 
 using namespace SVCDiagnostics;
 
@@ -24,6 +27,8 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_Ui->graphicsView->setScene(mp_Scene);
 
     InitLabel();
+
+    mp_TempSelectionDlg = new CSVCTargetTempSelectionDlg(mp_Ui->graphicsView);
 
     mp_Retort = CreatePart("Retort", QPoint(406, 30));
     mp_Oven = CreatePart("Oven", QPoint(7, 70));
@@ -84,6 +89,8 @@ CSVCDashboardWidget::~CSVCDashboardWidget()
         delete mp_RotaryValveCurrent;
 
         delete mp_PressureLabel;
+
+        delete mp_TempSelectionDlg;
     }
     catch (...) {
 
@@ -123,10 +130,10 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortTemp2 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortTemp3 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortCurrent = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_RetortTemp1->setPos(500, 68);
-    mp_RetortTemp2->setPos(500, 81);
-    mp_RetortTemp3->setPos(500, 94);
-    mp_RetortCurrent->setPos(500, 120);
+    mp_RetortTemp1->setPos(504, 68);
+    mp_RetortTemp2->setPos(504, 81);
+    mp_RetortTemp3->setPos(504, 94);
+    mp_RetortCurrent->setPos(504, 120);
     mp_RetortTemp1->setText("Retort_Temperature1");
     mp_RetortTemp2->setText("Retort_Temperature2");
     mp_RetortTemp3->setText("Retort_Temperature3");
@@ -180,6 +187,10 @@ void CSVCDashboardWidget::RetortSelected()
     qDebug()<<"retort selected.";
 
     CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        (void)mp_TempSelectionDlg->exec();
+    }
 
     qDebug()<<"get retort status:"<<Status;
 

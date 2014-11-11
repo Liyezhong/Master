@@ -70,7 +70,7 @@ private:
      *  \return reject or accept.
      */
     /****************************************************************************/
-    int ShowConfirmDlg(int StepNum);
+    int ShowConfirmDlg(int StepNum);    
 
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;  //!< The pointer of message dialog.

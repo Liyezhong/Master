@@ -3,11 +3,13 @@
 
 #include <QWidget>
 #include <QTimer>
-#include "SVCDiagnostics/Include/SVCButton.h"
-#include "SVCDiagnostics/Include/SVCLabel.h"
+
+#include "SVCDiagnostics/Include/SVCTargetTempSelectionDlg.h"
 
 class QGraphicsScene;
 class CGraphicsItemPart;
+class SVCButton;
+class SVCLabel;
 
 namespace SVCDiagnostics {
 
@@ -85,6 +87,8 @@ private:
     SVCLabel* mp_RotaryValveCurrent;
 
     SVCLabel* mp_PressureLabel;
+
+    CSVCTargetTempSelectionDlg* mp_TempSelectionDlg;
 };
 
 }//end of namespace
