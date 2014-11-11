@@ -1,4 +1,4 @@
-!include("../../../Templates/Test/TestDataManager.pri") {
+!include("../../../Test/TestDataManager.pri") {
     error("TestDataManager.pri not found")
 }
 
@@ -12,10 +12,11 @@ INCLUDEPATH += ../../../../ \
                ../../../../../../../HimalayaMain/Master/Include/
 
 
-DEPENDPATH +=  ../../../../
+INCLUDEPATH +=  ../../../../
+INCLUDEPATH +=  ../../../../../../../HimalayaMain/Master/Components/
 
 RESOURCES += ../Resources/*.qrc
 
-UseLib(../../../../HimalayaDataManager)
+UseLib(../../../../../../../HimalayaMain/Master/Components/HimalayaDataManager)
 UseLib(../../../../../../../../Platform/Master/Components/DataManager ../../../../../../../../Platform/Master/Components/Global)
 #CONFIG  += qtestlib

@@ -1,4 +1,4 @@
-!include("../../../Test/DataManager.pri"):error("DataManager.pri not found")
+!include("../../../Test/TestDataManager.pri"):error("DataManager.pri not found")
 
 TARGET = utTestProcessSettings
 SOURCES += TestProcessSettings.cpp
