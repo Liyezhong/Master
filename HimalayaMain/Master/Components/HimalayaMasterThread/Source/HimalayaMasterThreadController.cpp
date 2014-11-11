@@ -333,7 +333,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
                                             Global::tTranslatableStringList()
                                             << DateTime));
         // send NACK
-        SendAcknowledgeNOK(Ref, AckCommandChannel, TranslatedString, Global::GUIMSGTYPE_ERROR);
+        SendAcknowledgeNOK(Ref, AckCommandChannel, TranslatedString, Global::GUIMSGTYPE_WARNING);
     }
     else {
         // send ACK
