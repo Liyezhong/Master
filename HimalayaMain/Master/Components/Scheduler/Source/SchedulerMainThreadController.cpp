@@ -2579,6 +2579,11 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
 
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode)
 {
+    // Turn off local/remote alarm by default
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+    cmd->SetRmtLocOpcode(-1);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
     bool working = false;
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
     {
