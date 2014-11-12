@@ -156,6 +156,31 @@ public:
         EXPECT_CALL(*mp_IDeviceProcessing, PerGetRecentAlarmStatus(_))
                 .Times(AtLeast(1))
                 .WillRepeatedly(Return(0));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, IDSetAlarm(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVSetTemperatureSwitchState(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RTSetTemperatureSwitchState(_,_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVSetTempCtrlOFF())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RTSetTempCtrlOFF(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+
+        EXPECT_CALL(*mp_IDeviceProcessing, GetHeaterSwitchType(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
     ~TestSchedIDPExchange()

@@ -12,20 +12,17 @@ SUBDIRS += $${PLATFORM}/Master/Components/DataManager/Build/DataManager.pro
 SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Build/DeviceControl.pro
 SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Build/EventHandler.pro
 
-SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro
-SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Test/ExternalProcessTest.pro
-
 SUBDIRS += $${PLATFORM}/Master/Components/Global/Build/Global.pro
 SUBDIRS += $${PLATFORM}/Master/Components/Global/Test/Global.pro
+
+SUBDIRS += $${PLATFORM}/Master/Components/StateMachines/Build/StateMachines.pro
+SUBDIRS += $${PLATFORM}/Master/Components/StateMachines/Test/StateMachines.pro
 
 SUBDIRS += $${PLATFORM}/Master/Components/EncryptionDecryption/Build/EncryptionDecryption.pro
 SUBDIRS += $${PLATFORM}/Master/Components/EncryptionDecryption/Test/EncryptionDecryption.pro
 
 SUBDIRS += $${PLATFORM}/Master/Components/NetworkComponents/Build/NetworkComponents.pro
 SUBDIRS += $${PLATFORM}/Master/Components/NetworkComponents/Test/NetworkComponentsTest.pro
-
-SUBDIRS += $${PLATFORM}/Master/Components/StateMachines/Build/StateMachines.pro
-SUBDIRS += $${PLATFORM}/Master/Components/StateMachines/Test/StateMachines.pro
 
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareController/Build/RemoteCareController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareManager/Build/RemoteCareManager.pro
@@ -45,7 +42,10 @@ SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Test/TestDataManager.pro
 
-#SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
+SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro
+SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Test/ExternalProcessTest.pro
+
+SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
 SUBDIRS += $${PLATFORM}/Master/Components/DataManager/Test/DataManager.pro
 SUBDIRS += $${PLATFORM}/Master/Components/DataLogging/Test/DataLogging.pro
 SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
