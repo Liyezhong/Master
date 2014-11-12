@@ -1070,7 +1070,7 @@ void CDashboardWidget::RetranslateUI()
     //m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the total number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
-    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Tell user 300 seconds waiting time out, instrument are auto re-heating and filling safety reagents", 0, QApplication::UnicodeUTF8);
+    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
