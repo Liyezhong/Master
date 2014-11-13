@@ -252,6 +252,8 @@ bool CProgramStatusInfor::IsProgramFinished()
 
 void CProgramStatusInfor::SetProgramFinished()
 {
+    SetLastReagentGroup("");
+    SetProgramID("");
 }
 
 quint64 CProgramStatusInfor::GetOvenHeatingTime()
