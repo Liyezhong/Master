@@ -6,6 +6,9 @@
 #include "SVCDiagnostics/Include/GraphicsItemPart.h"
 #include "SVCDiagnostics/Include/SVCButton.h"
 #include "SVCDiagnostics/Include/SVCLabel.h"
+#include "SVCDiagnostics/Include/SVCTargetTempSelectionDlg.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
 
 using namespace SVCDiagnostics;
@@ -28,8 +31,6 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
 
     InitLabel();
 
-    mp_TempSelectionDlg = new CSVCTargetTempSelectionDlg(mp_Ui->graphicsView);
-
     mp_Retort = CreatePart("Retort", QPoint(406, 30));
     mp_Oven = CreatePart("Oven", QPoint(7, 70));
     mp_RotaryValve = CreatePart("RotaryValve", QPoint(220, 152));
@@ -38,13 +39,13 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_HeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
 
     mp_Fan = CreatePart("Fan", QPoint(266, 20));
-    mp_WaxTrap = CreatePart("WaxTrap", QPoint(666, 109));
+    mp_WaxTrap = CreatePart("WaxTrap", QPoint(666, 109), false);
     mp_Pump = CreatePart("Pump", QPoint(404, 288));
     mp_GV1 = CreatePart("GV1", QPoint(485, 192));
     mp_GV2 = CreatePart("GV2", QPoint(640, 245));
 
     mp_Pressure = CreatePart("Pressure", QPoint(615,75));
-    mp_RFV1 = CreatePart("RFV1", QPoint(606, 160));
+    mp_RFV1 = CreatePart("RFV1", QPoint(606, 160), false);
 
     mp_Filter = CreatePart("Filter", QPoint(269, 80), false);
     mp_Connect1 = CreatePart("ConnectPart", QPoint(500, 256), false);
@@ -55,17 +56,27 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_SelectBtn    = new SVCButton(false, mp_Ui->graphicsView);
     mp_ValveInfoBtn = new SVCButton(true, mp_Ui->graphicsView);
     mp_SelectBtn->setText("Select Position");
-    mp_SelectBtn->setPos(137,225);
+    mp_SelectBtn->setPos(137,238);
     mp_ValveInfoBtn->setText("Valve State Info");
     mp_ValveInfoBtn->setPos(380, 420);
 
+    mp_RefreshTimer = new QTimer;
+    mp_RefreshTimer->setSingleShot(false);
+    mp_RefreshTimer->setInterval(1000);
+    CONNECTSIGNALSLOT(mp_RefreshTimer, timeout(), this, RefreshLabel());
 
     CONNECTSIGNALSLOT(mp_Retort, PartSelected(), this, RetortSelected());
+    CONNECTSIGNALSLOT(mp_Oven, PartSelected(), this, OvenSelected());
+    CONNECTSIGNALSLOT(mp_RotaryValve, PartSelected(), this, RotaryValveSelected());
+    CONNECTSIGNALSLOT(mp_AirHeatingTube, PartSelected(), this, AirTubeSelected());
+    CONNECTSIGNALSLOT(mp_HeatingTube, PartSelected(), this, LiquidTubeSelected());
+    CONNECTSIGNALSLOT(mp_Pressure, PartSelected(), this, PressureSelected());
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
 {
-    try {
+    try {        
+        delete mp_RefreshTimer;
         delete mp_Ui;
         delete mp_Scene;
         delete mp_SelectBtn;
@@ -85,12 +96,11 @@ CSVCDashboardWidget::~CSVCDashboardWidget()
         delete mp_RetortCurrent;
 
         delete mp_RotaryValvePosition;
-        delete mp_RotaryValveTemp;
+        delete mp_RotaryValveTemp1;
+        delete mp_RotaryValveTemp2;
         delete mp_RotaryValveCurrent;
 
         delete mp_PressureLabel;
-
-        delete mp_TempSelectionDlg;
     }
     catch (...) {
 
@@ -103,14 +113,14 @@ void CSVCDashboardWidget::InitLabel()
     mp_HeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
     mp_HeatingTubeTemp->setPos(358, 126);
     mp_HeatingTubeCurrent->setPos(358, 147);
-    mp_HeatingTubeTemp->setText("   Temp : 46");
+    mp_HeatingTubeTemp->setText("   Temp : 46\260C");
     mp_HeatingTubeCurrent->setText("  Current : 1A");
 
     mp_AirHeatingTubeTemp    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_AirHeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
     mp_AirHeatingTubeTemp->setPos(596, 31);
     mp_AirHeatingTubeCurrent->setPos(596, 44);
-    mp_AirHeatingTubeTemp->setText("   Temp : 46");
+    mp_AirHeatingTubeTemp->setText("   Temp : 46\260C");
     mp_AirHeatingTubeCurrent->setText("  Current : 1A");
 
     mp_OvenTemp1   = new SVCLabel(true, mp_Ui->graphicsView);
@@ -121,9 +131,9 @@ void CSVCDashboardWidget::InitLabel()
     mp_OvenTemp2->setPos(17, 196);
     mp_OvenTemp3->setPos(17, 209);
     mp_OvenCurrent->setPos(17, 222);
-    mp_OvenTemp1->setText("  Oven1 : 90");
-    mp_OvenTemp2->setText("  Oven2 : 30");
-    mp_OvenTemp3->setText("  Oven3 : 60");
+    mp_OvenTemp1->setText("  Oven1 : 90\260C");
+    mp_OvenTemp2->setText("  Oven2 : 30\260C");
+    mp_OvenTemp3->setText("  Oven3 : 60\260C");
     mp_OvenCurrent->setText("  Current : 5A");
 
     mp_RetortTemp1 = new SVCLabel(true, mp_Ui->graphicsView);
@@ -140,13 +150,16 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortCurrent->setText("Current : 2A");
 
     mp_RotaryValvePosition = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_RotaryValveTemp     = new SVCLabel(true, mp_Ui->graphicsView);
+    mp_RotaryValveTemp1    = new SVCLabel(true, mp_Ui->graphicsView);
+    mp_RotaryValveTemp2    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RotaryValveCurrent  = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_RotaryValvePosition->setPos(137, 184);
-    mp_RotaryValveTemp->setPos(137, 197);
-    mp_RotaryValveCurrent->setPos(137, 210);
+    mp_RotaryValvePosition->setPos(137, 183);
+    mp_RotaryValveTemp1->setPos(137, 196);
+    mp_RotaryValveTemp2->setPos(137, 209);
+    mp_RotaryValveCurrent->setPos(137, 222);
     mp_RotaryValvePosition->setText("  Position : 10");
-    mp_RotaryValveTemp->setText("  Temp : 50");
+    mp_RotaryValveTemp1->setText("  Temp1 : 50\260C");
+    mp_RotaryValveTemp2->setText("  Temp1 : 50\260C");
     mp_RotaryValveCurrent->setText("  Current : 2A");
 
     mp_PressureLabel = new SVCLabel(false, mp_Ui->graphicsView);
@@ -189,45 +202,256 @@ void CSVCDashboardWidget::RetortSelected()
     CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        (void)mp_TempSelectionDlg->exec();
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
+        int DefTarget = p_TestCase->GetParameter("RetortTargetTemp").toInt();
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Retort Target Temperature");
+        (void)p_TempSelectionDlg->exec();
+
+        int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating();
     }
 
-    qDebug()<<"get retort status:"<<Status;
+    qDebug()<<"get Retort status:"<<Status;
+}
 
+void CSVCDashboardWidget::OvenSelected()
+{
+    qDebug()<<"Oven selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_Oven->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
+        int DefTarget = p_TestCase->GetParameter("OvenTopTargetTemp").toInt();
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Paraffin Oven Target Temperature");
+        (void)p_TempSelectionDlg->exec();
+
+        int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating();
+    }
+
+    qDebug()<<"get Oven status:"<<Status;
+}
+
+void CSVCDashboardWidget::RotaryValveSelected()
+{
+    qDebug()<<"Rotary Valve selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_RotaryValve->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
+        int DefTarget = p_TestCase->GetParameter("RVTargetTemp").toInt();
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Rotary Valve Target Temperature");
+        (void)p_TempSelectionDlg->exec();
+
+        int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating();
+    }
+
+    qDebug()<<"get RotaryValve status:"<<Status;
+}
+
+void CSVCDashboardWidget::AirTubeSelected()
+{
+    qDebug()<<"Air Heating Tube selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_AirHeatingTube->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
+        int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Air Heating Tube Target Temperature");
+        (void)p_TempSelectionDlg->exec();
+
+        int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating();
+    }
+
+    qDebug()<<"get AirHeatingTube status:"<<Status;
+}
+
+void CSVCDashboardWidget::LiquidTubeSelected()
+{
+    qDebug()<<"Liquid Heating Tube selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_HeatingTube->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
+        int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Liquid Heating Tube Target Temperature");
+        (void)p_TempSelectionDlg->exec();
+
+        int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating();
+    }
+
+    qDebug()<<"get LiquidHeatingTube status:"<<Status;
+}
+
+void CSVCDashboardWidget::PressureSelected()
+{
+    qDebug()<<"Pressure selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_Pressure->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(20, 40, 120, mp_Ui->graphicsView);
+        p_TempSelectionDlg->SetDialogTitle("Pressure");
+        (void)p_TempSelectionDlg->exec();
+        //int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpBuildPressure(40);
+        delete p_TempSelectionDlg;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpReleasePressure();
+    }
+
+    qDebug()<<"get Pressure status:"<<Status;
+}
+
+void CSVCDashboardWidget::TimerStart(bool IsStart)
+{
+    if (IsStart) {
+        mp_RefreshTimer->start();
+    }
+    else {
+        mp_RefreshTimer->stop();
+    }
+}
+
+void CSVCDashboardWidget::RefreshLabel()
+{
+    Diagnostics::ServiceDeviceProcess* p_DevProc = Diagnostics::ServiceDeviceProcess::Instance();
+    qreal OvenTemp1(0);
+    qreal OvenTemp2(0);
+    qreal OvenTemp3(0);
+    quint16 OvenCurrentT(0);
+    quint16 OvenCurrentB(0);
+
+    qreal RetortTemp1(0);
+    qreal RetortTemp2(0);
+    qreal RetortTemp3(0);
+    quint16 RetortCurrentS(0);
+    quint16 RetortCurrentB(0);
+
+    qreal SensorTemp1(0);
+    qreal SensorTemp2(0);
+    quint16 RVCurrent(0);
+
+    qreal AirTubeTemp(0);
+    quint16 AirTubeCurrent(0);
+
+    qreal LiquidTubeTemp(0);
+    quint16 LiquidTubeCurrent(0);
+
+    float Pressure(0);
+
+    p_DevProc->OvenGetTemp(&OvenTemp1, &OvenTemp2, &OvenTemp3);
+    p_DevProc->OvenGetCurrent(&OvenCurrentT, &OvenCurrentB);
+
+    p_DevProc->RetortGetTemp(&RetortTemp1, &RetortTemp2, &RetortTemp3);
+    p_DevProc->RetortGetCurrent(&RetortCurrentS, &RetortCurrentB);
+
+    p_DevProc->RVGetTemp(&SensorTemp1, &SensorTemp2);
+    p_DevProc->RVGetCurrent(&RVCurrent);
+
+    p_DevProc->AirTubeGetTemp(&AirTubeTemp);
+    p_DevProc->AirTubeGetCurrent(&AirTubeCurrent);
+
+    p_DevProc->LiquidTubeGetTemp(&LiquidTubeTemp);
+    p_DevProc->LiquidTubeGetCurrent(&LiquidTubeCurrent);
+
+    p_DevProc->PumpGetPressure(&Pressure);
+
+    UpdateOvenLabel(OvenTemp1, OvenTemp2, OvenTemp3, OvenCurrentT);
+    UpdateRetortLabel(RetortTemp1, RetortTemp2, RetortTemp3, RetortCurrentS);
+    UpdateRotaryValveLabel(10, SensorTemp1, SensorTemp2, RVCurrent);
+    UpdateAirHeatingTubeLabel(AirTubeTemp, AirTubeCurrent);
+    UpdateLiquidHeatingTubeLabel(LiquidTubeTemp, LiquidTubeCurrent);
+    UpdatePressureLabel(Pressure);
+}
+
+void CSVCDashboardWidget::UpdatePartStatus()
+{
+    bool StatusIsOn = false;
+    Diagnostics::ServiceDeviceProcess* p_DevProc = Diagnostics::ServiceDeviceProcess::Instance();
+
+    (void)p_DevProc->RetortTempControlIsOn(&StatusIsOn);
+    mp_Retort->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+
+    (void)p_DevProc->OvenTempControlIsOn(&StatusIsOn);
+    mp_Oven->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+
+    (void)p_DevProc->RVTempControlIsOn(&StatusIsOn);
+    mp_RotaryValve->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+
+    (void)p_DevProc->AirTubeTempControlIsOn(&StatusIsOn);
+    mp_AirHeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+
+    (void)p_DevProc->LiquidTubeTempControlIsOn(&StatusIsOn);
+    mp_HeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 }
 
 void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current)
 {
-    mp_OvenTemp1->setText(QString("  Oven1 : %1").arg(OvenTemp1));
-    mp_OvenTemp2->setText(QString("  Oven2 : %1").arg(OvenTemp2));
-    mp_OvenTemp3->setText(QString("  Oven3 : %1").arg(OvenTemp3));
+    mp_OvenTemp1->setText(QString("  Oven1 : %1\260C").arg(OvenTemp1));
+    mp_OvenTemp2->setText(QString("  Oven2 : %1\260C").arg(OvenTemp2));
+    mp_OvenTemp3->setText(QString("  Oven3 : %1\260C").arg(OvenTemp3));
     mp_OvenCurrent->setText(QString("  Current : %1A").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current)
 {
-    mp_RetortTemp1->setText(QString("  Retort1 : %1").arg(RetortTemp1));
-    mp_RetortTemp2->setText(QString("  Retort2 : %1").arg(RetortTemp2));
-    mp_RetortTemp3->setText(QString("  Retort3 : %1").arg(RetortTemp3));
+    mp_RetortTemp1->setText(QString("  Retort1 : %1\260C").arg(RetortTemp1));
+    mp_RetortTemp2->setText(QString("  Retort2 : %1\260C").arg(RetortTemp2));
+    mp_RetortTemp3->setText(QString("  Retort3 : %1\260C").arg(RetortTemp3));
     mp_RetortCurrent->setText(QString("  Current : %1A").arg(Current));
 }
 
-void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp, qreal RVCurrent)
+void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
 {
     mp_RotaryValvePosition->setText(QString("  Position : %1").arg(RVPosition));
-    mp_RotaryValveTemp->setText(QString("  Temp : %1").arg(RVTemp));
+    mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
+    mp_RotaryValveTemp2->setText(QString("  Temp2 : %1\260C").arg(RVTemp2));
     mp_RotaryValveCurrent->setText(QString("  Current : %1A").arg(RVCurrent));
 }
 
 void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, qreal Current)
 {
-    mp_AirHeatingTubeTemp->setText(QString("   Temp : %1").arg(Temp));
+    mp_AirHeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
     mp_AirHeatingTubeCurrent->setText(QString("  Current : %1A").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current)
 {
-    mp_HeatingTubeTemp->setText(QString("   Temp : %1").arg(Temp));
+    mp_HeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
     mp_HeatingTubeCurrent->setText(QString("  Current : %1A").arg(Current));
 }
 

@@ -24,7 +24,7 @@
 
 namespace SVCDiagnostics{
 
-CSVCTargetTempSelectionDlg::CSVCTargetTempSelectionDlg(QWidget* p_Parent):
+CSVCTargetTempSelectionDlg::CSVCTargetTempSelectionDlg(int DefaultTemp, int MinTemp, int MaxTemp, QWidget* p_Parent):
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSVCTargetTempSelectionDlg),
     m_TargetTemp(0)
@@ -32,7 +32,7 @@ CSVCTargetTempSelectionDlg::CSVCTargetTempSelectionDlg(QWidget* p_Parent):
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
 
-    this->SetDialogTitle(tr("Target Temperature Selection"));
+    //this->SetDialogTitle(tr("Target Temperature Selection"));
     mp_ScrollWheel = new MainMenu::CScrollWheel;
 
     mp_Ui->scrollPanelWidget->Init(1);
@@ -40,14 +40,14 @@ CSVCTargetTempSelectionDlg::CSVCTargetTempSelectionDlg(QWidget* p_Parent):
 
     mp_ScrollWheel->ClearItems();
 
-    for (int i = 50; i <= 70; i++) {
-        mp_ScrollWheel->AddItem(QString::number(i).rightJustified(2, '0'), i);
+    for (int i = MinTemp; i <= MaxTemp; i++) {
+        mp_ScrollWheel->AddItem(QString::number(i), i);
     }
 
     mp_ScrollWheel->SetNonContinuous();
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
-    mp_ScrollWheel->SetCurrentData(50);
+    mp_ScrollWheel->SetCurrentData(DefaultTemp);
     mp_Ui->scrollPanelWidget->SetSubtitle(tr("Target Temperature"), 0);
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonOk, clicked(), this, OnOk());

@@ -3,8 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
-
-#include "SVCDiagnostics/Include/SVCTargetTempSelectionDlg.h"
+#include <QEventLoop>
 
 class QGraphicsScene;
 class CGraphicsItemPart;
@@ -25,23 +24,37 @@ public:
     explicit CSVCDashboardWidget(QWidget *p_Parent = 0);
     ~CSVCDashboardWidget();
 
+signals:
+    void RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom);
+    void RetortStopHeating();
+
 private slots:
+    void RefreshLabel();
+
     void RetortSelected();
+    void OvenSelected();
+    void RotaryValveSelected();
+    void AirTubeSelected();
+    void LiquidTubeSelected();
+    void PressureSelected();
 
 public slots:
     void UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current);
     void UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current);
-    void UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp, qreal RVCurrent);
+    void UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent);
 
     void UpdateAirHeatingTubeLabel(qreal Temp, qreal Current);
     void UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current);
     void UpdatePressureLabel(qreal Pressure);
     
+    void UpdatePartStatus();
+    void TimerStart(bool IsStart);
 private:
     void InitLabel();
     CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos, bool Clickable = true);
     void paintEvent(QPaintEvent *p_PaintEvent);
 
+    QTimer*  mp_RefreshTimer;
     Ui::CSVCDashboardWidget *mp_Ui;
     QGraphicsScene *mp_Scene;
     CGraphicsItemPart* mp_Retort;
@@ -83,12 +96,11 @@ private:
     SVCLabel* mp_RetortCurrent;
 
     SVCLabel* mp_RotaryValvePosition;
-    SVCLabel* mp_RotaryValveTemp;
+    SVCLabel* mp_RotaryValveTemp1;
+    SVCLabel* mp_RotaryValveTemp2;
     SVCLabel* mp_RotaryValveCurrent;
 
     SVCLabel* mp_PressureLabel;
-
-    CSVCTargetTempSelectionDlg* mp_TempSelectionDlg;
 };
 
 }//end of namespace

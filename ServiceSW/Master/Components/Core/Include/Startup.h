@@ -174,7 +174,7 @@ private:
     Diagnostics::CMainControl               *mp_MainControl;                //!< Main Control tests
 
     //SVC Diagnostics
-    SVCDiagnostics::CSVCDashboardWidget     *mp_SVCDashboardWidget;
+    SVCDiagnostics::CSVCDashboardWidget      *mp_SVCDashboardWidget;
 
     // Diagnostics1 Manufacturing
     MainMenu::CMenuGroup                    *mp_DiagnosticsManufGroup;
@@ -205,6 +205,8 @@ private slots:
     void OnSelectTestOptions(int Index);
 	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
     int FileExistanceCheck();
+
+    void OnCurrentTabChanged(int TabIndex);
 private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
     void RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);

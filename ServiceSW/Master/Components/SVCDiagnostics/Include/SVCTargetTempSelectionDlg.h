@@ -33,7 +33,7 @@ class CSVCTargetTempSelectionDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 public:
-    explicit CSVCTargetTempSelectionDlg(QWidget* p_Parent);
+    explicit CSVCTargetTempSelectionDlg(int DefaultTemp, int MinTemp, int MaxTemp, QWidget* p_Parent);
     ~CSVCTargetTempSelectionDlg();
 
     //void SetText(const QString& Text);

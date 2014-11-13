@@ -166,6 +166,8 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
     CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
+
     //Diagnostics
     mp_DiagnosticsGroup = new MainMenu::CMenuGroup;
     mp_Display          = new Diagnostics::CDisplay;
@@ -1728,6 +1730,19 @@ void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStr
     qDebug()<<Results;
 
     mp_ServDevProc->HandleServResult(ReqName, ErrorCode, Results);
+}
+
+void CStartup::OnCurrentTabChanged(int TabIndex)
+{
+    if (mp_MainWindow->GetSaMUserMode() == "Service") {
+        if (TabIndex == 3) {
+            mp_SVCDashboardWidget->TimerStart(true);
+            mp_SVCDashboardWidget->UpdatePartStatus();
+        }
+        else {
+            mp_SVCDashboardWidget->TimerStart(false);
+        }
+    }
 }
 
 } // end namespace Core
