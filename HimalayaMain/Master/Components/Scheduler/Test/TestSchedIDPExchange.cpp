@@ -33,7 +33,7 @@ using::testing::AtLeast;
 using::testing::_;
 using::testing::Lt;
 
-inline void waitTime(qint8 time)
+inline void waitTime(qint32 time)
 {
     QTime delayTime = QTime::currentTime().addMSecs(time*1000);
     while (QTime::currentTime() < delayTime)
@@ -177,9 +177,36 @@ public:
                 //.Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-
         EXPECT_CALL(*mp_IDeviceProcessing, GetHeaterSwitchType(_))
                 //.Times(AtLeast(1))
+                .WillRepeatedly(Return(1));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALSetTempCtrlOFF(_))
+   //             .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALSetTempCtrlOFF(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALPressure(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALReleasePressure())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALControlValve(_,_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALTurnOffFan())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, OvenSetTempCtrlOFF(_))
+                .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
@@ -244,7 +271,7 @@ void TestSchedIDPExchange::UTAll()
     mp_IDeviceProcessing->InitializationFinished();
     waitTime(2);
     mp_IDeviceProcessing->ConfigurationFinished();
-    waitTime(20);
+    waitTime(160);
     emit SendStop();
 }
 
