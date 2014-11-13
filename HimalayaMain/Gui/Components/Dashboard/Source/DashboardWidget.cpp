@@ -256,12 +256,6 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 
 void CDashboardWidget::OnProgramWillComplete()
 {
-    //log the reagent ID in last step
-    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
-    QString strReagentIDOfLastStep = pProgram->GetProgramStep(pProgram->GetNumberOfSteps()-1)->GetReagentID();
-    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
-    emit UpdateUserSetting(*m_pUserSetting);
-
     mp_MessageDlg->SetIcon(QMessageBox::Information);
     mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strProgramWillComplete);

@@ -286,14 +286,14 @@ void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_
 {
     Q_UNUSED(remainingTimeTotal);
     Q_UNUSED(startDateTime);
-    Q_UNUSED(IsResume);
     if (DataManager::PROGRAM_START== ProgramActionType)
     {
         ui->stackedWidget->setCurrentIndex(1);
         QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(m_SelectedProgramId)->GetIcon() + ".png";
         ui->programRunningPanel->SetPanelIcon(strIconName);
         ui->programRunningPanel->SetPanelTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
-        ui->programRunningPanel->EnableProgramDetailButton(false);
+        if (!IsResume)
+            ui->programRunningPanel->EnableProgramDetailButton(false);
     }
 }
 
