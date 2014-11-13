@@ -298,7 +298,7 @@ void SchedulerMainThreadController::OnAcknowledge(Global::tRefType Ref, const Gl
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
-
+#if 0
     if (CTRL_CMD_RS_SWEXIT == newControllerCmd)
     {
         //send shutdown command to MasterThreadController
@@ -307,7 +307,7 @@ void SchedulerMainThreadController::OnTickTimer()
         m_SchedulerCommandProcessor->ShutDownDevice();
         return;
     }
-
+#endif
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
         m_TickTimer.stop();
