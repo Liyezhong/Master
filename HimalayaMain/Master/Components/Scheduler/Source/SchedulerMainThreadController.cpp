@@ -442,6 +442,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_SchedulerCommandProcessor->ALSetPressureDrift(m_ProgramStatusInfor.GetPressureDriftOffset());
     }
 
+    QString reagentID = m_ProgramStatusInfor.GetLastReagentGroup();
     QString curProgramID = m_ProgramStatusInfor.GetProgramId();
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
     int StepID = m_ProgramStatusInfor.GetStepID();
@@ -468,6 +469,17 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     {
         m_IsCleaningProgram = true;
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+    }
+    else
+    {
+        if("RG6" == reagentID)
+        {
+            m_CurProgramStepInfo.nextStationID = "S12";
+        }
+        else
+        {
+            m_CurProgramStepInfo.nextStationID = "S13";
+        }
     }
 
     RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
@@ -597,7 +609,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 }
                 else
                 {
-                    m_SchedulerMachine->SendRunSignal();
+                    m_SchedulerMachine->SendCleaningSignal();
                 }
             }
             else
@@ -1813,7 +1825,21 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         //cleaning program
         if((m_CurProgramStepIndex + 1) == count)
         {
-            programStepInfor.nextStationID = programStepInfor.stationID;
+            if(ProgramID.at(0) != 'C')
+            {
+                if("RG6" == reagentID)
+                {
+                    programStepInfor.nextStationID = "S12";
+                }
+                else
+                {
+                    programStepInfor.nextStationID = "S13";
+                }
+            }
+            else
+            {
+                programStepInfor.nextStationID = programStepInfor.stationID;
+            }
         }
         else
         {

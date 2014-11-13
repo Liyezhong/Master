@@ -1253,6 +1253,14 @@ protected:
         {
             m_CurProgramStepInfo.stationID = StationID;
             m_CurProgramStepInfo.reagentGroup = ReagentGroup;
+            if("RG6" == ReagentGroup)
+            {
+                m_CurProgramStepInfo.nextStationID = "S12";
+            }
+            else
+            {
+                m_CurProgramStepInfo.nextStationID = "S13";
+            }
         }
         /****************************************************************************/
         /*!

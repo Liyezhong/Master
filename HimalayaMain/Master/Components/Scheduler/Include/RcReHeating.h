@@ -118,6 +118,13 @@ public:
 private:
     /****************************************************************************/
     /*!
+     *  \brief  function of HandleInint
+     */
+    /****************************************************************************/
+    void HandleInint();
+
+    /****************************************************************************/
+    /*!
      *  \brief  function of StartHeatingWithScenario
      *  \return bool
      */
@@ -148,6 +155,15 @@ private:
      */
     /****************************************************************************/
     void ProcessDraining(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  function of MoveCleaningTubePos
+     *  \param  cmdName = QString
+     *  \param  retCode = DeviceControl::ReturnCode_t
+     */
+    /****************************************************************************/
+    void MoveCleaningTubePos(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -218,6 +234,13 @@ signals:
     /****************************************************************************/
     void SigDrainCurrentReagent();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal to move cleaning tube position
+     */
+    /****************************************************************************/
+    void SigMoveCleaningTubePos();
+
 private:
     /****************************************************************************/
     /*!
@@ -230,7 +253,8 @@ private:
         START_TEMPERATURE,
         CHECK_TEMPERATURE,
         GET_RV_POSOTION,
-        BEGIN_DRAIN
+        BEGIN_DRAIN,
+        MOVE_CLEANING_TUBE_POS
     }StateList_t;
 
     /****************************************************************************/
@@ -258,6 +282,7 @@ private:
     QSharedPointer<QState>          mp_CheckSensorTemp;                 //!< Check all sensor temperature
     QSharedPointer<QState>          mp_GetRvPosition;                   //!< Get RV position
     QSharedPointer<QState>          mp_DrainCurrentReagent;             //!< Drain current reagent
+    QSharedPointer<QState>          mp_MoveCleaningTubePos;             //!< Move cleaning tube position
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
