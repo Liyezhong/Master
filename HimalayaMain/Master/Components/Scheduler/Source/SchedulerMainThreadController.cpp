@@ -136,8 +136,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
 
-    (void)m_ProgramStatusInfor.ReadProgramStatusFile();
-
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
 }
 
@@ -268,7 +266,15 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 
 void SchedulerMainThreadController::OnGoReceived()
 {
-   // m_TickTimer.start();
+    quint32 ParaffinMeltPoint = 64;
+    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+    {
+        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    }
+    if(!m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint))
+    {
+        //Raise event
+    }
 }
 
 void SchedulerMainThreadController::OnStopReceived()
@@ -323,7 +329,12 @@ void SchedulerMainThreadController::OnTickTimer()
 
     if (CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN == newControllerCmd)
     {
-        m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
+        quint32 ParaffinMeltPoint = 64;
+        if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+        {
+            ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        }
+        m_ProgramStatusInfor.ResetOvenHeatingTime(ParaffinMeltPoint,true);
         mp_HeatingStrategy->ResetTheOvenHeating();
     }
 
@@ -540,8 +551,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 PVMode += "V";
             }
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                       << m_CurProgramStepInfo.stationID
                        <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                       <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
+                       <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                        <<PVMode);
 
             //send command to main controller to tell the left time
@@ -1077,8 +1089,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         PVMode += "V";
                     }
                     RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                               << m_CurProgramStepInfo.stationID
                                <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                               <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.durationInSeconds) : QString("Amb"))
+                               <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                                <<PVMode);
                     m_SchedulerMachine->NotifyStepProgramFinished();
                     //send command to main controller to tell the left time
@@ -2225,7 +2238,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         ProgramName = mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->GetName();
     }
 
-    if (Cmd.ProgramActionType() != DataManager::PROGRAM_START)
+    if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
     {
         if(Cmd.DelayTime() > 0) // start new program
         {
@@ -2239,15 +2252,15 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         }
         return;
     }
-    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_PAUSE)
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
     {
         RaiseEvent(EVENT_SCHEDULER_REC_PAUSE_PROGRAM,QStringList()<<ProgramName); //log
     }
-    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_ABORT)
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_ABORT)
     {
         RaiseEvent(EVENT_SCHEDULER_REC_ABORT_PROGRAM,QStringList()<<ProgramName); //log
     }
-    else if(Cmd.ProgramActionType() != DataManager::PROGRAM_DRAIN)
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_DRAIN)
     {
         RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,QStringList()<<ProgramName); //log
     }
@@ -2381,7 +2394,12 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
     this->SendAcknowledgeOK(Ref);
     RaiseEvent(EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT,QStringList()<<QString("[%1]").arg(Cmd.GetLastMeltPoint())
                <<QString("[%1]").arg(Cmd.GetCurrentMeltPoint()));
-    m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),true,true);
+    quint32 ParaffinMeltPoint = 64;
+    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+    {
+        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    }
+    m_ProgramStatusInfor.ResetOvenHeatingTime(ParaffinMeltPoint,true);;
     mp_HeatingStrategy->ResetTheOvenHeating();
 }
 
@@ -2646,7 +2664,10 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     //LogDebug(strctHWMonitor.toLogString());  //log to event logging file
     SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString()); // log to Sensor data file
-    m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
+    if(StepID.compare("INIT") != 0)
+    {
+        m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
+    }
 
     if("ERROR" == StepID)
     {
@@ -3866,39 +3887,14 @@ quint32 SchedulerMainThreadController::GetSecondsForMeltingParaffin()
 
 quint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
-    quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
-    {
-        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    }
-    quint32 StillNeedHeatingTime = m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin(ParaffinMeltPoint);
-    quint32 HeatedTime = 0;
-    QString TotalTime = "12h";
-    if(12 * 60 * 60 >= StillNeedHeatingTime)
-    {
-        HeatedTime = 12 * 60 * 60 - StillNeedHeatingTime;
-    }
-    if(ParaffinMeltPoint > 64 && (15 * 60 * 60 >= StillNeedHeatingTime))
-    {
-        TotalTime = "15h";
-        HeatedTime = 15 * 60 * 60 - StillNeedHeatingTime;
-    }
-    RaiseEvent(EVENT_SCHEDULER_OVEN_HEATING_TIME,QStringList()<<DataManager::Helper::ConvertSecondsToTimeString(StillNeedHeatingTime)<<TotalTime);
-    if(QFile::exists("TEST_ISSAC")) // linear agr only for testing
-    {
-        return m_ProgramStatusInfor.GetOvenHeatingTime(ParaffinMeltPoint);
-    }
-    return HeatedTime;
+    RaiseEvent(EVENT_SCHEDULER_OVEN_HEATING_TIME,
+               QStringList()<<DataManager::Helper::ConvertSecondsToTimeString(m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin()/1000));
+    return m_ProgramStatusInfor.GetOvenHeatingTime() / 1000;
 }
 
 quint64 SchedulerMainThreadController::GetOvenHeatingRemainingTime()
 {
-    quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
-    {
-        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    }
-    return m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin(ParaffinMeltPoint);
+    return m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin();
 }
 
 qint64 SchedulerMainThreadController::GetPreTestTime()

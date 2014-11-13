@@ -88,7 +88,7 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     CProgramStatusInfor ProStatus;
     bool result = false;
 
-    result = ProStatus.ReadProgramStatusFile();
+    result = ProStatus.InitProgramStatus(54);
     QVERIFY(result);
     ProStatus.SetLastRVPosition(DeviceControl::RV_SEAL_10);
     ProStatus.SetProgramID("L01");
@@ -108,23 +108,25 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     ProStatus.SetErrorFlag(0);
     QVERIFY(ProStatus.GetErrorFlag()==0);
 
-    quint64 OneHour = 60 * 60 * 1000;
-    quint64 TimeLimit = 12 * OneHour;
-    quint64 HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
-    QVERIFY(HeatingTime == TimeLimit/1000);
+    quint64 Hour= 60 * 60 * 1000;
+    quint64 Hour12 = 12 * Hour;
+    quint64 Hour15 = 15 * Hour;
+    quint64 CTime = QDateTime::currentMSecsSinceEpoch();
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour12);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
+    ProStatus.ResetOvenHeatingTime(70);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
 
-    quint64 time = QDateTime::currentMSecsSinceEpoch();
-    ProStatus.UpdateOvenHeatingTime(time - 15 * OneHour,true,true);
-    sleep(70);
-    ProStatus.UpdateOvenHeatingTime(time - 13 * OneHour,true);
-    HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
-    QVERIFY(HeatingTime == TimeLimit/1000);
+    ProStatus.UpdateOvenHeatingTime(CTime - Hour,true);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
+    ProStatus.UpdateOvenHeatingTime(CTime,true);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == Hour);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 14 * Hour);
 
-    ProStatus.UpdateOvenHeatingTime(time - 1 * OneHour,true,true);
-    sleep(70);
-    ProStatus.UpdateOvenHeatingTime(time,true);
-    HeatingTime = ProStatus.GetRemaingTimeForMeltingParffin(54);
-    QVERIFY(HeatingTime == TimeLimit/1000);
+    ProStatus.UpdateOvenHeatingTime(CTime,false);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
 }
 
 

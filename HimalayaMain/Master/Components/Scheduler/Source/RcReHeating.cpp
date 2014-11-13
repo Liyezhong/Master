@@ -263,7 +263,7 @@ void CRcReHeating::CheckTheTemperature()
         {
             if(0 == m_StartReq)
             {
-                m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime() * 1000;
+                m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime();
             }
             m_StartReq++;
             if(2 == m_StartReq)

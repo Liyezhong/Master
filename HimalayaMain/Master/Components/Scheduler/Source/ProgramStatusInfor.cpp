@@ -24,11 +24,19 @@
 #include "Scheduler/Include/ProgramStatusInfor.h"
 #include <unistd.h>
 #include <QDebug>
+namespace Scheduler{
+
+#define TIME_1_HOUR (1 * 60 * 60 * 1000)
+#define TIME_12_HOURS (12 * 60 * 60 * 1000)
+#define TIME_15_HOURS (15 * 60 * 60 * 1000)
+#define DATE_TIME_FORMAT "yyyyMMdd-hhmmss"
 
 CProgramStatusInfor::CProgramStatusInfor()
 {
     m_LastHeatingOn = false;
     m_LastTimeUpdateHeatingTime = 0;
+    m_MaxMeltTime = TIME_15_HOURS;
+    m_RemainTime = m_MaxMeltTime;
 }
 
 CProgramStatusInfor::~CProgramStatusInfor()
@@ -38,8 +46,9 @@ CProgramStatusInfor::~CProgramStatusInfor()
     m_StatusFile.close();
 }
 
-bool CProgramStatusInfor::ReadProgramStatusFile()
+bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
 {
+    ResetOvenHeatingTime(ParaffinMeltPoint);
     if(!m_StatusFile.isOpen())
     {
         m_StatusFile.setFileName("../Settings/ProgramStatus.txt");
@@ -57,7 +66,44 @@ bool CProgramStatusInfor::ReadProgramStatusFile()
        Line = FileStream.readLine().simplified();
     }
    m_StatusFile.close();
+   CalculateTime(true);
    return true;
+}
+
+void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool Reset)
+{
+    m_MaxMeltTime = TIME_15_HOURS;
+    if(ParaffinMeltPoint < 64)
+    {
+        m_MaxMeltTime = TIME_12_HOURS;
+    }
+    if(Reset)
+    {
+        QString key="HeatingOvenSlice";
+        m_Status.insert(key,"");
+        SetStatus("HeatingOvenSlice","");
+    }
+
+    if(QFile::exists("TEST_ISSAC")) // only for testing time of paraffin
+    {
+        QFile Test("TEST_ISSAC");
+        if (Test.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream in(&Test);
+            if(!in.atEnd())
+            {
+                QString line = in.readLine();
+                bool ok = false;
+                quint32 time = line.toUInt(&ok);
+                if(ok && time > 0)
+                {
+                    m_MaxMeltTime = time * 60;
+                }
+            }
+            Test.close();
+        }
+    }
+    m_RemainTime = m_MaxMeltTime;
 }
 
 void CProgramStatusInfor::SetLastRVPosition(const DeviceControl::RVPosition_t& rvpos)
@@ -208,17 +254,69 @@ void CProgramStatusInfor::SetProgramFinished()
 {
 }
 
-quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
+quint64 CProgramStatusInfor::GetOvenHeatingTime()
+{
+    return m_MaxMeltTime - m_RemainTime;
+}
+
+quint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin()
+{
+    return m_RemainTime;
+}
+
+
+void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn)
+{
+    if(((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000)
+            && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
+    {
+        return;
+    }
+    QString key="HeatingOvenSlice";
+    QString value = m_Status.value(key);
+    QStringList Slices;
+    if(!value.isEmpty())
+    {
+        Slices = value.split(",");
+    }
+    if(!IsHeatingOn)
+    {
+        m_RemainTime = m_MaxMeltTime;
+    }
+    if(Slices.length() == 0 || (!m_LastHeatingOn && IsHeatingOn)) // if 1. first boot; 2. the heating status from OFF to ON.
+    {
+
+        Slices.append(QDateTime::fromMSecsSinceEpoch(Time).toString(DATE_TIME_FORMAT));
+        Slices.append(QDateTime::fromMSecsSinceEpoch(Time).toString(DATE_TIME_FORMAT));
+        m_LastTimeUpdateHeatingTime = Time;
+        SetStatus(key, Slices.join(","));
+    }
+    else if(m_LastHeatingOn && IsHeatingOn) // if the heating status from ON to ON
+    {
+        Slices.replace(Slices.length() - 1,QDateTime::fromMSecsSinceEpoch(Time).toString(DATE_TIME_FORMAT));
+        if(m_LastTimeUpdateHeatingTime != 0)
+        {
+            if(m_RemainTime > (Time - m_LastTimeUpdateHeatingTime))
+            {
+                m_RemainTime -= (Time - m_LastTimeUpdateHeatingTime);
+            }
+            else
+            {
+                m_RemainTime = 0;
+            }
+        }
+        m_LastTimeUpdateHeatingTime = Time;
+        SetStatus(key, Slices.join(","));
+    }
+    m_LastHeatingOn = IsHeatingOn;
+}
+
+void CProgramStatusInfor::CalculateTime(bool reset)
 {
     /*lint -e550 */
-    quint64 TimeLimit = 12 * 60 * 60 * 1000;
+    quint64 TimeLimit = QDateTime::currentMSecsSinceEpoch() - m_MaxMeltTime;
     quint64 HeatingTime = 0;
     quint64 UnHeatingTime = 0;
-    if(ParaffinMeltingPoint >= 64)
-    {
-        TimeLimit = 15 * 60 * 60 * 1000;
-    }
-    TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
     QString value = m_Status.value("HeatingOvenSlice");
     QStringList Slices;
     if(!value.isEmpty())
@@ -230,8 +328,8 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
     quint64 End = 0;
     for(int i = 0; i < Slices.length() / 2;)
     {
-        Start = QDateTime::fromString(Slices.at(2 * i),"yyyyMMdd-hhmmss").toMSecsSinceEpoch();
-        End = QDateTime::fromString(Slices.at(2 * i + 1),"yyyyMMdd-hhmmss").toMSecsSinceEpoch();
+        Start = QDateTime::fromString(Slices.at(2 * i),DATE_TIME_FORMAT).toMSecsSinceEpoch();
+        End = QDateTime::fromString(Slices.at(2 * i + 1),DATE_TIME_FORMAT).toMSecsSinceEpoch();
         if(End < TimeLimit)
         {
             Slices.removeAt(2 * i);
@@ -240,7 +338,7 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
         }
         else if(End >= TimeLimit && Start < TimeLimit)
         {
-            Slices.replace(2 * i ,QDateTime::fromMSecsSinceEpoch(TimeLimit).toString("yyyyMMdd-hhmmss"));;
+            Slices.replace(2 * i ,QDateTime::fromMSecsSinceEpoch(TimeLimit).toString(DATE_TIME_FORMAT));;
             HeatingTime += (End - TimeLimit);
             Start = TimeLimit;
             i++;
@@ -250,117 +348,51 @@ quint64 CProgramStatusInfor::GetOvenHeatingTime(quint32 ParaffinMeltingPoint)
             HeatingTime += (End - Start);
             if(i > 0)
             {
-                UnHeatingTime += (Start - QDateTime::fromString(Slices.at(2 * i - 1),"yyyyMMdd-hhmmss").toMSecsSinceEpoch());
+                UnHeatingTime += (Start - QDateTime::fromString(Slices.at(2 * i - 1),DATE_TIME_FORMAT).toMSecsSinceEpoch());
             }
             i++;
         }
     }
-    SetStatus("HeatingOvenSlice", Slices.join(","));
-    return HeatingTime;
-}
-
-quint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin(quint32 ParaffinMeltingPoint)
-{
-    quint64 TimeLimit = 12 * 60 * 60 * 1000;
-    quint64 HeatingTime = 0;
-    quint64 UnHeatingTime = 0;
-    if(ParaffinMeltingPoint >= 64)
+    if(Start == 0 || End == 0) // empty value for HeatingOvenSlice
     {
-        TimeLimit = 15 * 60 * 60 * 1000;
-    }
-    quint64 TimeForMelting = TimeLimit;
-    TimeLimit = QDateTime::currentMSecsSinceEpoch() - TimeLimit;
-    QString value = m_Status.value("HeatingOvenSlice");
-    QStringList Slices;
-    if(!value.isEmpty())
-    {
-        Slices = value.split(",");
-    }
-    quint64 Start = 0;
-    quint64 End = 0;
-    for(int i = 0; i < Slices.length() / 2;)
-    {
-        Start = QDateTime::fromString(Slices.at(2 * i),"yyyyMMdd-hhmmss").toMSecsSinceEpoch();
-        End = QDateTime::fromString(Slices.at(2 * i + 1),"yyyyMMdd-hhmmss").toMSecsSinceEpoch();
-        if(End < TimeLimit)
-        {
-            Slices.removeAt(2 * i);
-            Slices.removeAt(2 * i);
-            Start = End = TimeLimit;
-        }
-        else if(End >= TimeLimit && Start < TimeLimit)
-        {
-            Slices.replace(2 * i ,QDateTime::fromMSecsSinceEpoch(TimeLimit).toString("yyyyMMdd-hhmmss"));
-            HeatingTime += (End - TimeLimit);
-            Start = TimeLimit;
-            i++;
-        }
-        else
-        {
-            HeatingTime += (End - Start);
-            if(i > 0)
-            {
-                UnHeatingTime += (Start - QDateTime::fromString(Slices.at(2 * i - 1),"yyyyMMdd-hhmmss").toMSecsSinceEpoch());
-            }
-            i++;
-        }
-    }
-    UnHeatingTime += (QDateTime::currentMSecsSinceEpoch() - End);
-    SetStatus("HeatingOvenSlice", Slices.join(","));
-
-    if(TimeForMelting - HeatingTime + UnHeatingTime <= 4 * 60 * 60 * 1000)
-    {
-        return 2 * (TimeForMelting - HeatingTime + UnHeatingTime) / 1000;
+        UnHeatingTime = m_MaxMeltTime;
+        HeatingTime = 0;
     }
     else
     {
-        return TimeForMelting/1000;
+      UnHeatingTime += (QDateTime::currentMSecsSinceEpoch() - End);
     }
-}
 
-void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, bool ResetFlag)
-{
-    if(((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000)
-            && !ResetFlag && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
+    if(UnHeatingTime > 4 * TIME_1_HOUR)
     {
-        return;
+        m_RemainTime = m_MaxMeltTime;
     }
-    QString key="HeatingOvenSlice";
-    QString value = m_Status.value(key);
-    QStringList Slices;
-    if(!value.isEmpty())
+    else
     {
-        Slices = value.split(",");
+        if(m_MaxMeltTime - HeatingTime + 2 * UnHeatingTime + TIME_1_HOUR > m_MaxMeltTime)
+        {
+            m_RemainTime = m_MaxMeltTime;
+        }
+        else
+        {
+            m_RemainTime = 2 * UnHeatingTime + TIME_1_HOUR;
+        }
     }
-    if(ResetFlag) // reset oven heating to 0
+    if(reset || Slices.isEmpty())
     {
         Slices.clear();
+        SetStatus("HeatingOvenSlice","");
     }
-    if(Slices.length() == 0 || (!m_LastHeatingOn && IsHeatingOn)) // if 1. first boot; 2. the heating status from OFF to ON.
+    else
     {
-
-        Slices.append(QDateTime::fromMSecsSinceEpoch(Time).toString("yyyyMMdd-hhmmss"));
-        Slices.append(QDateTime::fromMSecsSinceEpoch(Time).toString("yyyyMMdd-hhmmss"));
-        m_LastTimeUpdateHeatingTime = QDateTime::currentMSecsSinceEpoch();
-        SetStatus(key, Slices.join(","));
+        SetStatus("HeatingOvenSlice", Slices.join(","));
     }
-    else if(m_LastHeatingOn && IsHeatingOn) // if the heating status from ON to ON
-    {
-        Slices.replace(Slices.length() - 1,QDateTime::fromMSecsSinceEpoch(Time).toString("yyyyMMdd-hhmmss"));
-        m_LastTimeUpdateHeatingTime = QDateTime::currentMSecsSinceEpoch();
-        SetStatus(key, Slices.join(","));
-    }
-    m_LastHeatingOn = IsHeatingOn;
 }
 
 bool CProgramStatusInfor::IsRetortContaminted()
 {
     QString ReagentGroup = GetLastReagentGroup();
     return !ReagentGroup.isEmpty();
-    /*return ((!ReagentGroup.isEmpty()) &&
-            (ReagentGroup.compare("RG2") != 0) &&   //water
-            (ReagentGroup.compare("RG7") != 0) &&   //Cleaning Solvent
-            (ReagentGroup.compare("RG8") != 0));*/    //Cleaning Alcohol
 }
 void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
 {
@@ -407,3 +439,4 @@ void CProgramStatusInfor::FlushFile()
     (void)fsync(m_StatusFile.handle());
     m_StatusFile.close();
 }
+} //end of scheduler name space

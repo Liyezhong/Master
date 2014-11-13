@@ -25,6 +25,7 @@
 #include <QMap>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
+namespace Scheduler{
 /****************************************************************************/
 /*!
  * \brief the class for manage program status.
@@ -44,10 +45,19 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Read program status from file to m_Status;
+     *  \param ParaffinMeltPoint the melting point for paraffin
      *  \return true - program finished, false - not finished
      */
     /****************************************************************************/
-    bool ReadProgramStatusFile();
+    bool InitProgramStatus(quint32 ParaffinMeltPoint);
+    /****************************************************************************/
+    /*!
+     *  \brief clear oven heating time
+     *  \param ParaffinMeltPoint the melting point for paraffin
+     *  \param Reset true clear Heating time slice, otherwise false
+     */
+    /****************************************************************************/
+    void ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool Reset = false);
     /****************************************************************************/
     /*!
      *  \brief Set RV position
@@ -185,31 +195,29 @@ public:
     bool IsRetortContaminted();
     /****************************************************************************/
     /*!
-     *  \brief Get oven heating time
-     *  \param ParaffinMeltingPoint  paraffin melting point
+     *  \brief Get oven heating time by ms
      *  \return quint64 form seconds that oven has been heated.
      */
     /****************************************************************************/
-    quint64 GetOvenHeatingTime(quint32 ParaffinMeltingPoint);
+    quint64 GetOvenHeatingTime();
     /****************************************************************************/
     /*!
-     *  \brief Get the remaining time for melting paraffin
-     *  \param ParaffinMeltingPoint  paraffin melting point
+     *  \brief Get the remaining time for melting paraffin by ms
      *  \return quint64 form seconds for melting paraffin
      */
     /****************************************************************************/
-    quint64 GetRemaingTimeForMeltingParffin(quint32 ParaffinMeltingPoint);
+    quint64 GetRemaingTimeForMeltingParffin();
     /****************************************************************************/
     /*!
      *  \brief update oven heating time
      *  \param Time oven heating time
      *  \param IsHeatingOn oven heating start time
-     *  \param ResetFlag reset oven heating time to 0
      */
     /****************************************************************************/
-    void UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn, bool ResetFlag = false);
+    void UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn);
 
-
+private:
+    void CalculateTime(bool reset = false);
 
 private:
     void FlushFile();
@@ -219,6 +227,8 @@ private:
     QMap<QString, QString> m_Status;             //!< the pairs for keys and values
     quint64 m_LastTimeUpdateHeatingTime;        //!< the last time of update oven heating time
     bool m_LastHeatingOn;                       //!< store the last status of heating
+    quint64 m_MaxMeltTime;                      //!< max time for melting paraffin
+    quint64 m_RemainTime;                       //!< remain time for emlting paraffin
 };
-
+} //end of scheduler name space
 #endif // PROGRAMSTATUSINFOR_H

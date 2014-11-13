@@ -153,7 +153,7 @@ const quint32 EVENT_SCHEDULER_IN_ERROR_STATE = SCHEDULER_BASE_ID + 0x0311; ///< 
 // 3. runing program
 const quint32 EVENT_SCHEDULER_START_PROGRAM = SCHEDULER_BASE_ID + 0x0320; ///< start the program %1
 const quint32 EVENT_SCHEDULER_SET_RV_POSITION = SCHEDULER_BASE_ID + 0x0321; ///< Set the rotary valve position to %1.
-const quint32 EVENT_SCHEDULER_OVEN_HEATING_TIME = SCHEDULER_BASE_ID + 0x0322; ///< Still need to heat oven for %1 of %2 to melting paraffin.
+const quint32 EVENT_SCHEDULER_OVEN_HEATING_TIME = SCHEDULER_BASE_ID + 0x0322; ///< Still need to heat oven for %1 for melting paraffin.
 const quint32 EVENT_SCHEDULER_OVEN_ABORTING = SCHEDULER_BASE_ID + 0x0323; ///< Aborting program.
 const quint32 EVENT_SCHEDULER_OVEN_ABORTED = SCHEDULER_BASE_ID + 0x0324; ///< Aborted program.
 const quint32 EVENT_SCHEDULER_OVEN_PAUSE = SCHEDULER_BASE_ID + 0x0325; ///< Pause program.
@@ -167,7 +167,7 @@ const quint32 EVENT_SCHEDULER_MOVE_RV_SEALING_POSITION = SCHEDULER_BASE_ID + 0x0
 const quint32 EVENT_SCHEDULER_START_PROCESSING = SCHEDULER_BASE_ID + 0x032D; ///< Start processing.
 const quint32 EVENT_SCHEDULER_SET_PRESSURE = SCHEDULER_BASE_ID + 0x032E; ///< Set pressure to %1.
 const quint32 EVENT_SCHEDULER_PROGRAM_STEP_FINISHED = SCHEDULER_BASE_ID + 0x032F; ///< Finished Step %1.
-const quint32 EVENT_SCHEDULER_PROGRAM_STEP_START = SCHEDULER_BASE_ID + 0x0330; ///< Start Step %1(Station %2, %3, %4, %5).
+const quint32 EVENT_SCHEDULER_PROGRAM_STEP_START = SCHEDULER_BASE_ID + 0x0330; ///< Start Step %1(Station %2, %3, %4, %5, %6).
 const quint32 EVENT_SCHEDULER_PROGRAM_FINISHED = SCHEDULER_BASE_ID + 0x0331; ///< Finished Program %1.
 const quint32 EVENT_SCHEDULER_START_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0332; ///< Start the dry processing.
 const quint32 EVENT_SCHEDULER_FINISHED_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0333; ///< Finished the dry processing.

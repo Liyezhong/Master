@@ -1063,11 +1063,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             qint64 remainTime = mp_SchedulerController->GetOvenHeatingRemainingTime();
             if(50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
             {
-                heatingSensor.heatingStartTime = (12 * 3600 - remainTime) * 1000;
+                heatingSensor.heatingStartTime = 12 * 3600000 - remainTime;
             }
             else if(65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
             {
-                heatingSensor.heatingStartTime = (15 * 3600 - remainTime) * 1000;
+                heatingSensor.heatingStartTime = 15 * 3600000 - remainTime;
             }
             if(0 == heatingSensor.heatingStartTime)
             {
