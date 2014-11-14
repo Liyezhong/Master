@@ -1024,6 +1024,7 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     if (m_PasswordManager.GetFallbackPasswordFlag()) {
         // User entered the fallback password so ask him to change the password
         (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
+        m_PasswordManager.SetFallbackPasswordFlag(false);
     }
 }
 
