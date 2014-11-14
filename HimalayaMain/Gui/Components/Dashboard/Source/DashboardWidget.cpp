@@ -336,18 +336,21 @@ void CDashboardWidget::OnRetortCoverOpen()
 
 void CDashboardWidget::OnPowerFailureMsg()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    mp_MessageDlg->SetTitle(CommonString::strOK);
+    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
+    pMessageDlg->SetIcon(QMessageBox::Critical);
+    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_PowerFailureBoxTitle);
-    mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
+    pMessageDlg->SetText(strTemp);
+    pMessageDlg->SetButtonText(1, CommonString::strOK);
+    pMessageDlg->HideButtons();
 
-    if (mp_MessageDlg->exec())
+    if (pMessageDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_POWER_FAILURE_MSG);
+        delete pMessageDlg;
         return;
     }
+    delete pMessageDlg;
 }
 
 void CDashboardWidget::OnProgramBeginAbort()
