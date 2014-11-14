@@ -168,13 +168,27 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 	switch (currentState)
     {
     case PRETEST_INIT:
-        if(mp_SchedulerThreadController->IsCleaningProgram())
+        //emit RTTemperatureControlOn();
+        if (0 == m_MoveToTubeSeq)
         {
-            emit CleaningMoveToTube();
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+            m_MoveToTubeSeq++;
         }
         else
         {
-            emit RTTemperatureControlOn();
+            if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    m_MoveToTubeSeq = 0;
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
+                else
+                {
+                    m_MoveToTubeSeq = 0;
+                    emit CleaningMoveToTube();
+                }
+            }
         }
         break;
     case RT_TEMCTRL_ON:
