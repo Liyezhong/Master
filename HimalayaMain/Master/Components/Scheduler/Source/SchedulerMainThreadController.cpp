@@ -1035,15 +1035,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                    if (false == m_IsSafeReagentState)
-                    {
-                        m_SchedulerMachine->NotifyDrainFinished();
-                    }
-                    else
-                    {
-                        m_IsSafeReagentState = false; // Reset
-                        m_SchedulerMachine->NotifyProgramFinished();
-                    }
+                    m_SchedulerMachine->NotifyDrainFinished();
                 }
                 else
                 {
@@ -1058,7 +1050,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_RV_POS_CHANGE;
             if(IsRVRightPosition(NEXT_TUBE_POS))
             {
-               m_SchedulerMachine->NotifyStepFinished();
+               if (false == m_IsSafeReagentState)
+               {
+                   m_SchedulerMachine->NotifyStepFinished();
+               }
+               else
+               {
+                   m_IsSafeReagentState = false; // Reset
+                   m_SchedulerMachine->NotifyProgramFinished();
+               }
             }
             else
             {
@@ -1068,10 +1068,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         RaiseError(0, retCode, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
-                    }
-                    else
-                    {
-                        // Do nothing, just wait
                     }
                 }
             }
