@@ -283,33 +283,39 @@ void CDashboardWidget::OnProgramWillComplete()
 
 void CDashboardWidget::OnTissueProtectPassed()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
+    pMessageDlg->SetIcon(QMessageBox::Information);
+    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strTissueProtectPassed);
-    mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
+    pMessageDlg->SetText(strTemp);
+    pMessageDlg->SetButtonText(1, CommonString::strOK);
+    pMessageDlg->HideButtons();
 
-    if (mp_MessageDlg->exec())
+    if (pMessageDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN_SR);
+        delete pMessageDlg;
         return;
     }
+    delete pMessageDlg;
 }
 
 void CDashboardWidget::OnOvenCoverOpen()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-    mp_MessageDlg->SetText(m_strOvenCoverOpen);
-    mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-    mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-    mp_MessageDlg->HideCenterButton();
-    if (mp_MessageDlg->exec())
+    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
+    pMessageDlg->SetIcon(QMessageBox::Information);
+    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
+    pMessageDlg->SetText(m_strOvenCoverOpen);
+    pMessageDlg->SetButtonText(1, CommonString::strYes);
+    pMessageDlg->SetButtonText(3, CommonString::strNo);
+    pMessageDlg->HideCenterButton();
+    if (pMessageDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_OVEN_COVER_OPEN);
+        delete pMessageDlg;
         return;
     }
+    delete pMessageDlg;
 }
 
 void CDashboardWidget::OnRetortCoverOpen()
