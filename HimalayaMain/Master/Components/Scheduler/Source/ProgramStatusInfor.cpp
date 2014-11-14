@@ -97,7 +97,7 @@ void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool R
                 quint32 time = line.toUInt(&ok);
                 if(ok && time > 0)
                 {
-                    m_MaxMeltTime = time * 60;
+                    m_MaxMeltTime = time * 60 * 1000;
                 }
             }
             Test.close();
@@ -269,7 +269,7 @@ quint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin()
 
 void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn)
 {
-    if(((QDateTime::currentMSecsSinceEpoch() - m_LastTimeUpdateHeatingTime) < 60 * 1000)
+    if(((Time - m_LastTimeUpdateHeatingTime) < 60 * 1000)
             && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
     {
         return;
