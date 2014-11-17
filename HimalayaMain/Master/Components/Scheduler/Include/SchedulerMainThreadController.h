@@ -192,8 +192,11 @@ typedef struct
     class SchedulerMainThreadController : public Threads::ThreadController {
         Q_OBJECT
 
+#ifdef GOOGLE_MOCK
 		// add "friend class TestSchedulerController" for UT
-        friend class TestSchedulerController;
+        friend class TestSchedIDPExchange;
+#endif
+
     private:
         QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
         QMutex m_Mutex;       ///<  Definition/Declaration of variable m_Mutex
