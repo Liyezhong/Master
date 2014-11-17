@@ -130,7 +130,7 @@ void CSettings::OnCurrentTabChanged(int CurrentTabIndex)
 {
     mp_Ui->stackedWidget->setCurrentIndex(CurrentTabIndex);
 
-    if (mp_Ui->stackedWidget->currentWidget() == mp_Ui->pageNetworkSettings) {
+    if (mp_MainWindow->GetSaMUserMode() == QString("Manufacturing") && mp_Ui->stackedWidget->currentWidget() == mp_Ui->pageNetworkSettings) {
         if (mp_ServiceDataConnector->GetServiceParameters()) {
             mp_Ui->pageNetworkSettings->UpdateIpAddress(mp_ServiceDataConnector->GetServiceParameters()->GetProxyIPAddress());
         }
