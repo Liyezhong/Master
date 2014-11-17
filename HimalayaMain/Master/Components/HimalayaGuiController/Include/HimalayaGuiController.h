@@ -44,7 +44,7 @@ const QString GUI_PROCESS_NAME = "Himalaya Device GUI";
 class HimalayaGuiController : public ExternalProcessControl::ExternalProcessController
 {
     Q_OBJECT
-
+    friend class TestHimalayaGuiController;
 private:
 
     HimalayaGuiController();                                                    ///< Not implemented.
