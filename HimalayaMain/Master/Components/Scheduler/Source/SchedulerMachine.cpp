@@ -1373,7 +1373,7 @@ void CSchedulerStateMachine::HandleRsCheckBlockageWorkFlow(const QString& cmdNam
         break;
     case CHECK_PRESSURE:
         currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
-        if(currentPressure < 8)
+        if(currentPressure < 2.66)
         {
             m_RsCheckBlockage = BUILD_HIGHPRESSURE;
             OnTasksDone(true);
