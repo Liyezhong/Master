@@ -78,8 +78,6 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
    {
        ret = false;
    }
-
-   m_Status.insert("HeatingOvenSlice","");
    SetStatus("HeatingOvenSlice","");
 
    if(QFile::exists("TEST_ISSAC")) // only for testing time of paraffin
@@ -114,7 +112,6 @@ void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool R
     }
     if(Reset)
     {
-        m_Status.insert("HeatingOvenSlice","");
         SetStatus("HeatingOvenSlice","");
     }
 
