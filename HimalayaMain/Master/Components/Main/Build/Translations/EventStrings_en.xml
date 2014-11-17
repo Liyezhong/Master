@@ -791,8 +791,8 @@
         <string id="67176213" text1="Vacuum test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
         <string id="67176214" text1="Protocol was interrupted by power failure. Please remove the specimen and abort the protocol. Before start another protocol, please run cleaning protocol." text2=""/>
         <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
-	<string id="67176216" text1="Tell user 300 seconds waiting time out, instrument are auto re-heating and filling safety reagents" text2=""/>
-	<string id="67176217" text1="Power failure failed! Please call service!" text2=""/>
+	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
+	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service." text2=""/>
 	<string id="67176218" text1="SW encountered fatal error and will exit" text2=""/>
 	</language>
 </strings>
