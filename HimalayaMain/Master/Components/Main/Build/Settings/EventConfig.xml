@@ -103,12 +103,11 @@
 			<Step ID="3" Type="MSG" StringID="67176200" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="513040201" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67175943" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="67176200" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES"/>
-			<Step ID="2" Type="ACT" Action="RC_Draining" NextStepOnFail="4" NextStepOnSuccess="3"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>
-			<Step ID="4" Type="MSG" StringID="67176200" ButtonType="OK" NextStepOnTimeOut="5" TimeOut="15m" StatusBar="YES"/>
-			<Step ID="5" Type="ACT" Action="RS_Tissue_Protect"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="ACT" Action="RC_Draining" NextStepOnFail="3" NextStepOnSuccess="2"/>
+			<Step ID="2" Type="ACT" Action="RC_Restart"/>
+			<Step ID="3" Type="MSG" StringID="67176200" ButtonType="OK" NextStepOnTimeOut="4" TimeOut="15m" StatusBar="YES"/>
+			<Step ID="4" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040122" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175944" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_FillingAfterFlush" NextStepOnFail="1" NextStepOnSuccess="2"/>
