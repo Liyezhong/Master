@@ -81,7 +81,6 @@ int CLidLockTest::Run(void)
     if (Ret == 0) {
         return RETURN_ERR_FAIL;
     }
-
     return RETURN_OK;
 }
 

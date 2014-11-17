@@ -75,6 +75,10 @@ namespace SVCDiagnostics{
     class CSVCDashboardWidget;
 }
 
+namespace SVCScreenLock {
+    class CSVCScreenLockWidget;
+}
+
 namespace ServiceKeyValidator {
     class CUSBKeyValidator;
 }
@@ -175,6 +179,9 @@ private:
 
     //SVC Diagnostics
     SVCDiagnostics::CSVCDashboardWidget      *mp_SVCDashboardWidget;
+
+    //SVC Screen lock
+    SVCScreenLock::CSVCScreenLockWidget     *mp_SVCSceenLockWidget;
 
     // Diagnostics1 Manufacturing
     MainMenu::CMenuGroup                    *mp_DiagnosticsManufGroup;

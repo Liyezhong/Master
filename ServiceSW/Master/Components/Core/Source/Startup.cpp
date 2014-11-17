@@ -36,6 +36,8 @@
 #include <QDesktopWidget>
 #include "Core/Include/ServiceUtils.h"
 #include "SVCDiagnostics/Include/SVCDashboardWidget.h"
+#include "SVCScreenLock/Include/SVCScreenLockWidget.h"
+#include "Application/Include/Application.h"
 
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
@@ -58,7 +60,8 @@ CStartup::CStartup() : QObject(),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL)
+    mp_SealingStatusDlg(NULL),
+    mp_SVCSceenLockWidget(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -289,6 +292,9 @@ CStartup::~CStartup()
         delete mp_Retort;
         delete mp_DiagnosticsGroup;
         delete mp_SVCDashboardWidget;
+        if (mp_SVCSceenLockWidget) {
+            delete mp_SVCSceenLockWidget;
+        }
 
         //Diagnostics1 Manufacturing
         delete mp_DiagnosticsManufGroup;
@@ -560,6 +566,11 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         p_InitSystem->setFixedSize(800, 600);
         (void)p_InitSystem->exec();
         delete p_InitSystem;
+
+        mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
+        Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
+        CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
+        CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_SVCSceenLockWidget, OnCurrentTabChanged(int));
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {

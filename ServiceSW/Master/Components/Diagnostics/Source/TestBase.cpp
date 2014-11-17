@@ -22,14 +22,18 @@
 
 namespace Diagnostics {
 
+bool CTestBase::IsTestRuning = false;
+
 CTestBase::CTestBase(QWidget *p_Parent)
     :mp_Parent(p_Parent)
 {
     mp_WaitDlg = NULL;
+    IsTestRuning = true;
 }
 
 CTestBase::~CTestBase()
 {
+    IsTestRuning = false;
     try {
         if (mp_WaitDlg) {
             mp_WaitDlg->hide();

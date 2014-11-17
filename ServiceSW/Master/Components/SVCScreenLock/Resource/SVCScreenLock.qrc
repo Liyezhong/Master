@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/ScreenLock1.png</file>
+        <file>Images/ScreenLock2.png</file>
+    </qresource>
+</RCC>

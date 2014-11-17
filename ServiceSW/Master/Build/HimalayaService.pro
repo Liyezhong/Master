@@ -35,6 +35,7 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/TestCases/Build/TestCases.pro \
           ../Components/ServiceWidget/Build/ServiceWidget.pro \
           ../Components/SVCDiagnostics/Build/SVCDiagnostics.pro \
+          ../Components/SVCScreenLock/Build/SVCScreenLock.pro \
           ../Components/Calibration/Build/Calibration.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
           ../Components/LogViewerDialog/Build/LogViewerDialog.pro \

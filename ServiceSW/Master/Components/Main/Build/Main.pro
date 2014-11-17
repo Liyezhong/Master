@@ -72,6 +72,7 @@ HIMALAYA_COMPONENTS = TestCases  \
                       Diagnostics \
                       DiagnosticsManufacturing \
                       SVCDiagnostics \
+                      SVCScreenLock \
                       ServiceUpdates \
                       ServiceMasterThreadController \
                       ServiceDeviceController \
