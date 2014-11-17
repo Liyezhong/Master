@@ -88,6 +88,7 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     CProgramStatusInfor ProStatus;
     bool result = false;
 
+    system("rm TEST_ISSAC");
     result = ProStatus.InitProgramStatus(54);
     QVERIFY(result);
     ProStatus.SetLastRVPosition(DeviceControl::RV_SEAL_10);
@@ -127,6 +128,25 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     ProStatus.UpdateOvenHeatingTime(CTime,false);
     QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
     QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
+
+    system("echo 10 >TEST_ISSAC");
+    result = ProStatus.InitProgramStatus(54);
+    QVERIFY(result);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 10 * 60 * 1000);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
+    ProStatus.UpdateOvenHeatingTime(CTime - 15 * 60 * 1000,true);
+    ProStatus.UpdateOvenHeatingTime(CTime - 10 * 60 * 1000,true);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 5 * 60 * 1000);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 5 * 60 * 1000);
+
+    ProStatus.UpdateOvenHeatingTime(CTime - 3 * 60 * 1000,true);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 0);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 10 * 60 * 1000);
+
+    ProStatus.UpdateOvenHeatingTime(CTime,false);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 10 * 60 * 1000);
+    QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
+
 }
 
 

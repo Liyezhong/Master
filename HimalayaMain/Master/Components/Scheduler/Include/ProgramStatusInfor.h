@@ -212,12 +212,13 @@ public:
      *  \brief update oven heating time
      *  \param Time oven heating time
      *  \param IsHeatingOn oven heating start time
+     *  \return true / false
      */
     /****************************************************************************/
     void UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn);
 
 private:
-    void CalculateTime(bool reset = false);
+    bool CalculateTime(quint64& HeatingTime, quint64& UnHeatingTime);
 
 private:
     void FlushFile();
