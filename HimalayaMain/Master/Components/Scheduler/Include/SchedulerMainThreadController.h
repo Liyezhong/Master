@@ -194,7 +194,7 @@ typedef struct
 
 #ifdef GOOGLE_MOCK
 		// add "friend class TestSchedulerController" for UT
-        friend class TestSchedIDPExchange;
+        friend class TestSchedulerMainThreadController;
 #endif
 
     private:

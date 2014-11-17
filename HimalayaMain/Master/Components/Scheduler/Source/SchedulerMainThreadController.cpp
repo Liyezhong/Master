@@ -444,6 +444,11 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 
     QString reagentID = m_ProgramStatusInfor.GetLastReagentGroup();
     QString curProgramID = m_ProgramStatusInfor.GetProgramId();
+    if (reagentID.isNull() || reagentID.isEmpty() || curProgramID.isNull() || curProgramID.isEmpty())
+    {
+        return;
+    }
+
     quint32 scenario = m_ProgramStatusInfor.GetScenario();
     int StepID = m_ProgramStatusInfor.GetStepID();
     if(-1 == StepID)
@@ -629,6 +634,12 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
     m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
     MsgClasses::CmdUpdateStationReagentStatus* commandPtr = NULL;
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
+
+    if (m_CurProgramID.isNull() || m_CurProgramID.isEmpty())
+    {
+        return;
+    }
+
     if (m_CurProgramID.at(0) == 'C')//process cleaning reagent
     {
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
@@ -1749,6 +1760,10 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
                                                                   ProgramStepInfor& programStepInfor,
                                                                   bool onlyGetFirstProgramStepIndex)
 {
+    if (ProgramID.isNull() ||  ProgramID.isEmpty())
+    {
+        return false;
+    }
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
@@ -1863,6 +1878,11 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
 QString SchedulerMainThreadController::GetStationIDFromProgramStep(int ProgramStepIndex)
 {
     ProgramStepIndex = ProgramStepIndex - m_FirstProgramStepIndex;
+
+    if (ProgramStepIndex < 0 || (ProgramStepIndex > m_StationList.size()-1) || m_StationList.empty())
+    {
+        return "";
+    }
     return m_StationList.at(ProgramStepIndex);
 }
 
@@ -1932,6 +1952,11 @@ QString SchedulerMainThreadController::SelectStationByReagent(const CReagent* pR
 
 bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID, int beginStep)
 {
+    if (ProgramID.isEmpty() || ProgramID.isNull())
+    {
+        return false;
+    }
+
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
@@ -2105,6 +2130,11 @@ void SchedulerMainThreadController::OnEnterPssMStepFin()
  */
 int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& ProgramID)
 {
+    if (ProgramID.isNull() || ProgramID.isEmpty())
+    {
+        return -1;
+    }
+
     if (!mp_DataManager)
     {
         Q_ASSERT(false);

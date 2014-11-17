@@ -272,7 +272,7 @@ void TestSchedIDPExchange::UTAll()
     waitTime(2);
     mp_IDeviceProcessing->ConfigurationFinished();
     waitTime(100);
-	m_pSchedulerMainController->DevProcDestroyed();	
+    // m_pSchedulerMainController->DevProcDestroyed();
     emit SendStop();
 }
 
