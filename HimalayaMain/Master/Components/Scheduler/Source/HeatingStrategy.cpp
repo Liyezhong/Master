@@ -1049,39 +1049,61 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
     //Firstly, get the Parrifin melting point (user input)
     int userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    qint64 timeElapse = 0;
+    qint64 remainTime = 0;
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
+        timeElapse = 0;
         QPair<qint64,qint64> timeRange = heatingSensor.TimeRangeList[iter->Id];
         QPair<qreal,qreal> meltingRange = heatingSensor.ParaffinTempRangeList[iter->Id];
 
         qint64 now = QDateTime::currentMSecsSinceEpoch();
-        qint64 timeElapse = 0;
-        if (0 == heatingSensor.heatingStartTime)
+
+        if(50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
         {
-            qint64 remainTime = mp_SchedulerController->GetOvenHeatingRemainingTime();
-            if(50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
+            if (0 == heatingSensor.heatingStartTime)
             {
-                heatingSensor.heatingStartTime = 12 * 3600000 - remainTime;
-            }
-            else if(65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
-            {
-                heatingSensor.heatingStartTime = 15 * 3600000 - remainTime;
-            }
-            if(0 == heatingSensor.heatingStartTime)
-            {
-                timeElapse = heatingSensor.heatingStartTime;
+                 remainTime = mp_SchedulerController->GetOvenHeatingRemainingTime();
+                 timeElapse = 12 * 3600000 - remainTime;
+
+                 if(timeElapse < 0)
+                 {
+                     timeElapse = 0;
+                 }
+                 else if(timeElapse > 12 * 3600000)
+                 {
+                     timeElapse = 12 * 3600000;
+                 }
             }
             else
             {
                 timeElapse = now - heatingSensor.heatingStartTime;
             }
         }
-        else
+        else if(65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
         {
-            timeElapse = now - heatingSensor.heatingStartTime;
+            if (0 == heatingSensor.heatingStartTime)
+            {
+                 remainTime = mp_SchedulerController->GetOvenHeatingRemainingTime();
+                 timeElapse = 15 * 3600000 - remainTime;
+                 if(timeElapse < 0)
+                 {
+                     timeElapse = 0;
+                 }
+                 else if(timeElapse > 15 * 3600000)
+                 {
+                     timeElapse = 15 * 3600000;
+                 }
+            }
+            else
+            {
+                timeElapse = now - heatingSensor.heatingStartTime;
+            }
         }
+
+
         if (meltingRange.first <= userInputMeltingPoint && meltingRange.second >= userInputMeltingPoint
                 && (timeRange.first * 1000) <= timeElapse && (timeRange.second * 1000) >= timeElapse)
         {
@@ -1123,7 +1145,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
                 heatingSensor.OvenBottom2OTCheckPassed = false;
                 heatingSensor.OTCheckPassed = false;
                 heatingSensor.IsStartedHeating = true;
-                heatingSensor.heatingStartTime += QDateTime::currentMSecsSinceEpoch();
+                heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch() - timeElapse;
             }
 
             return DCL_ERR_FCT_CALL_SUCCESS;
