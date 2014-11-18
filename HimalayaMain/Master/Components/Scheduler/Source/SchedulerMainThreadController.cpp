@@ -1833,12 +1833,23 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     if (pProgramStep)
     {
         programStepInfor.stationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex);
-        //cleaning program
+        int soakTime = pProgramStep->GetDurationInSeconds();
+        if (0 == m_CurProgramStepIndex && m_delayTime > 0)
+        {
+            soakTime = soakTime + m_delayTime;
+        }
+        programStepInfor.durationInSeconds = soakTime;
+        programStepInfor.temperature = pProgramStep->GetTemperature().toInt();
+        programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
+        programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
+        m_CurReagnetName = GetReagentName(reagentID);
+        programStepInfor.reagentGroup = GetReagentGroupID(reagentID);
+        //next station
         if((m_CurProgramStepIndex + 1) == count)
         {
             if(ProgramID.at(0) != 'C')
             {
-                if("RG6" == reagentID)
+                if("RG6" == programStepInfor.reagentGroup)
                 {
                     programStepInfor.nextStationID = "S12";
                 }
@@ -1851,22 +1862,10 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
             {
                 programStepInfor.nextStationID = programStepInfor.stationID;
             }
-        }
-        else
+        }        else
         {
             programStepInfor.nextStationID = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
         }
-        int soakTime = pProgramStep->GetDurationInSeconds();
-        if (0 == m_CurProgramStepIndex && m_delayTime > 0)
-        {
-            soakTime = soakTime + m_delayTime;
-        }
-        programStepInfor.durationInSeconds = soakTime;
-        programStepInfor.temperature = pProgramStep->GetTemperature().toInt();
-        programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
-        programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
-        m_CurReagnetName = GetReagentName(reagentID);
-        programStepInfor.reagentGroup = GetReagentGroupID(reagentID);
     }
     else
     {
