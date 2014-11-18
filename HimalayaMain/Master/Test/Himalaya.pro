@@ -38,10 +38,16 @@ SUBDIRS += $${PLATFORM}/Master/Components/SWUpdateManager/Build/SWUpdateManager.
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Test/TestHimalayaMasterThread.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Build/HimalayaGuiController.pro
+SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Test/TestHimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/HimalayaDataManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Test/TestDataManager.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentGroupColor/Test/TestReagentGroupColor.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentGroups/Test/TestDataReagentGroupList.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentStations/Test/TestDataStationList.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/Reagents/Test/TestDataReagentList.pro
+
 
 SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Test/ExternalProcessTest.pro
