@@ -5,3 +5,4 @@ SUBDIRS += TestSchedulerMainThreadController.pro
 SUBDIRS += TestHeatingStrategy.pro
 SUBDIRS += TestProgramStatusInfor.pro
 SUBDIRS += TestRcReheating.pro
+SUBDIRS += TestSchedulerMachine.pro

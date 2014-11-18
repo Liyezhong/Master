@@ -1,8 +1,8 @@
-!include("TestSchedulerMainThreadController.pri") {
-    error("TestSchedulerMainThreadController.pri not found")
+!include("TestSchedulerMachine.pri") {
+    error("TestSchedulerMachine.pri not found")
 }
 
-TARGET = utTestSchedulerMainThreadController
+TARGET = utTestSchedulerMachine
 
 SOURCES += ../Source/*.cpp
 SOURCES += ../Commands/Source/*.cpp

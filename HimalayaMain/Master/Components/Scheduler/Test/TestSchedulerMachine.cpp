@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file   TestSchedulerMainThreadController.cpp
+/*! \file   TestSchedulerMachine.cpp
  *
- *  \brief  Implementation file for class TestSchedulerMainThreadController.
+ *  \brief  Implementation file for class TestSchedulerMachine.
  *
  *  $Version:   $ 0.1
- *  $Date:      $ 2014-11-17
+ *  $Date:      $ 2014-11-18
  *  $Author:    $ Songtao Yu
  *
  *  \b Company:
@@ -27,6 +27,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "HimalayaDataManager/Include/DataManager.h"
+#include "Scheduler/Include/SchedulerMachine.h"
 
 using::testing::Return;
 using::testing::AtLeast;
@@ -49,12 +50,13 @@ namespace Scheduler {
  * \brief Test class for TestSchedulerMainThreadController class.
  */
 /****************************************************************************/
-class TestSchedulerMainThreadController : public QObject {
+class TestSchedulerMachine : public QObject {
     Q_OBJECT
 public:
-    TestSchedulerMainThreadController()
+    TestSchedulerMachine()
         :mp_IDeviceProcessing(new MockIDeviceProcessing()),
-         m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER))
+         m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
+         m_pSchedulerMachine(new CSchedulerStateMachine(m_pSchedulerMainController))
     {
         Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
         mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
@@ -90,7 +92,7 @@ public:
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
-    ~TestSchedulerMainThreadController()
+    ~TestSchedulerMachine()
     {
         delete mp_HMThreadController;
         mp_HMThreadController = NULL;
@@ -103,6 +105,9 @@ public:
 
         m_pSchedulerMainController->deleteLater();
         m_pSchedulerMainController = NULL;
+
+        delete m_pSchedulerMachine;
+        m_pSchedulerMachine = NULL;
     }
 
 private:
@@ -110,6 +115,7 @@ private:
     DataManager::CDataManager*                  mp_DataManager;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     SchedulerMainThreadController*              m_pSchedulerMainController;
+    CSchedulerStateMachine*                     m_pSchedulerMachine;
 	
 private slots:
     /****************************************************************************/
@@ -125,7 +131,7 @@ private slots:
     /****************************************************************************/
     //void init();
 
-    void TestSlots();
+    void TestAPIs();
     /****************************************************************************/
     /**
      * \brief Called after each testfunction was executed.
@@ -148,141 +154,82 @@ signals:
 }; // end class TestEventCSVInfo
 
 
-void TestSchedulerMainThreadController::TestSlots()
+void TestSchedulerMachine::TestAPIs()
 {
-    m_pSchedulerMainController->DevProcDestroyed();
-
-    DataManager::CModule module;
-    m_pSchedulerMainController->ReportGetServiceInfo(DCL_ERR_FCT_CALL_SUCCESS, module, "TemperatureControl");
-
-    m_pSchedulerMainController->ResetActiveCarbonFilterLifetime();
-
-    m_pSchedulerMainController->OnReportFillingTimeOut2Min();
-
-    m_pSchedulerMainController->OnReportDrainingTimeOut2Min();
-
-    QDateTime curTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    m_pSchedulerMainController->OnReportError(200, 0x01, 0x01, 0x01, curTime);
-
-    m_pSchedulerMainController->CleanupAndDestroyObjects();
-
-    m_pSchedulerMainController->OnPowerFail(Global::POWER_FAIL_STAGE_1);
-
-    Global::AckOKNOK ack;
-    m_pSchedulerMainController->OnAcknowledge(1,ack);
-    ControlCommandType_t ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
-    SchedulerCommandShPtr_t cmd;
-    m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
-    m_pSchedulerMainController->HandlePowerFailure(ctrlCmd, cmd);
-
-    m_pSchedulerMainController->UpdateStationReagentStatus();
-
-    ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
-    m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
-    m_pSchedulerMainController->HandleRunState(ctrlCmd, cmd);
-
-    ProgramStepInfor stepInfo;
-    m_pSchedulerMainController->GetNextProgramStepInformation("", stepInfo);
-
-    m_pSchedulerMainController->GetStationIDFromProgramStep(0);
-
-    m_pSchedulerMainController->PrepareProgramStationList("",0);
-
-    QList<QString> stationList;
-    m_pSchedulerMainController->GetSafeReagentStationList("RG3", stationList);
-
-    m_pSchedulerMainController->SendTissueProtectMsg();
-
-    m_pSchedulerMainController->SendCoverLidOpenMsg();
-
-    m_pSchedulerMainController->WhichStepHasNoSafeReagent("");
-
-    m_pSchedulerMainController->GetLeftProgramStepsNeededTime("", 1);
-
-    m_pSchedulerMainController->GetCurrentProgramStepNeededTime("");
-
-    m_pSchedulerMainController->GetReagentName("RG6");
-
-    m_pSchedulerMainController->GetReagentGroupID("RG3");
-
-    QCOMPARE(m_pSchedulerMainController->BottleCheck(100), false);
-
-    m_pSchedulerMainController->RcBottleCheckI();
-
-    m_pSchedulerMainController->MoveRVToInit();
-
-    m_pSchedulerMainController->ReleasePressure();
-
-    m_pSchedulerMainController->OnEnterPssmProcessing();
-
-    QCOMPARE(m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true);
-
-    QCOMPARE(m_pSchedulerMainController->MoveRV(TUBE_POS), false);
-
-    m_pSchedulerMainController->Fill();
-
-    m_pSchedulerMainController->ShutdownFailedHeaters();
-
-    m_pSchedulerMainController->RestartFailedHeaters();
-
-    m_pSchedulerMainController->CheckSensorTempOverange();
-
-    m_pSchedulerMainController->FillRsTissueProtect("S1", false);
-
-    m_pSchedulerMainController->StopFillRsTissueProtect("S1");
-
-    m_pSchedulerMainController->CheckSlaveTempModulesCurrentRange(2);
-
-    m_pSchedulerMainController->OnStopFill();
-
-    m_pSchedulerMainController->RCDrain();
-
-    m_pSchedulerMainController->Drain();
-
-    m_pSchedulerMainController->RcDrainAtOnce();
-
-    m_pSchedulerMainController->OnBeginDrain();
-
-    m_pSchedulerMainController->OnStopDrain();
-
-    m_pSchedulerMainController->Pressure();
-
-    m_pSchedulerMainController->HighPressure();
-
-    m_pSchedulerMainController->Vaccum();
-
-    m_pSchedulerMainController->AllStop();
-
-    m_pSchedulerMainController->Pause();
-
-    m_pSchedulerMainController->m_TempALLevelSensor = 100.0;
-
-    QCOMPARE(m_pSchedulerMainController->CheckLevelSensorTemperature(30.0), true);
-
-    QCOMPARE(m_pSchedulerMainController->GetRVTubePositionByStationID(""), RV_UNDEF);
-
-    QCOMPARE(m_pSchedulerMainController->GetRVSealPositionByStationID(""), RV_UNDEF);
-
-    m_pSchedulerMainController->GetPreTestTime();
-
-    m_pSchedulerMainController->IsLastStep(1,"");
-
-    m_pSchedulerMainController->m_CurErrEventID = DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
-    QCOMPARE(m_pSchedulerMainController->GetFailerHeaterType(), LEVELSENSOR);
-
-    m_pSchedulerMainController->OnSystemError();
-
-    m_pSchedulerMainController->OnEnterRcRestart();
-
-    m_pSchedulerMainController->OnFillingHeatingRV();
-
-    m_pSchedulerMainController->OnPreTestDone();
-
-    m_pSchedulerMainController->SendPowerFailureMsg();
+    m_pSchedulerMachine->Stop();
+    m_pSchedulerMachine->SendRunSignal();
+    m_pSchedulerMachine->SendCleaningSignal();
+    m_pSchedulerMachine->SendRunComplete();
+    m_pSchedulerMachine->SendResumeFillingRVRodHeating();
+    m_pSchedulerMachine->SendResumeFillingLevelSensorHeating();
+    m_pSchedulerMachine->SendResumeFiling();
+    m_pSchedulerMachine->SendResumeRVMoveToSeal();
+    m_pSchedulerMachine->SendResumeProcessing();
+    m_pSchedulerMachine->SendResumeProcessingSR();
+    m_pSchedulerMachine->SendResumeRVMoveTube();
+    m_pSchedulerMachine->SendResumeDraining();
+    m_pSchedulerMachine->SendResumeRVPosChange();
+    m_pSchedulerMachine->SendResumeDryStep();
+    m_pSchedulerMachine->SendResumeAborting();
+    m_pSchedulerMachine->SendErrorSignal();
+    m_pSchedulerMachine->GetPreviousState();
+    m_pSchedulerMachine->NotifyStInitOK();
+    m_pSchedulerMachine->NotifyStTempOK();
+    m_pSchedulerMachine->NotifyStCurrentOK();
+    m_pSchedulerMachine->NotifyStVoltageOK();
+    m_pSchedulerMachine->NotifyStRVPositionOK();
+    m_pSchedulerMachine->NotifyStPressureOK();
+    m_pSchedulerMachine->NotifyStSealingOK();
+    m_pSchedulerMachine->NotifyStGetStationcheckResult();
+    m_pSchedulerMachine->NotifyStStationLeft();
+    m_pSchedulerMachine->NotifyStStationOK();
+    m_pSchedulerMachine->NotifyStDone();
+    m_pSchedulerMachine->NotifyTempsReady();
+    m_pSchedulerMachine->NotifyLevelSensorHeatingReady();
+    m_pSchedulerMachine->NotifyRVRodHeatingReady();
+    m_pSchedulerMachine->NotifyRVMoveToSealReady();
+    m_pSchedulerMachine->NotifyRVMoveToTubeReady();
+    m_pSchedulerMachine->NotifyHitTubeBefore();
+    m_pSchedulerMachine->NotifyFillFinished();
+    m_pSchedulerMachine->NotifyHitSeal();
+    m_pSchedulerMachine->NotifyProcessingFinished();
+    m_pSchedulerMachine->NotifyHitTubeAfter();
+    m_pSchedulerMachine->NotifyDrainFinished();
+    m_pSchedulerMachine->NotifyStepFinished();
+    m_pSchedulerMachine->NotifyProgramFinished();
+    m_pSchedulerMachine->NotifyEnterCleaningDryStep();
+    m_pSchedulerMachine->NotifyStepProgramFinished();
+    m_pSchedulerMachine->NotifyError();
+    m_pSchedulerMachine->NotifyAbort();
+    m_pSchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+    m_pSchedulerMachine->NotifyRcReport();
+    m_pSchedulerMachine->NotifyRsReleasePressure();
+    m_pSchedulerMachine->NotifyRsShutdownFailedHeater();
+    m_pSchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
+    m_pSchedulerMachine->NotifyResumeDrain();
+    m_pSchedulerMachine->EnterRsStandBy();
+    m_pSchedulerMachine->EnterRsHeatingErr30SRetry();
+    m_pSchedulerMachine->EnterRsPressureOverRange3SRetry();
+    m_pSchedulerMachine->EnterRsTSensorErr3MinRetry();
+    m_pSchedulerMachine->EnterRsStandByWithTissue();
+    m_pSchedulerMachine->EnterRcPressure();
+    m_pSchedulerMachine->EnterRcVacuum();
+    m_pSchedulerMachine->EnterRcFilling();
+    m_pSchedulerMachine->EnterRcDraining();
+    m_pSchedulerMachine->EnterRsDrainAtOnce();
+    m_pSchedulerMachine->EnterRcBottleCheckI();
+    m_pSchedulerMachine->EnterRsFillingAfterFlush();
+    m_pSchedulerMachine->EnterRsCheckBlockage();
+    m_pSchedulerMachine->EnterRsPause();
+    m_pSchedulerMachine->EnterRsRVWaitingTempUp();
+    m_pSchedulerMachine->EnterRsTissueProtect();
+    m_pSchedulerMachine->EnterRcCheckRTLock();
+    m_pSchedulerMachine->EnterRsReagentCheck();
+    m_pSchedulerMachine->EnterRsRVMoveToSealPosition();
 }
 
-/******************************************************************ls**********/
-void TestSchedulerMainThreadController::initTestCase()
+/****************************************************************************/
+void TestSchedulerMachine::initTestCase()
 {
     m_pSchedulerMainController->CreateAndInitializeObjects();
 
@@ -297,23 +244,24 @@ void TestSchedulerMainThreadController::initTestCase()
     schedulerThread->start();
 }
 
+
 /****************************************************************************/
-void TestSchedulerMainThreadController::cleanupTestCase()
+void TestSchedulerMachine::cleanupTestCase()
 {
     emit SendStop();
 }
 
 } // end namespace EventHandler
 
+//QTEST_MAIN(Scheduler::TestSchedulerMainThreadController)
 int main(int argc, char*argv[])
 {
     ::testing::GTEST_FLAG(throw_on_failure) = true;
     ::testing::InitGoogleMock(&argc, argv);
     QCoreApplication app(argc, argv);
-    Scheduler::TestSchedulerMainThreadController tc;
+    Scheduler::TestSchedulerMachine tc;
     return QTest::qExec(&tc, argc, argv);
 }
 
-
-#include "TestSchedulerMainThreadController.moc"
+#include "TestSchedulerMachine.moc"
 
