@@ -189,7 +189,10 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     CONNECTSIGNALSLOT(this, UpdateSoftwareFromRC(), mp_SWUpdateManager, OnSWUpdateFromRC());
 
     //Initialize objects in Master and base threads.
-    SetSWVersion(mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
+    if(mp_DataManager && mp_DataManager->GetSWVersion())
+    {
+        SetSWVersion(mp_DataManager->GetSWVersion()->GetSWReleaseVersion());
+    }
     MasterThreadController::CreateAndInitializeObjects();
 
     RegisterCommandForProcessing<NetCommands::CmdExternalProcessState, HimalayaMasterThreadController>

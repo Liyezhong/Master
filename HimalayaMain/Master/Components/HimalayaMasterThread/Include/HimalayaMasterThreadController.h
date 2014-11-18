@@ -215,7 +215,7 @@ private:
                     m_CurrentUserActionState = EXPORT_STATE;
                 }                
             }
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE, Global::FmtArgs() << "Import/Export is started");
+           // Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE, Global::FmtArgs() << "Import/Export is started");
 
             // save the command channel, so that once the work is completed then ack can be sent to the same channel
             mp_ImportExportAckChannel = &AckCommandChannel;

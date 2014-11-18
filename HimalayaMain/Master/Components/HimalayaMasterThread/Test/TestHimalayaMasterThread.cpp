@@ -250,6 +250,7 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     Global::SystemPaths::Instance().SetSoundPath("../Sounds");
     Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
 
+    system("sudo chmod 777 ../");
 //    // create master thread
 //    QThread thrMasterThread;
 
@@ -274,10 +275,8 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     QCOMPARE(QObject::connect(App.thread(), SIGNAL(started()), &App.TheMasterThreadController, SLOT(Go())),true);
 #endif
     Global::tRefType Ref = 0;
-    quint8 NoOfLogFiles = 0;
     Global::AckOKNOK Ack;
     QString CmdName = "";
-    NetCommands::CmdExecutionStateChanged Cmd;
     QStringList ImportTypeList;
     ImportTypeList.clear();
 
@@ -286,7 +285,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
 
 
     NetCommands::CmdSystemAction SystemActionCmd;
-    Global::CmdShutDown ShutdownCmd;
 
 
     // now push controller to master thread
@@ -295,16 +293,15 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     // and start the Master thread
     App.TheMasterThreadController.CreateAndInitializeObjects();
 //    App.TheMasterThreadController.ShutdownOnPowerFail();
-#if 0
+
     App.TheMasterThreadController.OnAckOKNOK(Ref, Ack);
+#if 1
     App.TheMasterThreadController.OnProcessTimeout(Ref, CmdName);
     App.TheMasterThreadController.SendDCLContainerTo(AckCommandChannel);
     App.TheMasterThreadController.OnInitStateCompleted();
     App.TheMasterThreadController.SendStateChange("IdleState");
-    App.TheMasterThreadController.ExportProcessExited(CmdName, Global::EXIT_CODE_EXPORT_SUCCESS);
     App.TheMasterThreadController.RemoveAndDestroyObjects();
-    App.TheMasterThreadController.ImportExportThreadFinished(true, ImportTypeList,
-                                                             Global::EXIT_CODE_EXPORT_SUCCESS, false, false);
+
     App.TheMasterThreadController.EventCmdSystemAction(Ref, SystemActionCmd, AckCommandChannel);
     App.TheMasterThreadController.ExternalProcessConnectionHandler(Ref, ExternalProcessCmd, AckCommandChannel);
     App.TheMasterThreadController.RequestDayRunLogFileNames("../DayRunLog/");
@@ -316,14 +313,18 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     App.TheMasterThreadController.SWUpdateRollbackComplete();
     App.TheMasterThreadController.InitializeGUI();
 
-    App.TheMasterThreadController.RemoteCareExportData(NoOfLogFiles);
-    App.TheMasterThreadController.OnPowerFail(Global::POWER_FAIL_NONE);
-    App.TheMasterThreadController.ShutdownHandler(Ref,ShutdownCmd, AckCommandChannel);
+//    App.TheMasterThreadController.RemoteCareExportData(1);
+//    Threads::CommandChannel DummyChannel(&(App.TheMasterThreadController), "Dummy", Global::EVENTSOURCE_NONE);
+//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataExport>(Ref,
+//                                  MsgClasses::CmdDataExport(),DummyChannel);
+//    App.TheMasterThreadController.ExportProcessExited(CmdName, Global::EXIT_CODE_EXPORT_SUCCESS);
+//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataImport>(Ref,
+//                                  MsgClasses::CmdDataImport(),DummyChannel);
+//    App.TheMasterThreadController.ImportExportThreadFinished(true, ImportTypeList,
+//                                                             Global::EXIT_CODE_EXPORT_SUCCESS, false, false);
 
-//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataExport>(Ref,MsgClasses::CmdDataExport(),*(App.TheMasterThreadController.mp_ImportExportAckChannel));
-//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataImport>(Ref,MsgClasses::CmdDataImport(),*(App.TheMasterThreadController.mp_ImportExportAckChannel));
-
-    App.thread()->quit();
+//    App.TheMasterThreadController.OnPowerFail(Global::POWER_FAIL_NONE);
+   // App.TheMasterThreadController.ShutdownHandler(Ref,ShutdownCmd, AckCommandChannel);
     // cleanup controller for master thread.
     //App.TheMasterThreadController.CleanupAndDestroyObjects();
 #endif

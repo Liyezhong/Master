@@ -52,7 +52,7 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
    quint64 UnHeatingTime = 0;
    bool ret = true;
    m_MaxMeltTime = TIME_15_HOURS;
-   if(ParaffinMeltPoint < 64)
+   if(ParaffinMeltPoint <= 64)
    {
        m_MaxMeltTime = TIME_12_HOURS;
    }
@@ -107,7 +107,7 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
 void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool Reset)
 {
     m_MaxMeltTime = TIME_15_HOURS;
-    if(ParaffinMeltPoint < 64)
+    if(ParaffinMeltPoint <= 64)
     {
         m_MaxMeltTime = TIME_12_HOURS;
     }
