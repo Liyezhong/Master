@@ -38,6 +38,9 @@ class SchedulerMainThreadController;
 /****************************************************************************/
 class CRcReHeating : public QObject
 {
+#ifdef GOOGLE_MOCK
+    friend class TestRcReheating;
+#endif
     Q_OBJECT
 public:
     /****************************************************************************/

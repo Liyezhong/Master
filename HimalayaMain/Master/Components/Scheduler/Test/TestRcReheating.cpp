@@ -36,46 +36,6 @@ using::testing::Lt;
 
 namespace Scheduler {
 
-class CMockRcReheating : public CRcReHeating{
-    Q_OBJECT
-public:
-    CMockRcReheating(SchedulerMainThreadController* SchedController)
-        :CRcReHeating(SchedController)
-    {
-    }
-
-    void EmitSigTemperatureControlOn()
-    {
-        emit SigTemperatureControlOn();
-    }
-
-    void EmitSigTemperatureSensorsChecking()
-    {
-        emit SigTemperatureSensorsChecking();
-    }
-
-    void EmitSigGetRVPosition()
-    {
-        emit SigGetRVPosition();
-    }
-
-    void EmitSigDrainCurrentReagent()
-    {
-        emit SigDrainCurrentReagent();
-    }
-
-    void EmitTaskDone(bool flag)
-    {
-        emit TasksDone(flag);
-    }
-
-    ~CMockRcReheating()
-    {
-    }
-
-
-};
-
 class TestRcReheating : public QObject {
     Q_OBJECT
 public:
@@ -94,7 +54,7 @@ private:
     SchedulerMainThreadController*              mp_SchedulerMainController;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     DataManager::CDataManager*                  mp_DataManager;
-    CMockRcReheating*                           mp_ReHeating;
+    CRcReHeating*                           mp_ReHeating;
 
 }; // end class TestRcReheating
 
@@ -110,7 +70,7 @@ TestRcReheating::TestRcReheating()
     mp_SchedulerMainController->DataManager(mp_DataManager);
     dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
-    mp_ReHeating = new CMockRcReheating(mp_SchedulerMainController);
+    mp_ReHeating = new CRcReHeating(mp_SchedulerMainController);
 }
 
 TestRcReheating::~TestRcReheating()
@@ -144,24 +104,22 @@ void TestRcReheating::UTAllCase()
         QString tmp = mp_ReHeating->GetReagentID();
         QCOMPARE(tmp, QString("RG1"));
 
-        mp_ReHeating->EmitSigTemperatureControlOn();
-        mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
-        //usleep(500);
+        QSet<QAbstractState*> statesList;
+        mp_ReHeating->GetCurrentState(statesList);
 
-        mp_ReHeating->EmitSigTemperatureSensorsChecking();
         mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
 
-        mp_ReHeating->EmitSigGetRVPosition();
-        mp_ReHeating->HandleWorkFlow("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
-
-        mp_ReHeating->EmitSigDrainCurrentReagent();
-        mp_ReHeating->HandleWorkFlow("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
+        mp_ReHeating->HandleInint();
+        mp_ReHeating->GetRvPosition("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
+        mp_ReHeating->ProcessDraining("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
+        mp_ReHeating->MoveCleaningTubePos("Scheduler::RVReqMoveToRVPosition", DCL_ERR_FCT_CALL_SUCCESS);
     }
 }
 
 void TestRcReheating::initTestCase()
 {
     mp_SchedulerMainController->CreateAndInitializeObjects();
+    //mp_SchedulerMainController->OnDCLConfigurationFinished(DCL_ERR_FCT_CALL_SUCCESS);
     sleep(1);
     {
         //Set google-mock expections
