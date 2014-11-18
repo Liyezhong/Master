@@ -28,6 +28,7 @@ INCLUDEPATH += ../.. \
                ../../../../../Shared/Master/Components \
                ../../../../../../Platform/Master/Components \
                ../../../../../HimalayaMain/Master/Include/
+INCLUDEPATH += ../../../../../../Platform/Common/Components
 
 # we depend of own source and library
 DEPENDPATH += . \

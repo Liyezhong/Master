@@ -36,6 +36,7 @@ SUBDIRS += $${PLATFORM}/Master/Components/HeartBeatManager/Build/HeartBeatManage
 SUBDIRS += $${PLATFORM}/Master/Components/HeartBeatManager/Test/TestHeartBeatThread.pro
 SUBDIRS += $${PLATFORM}/Master/Components/SWUpdateManager/Build/SWUpdateManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro
+SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Test/TestHimalayaMasterThread.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Build/HimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/HimalayaDataManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
@@ -52,6 +53,7 @@ SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareController/Test/TestRemoteCareController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/RemoteCareManager/Test/TestRemoteCareManager.pro
+
 
 
 

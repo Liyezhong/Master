@@ -121,6 +121,7 @@ typedef enum {
 /****************************************************************************/
 class HimalayaMasterThreadController : public Threads::MasterThreadController {
     Q_OBJECT
+    friend class TestHimalayaMasterThread;
 private:
     PasswordManager::CPasswordManager    m_PasswordManager;                      ///< The password manager.
 
