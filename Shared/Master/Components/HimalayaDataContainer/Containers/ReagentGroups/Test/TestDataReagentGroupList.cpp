@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file TestDataProgramSequenceList.cpp
+/*! \file TestDataReagentGroupList.cpp
  *
- *  \brief Unit test for program sequence container.
+ *  \brief Unit test for DataReagentGroupList.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2012-05-08
@@ -21,18 +21,20 @@
 #include <QTest>
 #include <QDebug>
 #include <QFile>
-#include <ColoradoDataContainer/Containers/ProgramSequence/Include/ProgramSequenceList.h>
-#include <ColoradoDataContainer/Containers/ProgramSequence/Include/ProgramSequenceVerifier.h>
 
+#include <HimalayaDataContainer/Containers/ReagentGroups/Include/ReagentGroup.h>
+#include <HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h>
+#include <HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupVerifier.h>
+#include <HimalayaDataContainer/Containers/ReagentGroups/Commands/Include/CmdReagentGroupUpdate.h>
 
 namespace DataManager {
 
 /****************************************************************************/
 /**
- * \brief Test class for Program sequence class.
+ * \brief Test class for Reagent group list.
  */
 /****************************************************************************/
-class TestDataProgramSequenceList : public QObject {
+class TestDataReagentGroupList : public QObject {
     Q_OBJECT
 private slots:
     /****************************************************************************/
@@ -62,180 +64,176 @@ private slots:
 
     /****************************************************************************/
     /**
-     * \brief Test  Program sequence object
+     * \brief Test ReagentGroup object
      */
     /****************************************************************************/
-    void utTestDataProgramSequence();
+    void utTestReagentGroup();
 
     /****************************************************************************/
     /**
-     * \brief Test data CProgramSequenceList
+     * \brief Test data ReagentGroupList
      */
     /****************************************************************************/
-    void utTestDataProgramSequenceList();
+    void utTestDataReagentGroupList();
 
     /****************************************************************************/
     /**
-     * \brief Test Program sequence verifier
+     * \brief Test CmdReagentGroupUpdate
      */
     /****************************************************************************/
-    void utTestDPSLListVerifier();
-}; // end class TestDataReagentList
+    void utTestCmdReagentGroupUpdate();
+}; // end class TestDataReagentGroupList
 
 /****************************************************************************/
-void TestDataProgramSequenceList::initTestCase() {
+void TestDataReagentGroupList::initTestCase() {
 }
 
 /****************************************************************************/
-void TestDataProgramSequenceList::init() {
+void TestDataReagentGroupList::init() {
 }
 
 /****************************************************************************/
-void TestDataProgramSequenceList::cleanup() {
+void TestDataReagentGroupList::cleanup() {
 }
 
 /****************************************************************************/
-void TestDataProgramSequenceList::cleanupTestCase() {
+void TestDataReagentGroupList::cleanupTestCase() {
 }
 
 /****************************************************************************/
-void TestDataProgramSequenceList::utTestDataProgramSequence() {
-    CProgramSequence *p_ProgSequence = new CProgramSequence();
-    p_ProgSequence->SetCounterValue(3);
-    p_ProgSequence->SetID("U10");
-    p_ProgSequence->SetStartCapableStatus(true);
-    p_ProgSequence->SetUsedStatus(true);
-    p_ProgSequence->SetStartCapableResult("1,2");
-    //Test getters
-    QCOMPARE((int)p_ProgSequence->GetCounterValue(), 3);
-    QCOMPARE(p_ProgSequence->GetID(), QString("U10"));
-    QCOMPARE(p_ProgSequence->GetStartCapableStatus(), true);
-    QCOMPARE(p_ProgSequence->GetUsedStatus(), true);
-    QCOMPARE(p_ProgSequence->GetStartCapableResult(), QString("1,2"));
+void TestDataReagentGroupList::utTestReagentGroup() {
+    CReagentGroup *p_ReagentGroup1 = new CReagentGroup();
+    CReagentGroup *p_ReagentGroup2 = new CReagentGroup("RG2");
 
-    // Test copy constructor , also test assignment operator
-    CProgramSequence ProgramSequence(*p_ProgSequence);
-    //Test getters
-    QCOMPARE((int)ProgramSequence.GetCounterValue(), 3);
-    QCOMPARE(ProgramSequence.GetID(), QString("U10"));
-    QCOMPARE(ProgramSequence.GetStartCapableStatus(), true);
-    QCOMPARE(ProgramSequence.GetUsedStatus(), true);
-    QCOMPARE(ProgramSequence.GetStartCapableResult(), QString("1,2"));
+    p_ReagentGroup1->SetGroupID("RG1");
+    p_ReagentGroup1->SetGroupNameID("1234");
+    p_ReagentGroup1->SetReagentGroupName("Fixation");
+    p_ReagentGroup1->CleaningReagentGroup(false);
+    p_ReagentGroup1->IsParraffin(false);
+    p_ReagentGroup1->SetGroupColor("D9FFD9");
 
-    ErrorHash_t Dummy;
-    ProgramSequence.SetErrorList(&Dummy);
+    QCOMPARE(p_ReagentGroup1->GetGroupID(), QString("RG1"));
+    QCOMPARE(p_ReagentGroup1->GetGroupNameID(), QString("1234"));
+    QCOMPARE(p_ReagentGroup1->GetReagentGroupName(), QString("Fixation"));
+    QCOMPARE(p_ReagentGroup1->IsCleaningReagentGroup(), false);
+    QCOMPARE(p_ReagentGroup1->IsParraffin(), false);
+    QCOMPARE(p_ReagentGroup1->GetGroupColor(), QString("D9FFD9"));
 
-    // check constructor with parameters
-    CProgramSequence ProgramSeq("U12");
-    QCOMPARE(ProgramSeq.GetID(), QString("U12"));
-    ProgramSeq.SetStartCapableDynamicStatus(false);
-    CProgramSequence ProgramSeq1(ProgramSeq);
-    QCOMPARE(ProgramSeq1.GetStartCapableDynamicStatus(), false);
+    p_ReagentGroup2->SetGroupNameID("50331654");
+    p_ReagentGroup2->SetReagentGroupName("Water");
+    p_ReagentGroup2->CleaningReagentGroup(false);
+    p_ReagentGroup2->IsParraffin(false);
+    p_ReagentGroup2->SetGroupColor("A9B7FF");
 
+    CReagentGroup ReagentGroup3(*p_ReagentGroup2); // copy constructor of CReagent
+
+    QCOMPARE(ReagentGroup3.GetGroupID(), QString("RG2"));
+    QCOMPARE(ReagentGroup3.GetGroupNameID(), QString("50331654"));
+    QCOMPARE(ReagentGroup3.GetReagentGroupName(), QString("Water"));
+    QCOMPARE(ReagentGroup3.IsCleaningReagentGroup(), false);
+    QCOMPARE(ReagentGroup3.IsParraffin(), false);
+    QCOMPARE(ReagentGroup3.GetGroupColor(), QString("A9B7FF"));
 }
-
 
 /****************************************************************************/
-void TestDataProgramSequenceList::utTestDataProgramSequenceList() {
-    //Test program list
-    CProgramSequenceList *p_ProgramSequenceList = new CProgramSequenceList();
-    CProgramSequenceListVerifier *p_ProgramSeqListVerifier = new CProgramSequenceListVerifier();
-    p_ProgramSequenceList->AddVerifier(p_ProgramSeqListVerifier);
-    p_ProgramSequenceList->SetDataVerificationMode(false);
-    QCOMPARE(p_ProgramSequenceList->Read(":/Xml/ProgramSequence.xml"), true);
+void TestDataReagentGroupList::utTestDataReagentGroupList() {
+    CReagentGroup *p_ReagentGroup4 = new CReagentGroup();
+    CReagentGroup *p_ReagentGroup5 = new CReagentGroup();
+    CDataReagentGroupList *p_ReagentGroupList = new CDataReagentGroupList();
+    IVerifierInterface *p_DataReagentGroupListVerifier;
+    p_DataReagentGroupListVerifier = new CDataReagentGroupListVerifier();
+    p_ReagentGroupList->AddVerifier(p_DataReagentGroupListVerifier);
+    p_ReagentGroupList->Init();
 
-    p_ProgramSequenceList->SetDataVerificationMode(true);
-    QCOMPARE(p_ProgramSequenceList->GetDataContainerType(), PROGRAMSEQUENCE);
-    QCOMPARE(p_ProgramSequenceList->GetDataVerificationMode(), true);
-    QCOMPARE(p_ProgramSequenceList->GetFilename(),QString(":/Xml/ProgramSequence.xml"));
-    QCOMPARE(p_ProgramSequenceList->GetNumberOfPrograms(), 7);
-    QCOMPARE(p_ProgramSequenceList->GetVersion(), 1);
-    QStringList StartCapableList;
-    StartCapableList << "L1" << "U1" << "U2" << "U3" << "U4";
-    qDebug()<<"\n StartableProgramIDList:"<<p_ProgramSequenceList->GetStartableProgramIDList();
-    QCOMPARE(p_ProgramSequenceList->GetStartableProgramIDList(), StartCapableList);
+    p_ReagentGroupList->SetDataVerificationMode(false);
+    // Checking the Read of CDataReagentGroupList
+    QCOMPARE(p_ReagentGroupList->Read(":/Xml/HimalayaReagentGroups.xml"), true);
+    p_ReagentGroupList->SetDataVerificationMode(true);
 
-    QVERIFY(!p_ProgramSequenceList->GetProgramSequenceStep("Dummy"));
+    // Checking the basic interfaces of CDataReagentGroupList
+    QCOMPARE(p_ReagentGroupList->GetDataVerificationMode(), true);
+    QCOMPARE(p_ReagentGroupList->GetVersion(), 1);
+    QCOMPARE(p_ReagentGroupList->GetNumberOfReagentGroups(), 8);
+    QCOMPARE(p_ReagentGroupList->GetReagentGroupIndex("RG8"), 7);
 
-    //Test Copy constructor
-    CProgramSequenceList *p_ProgramSequenceList2 = new CProgramSequenceList(*p_ProgramSequenceList);
-    QCOMPARE(p_ProgramSequenceList2->GetFilename(),QString(":/Xml/ProgramSequence.xml"));
-    QCOMPARE(p_ProgramSequenceList2->GetDataContainerType(), PROGRAMSEQUENCE);
-    QCOMPARE(p_ProgramSequenceList2->GetDataVerificationMode(), true);
-    QCOMPARE(p_ProgramSequenceList2->GetNumberOfPrograms(), p_ProgramSequenceList->GetNumberOfPrograms());
-    QCOMPARE(p_ProgramSequenceList2->GetVersion(), 1);
+    p_ReagentGroup4->SetGroupID("RG123");
+    p_ReagentGroup4->SetGroupNameID("1234123");
+    p_ReagentGroup4->SetReagentGroupName("Fixation_1");
+    p_ReagentGroup4->CleaningReagentGroup(false);
+    p_ReagentGroup4->IsParraffin(false);
+    p_ReagentGroup4->SetGroupColor("D9FFD9");
 
-    CProgramSequence *p_ProgSequence = new CProgramSequence("U11", false, 3, true, "0");
+    // Checking the AddReagent
+    QVERIFY(p_ReagentGroupList->AddReagentGroup(p_ReagentGroup4)); // added the Leica reagent
 
-    p_ProgramSequenceList->AddProgramSequenceStep(p_ProgSequence);
+    p_ReagentGroup5->SetGroupID("RG456");
+    p_ReagentGroup5->SetGroupNameID("456789");
+    p_ReagentGroup5->SetReagentGroupName("Fixation_2");
+    p_ReagentGroup5->CleaningReagentGroup(false);
+    p_ReagentGroup5->IsParraffin(false);
+    p_ReagentGroup5->SetGroupColor("D9FFD9");
 
-    QCOMPARE(p_ProgramSequenceList->GetNumberOfPrograms(), 8);
-
-    //Check contents of program sequence added
-    CProgramSequence ProgramSequence2;
-    QCOMPARE(p_ProgramSequenceList->GetProgramSequenceStep("U11", ProgramSequence2), true);
-    QCOMPARE(ProgramSequence2.GetID(), p_ProgSequence->GetID() );
-    QCOMPARE(ProgramSequence2.GetStartCapableResult(), p_ProgSequence->GetStartCapableResult());
-    QCOMPARE(ProgramSequence2.GetCounterValue(), p_ProgSequence->GetCounterValue());
-    QCOMPARE(ProgramSequence2.GetStartCapableStatus(), p_ProgSequence->GetStartCapableStatus());
-    QCOMPARE(ProgramSequence2.GetUsedStatus(), p_ProgSequence->GetUsedStatus());
-
-    CProgramSequence ProgramSequence3;
-    QCOMPARE(p_ProgramSequenceList->GetProgramSequenceStep(0, ProgramSequence3), true);
-    QCOMPARE(ProgramSequence3.GetID(), QString("L1"));
-    QCOMPARE(ProgramSequence3.GetStartCapableResult(), QString("0"));
-    QCOMPARE((int)ProgramSequence3.GetCounterValue(), 35);
-    QCOMPARE(ProgramSequence3.GetStartCapableStatus(), true);
-    QCOMPARE(ProgramSequence3.GetUsedStatus(), true);
-
-    //Check program sequence update functionality
-    CProgramSequence *p_ProgramSequence4 = new CProgramSequence();
-    QCOMPARE(p_ProgramSequenceList->GetProgramSequenceStep(0, *p_ProgramSequence4), true);
-    p_ProgramSequence4->SetID("U37");
-    p_ProgramSequence4->SetStartCapableResult("2");
-    p_ProgramSequence4->SetCounterValue(48);
-    p_ProgramSequence4->SetStartCapableStatus(true);
-    p_ProgramSequence4->SetUsedStatus(true);
-    StartCapableList.append(p_ProgramSequence4->GetID());
-    QCOMPARE(p_ProgramSequenceList->AddProgramSequenceStep(p_ProgramSequence4), true);
-    QCOMPARE(p_ProgramSequenceList->GetStartableProgramIDList(), StartCapableList);
-
-    CProgramSequence ProgramSequence5;
-    QCOMPARE(p_ProgramSequenceList->GetProgramSequenceStep(8, ProgramSequence5), true);
-    QCOMPARE(ProgramSequence5.GetID(), p_ProgramSequence4->GetID());
-    QCOMPARE(ProgramSequence5.GetStartCapableResult(), p_ProgramSequence4->GetStartCapableResult());
-    QCOMPARE(ProgramSequence5.GetCounterValue(), p_ProgramSequence4->GetCounterValue());
-    QCOMPARE(ProgramSequence5.GetStartCapableStatus(), p_ProgramSequence4->GetStartCapableStatus());
-    QCOMPARE(ProgramSequence5.GetUsedStatus(), p_ProgramSequence4->GetUsedStatus());
-
-    //Check Update Function
-    ProgramSequence5.SetUsedStatus(false);
-    QCOMPARE(p_ProgramSequenceList->UpdateProgramSequenceStep(&ProgramSequence5), true);
+    QVERIFY(p_ReagentGroupList->AddReagentGroup(p_ReagentGroup5)); // added the Special reagent
+    QCOMPARE(p_ReagentGroupList->GetNumberOfReagentGroups(), 10);
 
 
+    CReagentGroup reagentGroup6;
+    CReagentGroup reagentGroup7;
 
-    QCOMPARE(p_ProgramSequenceList->UpdateProgramSequenceStep(NULL), false);
+    p_ReagentGroupList->GetReagentGroup("RG1");
+    p_ReagentGroupList->GetReagentGroup(2);
+    QCOMPARE(p_ReagentGroupList->GetReagentGroup(3, reagentGroup6), true);
+    QCOMPARE(p_ReagentGroupList->GetReagentGroup("RG7", reagentGroup7), true);
 
-    delete p_ProgSequence;
-    //This will check the Delete methods
-    delete p_ProgramSequenceList2;
-    delete p_ProgramSequenceList;
+    reagentGroup7.SetReagentGroupName("Cleaning Solvent-111");
+    reagentGroup7.CleaningReagentGroup(false);
+
+    // Checking the Update ReagentGroup
+    //QCOMPARE(p_ReagentGroupList->UpdateReagentGroup(reagentGroup7), true);
+
+    //Checking the Delete Reagent group
+    QVERIFY(p_ReagentGroupList->DeleteReagentGroup("RG123")); // deleted special reagent group
+    QCOMPARE(p_ReagentGroupList->GetNumberOfReagentGroups(), 9);
+
+    QVERIFY(p_ReagentGroupList->DeleteReagentGroup(8)); // deleted special reagent group
+    QCOMPARE(p_ReagentGroupList->GetNumberOfReagentGroups(), 8);
+
+    // Check the copy constructor of CDataReagentGroupList
+    CDataReagentGroupList ReagentGroupList1(*p_ReagentGroupList);
+
+    // This file would be created in build folder particular to the Target (bin_dlg)
+    QCOMPARE(ReagentGroupList1.Write(":/Xml/HimalayaReagentGroups.xml"), false);
 }
 
-void TestDataProgramSequenceList::utTestDPSLListVerifier() {
-    CProgramSequenceList *p_ProgramSeqList = new CProgramSequenceList();
-    CProgramSequenceListVerifier *p_ProgramSeqListVerifier = new CProgramSequenceListVerifier();
-    p_ProgramSeqList->AddVerifier(p_ProgramSeqListVerifier);
-    p_ProgramSeqList->SetDataVerificationMode(false);
-    QCOMPARE(p_ProgramSeqList->Read(":/Xml/ProgramSequenceNOK.xml"), false);
-    p_ProgramSeqList->SetDataVerificationMode(true);
-    CProgramSequence *p_ProgSequence = new CProgramSequence("UU11", false, 3, true, "1");
-    QCOMPARE(p_ProgramSeqList->AddProgramSequenceStep(p_ProgSequence), false);
+void TestDataReagentGroupList::utTestCmdReagentGroupUpdate() {
+    MsgClasses::CmdReagentGroupUpdate *p_CmdReagentGroupUpdate = new MsgClasses::CmdReagentGroupUpdate(0, "RG1", "D9FFD9");
+    p_CmdReagentGroupUpdate->NAME = "CmdReagentGroupUpdate";
+
+    QCOMPARE(p_CmdReagentGroupUpdate->GetName(), QString("CmdReagentGroupUpdate"));
+    QCOMPARE(p_CmdReagentGroupUpdate->GetTimeout(), 0);
+    QCOMPARE(p_CmdReagentGroupUpdate->GroupId(), QString("RG1"));
+    QCOMPARE(p_CmdReagentGroupUpdate->GroupColor(), QString("D9FFD9"));
+
+    MsgClasses::CmdReagentGroupUpdate CmdData;
+    QByteArray Data;
+    // create data stream
+    QDataStream DataCmdStream(&Data, QIODevice::ReadWrite);
+    DataCmdStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+    DataCmdStream << *p_CmdReagentGroupUpdate;
+    /// reset the position of the data stream otherwise data stream will be pointing to last index in the IODevice
+    DataCmdStream.device()->reset();
+
+    DataCmdStream >> CmdData;
+    QCOMPARE(p_CmdReagentGroupUpdate->GetName(), CmdData.GetName());
+    QCOMPARE(p_CmdReagentGroupUpdate->GetTimeout(), CmdData.GetTimeout());
+    QCOMPARE(p_CmdReagentGroupUpdate->GroupColor(), CmdData.GroupColor());
+    delete p_CmdReagentGroupUpdate;
+
 }
 
 } // end namespace DataManager
 
-QTEST_MAIN(DataManager::TestDataProgramSequenceList)
+QTEST_MAIN(DataManager::TestDataReagentGroupList)
 
-#include "TestDataProgramSequenceList.moc"
+#include "TestDataReagentGroupList.moc"
 

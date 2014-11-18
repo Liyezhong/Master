@@ -23,13 +23,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
-
-#include "HimalayaDataContainer/Containers/ReagentStations/Include/DataStationListVerifier.h"
-
-
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"
-
-
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupA.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"

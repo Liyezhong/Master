@@ -51,14 +51,13 @@ protected:
     QString m_Color;                        //!< Reagent Color
     bool m_IsCleaningReagentGroup;          //!< is it a cleaning reagent?
     bool m_IsParraffinGroup;                //!< is it a parraffin reagent?
-    bool m_Locked;                          //!< locked stats for reagent , true user cannot chnage its parameters
     int  m_MinTemp;                         //!< Tempature range for reagent group, min value in CELSIUS
     int  m_MaxTemp;                         //!< Tempature range for reagent group, max value in CELSIUS
 
 
 public:
     CReagentGroup();
-    CReagentGroup(const QString ProgramID);
+    CReagentGroup(const QString& GroupID);
     ~CReagentGroup();
 
     CReagentGroup(const CReagentGroup&ReagentGroup);
@@ -67,24 +66,6 @@ public:
     CReagentGroup& operator = (const CReagentGroup&);
 
     /******************** INLINE FuNCTIONS **************************************/
-    /****************************************************************************/
-    /*!
-     *  \brief Gets the Locked State of the particular reagent
-     *
-     *  \return true or false
-     */
-    /****************************************************************************/
-    bool GetLockState() const {return m_Locked;}
-    /****************************************************************************/
-    /*!
-     *  \brief Sets the Locked State of the particular reagent
-     *
-     *  \iparam Value = bool type , either true or false
-     *
-     *  \return
-     */
-    /****************************************************************************/
-    void SetLockState(const bool Value){m_Locked = Value;}
 
     /****************************************************************************/
     /*!

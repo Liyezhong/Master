@@ -2,9 +2,9 @@
     error("TestDataManagement.pri not found")
 }
 
-TARGET = utTestDataReagentList
+TARGET = utTestReagentGroupColor
 
-SOURCES += TestDataReagentList.cpp
+SOURCES += TestReagentGroupColor.cpp
 
 INCLUDEPATH += ../../../../ \
                 ../../../../../../../../Platform/Master/Components \
@@ -13,6 +13,8 @@ INCLUDEPATH += ../../../../ \
 
 DEPENDPATH +=  ../../../../
 
-RESOURCES += ../Resources/*.qrc
 UseLib(../../../../HimalayaDataContainer)
 UseLib(../../../../../../../../Platform/Master/Components/DataManager ../../../../../../../../Platform/Master/Components/Global)
+
+RESOURCES += \
+    ../Resource/ReagentGroupColorXML.qrc

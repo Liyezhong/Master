@@ -9,7 +9,6 @@ HEADERS += ../Containers/Programs/Include/*.h \
  ../Containers/Reagents/Commands/Include/*.h \
  ../Containers/ReagentGroups/Include/*.h \
  ../Containers/ReagentGroups/Commands/Include/*.h \
- ../Containers/ReagentStations/Include/*.h \
  ../Containers/ReagentStations/Commands/Include/*.h \
  ../Containers/ReagentGroupColor/Include/*.h \
  ../SpecialVerifiers/Include/*h \
@@ -27,7 +26,6 @@ SOURCES +=../Containers/Programs/Source/*.cpp \
  ../Containers/Reagents/Commands/Source/*.cpp \
  ../Containers/ReagentGroups/Source/*.cpp \
  ../Containers/ReagentGroups/Commands/Source/*.cpp \
- ../Containers/ReagentStations/Source/*.cpp \
  ../Containers/ReagentStations/Commands/Source/*.cpp \
  ../Containers/ReagentGroupColor/Source/*.cpp \
  ../SpecialVerifiers/Source/*.cpp \

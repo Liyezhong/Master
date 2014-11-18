@@ -819,6 +819,9 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
     }
     QString ID = p_Reagent->GetReagentID();
     CReagent const *p_UpdatedReagent = GetReagent(ID);
+    if (!p_UpdatedReagent)
+        return false;
+
     QString PreviousName  = p_UpdatedReagent->GetReagentName().simplified();
 
     bool Result = false;

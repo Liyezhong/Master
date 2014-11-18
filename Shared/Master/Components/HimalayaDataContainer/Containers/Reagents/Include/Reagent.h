@@ -84,16 +84,6 @@ public:
     /****************************************************************************/
     ReagentType_t GetReagentType() const;
 
-//    /****************************************************************************/
-//    /*!
-//     *  \brief Gets the Locked State of the particular reagent
-//     *
-//     *  \return true or false
-//     */
-//    /****************************************************************************/
-//    bool GetLockState() const {return m_Locked;}
-
-//    void SetLockState(const bool Value){m_Locked = Value;}
 
     /****************************************************************************/
     /*!

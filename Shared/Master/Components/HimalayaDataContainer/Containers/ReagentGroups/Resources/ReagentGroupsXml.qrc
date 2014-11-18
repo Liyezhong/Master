@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/Xml">
-        <file>ReagentGroups.xml</file>
+        <file>HimalayaReagentGroups.xml</file>
     </qresource>
 </RCC>

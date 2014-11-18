@@ -30,7 +30,6 @@
 #include "DataManager/Containers/ExportConfiguration/Include/ExportConfigurationVerifier.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
-#include "HimalayaDataContainer/Containers/ReagentStations/Include/DataStationListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "DataManager/Containers/SWVersions/Include/SWVersionListVerifier.h"
