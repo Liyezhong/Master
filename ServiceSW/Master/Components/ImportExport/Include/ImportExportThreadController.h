@@ -57,6 +57,7 @@ class CmdDataExport;
 /****************************************************************************/
 class ImportExportThreadController : public Threads::ThreadController {
     Q_OBJECT
+    friend class TestHimalayaMasterThread;
 private:    
     //DataManager::CDataManager& m_DataManager;                   ///< Store the data manager - pointer
     DataManager::CDashboardDataStationList* mp_StationList;              ///< Store the Station list

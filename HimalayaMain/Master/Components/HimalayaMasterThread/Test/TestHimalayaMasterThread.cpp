@@ -46,6 +46,8 @@
 #include <HimalayaProcessExitCodes.h>
 #include <EventHandler/Include/EventHandlerEventCodes.h>
 #include <NetCommands/Include/CmdCriticalActionCheck.h>
+#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataExport.h>
+#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h>
 
 
 #include "DataManager/CommandInterface/Include/UserSettingsCommandInterface.h"
@@ -261,7 +263,7 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     // set max date time offset
     App.TheMasterThreadController.SetMaxAdjustedTimeOffset(24*3600);
     // read time offset from file
-    QCOMPARE((App.TheMasterThreadController.ReadTimeOffsetFile()),true);
+    App.TheMasterThreadController.ReadTimeOffsetFile();
 
 #if 0
     // add code to quit Master thread if its controller requests it
@@ -281,7 +283,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
 
     Threads::CommandChannel AckCommandChannel(&App.TheMasterThreadController, "Dummy", Global::EVENTSOURCE_NONE);
     NetCommands::CmdExternalProcessState ExternalProcessCmd;
-    NetCommands::CmdDataUpdate DataUpdateCmd;
 
 
     NetCommands::CmdSystemAction SystemActionCmd;
@@ -293,8 +294,8 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
 
     // and start the Master thread
     App.TheMasterThreadController.CreateAndInitializeObjects();
-    App.TheMasterThreadController.ShutdownOnPowerFail();
-#if 1
+//    App.TheMasterThreadController.ShutdownOnPowerFail();
+#if 0
     App.TheMasterThreadController.OnAckOKNOK(Ref, Ack);
     App.TheMasterThreadController.OnProcessTimeout(Ref, CmdName);
     App.TheMasterThreadController.SendDCLContainerTo(AckCommandChannel);
@@ -318,6 +319,9 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     App.TheMasterThreadController.RemoteCareExportData(NoOfLogFiles);
     App.TheMasterThreadController.OnPowerFail(Global::POWER_FAIL_NONE);
     App.TheMasterThreadController.ShutdownHandler(Ref,ShutdownCmd, AckCommandChannel);
+
+//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataExport>(Ref,MsgClasses::CmdDataExport(),*(App.TheMasterThreadController.mp_ImportExportAckChannel));
+//    App.TheMasterThreadController.ImportExportDataFileHandler<MsgClasses::CmdDataImport>(Ref,MsgClasses::CmdDataImport(),*(App.TheMasterThreadController.mp_ImportExportAckChannel));
 
     App.thread()->quit();
     // cleanup controller for master thread.
