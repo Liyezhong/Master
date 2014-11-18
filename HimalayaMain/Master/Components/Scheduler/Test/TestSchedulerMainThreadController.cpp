@@ -64,6 +64,30 @@ public:
 
         EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition(_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALAllStop())
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALBreakAllOperation())
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALPressure(_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALReleasePressure())
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALVaccum(_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_,_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALDraining(_,_,_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
     ~TestSchedulerMainThreadController()
@@ -131,7 +155,7 @@ void TestSchedulerMainThreadController::TestSlots()
     DataManager::CModule module;
     m_pSchedulerMainController->ReportGetServiceInfo(DCL_ERR_FCT_CALL_SUCCESS, module, "TemperatureControl");
 
-    m_pSchedulerMainController->ResetActiveCarbonFilterLifetime();
+    //m_pSchedulerMainController->ResetActiveCarbonFilterLifetime();
 
     m_pSchedulerMainController->OnReportFillingTimeOut2Min();
 
@@ -173,7 +197,88 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->WhichStepHasNoSafeReagent("");
 
+    m_pSchedulerMainController->GetLeftProgramStepsNeededTime("", 1);
 
+    m_pSchedulerMainController->GetCurrentProgramStepNeededTime("");
+
+    m_pSchedulerMainController->GetReagentName("RG6");
+
+    m_pSchedulerMainController->GetReagentGroupID("RG3");
+
+    QCOMPARE(m_pSchedulerMainController->BottleCheck(100), false);
+
+    m_pSchedulerMainController->RcBottleCheckI();
+
+    m_pSchedulerMainController->MoveRVToInit();
+
+    m_pSchedulerMainController->ReleasePressure();
+
+    m_pSchedulerMainController->OnEnterPssmProcessing();
+
+    QCOMPARE(m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true);
+
+    QCOMPARE(m_pSchedulerMainController->MoveRV(TUBE_POS), false);
+
+    m_pSchedulerMainController->Fill();
+
+    m_pSchedulerMainController->ShutdownFailedHeaters();
+
+    m_pSchedulerMainController->RestartFailedHeaters();
+
+    m_pSchedulerMainController->CheckSensorTempOverange();
+
+    m_pSchedulerMainController->FillRsTissueProtect("S1", false);
+
+    m_pSchedulerMainController->StopFillRsTissueProtect("S1");
+
+    m_pSchedulerMainController->CheckSlaveTempModulesCurrentRange(2);
+
+    m_pSchedulerMainController->OnStopFill();
+
+    m_pSchedulerMainController->RCDrain();
+
+    m_pSchedulerMainController->Drain();
+
+    m_pSchedulerMainController->RcDrainAtOnce();
+
+    m_pSchedulerMainController->OnBeginDrain();
+
+    m_pSchedulerMainController->OnStopDrain();
+
+    m_pSchedulerMainController->Pressure();
+
+    m_pSchedulerMainController->HighPressure();
+
+    m_pSchedulerMainController->Vaccum();
+
+    m_pSchedulerMainController->AllStop();
+
+    m_pSchedulerMainController->Pause();
+
+    m_pSchedulerMainController->m_TempALLevelSensor = 100.0;
+
+    QCOMPARE(m_pSchedulerMainController->CheckLevelSensorTemperature(30.0), true);
+
+    QCOMPARE(m_pSchedulerMainController->GetRVTubePositionByStationID(""), RV_UNDEF);
+
+    QCOMPARE(m_pSchedulerMainController->GetRVSealPositionByStationID(""), RV_UNDEF);
+
+    m_pSchedulerMainController->GetPreTestTime();
+
+    m_pSchedulerMainController->IsLastStep(1,"");
+
+    m_pSchedulerMainController->m_CurErrEventID = DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
+    QCOMPARE(m_pSchedulerMainController->GetFailerHeaterType(), LEVELSENSOR);
+
+    m_pSchedulerMainController->OnSystemError();
+
+    m_pSchedulerMainController->OnEnterRcRestart();
+
+    m_pSchedulerMainController->OnFillingHeatingRV();
+
+    m_pSchedulerMainController->OnPreTestDone();
+
+    m_pSchedulerMainController->SendPowerFailureMsg();
 }
 
 /******************************************************************ls**********/

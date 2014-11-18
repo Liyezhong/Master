@@ -2168,6 +2168,11 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
 quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
 {
     quint32 leftTime = 0;
+
+    if (ProgramID.isNull() || ProgramID.isEmpty())
+    {
+        return 0;
+    }
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
@@ -2226,6 +2231,10 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
 quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
+    if (ProgramID.isNull() || ProgramID.isEmpty())
+    {
+        return 0;
+    }
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
@@ -3089,11 +3098,6 @@ void SchedulerMainThreadController::MoveRVToInit()
     m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
 }
 
-void SchedulerMainThreadController::ShutdownRetortHeater()
-{
-    //todo: add code to shutdown retort heaters
-    LogDebug("Shut down all retort heaters!");
-}
 
 void SchedulerMainThreadController::ReleasePressure()
 {
@@ -3964,6 +3968,10 @@ qint64 SchedulerMainThreadController::GetPreTestTime()
 
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
 {
+    if (currentProgramID.isNull() || currentProgramID.isEmpty())
+    {
+        return false;
+    }
     if (!mp_DataManager)
     {
         Q_ASSERT(false);
