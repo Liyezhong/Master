@@ -33,7 +33,7 @@ namespace Scheduler{
 
 CProgramStatusInfor::CProgramStatusInfor()
 {
-    m_LastHeatingOn = false;
+    m_LastHeatingOn = true;
     m_LastTimeUpdateHeatingTime = 0;
     m_MaxMeltTime = TIME_15_HOURS;
     m_RemainTime = m_MaxMeltTime;
@@ -56,6 +56,7 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
    {
        m_MaxMeltTime = TIME_12_HOURS;
    }
+   m_LastHeatingOn = true;
    if(CalculateTime(HeatingTime,UnHeatingTime))
    {
        if(UnHeatingTime > 4 * TIME_1_HOUR)
@@ -319,7 +320,7 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn)
     {
         Slices = value.split(",");
     }
-    if(!IsHeatingOn)
+    if(!IsHeatingOn && !m_LastHeatingOn)
     {
         m_RemainTime = m_MaxMeltTime;
     }
