@@ -21,8 +21,8 @@
 		<SMCASB15 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="800"/>
 	</MainControl>
 	<LaSystem>
-		<LiquidHeatingTest RoomTempMin="10" RoomTempMax="35" LiquidTargetTemp="80" LiquidCurrentTempMin="10" LiquidCurrentTempMax="90" LiquidTempAbove="78" LiquidMaintainTime="60" LiquidTempMaintainRangeMin="75" LiquidTempMaintainRangeMax="85" LiquidRepeatTime="1200"/>
-		<AirHeatingTest RoomTempMin="10" RoomTempMax="35" AirTargetTemp="80" AirCurrentTempMin="10" AirCurrentTempMax="90" AirTempAbove="78" AirMaintainTime="60" AirTempMaintainRangeMin="75" AirTempMaintainRangeMax="85" AirRepeatTime="1200"/>
+		<LiquidHeatingTest RoomTempMin="10" RoomTempMax="35" LiquidTargetTemp="80" LiquidCurrentTempMin="10" LiquidCurrentTempMax="90" LiquidTempAbove="78" LiquidMaintainTime="60" LiquidTempMaintainRangeMin="75" LiquidTempMaintainRangeMax="85" LiquidRepeatTime="1800"/>
+		<AirHeatingTest RoomTempMin="10" RoomTempMax="35" AirTargetTemp="80" AirCurrentTempMin="10" AirCurrentTempMax="90" AirTempAbove="78" AirMaintainTime="60" AirTempMaintainRangeMin="75" AirTempMaintainRangeMax="85" AirRepeatTime="1800"/>
 	</LaSystem>
 	<System>
 		<SSystemSpeaker LowVolume="80" HighVolume="100" />

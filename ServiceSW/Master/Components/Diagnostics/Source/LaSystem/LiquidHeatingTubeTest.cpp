@@ -84,15 +84,6 @@ int CLiquidHeatingTubeTest::Run(void)
        return RETURN_OK;
     }
 
-    text = tr("Please look into the retort to identify if it is empty. If yes, click"
-              "OK to continue. If no, look at the reagent bottles to identify from which bottle the "
-              "reagent came from. Then abort this test and change to the "
-              "\"Diagnostic_Retort_Drain Reagent\" function to drain the liquid back to"
-              "the original position. Thereafter flush the retort if necessary.");
-    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-    if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
-
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
     qreal currentTemp;
@@ -137,8 +128,11 @@ int CLiquidHeatingTubeTest::Run(void)
 
         if ((ret = dev->LiquidTubeGetTemp(&currentTemp)) != RETURN_OK)
             break;
-        if (currentTemp >= liquidTempAbove)
+        if (currentTemp >= liquidTempAbove && currentTemp <= tempMaintainRangeMax)
             isAbove = true;
+        else if (currentTemp > tempMaintainRangeMax)
+            isAbove = false;
+
         if (isAbove && !count)
             break;
         if (i >= liquidRepeatTime && !isAbove) {
