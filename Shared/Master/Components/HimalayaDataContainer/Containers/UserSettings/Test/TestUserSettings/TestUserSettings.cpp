@@ -85,6 +85,10 @@ void TestUserSettingsTest::utTestCmdTone()
     almTone->isStateAllowed(QString("state"));
     almTone->isUserActionAllowed();
 
+    QDataStream ds;
+    ds << (*almTone);
+    ds >> (*almTone);
+
     delete almTone;
 }
 
@@ -112,6 +116,10 @@ void TestUserSettingsTest::utTestSetting()
     userSettings->isStateAllowed(QString("state"));
     userSettings->isUserActionAllowed();
 
+    QDataStream ds;
+    ds << (*userSettings);
+    ds >> (*userSettings);
+
     delete userSettings;
 
 }
@@ -137,6 +145,10 @@ void TestUserSettingsTest::utTestCmdRmsOnoff()
     rmsonoff->isSoftSwitchStateAllowed();
     rmsonoff->isStateAllowed(QString("state"));
     rmsonoff->isUserActionAllowed();
+
+    QDataStream ds;
+    ds << (*rmsonoff);
+    ds >> (*rmsonoff);
 
     delete rmsonoff;
 }
@@ -164,6 +176,10 @@ void TestUserSettingsTest::utTestCmdWaterStation()
     waterStation->isStateAllowed(QString("state"));
     waterStation->isUserActionAllowed();
 
+    QDataStream ds;
+    ds << (*waterStation);
+    ds >> (*waterStation);
+
     delete waterStation;
 }
 void TestUserSettingsTest::utTestCmdStationUpate()
@@ -190,6 +206,10 @@ void TestUserSettingsTest::utTestCmdStationUpate()
     stationUpdate->isSoftSwitchStateAllowed();
     stationUpdate->isStateAllowed(QString("state"));
     stationUpdate->isUserActionAllowed();
+
+    QDataStream ds;
+    ds << (*stationUpdate);
+    ds >> (*stationUpdate);
 
     delete stationUpdate;
 }
@@ -219,6 +239,10 @@ void TestUserSettingsTest::utTestCmdParaMelt()
     paraMelt->isStateAllowed(QString("state"));
     paraMelt->isUserActionAllowed();
 
+    QDataStream ds;
+    ds << (*paraMelt);
+    ds >> (*paraMelt);
+
     delete paraMelt;
 }
 
@@ -245,6 +269,10 @@ void TestUserSettingsTest::utTestCmdAppShutdown()
     quitApp->isStateAllowed(QString("state"));
     quitApp->isUserActionAllowed();
 
+    QDataStream ds;
+    ds << (*quitApp);
+    ds >> (*quitApp);
+
     delete quitApp;
 }
 
@@ -270,6 +298,10 @@ void TestUserSettingsTest::utTestCmdResetOP()
     rstop->isSoftSwitchStateAllowed();
     rstop->isStateAllowed(QString("state"));
     rstop->isUserActionAllowed();
+
+    QDataStream ds;
+    ds << (*rstop);
+    ds >> (*rstop);
 
     delete rstop;
 }

@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QDataStream>
 #include <QByteArray>
+#include <QFile>
 #include <stdio.h>
 #include "DataManager/Helper/Include/Types.h"
 
@@ -449,6 +450,15 @@ void TestProgramSettings::utTestDataProgramList()
     dataProgList->DoLocalVerification();
     dataProgList->Init();
 
+    QString Filename("./test.xml");
+    QFile File(Filename);
+    if (File.open(QFile::ReadWrite | QFile::Text)) {
+        dataProgList->Read(Filename);
+        QFile::remove(Filename);
+    }
+    dataProgList->ProgramExists(QString("programid"));
+    dataProgList->AddVerifier(NULL);
+
     delete dataProgList;
 }
 
@@ -462,7 +472,6 @@ void TestProgramSettings::utTestDataProgramListVerify()
 
     CDataProgramList dpl;
     dataProgListV->VerifyData(&dpl);
-
     delete dataProgListV;
 }
 
