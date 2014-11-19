@@ -2,6 +2,10 @@
     error("../../../Test/Himalaya.pri not found")
 }
 
+QT +=   xml \
+        network \
+        xmlpatterns
+
 TARGET = utTestHimalayaMasterThread
 SOURCES += TestHimalayaMasterThread.cpp
 

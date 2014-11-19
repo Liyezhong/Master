@@ -72,6 +72,7 @@
 #include <stdlib.h> //For "system()"
 #include "Global/Include/SignalHandler.h"
 #include "Global/Include/GlobalDefines.h"
+#include "Global/Include/AlarmPlayer.h"
 
 #define TRACE_TO_FILE 0     // set to 1 for messages getting printed to file
 
@@ -210,7 +211,119 @@ void TestHimalayaMasterThread::cleanupTestCase() {
 
 void TestHimalayaMasterThread::utTestHimalayaMasterThread()
 {
-#if 1
+    char **argv = NULL;
+    int argc = 0;
+    Global::EventObject::Instance();
+    Global::AdjustedTime::Instance();
+    Global::AlarmPlayer::Instance();
+    EventHandler::StateHandler::Instance();
+    MApplication App(argc, argv);
+
+    // set global directories.
+    Global::SystemPaths::Instance().SetComponentTestPath("../Tests");
+    Global::SystemPaths::Instance().SetFirmwarePath("../Firmware");
+    Global::SystemPaths::Instance().SetLogfilesPath("../Logfiles");
+    Global::SystemPaths::Instance().SetManualPath("../Manual");
+    Global::SystemPaths::Instance().SetSettingsPath("../Settings");
+    Global::SystemPaths::Instance().SetInstrumentSettingsPath("../Settings/Instrument");
+    Global::SystemPaths::Instance().SetUpdatePath("../Update");
+    Global::SystemPaths::Instance().SetUploadsPath("../Uploads");
+    Global::SystemPaths::Instance().SetTempPath("../Temporary");
+    Global::SystemPaths::Instance().SetRollbackPath("../Rollback");
+    Global::SystemPaths::Instance().SetTranslationsPath("../Translations");
+    Global::SystemPaths::Instance().SetSoundPath("../Sounds");
+    Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
+    Global::SystemPaths::Instance().SetScriptsPath("../Scripts");
+
+    Threads::SingletonThreadObject SingletonObjThread;
+
+    Global::EventObject::Instance().setParent(&SingletonObjThread);
+    (void)Global::AdjustedTime::Instance();
+    Global::AlarmPlayer::Instance().setParent(&SingletonObjThread);
+    EventHandler::StateHandler::Instance().setParent(&SingletonObjThread);
+
+    QThread ThreadForSingletonObjects;
+    SingletonObjThread.moveToThread(&ThreadForSingletonObjects);
+    (void)QObject::connect(&ThreadForSingletonObjects, SIGNAL(started()), &SingletonObjThread, SLOT(Run()));
+    ThreadForSingletonObjects.start();
+    QTimer TimeFinish;
+    (void)QObject::connect(&TimeFinish, SIGNAL(timeout()), &ThreadForSingletonObjects, SIGNAL(finished()));
+    TimeFinish.setInterval(10000);
+    TimeFinish.start();
+    //=========================================================
+    // WARNING: uncomment following lines to switch on
+    //          the DeviceControl layer debug logging.
+//    FILE* pFile = fopen ( "colorado_app.log", "w" );
+//    Output2FILE::Stream() = pFile;
+//    FILE_LOG_L(laFCT, llINFO) << "DEBUG FCT";
+//    FILE_LOG_L(laDEV, llINFO) << "DEBUG DEV";
+//    FILE_LOG_L(laDEVPROC, llINFO) << "DEBUG DEVPROC";
+    //=========================================================
+
+    // catch unexpected signals
+    Global::SignalHandler signalHandler;
+    signalHandler.init();
+
+    for (int i=1; i< argc; i++) {
+        if ((QString(argv[i]) == "-rolledback")) {
+            Global::AppSettings::SettingsRolledBack = true;
+        }
+    }
+
+    //#ifdef QT_DEBUG
+////    SchedulerSimulation::MainWindow::getInstance().show();
+//#endif
+
+
+
+    // create master thread
+    QThread thrMasterThread;
+    // create controller for master thread
+    App.TheMasterThreadController.SetOperatingMode("production");
+    // base file name for logging is "Events"
+    App.TheMasterThreadController.SetEventLoggerBaseFileName("PRIMARIS_");
+    /// \todo set max file size of event logger
+    App.TheMasterThreadController.SetEventLoggerMaxFileSize(1000000);
+    // set max file count for day operation logger
+    App.TheMasterThreadController.SetDayEventLoggerMaxFileCount(56);
+    // set max date time offset
+    App.TheMasterThreadController.SetMaxAdjustedTimeOffset(24*3600);
+    // read time offset from file
+    App.TheMasterThreadController.ReadTimeOffsetFile();
+    // add code to quit Master thread if its controller requests it
+    QObject::connect(&App.TheMasterThreadController, SIGNAL(RequestFinish()), &App, SLOT(ProcessAnyPendingEvents()));
+    // add code to quit Master thread if its controller requests it
+    QObject::connect(&App, SIGNAL(InitializeThreadStop()), &App.TheMasterThreadController, SLOT(Stop()));
+    // add code to close application when Master thread stops
+    QObject::connect(&thrMasterThread, SIGNAL(finished()), &ThreadForSingletonObjects, SLOT(quit()));
+    // Master thread should give its controller automatically a "Go" signal as soon it has started
+    QObject::connect(&thrMasterThread, SIGNAL(started()), &App.TheMasterThreadController, SLOT(Go()));
+
+    (void)QObject::connect(&ThreadForSingletonObjects, SIGNAL(finished()), &App, SLOT(quit()));
+    // now push controller to master thread
+    App.TheMasterThreadController.moveToThread(&thrMasterThread);
+    // and start the Master thread
+    thrMasterThread.start();
+
+    // start application
+    App.exec();
+
+    // wait for Master thread
+//    thrMasterThread.wait();
+    // cleanup controller for master thread.
+    App.TheMasterThreadController.CleanupAndDestroyObjects();
+    //write buffered data to disk-> refer man pages for sync
+    (void)system("sync &");
+    std::cout << "\n\n\n Sync in Main" << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
+    // and exit
+    //Remove parents for singleton
+    Global::EventObject::Instance().setParent(NULL);
+    Global::AlarmPlayer::Instance().setParent(NULL);
+    EventHandler::StateHandler::Instance().setParent(NULL);
+
+    App.TheMasterThreadController.InitiateShutdown(false);
+    App.quit();
+#if 0
     char **argv = NULL;
     int argc = 0;
     // catch unexpected signals
@@ -265,14 +378,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
     // read time offset from file
     App.TheMasterThreadController.ReadTimeOffsetFile();
 
-#if 0
-    // add code to quit Master thread if its controller requests it
-    QCOMPARE(QObject::connect(&App.TheMasterThreadController, SIGNAL(RequestFinish()), App.thread(), SLOT(quit())) , true);
-    // add code to close application when Master thread stops
-    QCOMPARE(QObject::connect(App.thread(), SIGNAL(finished()), &App, SLOT(quit())),true);
-    // Master thread should give its controller automatically a "Go" signal as soon it has started
-    QCOMPARE(QObject::connect(App.thread(), SIGNAL(started()), &App.TheMasterThreadController, SLOT(Go())),true);
-#endif
     Global::tRefType Ref = 0;
     Global::AckOKNOK Ack;
     QString CmdName = "";
@@ -294,7 +399,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
 //    App.TheMasterThreadController.ShutdownOnPowerFail();
 
     App.TheMasterThreadController.OnAckOKNOK(Ref, Ack);
-#if 1
     App.TheMasterThreadController.OnProcessTimeout(Ref, CmdName);
     App.TheMasterThreadController.SendDCLContainerTo(AckCommandChannel);
     App.TheMasterThreadController.OnInitStateCompleted();
@@ -326,7 +430,6 @@ void TestHimalayaMasterThread::utTestHimalayaMasterThread()
    // App.TheMasterThreadController.ShutdownHandler(Ref,ShutdownCmd, AckCommandChannel);
     // cleanup controller for master thread.
     //App.TheMasterThreadController.CleanupAndDestroyObjects();
-#endif
 #endif
 
 }

@@ -88,7 +88,10 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     CProgramStatusInfor ProStatus;
     bool result = false;
 
-    system("rm TEST_ISSAC");
+    if(QFile::exists("TEST_ISSAC"))
+    {
+        system("rm TEST_ISSAC");
+    }
     result = ProStatus.InitProgramStatus(54);
     QVERIFY(result);
     ProStatus.SetLastRVPosition(DeviceControl::RV_SEAL_10);
@@ -125,8 +128,9 @@ void TestProgramStatusInfor::utTestProgramStatusInfor() {
     QVERIFY(ProStatus.GetOvenHeatingTime() == Hour);
     QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 14 * Hour);
 
+    ProStatus.UpdateOvenHeatingTime(CTime - 2 * 60 * 1001,false);
     ProStatus.UpdateOvenHeatingTime(CTime,false);
-    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == Hour15);
+    QVERIFY(ProStatus.GetRemaingTimeForMeltingParffin() == 15 * Hour);
     QVERIFY(ProStatus.GetOvenHeatingTime() == 0);
 
     system("echo 10 >TEST_ISSAC");

@@ -219,6 +219,11 @@ public:
 
 private:
     bool CalculateTime(quint64& HeatingTime, quint64& UnHeatingTime);
+    bool ReadProgramStatusFile();
+    quint64 GetShutdownTime();
+    void SetShutdownTime(quint64 Time);
+    quint64 GetOvenHeatingStopDuration();
+    void SetOvenHeatingStopDuration(quint64 Duration);
 
 private:
     void FlushFile();
@@ -230,6 +235,7 @@ private:
     bool m_LastHeatingOn;                       //!< store the last status of heating
     quint64 m_MaxMeltTime;                      //!< max time for melting paraffin
     quint64 m_RemainTime;                       //!< remain time for emlting paraffin
+    quint64 m_FirstStopHeatingTime;             //!< the first time for stop oven heating of on stop period
 };
 } //end of scheduler name space
 #endif // PROGRAMSTATUSINFOR_H
