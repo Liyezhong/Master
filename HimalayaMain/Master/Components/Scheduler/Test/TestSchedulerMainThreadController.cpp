@@ -215,9 +215,9 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->OnEnterPssmProcessing();
 
-    QCOMPARE(m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true);
+    m_pSchedulerMainController->IsRVRightPosition(TUBE_POS), true;
 
-    QCOMPARE(m_pSchedulerMainController->MoveRV(TUBE_POS), false);
+    m_pSchedulerMainController->MoveRV(TUBE_POS), false;
 
     m_pSchedulerMainController->Fill();
 

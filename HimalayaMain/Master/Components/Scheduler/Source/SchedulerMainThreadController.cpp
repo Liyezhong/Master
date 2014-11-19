@@ -446,7 +446,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 
     QString reagentID = m_ProgramStatusInfor.GetLastReagentGroup();
     QString curProgramID = m_ProgramStatusInfor.GetProgramId();
-    if (reagentID.isNull() || reagentID.isEmpty() || curProgramID.isNull() || curProgramID.isEmpty())
+    if (curProgramID.isNull() || curProgramID.isEmpty())
     {
         return;
     }
