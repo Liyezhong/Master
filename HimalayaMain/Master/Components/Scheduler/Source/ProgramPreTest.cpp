@@ -17,6 +17,8 @@
  *
  */
 /****************************************************************************/
+#include <QCoreApplication>
+
 #include "Scheduler/Include/ProgramPreTest.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
@@ -64,8 +66,9 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     mp_BottlesChecking->addTransition(this,SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_MoveToTube->addTransition(this, SIGNAL(TasksDone()), mp_Initial.data());
 
+
     // Start up state machine
-    mp_StateMachine->start();
+    //mp_StateMachine->start();
 
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
@@ -87,6 +90,23 @@ CProgramPreTest::~CProgramPreTest()
 {
     /*lint -e1551 */
     mp_StateMachine->stop();
+}
+
+void CProgramPreTest::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+
+    mp_StateMachine->start();
+    this->ResetVarList();
 }
 
 CProgramPreTest::StateList_t CProgramPreTest::GetCurrentState(QSet<QAbstractState*> statesList)

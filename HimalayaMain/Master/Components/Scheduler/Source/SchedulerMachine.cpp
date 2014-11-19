@@ -327,7 +327,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //RS_Tissue_Protect
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
     CONNECTSIGNALSLOT(mp_RsTissueProtect.data(), TasksDone(bool), this, OnTasksDoneRSTissueProtect(bool));
-    //mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+    mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Check_RTLock
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcCheckRTLock()), mp_ErrorRcCheckRTLockState.data());
@@ -379,7 +379,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     if (false == flag)
     {
         Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, true);
-        emit sigEnterIdleState();
+        emit sigStateChange();
     }
     else
     {
@@ -474,6 +474,10 @@ void CSchedulerStateMachine::SendResumeFillingLevelSensorHeating()
 void CSchedulerStateMachine::SendResumeFiling()
 {
     emit ResumeFiling();
+}
+void CSchedulerStateMachine::StartPreCheck()
+{
+    mp_ProgramPreTest->Start();
 }
 
 void CSchedulerStateMachine::SendResumeRVMoveToSeal()

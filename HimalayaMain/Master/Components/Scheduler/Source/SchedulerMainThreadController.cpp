@@ -254,9 +254,10 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
+#if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
-#if 0
+
     RaiseError(0, DCL_ERR_DEV_INTER_SW_ERROR, m_CurrentScenario, true);
 #endif
 }
@@ -597,6 +598,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
+
+            // Start up PssmPrecheck state machine
+            m_SchedulerMachine->StartPreCheck();
 
             //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )

@@ -232,6 +232,7 @@ private:
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
     qint64 m_StartWaitTime;                                 //!< start up time for wait
+    bool   m_IsFillingSuccessful;                           //!< flag to indicate if Filling is successful or not
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);

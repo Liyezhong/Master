@@ -84,7 +84,8 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_MoveToTubeSeq = 0;
     m_FillSeq = 0;
     m_LevelSensorSeq = 0;
-    m_MoveToSealSeq = 0;;
+    m_MoveToSealSeq = 0;
+    m_IsFillingSuccessful = true;
     }
 
 CRsTissueProtect::~CRsTissueProtect()
@@ -154,6 +155,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         m_LevelSensorSeq = 0;
         m_MoveToSealSeq = 0;;
         m_StartWaitTime = 0;
+        m_IsFillingSuccessful = true;
 
         m_StationID = this->GetStationID();
         if ("" == m_StationID)
@@ -363,7 +365,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     }
                     else
                     {
-
+                        m_IsFillingSuccessful = false;
                     }
                     CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
                     cmd->SetDelayTime(5000);
@@ -380,6 +382,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     else
                     {
                         mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
+                        m_IsFillingSuccessful = false;
                     }
                     emit MoveToSealing();
                 }
@@ -441,8 +444,15 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
             }
-            //mp_SchedulerController->UpdateCurProgramStepInfo(m_StationID, m_ReagentGroup);
-            emit TasksDone(true);
+            if (m_IsFillingSuccessful)
+            {
+                emit TasksDone(true);
+            }
+            else
+            {
+                m_IsFillingSuccessful = true; //Reset the value
+                emit TasksDone(false);
+            }
         }
         else
         {
