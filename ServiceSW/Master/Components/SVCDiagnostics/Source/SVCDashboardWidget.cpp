@@ -10,6 +10,8 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 
+#include "Diagnostics/Include/SelectBottleNReagentDialog.h"
+
 
 using namespace SVCDiagnostics;
 
@@ -71,6 +73,8 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_AirHeatingTube, PartSelected(), this, AirTubeSelected());
     CONNECTSIGNALSLOT(mp_HeatingTube, PartSelected(), this, LiquidTubeSelected());
     CONNECTSIGNALSLOT(mp_Pressure, PartSelected(), this, PressureSelected());
+
+    CONNECTSIGNALSLOT(mp_SelectBtn, clicked(), this, OnSelectPosition());
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
@@ -336,6 +340,25 @@ void CSVCDashboardWidget::PressureSelected()
     qDebug()<<"get Pressure status:"<<Status;
 }
 
+void CSVCDashboardWidget::OnSelectPosition()
+{
+    QString Text = "Please select an option and press OK to continue.";
+    Diagnostics::CSelectBottleNReagentDialog* p_SelectDlg = new Diagnostics::CSelectBottleNReagentDialog(16, this);
+    p_SelectDlg->SetRadioButtonVisible(false);
+    //p_SelectDlg->SetTitle(QString("Select Position"));
+    p_SelectDlg->SetLableText(Text);
+
+    if (p_SelectDlg->exec() == 0) {
+        delete p_SelectDlg;
+        return;
+    }
+
+    int Position = p_SelectDlg->GetBottleNumber();
+    delete p_SelectDlg;
+
+    Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
+}
+
 void CSVCDashboardWidget::TimerStart(bool IsStart)
 {
     if (IsStart) {
@@ -361,6 +384,7 @@ void CSVCDashboardWidget::RefreshLabel()
     quint16 RetortCurrentS(0);
     quint16 RetortCurrentB(0);
 
+    qint32 Position(0);
     qreal SensorTemp1(0);
     qreal SensorTemp2(0);
     quint16 RVCurrent(0);
@@ -373,26 +397,27 @@ void CSVCDashboardWidget::RefreshLabel()
 
     float Pressure(0);
 
-    p_DevProc->OvenGetTemp(&OvenTemp1, &OvenTemp2, &OvenTemp3);
-    p_DevProc->OvenGetCurrent(&OvenCurrentT, &OvenCurrentB);
+    (void)p_DevProc->OvenGetTemp(&OvenTemp1, &OvenTemp2, &OvenTemp3);
+    (void)p_DevProc->OvenGetCurrent(&OvenCurrentT, &OvenCurrentB);
 
-    p_DevProc->RetortGetTemp(&RetortTemp1, &RetortTemp2, &RetortTemp3);
-    p_DevProc->RetortGetCurrent(&RetortCurrentS, &RetortCurrentB);
+    (void)p_DevProc->RetortGetTemp(&RetortTemp1, &RetortTemp2, &RetortTemp3);
+    (void)p_DevProc->RetortGetCurrent(&RetortCurrentS, &RetortCurrentB);
 
-    p_DevProc->RVGetTemp(&SensorTemp1, &SensorTemp2);
-    p_DevProc->RVGetCurrent(&RVCurrent);
+    (void)p_DevProc->RVGetPosition(&Position);
+    (void)p_DevProc->RVGetTemp(&SensorTemp1, &SensorTemp2);
+    (void)p_DevProc->RVGetCurrent(&RVCurrent);
 
-    p_DevProc->AirTubeGetTemp(&AirTubeTemp);
-    p_DevProc->AirTubeGetCurrent(&AirTubeCurrent);
+    (void)p_DevProc->AirTubeGetTemp(&AirTubeTemp);
+    (void)p_DevProc->AirTubeGetCurrent(&AirTubeCurrent);
 
-    p_DevProc->LiquidTubeGetTemp(&LiquidTubeTemp);
-    p_DevProc->LiquidTubeGetCurrent(&LiquidTubeCurrent);
+    (void)p_DevProc->LiquidTubeGetTemp(&LiquidTubeTemp);
+    (void)p_DevProc->LiquidTubeGetCurrent(&LiquidTubeCurrent);
 
-    p_DevProc->PumpGetPressure(&Pressure);
+    (void)p_DevProc->PumpGetPressure(&Pressure);
 
     UpdateOvenLabel(OvenTemp1, OvenTemp2, OvenTemp3, OvenCurrentT);
     UpdateRetortLabel(RetortTemp1, RetortTemp2, RetortTemp3, RetortCurrentS);
-    UpdateRotaryValveLabel(10, SensorTemp1, SensorTemp2, RVCurrent);
+    UpdateRotaryValveLabel(Position, SensorTemp1, SensorTemp2, RVCurrent);
     UpdateAirHeatingTubeLabel(AirTubeTemp, AirTubeCurrent);
     UpdateLiquidHeatingTubeLabel(LiquidTubeTemp, LiquidTubeCurrent);
     UpdatePressureLabel(Pressure);
@@ -437,7 +462,21 @@ void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2
 
 void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
 {
-    mp_RotaryValvePosition->setText(QString("  Position : %1").arg(RVPosition));
+    QString PositionStr;
+    if (RVPosition == 14) {
+        PositionStr = "P1";
+    }
+    else if (RVPosition == 15) {
+        PositionStr = "P2";
+    }
+    else if (RVPosition == 16) {
+        PositionStr = "P3";
+    }
+    else {
+        PositionStr = QString::number(RVPosition);
+    }
+
+    mp_RotaryValvePosition->setText(QString("  Position : %1").arg(PositionStr));
     mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
     mp_RotaryValveTemp2->setText(QString("  Temp2 : %1\260C").arg(RVTemp2));
     mp_RotaryValveCurrent->setText(QString("  Current : %1A").arg(RVCurrent));

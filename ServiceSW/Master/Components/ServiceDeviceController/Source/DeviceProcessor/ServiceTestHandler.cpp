@@ -1054,6 +1054,23 @@ void ServiceTestHandler::RVMovePosition(QString& ReqName, QStringList& Params)
     }
 }
 
+void ServiceTestHandler::RVGetPosition(QString& ReqName, QStringList& Params)
+{
+    Q_UNUSED(Params);
+
+    QStringList Results;
+    Results.clear();
+    if (mp_MotorRV == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    QString Position = mp_MotorRV->GetPosition();
+    Results.append(Position);
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
 void ServiceTestHandler::RVSetTemperatureSwitchState(QString& ReqName, QStringList& Params)
 {
     QStringList Results;
@@ -1715,6 +1732,9 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     }
     else if (ReqName == "RVMovePosition") {
         RVMovePosition(ReqName, Params);
+    }
+    else if (ReqName == "RVGetPosition") {
+        RVGetPosition(ReqName, Params);
     }
     else if (ReqName == "RVSetTemperatureSwitchState") {
         RVSetTemperatureSwitchState(ReqName, Params);

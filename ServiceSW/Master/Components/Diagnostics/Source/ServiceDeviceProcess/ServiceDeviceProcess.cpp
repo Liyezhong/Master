@@ -890,6 +890,30 @@ int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
     return Ret;
 }
 
+int ServiceDeviceProcess::RVGetPosition(qint32 *Position)
+{
+    QString ReqName = "RVGetPosition";
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+    if (Ret == RESPONSE_TIMEOUT) {
+        return Ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+    qDebug()<<"Results = "<<Results;
+
+    if (Results.size()>0) {
+        *Position = Results.at(0).toFloat();
+    }
+    (void)m_ResultsMap.remove(ReqName);
+
+    return Ret;
+}
+
 int ServiceDeviceProcess::RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
 {
     QString ReqName = "RVSetTemperatureSwitchState";

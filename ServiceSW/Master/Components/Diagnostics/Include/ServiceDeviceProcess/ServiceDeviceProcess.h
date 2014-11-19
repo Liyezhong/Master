@@ -118,6 +118,7 @@ public:
     int RVGetCurrent(quint16 *RetCurrent);
     int RVInitialize(bool TubeFlag=false, quint32 Position=0);
     int RVMovePosition(bool TubeFlag, int Position);
+    int RVGetPosition(qint32 *Position);
     int RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
     int RVGetHeaterSwitchType(quint8 *RetSwitchType);
     int RVTempControlIsOn(bool *RetIsOn);

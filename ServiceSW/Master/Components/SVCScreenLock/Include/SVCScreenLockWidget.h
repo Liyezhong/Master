@@ -32,7 +32,7 @@ namespace Ui {
 
 /****************************************************************************/
 /*!
- *  \brief  Definition/Declaration of class ScreenSaverWidget
+ *  \brief  Definition/Declaration of class CSVCScreenLockWidget
  */
 /****************************************************************************/
 class CSVCScreenLockWidget : public QWidget
@@ -42,19 +42,35 @@ class CSVCScreenLockWidget : public QWidget
 public:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function ScreenSaverWidget
+     *  \brief  Definition/Declaration of function CSVCScreenLockWidget
      *
-     *  \param parent
+     *  \param p_Parent = parent widget
      *
-     *  \return from ScreenSaverWidget
+     *  \return from CSVCScreenLockWidget
      */
     /****************************************************************************/
     explicit CSVCScreenLockWidget(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CSVCScreenLockWidget();
 
 private:
-
+    /****************************************************************************/
+    /*!
+     *  \brief Connects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void ConnectKeyBoardSignalSlots();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Disconnects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void DisconnectKeyBoardSignalSlots();
 
     Ui::CSVCScreenLockWidget *ui;       ///<  Definition/Declaration of variable ui
@@ -71,10 +87,33 @@ private slots:
     /****************************************************************************/
     void AppIdleForLongTime();
 
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when OK is clicked
+     *  \iparam EnteredString = Stores line edit string
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredString);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when Esc is clicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for display keyboard widget
+     */
+    /****************************************************************************/
     void DisplayKeyBoard();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for hide keyboard widget
+     */
+    /****************************************************************************/
     void HideKeyBoard();
 public slots:
     /****************************************************************************/
@@ -84,6 +123,11 @@ public slots:
     /****************************************************************************/
     void OnInteractStart();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for when current tab changed
+     */
+    /****************************************************************************/
     void OnCurrentTabChanged(int Index);
 };
 

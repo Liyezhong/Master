@@ -29,15 +29,41 @@ namespace Ui {
 class CSVCTargetTempSelectionDlg;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CSVCTargetTempSelectionDlg
+ */
+/****************************************************************************/
 class CSVCTargetTempSelectionDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CSVCTargetTempSelectionDlg
+     *  \iparam DefaultTemp = The default temperature
+     *  \iparam MinTemp  = The min temperature
+     *  \iparam MaxTemp  = The max temperature
+     *  \iparam p_Parent = parent widget
+     */
+    /****************************************************************************/
     explicit CSVCTargetTempSelectionDlg(int DefaultTemp, int MinTemp, int MaxTemp, QWidget* p_Parent);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CSVCTargetTempSelectionDlg();
 
     //void SetText(const QString& Text);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  To get target temperature
+     *  \return target temperature
+     */
+    /****************************************************************************/
     int GetTargetTemp() {
         return m_TargetTemp;
     }
@@ -46,13 +72,20 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Object = The event object
      *  \param p_Event = QEvent type parameter
-     *  \return from changeEvent
+     *  \return ture or false
      */
     /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private Q_SLOTS:
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot for Ok button clicked
+     */
+    /****************************************************************************/
     void OnOk();
 
 private:

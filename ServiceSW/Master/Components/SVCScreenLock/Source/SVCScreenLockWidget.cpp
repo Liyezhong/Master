@@ -24,7 +24,7 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     mp_MessageDlg->setModal(true);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD, NULL, this);
     m_timer = new QTimer(this);
-    m_timer->setInterval(1200000);//3 mintues
+    m_timer->setInterval(60000);//20 mintues
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_timer->start();
 }
@@ -51,7 +51,7 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
         return;
     }
 
-    if (m_CurrentTab == 3) {
+    if (m_CurrentTab == 3) { //SVCDiagnosics tab
         //this->setStyleSheet("QWidget { background-image: url(:/Images/ScreenLock1.png) }");
         this->setStyleSheet(this->property("defaultStyleSheet").toString() +
                       "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock1.png) }");
@@ -88,14 +88,14 @@ void CSVCScreenLockWidget::ConnectKeyBoardSignalSlots()
 {
     // Connect signals and slots to keyboard.
     CONNECTSIGNALSLOT(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
-    //CONNECTSIGNALSLOT(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
+    CONNECTSIGNALSLOT(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
 }
 
 void CSVCScreenLockWidget::DisconnectKeyBoardSignalSlots()
 {
     // Disconnect signals and slots connected to keyboard.
     (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)), this, SLOT(OnOkClicked(QString)));
-    //(void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()), this, SLOT(OnESCClicked()));
+    (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()), this, SLOT(OnESCClicked()));
 }
 
 void CSVCScreenLockWidget::OnOkClicked(QString EnteredString)
@@ -191,7 +191,7 @@ void CSVCScreenLockWidget::HideKeyBoard()
 
 void CSVCScreenLockWidget::OnESCClicked()
 {
-
+    DisplayKeyBoard();
 }
 
 } //end of namespace SVCScreenLock

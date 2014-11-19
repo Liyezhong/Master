@@ -2,12 +2,12 @@
 
 CGraphicsItemPart::CGraphicsItemPart(
         const QPixmap &pixmapNormal,
-        QGraphicsItem *parent,
-        QGraphicsScene *scene):
+        QGraphicsItem *p_Parent,
+        QGraphicsScene *p_Scene):
     QGraphicsPixmapItem(pixmapNormal,
-                         parent,
-                         scene),
-    s(false)
+                         p_Parent,
+                         p_Scene),
+    m_StatusChange(false)
 {
 }
 
@@ -26,15 +26,15 @@ CGraphicsItemPart::CGraphicsItemPart(const QPixmap &pixmapNormal,
 
 void CGraphicsItemPart::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (s)
+    if (m_StatusChange)
     {
-       SetStatus(Working);
-       s = false;
+        SetStatus(Working);
+        m_StatusChange = false;
     }
     else
     {
-     SetStatus(Normal);
-     s = true;
+        SetStatus(Normal);
+        m_StatusChange = true;
     }
     emit PartSelected();
     QGraphicsItem::mouseReleaseEvent(event);

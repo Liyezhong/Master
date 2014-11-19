@@ -141,6 +141,7 @@ private:
     void RVGetCurrent(QString& ReqName, QStringList& Params);
     void RVInitialize(QString& ReqName, QStringList& Params);
     void RVMovePosition(QString& ReqName, QStringList& Params);
+    void RVGetPosition(QString& ReqName, QStringList& Params);
     void RVSetTemperatureSwitchState(QString& ReqName, QStringList& Params);
     void RVGetHeaterSwitchType(QString& ReqName, QStringList& Params);
     void RVTempControlIsOn(QString& ReqName, QStringList& Params);
