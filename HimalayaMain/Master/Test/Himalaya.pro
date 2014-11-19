@@ -40,6 +40,7 @@ SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Test/TestHim
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Build/HimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Test/TestHimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/HimalayaDataManager.pro
+SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Test/TestHimalayaDataManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Test/TestDataManager.pro
