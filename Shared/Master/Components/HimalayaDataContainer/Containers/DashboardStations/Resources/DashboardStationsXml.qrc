@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/Xml">
-        <file>DashboardStations.xml</file>
+        <file>HimalayaStations.xml</file>
     </qresource>
 </RCC>
