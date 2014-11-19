@@ -124,7 +124,7 @@ void TestReagentGroupColor::utTestReagentGroupColorList() {
 
     // Checking the basic interfaces of CReagentGroupColorList
     QCOMPARE(p_ReagentGroupColorList->GetDataVerificationMode(), true);
-    QCOMPARE(p_ReagentGroupColorList->GetVersion(), 1);
+    QCOMPARE(p_ReagentGroupColorList->GetVersion(), 0);
     QCOMPARE(p_ReagentGroupColorList->GetNumberOfReagentGroupColor(), 12);
 
     p_ReagentGroupColor4->SetColorID("7001");

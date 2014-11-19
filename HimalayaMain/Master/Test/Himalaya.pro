@@ -47,6 +47,7 @@ SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/Reagent
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentGroups/Test/TestDataReagentGroupList.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentStations/Test/TestDataStationList.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/Reagents/Test/TestDataReagentList.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/DashboardStations/Test/TestDashboardStationList.pro
 
 
 SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro
