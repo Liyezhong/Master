@@ -262,6 +262,7 @@ typedef struct
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not
+        bool    m_DiasbleHeatingError;                        ///< disable heating strategy error
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
 
     private:

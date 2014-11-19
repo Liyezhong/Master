@@ -137,6 +137,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_PssmStepFinSeq = 0;
 
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
+    m_DiasbleHeatingError = Global::Workaroundchecking("OVEN_HEATING");
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -312,6 +313,7 @@ void SchedulerMainThreadController::OnTickTimer()
     {
         m_TickTimer.stop();
         m_SchedulerCommandProcessor->ShutDownDevice();
+        m_ProgramStatusInfor.SetErrorFlag(0);
         //DequeueNonDeviceCommand();
         return;
     }
@@ -2738,11 +2740,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {      
-            LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-            RaiseError(0, retCode, Scenario, true);
-            m_SchedulerMachine->SendErrorSignal();
+        if(false == m_DiasbleHeatingError)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
+                RaiseError(0, retCode, Scenario, true);
+                m_SchedulerMachine->SendErrorSignal();
+            }
         }
     }
 
@@ -4228,7 +4233,10 @@ bool SchedulerMainThreadController::ConstructSlaveModuleAttrList(QString moduleN
 
 void SchedulerMainThreadController::OnSystemError()
 {
-    m_ProgramStatusInfor.SetErrorFlag(1);
+    if(m_CurrentScenario != 2)
+    {
+        m_ProgramStatusInfor.SetErrorFlag(1);
+    }
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_EEEOR;
     MsgClasses::CmdProgramAcknowledge* commandPtrSystemError(new MsgClasses::CmdProgramAcknowledge(5000, type));
     Q_ASSERT(commandPtrSystemError);
