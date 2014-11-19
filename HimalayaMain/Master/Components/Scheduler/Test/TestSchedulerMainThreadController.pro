@@ -6,7 +6,7 @@ TARGET = utTestSchedulerMainThreadController
 
 SOURCES += ../Source/*.cpp
 SOURCES += ../Commands/Source/*.cpp
-SOURCES += TestSchedulerMachine.cpp
+SOURCES += TestSchedulerMainThreadController.cpp
 
 INCLUDEPATH += ../../../../../../Platform/Common/Components/
 
