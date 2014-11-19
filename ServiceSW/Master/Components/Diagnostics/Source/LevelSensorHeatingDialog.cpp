@@ -32,8 +32,9 @@ CLevelSensorHeatingDialog::CLevelSensorHeatingDialog(QWidget *p_Parent)
      mp_Ui(new Ui::CLevelSensorHeatingDialog),
      m_Abort(false)
 {
-    mp_Ui->setupUi(GetContentFrame());
+    mp_Ui->setupUi(this);
     setModal(true);
+    //resize(400, 300);
 
     CONNECTSIGNALSLOTGUI(mp_Ui->abortBtn, clicked(), this, AbortDialog());
 }
