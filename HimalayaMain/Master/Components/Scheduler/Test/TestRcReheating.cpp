@@ -126,29 +126,30 @@ void TestRcReheating::initTestCase()
         EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-//        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition())
-//                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition(_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, IDForceDraining(_, _, _))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToRVPosition(_))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, RTStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+//        EXPECT_CALL(*mp_IDeviceProcessing, RTStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+//                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, RVStartTemperatureControlWithPID(_, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+//        EXPECT_CALL(*mp_IDeviceProcessing, RVStartTemperatureControlWithPID(_, _, _, _, _, _))
+//                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, OvenStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+//        EXPECT_CALL(*mp_IDeviceProcessing, OvenStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+//                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, ALStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+//        EXPECT_CALL(*mp_IDeviceProcessing, ALStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+//                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-        EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
-                .WillRepeatedly(Return(100));
-
-        EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
     sleep(1);
