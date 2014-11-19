@@ -1,8 +1,8 @@
-!include("TestSVCDiagnostics.pri"):error("TestSVCDiagnostics.pri not found")
+!include("TestSVCScreenLock.pri"):error("TestSVCScreenLock.pri not found")
 
-TARGET 	 = utTestSVCDiagnostics
+TARGET 	 = utTestSVCScreenLock
 CONFIG   += console
-SOURCES  += TestSVCDiagnostics.cpp
+SOURCES  += TestSVCScreenLock.cpp
 TEMPLATE  = app
 
 
@@ -15,9 +15,9 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Core ServiceDataManager SVCDiagnostics)
+UseLibs(Core ServiceDataManager SVCScreenLock Diagnostics)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
-UsePlatformLibs(DataManager Global)
+UsePlatformLibs(DataManager Global PasswordManager)
 # UseSharedLibs(HimalayaDataContainer)
 UsePlatformScroller(QtScroller)
 

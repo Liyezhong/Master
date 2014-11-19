@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QMessageBox>
 #include <QMainWindow>
+#include "SVCDiagnostics/Include/GraphicsItemPart.h"
+#include "SVCDiagnostics/Include/SVCDashboardWidget.h"
 
 namespace SVCDiagnostics {
 
@@ -89,6 +91,23 @@ void CTestSVCDiagnostics::cleanupTestCase() {
 
 /****************************************************************************/
 void CTestSVCDiagnostics::utTestSVCDiagnostics() {
+    CGraphicsItemPart* ItemPart = new CGraphicsItemPart(QPixmap(":/Images/Retort.png"));
+    ItemPart->SetStatus(CGraphicsItemPart::Working);
+
+    QVERIFY(CGraphicsItemPart::Working == ItemPart->Status());
+
+    CSVCDashboardWidget* TestWidget = new CSVCDashboardWidget();
+    TestWidget->UpdateAirHeatingTubeLabel(11, 12);
+    TestWidget->UpdateLiquidHeatingTubeLabel(11, 12);
+    TestWidget->UpdateOvenLabel(11, 11, 11, 12);
+    TestWidget->UpdatePressureLabel(11.2);
+    TestWidget->UpdateRetortLabel(11, 11, 11, 12);
+    TestWidget->UpdateRotaryValveLabel(10, 11, 11, 12);
+
+    TestWidget->UpdatePartStatus();
+
+    TestWidget->TimerStart(true);
+    TestWidget->TimerStart(false);
 }
 
 } // end namespace SVCDiagnostics

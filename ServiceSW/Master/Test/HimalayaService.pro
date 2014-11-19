@@ -37,6 +37,8 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/ServiceDataManager/Build/ServiceDataManager.pro \
           ../Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
           ../Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
+          ../Components/SVCDiagnostics/Build/SVCDiagnostics.pro \
+          ../Components/SVCScreenLock/Build/SVCScreenLock.pro \
           ../Components/SystemTracking/Test/TestSystemTracking.pro \
           ../Components/LogViewerDialog/Test/TestLogViewerDialog.pro \
           ../Components/Diagnostics/Test/TestDiagnostics.pro \
@@ -44,7 +46,9 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/ServiceUpdates/Test/TestServiceUpdates.pro \
           ../Components/ImportExport/Test/TestServiceImportExportHandler.pro \
           ../Components/ServiceDataManager/Test/TestServiceDataManager.pro \
-          ../Components/ServiceDeviceController/Test/TestServiceDeviceController.pro
+          ../Components/ServiceDeviceController/Test/TestServiceDeviceController.pro \
+          ../Components/SVCDiagnostics/Test/TestSVCDiagnostics.pro \
+          ../Components/SVCScreenLock/Test/TestSVCScreenLock.pro
 
 CONFIG += ordered
 

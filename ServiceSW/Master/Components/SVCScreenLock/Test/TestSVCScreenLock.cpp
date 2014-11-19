@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file TestSVCDiagnostics.cpp
+/*! \file TestSVCScreenLock.cpp
  *
- *  \brief Unit test for SVCDiagnostics menu
+ *  \brief Unit test for SVCScreenLock menu
  *
  *
  *  $Version:   $ 0.1
@@ -21,19 +21,16 @@
 
 #include <QtTest/QTest>
 #include <QDebug>
-#include <MainMenu/Include/MainWindow.h>
-#include <QObject>
-#include <QMessageBox>
-#include <QMainWindow>
+#include "SVCScreenLock/Include/SVCScreenLockWidget.h"
 
-namespace SVCDiagnostics {
+namespace SVCScreenLock {
 
 /****************************************************************************/
 /**
  * \brief Test class for Diagnostics class.
  */
 /****************************************************************************/
-class CTestSVCDiagnostics : public QObject {
+class CTestSVCScreenLock : public QObject {
     Q_OBJECT
 private slots:
     /****************************************************************************/
@@ -66,33 +63,38 @@ private slots:
      * \brief Test Diagnostics Menu object
      */
     /****************************************************************************/
-    void utTestSVCDiagnostics();
+    void utTestSVCScreenLock();
 
 
 }; // end class CTestSVCDiagnostics
 
 /****************************************************************************/
-void CTestSVCDiagnostics::initTestCase() {
+void CTestSVCScreenLock::initTestCase() {
 }
 
 /****************************************************************************/
-void CTestSVCDiagnostics::init() {
+void CTestSVCScreenLock::init() {
 }
 
 /****************************************************************************/
-void CTestSVCDiagnostics::cleanup() {
+void CTestSVCScreenLock::cleanup() {
 }
 
 /****************************************************************************/
-void CTestSVCDiagnostics::cleanupTestCase() {
+void CTestSVCScreenLock::cleanupTestCase() {
 }
 
 /****************************************************************************/
-void CTestSVCDiagnostics::utTestSVCDiagnostics() {
+void CTestSVCScreenLock::utTestSVCScreenLock() {
+    CSVCScreenLockWidget* testWidget = new CSVCScreenLockWidget();
+
+    testWidget->OnCurrentTabChanged(1);
+    testWidget->OnCurrentTabChanged(3);
+    testWidget->OnInteractStart();
 }
 
-} // end namespace SVCDiagnostics
+} // end namespace SVCScreenLock
 
-QTEST_MAIN(SVCDiagnostics::CTestSVCDiagnostics)
-#include "TestSVCDiagnostics.moc"
+QTEST_MAIN(SVCScreenLock::CTestSVCScreenLock)
+#include "TestSVCScreenLock.moc"
 

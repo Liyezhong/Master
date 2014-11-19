@@ -15,7 +15,7 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Core ServiceDataManager SVCDiagnostics)
+UseLibs(Core ServiceDataManager SVCDiagnostics Diagnostics)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global)
 # UseSharedLibs(HimalayaDataContainer)
