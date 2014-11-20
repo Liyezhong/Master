@@ -25,19 +25,17 @@ SVCButton::SVCButton(bool isBig, QWidget *parent)
 {
     QFont Font;
     Font.setWeight(QFont::Black);
+    Font.setPointSize(9);
+    setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }");
     if (isBig) {
-        Font.setPointSize(14);
-        setFont(Font);
-        setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }"); // big background
-        width = 194;
-        height = 44;
-    } else {
-        Font.setPointSize(9);
-        setFont(Font);
-        setStyleSheet("QPushButton { border-image: url(:/Images/Button1) }"); // little
+         // big background
+        width = 110;
+        height = 28;
+    } else {    
         width = 97;
         height = 28;
     }
+    setFont(Font);
     //setAutoFillBackground(true);
     setFocusPolicy(Qt::NoFocus);
 }

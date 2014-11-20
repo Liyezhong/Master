@@ -17,7 +17,8 @@ CGraphicsItemPart::CGraphicsItemPart(const QPixmap &pixmapNormal,
     :QGraphicsPixmapItem(pixmapNormal),
       m_PixmapNormal(pixmapNormal),
       m_PixmapDisabled(pixmapDisabled),
-      m_PixmapWorking(pixmapWorking)
+      m_PixmapWorking(pixmapWorking),
+      m_StatusChange(false)
 {
     this->setFlags(ItemIsSelectable | QGraphicsItem::ItemIgnoresParentOpacity |
                    ItemDoesntPropagateOpacityToChildren | QGraphicsItem::ItemClipsToShape
@@ -46,6 +47,7 @@ void CGraphicsItemPart::SetStatus(PartStatus status)
     if (m_PartStatus == Normal)
     {
         this->setPixmap(m_PixmapNormal);
+        m_StatusChange = true;
     }
     else if (m_PartStatus == Disabled)
     {
@@ -54,6 +56,7 @@ void CGraphicsItemPart::SetStatus(PartStatus status)
     else if (m_PartStatus == Working)
     {
         this->setPixmap(m_PixmapWorking);
+        m_StatusChange = false;
     }
     update();
 }

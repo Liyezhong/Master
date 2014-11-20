@@ -247,6 +247,8 @@ private:
     SVCLabel* mp_RotaryValveCurrent;    //!< Rotary valve current label
 
     SVCLabel* mp_PressureLabel;         //!< Pressure label
+
+    bool m_IsFristMoveRV;    //!< Flag for move rotary valve position
 };
 
 }//end of namespace

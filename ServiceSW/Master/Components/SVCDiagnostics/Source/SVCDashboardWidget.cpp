@@ -17,7 +17,8 @@ using namespace SVCDiagnostics;
 
 CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     QWidget(p_Parent),
-    mp_Ui(new Ui::CSVCDashboardWidget)
+    mp_Ui(new Ui::CSVCDashboardWidget),
+    m_IsFristMoveRV(true)
 {
     mp_Ui->setupUi(this);
     mp_Ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
@@ -60,7 +61,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_SelectBtn->setText("Select Position");
     mp_SelectBtn->setPos(137,238);
     mp_ValveInfoBtn->setText("Valve State Info");
-    mp_ValveInfoBtn->setPos(380, 420);
+    mp_ValveInfoBtn->setPos(400, 420);
 
     mp_RefreshTimer = new QTimer;
     mp_RefreshTimer->setSingleShot(false);
@@ -356,7 +357,13 @@ void CSVCDashboardWidget::OnSelectPosition()
     int Position = p_SelectDlg->GetBottleNumber();
     delete p_SelectDlg;
 
-    Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
+    qDebug()<<"move to position "<<Position;
+    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
+    if (Ret == -5) {//REFER_RUN_NOT_INITIALIZED
+        Diagnostics::ServiceDeviceProcess::Instance()->RVInitialize();
+        Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
+    }
+    qDebug()<<"move position result :"<<Ret;
 }
 
 void CSVCDashboardWidget::TimerStart(bool IsStart)
@@ -426,21 +433,27 @@ void CSVCDashboardWidget::RefreshLabel()
 void CSVCDashboardWidget::UpdatePartStatus()
 {
     bool StatusIsOn = false;
+    int Ret(0);
     Diagnostics::ServiceDeviceProcess* p_DevProc = Diagnostics::ServiceDeviceProcess::Instance();
 
-    (void)p_DevProc->RetortTempControlIsOn(&StatusIsOn);
+    Ret = p_DevProc->RetortTempControlIsOn(&StatusIsOn);
+    qDebug()<<"retort temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_Retort->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 
-    (void)p_DevProc->OvenTempControlIsOn(&StatusIsOn);
+    Ret = p_DevProc->OvenTempControlIsOn(&StatusIsOn);
+    qDebug()<<"Oven temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_Oven->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 
-    (void)p_DevProc->RVTempControlIsOn(&StatusIsOn);
+    Ret = p_DevProc->RVTempControlIsOn(&StatusIsOn);
+    qDebug()<<"rotary valve temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_RotaryValve->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 
-    (void)p_DevProc->AirTubeTempControlIsOn(&StatusIsOn);
+    Ret = p_DevProc->AirTubeTempControlIsOn(&StatusIsOn);
+    qDebug()<<"air tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_AirHeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 
-    (void)p_DevProc->LiquidTubeTempControlIsOn(&StatusIsOn);
+    Ret = p_DevProc->LiquidTubeTempControlIsOn(&StatusIsOn);
+    qDebug()<<"liquid tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_HeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 }
 
@@ -449,7 +462,7 @@ void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qrea
     mp_OvenTemp1->setText(QString("  Oven1 : %1\260C").arg(OvenTemp1));
     mp_OvenTemp2->setText(QString("  Oven2 : %1\260C").arg(OvenTemp2));
     mp_OvenTemp3->setText(QString("  Oven3 : %1\260C").arg(OvenTemp3));
-    mp_OvenCurrent->setText(QString("  Current : %1A").arg(Current));
+    mp_OvenCurrent->setText(QString("  Current : %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current)
@@ -457,7 +470,7 @@ void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2
     mp_RetortTemp1->setText(QString("  Retort1 : %1\260C").arg(RetortTemp1));
     mp_RetortTemp2->setText(QString("  Retort2 : %1\260C").arg(RetortTemp2));
     mp_RetortTemp3->setText(QString("  Retort3 : %1\260C").arg(RetortTemp3));
-    mp_RetortCurrent->setText(QString("  Current : %1A").arg(Current));
+    mp_RetortCurrent->setText(QString("  Current : %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
@@ -479,19 +492,19 @@ void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1
     mp_RotaryValvePosition->setText(QString("  Position : %1").arg(PositionStr));
     mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
     mp_RotaryValveTemp2->setText(QString("  Temp2 : %1\260C").arg(RVTemp2));
-    mp_RotaryValveCurrent->setText(QString("  Current : %1A").arg(RVCurrent));
+    mp_RotaryValveCurrent->setText(QString("  Current : %1mA").arg(RVCurrent));
 }
 
 void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, qreal Current)
 {
     mp_AirHeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
-    mp_AirHeatingTubeCurrent->setText(QString("  Current : %1A").arg(Current));
+    mp_AirHeatingTubeCurrent->setText(QString("  Current : %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current)
 {
     mp_HeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
-    mp_HeatingTubeCurrent->setText(QString("  Current : %1A").arg(Current));
+    mp_HeatingTubeCurrent->setText(QString("  Current : %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdatePressureLabel(qreal Pressure)

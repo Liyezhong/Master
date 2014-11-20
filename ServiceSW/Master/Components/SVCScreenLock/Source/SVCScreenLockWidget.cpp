@@ -11,7 +11,7 @@ const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]{1,4}$"; //!< Reg expression for
 namespace SVCScreenLock {
 
 CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
-    QWidget(p_Parent),
+    //QWidget(p_Parent),
     ui(new Ui::CSVCScreenLockWidget),
     mp_KeyBoardWidget(NULL),
     m_CurrentTab(0)

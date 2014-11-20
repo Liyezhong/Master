@@ -47,6 +47,7 @@
 #include "Diagnostics/Include/LaSystem/LiquidHeatingTubeTest.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"
+#include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include <QObject>
 #include <QMessageBox>
 #include <QMainWindow>
@@ -493,6 +494,8 @@ private slots:
 
     void MainControlASBTest();
 
+    void ServiceDeviceProcessTest();
+
 
 }; // end class CTestDiagnostics
 
@@ -684,6 +687,14 @@ void CTestDiagnostics::LAAirHeatingTubeTest()
     CDiagnosticMessageDlgMock dlg;
     LaSystem::CAirHeatingTubeTest ut(&dlg);
     QVERIFY(ut.Run() == RETURN_OK);
+}
+
+void CTestDiagnostics::ServiceDeviceProcessTest()
+{
+    Diagnostics::ServiceDeviceProcess* p_Dev = Diagnostics::ServiceDeviceProcess::Instance();
+
+    QVERIFY(p_Dev->OvenStartHeating(20, 30) == RETURN_OK);
+    QVERIFY(p_Dev->OvenStopHeating() == RETURN_OK);
 }
 
 /****************************************************************************/
