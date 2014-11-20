@@ -175,6 +175,34 @@ void TestHimalayaDataManager::utTestHimalayaDataManager()
     Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
 
     CDataManager* pDataManager = new CDataManager(NULL);
+    pDataManager->GetDataContainer();
+    pDataManager->GetProgramList();
+    CDataProgramList* pDataProgramList =  new CDataProgramList();
+    pDataManager->GetProgramList(pDataProgramList);
+    pDataManager->GetProgramSettings();
+    CProgramSettings* pProgramSetting = new CProgramSettings();
+    pDataManager->GetProgramSettings(pProgramSetting);
+
+    pDataManager->GetReagentGroupList();
+    CDataReagentGroupList* pDataReagentGroupList = new CDataReagentGroupList();
+    pDataManager->GetReagentGroupList(pDataReagentGroupList);
+
+    pDataManager->GetReagentGroupColorList();
+    pDataManager->GetStationList();
+    CDashboardDataStationList* pDashboardDataStationList = new CDashboardDataStationList();
+    pDataManager->GetStationList(pDashboardDataStationList);
+
+    pDataManager->GetReagentList();
+    CDataReagentList* pDataReagentList = new CDataReagentList();
+    pDataManager->GetReagentList(pDataReagentList);
+
+    pDataManager->GetSWVersion();
+    pDataManager->GetUserSettingsInterface();
+    pDataManager->GetUserSettings();
+    pDataManager->GetDeviceConfigurationInterface();
+    pDataManager->SaveDataOnShutdown();
+
+
 }
 
 } //end of namespace
