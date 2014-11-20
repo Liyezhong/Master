@@ -67,7 +67,7 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
        }
        else
        {
-           if(m_MaxMeltTime - HeatingTime + 2 * UnHeatingTime + TIME_1_HOUR > m_MaxMeltTime)
+           if((m_MaxMeltTime + 2 * UnHeatingTime + TIME_1_HOUR) > m_MaxMeltTime + HeatingTime)
            {
                m_RemainTime = m_MaxMeltTime;
            }
@@ -310,17 +310,17 @@ quint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin()
 
 void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn)
 {
-    if(IsHeatingOn)
+    if(IsHeatingOn || m_FirstStopHeatingTime == 0) // first time or heating on
     {
         m_FirstStopHeatingTime = Time;
     }
 
-    if(Time - m_FirstStopHeatingTime > 2 * 60 * 1000) // reset to Maxtime if stop oven heating more than 2 minutes.
+    if(Time > m_FirstStopHeatingTime + 2 * 60 * 1000) // reset to Maxtime if stop oven heating more than 2 minutes.
     {
         m_RemainTime = m_MaxMeltTime;
     }
 
-    if(((Time - m_LastTimeUpdateHeatingTime) < 60 * 1000)
+    if((Time < (60 * 1000 + m_LastTimeUpdateHeatingTime))
             && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
     {
         return;
@@ -343,7 +343,7 @@ void CProgramStatusInfor::UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn)
     else if(m_LastHeatingOn && IsHeatingOn) // if the heating status from ON to ON
     {
         Slices.replace(Slices.length() - 1,QDateTime::fromMSecsSinceEpoch(Time).toString(DATE_TIME_FORMAT));
-        if(m_LastTimeUpdateHeatingTime != 0)
+        if(m_LastTimeUpdateHeatingTime != 0 && (Time > m_LastTimeUpdateHeatingTime))
         {
             if(m_RemainTime > (Time - m_LastTimeUpdateHeatingTime))
             {
@@ -397,10 +397,17 @@ bool CProgramStatusInfor::CalculateTime(quint64& HeatingTime, quint64& UnHeating
 //        }
 //        else
          {
-            HeatingTime += (End - Start);
+            if(End > Start)
+            {
+                HeatingTime += (End - Start);
+            }
             if(i > 0)
             {
-                UnHeatingTime += (Start - QDateTime::fromString(Slices.at(2 * i - 1),DATE_TIME_FORMAT).toMSecsSinceEpoch());
+                quint64 lastEnd = QDateTime::fromString(Slices.at(2 * i - 1),DATE_TIME_FORMAT).toMSecsSinceEpoch();
+                if(Start > lastEnd)
+                {
+                    UnHeatingTime += (Start - lastEnd);
+                }
             }
             i++;
         }
@@ -412,7 +419,10 @@ bool CProgramStatusInfor::CalculateTime(quint64& HeatingTime, quint64& UnHeating
     }
     else
     {
-      UnHeatingTime += (QDateTime::currentMSecsSinceEpoch() - End);
+        if(QDateTime::currentMSecsSinceEpoch() > End)
+        {
+            UnHeatingTime += (QDateTime::currentMSecsSinceEpoch() - End);
+        }
     }
     return true;
 }

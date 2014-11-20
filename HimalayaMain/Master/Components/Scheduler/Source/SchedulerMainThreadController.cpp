@@ -268,7 +268,7 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 void SchedulerMainThreadController::OnGoReceived()
 {
     quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
@@ -333,7 +333,7 @@ void SchedulerMainThreadController::OnTickTimer()
     if (CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN == newControllerCmd)
     {
         quint32 ParaffinMeltPoint = 64;
-        if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+        if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
         {
             ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         }
@@ -2461,7 +2461,7 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
     RaiseEvent(EVENT_SCHEDULER_REC_CHANGE_MELTING_POINT,QStringList()<<QString("[%1]").arg(Cmd.GetLastMeltPoint())
                <<QString("[%1]").arg(Cmd.GetCurrentMeltPoint()));
     quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && ! mp_DataManager->GetUserSettings())
+    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
