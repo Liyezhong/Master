@@ -2778,19 +2778,27 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if ("ERROR" != StepID && 0 != Scenario)
     {
         // For voltage related
-        if (strctHWMonitor.Slave3Voltage < (m_SlaveAttrList[0].Voltagerated24VDC - m_SlaveAttrList[0].VoltageTolerance24VDC)*1000)
+        quint16 slave3UpperLimit = (m_SlaveAttrList[0].Voltagerated24VDC + m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
+        quint16 slave3LowerLimit = (m_SlaveAttrList[0].Voltagerated24VDC - m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
+        if (strctHWMonitor.Slave3Voltage < slave3LowerLimit || strctHWMonitor.Slave3Voltage > slave3UpperLimit)
         {
             LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
             RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-        if (strctHWMonitor.Slave5Voltage < (m_SlaveAttrList[1].Voltagerated24VDC - m_SlaveAttrList[1].VoltageTolerance24VDC)*1000)
+
+        quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
+        quint16 slave5LowerLimit =  (m_SlaveAttrList[1].Voltagerated24VDC - m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
+        if (strctHWMonitor.Slave5Voltage < slave5LowerLimit || strctHWMonitor.Slave5Voltage > slave5UpperLimit)
         {
             LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
             RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,Scenario,true);
             m_SchedulerMachine->SendErrorSignal();
         }
-        if (strctHWMonitor.Slave15Voltage < (m_SlaveAttrList[2].Voltagerated24VDC - m_SlaveAttrList[2].VoltageTolerance24VDC)*1000)
+
+        quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
+        quint16 slave15LowerLimit = (m_SlaveAttrList[2].Voltagerated24VDC - m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
+        if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
         {
             LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
             RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
