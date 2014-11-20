@@ -375,6 +375,7 @@ private:
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
     bool                                m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
+    bool                                m_DiasbleOvenHeatingError;      //!< disable heating strategy error
     qint64                              m_OvenStartHeatingTime;         //!< the value of oven starting heating time
 
     /****************************************************************************/

@@ -137,7 +137,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_PssmStepFinSeq = 0;
 
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
-    m_DiasbleHeatingError = Global::Workaroundchecking("OVEN_HEATING");
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -313,8 +312,9 @@ void SchedulerMainThreadController::OnTickTimer()
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
         m_TickTimer.stop();
-        m_SchedulerCommandProcessor->ShutDownDevice();
         m_ProgramStatusInfor.SetErrorFlag(0);
+        m_ProgramStatusInfor.SetProgramFinished();
+        m_SchedulerCommandProcessor->ShutDownDevice();
         //DequeueNonDeviceCommand();
         return;
     }
@@ -2744,14 +2744,11 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
-        if(false == m_DiasbleHeatingError)
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-            {
-                LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-                RaiseError(0, retCode, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
-            }
+            LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
+            RaiseError(0, retCode, Scenario, true);
+            m_SchedulerMachine->SendErrorSignal();
         }
     }
 

@@ -53,6 +53,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     m_CmdResult = true;
     m_IsOvenHeatingStarted = false;
     m_OvenStartHeatingTime = 0;
+    m_DiasbleOvenHeatingError = Global::Workaroundchecking("OVEN_HEATING");
     if (!this->ConstructHeatingSensorList())
     {
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED);
@@ -1709,6 +1710,10 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
 DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor& heatingSensor, qreal HWTemp, OVENSensorType_t OvenType)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    if(m_DiasbleOvenHeatingError)
+    {
+        return retCode;
+    }
     if(!isEffectiveTemp(HWTemp))
     {
         return retCode;
