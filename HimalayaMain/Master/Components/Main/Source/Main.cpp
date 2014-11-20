@@ -67,6 +67,7 @@ int main(int argc, char *argv[]) {
     Global::SystemPaths::Instance().SetSoundPath("../Sounds");
     Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
     Global::SystemPaths::Instance().SetScriptsPath("../Scripts");
+    Global::SystemPaths::Instance().SetFontsPath("../Fonts");
 
     Threads::SingletonThreadObject SingletonObjThread;
 
