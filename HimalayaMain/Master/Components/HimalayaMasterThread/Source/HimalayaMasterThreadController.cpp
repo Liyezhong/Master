@@ -90,6 +90,7 @@
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Commands/Include/CmdRmtLocAlarm.h"
 #include "EventHandler/Include/HimalayaEventHandlerThreadController.h"
+#include <DataManager/CommandInterface/Include/UserSettingsCommandInterface.h>
 
 //lint -e578
 
@@ -181,6 +182,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     mp_DataManagerBase = mp_DataManager;
 
     mp_SWUpdateManager = new SWUpdate::SWUpdateManager(*this);
+    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, UserSettingsChanged(const bool), this , OnLanguageChanged(const bool));
     CONNECTSIGNALSLOT(mp_SWUpdateManager, RollBackComplete(), this, SWUpdateRollbackComplete());
     CONNECTSIGNALSLOT(mp_SWUpdateManager, WaitDialog(bool, Global::WaitDialogText_t),
                       this, ShowWaitDialog(bool,Global::WaitDialogText_t));
@@ -1338,6 +1340,47 @@ void HimalayaMasterThreadController::ShowWaitDialog(bool Display, Global::WaitDi
 void HimalayaMasterThreadController::SendRCCmdToGuiChannel(const Global::CommandShPtr_t &Cmd)
 {
     (void)SendCommand(Cmd, m_CommandChannelGui);
+}
+
+void HimalayaMasterThreadController::OnLanguageChanged(const bool LanguangeChanged)
+{
+    if (!LanguangeChanged || (0 == mp_DataManager))
+    {
+        return;
+    }
+
+    if (mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false) != NULL) {
+        // get the current language
+        QLocale::Language CurrentLanguage =
+                mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false)->GetLanguage();
+
+        // store the langauge name de_DE
+        QString LanguageName(QLocale(CurrentLanguage).name());
+        // remove the DE
+        LanguageName.truncate(LanguageName.lastIndexOf('_'));
+        qDebug() << "Language Name ############################" << LanguageName << "#########################";
+
+        QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
+        this->SendLanguageFileToGUI(LanguageFileName);
+        DataManager::CDataProgramList* pProgramList = mp_DataManager->GetProgramList();
+        if(pProgramList)
+        {
+            pProgramList->UpdateOnLanguageChanged();
+            this->SendConfigurationFile(pProgramList, NetCommands::PROGRAM);
+        }
+
+        if(mp_DataManager->GetReagentGroupList())
+        {
+            mp_DataManager->GetReagentGroupList()->UpdateOnLanguageChanged();
+            this->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
+        }
+
+        if(mp_DataManager->GetReagentList())
+        {
+            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
+            this->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
+        }
+    }
 }
 
 } // end namespace Himalaya
