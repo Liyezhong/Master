@@ -125,6 +125,7 @@ private slots:
      */
     /****************************************************************************/
     void utTestHimalayaDataManager();
+
 }; // end class TestHimalayaDataManager
 
 /****************************************************************************/
@@ -201,9 +202,15 @@ void TestHimalayaDataManager::utTestHimalayaDataManager()
     pDataManager->GetUserSettings();
     pDataManager->GetDeviceConfigurationInterface();
     pDataManager->SaveDataOnShutdown();
+    delete pDataManager;
 
+    CDataContainer* pDataContainer = new CDataContainer(NULL);
+    pDataContainer->InitializeContainers();
+    pDataContainer->GetReagentName("L1");
+    delete pDataContainer;
 
 }
+
 
 } //end of namespace
 
