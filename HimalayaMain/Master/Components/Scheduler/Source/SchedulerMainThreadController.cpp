@@ -135,6 +135,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
+    m_AbortingSeq = 0;
 
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
 }
@@ -1228,12 +1229,28 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-             m_CurrentStepState = PSSM_ABORTING;
-             m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
+            if(0 == m_AbortingSeq)
+            {
+                m_CurrentStepState = PSSM_ABORTING;
+                if(m_ProgramStatusInfor.IsRetortContaminted())
+                {
+                    if("RG6" == m_ProgramStatusInfor.GetLastReagentGroup())
+                    {
+                        m_CurProgramStepInfo.nextStationID = "S12";
+                    }
+                    else
+                    {
+                        m_CurProgramStepInfo.nextStationID = "S13";
+                    }
+                }
+
+            }
+            m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
         }
         else if(PSSM_ABORTED == stepState)
         {
-             m_CurrentStepState = PSSM_ABORTED;
+            m_AbortingSeq = 0;
+            m_CurrentStepState = PSSM_ABORTED;
             //program finished
             AllStop();
 

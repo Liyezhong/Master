@@ -263,6 +263,7 @@ typedef struct
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
+        qint8   m_AbortingSeq;                                ///< the sequence of aborting
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
