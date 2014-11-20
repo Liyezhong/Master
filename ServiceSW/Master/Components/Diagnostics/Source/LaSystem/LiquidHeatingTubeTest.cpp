@@ -80,9 +80,18 @@ int CLiquidHeatingTubeTest::Run(void)
        text = tr("Test has to be aborted. Please inform the "
                  "user that the Instrument is operated out of the "
                  "operating temperature range of  %1\260C-%2\260C.").arg(roomTempMin).arg(roomTempMax);
-       dlg->ShowMessage(title, text, RETURN_OK);
+       dlg->ShowMessage(title, text, RETURN_ABORT);
        return RETURN_OK;
     }
+
+    text = tr("Please look into the retort to identify if it is empty. If yes, click"
+               "OK to continue. If no, look at the reagent bottles to identify from which bottle the "
+               "reagent came from. Then abort this test and change to the "
+               "\"Diagnostic_Retort_Drain Reagent\" function to drain the Air back to"
+               "the original position. Thereafter flush the retort if necessary.");
+    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+    if (ret == CDiagnosticMessageDlg::ABORT)
+        return RETURN_OK;
 
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
@@ -112,6 +121,7 @@ int CLiquidHeatingTubeTest::Run(void)
             goto __fail__;
     }
 
+
     timingDialog->SetTitle(title);
 
     heatingStatus.UsedTime = 0;
@@ -123,30 +133,37 @@ int CLiquidHeatingTubeTest::Run(void)
 
     count = liquidMaintainTime;
     isAbove = false;
+    ret = RETURN_ERR_FAIL;
+
     for (i = 0; i < (liquidRepeatTime + liquidMaintainTime) && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
 
-        if ((ret = dev->LiquidTubeGetTemp(&currentTemp)) != RETURN_OK)
-            break;
-        if (currentTemp >= liquidTempAbove && currentTemp <= tempMaintainRangeMax)
-            isAbove = true;
-        else if (currentTemp > tempMaintainRangeMax)
-            isAbove = false;
-
-        if (isAbove && !count)
-            break;
-        if (i >= liquidRepeatTime && !isAbove) {
-            ret = RETURN_ERR_FAIL;
+        if (dev->LiquidTubeGetTemp(&currentTemp) != RETURN_OK) {
             break;
         }
-        if (isAbove && currentTemp >= tempMaintainRangeMin && currentTemp <= tempMaintainRangeMax) {
-            if (count > 0)
+
+        if (currentTemp >= tempMaintainRangeMin && currentTemp <= tempMaintainRangeMax) {
+            if (isAbove) {
                 count--;
-        } else {
-            if (count != liquidMaintainTime) {
-                count = liquidMaintainTime;
+                if (count <= 0) {
+                    ret = RETURN_OK;
+                    break;
+                }
+            }
+            if (currentTemp >= liquidTempAbove) {
+                isAbove = true;
+            }
+        }
+        else {
+            if (isAbove) {
                 isAbove = false;
             }
+            if (count != liquidMaintainTime) {
+                count = liquidMaintainTime;
+            }
+        }
+        if (i >= liquidRepeatTime && count == liquidMaintainTime) {
+            break;
         }
 
         heatingStatus.UsedTime++;
@@ -167,7 +184,7 @@ int CLiquidHeatingTubeTest::Run(void)
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
     else
-        text = tr("Liquid Heating Tube Test is successful.");
+        text = tr("Liquid Heating Tube Test successful.");
 
 //__ok__:
 __fail__:

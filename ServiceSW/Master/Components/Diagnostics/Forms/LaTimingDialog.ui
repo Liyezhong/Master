@@ -153,7 +153,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Please waiting ...</string>
+    <string>Please wait ...</string>
    </property>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">

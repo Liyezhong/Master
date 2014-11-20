@@ -47,7 +47,7 @@ void CDiagnosticMessageDlg::ShowMessage(QString& MessageTitle, QString& MessageT
 {
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
     dlg->SetTitle(MessageTitle);
-    if (Ret == RETURN_OK) {
+    if (Ret == RETURN_OK || Ret == RETURN_ABORT) {
         dlg->SetIcon(QMessageBox::Information);
     }
     else {
@@ -55,7 +55,12 @@ void CDiagnosticMessageDlg::ShowMessage(QString& MessageTitle, QString& MessageT
     }
     dlg->SetText(MessageText);
     dlg->HideButtons();
-    dlg->SetButtonText(1, "OK");
+    if (Ret == RETURN_ABORT) {
+        dlg->SetButtonText(1, "Abort");
+    }
+    else {
+        dlg->SetButtonText(1, "OK");
+    }
     dlg->setModal(true);
     qDebug()<<MessageText;
 
