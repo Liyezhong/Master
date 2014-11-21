@@ -321,66 +321,31 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
             }
             break;
         case CHECK_VOLTAGE_RANGE_AGAIN:
-            if(1 == m_ASB5SwitchType)
+            if(0 == m_StartReq)
             {
-                //Serial for 220V
-                if(0 == m_StartReq)
-                {
-                    CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
-                    cmd->SetHeaterVoltage(HEATER_220V);
-                    cmd->SetAutoType(AUTO_SWITCH_ENABLE);
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                    m_StartReq++;
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5);
-                }
-                else
-                {
-                    if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
-                    {
-                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
-                            emit SigDCHeating();
-                        }
-                        else
-                        {
-                            mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                            SendSignalSelfTestDone(false);
-                        }
-                        m_StartReq = 0;
-                        m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
-                    }
-                }
+                CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
+                cmd->SetAutoType(AUTO_SWITCH_DISABLE);
+                cmd->SetHeaterVoltage(m_ASB5SwitchType);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                m_StartReq++;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5);
             }
             else
             {
-                //Parallel for 110V
-                if(0 == m_StartReq)
+                if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
                 {
-                    CmdRVSetTemperatureSwitchState* cmd = new CmdRVSetTemperatureSwitchState(500, mp_SchedulerThreadController);
-                    cmd->SetHeaterVoltage(HEATER_110V);
-                    cmd->SetAutoType(AUTO_SWITCH_ENABLE);
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                    m_StartReq++;
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5);
-                }
-                else
-                {
-                    if("Scheduler::RVSetTemperatureSwitchState" == cmdName)
+                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
-                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
-                            emit SigDCHeating();
-                        }
-                        else
-                        {
-                            mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                            SendSignalSelfTestDone(false);
-                        }
-                        m_StartReq = 0;
-                        m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
+                        emit SigDCHeating();
                     }
+                    else
+                    {
+                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
+                        SendSignalSelfTestDone(false);
+                    }
+                    m_StartReq = 0;
+                    m_StateACVoltageStep = SET_VOLTAGE_ASB3_AWITCH;
                 }
             }
             break;

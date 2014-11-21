@@ -4070,10 +4070,13 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
 
 bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenario,qreal HWTemp)
 {
-    if (200 == Scenario || 205 == Scenario || (Scenario >=211 && Scenario <=217)
-            || (Scenario >= 252 && Scenario <= 257) || 260 == Scenario || (Scenario >= 217 && Scenario <=277)
-            || (Scenario >= 222 && Scenario <= 227) || (Scenario >= 231 && Scenario <=237)
-            || (Scenario >= 241 && Scenario <=247) || 251 == Scenario || 002 == Scenario
+    if (002 == Scenario || 200 == Scenario || 203 == Scenario
+            || (Scenario != 214 && Scenario >=211 && Scenario <=217)
+            || (Scenario != 224 && Scenario >= 222 && Scenario <= 227)
+            || (Scenario != 234 && Scenario >= 232 && Scenario <= 237)
+            || (Scenario != 244 && Scenario >= 241 && Scenario <= 247)
+            || (Scenario != 254 && Scenario >= 251 && Scenario <= 257)
+            || (Scenario != 274 && Scenario >= 271 && Scenario <=277)
             || (Scenario >= 281 && Scenario <= 297) )
     {
         //if (qFuzzyCompare((qAbs(HWTemp-299+1)), 0.0+1))
