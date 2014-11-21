@@ -688,7 +688,15 @@ private slots:
           */
          /****************************************************************************/
          void OnPreTestDone();
-
+         /****************************************************************************/
+         /*!
+          *  \brief  Slot to exit init State
+          *
+          *  \param  void
+          *
+          *  \return void
+          */
+         void OnExitedInitState();
          /****************************************************************************/
          /*!
           *  \brief  Slot for reporting error from DeviceControl
@@ -991,6 +999,13 @@ protected:
         /****************************************************************************/
         quint64 GetOvenHeatingRemainingTime();
 
+        /****************************************************************************/
+        /**
+         *  \brief Init program status
+         *  \return from GetOvenHeatingRemainingTime of quint64
+         */
+        /****************************************************************************/
+        quint64 InitProgramStatus();
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) for melting paraffin

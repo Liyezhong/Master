@@ -38,6 +38,7 @@ CProgramStatusInfor::CProgramStatusInfor()
     m_MaxMeltTime = TIME_15_HOURS;
     m_RemainTime = m_MaxMeltTime;
     m_FirstStopHeatingTime = 0;
+    m_IsInit = false;
 }
 
 CProgramStatusInfor::~CProgramStatusInfor()
@@ -49,9 +50,14 @@ CProgramStatusInfor::~CProgramStatusInfor()
 
 bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
 {
+    if(m_IsInit)
+    {
+        return true;
+    }
    quint64 HeatingTime = 0;
    quint64 UnHeatingTime = 0;
    bool ret = true;
+   m_IsInit = true;
    m_MaxMeltTime = TIME_15_HOURS;
    if(ParaffinMeltPoint <= 64)
    {

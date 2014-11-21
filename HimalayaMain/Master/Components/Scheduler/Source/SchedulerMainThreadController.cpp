@@ -268,15 +268,6 @@ void SchedulerMainThreadController::CleanupAndDestroyObjects()
 
 void SchedulerMainThreadController::OnGoReceived()
 {
-    quint32 ParaffinMeltPoint = 64;
-    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
-    {
-        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    }
-    if(!m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint))
-    {
-        //Raise event
-    }
 }
 
 void SchedulerMainThreadController::OnStopReceived()
@@ -3982,6 +3973,19 @@ quint64 SchedulerMainThreadController::GetOvenHeatingRemainingTime()
     return m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin();
 }
 
+void SchedulerMainThreadController::InitProgramStatus()
+{
+    quint32 ParaffinMeltPoint = 64;
+    if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
+    {
+        ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    }
+    if(!m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint))
+    {
+        RaiseEvent(EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL);
+    }
+}
+
 qint64 SchedulerMainThreadController::GetPreTestTime()
 {
     quint32 BottleCount = m_ProgramStationList.size();
@@ -4327,4 +4331,8 @@ void SchedulerMainThreadController::SendPowerFailureMsg()
     SendCommand(fRef, Global::CommandShPtr_t(CmdPowerFailureMsg));
 }
 
+void SchedulerMainThreadController::OnExitedInitState()
+{
+    InitProgramStatus();
+}
 }

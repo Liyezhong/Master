@@ -1218,6 +1218,9 @@
 	    <Event Code="" ErrorID="67175185" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_ERROR_STATE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175185" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="67175186" ErrorType="WARNING" AlarmType="No" Name="EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175186" ButtonType="OK" StatusBar=""/>
+	    </Event>
 	    <Event Code="" ErrorID="67175200" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_START_PROGRAM" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175200" ButtonType="" StatusBar=""/>
 	    </Event>

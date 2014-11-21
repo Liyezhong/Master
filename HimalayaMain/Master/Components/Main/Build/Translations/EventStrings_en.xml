@@ -660,6 +660,7 @@
    		<string id="67175174" text1="Power failure back to RC_restart." text2="" />
    		<string id="67175184" text1="Scheduler enters the idle state." text2="" />
    		<string id="67175185" text1="Scheduler enters the error state." text2="" />
+   		<string id="67175186" text1="Not found unfinished program,  please confirm." text2="" />
    		<string id="67175200" text1="start the program %1" text2="" />
    		<string id="67175201" text1="Set the rotary valve position to %1." text2="" />
    		<string id="67175202" text1="Still need to heat oven for %1 for melting paraffin." text2="" />

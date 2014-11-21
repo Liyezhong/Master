@@ -236,6 +236,7 @@ private:
     quint64 m_MaxMeltTime;                      //!< max time for melting paraffin
     quint64 m_RemainTime;                       //!< remain time for emlting paraffin
     quint64 m_FirstStopHeatingTime;             //!< the first time for stop oven heating of on stop period
+    bool m_IsInit;                              //!< True - m_StatusFile has been read and clear, or not
 };
 } //end of scheduler name space
 #endif // PROGRAMSTATUSINFOR_H
