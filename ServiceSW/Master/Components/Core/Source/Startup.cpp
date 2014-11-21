@@ -56,12 +56,12 @@ CStartup::CStartup() : QObject(),
     mp_USBKeyValidator(NULL),
     mp_LogContentDlg(NULL),
     mp_SystemLogContentDlg(NULL),
+    mp_SVCSceenLockWidget(NULL),
     m_CurrentUserMode(""),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL),
-    mp_SVCSceenLockWidget(NULL)
+    mp_SealingStatusDlg(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -570,7 +570,6 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
         Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
         CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
-        CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_SVCSceenLockWidget, OnCurrentTabChanged(int));
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {
@@ -1749,9 +1748,11 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
         if (TabIndex == 3) {
             mp_SVCDashboardWidget->TimerStart(true);
             mp_SVCDashboardWidget->UpdatePartStatus();
+            mp_SVCSceenLockWidget->SetLockStatus(true);
         }
         else {
             mp_SVCDashboardWidget->TimerStart(false);
+            mp_SVCSceenLockWidget->SetLockStatus(false);
         }
     }
 }

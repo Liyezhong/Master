@@ -107,8 +107,8 @@ int CLiquidHoseTest::ShowConfirmDlg(int StepNum)
     case 1:
         Text = "Be aware that the result of this test is only valid if the System_System Sealing Test "
                 "was successfully performed before!<br>"
-                "Please confirm the retort is empty and dry.(If not, use the 'Diagnostic_Retort_Drain "
-                "Reagent' function first). Please check sealing surfaces on retort and lid. Close retort lid "
+                "Please confirm the retort is empty and dry.(If not, use the \"Diagnostic_Retort_Drain "
+                "Reagent\" function first). Please check sealing surfaces on retort and lid. Close retort lid "
                 "and rotate lock to closed position.<br>"
                 "Please ensure the liquid levels in all bottles and paraffin baths are between the min/max mark.";
         break;

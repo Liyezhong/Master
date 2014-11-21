@@ -58,6 +58,10 @@ public:
     /****************************************************************************/
     ~CSVCScreenLockWidget();
 
+    void SetLockStatus(bool Status) {
+        m_LockStatus = Status;
+    }
+
 private:
     /****************************************************************************/
     /*!
@@ -77,7 +81,7 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;               //!< Information dialog
     QString m_EnteredPin;               //!< Service Pin
     QTimer* m_timer;       ///<  Definition/Declaration of variable m_timer
-    int m_CurrentTab;
+    bool m_LockStatus;      //!< flag of lock status
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;             //!< KeyBoard widget
 private slots:
     /****************************************************************************/
@@ -122,13 +126,6 @@ public slots:
      */
     /****************************************************************************/
     void OnInteractStart();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Slot for when current tab changed
-     */
-    /****************************************************************************/
-    void OnCurrentTabChanged(int Index);
 };
 
 } //end of namespce SVCScreenLock

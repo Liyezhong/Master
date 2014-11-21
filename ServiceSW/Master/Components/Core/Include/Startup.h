@@ -178,7 +178,7 @@ private:
     Diagnostics::CMainControl               *mp_MainControl;                //!< Main Control tests
 
     //SVC Diagnostics
-    SVCDiagnostics::CSVCDashboardWidget      *mp_SVCDashboardWidget;
+    SVCDiagnostics::CSVCDashboardWidget     *mp_SVCDashboardWidget;
 
     //SVC Screen lock
     SVCScreenLock::CSVCScreenLockWidget     *mp_SVCSceenLockWidget;

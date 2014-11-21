@@ -697,6 +697,14 @@ private:
     WrapperFmBaseModule*        mp_BaseModule5;         //!< Wrapper of asb5 module
     WrapperFmBaseModule*        mp_BaseModule15;        //!< Wrapper of asb15 module
 
+    bool m_OvenTempControlIsOn;                         //!< Flag of oven temperature control state
+    bool m_RetortTempControlIsOn;                       //!< Flag of retort temperature control state
+    bool m_RVTempControlIsOn;                           //!< Flag of rotary valve temperature control state
+    bool m_ATubeTempControlIsOn;                        //!< Flag of air tube temperature control state
+    bool m_LTubeTempControlIsOn;                        //!< Flag of liquid tube temperature control state
+    bool m_LSTempControlIsOn;                           //!< Flag of level sensor temperature control state
+    quint8 m_RVCurrentPosition;                         //!< store rotary valve current position
+
 signals:
     /****************************************************************************/
     /**

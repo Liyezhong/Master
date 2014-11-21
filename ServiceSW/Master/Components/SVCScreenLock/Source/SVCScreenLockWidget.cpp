@@ -14,7 +14,7 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     //QWidget(p_Parent),
     ui(new Ui::CSVCScreenLockWidget),
     mp_KeyBoardWidget(NULL),
-    m_CurrentTab(0)
+    m_LockStatus(false)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -51,7 +51,7 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
         return;
     }
 
-    if (m_CurrentTab == 3) { //SVCDiagnosics tab
+    if (m_LockStatus) {
         //this->setStyleSheet("QWidget { background-image: url(:/Images/ScreenLock1.png) }");
         this->setStyleSheet(this->property("defaultStyleSheet").toString() +
                       "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock1.png) }");
@@ -66,7 +66,7 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
 
 void CSVCScreenLockWidget::OnInteractStart()
 {
-    if (m_CurrentTab == 3) { //SVCDiagnosics tab
+    if (m_LockStatus) {
         return;
     }
 
@@ -77,11 +77,6 @@ void CSVCScreenLockWidget::OnInteractStart()
         this->hide();
         DisplayKeyBoard();
     }
-}
-
-void CSVCScreenLockWidget::OnCurrentTabChanged(int Index)
-{
-    m_CurrentTab = Index;
 }
 
 void CSVCScreenLockWidget::ConnectKeyBoardSignalSlots()

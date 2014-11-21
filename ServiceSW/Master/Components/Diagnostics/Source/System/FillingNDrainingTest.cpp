@@ -169,7 +169,7 @@ int CFillingNDrainingTest::ShowConfirmDlg(int StepNum)
         Text = "Be aware that the result of this test is only valid if the Retort_Level Sensor "\
                 "Detection test was successfully performed before! "\
                 "Please verify status of the retort. If there is any reagent or paraffin in the retort, "\
-                "abort this test and change to the 'Diagnostic_Retort_Reagent Drain' function to drain the "\
+                "abort this test and change to the \"Diagnostic_Retort_Reagent Drain\" function to drain the "\
                 "liquid back to the original position. Thereafter flush the retort if necessary.";
     }
     else if (StepNum == 2) {

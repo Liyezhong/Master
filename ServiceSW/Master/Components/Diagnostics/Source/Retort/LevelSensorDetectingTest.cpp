@@ -207,7 +207,7 @@ int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
         break;
     case 2:
         Text = "Make sure the retort is empty and dry. (If not, use "
-                "the 'Diagnostic_Retort_Drain Reagent' function first). "
+                "the \"Diagnostic_Retort_Drain Reagent\" function first). "
                 "Then close the lid and rotate the handle to the closed position.";
         break;
     case 3:

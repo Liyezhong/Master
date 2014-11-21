@@ -9,6 +9,7 @@
 #include "SVCDiagnostics/Include/SVCTargetTempSelectionDlg.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+#include "Diagnostics/Include/DiagnosticMessageDlg.h"
 
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 
@@ -32,6 +33,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_Scene->setBackgroundBrush(QImage(":/Images/SVCDiagnosticsBackground.png"));
     mp_Ui->graphicsView->setScene(mp_Scene);
 
+    mp_MsgDlg = new Diagnostics::CDiagnosticMessageDlg(this);
     InitLabel();
 
     mp_Retort = CreatePart("Retort", QPoint(406, 30));
@@ -84,6 +86,7 @@ CSVCDashboardWidget::~CSVCDashboardWidget()
         delete mp_RefreshTimer;
         delete mp_Ui;
         delete mp_Scene;
+        delete mp_MsgDlg;
         delete mp_SelectBtn;
         delete mp_ValveInfoBtn;
         delete mp_HeatingTubeTemp;
@@ -343,7 +346,16 @@ void CSVCDashboardWidget::PressureSelected()
 
 void CSVCDashboardWidget::OnSelectPosition()
 {
-    QString Text = "Please select an option and press OK to continue.";
+    QString Title = tr("Select Position");
+    QString Text;
+    qint32 CurrentPosition(0);
+    (void)Diagnostics::ServiceDeviceProcess::Instance()->RVGetPosition(&CurrentPosition);
+    if (CurrentPosition == 0) {
+        Text = "Can't get current position, please go to \"Diagnostics_RotaryValve\" and \"Movement Test\"";
+        mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
+        return;
+    }
+    Text = "Please select an option and press OK to continue.";
     Diagnostics::CSelectBottleNReagentDialog* p_SelectDlg = new Diagnostics::CSelectBottleNReagentDialog(16, this);
     p_SelectDlg->SetRadioButtonVisible(false);
     //p_SelectDlg->SetTitle(QString("Select Position"));
@@ -357,12 +369,11 @@ void CSVCDashboardWidget::OnSelectPosition()
     int Position = p_SelectDlg->GetBottleNumber();
     delete p_SelectDlg;
 
-    qDebug()<<"move to position "<<Position;
+    Text = QString("Rotating Rotary Valve to position %1").arg(Position);
+    mp_MsgDlg->ShowWaitingDialog(Title, Text);
     int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
-    if (Ret == -5) {//REFER_RUN_NOT_INITIALIZED
-        Diagnostics::ServiceDeviceProcess::Instance()->RVInitialize();
-        Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
-    }
+    mp_MsgDlg->HideWaitingDialog();
+
     qDebug()<<"move position result :"<<Ret;
 }
 
@@ -475,24 +486,36 @@ void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2
 
 void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
 {
-    QString PositionStr;
-    if (RVPosition == 14) {
-        PositionStr = "P1";
-    }
-    else if (RVPosition == 15) {
-        PositionStr = "P2";
-    }
-    else if (RVPosition == 16) {
-        PositionStr = "P3";
-    }
-    else {
-        PositionStr = QString::number(RVPosition);
-    }
+    QString PositionStr = PostionToStr(RVPosition);
 
     mp_RotaryValvePosition->setText(QString("  Position : %1").arg(PositionStr));
     mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
     mp_RotaryValveTemp2->setText(QString("  Temp2 : %1\260C").arg(RVTemp2));
     mp_RotaryValveCurrent->setText(QString("  Current : %1mA").arg(RVCurrent));
+}
+
+QString CSVCDashboardWidget::PostionToStr(qreal Position)
+{
+    QString PositionStr;
+    if (Position == 0) {
+        PositionStr = "Unknow";
+    }
+    else if (Position == 27) {
+        PositionStr = "P1";
+    }
+    else if (Position == 29) {
+        PositionStr = "P2";
+    }
+    else if (Position == 31) {
+        PositionStr = "P3";
+    }
+    else if ((int)Position & 1) {
+        PositionStr = QString("%1").arg((Position+1)/2);
+    }
+    else {
+        PositionStr = QString("X%1").arg(Position/2);
+    }
+    return PositionStr;
 }
 
 void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, qreal Current)

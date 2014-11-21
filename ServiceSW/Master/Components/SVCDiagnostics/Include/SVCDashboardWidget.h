@@ -10,6 +10,10 @@ class CGraphicsItemPart;
 class SVCButton;
 class SVCLabel;
 
+namespace Diagnostics {
+    class CDiagnosticMessageDlg;
+}
+
 namespace SVCDiagnostics {
 
 namespace Ui {
@@ -174,6 +178,9 @@ public slots:
     /****************************************************************************/
     void TimerStart(bool IsStart);
 private:
+
+    QString PostionToStr(qreal Position);
+
     /****************************************************************************/
     /*!
      *  \brief Create all label
@@ -203,6 +210,7 @@ private:
     QTimer*  mp_RefreshTimer;         //!< Refresh label status timer
     Ui::CSVCDashboardWidget *mp_Ui;   //!< User interface
     QGraphicsScene *mp_Scene;         //!< The graphics scene
+    Diagnostics::CDiagnosticMessageDlg* mp_MsgDlg; //!< Show message dialog
     CGraphicsItemPart* mp_Retort;     //!< retort item part
     CGraphicsItemPart* mp_Oven;       //!< oven item part
     CGraphicsItemPart* mp_RotaryValve;  //!< rotary valve item part

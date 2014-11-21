@@ -147,7 +147,7 @@ void CInitialSystemCheck::RetortPreHeating()
             "Please visually observe the paraffin melting status in retort. As soon "
             "the sides of paraffin block are molten, remove the block manually and "
             "ensure that existing specimen are provided to the customer. Then "
-            "change to the 'Diagnostic_Retort_Reagent Drain' function and drain "
+            "change to the \"Diagnostic_Retort_Reagent Drain\" function and drain "
             "remaining paraffin back to original paraffin bath. Thereafter flush the retort";
 
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);

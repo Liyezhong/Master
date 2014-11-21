@@ -68,7 +68,14 @@ void ServiceTestHandler::Destroy()
 /****************************************************************************/
 ServiceTestHandler::ServiceTestHandler(DeviceControl::IDeviceProcessing &iDevProc)
     : m_rIdevProc(iDevProc),
-      m_IsConfigured(false)
+      m_IsConfigured(false),
+      m_OvenTempControlIsOn(false),
+      m_RetortTempControlIsOn(false),
+      m_RVTempControlIsOn(false),
+      m_ATubeTempControlIsOn(false),
+      m_LTubeTempControlIsOn(false),
+      m_LSTempControlIsOn(false),
+      m_RVCurrentPosition(0)
 {
     mp_Utils = NULL;
 
@@ -403,6 +410,7 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
     }
 
     if (Ret) {
+        m_OvenTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -428,6 +436,7 @@ void ServiceTestHandler::OvenStopHeating(QString& ReqName, QStringList& Params)
     Ret |= mp_TempOvenTop->StopTemperatureControl();
 
     if (Ret) {
+        m_OvenTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -522,14 +531,14 @@ void ServiceTestHandler::OvenTempControlIsOn(QString &ReqName, QStringList &Para
     QStringList Results;
     Results.clear();
 
-    if (mp_TempOvenTop == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempOvenTop == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempOvenTop->IsTemperatureControlOn();
+//    bool isOn = mp_TempOvenTop->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_OvenTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -555,6 +564,7 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
     Ret |= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
 
     if (Ret) {
+        m_RetortTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -578,6 +588,7 @@ void ServiceTestHandler::RetortStopHeating(QString& ReqName, QStringList& Params
     Ret = mp_TempRetortBottom->StopTemperatureControl();
     Ret |= mp_TempRetortSide->StopTemperatureControl();
     if (Ret) {
+        m_RetortTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -698,14 +709,14 @@ void ServiceTestHandler::RetortTempControlIsOn(QString &ReqName, QStringList &Pa
     QStringList Results;
     Results.clear();
 
-    if (mp_TempRetortSide == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempRetortSide == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempRetortSide->IsTemperatureControlOn();
+//    bool isOn = mp_TempRetortSide->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_RetortTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -726,6 +737,7 @@ void ServiceTestHandler::LiquidTubeStartHeating(QString& ReqName, QStringList& P
     Ret = mp_TempTubeLiquid->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
+        m_LTubeTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -748,6 +760,7 @@ void ServiceTestHandler::LiquidTubeStopHeating(QString& ReqName, QStringList& Pa
 
     Ret = mp_TempTubeLiquid->StopTemperatureControl();
     if (Ret) {
+        m_LTubeTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -797,14 +810,14 @@ void ServiceTestHandler::LiquidTubeTempControlIsOn(QString &ReqName, QStringList
     QStringList Results;
     Results.clear();
 
-    if (mp_TempTubeLiquid == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempTubeLiquid == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempTubeLiquid->IsTemperatureControlOn();
+//    bool isOn = mp_TempTubeLiquid->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_LTubeTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -826,6 +839,7 @@ void ServiceTestHandler::AirTubeStartHeating(QString& ReqName, QStringList& Para
     Ret = mp_TempTubeAir->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
+        m_ATubeTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -847,6 +861,7 @@ void ServiceTestHandler::AirTubeStopHeating(QString& ReqName, QStringList& Param
 
     Ret = mp_TempTubeAir->StopTemperatureControl();
     if (Ret) {
+        m_ATubeTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -897,14 +912,14 @@ void ServiceTestHandler::AirTubeTempControlIsOn(QString &ReqName, QStringList &P
     QStringList Results;
     Results.clear();
 
-    if (mp_TempTubeAir == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempTubeAir == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempTubeAir->IsTemperatureControlOn();
+//    bool isOn = mp_TempTubeAir->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_ATubeTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -926,6 +941,7 @@ void ServiceTestHandler::RVStartHeating(QString& ReqName, QStringList& Params)
     qDebug()<<"RVStartHeating : target="<<TargetTemp<<"   Ret="<<Ret;
 
     if (Ret) {
+        m_RVTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -949,6 +965,7 @@ void ServiceTestHandler::RVStopHeating(QString& ReqName, QStringList& Params)
     Ret = mp_TempRV->StopTemperatureControl();
 
     if (Ret) {
+        m_RVTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -1008,16 +1025,25 @@ void ServiceTestHandler::RVInitialize(QString& ReqName, QStringList& Params)
         return ;
     }
 
+    quint8 TempPosition(0);
     if (Params.size()>0) {
         bool TubeFlag = Params.at(0).toInt();
         quint32 Position = Params.at(1).toInt();
+        if (TubeFlag) {
+            TempPosition = Position*2 - 1;
+        }
+        else {
+            TempPosition = Position*2;
+        }
         Ret = mp_MotorRV->MoveToInitialPosition(TubeFlag, Position);
     }
     else {
+        TempPosition = 1;
         Ret = mp_MotorRV->MoveToInitialPosition();
     }
 
     if (Ret == RV_MOVE_OK) {
+        m_RVCurrentPosition = TempPosition;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -1046,6 +1072,12 @@ void ServiceTestHandler::RVMovePosition(QString& ReqName, QStringList& Params)
     }
 
     if (Ret == RV_MOVE_OK) {
+        if (TubeFlag) {
+            m_RVCurrentPosition = Position*2 - 1;
+        }
+        else {
+            m_RVCurrentPosition = Position*2;
+        }
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -1060,13 +1092,13 @@ void ServiceTestHandler::RVGetPosition(QString& ReqName, QStringList& Params)
 
     QStringList Results;
     Results.clear();
-    if (mp_MotorRV == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_MotorRV == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    QString Position = mp_MotorRV->GetPosition();
-    Results.append(Position);
+//    QString Position = mp_MotorRV->GetPosition();
+    Results.append(QString("%1").arg(m_RVCurrentPosition));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -1120,14 +1152,14 @@ void ServiceTestHandler::RVTempControlIsOn(QString &ReqName, QStringList &Params
     QStringList Results;
     Results.clear();
 
-    if (mp_TempRV == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempRV == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempRV->IsTemperatureControlOn();
+//    bool isOn = mp_TempRV->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_RVTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -1184,6 +1216,7 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
     }
     else {
+        m_LSTempControlIsOn = true;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
 }
@@ -1203,6 +1236,7 @@ void ServiceTestHandler::LSStopHeating(QString& ReqName, QStringList& Params)
     bool Ret = mp_TempLSensor->StopTemperatureControl();
 
     if (Ret) {
+        m_LSTempControlIsOn = false;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -1342,14 +1376,14 @@ void ServiceTestHandler::LSTempControlIsOn(QString &ReqName, QStringList &Params
     QStringList Results;
     Results.clear();
 
-    if (mp_TempLSensor == NULL) {
-        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
-        return ;
-    }
+//    if (mp_TempLSensor == NULL) {
+//        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+//        return ;
+//    }
 
-    bool isOn = mp_TempLSensor->IsTemperatureControlOn();
+//    bool isOn = mp_TempLSensor->IsTemperatureControlOn();
 
-    Results.append(QString("%1").arg(isOn));
+    Results.append(QString("%1").arg(m_LSTempControlIsOn));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
