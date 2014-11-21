@@ -162,7 +162,7 @@ int CLiquidHeatingTubeTest::Run(void)
                 count = liquidMaintainTime;
             }
         }
-        if (i >= liquidRepeatTime && count == liquidMaintainTime) {
+        if (i > liquidRepeatTime && count == liquidMaintainTime) {
             break;
         }
 

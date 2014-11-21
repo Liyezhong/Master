@@ -43,9 +43,15 @@
      <rect>
       <x>250</x>
       <y>25</y>
-      <width>59</width>
+      <width>81</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>81</width>
+      <height>0</height>
+     </size>
     </property>
     <property name="text">
      <string>00:00:00</string>
@@ -69,9 +75,15 @@
      <rect>
       <x>250</x>
       <y>48</y>
-      <width>59</width>
+      <width>81</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>81</width>
+      <height>0</height>
+     </size>
     </property>
     <property name="text">
      <string>00:30:00</string>
@@ -205,7 +217,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Please waiting ...</string>
+    <string>Please wait ...</string>
    </property>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">

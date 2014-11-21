@@ -108,6 +108,7 @@ int CHeatingTestEmpty::Run(void)
     qreal targetTempRangeMin;
     qreal targetTempRangeMax;
     struct heatingTestStatus status;
+    bool isAbove = false;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("HeatingTestEmpty");
 
@@ -240,25 +241,47 @@ int CHeatingTestEmpty::Run(void)
     count = t2;
     targetTempRangeMin = status.OvenTempTopTarget + status.TempOffsetRangeMin;
     targetTempRangeMax = status.OvenTempTopTarget + status.TempOffsetRangeMax;
+
+    ret = RETURN_ERR_FAIL;
     for (i = 0; i < t1 + t2 && timingDialog->isVisible(); i++) {
         QTime EndTime = QTime().currentTime().addSecs(1);
-        ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
-        if (ret != RETURN_OK)
-            break;
 
-        if (OvenTempTopCur >= targetTempRangeMin && OvenTempTopCur <= targetTempRangeMax
-           && OvenTempSensor1Cur >= targetTempRangeMin && OvenTempSensor1Cur <= targetTempRangeMax
-           && OvenTempSensor2Cur >= targetTempRangeMin && OvenTempSensor2Cur <= targetTempRangeMax) {
-            if (!count--)
-                break;
-        } else {
-            if (i >= t1) {
-                ret = RETURN_ERR_FAIL;
-                break;
-            }
-            if (count != t2)
-                count = t2;
+        if (dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur) != RETURN_OK) {
+            break;
         }
+
+        if (OvenTempTopCur >= targetTempRangeMin &&
+                OvenTempSensor1Cur >= targetTempRangeMin &&
+                OvenTempSensor2Cur >= targetTempRangeMin )
+        {
+            if (OvenTempTopCur <= targetTempRangeMax &&
+                   OvenTempSensor1Cur <= targetTempRangeMax &&
+                   OvenTempSensor2Cur <= targetTempRangeMax ) {
+                if (isAbove) {
+                    count--;
+                }
+                if (count <= 0) {
+                    ret = RETURN_OK;
+                    break;
+                }
+            }
+            else {
+                count = t2;
+            }
+
+            if (!isAbove) {
+                isAbove = true;
+            }
+        }
+        else {
+            isAbove = false;
+            count = t2;
+        }
+
+        if (i > t1 && count == t2) {
+            break;
+        }
+
 
         status.OvenTempTop = OvenTempTopCur;
         status.OvenTempSensor1 = OvenTempSensor1Cur;
@@ -273,12 +296,13 @@ int CHeatingTestEmpty::Run(void)
         goto _abort_;
 
     timingDialog->accept();
-    if (ret != RETURN_OK) {
+
+    if (ret != RETURN_OK && isAbove==false) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. Temperature did "
-                  "not reach TM[current temperature +10\260C ] within %1 mins?. "
+                  "not reach %1\260C within %2 mins. "
                   "Root cause might be damaged ASB5 or Paraffin Oven Module. "
                   "Sequentially check resistance of heaters and function of ASB5. "
-                  "Exchange defective part accordingly and repeat this test.").arg(t1/60);
+                  "Exchange defective part accordingly and repeat this test.").arg(targetTempRangeMin).arg(t1/60);
         goto _fail_;
     }
     if (count > 0) {

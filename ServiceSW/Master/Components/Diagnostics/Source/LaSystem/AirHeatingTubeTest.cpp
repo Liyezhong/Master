@@ -148,7 +148,7 @@ int CAirHeatingTubeTest::Run(void)
                 count = AirMaintainTime;
             }
         }
-        if (i >= AirRepeatTime && count == AirMaintainTime) {
+        if (i > AirRepeatTime && count == AirMaintainTime) {
             break;
         }
 
