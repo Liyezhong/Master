@@ -1005,7 +1005,7 @@ protected:
          *  \return from GetOvenHeatingRemainingTime of quint64
          */
         /****************************************************************************/
-        quint64 InitProgramStatus();
+        void InitProgramStatus();
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) for melting paraffin
