@@ -283,6 +283,10 @@ void CMainControl::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED);
 
+    if (!mp_TestReporter->CheckSystemSN()) {
+        return;
+    }
+
     if (mp_Ui->eboxSNEdit->text().endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
         mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
@@ -293,10 +297,6 @@ void CMainControl::BeginTest()
             mp_Ui->eboxSNEdit->setFocus();
             mp_Ui->eboxSNEdit->selectAll();
         }
-        return;
-    }
-
-    if (!mp_TestReporter->CheckSystemSN()) {
         return;
     }
 

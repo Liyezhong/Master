@@ -275,6 +275,14 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 void CRotaryValve::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
+
+    bool IsEndTest = (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST);
+    if (IsEndTest) {
+        if (!mp_TestReporter->CheckSystemSN()) {
+            return;
+        }
+    }
+
     if (mp_Ui->rvSNEdit->text().endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
         mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
@@ -288,12 +296,7 @@ void CRotaryValve::BeginTest()
         return;
     }
 
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        if (!mp_TestReporter->CheckSystemSN()) {
-            return;
-        }
-    }
-    else {
+    if (!IsEndTest) {
         mp_TestReporter->SetSerialNumber(m_RVSNString);
     }
 
