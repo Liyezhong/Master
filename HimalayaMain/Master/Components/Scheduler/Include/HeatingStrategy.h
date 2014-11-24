@@ -108,7 +108,6 @@ struct OvenSensor : public HeatingSensor
     QMap<QString, qreal>                    OTTempOffsetList;           //!< oven temperature offset map
     QMap< QString, QPair<qreal,qreal> >     ParaffinTempRangeList;      //!< paraffin temperature range map
     QMap< QString, QPair<qint64, qint64> >  TimeRangeList;              //!< time range map
-
 };
 
 /****************************************************************************/
@@ -276,14 +275,6 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Get the oven heating begin Time
-     *  \return qint64
-     */
-    /****************************************************************************/
-    qint64 GetOvenHeatingBeginTime() const { return m_OvenStartHeatingTime; }
-
-    /****************************************************************************/
-    /*!
      *  \brief  check the temperature of sensors in scenario 260
      **  \param strctHWMonitor - temperature list from Device Control
      *  \return bool
@@ -374,9 +365,7 @@ private:
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
-    bool                                m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
     bool                                m_DiasbleOvenHeatingError;      //!< disable heating strategy error
-    qint64                              m_OvenStartHeatingTime;         //!< the value of oven starting heating time
 
     /****************************************************************************/
     /*!

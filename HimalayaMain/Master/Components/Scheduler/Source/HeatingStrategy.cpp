@@ -51,8 +51,6 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
     m_CmdResult = true;
-    m_IsOvenHeatingStarted = false;
-    m_OvenStartHeatingTime = 0;
     m_DiasbleOvenHeatingError = Global::Workaroundchecking("OVEN_HEATING");
     if (!this->ConstructHeatingSensorList())
     {
@@ -223,12 +221,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
         return retCode;
-    }
-
-    if (false == m_IsOvenHeatingStarted)
-    {
-        m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
-        m_IsOvenHeatingStarted = true;
     }
 
     if ( !QFile::exists("TEST_RETORT") )
@@ -761,7 +753,8 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_TOP);
         if(!m_OvenTop.curModuleId.isEmpty())
         {
-            m_OvenTop.curModuleId = "";
+            m_OvenTop.IsStartedHeating = false;
+            m_OvenTop.heatingStartTime = 0;
         }
     }
     if ("OvenBottom" == HeaterName)
@@ -770,7 +763,8 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_BOTTOM);
         if(!m_OvenBottom.curModuleId.isEmpty())
         {
-            m_OvenTop.curModuleId = "";
+            m_OvenBottom.IsStartedHeating = false;
+            m_OvenBottom.heatingStartTime = 0;
         }
     }
     if ("RV" == HeaterName)
@@ -1115,7 +1109,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
-        if(heatingSensor.curModuleId == iter->Id)
+        if(true == heatingSensor.IsStartedHeating && heatingSensor.curModuleId == iter->Id)
         {
             return retCode;
         }
@@ -1140,12 +1134,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_OVEN, QStringList()<<QString("[%1]").arg(OvenType)<<QString("[%1]").arg(m_CurScenario)
                                                <<QString("[%1]").arg(iter->TemperatureOffset+userInputMeltingPoint));
             heatingSensor.curModuleId = iter->Id;
+            heatingSensor.IsStartedHeating = true;
             iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
-            if(false == heatingSensor.IsStartedHeating)
+            if(0 == heatingSensor.heatingStartTime)
             {
                 heatingSensor.OvenBottom2OTCheckPassed = false;
                 heatingSensor.OTCheckPassed = false;
-                heatingSensor.IsStartedHeating = true;
                 heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch() - timeElapse;
             }
 
@@ -1390,6 +1384,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenTop.heatingStartTime = 0;
     m_OvenTop.curModuleId = "";
     m_OvenTop.OTCheckPassed = false;
+    m_OvenTop.OvenBottom2OTCheckPassed = false;
     sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_OvenTop, sequenceList))
     {
@@ -1445,6 +1440,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenBottom.heatingStartTime = 0;
     m_OvenBottom.curModuleId = "";
     m_OvenBottom.OTCheckPassed = false;
+    m_OvenBottom.OvenBottom2OTCheckPassed = false;
     sequenceList << "1" << "2" << "3" << "4";
     if (false == this->ConstructHeatingSensor(m_OvenBottom, sequenceList))
     {

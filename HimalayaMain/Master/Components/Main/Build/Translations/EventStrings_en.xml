@@ -794,6 +794,7 @@
         <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service. If you want to enter the normal state next time. Please shut down the program by the Shutdown button." text2=""/>
-	<string id="67176218" text1="SW encountered fatal error and will exit" text2=""/>
+	<string id="67176218" text1="SW encountered fatal error and will exit." text2=""/>
+	<string id="67176219" text1="Safey reagent failed, Please call service." text2=""/>
 	</language>
 </strings>

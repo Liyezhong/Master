@@ -368,7 +368,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
-    Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
+    quint32 EventKey = mp_SchedulerThreadController->GetEventKey();
+    //Global::EventObject::Instance().RaiseEvent(EventKey, 0, 0, flag);
+    mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
 }
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
@@ -379,7 +381,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
     if (false == flag)
     {
-        Global::EventObject::Instance().RaiseEvent(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, true);
+        mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_TISSUE_PROTECT_REPORT, 0, false);
         emit sigStateChange();
     }
     else

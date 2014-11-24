@@ -875,13 +875,13 @@ protected:
         virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
                                   const bool ActionResult, const bool Active = true)
         {
-            quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
-            if(ErrorID == 0)// not find
-            {
-                ErrorID = EventID;
-            }
             if(EventKey == 0)
             {
+                quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
+                if(ErrorID == 0)// not find
+                {
+                    ErrorID = EventID;
+                }
                 // We only update current event ID when current status is NOT error.
                 SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
                 if (SM_ERROR != (currentState & 0xFF))
@@ -900,7 +900,7 @@ protected:
             }
             else
             {
-                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active);
+                Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
             }
         }
         /****************************************************************************/
