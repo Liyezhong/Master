@@ -3980,10 +3980,11 @@ void SchedulerMainThreadController::InitProgramStatus()
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-    if(!m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint))
+    if(!QFile::exists("../Settings/ProgramStatus.txt"))
     {
         RaiseEvent(EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL);
     }
+	m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint);
 }
 
 qint64 SchedulerMainThreadController::GetPreTestTime()
