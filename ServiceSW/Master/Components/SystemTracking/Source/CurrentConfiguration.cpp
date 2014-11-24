@@ -182,7 +182,7 @@ void CCurrentConfiguration::RetranslateUI()
 {
     m_strOk                = QApplication::translate("SystemTracking::CCurrentConfiguration", "OK", 0, QApplication::UnicodeUTF8);
     m_strSelectModuleTitle = QApplication::translate("SystemTracking::CCurrentConfiguration", "Select Module", 0, QApplication::UnicodeUTF8);
-    m_strSelectModuleText  = QApplication::translate("SystemTracking::CCurrentConfiguration", "Please select a Module..", 0, QApplication::UnicodeUTF8);
+    m_strSelectModuleText  = QApplication::translate("SystemTracking::CCurrentConfiguration", "Please select a Module", 0, QApplication::UnicodeUTF8);
 }
 
 

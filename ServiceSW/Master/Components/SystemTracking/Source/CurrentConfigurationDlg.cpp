@@ -210,7 +210,7 @@ void CCurrentConfigurationDlg::RetranslateUI()
                                                             0, QApplication::UnicodeUTF8);
     m_strSelectSubModuleMsgTitle = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "Select SubModule",
                                                             0, QApplication::UnicodeUTF8);
-    m_strSelectSubModuleMsgText  = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "Please select a SubModule..",
+    m_strSelectSubModuleMsgText  = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "Please select a SubModule",
                                                             0, QApplication::UnicodeUTF8);
 }
 
