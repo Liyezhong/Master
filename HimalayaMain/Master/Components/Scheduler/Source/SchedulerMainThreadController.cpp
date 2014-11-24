@@ -210,6 +210,12 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //InitializeDevice();
 
+    //For Event-Scenaro-Error map list, we store it into m_pXMLEventList
+    m_pESEXMLInfo = QSharedPointer<EventScenarioErrXMLInfo>(new EventScenarioErrXMLInfo(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "EventScenarioErrorMap.xml"));
+    if (m_pESEXMLInfo->InitXMLInfo() == false)
+    {
+        //
+    }
     //for debug
     LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     m_SchedulerMachine->Start();

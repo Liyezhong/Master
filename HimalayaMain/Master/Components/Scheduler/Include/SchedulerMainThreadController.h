@@ -38,6 +38,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Global/Include/Commands/AckOKNOK.h"
 #include "Scheduler/Include/SchedulerLogging.h"
+#include "Scheduler/Include/EventScenarioErrorXMLInfo.h"
 
 using namespace DeviceControl;
 
@@ -264,6 +265,7 @@ typedef struct
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
+        QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -873,6 +875,11 @@ protected:
         virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
                                   const bool ActionResult, const bool Active = true)
         {
+            quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
+            if(ErrorID == 0)// not find
+            {
+                ErrorID = EventID;
+            }
             if(EventKey == 0)
             {
                 // We only update current event ID when current status is NOT error.
@@ -888,12 +895,12 @@ protected:
                     EventID = DCL_ERR_DEV_INTER_SW_ERROR;
                 }
 
-                Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
+                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
             }
             else
             {
-                Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active);
+                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active);
             }
         }
         /****************************************************************************/
