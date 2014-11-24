@@ -692,9 +692,68 @@ void CTestDiagnostics::LAAirHeatingTubeTest()
 void CTestDiagnostics::ServiceDeviceProcessTest()
 {
     Diagnostics::ServiceDeviceProcess* p_Dev = Diagnostics::ServiceDeviceProcess::Instance();
+    qreal OutReal;
+    int OutInt;
+    quint8 OutUint8;
+    quint16 OutUint16;
+    qint32 OutInt32;
+    bool OutBool;
+    float OutFloat;
 
-    QVERIFY(p_Dev->OvenStartHeating(20, 30) == RETURN_OK);
-    QVERIFY(p_Dev->OvenStopHeating() == RETURN_OK);
+    QVERIFY(p_Dev->OvenStartHeating(20, 30) != RETURN_OK);
+    QVERIFY(p_Dev->OvenStopHeating() != RETURN_OK);
+    QVERIFY(p_Dev->OvenGetCoverSensorState(&OutInt32) != RETURN_OK);
+    QVERIFY(p_Dev->OvenGetCurrent(&OutUint16, &OutUint16) != RETURN_OK);
+    QVERIFY(p_Dev->OvenGetSwitchType(&OutInt) != RETURN_OK);
+    QVERIFY(p_Dev->OvenGetTemp(&OutReal, &OutReal, &OutReal) != RETURN_OK);
+    QVERIFY(p_Dev->OvenTempControlIsOn(&OutBool) != RETURN_OK);
+
+    QVERIFY(p_Dev->RetortStartHeating(20, 30) != RETURN_OK);
+    QVERIFY(p_Dev->RetortStopHeating() != RETURN_OK);
+    QVERIFY(p_Dev->RetortGetCurrent(&OutUint16, &OutUint16) != RETURN_OK);
+    QVERIFY(p_Dev->RetortGetHeaterSwitchType(&OutUint8) != RETURN_OK);
+    QVERIFY(p_Dev->RetortGetLidLockState(&OutInt32) != RETURN_OK);
+    QVERIFY(p_Dev->RetortGetTemp(&OutReal, &OutReal, &OutReal) != RETURN_OK);
+    QVERIFY(p_Dev->RetortSetTemperatureSwitchState(1, 1) != RETURN_OK);
+    QVERIFY(p_Dev->RetortTempControlIsOn(&OutBool) != RETURN_OK);
+
+    QVERIFY(p_Dev->AirTubeGetCurrent(&OutUint16) != RETURN_OK);
+    QVERIFY(p_Dev->AirTubeGetTemp(&OutReal) != RETURN_OK);
+    QVERIFY(p_Dev->AirTubeStartHeating(30) != RETURN_OK);
+    QVERIFY(p_Dev->AirTubeStopHeating() != RETURN_OK);
+    QVERIFY(p_Dev->AirTubeTempControlIsOn(&OutBool) != RETURN_OK);
+
+    QVERIFY(p_Dev->AlarmGetState(1, &OutInt32) != RETURN_OK);
+    QVERIFY(p_Dev->AlarmSetOnOff(1, false) != RETURN_OK);
+
+    QVERIFY(p_Dev->LiquidTubeGetCurrent(&OutUint16) != RETURN_OK);
+    QVERIFY(p_Dev->LiquidTubeGetTemp(&OutReal) != RETURN_OK);
+    QVERIFY(p_Dev->LiquidTubeStartHeating(30) != RETURN_OK);
+    QVERIFY(p_Dev->LiquidTubeStopHeating() != RETURN_OK);
+    QVERIFY(p_Dev->LiquidTubeTempControlIsOn(&OutBool) != RETURN_OK);
+
+    QVERIFY(p_Dev->RVGetCurrent(&OutUint16) != RETURN_OK);
+    QVERIFY(p_Dev->RVGetHeaterSwitchType(&OutUint8) != RETURN_OK);
+    QVERIFY(p_Dev->RVGetPosition(&OutInt32) != RETURN_OK);
+    QVERIFY(p_Dev->RVGetTemp(&OutReal, &OutReal) != RETURN_OK);
+    QVERIFY(p_Dev->RVInitialize() != RETURN_OK);
+    QVERIFY(p_Dev->RVMovePosition(false, 6) != RETURN_OK);
+    QVERIFY(p_Dev->RVSetTemperatureSwitchState(1, 0) != RETURN_OK);
+    QVERIFY(p_Dev->RVStartHeating(80) != RETURN_OK);
+    QVERIFY(p_Dev->RVStopHeating() != RETURN_OK);
+    QVERIFY(p_Dev->RVTempControlIsOn(&OutBool) != RETURN_OK);
+
+    QVERIFY(p_Dev->PumpBuildPressure(30) != RETURN_OK);
+    QVERIFY(p_Dev->PumpDraining() != RETURN_OK);
+    QVERIFY(p_Dev->PumpGetPressure(&OutFloat) != RETURN_OK);
+    //QVERIFY(p_Dev->PumpReadPressureDrift(&OutFloat) != RETURN_OK);
+    QVERIFY(p_Dev->PumpReleasePressure() != RETURN_OK);
+    QVERIFY(p_Dev->PumpSetFan(1) != RETURN_OK);
+    QVERIFY(p_Dev->PumpSetPressure(0, 30) != RETURN_OK);
+    QVERIFY(p_Dev->PumpSetValve(0, 0) != RETURN_OK);
+    QVERIFY(p_Dev->PumpStopCompressor() != RETURN_OK);
+    QVERIFY(p_Dev->PumpSucking() != RETURN_OK);
+    //QVERIFY(p_Dev->PumpWritePressureDrift(3.6) != RETURN_OK);
 }
 
 /****************************************************************************/

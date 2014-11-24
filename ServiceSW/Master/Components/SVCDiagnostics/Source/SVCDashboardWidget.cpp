@@ -313,8 +313,10 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         (void)p_TempSelectionDlg->exec();
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
+        int Ret = Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
+        qDebug()<<"Liquid tube heating result:"<<Ret;
+        //if (Ret == 0)
     }
     else if (Status == CGraphicsItemPart::Normal){
         Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating();
@@ -351,9 +353,23 @@ void CSVCDashboardWidget::OnSelectPosition()
     qint32 CurrentPosition(0);
     (void)Diagnostics::ServiceDeviceProcess::Instance()->RVGetPosition(&CurrentPosition);
     if (CurrentPosition == 0) {
-        Text = "Can't get current position, please go to \"Diagnostics_RotaryValve\" and \"Movement Test\"";
-        mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
-        return;
+        Text = "Can't get current position, Do you want to initialize position?";
+        int Ret = mp_MsgDlg->ShowConfirmMessage(Title, Text, Diagnostics::CDiagnosticMessageDlg::OK_ABORT);
+
+        if (Ret == Diagnostics::CDiagnosticMessageDlg::ABORT) {
+            return;
+        }
+
+        Text = "Rotary valve is initializing...";
+        mp_MsgDlg->ShowWaitingDialog(Title, Text);
+        Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVInitialize();
+        mp_MsgDlg->HideWaitingDialog();
+
+        if (Ret != Diagnostics::RETURN_OK) {
+            Text = "Rotary valve initialize failed.";
+            mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
+            return;
+        }
     }
     Text = "Please select an option and press OK to continue.";
     Diagnostics::CSelectBottleNReagentDialog* p_SelectDlg = new Diagnostics::CSelectBottleNReagentDialog(16, this);

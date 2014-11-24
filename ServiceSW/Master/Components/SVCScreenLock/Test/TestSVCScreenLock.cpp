@@ -88,8 +88,8 @@ void CTestSVCScreenLock::cleanupTestCase() {
 void CTestSVCScreenLock::utTestSVCScreenLock() {
     CSVCScreenLockWidget* testWidget = new CSVCScreenLockWidget();
 
-    testWidget->OnCurrentTabChanged(1);
-    testWidget->OnCurrentTabChanged(3);
+    testWidget->SetLockStatus(false);
+    testWidget->SetLockStatus(true);
     testWidget->OnInteractStart();
 }
 
