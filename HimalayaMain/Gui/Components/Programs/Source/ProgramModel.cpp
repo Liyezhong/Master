@@ -282,21 +282,17 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
                 if (FavProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
                 {
                     p_Program->SetFavorite(Value.toBool());
-                    //UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
-                    OnUpdateProgramList();
                     emit FavoriteProgramListUpdated(*p_Program);
                     return true;
                 }
                 else if(Value.toBool() == 0)
                 {
                     p_Program->SetFavorite(false);
-                    OnUpdateProgramList();
                     emit FavoriteProgramListUpdated(*p_Program);
                     return false;
                 }
                 else
                 {
-                    OnUpdateProgramList();
                     emit FavoriteProgramListUpdated(*p_Program);
                     return false;
                 }
@@ -304,16 +300,6 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
         }
     }
     return false;
-}
-/****************************************************************************/
-/*!
- *  \brief Updates the model whenever GUI receives an updated XML from Master
- */
-/****************************************************************************/
-void CProgramModel::OnUpdateProgramList()
-{
-    beginResetModel();
-    endResetModel();
 }
 
 void CProgramModel ::SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole)
@@ -324,16 +310,6 @@ void CProgramModel ::SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole)
 void CProgramModel :: SelectedRowIndex(int Index)
 {
     m_CurrentIndex = Index;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Calls the function to Update the model
- */
-/****************************************************************************/
-void CProgramModel:: ResetandUpdateModel()
-{
-    OnUpdateProgramList();
 }
 
 } // end namespace Programs

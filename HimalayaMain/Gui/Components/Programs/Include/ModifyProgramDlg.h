@@ -130,6 +130,13 @@ public:
     void CloseDialogModifyStepDlg();
     void NewProgram();    
     void DeleteSelectedStep(DataManager::CProgram* p_CurrentProgram);
+    /****************************************************************************/
+    /*!
+     *  \brief Enable save button in ModifyProgramStep dialog
+     *
+     */
+    /****************************************************************************/
+    void EnablebtnSave();
 
 private:
     void ResizeHorizontalSection();
@@ -266,14 +273,6 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This signal is emitted when the ProgramStepList is updated and informs
-     *  Program Step model to update the program step list data.
-     */
-    /****************************************************************************/
-    void UpdateStepModel();
-
-    /****************************************************************************/
-    /*!
      *  \brief This signal is emitted when a program is updated.
      *
      *  \iparam Program = Selected Program.
@@ -289,18 +288,6 @@ signals:
      */
     /****************************************************************************/
     void AddProgram(DataManager::CProgram &Program);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is emitted when the color of one program is assigned to
-     *         the selected program.
-     *
-     *  \iparam ColorReplacedProgram = Program whose color was assigned to selected program.
-     *  \iparam ColorAssignedProgram = Selected program for which the color was assigned.
-     */
-    /****************************************************************************/
-    void ProgramColorReplaced(DataManager::CProgram &ColorReplacedProgram,
-                              DataManager::CProgram &ColorAssignedProgram);
 
     /****************************************************************************/
     /*!

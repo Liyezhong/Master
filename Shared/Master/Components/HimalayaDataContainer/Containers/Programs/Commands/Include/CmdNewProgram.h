@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file CmdNewProgram.h
  *
- *  \brief CmdProgramUpdate command definition.
+ *  \brief CmdNewProgram command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 12.04.2012
@@ -27,7 +27,7 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdProgramUpdate command.
+ *  \brief  This class implements a CmdNewProgram command.
  *
  * \todo implement
  */
@@ -65,7 +65,7 @@ private:
     const CmdNewProgram & operator = (const CmdNewProgram &); ///< Not implemented.
     QByteArray m_ProgramByteArray;          //!< Byte Array filled with Program data
     QByteArray m_ProgramSequenceByteArray;  //!< Byte Array filled with Program data
-}; // end class CmdProgramUpdate
+}; // end class CmdNewProgram
 
 /****************************************************************************/
 /**

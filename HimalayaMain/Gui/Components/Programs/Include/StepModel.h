@@ -121,13 +121,6 @@ private:
     bool m_IsShowStation;       ///<  Definition/Declaration of variable m_IsShowStation
     int m_CurSelectRowIndex;       ///<  Definition/Declaration of variable m_CurSelectRowIndex
 
-private slots:
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of UpdateStepModel
-     */
-    /****************************************************************************/
-    void UpdateStepModel();
 };
 
 } // end namespace Programs

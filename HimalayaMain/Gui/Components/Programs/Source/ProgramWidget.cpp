@@ -86,13 +86,8 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
     CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgramDlg, ReagentsUpdated());
-    CONNECTSIGNALSLOT(this, UpdateProgramList(), &m_ProgramModel, OnUpdateProgramList());
-    CONNECTSIGNALSIGNAL(this, UpdateProgramList(), mp_ModifyProgramDlg, UpdateStepModel());
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, UpdateProgram(DataManager::CProgram &),
                         this, UpdateProgram(DataManager::CProgram &));
-
-    CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &),
-                        this, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &));
 
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, AddProgram(DataManager::CProgram &),
                         this, AddProgram(DataManager::CProgram &));
@@ -292,7 +287,6 @@ void CProgramWidget::OnUserRoleChanged()
             mp_Ui->btnNew->setEnabled(true);
             mp_Ui->btnCopy->setEnabled(true);
         }
-        m_ProgramModel.ResetandUpdateModel();
     }
     else {
         //View Mode
@@ -483,6 +477,22 @@ void CProgramWidget::CloseDialogs()
     mp_ModifyProgramDlg->accept();
 }
 
+void CProgramWidget::ProgramUpdated()
+{
+    mp_ModifyProgramDlg->accept();
+    mp_ModifyProgramDlg->EnablebtnSave();
+}
+
+void CProgramWidget::ProgramAdded()
+{
+    mp_ModifyProgramDlg->accept();
+    mp_ModifyProgramDlg->EnablebtnSave();
+}
+
+void CProgramWidget::RevertChangedProgram()
+{
+    mp_ModifyProgramDlg->EnablebtnSave();
+}
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Cancel is clicked in ModifyProgramDialog

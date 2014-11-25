@@ -159,8 +159,6 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->setModal(true);
     mp_MessageDlg->HideButtons();
-    m_UpdateProgramColor = false;
-    m_AddProgramWithUpdateColor = false;
 
     mp_BlgScanWaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
@@ -506,34 +504,6 @@ void CDataConnector::SendProgramUpdate(DataManager::CProgram &Program)
       MsgClasses::CmdProgramUpdate Command(COMMAND_TIME_OUT, ProgramDataStream, ProgramDataStream);
       Command.SetProgramColorReplaced(false);
       (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
-       m_UpdateProgramColor = false;
-      mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
-      mp_WaitDialog->SetText(m_strSavingSettings);
-      mp_WaitDialog->SetTimeout(10000);
-      mp_WaitDialog->show();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Sends updated Program data to the master
- *
- *  \iparam ColorReplacedProgram = Program data object
- *  \iparam ColorAssignedProgram = Program data object
- */
-/****************************************************************************/
-void CDataConnector::SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,DataManager::CProgram &ColorAssignedProgram)
-{
-      QByteArray ByteArray;
-      QByteArray ByteArrayNext;
-      QDataStream ProgramDataStream(&ByteArray,QIODevice::ReadWrite);
-      QDataStream ColorAssignedProgramDataStream(&ByteArrayNext,QIODevice::ReadWrite);
-      ProgramDataStream << ColorReplacedProgram ;    
-      ColorAssignedProgramDataStream << ColorAssignedProgram;
-      (void)ProgramDataStream.device()->reset();
-      MsgClasses::CmdProgramUpdate Command(COMMAND_TIME_OUT, ProgramDataStream, ColorAssignedProgramDataStream);
-      Command.SetProgramColorReplaced(true);
-      (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
-      m_UpdateProgramColor = true;
       mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
       mp_WaitDialog->SetText(m_strSavingSettings);
       mp_WaitDialog->SetTimeout(10000);
@@ -612,13 +582,11 @@ void CDataConnector::AddNewProgramHandler(Global::tRefType Ref, const MsgClasses
     DataManager::CProgram Program;
     QDataStream ProgramDataStream(&const_cast<QByteArray &>(Command.GetProgramData()), QIODevice::ReadWrite);
     ProgramDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-
     ProgramDataStream >> Program;
-
 
     Result = ProgramList->AddProgram(&Program);
     if (Result) {
-        emit ProgramsUpdated();
+        emit ProgramAdded();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
@@ -634,31 +602,15 @@ void CDataConnector::AddNewProgramHandler(Global::tRefType Ref, const MsgClasses
 void CDataConnector::UpdateProgramHandler(Global::tRefType Ref, const MsgClasses::CmdProgramUpdate &Command)
 {
     bool Result = false;
-    bool ColorAssignedResult = false;
     DataManager::CProgram Program;
-    DataManager::CProgram ColorAssignedProgram;
     QDataStream ProgramDataStream(&const_cast<QByteArray &>(Command.GetProgramData()), QIODevice::ReadWrite);
     ProgramDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
     ProgramDataStream >> Program;
     Result = ProgramList->UpdateProgram(&Program);
-
-    if (m_UpdateProgramColor == true) {
-        QDataStream ColorAssignedProgramDataStream(&const_cast<QByteArray &>(Command.GetColorAssignedProgramData()), QIODevice::ReadWrite);
-        ColorAssignedProgramDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-        (void)ColorAssignedProgramDataStream.device()->reset();
-        ColorAssignedProgramDataStream >> ColorAssignedProgram;
-        ColorAssignedResult = ProgramList->UpdateProgram(&ColorAssignedProgram);
-        if (Result && ColorAssignedResult) {
-            emit ProgramsUpdated();
-        }
-        m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result && ColorAssignedResult));
+    if (Result) {
+        emit ProgramUpdated();
     }
-    else {
-        if (Result) {
-            emit ProgramsUpdated();
-        }
-        m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
-    }
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
 }
 
@@ -677,7 +629,6 @@ void CDataConnector::ProgramRemoveHandler(Global::tRefType Ref,
     QString ProgramId = Command.GetItemId();
     Result = ProgramList-> DeleteProgram(ProgramId);
     if (Result) {
-        emit ProgramsUpdated();
         emit ProgramsDeleted();
     }
     else {
@@ -950,7 +901,6 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         case NetCommands::PROGRAM:
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
-            emit ProgramsUpdated();
             emit ProgramsInitialized(false);
             break;
 

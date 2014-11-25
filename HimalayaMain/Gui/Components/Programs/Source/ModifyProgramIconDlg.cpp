@@ -138,7 +138,7 @@ void CModifyProgramIconDlg::OnCancel()
 /****************************************************************************/
 void CModifyProgramIconDlg::OnOk()
 {
-    emit UpdateProgram(&m_Program);
+    emit UpdateProgramIcon(&m_Program);
     accept();
 }
 /****************************************************************************/

@@ -283,13 +283,7 @@ public slots:
      */
     /****************************************************************************/
     void SendRCSWUpdate();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of SendProgramColorUpdate
-     */
-    /****************************************************************************/
-    void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
-                                DataManager::CProgram &ColorAssignedProgram);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramAction
@@ -411,10 +405,16 @@ signals:
     void ReagentGroupColorUpdated();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramsUpdated
+     *  \brief  Definition/Declaration of signal ProgramUpdated
      */
     /****************************************************************************/
-    void ProgramsUpdated();
+    void ProgramUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramAdded
+     */
+    /****************************************************************************/
+    void ProgramAdded();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramsInitialized
@@ -907,8 +907,6 @@ private:
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
     QTranslator m_Translator;                       //!< Language translator
     QProcess* m_pServiceProcess;       ///<  Definition/Declaration of variable m_pServiceProcess
-    bool m_UpdateProgramColor;       ///<  Definition/Declaration of variable m_UpdateProgramColor
-    bool m_AddProgramWithUpdateColor;       ///<  Definition/Declaration of variable m_AddProgramWithUpdateColor
     quint32 m_LanguageChangeCount;                  //!< Count of language changes
     QHash<quint32, ScheduledStations_t> m_ScheduledStationsHash;    //!< Scheduled Stations hash
     MainMenu::CMsgBoxManager *mp_MesgBoxManager;              //!< Msg Box manager for CmdEventReport

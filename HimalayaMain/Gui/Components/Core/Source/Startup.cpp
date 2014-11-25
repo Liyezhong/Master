@@ -84,12 +84,12 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
     CONNECTSIGNALSLOT(mp_Dashboard, ProgramSelected(QString&, QList<QString>&), mp_GlobalHelper, OnProgramSelected(QString&, QList<QString>&));
 
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramUpdated(), mp_Programs, ProgramUpdated());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramAdded(), mp_Programs, ProgramAdded());
+    CONNECTSIGNALSLOT(mp_DataConnector, RevertChangedProgram(), mp_Programs, RevertChangedProgram());
 
     CONNECTSIGNALSLOT(mp_Programs, UpdateProgram(DataManager::CProgram &),
                       mp_DataConnector, SendProgramUpdate(DataManager::CProgram &));
-    CONNECTSIGNALSLOT(mp_Programs, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &),
-                      mp_DataConnector, SendProgramColorUpdate(DataManager::CProgram &,DataManager::CProgram &));
     CONNECTSIGNALSLOT(mp_Programs, AddProgram(DataManager::CProgram &),
                       mp_DataConnector, SendProgramAdd(DataManager::CProgram &));
     CONNECTSIGNALSLOT(mp_Programs, DeleteProgram(QString &),mp_DataConnector,SendProgramRemove(QString &));

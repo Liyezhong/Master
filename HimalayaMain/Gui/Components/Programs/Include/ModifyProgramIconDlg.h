@@ -134,11 +134,11 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This signal is emitted when ReagentList is updated.
+     *  \brief This signal is emitted when program icon is updated.
      *  \param Program = the updated program
      */
     /****************************************************************************/
-    void UpdateProgram(DataManager::CProgram* Program);
+    void UpdateProgramIcon(DataManager::CProgram* Program);
 
 };
 }

@@ -101,11 +101,10 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     CONNECTSIGNALSLOT(mp_Ui->btnPrgIcon, clicked(), this, OnIconClicked());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgStepDlg, ReagentsUpdated());
-    CONNECTSIGNALSLOT(this, UpdateStepModel(), &m_StepModel, UpdateStepModel());
 
     CONNECTSIGNALSLOT(mp_ModifyProgStepDlg, AddProgramStep(DataManager::CProgramStep*,bool),
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
-    CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgram(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));
+    CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgramIcon(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     OnProcessStateChanged();
     mp_Ui->btnPrgIcon->setIconSize(QSize(45, 30));
@@ -496,7 +495,6 @@ void CModifyProgramDlg::DeleteSelectedStep(DataManager::CProgram* p_CurrentProgr
 
     // Added void to please lint
     (void) p_Program->DeleteProgramStep(Index);
-    emit UpdateStepModel();
     ResetButtons(*p_Program, false);
 }
 
@@ -507,6 +505,7 @@ void CModifyProgramDlg::DeleteSelectedStep(DataManager::CProgram* p_CurrentProgr
 /****************************************************************************/
 void CModifyProgramDlg::OnSave()
 {
+    mp_Ui->btnSave->setEnabled(false);
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
     }
@@ -519,6 +518,7 @@ void CModifyProgramDlg::OnSave()
     if(mp_Ui->btnPrgName->text() == "--"){
         mp_MessageDlg->SetText(m_strEnterValidName);
         (void) mp_MessageDlg->exec();
+        mp_Ui->btnSave->setEnabled(true);
         return;
     }
 
@@ -541,9 +541,10 @@ void CModifyProgramDlg::OnSave()
         if (m_bIconSelected == false || m_Icon.isEmpty()) {
             mp_MessageDlg->SetText(m_strSeclectIcon);
             (void) mp_MessageDlg->exec();
+            mp_Ui->btnSave->setEnabled(true);
             return;
         }
-        //mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+
         if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
             mp_NewProgram->SetName(m_strLastProgName);
         }
@@ -551,7 +552,6 @@ void CModifyProgramDlg::OnSave()
             mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
         }
         mp_NewProgram->SetIcon(m_Icon);
-
         emit AddProgram(*mp_NewProgram);
     }
 }
@@ -987,6 +987,11 @@ void CModifyProgramDlg::RetranslateUI()
     m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
     m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 
+}
+
+void CModifyProgramDlg::EnablebtnSave()
+{
+    mp_Ui->btnSave->setEnabled(true);
 }
 
 } // end namespace Programs

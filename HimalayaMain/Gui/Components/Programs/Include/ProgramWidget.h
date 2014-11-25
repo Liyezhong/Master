@@ -175,6 +175,24 @@ private slots:
      */
     /****************************************************************************/
     void OnCancelClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of ProgramUpdated
+     */
+    /****************************************************************************/
+    void ProgramUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of ProgramAdded
+     */
+    /****************************************************************************/
+    void ProgramAdded();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of RevertChangedProgram
+     */
+    /****************************************************************************/
+    void RevertChangedProgram();
 
 protected:
     void changeEvent(QEvent *p_Event);
@@ -195,13 +213,6 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This siganl is emitted when a white rack is inserted into the loading station.
-     */
-    /****************************************************************************/
-    void ManualProgramShow(QString);
-
-    /****************************************************************************/
-    /*!
      *  \brief This siganl is emitted when reagents are updated.
      */
     /****************************************************************************/
@@ -214,14 +225,6 @@ signals:
      */
     /****************************************************************************/
     void UpdateProgramList();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  This signal is emitted when the ProgramSequenceList is updated and informs
-     *   ProgramSequence model to update the program sequence list data.
-     */
-    /****************************************************************************/
-    void UpdateProgramSequenceList();
 
     /****************************************************************************/
     /*!
@@ -249,45 +252,6 @@ signals:
      */
     /****************************************************************************/
     void DeleteProgram(QString &ProgramID);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is emitted to send Leica kit scan command.
-     *
-     *  \iparam ProgramLongName = Leica program long name
-     *  \iparam IsKitScanViaBlg = Kit scan sequence via blg or update reagent
-     *  \iparam KitCount = Leica kit count
-     */
-    /****************************************************************************/
-    void ScanLeicaKitPrgWidget(QString ProgramLongName, bool IsKitScanViaBlg, int KitCount);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is emitted to send Leica bottle scan command.
-     *
-     *  \iparam IsKitScanViaBlg = Kit scan sequence via blg or update reagent
-     */
-    /****************************************************************************/
-    void ScanLeicaBottlePrgWidget(bool IsKitScanViaBlg);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is emitted to send command to replace back original
-     *  container in case of failure
-     */
-    /****************************************************************************/
-    void ReplaceBackContainersPrgWidget();
-
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is emitted when the color of one program is assigned to the selected program.
-     *
-     *  \iparam ColorReplacedProgram = Program whose color was assigned to selected program.
-     *  \iparam ColorAssignedProgram = Selected program for which the color was assigned.
-     */
-    /****************************************************************************/
-    void ProgramColorReplaced(DataManager::CProgram &ColorReplacedProgram,
-                              DataManager::CProgram &ColorAssignedProgram);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UnselectProgram

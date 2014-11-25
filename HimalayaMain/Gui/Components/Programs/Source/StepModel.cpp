@@ -397,15 +397,4 @@ qint32 CStepModel::GetIndex()
     return  m_CurrentRow;
 }
 
-/****************************************************************************/
-/*!
- *  \brief Updates Step Model when programs xml is sent from master
- */
-/****************************************************************************/
-void CStepModel::UpdateStepModel()
-{
-    beginResetModel();
-    endResetModel();
-}
-
 } // end namespace Programs
