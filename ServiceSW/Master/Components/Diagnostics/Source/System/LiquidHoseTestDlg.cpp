@@ -79,6 +79,8 @@ bool CLiquidHoseTestDlg::RunTest()
     qreal RVTempSensor1(0);
     qreal RVTempSensor2(0);
 
+    p_DevProc->RVGetTemp(&RVTempSensor1, &RVTempSensor2);
+
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
         return false;

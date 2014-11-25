@@ -70,7 +70,7 @@ CStartup::CStartup() : QObject(),
     // GUI components
     mp_Clock = new QTimer();    
     mp_MainWindow = new MainMenu::CMainWindow();
-    mp_MessageBox = new MainMenu::CMessageDlg(mp_MainWindow);
+//    mp_MessageBox = new MainMenu::CMessageDlg(mp_MainWindow);
 
     CONNECTSIGNALSLOT(this, LogOffSystem(), mp_MainWindow, hide());
     CONNECTSIGNALSLOT(this, LogOnSystem(), mp_MainWindow, show());
@@ -1168,24 +1168,26 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    mp_MessageBox->SetTitle(Service::CMessageString::MSG_TITLE_SPEAKER_TEST);
+    MainMenu::CMessageDlg *p_MsgBox = new MainMenu::CMessageDlg(mp_MainWindow);
+    p_MsgBox->SetTitle(Service::CMessageString::MSG_TITLE_SPEAKER_TEST);
 
     if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
-        mp_MessageBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_LOW);
+        p_MsgBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_LOW);
     }
     else {
-        mp_MessageBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH);
+        p_MsgBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_HIGH);
     }
-    mp_MessageBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_NO);
-    mp_MessageBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
-    mp_MessageBox->HideCenterButton();
+    p_MsgBox->SetButtonText(1, Service::CMessageString::MSG_BUTTON_NO);
+    p_MsgBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
+    p_MsgBox->HideCenterButton();
 
-    if (!mp_MessageBox->exec()) { // yes
+    if (!p_MsgBox->exec()) { // yes
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }
     else {
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
     }
+    delete p_MsgBox;
 
     emit PerformManufacturingTest(Service::TEST_ABORT, Id);
 }
@@ -1231,9 +1233,11 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    mp_MessageBox->SetTitle(Service::CMessageString::MSG_TITLE_MAINS_RELAY_TEST);
-    mp_MessageBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
-    mp_MessageBox->HideButtonsOneAndTwo();
+    MainMenu::CMessageDlg *p_MsgBox = new MainMenu::CMessageDlg(mp_MainWindow);
+
+    p_MsgBox->SetTitle(Service::CMessageString::MSG_TITLE_MAINS_RELAY_TEST);
+    p_MsgBox->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
+    p_MsgBox->HideButtonsOneAndTwo();
 
     bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
 
@@ -1250,9 +1254,10 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
 
     MessagetText.append(Service::CMessageString::MSG_DIAGNOSTICS_ASB3_CURRENT.arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));
 
-    mp_MessageBox->SetText(MessagetText);
-    (void)mp_MessageBox->exec();
+    p_MsgBox->SetText(MessagetText);
+    (void)p_MsgBox->exec();
 
+    delete p_MsgBox;
 }
 
 void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)

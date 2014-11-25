@@ -194,7 +194,7 @@ private:
 
 
     //Message Box, Busy Box, Generic PoP Up.
-    MainMenu::CMessageDlg *mp_MessageBox;
+//    MainMenu::CMessageDlg *mp_MessageBox;
     Core::CCalibrationHanlder *mp_CalibrationHandler;
     QString m_CurrentUserMode;                                              //!< Stores current user mode
 
