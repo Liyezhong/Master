@@ -535,6 +535,8 @@ void CModifyProgramDlg::OnSave()
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         m_Program.SetFavorite(false);
+        m_Program.SetNameID("");
+        m_Program.SetBottleCheck(true);
         emit AddProgram(m_Program);
     }
     else {

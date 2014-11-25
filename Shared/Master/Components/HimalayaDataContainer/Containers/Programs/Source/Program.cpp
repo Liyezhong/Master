@@ -33,7 +33,7 @@ namespace DataManager {
  */
 /****************************************************************************/
 CProgram::CProgram() : CProgramBase("0","",""),
-    m_LeicaProgram(false), m_Icon(""), m_Favorite(false)
+    m_LeicaProgram(false), m_Icon(""), m_Favorite(false),m_BottleCheck(true)
 {
     Init();
 }
@@ -45,7 +45,7 @@ CProgram::CProgram() : CProgramBase("0","",""),
  */
 /****************************************************************************/
 CProgram::CProgram(const QString ID) : CProgramBase(ID,"",""),
-     m_LeicaProgram(false), m_Icon(""), m_Favorite(false)
+     m_LeicaProgram(false), m_Icon(""), m_Favorite(false),m_BottleCheck(true)
 {
     Init();
 }
@@ -66,7 +66,8 @@ CProgram::CProgram(const QString ID, const QString Name, const QString LongName,
     CProgramBase(ID, Name, LongName),
     m_LeicaProgram(IsLeicaProgram),
     m_Icon(Icon),
-    m_Favorite(Favorite)
+    m_Favorite(Favorite),
+    m_BottleCheck(true)
 {
     Init();
 }
@@ -168,6 +169,12 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
         XmlStreamWriter.writeAttribute("Favorite", "false");
     }
 
+    if (GetBottleCheck()) {
+        XmlStreamWriter.writeAttribute("BottleCheck", "true");
+    } else {
+        XmlStreamWriter.writeAttribute("BottleCheck", "false");
+    }
+
     XmlStreamWriter.writeStartElement("StepList");
     XmlStreamWriter.writeAttribute("NextStepID", GetNextFreeStepID(false));
 
@@ -231,6 +238,15 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     if (!XmlStreamReader.attributes().hasAttribute("LeicaProgram")) {
         qDebug() << "### attribute <LeicaProgram> is missing => abort reading";
         return false;
+    }
+
+    if (XmlStreamReader.attributes().hasAttribute("BottleCheck")) {
+        if (XmlStreamReader.attributes().value("BottleCheck").toString().toUpper() == "TRUE") {
+            m_BottleCheck = true;
+        }
+        else {
+            m_BottleCheck = false;
+        }
     }
     if (XmlStreamReader.attributes().value("LeicaProgram").toString().toUpper() == "TRUE") {
         m_LeicaProgram = true;

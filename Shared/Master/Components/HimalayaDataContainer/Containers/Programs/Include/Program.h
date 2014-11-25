@@ -43,6 +43,7 @@ private:
     bool m_LeicaProgram;                        //!< leica program or not
     QString m_Icon;                             //!< program icon
     bool m_Favorite;                            //!< program favorite
+    bool m_BottleCheck;                         //!< flag for bottle checking or not
 
     QStringList m_ReagentIDList;                //!< Holds the reagent ID's present in Program.
 
@@ -70,8 +71,25 @@ public:
      *  \return True - Favorite , else no
      */
     /****************************************************************************/
-    bool IsFavorite() const {return m_Favorite;}
+    bool GetBottleCheck() const {return m_BottleCheck;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief set bottle check flag
+     *
+     *  \iparam value = true enable,
+     */
+    /****************************************************************************/
+    bool SetBottleCheck(bool value) {m_BottleCheck = value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Checks if program need to do bottle check
+     *
+     *  \return True - yes , else no
+     */
+    /****************************************************************************/
+    bool IsFavorite() const {return m_Favorite;}
     /****************************************************************************/
     /*!
      *  \brief Checks if program is a Cleaning program
