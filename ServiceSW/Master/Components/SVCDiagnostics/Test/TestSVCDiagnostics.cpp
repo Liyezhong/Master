@@ -27,6 +27,9 @@
 #include <QMainWindow>
 #include "SVCDiagnostics/Include/GraphicsItemPart.h"
 #include "SVCDiagnostics/Include/SVCDashboardWidget.h"
+#include "SVCDiagnostics/Include/SVCRotaryValveDlg.h"
+#include "SVCDiagnostics/Include/SVCButton.h"
+#include "SVCDiagnostics/Include/SVCLabel.h"
 
 namespace SVCDiagnostics {
 
@@ -68,8 +71,21 @@ private slots:
      * \brief Test Diagnostics Menu object
      */
     /****************************************************************************/
-    void utTestSVCDiagnostics();
+    void utTestSVCDiagnostics();    
 
+    /****************************************************************************/
+    /**
+     * \brief Test Diagnostics Menu object
+     */
+    /****************************************************************************/
+    void utTestRotaryValveDlg();
+
+    /****************************************************************************/
+    /**
+     * \brief Test Diagnostics SVCLabel & SVCButton
+     */
+    /****************************************************************************/
+    void utTestLabelButton();
 
 }; // end class CTestSVCDiagnostics
 
@@ -108,6 +124,44 @@ void CTestSVCDiagnostics::utTestSVCDiagnostics() {
 
     TestWidget->TimerStart(true);
     TestWidget->TimerStart(false);
+}
+
+/****************************************************************************/
+void CTestSVCDiagnostics::utTestRotaryValveDlg()
+{
+    CSVCRotaryValveDlg rotaryValveDlg(NULL);
+    bool flag1, flag2;
+    qint32 pos1, pos2;
+
+    flag1 = true;
+    pos1 = 10;
+    rotaryValveDlg.SetPos(flag1, flag1);
+    rotaryValveDlg.GetPos(flag2, pos2);
+
+    QCOMPARE(flag1, flag2);
+    QCOMPARE(pos1, pos2);
+}
+
+/****************************************************************************/
+void CTestSVCDiagnostics::utTestLabelButton()
+{
+    SVCLabel  label;
+    label.setText(tr("test"));
+    label.setPos(10, 10);
+    label.setPos(QPoint(10, 10));
+    label.setSize(10, 10);
+
+    SVCLabel  label1("test");
+    label1.setText(tr("hello"));
+
+    SVCButton button;
+    button.setText(tr("test"));
+    button.setPos(QPoint(10, 10));
+    button.setPos(10, 10);
+    button.setSize(10, 10);
+
+    SVCButton button1(tr("hello"));
+    button1.setText(tr("test"));
 }
 
 } // end namespace SVCDiagnostics

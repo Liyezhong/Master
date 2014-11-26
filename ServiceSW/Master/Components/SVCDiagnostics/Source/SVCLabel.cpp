@@ -61,12 +61,6 @@ void SVCLabel::setPos(QPoint pos)
     setGeometry(QRect(pos.x(), pos.y(), width, height));
 }
 
-/*
-void SVCLabel::setText(const QString &text)
-{
-    QLabel::setText("  " + text);
-}
-*/
 void SVCLabel::setSize(int width, int height)
 {
     this->width = width;

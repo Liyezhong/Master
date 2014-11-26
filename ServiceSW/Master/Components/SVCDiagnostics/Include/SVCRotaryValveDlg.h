@@ -145,4 +145,4 @@ private:
 
 }//end of namespace SVCDiagnostics
 
-#endif // SVCTARGETTEMPSELECTIONDLG_H
+#endif // SVCROTARYVALVEDLG_H

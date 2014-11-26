@@ -380,7 +380,7 @@ void CSVCDashboardWidget::OnSelectPosition()
     }
 
     SVCDiagnostics::CSVCRotaryValveDlg rotaryValveDlg(this);
-    rotaryValveDlg.SetDialogTitle(tr("Rotary valve Dialog"));
+    rotaryValveDlg.SetDialogTitle(tr("Rotary valve dialog"));
     rotaryValveDlg.SetPos(CurrentTubeFlag, CurrentPosition);
     if (rotaryValveDlg.exec() == 0)
         return;

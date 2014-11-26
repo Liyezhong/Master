@@ -10,6 +10,7 @@ INCLUDEPATH += ../../ \
                ../../../../../../Shared/Master/Components \
                ../../../../../../Platform/Master/Components \
                ../../../../../../Platform/Gui/Components \
+               ../Build/
 
 CONFIG += qtestlib
 CONFIG += qt
