@@ -27,11 +27,22 @@
 
 namespace SVCDiagnostics {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CGraphicsPixmapItem
+ */
+/****************************************************************************/
 class CGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CGraphicsPixmapItem
+     *  \iparam file = image path
+     */
+    /****************************************************************************/
     CGraphicsPixmapItem(QString file);
 
     //virtual function
@@ -39,10 +50,28 @@ public:
     QPainterPath shape() const;
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Set pixmap state
+     *  \iparam status = enable/false
+     */
+    /****************************************************************************/
     void SetState(bool status);
+    /****************************************************************************/
+    /*!
+     *  \brief Set tag
+     *  \iparam tag
+     */
+    /****************************************************************************/
     void SetTag(int tag);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief when pixamp is Clicked, send a signal
+     *  \iparam tag
+     */
+    /****************************************************************************/
     void Clicked(int tag);
 
 protected:
@@ -50,10 +79,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    QPixmap pixmapEnable;
-    QPixmap pixmapDisable;
+    QPixmap pixmapEnable;     //!< save pixmap enable state
+    QPixmap pixmapDisable;     //!< save pixmap disable state
 
-    int tag;
+    int tag;     //!< save tag
 };
 
 /****************************************************************************/
@@ -67,7 +96,7 @@ class CSVCRotaryValveDlg : public MainMenu::CDialogFrame
 public:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function CSVCRotaryValveDlg
+     *  \brief  Definition/Declaration of constructor function CSVCRotaryValveDlg
      *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/
@@ -109,9 +138,9 @@ private:
     QGraphicsScene *mp_Scene;   //!< graphics scene
 
     QGraphicsPixmapItem *rotaryValvePointer; //!< rotary valve position pointer
-    CGraphicsPixmapItem *rotaryValvePos[32]; // 0 - 15: tube, 16-31: sealing
+    CGraphicsPixmapItem *rotaryValvePos[32]; //!< 0 - 15: tube, 16-31: sealing
 
-    int tag; // save rotay valve position
+    int tag; //!< save rotay valve position
 };
 
 }//end of namespace SVCDiagnostics

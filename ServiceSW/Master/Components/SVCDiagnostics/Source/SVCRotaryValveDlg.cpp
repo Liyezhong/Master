@@ -29,12 +29,10 @@ namespace SVCDiagnostics {
 
 CGraphicsPixmapItem::CGraphicsPixmapItem(QString file)
     : tag(0)
+    , pixmapEnable(QPixmap(file))
+    , pixmapDisable(QPixmap(pixmapEnable.size()))
 {
-    pixmapEnable = QPixmap(file);
-
-    pixmapDisable = QPixmap(pixmapEnable.size());
     pixmapDisable.fill(Qt::transparent);
-
     setPixmap(pixmapDisable);
 }
 
@@ -193,7 +191,7 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
 
 void CSVCRotaryValveDlg::SetPos(bool flag, qint32 position)
 {
-    static const int tag_table[32] = {
+    static const qint32 tag_table[32] = {
         14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,  0, 15, // tube position
         29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 31, 30  // sealing position
     };
@@ -216,7 +214,7 @@ void CSVCRotaryValveDlg::SetPos(bool flag, qint32 position)
 
 void CSVCRotaryValveDlg::GetPos(bool &flag, qint32 &position)
 {
-    static const int pos_table[32] = {
+    static const qint32 pos_table[32] = {
         15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, // tube position
         14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, 15  // sealing position
     };

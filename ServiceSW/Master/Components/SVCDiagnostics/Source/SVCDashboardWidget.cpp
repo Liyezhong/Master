@@ -10,6 +10,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
+#include "SVCDiagnostics/Include/SVCRotaryValveDlg.h"
 
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 
@@ -374,23 +375,23 @@ void CSVCDashboardWidget::OnSelectPosition()
             return;
         }
     }
-    Text = "Please select an option and press OK to continue.";
-    Diagnostics::CSelectBottleNReagentDialog* p_SelectDlg = new Diagnostics::CSelectBottleNReagentDialog(16, this);
-    p_SelectDlg->SetRadioButtonVisible(false);
-    //p_SelectDlg->SetTitle(QString("Select Position"));
-    p_SelectDlg->SetLableText(Text);
 
-    if (p_SelectDlg->exec() == 0) {
-        delete p_SelectDlg;
+    SVCDiagnostics::CSVCRotaryValveDlg rotaryValveDlg(this);
+    rotaryValveDlg.SetDialogTitle(tr("Rotary valve Dialog"));
+    rotaryValveDlg.SetPos(CurrentTubeFlag, CurrentPosition);
+    if (rotaryValveDlg.exec() == 0)
         return;
-    }
 
-    int Position = p_SelectDlg->GetBottleNumber();
-    delete p_SelectDlg;
+    bool flag;
+    qint32 pos;
+    rotaryValveDlg.GetPos(flag, pos);
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(Position);
+    if ( flag == CurrentTubeFlag && pos == CurrentPosition)
+        return;
+
+    Text = QString("Rotating Rotary Valve to position %1").arg(pos);
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
-    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(true, Position);
+    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, pos);
     mp_MsgDlg->HideWaitingDialog();
 
     qDebug()<<"move position result :"<<Ret;
