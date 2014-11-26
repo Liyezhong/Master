@@ -2301,6 +2301,36 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
+void SchedulerMainThreadController::CheckCarbonFilterExpired()
+{
+    //Check for Service
+    DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
+    QString strLastOperateResetDate = pUserSetting->GetOperationLastResetDate();
+    if (!strLastOperateResetDate.isEmpty())
+    {
+        QDateTime lastOperateResetDate = QDateTime::fromString(strLastOperateResetDate);
+        int diffDays = lastOperateResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+        if (diffDays >= 365)
+        {
+           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
+        }
+    }
+
+    QString strLastActiveCarbonResetDate = pUserSetting->GetActiveCarbonLastResetDate();
+    if (!strLastActiveCarbonResetDate.isEmpty())
+    {
+        QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
+        int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
+        if ((diffDaysActiveCarbon >= 45) && (diffDaysActiveCarbon < 60))
+        {
+           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING);
+        }
+        else if (diffDaysActiveCarbon >= 60)
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM);
+        }
+    }
+}
 
 //client-->master
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
@@ -2330,6 +2360,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         {
             RaiseEvent(EVENT_SCHEDULER_REC_CONTINUE_PROGRAM,QStringList()<<ProgramName); //log
         }
+        CheckCarbonFilterExpired();
         return;
     }
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
@@ -2343,48 +2374,6 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_DRAIN)
     {
         RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,QStringList()<<ProgramName); //log
-    }
-
-    //Check for Service
-    DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
-    QString strLastOperateResetDate = pUserSetting->GetOperationLastResetDate();
-    if (!strLastOperateResetDate.isEmpty())
-    {
-        QDateTime lastOperateResetDate = QDateTime::fromString(strLastOperateResetDate);
-        int diffDays = lastOperateResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
-        if (diffDays >= 365)
-        {
-           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
-        }
-    }
-
-
-    QString strLastActiveCarbonResetDate = pUserSetting->GetActiveCarbonLastResetDate();
-    if (!strLastActiveCarbonResetDate.isEmpty())
-    {
-        QDateTime lastActiveCarbonResetDate = QDateTime::fromString(strLastActiveCarbonResetDate);
-        int diffDaysActiveCarbon = lastActiveCarbonResetDate.daysTo(Global::AdjustedTime::Instance().GetCurrentDateTime());
-
-        //int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
-        /*to do...
-         *int warningthreshold = 0;
-        if (1 == usedExhaustSystem)
-        {
-            warningthreshold = 30;
-        }
-        else
-        {
-            warningthreshold = 45;
-        }*/
-
-        if ((diffDaysActiveCarbon >= 45) && (diffDaysActiveCarbon < 60))
-        {
-           Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING);
-        }
-        else if (diffDaysActiveCarbon >= 60)
-        {
-            Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM);
-        }
     }
 }
 

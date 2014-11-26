@@ -549,6 +549,14 @@ typedef struct
          void GetStringIDList(quint32 ErrorID,
                               Global::tTranslatableStringList &EventStringParList,
                               Global::tTranslatableStringList &EventRDStringParList);
+
+         /****************************************************************************/
+         /*!
+          *  \brief Check active carbon filter is expired
+          *
+          */
+         /****************************************************************************/
+         void CheckCarbonFilterExpired();
 signals:
          /****************************************************************************/
          /*!
