@@ -444,18 +444,6 @@ void CReagentStatusModel::SetUserSettings(DataManager::CUserSettings *p_UserSett
 /*!
  *  \brief Returns item model flags of a cell
  *
- *  \return Flags of the cell
- */
-/****************************************************************************/
-void CReagentStatusModel::ResetAndUpdateModel()
-{
-    beginResetModel();
-    endResetModel();
-}
-/****************************************************************************/
-/*!
- *  \brief Returns item model flags of a cell
- *
  *  \iparam Index = Index of a table cell
  *
  *  \return Flags of the cell

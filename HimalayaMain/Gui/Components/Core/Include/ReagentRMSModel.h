@@ -64,7 +64,6 @@ public:
     Qt::ItemFlags flags(const QModelIndex &Index) const;
     QModelIndex CreateIndex(int Row, int Column);
 
-    void ResetAndUpdateModel();
     /****************************************************************************/
     /**
      * \brief Returns the position of Reagent to be selected

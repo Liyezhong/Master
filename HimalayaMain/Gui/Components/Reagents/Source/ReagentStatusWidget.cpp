@@ -200,7 +200,6 @@ void CReagentStatusWidget::RMSChanged(const Global::RMSOptions_t RMSValue)
     m_ReagentStatusModel.SetRMSOption(RMSValue);
     m_RMSOptions = RMSValue;
     ControlColumnShow();
-    m_ReagentStatusModel.ResetAndUpdateModel();
 }
 
 void CReagentStatusWidget::RMSCleaningChanged(const Global::RMSOptions_t RMSValue)
@@ -208,7 +207,6 @@ void CReagentStatusWidget::RMSCleaningChanged(const Global::RMSOptions_t RMSValu
     m_ReagentStatusModel.SetRMSCleaningOption(RMSValue);
     m_RMSCleaningOptions = RMSValue;
     ControlColumnShow();
-    m_ReagentStatusModel.ResetAndUpdateModel();
 }
 
 void CReagentStatusWidget::ControlColumnShow()
@@ -597,7 +595,6 @@ void CReagentStatusWidget::StationReagentUpdated(const QString& StationId)
 {
     Q_UNUSED(StationId)
     m_ReagentStatusModel.UpdateReagentList();
-    m_ReagentStatusModel.ResetAndUpdateModel();
     mp_TableWidget->selectRow(m_CurrentIndex.row());
 }
 

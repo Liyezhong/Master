@@ -297,7 +297,6 @@ void CReagentStationWidget::ResetButtons()
 void CReagentStationWidget:: StationReagentUpdated(const QString& StationId)
 {
     m_ReagentStationModel.UpdateReagent(StationId);
-    m_ReagentStationModel.ResetAndUpdateModel();
 }
 
 void CReagentStationWidget::UpdateSelectedStationList(QList<QString>& stationList)

@@ -210,14 +210,6 @@ signals:
      */
     /****************************************************************************/
     void FavoriteProgramListUpdated(DataManager::CProgram &);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This siganl is emitted when reagents are updated.
-     */
-    /****************************************************************************/
-    void ReagentsUpdated();
-
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when the ProgramList is updated and informs

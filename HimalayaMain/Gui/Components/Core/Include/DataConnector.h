@@ -429,10 +429,16 @@ signals:
     void ProgramsDeleted();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ReagentsUpdated
+     *  \brief  Definition/Declaration of signal ReagentUpdated
      */
     /****************************************************************************/
-    void ReagentsUpdated();
+    void ReagentUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ReagentAdded
+     */
+    /****************************************************************************/
+    void ReagentAdded();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UserSettingsUpdated

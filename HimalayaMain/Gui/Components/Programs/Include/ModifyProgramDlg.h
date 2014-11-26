@@ -266,13 +266,6 @@ signals:
     void ProgramIconUpdated();
     /****************************************************************************/
     /*!
-     *  \brief This siganl is emitted when reagents are updated.
-     */
-    /****************************************************************************/
-    void ReagentsUpdated();
-
-    /****************************************************************************/
-    /*!
      *  \brief This signal is emitted when a program is updated.
      *
      *  \iparam Program = Selected Program.

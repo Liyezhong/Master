@@ -440,7 +440,6 @@ void CModifyReagentRMSDlg::OnOk()
         }
         emit AddReagent(m_Reagent);
     }
-    accept();
 }
 
 /****************************************************************************/

@@ -103,7 +103,6 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
-    CONNECTSIGNALSLOT(p_Parent, ReagentsUpdated(), this, ReagentTableUpdate());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(),this,UpdateUserSetting());
 }
@@ -473,18 +472,6 @@ void CModifyProgramStepDlg::OnOk()
 void CModifyProgramStepDlg::OnCancel()
 {
     reject();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Updates the reagent list table.
- */
-/****************************************************************************/
-void CModifyProgramStepDlg::ReagentTableUpdate()
-{
-    if (mp_ReagentList) {
-
-    }
 }
 
 /****************************************************************************/

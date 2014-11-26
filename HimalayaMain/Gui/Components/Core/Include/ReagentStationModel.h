@@ -51,7 +51,6 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const;
-    void ResetAndUpdateModel();
     void UpdateReagent(const QString &StationId);
 
      Qt::ItemFlags flags(const QModelIndex &Index) const;

@@ -466,16 +466,7 @@ QModelIndex CReagentRMSModel::CreateIndex(int Row, int Column)
 {
     return createIndex(Row, Column);
 }
-/****************************************************************************/
-/*!
- *  \brief Returns item model flags of a cell
- */
-/****************************************************************************/
-void CReagentRMSModel::ResetAndUpdateModel()
-{
-    beginResetModel();
-    endResetModel();
-}
+
 
 
 } // end namespace Core

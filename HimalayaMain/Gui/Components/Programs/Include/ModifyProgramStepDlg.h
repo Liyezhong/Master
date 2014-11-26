@@ -161,12 +161,6 @@ private slots:
     void OnSelectionChanged(QModelIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of ReagentTableUpdate
-     */
-    /****************************************************************************/
-    void ReagentTableUpdate();
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
@@ -179,14 +173,6 @@ private slots:
     void UpdateUserSetting();
 
 signals:
-
-    /****************************************************************************/
-    /*!
-     *  \brief This siganl is emitted when reagents are updated.
-     */
-    /****************************************************************************/
-    void ReagentsUpdated();
-
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when a new program step is added.

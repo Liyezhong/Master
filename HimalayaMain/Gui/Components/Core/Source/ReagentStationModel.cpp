@@ -269,16 +269,6 @@ void CReagentStationModel::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
- */
-/****************************************************************************/
-void CReagentStationModel::ResetAndUpdateModel()
-{
-    beginResetModel();
-    endResetModel();
-}
-/****************************************************************************/
-/*!
- *  \brief Returns item model flags of a cell
  *
  *  \iparam Index = Index of a table cell
  *

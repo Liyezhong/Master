@@ -94,7 +94,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     (void)m_PixmapParaffinbathBackground.load(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png");
     (void)m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
     (void)m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
-    CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
+    CONNECTSIGNALSLOT(mp_DataConnector, ReagentUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
     PrepareStationItemLabel();

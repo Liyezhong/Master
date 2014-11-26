@@ -100,8 +100,6 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     CONNECTSIGNALSLOT(mp_Ui->btnPrgName, clicked(), this, OnEditName());
     CONNECTSIGNALSLOT(mp_Ui->btnPrgIcon, clicked(), this, OnIconClicked());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-    CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgStepDlg, ReagentsUpdated());
-
     CONNECTSIGNALSLOT(mp_ModifyProgStepDlg, AddProgramStep(DataManager::CProgramStep*,bool),
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
     CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgramIcon(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));

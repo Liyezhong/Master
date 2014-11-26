@@ -65,19 +65,20 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
         mp_Ui->pageReagents->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
     }
     // call when reagents are updated
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagents, UpdateReagentList());
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentUpdated(), mp_Ui->pageReagents, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+
     // call when Reagent group is updated, since the color is changed
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagents, UpdateReagentList());
     // for the reagent group
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagentGroup, UpdateReagentGroupList());
     // by calling reagent list it updates all the stations
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
+
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
     CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
 
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
     CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
 

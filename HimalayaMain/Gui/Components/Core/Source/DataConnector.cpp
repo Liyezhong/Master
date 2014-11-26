@@ -276,7 +276,7 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
     mp_WaitDialog->accept();
     if (Ack.GetStatus() == true) {
         emit DateTimeAcked();
-        ReagentsUpdated();//update for reagent expired
+        emit ReagentUpdated();//update for reagent expired
     }
     else {
         if (Ack.GetText().length() > 0) {
@@ -655,10 +655,9 @@ void CDataConnector::AddNewReagentHandler(Global::tRefType Ref, const MsgClasses
     ReagentDataStream >> Reagent;
     Result = ReagentList->AddReagent(&Reagent);
     if (Result) {
-        emit ReagentsUpdated();
+        emit ReagentAdded();
         (void)ReagentList->GetNextFreeReagentID(true);
         mp_WaitDialog->accept();
-        qDebug()<<"ReagentsUpdated emitted";
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
@@ -681,7 +680,7 @@ void CDataConnector::UpdateReagentHandler(Global::tRefType Ref, const MsgClasses
     Result = ReagentList->UpdateReagent(&Reagent);
     if (Result) {
         mp_WaitDialog->accept();
-        emit ReagentsUpdated();
+        emit ReagentUpdated();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
@@ -706,7 +705,7 @@ void CDataConnector::UpdateReagentGroupHandler(Global::tRefType Ref, const MsgCl
     if(Result){
         mp_WaitDialog->accept();
         emit ReagentGroupUpdated();
-        emit ReagentsUpdated();
+        emit ReagentUpdated();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
@@ -874,7 +873,7 @@ void CDataConnector::ReagentRemoveHandler(Global::tRefType Ref,
     Result = ReagentList->DeleteReagent(Command.GetReagentID());
     if (Result && ResultUpdateStation) {
         mp_WaitDialog->accept();
-        emit ReagentsUpdated();
+        emit ReagentUpdated();
     }
     else {
         Result = false;
@@ -907,7 +906,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         case NetCommands::REAGENT:
             DataStream >> *ReagentList;
             ReagentList->SetDataVerificationMode(false);
-            emit ReagentsUpdated();
+            emit ReagentUpdated();
             break;
         case NetCommands::REAGENTGROUP:            
             DataStream >> *ReagentGroupList;
