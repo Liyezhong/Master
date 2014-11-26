@@ -65,6 +65,7 @@ typedef struct
 	qreal			TempRV1;       ///<  Definition/Declaration of variable TempRV1
 	qreal			TempRV2;       ///<  Definition/Declaration of variable TempRV2
 	RVPosition_t	PositionRV;       ///<  Definition/Declaration of variable PositionRV
+    quint32         LowerLimit;         ///< Definition/Declaration of variable LowerLimit
 	qreal			TempRTSide;       ///<  Definition/Declaration of variable TempRTSide
 	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
 	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus

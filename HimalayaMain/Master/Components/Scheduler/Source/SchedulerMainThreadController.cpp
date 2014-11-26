@@ -3095,6 +3095,7 @@ bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
 
     m_CurrentBottlePosition.ReagentGrpId = reagentGrpId;
     m_CurrentBottlePosition.RvPos = tubePos;
+    m_CurrentBottlePosition.StationID = stationInfo.StationID;
 
     LogDebug(QString("Bottle check for tube %1").arg(tubePos));
     CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
@@ -3907,6 +3908,7 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
             }
         }
     }
+    m_CurrentBottlePosition.RvPos = ret;
     return ret;
 }
 
@@ -3929,6 +3931,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
             }
         }
     }
+    m_CurrentBottlePosition.RvPos = ret;
     return ret;
 }
 
@@ -4345,4 +4348,67 @@ void SchedulerMainThreadController::OnExitedInitState()
 {
     InitProgramStatus();
 }
+
+void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
+                                                    Global::tTranslatableStringList &EventStringParList,
+                                                    Global::tTranslatableStringList &EventRDStringParList)
+{
+    quint32 InternalSteps = 0;
+    quint32 RVPosition = 0;
+    switch(ErrorID)
+    {
+        case 513040012:
+        case 512040013:
+        case 513040161:
+        case 513040163:
+            EventStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            break;
+        case 513040203:
+        case 513040201:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID)<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().PressureAL);
+            break;
+        case 513040014:
+        case 513040241:
+        case 511040101:
+        case 511040221:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            break;
+        case 513040501:
+        case 512040520:
+        case 512040523:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1);
+            break;
+        case 513040511:
+        case 512040530:
+        case 512040533:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2);
+            break;
+        case 513030031:
+        case 513030033:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            RVPosition = (quint32)m_ProgramStatusInfor.GetLastRVPosition();
+            InternalSteps =m_SchedulerCommandProcessor->HardwareMonitor().PositionRV - RVPosition;
+            EventRDStringParList<<QString("%1").arg(RVPosition)<<QString("%1").arg(m_CurrentBottlePosition.RvPos)
+                               <<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().LowerLimit)
+                               <<QString("%1").arg(InternalSteps);
+            break;
+        case 513040020:
+        case 511040021:
+        case 511040022:
+        case 512040052:
+        case 512040053:
+            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(m_PressureAL);
+            break;
+        default:
+            EventStringParList << QString("(%1)").arg(ErrorID);
+            break;
+    }
+}
+
 }

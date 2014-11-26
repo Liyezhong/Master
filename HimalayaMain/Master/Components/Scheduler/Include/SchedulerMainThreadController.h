@@ -126,6 +126,7 @@ typedef struct
 typedef struct
 {
     QString         ReagentGrpId;           //!< reagent group ID
+    QString         StationID;              //!< the current StationID
     RVPosition_t    RvPos;                  //!< RV position
 }BottlePosition_t;
 
@@ -535,6 +536,19 @@ typedef struct
           */
          /****************************************************************************/
          bool ConstructSlaveModuleAttrList(QString moduleName);
+
+         /****************************************************************************/
+         /*!
+          *  \brief Get the stringID for ErrHandling and Service
+          *
+          *  \param quint32 - ErrorID
+          *  \param Global::tTranslatableStringList - EventStringParList
+          *  \param Global::tTranslatableStringList - EventRDStringParList
+          */
+         /****************************************************************************/
+         void GetStringIDList(quint32 ErrorID,
+                              Global::tTranslatableStringList &EventStringParList,
+                              Global::tTranslatableStringList &EventRDStringParList);
 signals:
          /****************************************************************************/
          /*!
@@ -876,7 +890,13 @@ protected:
                                   const bool ActionResult, const bool Active = true)
         {
             if(EventKey == 0)
-            {
+            {                // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
+                if (EventID < 0x1000)
+                {
+                    LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
+                    EventID = DCL_ERR_DEV_INTER_SW_ERROR;
+                }
+
                 quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
                 if(ErrorID == 0)// not find
                 {
@@ -888,15 +908,11 @@ protected:
                 {
                     m_CurErrEventID = EventID;
                 }
-                // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
-                if (EventID < 0x1000)
-                {
-                    LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
-                    EventID = DCL_ERR_DEV_INTER_SW_ERROR;
-                }
 
-                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active,
-                                                       Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
+                Global::tTranslatableStringList EventStringParList;
+                Global::tTranslatableStringList EventRDStringParList;
+                GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
+                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
             }
             else
             {
