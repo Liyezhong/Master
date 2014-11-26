@@ -520,7 +520,13 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    //m_Program.SetName(mp_Ui->btnPrgName->text());
+    if (m_bIconSelected == false || m_Icon.isEmpty()) {
+        mp_MessageDlg->SetText(m_strSeclectIcon);
+        (void) mp_MessageDlg->exec();
+        mp_Ui->btnSave->setEnabled(true);
+        return;
+    }
+
     if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
         m_Program.SetName(m_strLastProgName);
     }
@@ -538,12 +544,7 @@ void CModifyProgramDlg::OnSave()
         emit AddProgram(m_Program);
     }
     else {
-        if (m_bIconSelected == false || m_Icon.isEmpty()) {
-            mp_MessageDlg->SetText(m_strSeclectIcon);
-            (void) mp_MessageDlg->exec();
-            mp_Ui->btnSave->setEnabled(true);
-            return;
-        }
+
 
         if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
             mp_NewProgram->SetName(m_strLastProgName);
