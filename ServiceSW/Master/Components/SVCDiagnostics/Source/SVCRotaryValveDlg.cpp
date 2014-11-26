@@ -97,6 +97,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     mp_Scene->setBackgroundBrush(QImage(":/Images/RotaryValveDetail.png"));
     ui->graphicsView->setScene(mp_Scene);
 
+    // tube item init
     qreal angle = 0;
     for (int i = 0; i < 16; i++, angle += 11.25 * 2) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveTube.png");
@@ -108,6 +109,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
         rotaryValvePos[i]->SetTag(i);
     }
 
+    // sealing item init
     angle = 11.25;
     for (int i = 16; i < 32; i++, angle += 11.25 * 2) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveSealing.png");
@@ -119,6 +121,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
         rotaryValvePos[i]->SetTag(i);
     }
 
+    // pointer init
     rotaryValvePointer = mp_Scene->addPixmap(QPixmap(":/Images/RotaryValvePointer.png"));
     rotaryValvePointer->setPos(QPoint(mp_Scene->width()/2, mp_Scene->height()/2));
     rotaryValvePointer->setPos(QPoint(191,  53));  // P1

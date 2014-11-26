@@ -22,23 +22,58 @@
 
 #include <QPushButton>
 
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class SVCButton
+ */
 /****************************************************************************/
 class SVCButton : public QPushButton
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SVCButton
+     *  \iparam isBig = whether select big pixmap
+     *  \iparam parent = the parent graphics item
+     */
+    /****************************************************************************/
     explicit SVCButton(bool isBig = true, QWidget *parent=0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SVCButton
+     *  \iparam text = button text
+     *  \iparam isBig = whether select big pixmap
+     *  \iparam parent = the parent graphics item
+     */
+    /****************************************************************************/
     explicit SVCButton(const QString &text, bool isBig = true, QWidget *parent=0);
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setPos, change button position;
+     */
+    /****************************************************************************/
     void setPos(int x, int y);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setPos, change button position;
+     */
+    /****************************************************************************/
     void setPos(QPoint pos);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setSize, change button size;
+     */
+    /****************************************************************************/
     void setSize(int width, int height);
 
 private:
-    int width;
-    int height;
+    int width; //!< label width
+    int height; //!< label height
 };
 
 #endif // SVC_BUTTON_H
