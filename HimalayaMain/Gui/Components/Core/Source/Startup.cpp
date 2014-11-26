@@ -76,7 +76,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSIGNAL(pApp, InteractStart(), mp_Dashboard, OnInteractStart());
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
 
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));

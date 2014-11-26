@@ -312,4 +312,14 @@ void CProgramModel :: SelectedRowIndex(int Index)
     m_CurrentIndex = Index;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Updates the model whenever GUI receives an updated XML from Master
+ */
+/****************************************************************************/
+void CProgramModel::OnUpdateProgramList()
+{
+    beginResetModel();
+    endResetModel();
+}
 } // end namespace Programs

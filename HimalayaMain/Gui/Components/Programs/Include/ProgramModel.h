@@ -86,6 +86,13 @@ private:
     int m_CurrentIndex;       ///<  Definition/Declaration of variable m_CurrentIndex
     QStringList m_ProgramIDList;       ///<  Definition/Declaration of variable m_ProgramIDList
 
+private slots:
+    /****************************************************************************/
+    /*!
+    *  \brief  Definition/Declaration of OnUpdateProgramList
+    */
+    /****************************************************************************/
+    void OnUpdateProgramList();
 signals:
     /****************************************************************************/
     /*!

@@ -629,7 +629,7 @@ void CDataConnector::ProgramRemoveHandler(Global::tRefType Ref,
     QString ProgramId = Command.GetItemId();
     Result = ProgramList-> DeleteProgram(ProgramId);
     if (Result) {
-        emit ProgramsDeleted();
+        emit ProgramDeleted();
     }
     else {
         Result = false;

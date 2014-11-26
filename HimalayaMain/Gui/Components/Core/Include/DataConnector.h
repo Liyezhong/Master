@@ -423,10 +423,10 @@ signals:
     void ProgramsInitialized(bool);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramsDeleted
+     *  \brief  Definition/Declaration of signal ProgramDeleted
      */
     /****************************************************************************/
-    void ProgramsDeleted();
+    void ProgramDeleted();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ReagentUpdated
