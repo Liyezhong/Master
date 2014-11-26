@@ -2428,6 +2428,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 {
     m_hasParaffin = false;
     this->SendAcknowledgeOK(Ref);
+    m_delayTime = 0;
     QString curProgramID = Cmd.GetProgramID();
     m_CurProgramStepIndex = -1;
     (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
