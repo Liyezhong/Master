@@ -73,6 +73,7 @@ int CHeatingTestWithWater::Run(void)
     int ret, i;
     struct HeatingStatus heatingStatus;
     RetortInputDialog inputDialog(dlg->ParentWidget());
+
     QString tempExternal;
 
     text = tr("Please perform Retort Heating Test (Empty).<br/>"
@@ -134,10 +135,20 @@ int CHeatingTestWithWater::Run(void)
     // RV initialize
     text = tr("Initializing the rotary valve...");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVInitialize();
+    ret = dev->RVInitialize();
+    if (ret != RETURN_OK) {
+        dlg->HideWaitingDialog();
+        dlg->ShowRVMoveFailedDlg(title);
+        return RETURN_ERR_FAIL;
+    }
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(true, 13);
+    ret = dev->RVMovePosition(true, 13);
+    if (ret != RETURN_OK) {
+        dlg->HideWaitingDialog();
+        dlg->ShowRVMoveFailedDlg(title);
+        return RETURN_ERR_FAIL;
+    }
     dlg->HideWaitingDialog();
 
     CLevelSensorHeatingDialog HeatingDlg(dlg->ParentWidget());
@@ -161,24 +172,29 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->LSStopHeating();
     text = tr("Rotating Rotary Valve to sealing position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(false, 13);    
+    ret = dev->RVMovePosition(false, 13);
+    if (ret != RETURN_OK) {
+        dlg->HideWaitingDialog();
+        dlg->ShowRVMoveFailedDlg(title);
+        return RETURN_ERR_FAIL;
+    }
     text = tr("Release pressure...");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpReleasePressure();
      dlg->HideWaitingDialog();
 
-    text = tr("Please put the calibrated external thermometer into retort, and then close the retort lid lock.");
-    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-    if (ret == CDiagnosticMessageDlg::ABORT) {
-        text = tr("Rotating Rotary Valve to tube position 13");
-        dlg->ShowWaitingDialog(title, text);
-        (void)dev->RVMovePosition(true, 13);
-        text = tr("Start draining");
-        dlg->ShowWaitingDialog(title, text);
-        (void)dev->PumpDraining();
-        dlg->HideWaitingDialog();
-        return RETURN_OK;
-    }
+//    text = tr("Please put the calibrated external thermometer into retort, and then close the retort lid lock.");
+//    ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
+//    if (ret == CDiagnosticMessageDlg::ABORT) {
+//        text = tr("Rotating Rotary Valve to tube position 13");
+//        dlg->ShowWaitingDialog(title, text);
+//        (void)dev->RVMovePosition(true, 13);
+//        text = tr("Start draining");
+//        dlg->ShowWaitingDialog(title, text);
+//        (void)dev->PumpDraining();
+//        dlg->HideWaitingDialog();
+//        return RETURN_OK;
+//    }
 
     int t1 = p_TestCase->GetParameter("t1").toInt();
     qreal tempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
@@ -217,7 +233,12 @@ int CHeatingTestWithWater::Run(void)
         (void)dev->RetortStopHeating();
         text = tr("Rotating Rotary Valve to tube position 13");
         dlg->ShowWaitingDialog(title, text);
-        (void)dev->RVMovePosition(true, 13);
+        ret = dev->RVMovePosition(true, 13);
+        if (ret != RETURN_OK) {
+            dlg->HideWaitingDialog();
+            dlg->ShowRVMoveFailedDlg(title);
+            return RETURN_ERR_FAIL;
+        }
         text = tr("Start draining");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->PumpDraining();
@@ -243,7 +264,12 @@ int CHeatingTestWithWater::Run(void)
     (void)dev->RetortStopHeating();
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(true, 13);
+    ret = dev->RVMovePosition(true, 13);
+    if (ret != RETURN_OK) {
+        dlg->HideWaitingDialog();
+        dlg->ShowRVMoveFailedDlg(title);
+        return RETURN_ERR_FAIL;
+    }
     text = tr("Start draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();
@@ -266,7 +292,12 @@ __fail__:
     (void)dev->RetortStopHeating();
     text = tr("Rotating Rotary Valve to tube position 13");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->RVMovePosition(true, 13);
+    ret = dev->RVMovePosition(true, 13);
+    if (ret != RETURN_OK) {
+        dlg->HideWaitingDialog();
+        dlg->ShowRVMoveFailedDlg(title);
+        return RETURN_ERR_FAIL;
+    }
     text = tr("Start draining");
     dlg->ShowWaitingDialog(title, text);
     (void)dev->PumpDraining();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>361</width>
-    <height>241</height>
+    <height>323</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>76</y>
+     <y>156</y>
      <width>321</width>
      <height>27</height>
     </rect>
@@ -27,13 +27,17 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>22</y>
+     <y>40</y>
      <width>331</width>
-     <height>61</height>
+     <height>111</height>
     </rect>
    </property>
    <property name="text">
-    <string>Please enter the water temperature
+    <string>Please open the retort lid and use a calibrated 
+thermometer to measure the water temperature
+ in the middle of the retort (without contact to 
+the inner retort walls).
+Please enter the water temperature
 measured by calibrated external thermometer</string>
    </property>
   </widget>
@@ -41,7 +45,7 @@ measured by calibrated external thermometer</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>160</y>
+     <y>240</y>
      <width>321</width>
      <height>27</height>
     </rect>
@@ -51,7 +55,7 @@ measured by calibrated external thermometer</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>106</y>
+     <y>186</y>
      <width>331</width>
      <height>61</height>
     </rect>
@@ -65,7 +69,7 @@ for verification</string>
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>190</y>
+     <y>270</y>
      <width>87</width>
      <height>63</height>
     </rect>
@@ -93,6 +97,13 @@ for verification</string>
     </item>
    </layout>
   </widget>
+  <zorder>lineEdit</zorder>
+  <zorder>label</zorder>
+  <zorder>lineEdit_2</zorder>
+  <zorder>label_2</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>verticalSpacer</zorder>
+  <zorder>ok</zorder>
  </widget>
  <resources/>
  <connections/>

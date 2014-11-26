@@ -98,6 +98,8 @@ public:
         return mp_Parent;
     }
 
+    virtual void ShowRVMoveFailedDlg(QString& Title);
+
 protected:
     QWidget        *mp_Parent;              //!< Parent widget
     MainMenu::CMessageDlg *mp_WaitDlg;      //!< Wait dialog

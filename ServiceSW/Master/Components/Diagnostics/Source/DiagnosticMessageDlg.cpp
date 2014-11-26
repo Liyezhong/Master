@@ -138,4 +138,20 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& Me
     return Ret;
 }
 
+void CDiagnosticMessageDlg::ShowRVMoveFailedDlg(QString& Title)
+{
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
+    dlg->SetTitle(Title);
+    dlg->SetIcon(QMessageBox::Critical);
+    dlg->SetText("Rotating Rotary Valve failed.");
+    dlg->HideButtons();
+    dlg->SetButtonText(1, "OK");
+    dlg->setModal(true);
+    //qDebug()<<MessageText;
+
+    (void)dlg->exec();
+
+    delete dlg;
+}
+
 }
