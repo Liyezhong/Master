@@ -49,7 +49,7 @@
 		<FirmwareGetSlaveInfo SlaveType="3" />
 	</Firmware>
 	<PressureSensor>
-		<PressureSensorCalibrate TryNum="1" />
+		<PressureSensorCalibrate TryNum="1" FirstTime="1" />
 	</PressureSensor>
 	<SystemSelfTest>
 	</SystemSelfTest>

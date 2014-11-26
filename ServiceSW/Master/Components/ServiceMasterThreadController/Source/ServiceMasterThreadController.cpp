@@ -280,7 +280,7 @@ void ServiceMasterThreadController::RegisterCommands() {
 void ServiceMasterThreadController::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack) {
     Q_UNUSED(Ref);
     Q_UNUSED(Ack);
-    qDebug()<<"ServiceMasterThreadController::OnAckOKNOK";
+//    qDebug()<<"ServiceMasterThreadController::OnAckOKNOK";
 }
 /****************************************************************************/
 
@@ -1285,7 +1285,7 @@ void ServiceMasterThreadController::OnGetDataContainersCommand(Global::tRefType 
 /****************************************************************************/
 void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
-    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
+//    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
 
     SendAcknowledgeOK(Ref, AckCommandChannel);
     switch(Cmd.m_MessageType)
@@ -1339,7 +1339,7 @@ void ServiceMasterThreadController::sendManufacturingTestCommand(Service::Module
 
 void ServiceMasterThreadController::sendServiceTestRequest(QString ReqName, QStringList Params)
 {
-    qDebug()<<"ServiceMasterThreadController::sendServiceTestRequest -- ReqName="<<ReqName;
+//    qDebug()<<"ServiceMasterThreadController::sendServiceTestRequest -- ReqName="<<ReqName;
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdServiceTest(ReqName, Params)), m_CommandChannelDeviceThread);
 }
 

@@ -2005,8 +2005,12 @@ void WrapperFmPressureControl::WritePressureDrift(float PressureDrift)
     FILE* pFile = fopen(FileName.toStdString().c_str(), "w+");
     fprintf(pFile, "%s", msg.toStdString().c_str());
     fflush(pFile);
+
+    int fd = fileno(pFile);
+    fsync(fd);
+
     fclose(pFile);
-    system("sync");
+
     m_PressureDrift = PressureDrift;
 }
 

@@ -2780,11 +2780,20 @@ void ManufacturingTestHandler::CalibratePressureSensor()
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
 
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    int FirstTime = p_TestCase->GetParameter("FirstTime").toInt();
+
+    if (FirstTime == 1) {
+        p_TestCase->SetParameter("FirstTime", "0");
+        mp_PressPump->WritePressureDrift(0.0);
+    }
+
     (void)mp_PressPump->SetValve(0, 0);
     (void)mp_PressPump->SetValve(1, 0);
     mp_Utils->Pause(20*1000);
 
-    qreal Pressure = mp_PressPump->GetPressure();
+    float Pressure = mp_PressPump->GetPressure();
 
     float Drift(0);
 
@@ -2798,9 +2807,11 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     else {
         (void)Status.insert("Result", "1"); // Set drift and retry
         Drift =  mp_PressPump->ReadPressureDrift();
+
         (void)mp_PressPump->WritePressureDrift(Drift+Pressure);
     }
-    Drift =  mp_PressPump->ReadPressureDrift();
+//    Drift =  mp_PressPump->ReadPressureDrift();
+//    qDebug()<<"Drift="<<Drift << " Pressure="<<Pressure;
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
 }

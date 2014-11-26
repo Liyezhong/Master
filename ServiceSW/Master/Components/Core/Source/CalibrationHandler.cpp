@@ -21,6 +21,10 @@
 #include "Core/Include/CalibrationHandler.h"
 #include <QApplication>
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
+
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 //#include "Core/Include/CMessageString.h"
 
 namespace Core {
@@ -99,6 +103,9 @@ void CCalibrationHanlder::ServiceCalibation()
             Text = QApplication::translate("Core::CCalibrationHanlder",
                                               "Executing the first calibration, please wait...",
                                               0, QApplication::UnicodeUTF8);
+
+            // we reset the offset to 0 in case the old value is wrong after last failed calibration.
+            p_Dev->PumpWritePressureDrift(0);
         }
         else if (i==1) {
             Text = QApplication::translate("Core::CCalibrationHanlder",
@@ -152,7 +159,7 @@ void CCalibrationHanlder::ServiceCalibation()
     (void)MsgDlg->exec();
 
     (void)p_Dev->PumpGetPressure(&Pressure);
-    qDebug()<<"Get Pressure:"<<Pressure;
+
     if (qAbs(Pressure) > 1.5) {
         Text = QString("Pressure Sensor is defective. Please exchange it and repeat this calibration.");
     }
@@ -164,6 +171,7 @@ void CCalibrationHanlder::ServiceCalibation()
             (void)p_Dev->PumpWritePressureDrift(Pressure + Drift);
         }
     }
+    qDebug()<<"Get Drift="<<Drift;
 
 Calibation_Finished:
     MsgDlg->SetText(Text);
@@ -190,6 +198,15 @@ void CCalibrationHanlder::ManufacturingCalibation()
             Msg = QApplication::translate("Core::CCalibrationHanlder",
                                               "Executing the first calibration, please wait...",
                                               0, QApplication::UnicodeUTF8);
+
+
+            Service::ModuleTestCaseID Id = Service::PRESSURE_CALIBRATION;
+
+            QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+
+            DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+            p_TestCase->SetParameter("FirstTime", "1");
+
         }
         else if (i==1) {
             Msg = QApplication::translate("Core::CCalibrationHanlder",
@@ -219,7 +236,7 @@ void CCalibrationHanlder::ManufacturingCalibation()
             break;
         }
         else if (m_Result == 2) {
-            if (i==3) {
+            if (i==2) {
                 break;
             }
             Msg = QApplication::translate("Core::CCalibrationHanlder",

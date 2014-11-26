@@ -1648,8 +1648,8 @@ void ServiceTestHandler::Pause(quint32 MilliSeconds)
 
 void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
 {
-    qDebug()<<"HandleRequest:"<<"  ReqName="<<ReqName;
-    qDebug()<<Params;
+//    qDebug()<<"HandleRequest:"<<"  ReqName="<<ReqName;
+//    qDebug()<<Params;
 
     if (ReqName == "MainControlGetCurrent") {
         MainControlGetCurrent(ReqName, Params);

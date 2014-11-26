@@ -361,9 +361,9 @@ void ServiceDeviceController::ReturnManufacturingTestMsg(bool TestResult)
 
 void ServiceDeviceController::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results)
 {
-    qDebug()<<"ServiceDeviceController::OnReturnServiceRequestResult TestResult="<<ErrorCode;
-    qDebug()<<"ReqName="<<ReqName;
-    qDebug()<<Results;
+//    qDebug()<<"ServiceDeviceController::OnReturnServiceRequestResult TestResult="<<ErrorCode;
+//    qDebug()<<"ReqName="<<ReqName;
+//    qDebug()<<Results;
 
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage("Service Request Result"));
     commandPtr->m_ServErrorCode = ErrorCode;
@@ -396,7 +396,7 @@ void ServiceDeviceController::OnCmdModuleManufacturingTest(Global::tRefType Ref,
 {
     SendAcknowledgeOK(Ref);
 
-    qDebug()<<"ServiceDeviceController::OnCmdModuleManufacturingTest CmdType="<<Cmd.m_CommandType;
+//    qDebug()<<"ServiceDeviceController::OnCmdModuleManufacturingTest CmdType="<<Cmd.m_CommandType;
 
     emit ModuleManufacturingTest(Cmd.m_CommandType, Cmd.m_AbortTestCaseId);
 }
@@ -405,7 +405,7 @@ void ServiceDeviceController::OnCmdServiceRequest(Global::tRefType Ref, const De
 {
     SendAcknowledgeOK(Ref);
 
-    qDebug()<<"ServiceDeviceController::OnCmdServiceRequest ReqName="<<Cmd.m_ReqName;
+//    qDebug()<<"ServiceDeviceController::OnCmdServiceRequest ReqName="<<Cmd.m_ReqName;
 
     emit ServiceRequest(Cmd.m_ReqName, Cmd.m_Params);
 }

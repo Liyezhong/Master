@@ -1741,8 +1741,8 @@ void CStartup::SendFilesToMaster(QStringList FileList)
 
 void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results)
 {
-    qDebug()<<"CStartup::OnReturnServiceRequestResult Req="<<ReqName;
-    qDebug()<<Results;
+//    qDebug()<<"CStartup::OnReturnServiceRequestResult Req="<<ReqName;
+//    qDebug()<<Results;
 
     mp_ServDevProc->HandleServResult(ReqName, ErrorCode, Results);
 }

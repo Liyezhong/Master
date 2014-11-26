@@ -1336,7 +1336,7 @@ void ServiceDeviceProcess::HandleServResult(QString ReqName, int Error, QStringL
         (void)m_ResultsMap.insert(ReqName, Results);
     }
 
-    qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
+//    qDebug()<<"ServiceDeviceProcess::HandleServResult req="<<ReqName<<" Error="<<Error;
 
     QEventLoop *loop = m_EventLoopMap.value(ReqName);
 
