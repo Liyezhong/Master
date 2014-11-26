@@ -117,7 +117,7 @@ int ServiceDeviceProcess::AlarmGetState(int LocalRemote, qint32 *RetState)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetState = Results.at(0).toInt();
@@ -144,7 +144,7 @@ int ServiceDeviceProcess::MainControlGetCurrent(quint8 SlaveType, quint16 *RetCu
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
@@ -171,7 +171,7 @@ int ServiceDeviceProcess::MainControlGetVoltage(quint8 SlaveType, quint16 *RetVo
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetVoltage = Results.at(0).toInt();
@@ -229,7 +229,7 @@ int ServiceDeviceProcess::OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, 
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (RetTempTop) {
@@ -263,7 +263,7 @@ int ServiceDeviceProcess::OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCur
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (RetCurrentTop) {
@@ -294,7 +294,7 @@ int ServiceDeviceProcess::OvenGetCoverSensorState(qint32 *RetCoverSensorState)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetCoverSensorState = Results.at(0).toInt();
@@ -320,7 +320,7 @@ int ServiceDeviceProcess::OvenGetSwitchType(int *RetSwitchType)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
@@ -345,7 +345,7 @@ int ServiceDeviceProcess::OvenTempControlIsOn(bool *RetIsOn)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetIsOn = Results.at(0).toInt();
@@ -401,7 +401,7 @@ int ServiceDeviceProcess::RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (RetTempSide) {
@@ -437,7 +437,7 @@ int ServiceDeviceProcess::RetortGetCurrent(quint16 *RetCurrentSide, quint16 *Ret
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (RetCurrentSide) {
@@ -468,7 +468,7 @@ int ServiceDeviceProcess::RetortGetLidLockState(qint32 *RetLidLockState)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetLidLockState = Results.at(0).toInt();
@@ -511,7 +511,7 @@ int ServiceDeviceProcess::RetortGetHeaterSwitchType(quint8 *RetSwitchType)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
@@ -698,7 +698,7 @@ int ServiceDeviceProcess::AirTubeGetTemp(qreal *RetTemp)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetTemp = Results.at(0).toFloat();
@@ -724,7 +724,7 @@ int ServiceDeviceProcess::AirTubeGetCurrent(quint16 *RetCurrent)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
@@ -749,7 +749,7 @@ int ServiceDeviceProcess::AirTubeTempControlIsOn(bool *RetIsOn)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetIsOn = Results.at(0).toInt();
@@ -802,7 +802,7 @@ int ServiceDeviceProcess::RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (RetTempSensor1) {
@@ -833,7 +833,7 @@ int ServiceDeviceProcess::RVGetCurrent(quint16 *RetCurrent)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
@@ -876,7 +876,7 @@ int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
 
     if (Ret == RETURN_ERR_FAIL) {
         QStringList Results = m_ResultsMap.value(ReqName);
-        qDebug()<<"Results = "<<Results;
+//        qDebug()<<"Results = "<<Results;
 
         if (Results.size()>0) {
 
@@ -904,7 +904,7 @@ int ServiceDeviceProcess::RVGetPosition(bool* TubeFlag, qint32 *Position)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         if (TubeFlag) {
@@ -952,7 +952,7 @@ int ServiceDeviceProcess::RVGetHeaterSwitchType(quint8 *RetSwitchType)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetSwitchType = Results.at(0).toInt();
@@ -977,7 +977,7 @@ int ServiceDeviceProcess::RVTempControlIsOn(bool *RetIsOn)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetIsOn = Results.at(0).toInt();
@@ -1030,7 +1030,7 @@ int ServiceDeviceProcess::LSGetTemp(qreal *RetTemp)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetTemp = Results.at(0).toFloat();
@@ -1054,7 +1054,7 @@ int ServiceDeviceProcess::LSGetCurrent(quint16 *RetCurrent)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetCurrent = Results.at(0).toInt();
@@ -1093,7 +1093,7 @@ int ServiceDeviceProcess::LSTempControlIsOn(bool *RetIsOn)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetIsOn = Results.at(0).toInt();
@@ -1159,7 +1159,7 @@ int ServiceDeviceProcess::PumpGetPressure(float *RetPressure)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetPressure = Results.at(0).toFloat();
@@ -1227,7 +1227,7 @@ int ServiceDeviceProcess::PumpSucking(quint32 DelayTime)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         Ret = Results.at(0).toInt();
@@ -1253,7 +1253,7 @@ int ServiceDeviceProcess::PumpDraining(quint32 DelayTime)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         Ret = Results.at(0).toInt();
@@ -1278,7 +1278,7 @@ int ServiceDeviceProcess::PumpReadPressureDrift(float *RetPressureDrift)
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
-    qDebug()<<"Results = "<<Results;
+//    qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
         *RetPressureDrift = Results.at(0).toFloat();
