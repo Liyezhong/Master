@@ -154,6 +154,7 @@ public:
 
     //! Request actual oven cover position
     MOCK_METHOD0(RVReqActRVPosition, RVPosition_t());
+    MOCK_METHOD0(GetCurrentLowerLimit, quint32());
 
     MOCK_METHOD6(RVStartTemperatureControlWithPID, ReturnCode_t(qreal NominalTemperature, quint8 SlopeTempChange, quint16 MaxTemperature, \
                 quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime));
