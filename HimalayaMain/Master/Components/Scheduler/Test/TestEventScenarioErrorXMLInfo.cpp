@@ -24,7 +24,7 @@
 #include <Global/Include/Utils.h>
 #include <Scheduler/Include/EventScenarioErrorXMLInfo.h>
 
-namespace EventHandler {
+namespace Scheduler {
 
 /****************************************************************************/
 /**
@@ -104,7 +104,7 @@ void TestEventScenarioErrorXMLInfo::UTAll()
 /******************************************************************ls**********/
 void TestEventScenarioErrorXMLInfo::initTestCase()
 {
-    m_pESEXMLInfo = QSharedPointer<EventScenarioErrXMLInfo>(new EventScenarioErrXMLInfo("../../../../../../Himalaya/HimalayaMain/Master/Components/Main/Build/Settings/EventScenarioErrorMap.xml"));
+    m_pESEXMLInfo = QSharedPointer<EventScenarioErrXMLInfo>(new EventScenarioErrXMLInfo("../../../Main/Build/Settings/EventScenarioErrorMap.xml"));
     bool ret = m_pESEXMLInfo->InitXMLInfo();
     QVERIFY(ret);
 }
@@ -127,6 +127,6 @@ void TestEventScenarioErrorXMLInfo::cleanupTestCase()
 
 } // end namespace EventHandler
 
-QTEST_MAIN(EventHandler::TestEventScenarioErrorXMLInfo)
+QTEST_MAIN(Scheduler::TestEventScenarioErrorXMLInfo)
 
 #include "TestEventScenarioErrorXMLInfo.moc"

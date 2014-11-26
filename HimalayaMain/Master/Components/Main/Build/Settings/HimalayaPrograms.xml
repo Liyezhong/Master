@@ -57,7 +57,7 @@
                 <Step ID="13" ReagentID="L8" Duration="10m" Temperature="65" Pressure="Off" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="L04" Name="FastProgram" NameID="50331653" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
+        <Program ID="L04" Name="FastProgram" NameID="" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="1">
                 <Step ID="0" ReagentID="L1" Duration="1m" Temperature="37" Pressure="On" Vacuum="On"/>
                 <!--Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
