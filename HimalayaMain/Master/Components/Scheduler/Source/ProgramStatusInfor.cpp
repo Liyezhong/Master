@@ -382,8 +382,8 @@ bool CProgramStatusInfor::CalculateTime(quint64& HeatingTime, quint64& UnHeating
         Slices = value.split(",");
     }
     //bool ok = false;
-    quint64 Start = 0;
-    quint64 End = 0;
+    qint64 Start = 0;
+    qint64 End = 0;
     for(int i = 0; i < Slices.length() / 2;)
     {
         Start = QDateTime::fromString(Slices.at(2 * i),DATE_TIME_FORMAT).toMSecsSinceEpoch();

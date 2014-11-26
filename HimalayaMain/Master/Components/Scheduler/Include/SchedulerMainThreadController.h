@@ -260,7 +260,8 @@ typedef struct
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
         bool    m_CmdDrainSR_Click;                           ///< CTRL_CMD_DRAIN_SR was clicked
-        bool    m_StopFilling;                                ///< When restart filling, need stop filling
+        qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
+        qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not

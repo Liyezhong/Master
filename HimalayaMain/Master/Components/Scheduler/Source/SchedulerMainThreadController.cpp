@@ -132,7 +132,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
     m_CmdDrainSR_Click = false;
-    m_StopFilling = false;
+    m_ReEnterFilling = 0;
+    m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
@@ -261,6 +262,11 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
+    Q_UNUSED(instanceID);
+    Q_UNUSED(usErrorGroup);
+    Q_UNUSED(usErrorID);
+    Q_UNUSED(usErrorData);
+    Q_UNUSED(timeStamp);
 #if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
@@ -709,7 +715,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                CmdALStopCmdExec* ALStopCmd = NULL;
                 /*lint -e525 */
                 switch (m_CurrentStepState)
                 {
@@ -724,18 +729,35 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     break;
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
                 case PSSM_FILLING:
-                    // Stop filling at first
-                    if(false == m_StopFilling)
+                    if(0 == m_ReEnterFilling)
                     {
-                        ALStopCmd = new CmdALStopCmdExec(500, this);
-                        ALStopCmd->SetCmdType(0);
-                        m_SchedulerCommandProcessor->pushCmd(ALStopCmd);
-                        m_StopFilling = true;
+                        this->HighPressure();
+                        m_ReEnterFilling = 1;
                     }
-                    else if( (DCL_ERR_FCT_CALL_SUCCESS == retCode) && ("Scheduler::ALStopCmdExec" == cmdName) )
+                    else if (1 == m_ReEnterFilling)
                     {
-                        m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
-                        m_StopFilling = false;
+                        if("Scheduler::ALPressure" == cmdName)
+                        {
+                            m_ReEnterFilling = 2;
+                            m_TimeReEnterFilling = QDateTime::currentMSecsSinceEpoch();
+                        }
+                        else
+                        {
+                            // Do nothing, just wait
+                        }
+                    }
+                    else if (2 == m_ReEnterFilling)
+                    {
+                        if ((QDateTime::currentMSecsSinceEpoch() - m_TimeReEnterFilling) > 20*1000)
+                        {
+                            m_ReEnterFilling = 0;
+                            m_TimeReEnterFilling = 0;
+                            m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
+                        }
+                        else
+                        {
+                            // Do nothing, just wait for timeout
+                        }
                     }
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
@@ -4145,21 +4167,25 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {
+        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
         RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError2.instanceID != 0)
     {
+        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
         RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError3.instanceID != 0 )
     {
+        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
         RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
     if (reportError4.instanceID != 0)
     {
+        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
         RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
         m_SchedulerMachine->SendErrorSignal();
     }
