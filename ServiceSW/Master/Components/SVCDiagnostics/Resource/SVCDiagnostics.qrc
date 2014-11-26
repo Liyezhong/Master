@@ -44,5 +44,9 @@
         <file>Images/Line1.png</file>
         <file>Images/Line2.png</file>
         <file>Images/Line3.png</file>
+        <file>Images/RotaryValveDetail.png</file>
+        <file>Images/RotaryValvePointer.png</file>
+        <file>Images/RotaryValveTube.png</file>
+        <file>Images/RotaryValveSealing.png</file>
     </qresource>
 </RCC>

@@ -31,7 +31,6 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Include/System/VentilationFanTest.h \
     ../Include/SelectBottleNReagentDialog.h \
     ../Include/LevelSensorHeatingDialog.h \
-    ../Source/Oven/OvenHeatingTestEmptyTimingDialog.h \
     ../Include/System/SystemSealingTest.h \
     ../Include/System/LiquidHoseTest.h \
     ../Include/System/LiquidHoseTestDlg.h \

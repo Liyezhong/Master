@@ -210,6 +210,7 @@ private:
 
     QTimer*  mp_RefreshTimer;         //!< Refresh label status timer
     Ui::CSVCDashboardWidget *mp_Ui;   //!< User interface
+
     QGraphicsScene *mp_Scene;         //!< The graphics scene
     Diagnostics::CDiagnosticMessageDlg* mp_MsgDlg; //!< Show message dialog
     CGraphicsItemPart* mp_Retort;     //!< retort item part
