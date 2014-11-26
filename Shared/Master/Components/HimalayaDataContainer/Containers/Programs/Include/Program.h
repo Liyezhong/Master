@@ -80,7 +80,7 @@ public:
      *  \iparam value = true enable,
      */
     /****************************************************************************/
-    bool SetBottleCheck(bool value) {m_BottleCheck = value;}
+    void SetBottleCheck(bool value) {m_BottleCheck = value;}
 
     /****************************************************************************/
     /*!

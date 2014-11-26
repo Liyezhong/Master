@@ -196,17 +196,17 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Get oven heating time by ms
-     *  \return quint64 form seconds that oven has been heated.
+     *  \return qint64 form seconds that oven has been heated.
      */
     /****************************************************************************/
-    quint64 GetOvenHeatingTime();
+    qint64 GetOvenHeatingTime();
     /****************************************************************************/
     /*!
      *  \brief Get the remaining time for melting paraffin by ms
-     *  \return quint64 form seconds for melting paraffin
+     *  \return qint64 form seconds for melting paraffin
      */
     /****************************************************************************/
-    quint64 GetRemaingTimeForMeltingParffin();
+    qint64 GetRemaingTimeForMeltingParffin();
     /****************************************************************************/
     /*!
      *  \brief update oven heating time
@@ -215,15 +215,15 @@ public:
      *  \return true / false
      */
     /****************************************************************************/
-    void UpdateOvenHeatingTime(quint64 Time, bool IsHeatingOn);
+    void UpdateOvenHeatingTime(qint64 Time, bool IsHeatingOn);
 
 private:
-    bool CalculateTime(quint64& HeatingTime, quint64& UnHeatingTime);
+    bool CalculateTime(qint64& HeatingTime, qint64& UnHeatingTime);
     bool ReadProgramStatusFile();
-    quint64 GetShutdownTime();
-    void SetShutdownTime(quint64 Time);
-    quint64 GetOvenHeatingStopDuration();
-    void SetOvenHeatingStopDuration(quint64 Duration);
+    qint64 GetShutdownTime();
+    void SetShutdownTime(qint64 Time);
+    qint64 GetOvenHeatingStopDuration();
+    void SetOvenHeatingStopDuration(qint64 Duration);
 
 private:
     void FlushFile();
@@ -231,11 +231,11 @@ private:
     QString GetStatus(const QString& key);
     QFile m_StatusFile;         //!< File for store program status
     QMap<QString, QString> m_Status;             //!< the pairs for keys and values
-    quint64 m_LastTimeUpdateHeatingTime;        //!< the last time of update oven heating time
+    qint64 m_LastTimeUpdateHeatingTime;        //!< the last time of update oven heating time
     bool m_LastHeatingOn;                       //!< store the last status of heating
-    quint64 m_MaxMeltTime;                      //!< max time for melting paraffin
-    quint64 m_RemainTime;                       //!< remain time for emlting paraffin
-    quint64 m_FirstStopHeatingTime;             //!< the first time for stop oven heating of on stop period
+    qint64 m_MaxMeltTime;                      //!< max time for melting paraffin
+    qint64 m_RemainTime;                       //!< remain time for emlting paraffin
+    qint64 m_FirstStopHeatingTime;             //!< the first time for stop oven heating of on stop period
     bool m_IsInit;                              //!< True - m_StatusFile has been read and clear, or not
 };
 } //end of scheduler name space

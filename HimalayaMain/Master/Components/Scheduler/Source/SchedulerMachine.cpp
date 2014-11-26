@@ -369,8 +369,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
-    quint32 EventKey = mp_SchedulerThreadController->GetEventKey();
-    //Global::EventObject::Instance().RaiseEvent(EventKey, 0, 0, flag);
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
 }
