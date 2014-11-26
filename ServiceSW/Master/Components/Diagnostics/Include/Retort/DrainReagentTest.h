@@ -73,11 +73,47 @@ private:
     /****************************************************************************/
     void ShowFinishDlg(int RetNum);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Select rotary valve postion
+     *  \iparam StepNum = The test step number
+     *  \oparam TubeFlag = Get the Tube flag
+     *  \oparam Postion = Get the current Postion
+     *  \return ture or false
+     */
+    /****************************************************************************/
     bool SelectPosition(int StepNum, bool& TubeFlag, int& Position);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To build vacuum.
+     *  \return ture of false
+     */
+    /****************************************************************************/
     bool BuildVacuum();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Check rotary valve temperature
+     *  \return ture of false
+     */
+    /****************************************************************************/
     bool CheckRVTemp(bool IsParaffin);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To check liquid heating tube temperature
+     *  \return ture of false
+     */
+    /****************************************************************************/
     bool CheckLTubeTemp();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To check oven temperatures
+     *  \return ture of false
+     */
+    /****************************************************************************/
     bool CheckOvenTemp();
 
 private:

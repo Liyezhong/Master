@@ -324,7 +324,6 @@ bool CDrainReagentTest::BuildVacuum()
 
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
     int Ret = p_Dev->PumpBuildPressure(TargetPressure);
-    mp_MessageDlg->HideWaitingDialog();
 
     if (Ret != RETURN_OK) {
         return false;
@@ -332,13 +331,14 @@ bool CDrainReagentTest::BuildVacuum()
 
     float CurrentPressure(0);
     while (WaitTime) {
+        (void)p_Dev->PumpGetPressure(&CurrentPressure);
         if (CurrentPressure < TargetPressure) {
+            mp_MessageDlg->HideWaitingDialog();
             return true;
         }
-
         p_Dev->Pause(1000);
     }
-
+    mp_MessageDlg->HideWaitingDialog();
     return false;
 }
 
