@@ -267,6 +267,7 @@ typedef struct
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
+        bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1490,6 +1491,12 @@ protected:
          */
         /****************************************************************************/
         void OnEnterPssMStepFin();
+        /****************************************************************************/
+        /*!
+         *  \brief  Slot for entering OnEnterDryStepState stage
+         */
+        /****************************************************************************/
+        void OnEnterDryStepState();
     };
 
 } // EONS ::Scheduler

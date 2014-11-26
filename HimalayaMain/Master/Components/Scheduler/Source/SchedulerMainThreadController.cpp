@@ -116,6 +116,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
+        ,m_RestartDryStep(true)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -2142,6 +2143,11 @@ void SchedulerMainThreadController::OnEnterPssMStepFin()
     m_PssmStepFinSeq = 0;
 }
 
+void SchedulerMainThreadController::OnEnterDryStepState()
+{
+    m_RestartDryStep = true;
+}
+
 /**
  * @brief Check which step has no safe reagent in a program.
  * @param ProgramID The the program Id, which to be checked.
@@ -3220,6 +3226,14 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     CmdRVReqMoveToRVPosition* CmdMvRV = NULL;
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr = NULL;
     Global::tRefType Ref;
+
+    if(m_RestartDryStep)
+    {
+        CurrentState = CDS_READY;
+        StepStartTime = 0;
+        warningReport = false;
+        m_RestartDryStep = false;
+    }
     switch (CurrentState)
     {
     case CDS_READY:
