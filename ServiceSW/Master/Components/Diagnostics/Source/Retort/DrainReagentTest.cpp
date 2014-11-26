@@ -51,8 +51,8 @@ int CDrainReagentTest::Run(void)
     }
 
     QString Text = "Select the content/condition within the retor.";
-    QString Button1 = "Paraffin";
-    QString Button2 = "Other Reagent";
+    QString Button1 = "Other Reagent";
+    QString Button2 = "Paraffin";
     CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
     p_SelectDlg->SetScrollWheelVisible(false);
     p_SelectDlg->SetTitle(m_MessageTitle);

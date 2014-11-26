@@ -374,6 +374,9 @@ void CSVCDashboardWidget::OnSelectPosition()
             mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
             return;
         }
+
+        CurrentTubeFlag = true;
+        CurrentPosition = 1;
     }
 
     SVCDiagnostics::CSVCRotaryValveDlg rotaryValveDlg(this);
@@ -522,18 +525,21 @@ QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)
     }
 
     QString PositionStr;
-    if (Position == 14) {
-        PositionStr = "P1";
-    }
-    else if (Position == 15) {
-        PositionStr = "P2";
-    }
-    else if (Position == 16) {
-        PositionStr = "P3";
+    if (!TubeFlag) {
+        PositionStr = "X";
     }
 
-    if (!TubeFlag) {
-        PositionStr.insert(0, "X");
+    if (Position == 14) {
+        PositionStr += "P1";
+    }
+    else if (Position == 15) {
+        PositionStr += "P2";
+    }
+    else if (Position == 16) {
+        PositionStr += "P3";
+    }
+    else {
+        PositionStr += QString("%1").arg(Position);
     }
 
     return PositionStr;
