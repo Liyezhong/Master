@@ -32,6 +32,7 @@
 		<SSystemLiquidHose RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure="30" TimeOut="60" KeepDuration="10" RecordTime="5" />
 	</System>
 	<Retort>
+		<SRetortDrainReagent RVTargetTemp1="80" RVTargetTemp2="40" RVPTargetTemp1="100" RVPTargetTemp2="70" TargetPressure="-0.5" TimeOut="10" OvenDiffTemp="3" />
 		<RetortHeatingTestEmpty RetortSideTargetTemp="70" RetortBottomTargetTemp="70" RetortDiffTemp="20" TempOffset="15" t="3" t1="900" t2="60"/>
 		<RetortHeatingTestWithWater RetortSideTargetTemp="95" RetortBottomTargetTemp="95" RetortSideTargetTemp1="50" RetortBottomTargetTemp1="50" RetortDiffTemp="20" TempOffset="6" TempOffset1="9" t="3" t1="3600"/>
 	</Retort>

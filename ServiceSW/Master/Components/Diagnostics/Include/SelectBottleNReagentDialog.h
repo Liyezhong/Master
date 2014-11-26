@@ -81,6 +81,7 @@ public:
     void SetTitle(QString& Title);
     void SetLableText(QString& Text);
     void SetRadioButtonText(QString& Button1, QString& Button2);
+    void HideAbort();
 protected:
     /****************************************************************************/
     /*!

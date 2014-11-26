@@ -129,6 +129,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for update Rotary valve labels
+     *  \iparam RVTubeFlag = rotary valve tube flag
      *  \iparam RVPosition = rotary valve position
      *  \iparam RVTemp1    = rotary valve temperature 1
      *  \iparam RVTemp2    = rotary valve temperature 2
@@ -136,7 +137,7 @@ public slots:
      *  \iparam RVCurrent  = rotary valve Current
      */
     /****************************************************************************/
-    void UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent);
+    void UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent);
 
     /****************************************************************************/
     /*!
@@ -179,7 +180,7 @@ public slots:
     void TimerStart(bool IsStart);
 private:
 
-    QString PostionToStr(qreal Position);
+    QString PostionToStr(bool TubeFlag, qreal Position);
 
     /****************************************************************************/
     /*!
@@ -229,6 +230,8 @@ private:
     CGraphicsItemPart* mp_Connect2;  //!< connect2 item part
     CGraphicsItemPart* mp_Connect3;  //!< connect3 item part
     CGraphicsItemPart* mp_Line1;     //!< connect line1 item part
+    CGraphicsItemPart* mp_Line2;     //!< connect line2 item part
+    CGraphicsItemPart* mp_Line3;     //!< connect line3 item part
 
     SVCButton* mp_SelectBtn;         //!< The button of select position
     SVCButton* mp_ValveInfoBtn;      //!< The button of valve state info

@@ -75,8 +75,9 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidg
     mp_ScrollWheel->SetNonContinuous();
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->widget->SetThreeDigitMode(true);
-    mp_Ui->radioButton2->setChecked(true);
+    //mp_Ui->radioButton2->setChecked(true);
     mp_Ui->widget->SetSubtitle("Bottle Number", 0);
+    mp_Ui->okBtn->setEnabled(false);
 
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
 
@@ -108,6 +109,7 @@ void CSelectBottleNReagentDialog::SetRadioButtonVisible(bool Visible)
     else {
         mp_Ui->radioButton1->hide();
         mp_Ui->radioButton2->hide();
+        mp_Ui->okBtn->setEnabled(true);
     }
 }
 
@@ -135,6 +137,11 @@ void CSelectBottleNReagentDialog::SetRadioButtonText(QString &Button1, QString &
 {
     mp_Ui->radioButton1->setText(Button1);
     mp_Ui->radioButton2->setText(Button2);
+}
+
+void CSelectBottleNReagentDialog::HideAbort()
+{
+    mp_Ui->abortBtn->hide();
 }
 
 /****************************************************************************/
@@ -181,6 +188,7 @@ void CSelectBottleNReagentDialog::OnAbort()
 void CSelectBottleNReagentDialog::OnRadioBtnSelected(int radioBtnIndex)
 {   
     m_Option = radioBtnIndex;
+    mp_Ui->okBtn->setEnabled(true);
 }
 
 } // end namespace Diagnostics

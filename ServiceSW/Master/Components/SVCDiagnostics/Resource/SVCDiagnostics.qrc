@@ -42,5 +42,7 @@
         <file>Images/Button2.png</file>
         <file>Images/Button1.png</file>
         <file>Images/Line1.png</file>
+        <file>Images/Line2.png</file>
+        <file>Images/Line3.png</file>
     </qresource>
 </RCC>

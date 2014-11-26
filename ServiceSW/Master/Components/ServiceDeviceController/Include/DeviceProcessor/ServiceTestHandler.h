@@ -703,6 +703,7 @@ private:
     bool m_ATubeTempControlIsOn;                        //!< Flag of air tube temperature control state
     bool m_LTubeTempControlIsOn;                        //!< Flag of liquid tube temperature control state
     bool m_LSTempControlIsOn;                           //!< Flag of level sensor temperature control state
+    bool m_RVTubeFlag;                                  //!< Flag of Rotary valve position state
     quint8 m_RVCurrentPosition;                         //!< store rotary valve current position
 
 signals:

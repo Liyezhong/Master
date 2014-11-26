@@ -75,6 +75,7 @@ ServiceTestHandler::ServiceTestHandler(DeviceControl::IDeviceProcessing &iDevPro
       m_ATubeTempControlIsOn(false),
       m_LTubeTempControlIsOn(false),
       m_LSTempControlIsOn(false),
+      m_RVTubeFlag(false),
       m_RVCurrentPosition(0)
 {
     mp_Utils = NULL;
@@ -1025,24 +1026,23 @@ void ServiceTestHandler::RVInitialize(QString& ReqName, QStringList& Params)
         return ;
     }
 
+    bool TempTubeFlag = false;
     quint8 TempPosition(0);
     if (Params.size()>0) {
         bool TubeFlag = Params.at(0).toInt();
         quint32 Position = Params.at(1).toInt();
-        if (TubeFlag) {
-            TempPosition = Position*2 - 1;
-        }
-        else {
-            TempPosition = Position*2;
-        }
+        TempTubeFlag = TubeFlag;
+        TempPosition = Position;
         Ret = mp_MotorRV->MoveToInitialPosition(TubeFlag, Position);
     }
     else {
+        TempTubeFlag = true;
         TempPosition = 1;
         Ret = mp_MotorRV->MoveToInitialPosition();
     }
 
     if (Ret == RV_MOVE_OK) {
+        m_RVTubeFlag = TempTubeFlag;
         m_RVCurrentPosition = TempPosition;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
@@ -1072,12 +1072,8 @@ void ServiceTestHandler::RVMovePosition(QString& ReqName, QStringList& Params)
     }
 
     if (Ret == RV_MOVE_OK) {
-        if (TubeFlag) {
-            m_RVCurrentPosition = Position*2 - 1;
-        }
-        else {
-            m_RVCurrentPosition = Position*2;
-        }
+        m_RVTubeFlag = TubeFlag;
+        m_RVCurrentPosition = Position;
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
@@ -1098,6 +1094,7 @@ void ServiceTestHandler::RVGetPosition(QString& ReqName, QStringList& Params)
 //    }
 
 //    QString Position = mp_MotorRV->GetPosition();
+    Results.append(QString("%1").arg(m_RVTubeFlag));
     Results.append(QString("%1").arg(m_RVCurrentPosition));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);

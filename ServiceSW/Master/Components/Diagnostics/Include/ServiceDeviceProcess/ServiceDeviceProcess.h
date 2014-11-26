@@ -428,11 +428,12 @@ public:
     /****************************************************************************/
     /**
      *  \brief To get rotary valve position
+     *  \oparam TubeFlag = flag of tube of sealing position
      *  \oparam Position = result position of rotary valve
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVGetPosition(qint32 *Position);
+    int RVGetPosition(bool* TubeFlag, qint32 *Position);
 
     /****************************************************************************/
     /**

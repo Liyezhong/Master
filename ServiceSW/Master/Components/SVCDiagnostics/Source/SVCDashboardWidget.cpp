@@ -49,14 +49,16 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_GV1 = CreatePart("GV1", QPoint(485, 192));
     mp_GV2 = CreatePart("GV2", QPoint(640, 245));
 
-    mp_Pressure = CreatePart("Pressure", QPoint(615,75));
-    mp_RFV1 = CreatePart("RFV1", QPoint(606, 160), false);
+    mp_Pressure = CreatePart("Pressure", QPoint(610,70));
+    mp_RFV1 = CreatePart("RFV1", QPoint(596, 154), false);
 
     mp_Filter = CreatePart("Filter", QPoint(269, 80), false);
     mp_Connect1 = CreatePart("ConnectPart", QPoint(500, 256), false);
     mp_Connect2 = CreatePart("ConnectPart", QPoint(569, 256), false);
     mp_Connect3 = CreatePart("ConnectPart", QPoint(517, 360), false);
     mp_Line1    = CreatePart("Line1", QPoint(10, 100), false);
+    mp_Line2    = CreatePart("Line2", QPoint(434, 76), false);
+    mp_Line3    = CreatePart("Line3", QPoint(227, 274), false);
 
     mp_SelectBtn    = new SVCButton(false, mp_Ui->graphicsView);
     mp_ValveInfoBtn = new SVCButton(true, mp_Ui->graphicsView);
@@ -151,7 +153,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortTemp1->setPos(504, 68);
     mp_RetortTemp2->setPos(504, 81);
     mp_RetortTemp3->setPos(504, 94);
-    mp_RetortCurrent->setPos(504, 120);
+    mp_RetortCurrent->setPos(504, 116);
     mp_RetortTemp1->setText("Retort_Temperature1");
     mp_RetortTemp2->setText("Retort_Temperature2");
     mp_RetortTemp3->setText("Retort_Temperature3");
@@ -350,8 +352,9 @@ void CSVCDashboardWidget::OnSelectPosition()
 {
     QString Title = tr("Select Position");
     QString Text;
+    bool CurrentTubeFlag = true;
     qint32 CurrentPosition(0);
-    (void)Diagnostics::ServiceDeviceProcess::Instance()->RVGetPosition(&CurrentPosition);
+    (void)Diagnostics::ServiceDeviceProcess::Instance()->RVGetPosition(&CurrentTubeFlag, &CurrentPosition);
     if (CurrentPosition == 0) {
         Text = "Can't get current position, Do you want to initialize position?";
         int Ret = mp_MsgDlg->ShowConfirmMessage(Title, Text, Diagnostics::CDiagnosticMessageDlg::OK_ABORT);
@@ -418,6 +421,7 @@ void CSVCDashboardWidget::RefreshLabel()
     quint16 RetortCurrentS(0);
     quint16 RetortCurrentB(0);
 
+    bool TubeFlag(0);
     qint32 Position(0);
     qreal SensorTemp1(0);
     qreal SensorTemp2(0);
@@ -437,7 +441,7 @@ void CSVCDashboardWidget::RefreshLabel()
     (void)p_DevProc->RetortGetTemp(&RetortTemp1, &RetortTemp2, &RetortTemp3);
     (void)p_DevProc->RetortGetCurrent(&RetortCurrentS, &RetortCurrentB);
 
-    (void)p_DevProc->RVGetPosition(&Position);
+    (void)p_DevProc->RVGetPosition(&TubeFlag, &Position);
     (void)p_DevProc->RVGetTemp(&SensorTemp1, &SensorTemp2);
     (void)p_DevProc->RVGetCurrent(&RVCurrent);
 
@@ -451,7 +455,7 @@ void CSVCDashboardWidget::RefreshLabel()
 
     UpdateOvenLabel(OvenTemp1, OvenTemp2, OvenTemp3, OvenCurrentT);
     UpdateRetortLabel(RetortTemp1, RetortTemp2, RetortTemp3, RetortCurrentS);
-    UpdateRotaryValveLabel(Position, SensorTemp1, SensorTemp2, RVCurrent);
+    UpdateRotaryValveLabel(TubeFlag, Position, SensorTemp1, SensorTemp2, RVCurrent);
     UpdateAirHeatingTubeLabel(AirTubeTemp, AirTubeCurrent);
     UpdateLiquidHeatingTubeLabel(LiquidTubeTemp, LiquidTubeCurrent);
     UpdatePressureLabel(Pressure);
@@ -500,9 +504,9 @@ void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2
     mp_RetortCurrent->setText(QString("  Current : %1mA").arg(Current));
 }
 
-void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
+void CSVCDashboardWidget::UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
 {
-    QString PositionStr = PostionToStr(RVPosition);
+    QString PositionStr = PostionToStr(RVTubeFlag, RVPosition);
 
     mp_RotaryValvePosition->setText(QString("  Position : %1").arg(PositionStr));
     mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
@@ -510,27 +514,27 @@ void CSVCDashboardWidget::UpdateRotaryValveLabel(qreal RVPosition, qreal RVTemp1
     mp_RotaryValveCurrent->setText(QString("  Current : %1mA").arg(RVCurrent));
 }
 
-QString CSVCDashboardWidget::PostionToStr(qreal Position)
-{
-    QString PositionStr;
+QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)
+{   
     if (Position == 0) {
-        PositionStr = "Unknow";
+        return QString("Unknow");
     }
-    else if (Position == 27) {
+
+    QString PositionStr;
+    if (Position == 14) {
         PositionStr = "P1";
     }
-    else if (Position == 29) {
+    else if (Position == 15) {
         PositionStr = "P2";
     }
-    else if (Position == 31) {
+    else if (Position == 16) {
         PositionStr = "P3";
     }
-    else if ((int)Position & 1) {
-        PositionStr = QString("%1").arg((Position+1)/2);
+
+    if (!TubeFlag) {
+        PositionStr.insert(0, "X");
     }
-    else {
-        PositionStr = QString("X%1").arg(Position/2);
-    }
+
     return PositionStr;
 }
 

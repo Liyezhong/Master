@@ -29,6 +29,7 @@
 #include "Diagnostics/Include/Retort/LevelSensorDetectingTest.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestWithWater.h"
+#include "Diagnostics/Include/Retort/DrainReagentTest.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -98,11 +99,16 @@ void CRetort::StartLidLockTest(void)
 void CRetort::StartDrainReagentTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST);
-    qDebug() << "Retort: start level sensor heating test";
+    qDebug() << "Retort: start drain reagent test";
 
-    //Retort::CLevelSensorHeatingTest test;
+    Retort::CDrainReagentTest Test(mp_MessageDlg, this);
 
-    //test.Run();
+    if (Test.Run() == RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST_FAILURE);
+    }
 }
 
 void CRetort::StartLevelSensorDetectionTest(void)

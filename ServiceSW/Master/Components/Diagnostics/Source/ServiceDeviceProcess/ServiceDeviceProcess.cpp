@@ -890,7 +890,7 @@ int ServiceDeviceProcess::RVMovePosition(bool TubeFlag, int Position)
     return Ret;
 }
 
-int ServiceDeviceProcess::RVGetPosition(qint32 *Position)
+int ServiceDeviceProcess::RVGetPosition(bool* TubeFlag, qint32 *Position)
 {
     QString ReqName = "RVGetPosition";
     QStringList Params;
@@ -907,7 +907,12 @@ int ServiceDeviceProcess::RVGetPosition(qint32 *Position)
     qDebug()<<"Results = "<<Results;
 
     if (Results.size()>0) {
-        *Position = Results.at(0).toFloat();
+        if (TubeFlag) {
+            *TubeFlag = Results.at(0).toInt();
+        }
+        if (Position) {
+            *Position = Results.at(1).toInt();
+        }
     }
     (void)m_ResultsMap.remove(ReqName);
 

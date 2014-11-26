@@ -34,7 +34,8 @@ HEADERS *= ../Include/*.h \    # header file location
     ../Source/Oven/OvenHeatingTestEmptyTimingDialog.h \
     ../Include/System/SystemSealingTest.h \
     ../Include/System/LiquidHoseTest.h \
-    ../Include/System/LiquidHoseTestDlg.h
+    ../Include/System/LiquidHoseTestDlg.h \
+    ../Include/Retort/DrainReagentTest.h
 
 SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/Retort/*.cpp \
@@ -57,7 +58,8 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/LevelSensorHeatingDialog.cpp \
     ../Source/System/LiquidHoseTest.cpp \
     ../Source/System/LiquidHoseTestDlg.cpp \
-    ../Source/System/SystemSealingTest.cpp
+    ../Source/System/SystemSealingTest.cpp \
+    ../Source/Retort/DrainReagentTest.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \
