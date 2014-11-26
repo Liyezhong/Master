@@ -29,9 +29,9 @@ namespace SVCDiagnostics {
 
 CGraphicsPixmapItem::CGraphicsPixmapItem(QString file)
     : tag(0)
-    , pixmapEnable(QPixmap(file))
-    , pixmapDisable(QPixmap(pixmapEnable.size()))
 {
+    pixmapEnable = QPixmap(file);
+    pixmapDisable = QPixmap(pixmapEnable.size());
     pixmapDisable.fill(Qt::transparent);
     setPixmap(pixmapDisable);
 }
@@ -100,7 +100,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     qreal angle = 0;
     for (int i = 0; i < 16; i++, angle += 11.25 * 2) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveTube.png");
-        connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
+        (void)connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
 
         mp_Scene->addItem(rotaryValvePos[i]);
         rotaryValvePos[i]->setPos(171, 6);
@@ -111,7 +111,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     angle = 11.25;
     for (int i = 16; i < 32; i++, angle += 11.25 * 2) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveSealing.png");
-        connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
+        (void)connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
 
         mp_Scene->addItem(rotaryValvePos[i]);
         rotaryValvePos[i]->setPos(186, 82);
@@ -192,8 +192,8 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
 void CSVCRotaryValveDlg::SetPos(bool flag, qint32 position)
 {
     static const qint32 tag_table[32] = {
-        14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,  0, 15, // tube position
-        29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 31, 30  // sealing position
+        14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,  0, 15, // tube position tag
+        29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 31, 30  // sealing position tag
     };
     RotaryValveClicked(flag ? tag_table[position - 1] : tag_table[position - 1 + 16]);
 
