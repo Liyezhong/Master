@@ -734,7 +734,7 @@ void CTestDiagnostics::ServiceDeviceProcessTest()
 
     QVERIFY(p_Dev->RVGetCurrent(&OutUint16) != RETURN_OK);
     QVERIFY(p_Dev->RVGetHeaterSwitchType(&OutUint8) != RETURN_OK);
-    QVERIFY(p_Dev->RVGetPosition(&OutInt32) != RETURN_OK);
+    QVERIFY(p_Dev->RVGetPosition(&OutBool, &OutInt32) != RETURN_OK);
     QVERIFY(p_Dev->RVGetTemp(&OutReal, &OutReal) != RETURN_OK);
     QVERIFY(p_Dev->RVInitialize() != RETURN_OK);
     QVERIFY(p_Dev->RVMovePosition(false, 6) != RETURN_OK);

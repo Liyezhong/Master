@@ -102,7 +102,7 @@ void CTestSVCDiagnostics::utTestSVCDiagnostics() {
     TestWidget->UpdateOvenLabel(11, 11, 11, 12);
     TestWidget->UpdatePressureLabel(11.2);
     TestWidget->UpdateRetortLabel(11, 11, 11, 12);
-    TestWidget->UpdateRotaryValveLabel(10, 11, 11, 12);
+    TestWidget->UpdateRotaryValveLabel(true,10, 11, 11, 12);
 
     TestWidget->UpdatePartStatus();
 
