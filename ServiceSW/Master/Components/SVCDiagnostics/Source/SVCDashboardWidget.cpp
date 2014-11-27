@@ -392,7 +392,7 @@ void CSVCDashboardWidget::OnSelectPosition()
     if ( flag == CurrentTubeFlag && pos == CurrentPosition)
         return;
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(pos);
+    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(flag, pos));
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
     int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, pos);
     mp_MsgDlg->HideWaitingDialog();

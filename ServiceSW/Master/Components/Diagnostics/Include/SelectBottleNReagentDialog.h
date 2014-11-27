@@ -121,7 +121,7 @@ private:
 
     QButtonGroup* mp_ButtonGroup;             //!< redio button group
     int m_BottleNumber;                       //!< Desired bottle number selected by user.
-    int m_Option;                             //!< Radio button option (1-xylene, 2-Other Reagents).
+    int m_Option;                             //!< Radio button option (0--button1, 1--button2).
 
 };
 
