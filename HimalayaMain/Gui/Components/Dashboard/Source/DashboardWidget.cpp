@@ -259,7 +259,7 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 
 void CDashboardWidget::CancelProgramWillCompletePrompt()
 {
-    mp_MessageDlg->accept();
+    mp_MessageDlg->reject();
 }
 
 void CDashboardWidget::OnProgramWillComplete()
