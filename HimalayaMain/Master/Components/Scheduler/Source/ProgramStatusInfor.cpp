@@ -39,6 +39,7 @@ CProgramStatusInfor::CProgramStatusInfor()
     m_RemainTime = m_MaxMeltTime;
     m_FirstStopHeatingTime = 0;
     m_IsInit = false;
+    ReadProgramStatusFile();
 }
 
 CProgramStatusInfor::~CProgramStatusInfor()
@@ -370,10 +371,10 @@ bool CProgramStatusInfor::CalculateTime(qint64& HeatingTime, qint64& UnHeatingTi
 {
     /*lint -e550 */
 
-    if(! ReadProgramStatusFile())
-    {
-        return false;
-    }
+//    if(! ReadProgramStatusFile())
+//    {
+//        return false;
+//    }
 //    qint64 TimeLimit = QDateTime::currentMSecsSinceEpoch() - m_MaxMeltTime;
     QString value = m_Status.value("HeatingOvenSlice");
     QStringList Slices;
