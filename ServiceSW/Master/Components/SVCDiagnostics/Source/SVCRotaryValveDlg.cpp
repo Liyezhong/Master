@@ -187,8 +187,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
 
     // pointer init
     rotaryValvePointer = mp_Scene->addPixmap(QPixmap(":/Images/RotaryValvePointer.png"));
-    rotaryValvePointer->setPos(QPoint(mp_Scene->width()/2, mp_Scene->height()/2));
-    rotaryValvePointer->setPos(QPoint(190,  55 + 12));  // P1
+    rotaryValvePointer->setPos(QPoint(200 - rotaryValvePointer->pixmap().width()/2, 200 - rotaryValvePointer->pixmap().height() + 12)); // P1
 }
 
 CSVCRotaryValveDlg::~CSVCRotaryValveDlg()
