@@ -68,10 +68,10 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief Event handler for mouse release events
-     *  \iparam event = Event for Mouse release
+     *  \iparam p_Event = Event for Mouse release
      */
     /****************************************************************************/
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *p_Event);
 
 private:
     PartStatus m_PartStatus;    //!< Store the part status
