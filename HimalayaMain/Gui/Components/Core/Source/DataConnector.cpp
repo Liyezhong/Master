@@ -1755,6 +1755,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit PowerFailureMsg();
         }
         break;
+        case DataManager::CANCEL_PROGRAM_WILL_COMPLETE_PROMPT:
+        {
+            emit CancelProgramWillCompletePrompt();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

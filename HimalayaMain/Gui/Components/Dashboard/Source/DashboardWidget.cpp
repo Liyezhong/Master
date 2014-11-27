@@ -114,6 +114,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
                       this, OnProgramWillComplete());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, CancelProgramWillCompletePrompt(),
+                      this, CancelProgramWillCompletePrompt());
+
     CONNECTSIGNALSLOT(mp_DataConnector, TissueProtectPassed(),
                       this, OnTissueProtectPassed());
 
@@ -252,6 +255,11 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     m_ProgramStartReady = true;
+}
+
+void CDashboardWidget::CancelProgramWillCompletePrompt()
+{
+    mp_MessageDlg->accept();
 }
 
 void CDashboardWidget::OnProgramWillComplete()

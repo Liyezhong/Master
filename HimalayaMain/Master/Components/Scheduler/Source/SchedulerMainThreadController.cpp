@@ -4310,6 +4310,14 @@ void SchedulerMainThreadController::OnSystemError()
     {
         m_ProgramStatusInfor.SetErrorFlag(1);
     }
+    if(m_completionNotifierSent)
+    {
+        MsgClasses::CmdProgramAcknowledge* command(new MsgClasses::CmdProgramAcknowledge(5000,
+                                                                DataManager::CANCEL_PROGRAM_WILL_COMPLETE_PROMPT));
+        Global::tRefType ref = GetNewCommandRef();
+        SendCommand(ref, Global::CommandShPtr_t(command));
+    }
+
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_EEEOR;
     MsgClasses::CmdProgramAcknowledge* commandPtrSystemError(new MsgClasses::CmdProgramAcknowledge(5000, type));
     Q_ASSERT(commandPtrSystemError);

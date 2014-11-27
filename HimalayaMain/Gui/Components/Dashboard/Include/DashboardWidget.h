@@ -235,7 +235,12 @@ private slots:
      */
     /****************************************************************************/
     void OnProgramWillComplete();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CancelProgramWillCompletePrompt
+     */
+    /****************************************************************************/
+    void CancelProgramWillCompletePrompt();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnTissueProtectPassed

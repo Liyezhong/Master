@@ -99,7 +99,8 @@ typedef enum  {
 
         PROGRAM_PRETEST_DONE,
 
-        POWER_FAILURE_MSG
+        POWER_FAILURE_MSG,
+        CANCEL_PROGRAM_WILL_COMPLETE_PROMPT
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
