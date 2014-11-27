@@ -205,41 +205,12 @@ CSVCRotaryValveDlg::~CSVCRotaryValveDlg()
 
 void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
 {
-    static const qreal angle_table[32] = {
-        22.5 * 0,
-        22.5 * 1,
-        22.5 * 2,
-        22.5 * 3,
-        22.5 * 4,
-        22.5 * 5,
-        22.5 * 6,
-        22.5 * 7,
-        22.5 * 8,
-        22.5 * 9,
-        22.5 * 10,
-        22.5 * 11,
-        22.5 * 12,
-        22.5 * 13,
-        22.5 * 14,
-        22.5 * 15,
+    qreal angle;
 
-        11.25 + 22.5 * 0,
-        11.25 + 22.5 * 1,
-        11.25 + 22.5 * 2,
-        11.25 + 22.5 * 3,
-        11.25 + 22.5 * 4,
-        11.25 + 22.5 * 5,
-        11.25 + 22.5 * 6,
-        11.25 + 22.5 * 7,
-        11.25 + 22.5 * 8,
-        11.25 + 22.5 * 9,
-        11.25 + 22.5 * 10,
-        11.25 + 22.5 * 11,
-        11.25 + 22.5 * 12,
-        11.25 + 22.5 * 13,
-        11.25 + 22.5 * 14,
-        11.25 + 22.5 * 15,
-    };
+    if (tag < 16)
+        angle = 22.5 * tag;
+    else
+        angle = 11.25 + 22.5 * (tag - 16);
 
     qDebug() << "tag: " << tag;
     for (int i = 0; i < 32; i++) {
@@ -250,7 +221,7 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
     this->tag = tag;
     rotaryValvePointer->setTransform(
               QTransform().translate(rotaryValvePointer->pixmap().width()/2, rotaryValvePointer->pixmap().height() - 12)
-             .rotate(angle_table[tag])
+             .rotate(angle)
              .translate(-rotaryValvePointer->pixmap().width()/2, -rotaryValvePointer->pixmap().height() + 12)
     );
 }
