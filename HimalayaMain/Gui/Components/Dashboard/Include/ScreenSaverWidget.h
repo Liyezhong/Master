@@ -32,7 +32,6 @@ public:
 private:
     Ui::ScreenSaverWidget *ui;       ///<  Definition/Declaration of variable ui
     QTimer* m_timer;       ///<  Definition/Declaration of variable m_timer
-    bool m_isFirstShow;       ///<  Definition/Declaration of variable m_isFirstShow
 private slots:
     /****************************************************************************/
     /*!
