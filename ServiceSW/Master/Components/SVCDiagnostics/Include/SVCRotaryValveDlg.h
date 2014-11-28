@@ -52,6 +52,8 @@ public:
     QRectF boundingRect() const;
     QPainterPath shape() const;
 
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+
 public:
     /****************************************************************************/
     /*!
@@ -136,29 +138,29 @@ private Q_SLOTS:
     /****************************************************************************/
     void RotaryValveClicked(int tag);
 
-    void setPosIncrease_x();
-    void setPosDecrease_x();
-    void setPosIncrease_y();
-    void setPosDecrease_y();
+//    void setPosIncrease_x();
+//    void setPosDecrease_x();
+//    void setPosIncrease_y();
+//    void setPosDecrease_y();
 
 private:
     Ui::CRotaryValveDlg* ui;    //!< User interface
     QGraphicsScene *mp_Scene;   //!< graphics scene
 
-    QGraphicsPixmapItem *rotaryValvePointer; //!< rotary valve position pointer
+    CGraphicsPixmapItem *rotaryValvePointer; //!< rotary valve position pointer
     CGraphicsPixmapItem *rotaryValvePos[32]; //!< 0 - 15: tube, 16-31: sealing
 
     int tag; //!< save rotay valve position
 
-private:
-    QPushButton *buttonPosX_inc;
-    QPushButton *buttonPosX_dec;
+//private:
+//    QPushButton *buttonPosX_inc;
+//    QPushButton *buttonPosX_dec;
 
-    QPushButton *buttonPosY_inc;
-    QPushButton *buttonPosY_dec;
+//    QPushButton *buttonPosY_inc;
+//    QPushButton *buttonPosY_dec;
 
-    QLineEdit *EditPos;
-    QLineEdit *editIndex;
+//    QLineEdit *EditPos;
+//    QLineEdit *editIndex;
 };
 
 }//end of namespace SVCDiagnostics
