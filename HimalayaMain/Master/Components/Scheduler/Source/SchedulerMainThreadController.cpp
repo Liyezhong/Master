@@ -922,7 +922,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         }
                     }
                     //if it is Cleaning program, need not notify user
-                    if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+                    if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
                     {
                          //this is last step, need to notice user
                          if(!m_completionNotifierSent)
@@ -935,15 +935,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                          }
                          if(CTRL_CMD_DRAIN == ctrlCmd)
                          {
-                              if(m_ReleasePressureSucessOfSoakFinish)
-                              {
-                                  LogDebug(QString("last Program Processing(Soak) Process finished"));
-                                  m_SchedulerMachine->NotifyProcessingFinished();
-                                  m_TimeStamps.CurStepSoakStartTime = 0;
-                                  m_completionNotifierSent = false;
-                                  m_IsReleasePressureOfSoakFinish = false;
-                                  m_ReleasePressureSucessOfSoakFinish = false;
-                              }
+                              LogDebug(QString("last Program Processing(Soak) Process finished"));
+                              m_SchedulerMachine->NotifyProcessingFinished();
+                              m_TimeStamps.CurStepSoakStartTime = 0;
+                              m_completionNotifierSent = false;
+                              m_IsReleasePressureOfSoakFinish = false;
+                              m_ReleasePressureSucessOfSoakFinish = false;
                          }
                     }
                     else
