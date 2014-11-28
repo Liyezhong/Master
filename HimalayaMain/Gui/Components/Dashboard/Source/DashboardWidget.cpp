@@ -117,6 +117,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, CancelProgramWillCompletePrompt(),
                       this, CancelProgramWillCompletePrompt());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, CancelTissueProtectPassedPrompt(),
+                      this, CancelTissueProtectPassedPrompt());
+
     CONNECTSIGNALSLOT(mp_DataConnector, TissueProtectPassed(),
                       this, OnTissueProtectPassed());
 
@@ -289,23 +292,32 @@ void CDashboardWidget::OnProgramWillComplete()
     }
 }
 
+void CDashboardWidget::CancelTissueProtectPassedPrompt()
+{
+    if (mp_TissueProtectPassedMsgDlg)
+        mp_TissueProtectPassedMsgDlg->reject();
+}
+
 void CDashboardWidget::OnTissueProtectPassed()
 {
-    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
-    pMessageDlg->SetIcon(QMessageBox::Information);
-    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
+    mp_TissueProtectPassedMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Information);
+    mp_TissueProtectPassedMsgDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strTissueProtectPassed);
-    pMessageDlg->SetText(strTemp);
-    pMessageDlg->SetButtonText(1, CommonString::strOK);
-    pMessageDlg->HideButtons();
+    mp_TissueProtectPassedMsgDlg->SetText(strTemp);
+    mp_TissueProtectPassedMsgDlg->SetButtonText(1, CommonString::strOK);
+    mp_TissueProtectPassedMsgDlg->HideButtons();
 
-    if (pMessageDlg->exec())
+    if (mp_TissueProtectPassedMsgDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN_SR);
-        delete pMessageDlg;
+        delete mp_TissueProtectPassedMsgDlg;
+        mp_TissueProtectPassedMsgDlg = NULL;
         return;
     }
-    delete pMessageDlg;
+
+    delete mp_TissueProtectPassedMsgDlg;
+    mp_TissueProtectPassedMsgDlg = NULL;
 }
 
 void CDashboardWidget::OnOvenCoverOpen()

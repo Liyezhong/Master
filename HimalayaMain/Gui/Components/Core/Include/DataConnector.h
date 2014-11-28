@@ -592,7 +592,12 @@ signals:
      */
     /****************************************************************************/
     void CancelProgramWillCompletePrompt();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CancelTissueProtectPassedPrompt
+     */
+    /****************************************************************************/
+    void CancelTissueProtectPassedPrompt();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed
