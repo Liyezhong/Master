@@ -125,13 +125,13 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_lastPVTime = 0;
     m_ProcessingPV = 3; // 0 for Pressure and 1 for Vacuum, 3 for avoiding message to pop up too many times
     m_completionNotifierSent = false;
+    m_completionSRSent = false;
     m_IsReleasePressureOfSoakFinish = false;
     m_ReleasePressureSucessOfSoakFinish = false;
     m_IsCleaningProgram = false;
     m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
     m_IsSafeReagentState = false;
-    m_CmdDrainSR_Click = false;
     m_ReEnterFilling = 0;
     m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
@@ -1022,10 +1022,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (PSSM_PROCESSING_SR == stepState)
         {
-            m_ProgramStatusInfor.SetErrorFlag(0);
             m_CurrentStepState = PSSM_PROCESSING_SR;
             if(CTRL_CMD_DRAIN_SR == ctrlCmd)
             {
+                CloseTheAlarm();
+                m_ProgramStatusInfor.SetErrorFlag(0);
+                m_completionSRSent = false;
                 m_IsSafeReagentState = true;
                 m_SchedulerMachine->NotifyProcessingFinished();
             }
@@ -1306,11 +1308,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             retCode = DCL_ERR_UNDEFINED;
         }
         cmdName = cmd->GetName();
-    }
-
-    if (CTRL_CMD_DRAIN_SR == ctrlCmd)
-    {
-        m_CmdDrainSR_Click = true;
     }
 
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
@@ -2130,18 +2127,16 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
 void SchedulerMainThreadController::SendTissueProtectMsg()
 {
-    if (false == m_CmdDrainSR_Click)
+    if (false == m_completionSRSent)
     {
         MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
         Q_ASSERT(CmdTissueProtectDone);
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
-    }
-    else
-    {
-        m_CmdDrainSR_Click = false;
+        m_completionSRSent = true;
     }
 }
+
 void SchedulerMainThreadController::SendCoverLidOpenMsg()
 {
     if(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN == m_CurErrEventID)
@@ -4447,6 +4442,14 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
             EventStringParList << QString("(%1)").arg(ErrorID);
             break;
     }
+}
+
+void SchedulerMainThreadController::CloseTheAlarm()
+{
+    Global::AlarmHandler::Instance().reset();
+    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
+    cmd->SetRmtLocOpcode(-1);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 
 }
