@@ -340,6 +340,9 @@ void CProgramRunningPanelWidget::GetStationNameList(QList<QString>& stationNameL
 
 void CProgramRunningPanelWidget::OnProgramDetail()
 {
+    if (m_selectedProgramId.isEmpty())
+        return;
+
     CDashboardProgramStatusWidget *pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
     pProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
 
@@ -350,6 +353,10 @@ void CProgramRunningPanelWidget::OnProgramDetail()
 
     const DataManager::CProgram* pProgram = pStartup->DataConnector()->ProgramList ->GetProgram(m_selectedProgramId);
     Q_ASSERT(pProgram);
+
+    if (!pProgram)
+        return;
+
     QList<QString> stationNameList;
     for (int i = 0; i < m_firstProgramStepIndex; i++)
     {
