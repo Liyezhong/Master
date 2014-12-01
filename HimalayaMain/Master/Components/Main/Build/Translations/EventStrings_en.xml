@@ -795,6 +795,6 @@
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service. If you want to enter the normal state next time. Please shut down the program by the Shutdown button." text2=""/>
 	<string id="67176218" text1="SW encountered fatal error and will exit." text2=""/>
-	<string id="67176219" text1="Safe reagent failed, Please call service." text2=""/>
+	<string id="67176219" text1="Safe reagent failed. Please call service." text2=""/>
 	</language>
 </strings>

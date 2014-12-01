@@ -390,24 +390,32 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
     if(flag)
     {
         LogDebug("Self test is done");
-        //send command to main controller to tell self test OK
-        if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        if(m_ProgramStatusInfor.GetErrorFlag() == 1)
         {
-            if(m_ProgramStatusInfor.GetErrorFlag() == 1)
+            MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
+                        new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
+                                                                    m_ProgramStatusInfor.GetStepID(),
+                                                                    m_ProgramStatusInfor.GetScenario(),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
+                                                                    m_ProgramStatusInfor.GetLastReagentGroup(),
+                                                                    m_ProgramStatusInfor.GetStationList()));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+            RaiseError(0, DCL_ERR_DEV_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
+        else if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
+        {
+            QString ProgramName = "";
+            if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
             {
-                RaiseError(0, DCL_ERR_DEV_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
-                m_SchedulerMachine->SendErrorSignal();
+                ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
             }
-            else
-            {
-                QString ProgramName = "";
-                if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
-                {
-                    ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
-                }
-                RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
-                m_SchedulerMachine->EnterPowerFailure();
-            }
+            RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+            m_SchedulerMachine->EnterPowerFailure();
+
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
