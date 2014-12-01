@@ -4,14 +4,13 @@
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     QWidget(p),
-    ui(new Ui::ScreenSaverWidget),
-    m_isFirstShow(true)
+    ui(new Ui::ScreenSaverWidget)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->move(0, 0);
     m_timer = new QTimer(this);
-    m_timer->setInterval(1800000);//30 mintues
+    m_timer->setInterval(900000);//, here should be 30 mintues, 1800000
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_timer->start();
 }
@@ -30,14 +29,6 @@ ScreenSaverWidget::~ScreenSaverWidget()
 void ScreenSaverWidget::AppIdleForLongTime()
 {
     m_timer->stop();
-    if (m_isFirstShow)
-    {
-        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png) }");
-
-        m_isFirstShow = false;
-    }
-
     this->show();
 }
 

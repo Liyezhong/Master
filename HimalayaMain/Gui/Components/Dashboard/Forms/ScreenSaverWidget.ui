@@ -10,31 +10,53 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="autoFillBackground">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>801</width>
-     <height>601</height>
+     <x>195</x>
+     <y>175</y>
+     <width>409</width>
+     <height>249</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetMaximumSize</enum>
-    </property>
-   </layout>
+   <property name="maximumSize">
+    <size>
+     <width>409</width>
+     <height>249</height>
+    </size>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnTest">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>360</y>
+     <width>102</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Test</string>
+   </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc"/>
+ </resources>
  <connections/>
 </ui>

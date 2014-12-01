@@ -1667,7 +1667,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         return true;
     }
 
-    if (qAbs(HWTemp-heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature) < 0.5)
+    if ((heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature-0.5)<= HWTemp)
     {
         heatingSensor.OTCheckPassed = true;
     }

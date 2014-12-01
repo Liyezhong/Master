@@ -246,6 +246,7 @@ typedef struct
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         qint8 m_ProcessingPV;                                 ///< flag to indicate P or V operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
+        bool m_completionSRSent;                           ///< CTRL_CMD_DRAIN_SR was clicked
         bool m_IsCleaningProgram;                             ///< cleaning program run or not
         bool m_CleanAckSentGui;                                ///< flag to indicate if cleaning ack to gui or not
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor
@@ -259,7 +260,6 @@ typedef struct
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
         bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
-        bool    m_CmdDrainSR_Click;                           ///< CTRL_CMD_DRAIN_SR was clicked
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
@@ -1339,6 +1339,13 @@ protected:
          */
         /****************************************************************************/
         void SendPowerFailureMsg();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function CloseTheAlarm
+         */
+        /****************************************************************************/
+        void CloseTheAlarm();
 
     public slots:
 

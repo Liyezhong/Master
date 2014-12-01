@@ -586,7 +586,18 @@ signals:
      */
     /****************************************************************************/
     void ProgramWillComplete();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CancelProgramWillCompletePrompt
+     */
+    /****************************************************************************/
+    void CancelProgramWillCompletePrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CancelTissueProtectPassedPrompt
+     */
+    /****************************************************************************/
+    void CancelTissueProtectPassedPrompt();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed

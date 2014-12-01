@@ -220,14 +220,14 @@ void CSVCDashboardWidget::RetortSelected()
         (void)p_TempSelectionDlg->exec();
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
         delete p_TempSelectionDlg;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating();
     }
 
-    qDebug()<<"get Retort status:"<<Status;
+    //qDebug()<<"get Retort status:"<<Status;
 }
 
 void CSVCDashboardWidget::OvenSelected()
@@ -244,14 +244,14 @@ void CSVCDashboardWidget::OvenSelected()
         (void)p_TempSelectionDlg->exec();
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
         delete p_TempSelectionDlg;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating();
     }
 
-    qDebug()<<"get Oven status:"<<Status;
+    //qDebug()<<"get Oven status:"<<Status;
 }
 
 void CSVCDashboardWidget::RotaryValveSelected()
@@ -272,10 +272,10 @@ void CSVCDashboardWidget::RotaryValveSelected()
         delete p_TempSelectionDlg;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating();
     }
 
-    qDebug()<<"get RotaryValve status:"<<Status;
+    //qDebug()<<"get RotaryValve status:"<<Status;
 }
 
 void CSVCDashboardWidget::AirTubeSelected()
@@ -292,14 +292,14 @@ void CSVCDashboardWidget::AirTubeSelected()
         (void)p_TempSelectionDlg->exec();
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating();
     }
 
-    qDebug()<<"get AirHeatingTube status:"<<Status;
+    //qDebug()<<"get AirHeatingTube status:"<<Status;
 }
 
 void CSVCDashboardWidget::LiquidTubeSelected()
@@ -322,10 +322,10 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         //if (Ret == 0)
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating();
     }
 
-    qDebug()<<"get LiquidHeatingTube status:"<<Status;
+    //qDebug()<<"get LiquidHeatingTube status:"<<Status;
 }
 
 void CSVCDashboardWidget::PressureSelected()
@@ -339,14 +339,14 @@ void CSVCDashboardWidget::PressureSelected()
         p_TempSelectionDlg->SetDialogTitle("Pressure");
         (void)p_TempSelectionDlg->exec();
         //int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpBuildPressure(40);
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpBuildPressure(40);
         delete p_TempSelectionDlg;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpReleasePressure();
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpReleasePressure();
     }
 
-    qDebug()<<"get Pressure status:"<<Status;
+    //qDebug()<<"get Pressure status:"<<Status;
 }
 
 void CSVCDashboardWidget::OnSelectPosition()
@@ -392,7 +392,7 @@ void CSVCDashboardWidget::OnSelectPosition()
     if ( flag == CurrentTubeFlag && pos == CurrentPosition)
         return;
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(pos);
+    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(flag, pos));
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
     int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, pos);
     mp_MsgDlg->HideWaitingDialog();

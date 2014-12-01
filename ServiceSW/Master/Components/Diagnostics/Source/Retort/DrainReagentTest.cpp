@@ -73,6 +73,7 @@ int CDrainReagentTest::Run(void)
     int ParaffinOption = p_SelectDlg->GetOption();
 
     delete p_SelectDlg;
+    qDebug()<<"Select ParaffinOption option :"<<ParaffinOption;
     if (ParaffinOption == 1) {
         if (ShowConfirmDlg(1) == 0) {
             return RETURN_ERR_FAIL;
@@ -305,7 +306,7 @@ bool CDrainReagentTest::SelectPosition(int StepNum, bool& TubeFlag, int& Positio
     }
 
     Position = p_SelectDlg->GetBottleNumber();
-    TubeFlag = (p_SelectDlg->GetOption() == 2);
+    TubeFlag = (p_SelectDlg->GetOption() == 1);
 
     delete p_SelectDlg;
     return true;

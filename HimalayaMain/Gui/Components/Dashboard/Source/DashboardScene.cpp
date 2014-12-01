@@ -746,9 +746,9 @@ void CDashboardScene::ExpiredReagentStationBlinking(bool bStart)
         if (m_pBlinkingIntervalTimer->isActive())
         {
             m_pBlinkingIntervalTimer->stop();
-            //reset the all expired station
-            this->EnableBlink(bStart);
         }
+        //reset the all expired station
+        this->EnableBlink(bStart);
     }
 }
 

@@ -135,7 +135,7 @@ void CTestSVCDiagnostics::utTestRotaryValveDlg()
 
     flag1 = true;
     pos1 = 10;
-    rotaryValveDlg.SetPos(flag1, flag1);
+    rotaryValveDlg.SetPos(flag1, pos1);
     rotaryValveDlg.GetPos(flag2, pos2);
 
     QCOMPARE(flag1, flag2);

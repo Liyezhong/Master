@@ -48,5 +48,6 @@
         <file>Images/RotaryValvePointer.png</file>
         <file>Images/RotaryValveTube.png</file>
         <file>Images/RotaryValveSealing.png</file>
+        <file>Images/RotaryValveSealingDisable.png</file>
     </qresource>
 </RCC>

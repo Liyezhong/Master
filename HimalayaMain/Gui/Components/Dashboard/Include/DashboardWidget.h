@@ -151,7 +151,8 @@ private:
     QString m_NewSelectedProgramId;       ///<  Definition/Declaration of variable m_NewSelectedProgramId
     int m_ParaffinStepIndex;       ///<  Definition/Declaration of variable m_ParaffinStepIndex
     DataManager::CHimalayaUserSettings* m_pUserSetting;       ///<  Definition/Declaration of variable m_pUserSetting
-    MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
+    MainMenu::CMessageDlg* mp_MessageDlg;                      //!< Message Dialogue
+    MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
@@ -235,7 +236,18 @@ private slots:
      */
     /****************************************************************************/
     void OnProgramWillComplete();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CancelProgramWillCompletePrompt
+     */
+    /****************************************************************************/
+    void CancelProgramWillCompletePrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CancelTissueProtectPassedPrompt
+     */
+    /****************************************************************************/
+    void CancelTissueProtectPassedPrompt();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnTissueProtectPassed
