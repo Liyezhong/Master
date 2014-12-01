@@ -98,6 +98,17 @@ private slots:
 
     /****************************************************************************/
     /*!
+     *  \brief This function is called when clicked the Fan image
+     */
+    /****************************************************************************/
+    void FanSelected();
+
+    void Valve1Selected();
+
+    void Valve2Selected();
+
+    /****************************************************************************/
+    /*!
      *  \brief This function is called when clicked the Select Position button
      */
     /****************************************************************************/
@@ -233,6 +244,14 @@ private:
     CGraphicsItemPart* mp_Line1;     //!< connect line1 item part
     CGraphicsItemPart* mp_Line2;     //!< connect line2 item part
     CGraphicsItemPart* mp_Line3;     //!< connect line3 item part
+
+    CGraphicsItemPart* mp_GV1StateUp;
+    CGraphicsItemPart* mp_GV1StateLeft;
+    CGraphicsItemPart* mp_GV1StateRight;
+
+    CGraphicsItemPart* mp_GV2StateUp;
+    CGraphicsItemPart* mp_GV2StateLeft;
+    CGraphicsItemPart* mp_GV2StateRight;
 
     SVCButton* mp_SelectBtn;         //!< The button of select position
     SVCButton* mp_ValveInfoBtn;      //!< The button of valve state info

@@ -171,8 +171,8 @@ void CSystemSealingTest::TestReleasePressure(bool StopCompressorFlag)
         (void)p_DevProc->PumpStopCompressor();
     }
     (void)p_DevProc->PumpSetFan(0);
+    (void)p_DevProc->PumpSetValve(0, 0);
     (void)p_DevProc->PumpSetValve(1, 0);
-    (void)p_DevProc->PumpSetValve(2, 0);
     p_DevProc->Pause(20*1000);
     mp_MessageDlg->HideWaitingDialog();
 }

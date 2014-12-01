@@ -61,6 +61,13 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_Line2    = CreatePart("Line2", QPoint(434, 76), false);
     mp_Line3    = CreatePart("Line3", QPoint(227, 274), false);
 
+    mp_GV1StateUp    = CreatePart("ValveState", QPoint(512, 167), false);
+    mp_GV1StateLeft  = CreatePart("ValveState", QPoint(462, 220), false);
+    mp_GV1StateRight = CreatePart("ValveState", QPoint(564, 200), false);
+    mp_GV2StateUp    = CreatePart("ValveState", QPoint(658, 236), false);
+    mp_GV2StateLeft  = CreatePart("ValveState", QPoint(637, 291), false);
+    mp_GV2StateRight = CreatePart("ValveState", QPoint(720, 251), false);
+
     mp_SelectBtn    = new SVCButton(false, mp_Ui->graphicsView);
     mp_ValveInfoBtn = new SVCButton(true, mp_Ui->graphicsView);
     mp_SelectBtn->setText("Select Position");
@@ -79,6 +86,9 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_AirHeatingTube, PartSelected(), this, AirTubeSelected());
     CONNECTSIGNALSLOT(mp_HeatingTube, PartSelected(), this, LiquidTubeSelected());
     CONNECTSIGNALSLOT(mp_Pressure, PartSelected(), this, PressureSelected());
+    CONNECTSIGNALSLOT(mp_Fan, PartSelected(), this, FanSelected());
+    CONNECTSIGNALSLOT(mp_GV1, PartSelected(), this, Valve1Selected());
+    CONNECTSIGNALSLOT(mp_GV2, PartSelected(), this, Valve2Selected());
 
     CONNECTSIGNALSLOT(mp_SelectBtn, clicked(), this, OnSelectPosition());
 }
@@ -182,16 +192,16 @@ CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, c
 {
     QString normalImg = ":/Images/" + partResName + ".png";
     CGraphicsItemPart* pGraphicsItemPart = NULL;
-    if (Clickable) {
+    //if (Clickable) {
         QString disabledImg = ":/Images/" + partResName + "Disabled.png";
         QString glowImg = ":/Images/" + partResName + "Glow.png";
         pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
                                                 QPixmap(disabledImg),
-                                                QPixmap(glowImg));
-    }
-    else {
-        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg));
-    }
+                                                QPixmap(glowImg), Clickable);
+//    }
+//    else {
+//        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg));
+//    }
     mp_Scene->addItem(pGraphicsItemPart);
     pGraphicsItemPart->setPos(pos);
     return pGraphicsItemPart;
@@ -349,6 +359,60 @@ void CSVCDashboardWidget::PressureSelected()
     //qDebug()<<"get Pressure status:"<<Status;
 }
 
+void CSVCDashboardWidget::FanSelected()
+{
+    qDebug()<<"Fan selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_Fan->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(1);
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(0);
+    }
+}
+
+void CSVCDashboardWidget::Valve1Selected()
+{
+    qDebug()<<"Valve1 selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1);
+        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0);
+        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+    }
+}
+
+void CSVCDashboardWidget::Valve2Selected()
+{
+    qDebug()<<"Valve1 selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1);
+        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0);
+        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+    }
+}
+
 void CSVCDashboardWidget::OnSelectPosition()
 {
     QString Title = tr("Select Position");
@@ -490,6 +554,9 @@ void CSVCDashboardWidget::UpdatePartStatus()
     Ret = p_DevProc->LiquidTubeTempControlIsOn(&StatusIsOn);
     qDebug()<<"liquid tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_HeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+
+    mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+    mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
 }
 
 void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current)

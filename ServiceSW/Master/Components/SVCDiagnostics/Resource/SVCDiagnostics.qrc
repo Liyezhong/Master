@@ -49,5 +49,7 @@
         <file>Images/RotaryValveTube.png</file>
         <file>Images/RotaryValveSealing.png</file>
         <file>Images/RotaryValveSealingDisable.png</file>
+        <file>Images/ValveState.png</file>
+        <file>Images/ValveStateDisabled.png</file>
     </qresource>
 </RCC>

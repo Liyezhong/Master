@@ -136,8 +136,8 @@ int CDrainReagentTest::Run(void)
             if (i == 1) {
                 ShowFinishDlg(7);
                 p_Dev->PumpStopCompressor();
+                p_Dev->PumpSetValve(0, 0);
                 p_Dev->PumpSetValve(1, 0);
-                p_Dev->PumpSetValve(2, 0);
                 ShowFinishDlg(8);
                 return RETURN_ERR_FAIL;
             }

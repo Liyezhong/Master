@@ -35,7 +35,8 @@ public:
     /****************************************************************************/
     CGraphicsItemPart(const QPixmap &pixmapNormal,
                       const QPixmap &pixmapDisabled,
-                      const QPixmap &pixmapWorking);
+                      const QPixmap &pixmapWorking,
+                      bool Clickable = true);
 
     /****************************************************************************/
     /*!
@@ -78,7 +79,7 @@ private:
     QPixmap m_PixmapNormal;     //!< The normal pixmap
     QPixmap m_PixmapDisabled;   //!< The disbaled pixmap
     QPixmap m_PixmapWorking;    //!< The working pixmap
-    bool m_StatusChange;        //!< Flag for part clicked
+    bool m_Clickable;           //!< Flag for part clicked
 Q_SIGNALS:
 
     /****************************************************************************/
