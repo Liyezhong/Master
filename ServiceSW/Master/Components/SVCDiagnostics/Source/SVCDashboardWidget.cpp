@@ -381,15 +381,15 @@ void CSVCDashboardWidget::Valve1Selected()
 
     if (Status == CGraphicsItemPart::Working) {
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1);
-        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Disabled);
-        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
-        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
     }
     else if (Status == CGraphicsItemPart::Normal){
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0);
         mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
     }
 }
 
@@ -401,15 +401,15 @@ void CSVCDashboardWidget::Valve2Selected()
 
     if (Status == CGraphicsItemPart::Working) {
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1);
-        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Disabled);
-        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
-        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
     }
     else if (Status == CGraphicsItemPart::Normal){
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0);
         mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
     }
 }
 
