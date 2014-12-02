@@ -206,6 +206,8 @@ private:
 
     Diagnostics::ServiceDeviceProcess* mp_ServDevProc;
 
+    int m_CurrentTabIndex;
+
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();

@@ -61,7 +61,8 @@ CStartup::CStartup() : QObject(),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL)
+    mp_SealingStatusDlg(NULL),
+    m_CurrentTabIndex(0)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -1749,8 +1750,27 @@ void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStr
 
 void CStartup::OnCurrentTabChanged(int TabIndex)
 {
-    if (mp_MainWindow->GetSaMUserMode() == "Service") {
-        if (TabIndex == 3) {
+    if (mp_MainWindow->GetSaMUserMode() == "Service" && !mp_UpdateSystem->GetFlag()) {
+        if (TabIndex == 3) {//SVCDiagnostics
+            MainMenu::CMessageDlg *p_MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+            p_MsgDlg->SetTitle("WARNING!");
+            p_MsgDlg->SetIcon(QMessageBox::Critical);
+            p_MsgDlg->SetText("Using this screen can DAMAGE this instrument and specimen inside the retort! "
+                         "Use CAUTION and be sure of what you do BEFORE you do it! Valves and pump in "
+                         "this interactive diagnostics screen can be activated in ANY DESIRED COMBINATION. "
+                         "Pressure/Vacuum will NOT BE CONTROLLED. Be aware of overpressure, underpressure, "
+                         "overfilling the retort and cross-contamination of reagents! Heatings and Rotary "
+                         "Valve movements are controlled and safe.");
+            p_MsgDlg->HideCenterButton();
+            p_MsgDlg->SetButtonText(1, "Accept Risk");
+            p_MsgDlg->SetButtonText(3, "Cancel");
+            if (p_MsgDlg->exec() == 0) {
+                mp_MainWindow->SetTabWidgetIndex(m_CurrentTabIndex);
+                delete p_MsgDlg;
+                return;
+            }
+            delete p_MsgDlg;
+
             mp_SVCDashboardWidget->TimerStart(true);
             mp_SVCDashboardWidget->UpdatePartStatus();
             mp_SVCSceenLockWidget->SetLockStatus(true);
@@ -1760,6 +1780,7 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
             mp_SVCSceenLockWidget->SetLockStatus(false);
         }
     }
+    m_CurrentTabIndex = TabIndex;
 }
 
 } // end namespace Core

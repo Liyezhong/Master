@@ -31,6 +31,7 @@ CSystem::CSystem(QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CServiceSystem)
     , mp_MessageDlg(new MainMenu::CMessageDlg(p_Parent))
+    , m_ShutDownFlag(false)
 {
     mp_Ui->setupUi(this);
 
@@ -68,6 +69,7 @@ void CSystem::changeEvent(QEvent *p_Event)
 
 void CSystem::OnShutDown(void)
 {
+    m_ShutDownFlag = true;
     Global::EventObject::Instance().RaiseEvent(EVENT_SYSTEM_SHUT_DOWN);
     mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CSystem", "System is shutting down ...\n", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->HideAllButtons();

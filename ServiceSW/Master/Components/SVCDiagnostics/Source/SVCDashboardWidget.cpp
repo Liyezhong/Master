@@ -50,7 +50,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_GV1 = CreatePart("GV1", QPoint(485, 192));
     mp_GV2 = CreatePart("GV2", QPoint(640, 245));
 
-    mp_Pressure = CreatePart("Pressure", QPoint(610,70));
+    mp_Pressure = CreatePart("Pressure", QPoint(610,70), false);
     mp_RFV1 = CreatePart("RFV1", QPoint(596, 154), false);
 
     mp_Filter = CreatePart("Filter", QPoint(269, 80), false);
@@ -85,7 +85,6 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_RotaryValve, PartSelected(), this, RotaryValveSelected());
     CONNECTSIGNALSLOT(mp_AirHeatingTube, PartSelected(), this, AirTubeSelected());
     CONNECTSIGNALSLOT(mp_HeatingTube, PartSelected(), this, LiquidTubeSelected());
-    CONNECTSIGNALSLOT(mp_Pressure, PartSelected(), this, PressureSelected());
     CONNECTSIGNALSLOT(mp_Fan, PartSelected(), this, FanSelected());
     CONNECTSIGNALSLOT(mp_GV1, PartSelected(), this, Valve1Selected());
     CONNECTSIGNALSLOT(mp_GV2, PartSelected(), this, Valve2Selected());
@@ -338,27 +337,6 @@ void CSVCDashboardWidget::LiquidTubeSelected()
     //qDebug()<<"get LiquidHeatingTube status:"<<Status;
 }
 
-void CSVCDashboardWidget::PressureSelected()
-{
-    qDebug()<<"Pressure selected.";
-
-    CGraphicsItemPart::PartStatus Status = mp_Pressure->Status();
-
-    if (Status == CGraphicsItemPart::Working) {
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(20, 40, 120, mp_Ui->graphicsView);
-        p_TempSelectionDlg->SetDialogTitle("Pressure");
-        (void)p_TempSelectionDlg->exec();
-        //int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
-        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpBuildPressure(40);
-        delete p_TempSelectionDlg;
-    }
-    else if (Status == CGraphicsItemPart::Normal){
-        (void)Diagnostics::ServiceDeviceProcess::Instance()->PumpReleasePressure();
-    }
-
-    //qDebug()<<"get Pressure status:"<<Status;
-}
-
 void CSVCDashboardWidget::FanSelected()
 {
     qDebug()<<"Fan selected.";
@@ -381,13 +359,13 @@ void CSVCDashboardWidget::Valve1Selected()
 
     if (Status == CGraphicsItemPart::Working) {
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1);
-        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
+        //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
         mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
         mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
     }
     else if (Status == CGraphicsItemPart::Normal){
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0);
-        mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
+        //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
         mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
     }
@@ -401,13 +379,13 @@ void CSVCDashboardWidget::Valve2Selected()
 
     if (Status == CGraphicsItemPart::Working) {
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1);
-        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
+        //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
     }
     else if (Status == CGraphicsItemPart::Normal){
         Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0);
-        mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
+        //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
     }
@@ -555,7 +533,7 @@ void CSVCDashboardWidget::UpdatePartStatus()
     qDebug()<<"liquid tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_HeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
 
-    mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+    mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
     mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
 }
 
