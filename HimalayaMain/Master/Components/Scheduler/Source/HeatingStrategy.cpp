@@ -150,17 +150,33 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         }
         else
         {
-            //For RTTop
-            retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            if(4 == m_CurScenario)
             {
-                return retCode;
+                retCode = StopTemperatureControl("RTSide");
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
+                retCode = StopTemperatureControl("RTBottom");
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
             }
-            //For RTBottom
-            retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            else
             {
-                return retCode;
+                //For RTTop
+                retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
+                //For RTBottom
+                retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
             }
         }
 

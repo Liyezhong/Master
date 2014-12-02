@@ -4415,31 +4415,31 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
             break;
         case 513040203:
         case 513040201:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID)<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().PressureAL);
             break;
         case 513040014:
         case 513040241:
         case 511040101:
         case 511040221:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
             break;
         case 513040501:
         case 512040520:
         case 512040523:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1);
             break;
         case 513040511:
         case 512040530:
         case 512040533:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2);
             break;
         case 513030031:
         case 513030033:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             RVPosition = (quint32)m_ProgramStatusInfor.GetLastRVPosition();
             InternalSteps =m_SchedulerCommandProcessor->HardwareMonitor().PositionRV - RVPosition;
             EventRDStringParList<<QString("%1").arg(RVPosition)<<QString("%1").arg(m_CurrentBottlePosition.RvPos)
@@ -4451,11 +4451,11 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
         case 511040022:
         case 512040052:
         case 512040053:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_PressureAL);
             break;
         default:
-            EventStringParList << QString("(%1)").arg(ErrorID);
+            EventStringParList << QString("%1").arg(ErrorID);
             break;
     }
 }
