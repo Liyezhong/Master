@@ -74,13 +74,13 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
        }
        else
        {
-           if((m_MaxMeltTime + 2 * UnHeatingTime + TIME_1_HOUR) > m_MaxMeltTime + HeatingTime)
+           if((m_MaxMeltTime + 2 * UnHeatingTime + TIME_1_HOUR) >= m_MaxMeltTime + HeatingTime)
            {
                m_RemainTime = m_MaxMeltTime;
            }
            else
            {
-               m_RemainTime = 2 * UnHeatingTime + TIME_1_HOUR;
+               m_RemainTime = m_MaxMeltTime - HeatingTime + 2 * UnHeatingTime + TIME_1_HOUR;
            }
        }
    }
@@ -317,15 +317,15 @@ qint64 CProgramStatusInfor::GetRemaingTimeForMeltingParffin()
 
 void CProgramStatusInfor::UpdateOvenHeatingTime(qint64 Time, bool IsHeatingOn)
 {
-    if(IsHeatingOn || m_FirstStopHeatingTime == 0) // first time or heating on
-    {
-        m_FirstStopHeatingTime = Time;
-    }
+//    if(IsHeatingOn || m_FirstStopHeatingTime == 0) // first time or heating on
+//    {
+//        m_FirstStopHeatingTime = Time;
+//    }
 
-    if(Time > m_FirstStopHeatingTime + 2 * 60 * 1000) // reset to Maxtime if stop oven heating more than 2 minutes.
-    {
-        m_RemainTime = m_MaxMeltTime;
-    }
+//    if(Time > m_FirstStopHeatingTime + 2 * 60 * 1000) // reset to Maxtime if stop oven heating more than 2 minutes.
+//    {
+//        m_RemainTime = m_MaxMeltTime;
+//    }
 
     if((Time < (60 * 1000 + m_LastTimeUpdateHeatingTime))
             && (IsHeatingOn == m_LastHeatingOn)) // record by one minutes
