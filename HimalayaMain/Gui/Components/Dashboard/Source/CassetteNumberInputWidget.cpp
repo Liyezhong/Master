@@ -15,7 +15,7 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QWidget
     m_CurrentTotalCassette(0)
 
 {
-    ui->setupUi(this);
+    ui->setupUi(GetContentFrame());
     RetranslateUI();//As the overrided function changeEvent(QEvent *p_Event) cannot be revoked in this class, we should call it here
 
     ui->totalcassettelbl->setText(m_strTotalCassette);
@@ -123,7 +123,7 @@ void CCassetteNumberInputWidget::RetranslateUI()
     m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The entered cassette number should be between 1 and 200.", 0, QApplication::UnicodeUTF8);
     m_strWarning = QApplication::translate("CCassetteNumberInputWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("CCassetteNumberInputWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strTotalCassette = QApplication::translate("CCassetteNumberInputWidget", "Current cassettle number: ", 0, QApplication::UnicodeUTF8);
-    m_strInputCassetteHint = QApplication::translate("CCassetteNumberInputWidget", "Add more cassette", 0, QApplication::UnicodeUTF8);
+    m_strTotalCassette = QApplication::translate("CCassetteNumberInputWidget", "Original cassettle number: ", 0, QApplication::UnicodeUTF8);
+    m_strInputCassetteHint = QApplication::translate("CCassetteNumberInputWidget", "Add more cassette:", 0, QApplication::UnicodeUTF8);
 }
 

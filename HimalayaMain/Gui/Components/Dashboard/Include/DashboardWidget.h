@@ -41,6 +41,9 @@ namespace Ui {
     class CDashboardWidget;
 }
 
+class CDashboardDateTimeWidget;
+
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class Dashboard::CDashboardWidget
@@ -199,6 +202,8 @@ private:
     ProgramStageStatus_t m_ProgramStageStatus;
     ProgramStatus_t m_ProgramStatus;
     bool m_IsProgramAbortedOrCompleted;
+    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
+
 public slots:
     /****************************************************************************/
     /*!

@@ -169,21 +169,8 @@ signals:
      */
     /****************************************************************************/
     void ResetFocus(bool reset);
-    /****************************************************************************/
-    /*!
-     *  \brief  singnal of RequestAsapDateTime
-     *
-     */
-    /****************************************************************************/
-    void RequestAsapDateTime();
-    /****************************************************************************/
-    /*!
-     *  \brief refresh the program selection
-     *  \param asapDateTime = the as soon as possible end datetime
-     *  \param bIsFirstStepFixation = whether the first step is fixation or not
-     */
-    /****************************************************************************/
-    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+
+
     /****************************************************************************/
     /*!
      *  \brief Declaration of signal AddItemsToFavoritePanel

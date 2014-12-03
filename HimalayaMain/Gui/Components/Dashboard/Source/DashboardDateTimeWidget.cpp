@@ -42,7 +42,8 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindo
     : CDialogFrame(p_Parent, pMainWindow),
     mp_Ui(new Ui::CDashboardDateTimeWidget),
     mp_UserSetting(NULL),
-    m_IsClickedOK(false)
+    m_IsClickedOK(false),
+    m_IsASAPMode(false)
 {
 
     mp_Ui->setupUi(GetContentFrame());
@@ -165,6 +166,9 @@ void CDashboardDateTimeWidget::showEvent(QShowEvent *p_Event)
     if (mp_UserSetting) {
         RefreshDateTime(mp_UserSetting->GetTimeFormat());
     }
+    mp_Ui->btnASAP->setChecked(false);
+    mp_Ui->btnOK->setText(tr("OK"));
+    DisabledWheel(false);
 }
 
 /****************************************************************************/
@@ -242,6 +246,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
     m_strEarlierEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8);
     m_strLaterEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week.", 0, QApplication::UnicodeUTF8);
     m_strCannotDelay = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than the ASAP End Date Time as the first program step is not Fixation reagent.", 0, QApplication::UnicodeUTF8);
+    m_strRun = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Run", 0, QApplication::UnicodeUTF8);
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
     m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time of program", 0, QApplication::UnicodeUTF8);
 }
@@ -254,6 +259,8 @@ void CDashboardDateTimeWidget::OnCancel()
 
 void CDashboardDateTimeWidget::OnRequestASAPDateTime()
 {
+    mp_Ui->btnOK->setEnabled(false);
+    m_IsASAPMode = mp_Ui->btnASAP->isChecked();
     emit RequestAsapDateTime();
 }
 
@@ -262,6 +269,14 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirst
     m_ASAPDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapDateTime);
     if (m_IsClickedOK)
     {
+        if (m_IsASAPMode)
+        {
+            emit OnSelectDateTime(m_ASAPDateTime);
+             m_IsClickedOK = false;
+             m_IsASAPMode = false;
+            accept();
+            return;
+        }
         // make it UTC
         m_selDateTime.setTimeSpec(Qt::UTC);
 
@@ -340,10 +355,31 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirst
     }
     else
     {
-        if (mp_UserSetting) {
-            RefreshDateTime(mp_UserSetting->GetTimeFormat());
+        if (m_IsASAPMode)
+        {
+            if (mp_UserSetting) {
+                RefreshDateTime(mp_UserSetting->GetTimeFormat());
+            }
+            DisabledWheel(true);
+            mp_Ui->lblDateTimeDisplay->setText("ASAP");
+            mp_Ui->btnOK->setText(m_strRun);
+            mp_Ui->btnOK->setEnabled(true);
+        }
+        else
+        {
+            DisabledWheel(false);
+            if (mp_UserSetting) {
+                RefreshDateTime(mp_UserSetting->GetTimeFormat());
+            }
+            mp_Ui->btnOK->setText(tr("OK"));
+            mp_Ui->btnOK->setEnabled(true);
         }
     }
 }
 
+void CDashboardDateTimeWidget::DisabledWheel(bool enable)
+{
+    mp_Ui->scrollPanelDate->SetDisabled(enable);
+    mp_Ui->scrollPanelTime->SetDisabled(enable);
+}
 } // end namespace Dashboard

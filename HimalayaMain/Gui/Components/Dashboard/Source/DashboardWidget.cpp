@@ -27,6 +27,7 @@
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "Core/Include/GlobalHelper.h"
+#include "Dashboard/Include/DashboardDateTimeWidget.h"
 
 //lint -e613
 
@@ -64,6 +65,16 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
 
+    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
+    mp_wdgtDateTime->setModal(true);
+    mp_wdgtDateTime->SetUserSettings(m_pUserSetting);
+
+    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
+    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), ui->programPanelWidget, OnSelectEndDateTime(const QDateTime &));
+
+    CONNECTSIGNALSLOT(mp_wdgtDateTime, RequestAsapDateTime(), this, RequestAsapDateTime());
+    CONNECTSIGNALSLOT(this, SendAsapDateTime(int, bool), mp_wdgtDateTime, OnGetASAPDateTime(int, bool));
+
     CONNECTSIGNALSIGNAL(this, ResetFocus(bool), ui->programPanelWidget, ResetFocus(bool));
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
     CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
@@ -72,14 +83,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, RecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure &),
                       this, OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure&));
-
-    CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
-                        this, OnSelectEndDateTime(const QDateTime &));
-
-    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->programPanelWidget, SendAsapDateTime(int, bool));
-
-    CONNECTSIGNALSLOT(ui->programPanelWidget, RequestAsapDateTime(),
-                        this, RequestAsapDateTime());
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
                        ui->programPanelWidget, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
@@ -449,13 +452,11 @@ void CDashboardWidget::SetCassetteNumber()
     if (mp_DataConnector)
     {
         //input cassette number
-        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
         pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
         pCassetteInput->SetCurrentCassette(m_TotalCassette);
         pCassetteInput->ShowLabel();
         pCassetteInput->SetDialogTitle(m_strChangeCassetteBoxTitle);
-        QRect scr = mp_MainWindow->geometry();
-        pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
         (void)pCassetteInput->exec();
 
         int cassetteNumber = pCassetteInput->CassetteNumber();
@@ -836,24 +837,8 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     {
         int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
         int TimeDelta = 0;
-        int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
+        GetASAPTime(m_TimeProposedForProgram,
                                       m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, TimeDelta, bCanNotRun);
-
-        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
-        QDateTime newAsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-        if (newAsapEndDateTime > m_EndDateTime)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText(m_strResetEndTime);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            {
-                return false;
-            }
-            return false;
-        }
     }
     else
     {
@@ -905,6 +890,15 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             m_TotalCassette = cassetteNumber;
             mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
             delete pCassetteInput;
+        }
+    }
+
+    if (m_SelectedProgramId.at(0) != 'C')
+    {   //show Datetime dialog
+        mp_wdgtDateTime->UpdateProgramName();
+        if (mp_wdgtDateTime->exec() == (int)QDialog::Rejected)
+        {
+            return false;
         }
     }
     return true;
@@ -1036,6 +1030,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_bIsFirstStepFixation = IsFixationInFirstStep();
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList, cmd.GetFirstProgramStepIndex());
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
+    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
     emit UpdateSelectedStationList(m_StationList);
 }
 
@@ -1089,9 +1084,8 @@ void CDashboardWidget::RetranslateUI()
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired, please replace the expired ones with fresh reagents! You can't operate this program.", 0, QApplication::UnicodeUTF8);
-    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
-    //m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the total number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
-    m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
+    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
+    m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
 }

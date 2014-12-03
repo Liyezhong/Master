@@ -78,6 +78,8 @@ public:
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 private:
+    void RetranslateUI();
+    void DisabledWheel(bool enable);
 
     Ui::CDashboardDateTimeWidget *mp_Ui;            //!< User interface
     MainMenu::CScrollWheel *mp_DayWheel;    //!< Day scroll wheel
@@ -98,8 +100,9 @@ private:
     QString m_strEarlierEndTime;
     QString m_strLaterEndTime;
     QString m_strCannotDelay;
+    QString m_strRun;
     bool m_IsClickedOK;
-    void RetranslateUI();
+    bool m_IsASAPMode;
 
 protected:
     void changeEvent(QEvent *p_Event);

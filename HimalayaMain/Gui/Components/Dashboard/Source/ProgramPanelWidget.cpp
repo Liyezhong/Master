@@ -32,16 +32,10 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(bool), ui->favoriteProgramsPanel, AddItemsToFavoritePanel(bool));
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
-    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&),
+    CONNECTSIGNALSLOT(this, OnSelectEndDateTime(const QDateTime&),
                       ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequestAsapDateTime(), this, RequestAsapDateTime());
+
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, UpdateFavProgram(), this, OnUpdatePanelProgram());
-
-    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->favoriteProgramsPanel, SendAsapDateTime(int, bool));
-
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
-                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool, bool));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
                       ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
