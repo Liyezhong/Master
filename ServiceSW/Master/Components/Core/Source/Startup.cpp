@@ -1754,7 +1754,7 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
         if (TabIndex == 3) {//SVCDiagnostics
             MainMenu::CMessageDlg *p_MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
             p_MsgDlg->SetTitle("WARNING!");
-            p_MsgDlg->SetIcon(QMessageBox::Critical);
+            p_MsgDlg->SetIcon(QMessageBox::Warning);
             p_MsgDlg->SetText("Using this screen can DAMAGE this instrument and specimen inside the retort! "
                          "Use CAUTION and be sure of what you do BEFORE you do it! Valves and pump in "
                          "this interactive diagnostics screen can be activated in ANY DESIRED COMBINATION. "

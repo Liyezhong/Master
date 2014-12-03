@@ -539,28 +539,28 @@ void CSVCDashboardWidget::UpdatePartStatus()
 
 void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current)
 {
-    mp_OvenTemp1->setText(QString("  Oven1 : %1\260C").arg(OvenTemp1));
-    mp_OvenTemp2->setText(QString("  Oven2 : %1\260C").arg(OvenTemp2));
-    mp_OvenTemp3->setText(QString("  Oven3 : %1\260C").arg(OvenTemp3));
-    mp_OvenCurrent->setText(QString("  Current : %1mA").arg(Current));
+    mp_OvenTemp1->setText(QString(" Oven1: %1\260C").arg(OvenTemp1));
+    mp_OvenTemp2->setText(QString(" Oven2: %1\260C").arg(OvenTemp2));
+    mp_OvenTemp3->setText(QString(" Oven3: %1\260C").arg(OvenTemp3));
+    mp_OvenCurrent->setText(QString(" Current: %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current)
 {
-    mp_RetortTemp1->setText(QString("  Retort1 : %1\260C").arg(RetortTemp1));
-    mp_RetortTemp2->setText(QString("  Retort2 : %1\260C").arg(RetortTemp2));
-    mp_RetortTemp3->setText(QString("  Retort3 : %1\260C").arg(RetortTemp3));
-    mp_RetortCurrent->setText(QString("  Current : %1mA").arg(Current));
+    mp_RetortTemp1->setText(QString(" Retort1: %1\260C").arg(RetortTemp1));
+    mp_RetortTemp2->setText(QString(" Retort2: %1\260C").arg(RetortTemp2));
+    mp_RetortTemp3->setText(QString(" Retort3: %1\260C").arg(RetortTemp3));
+    mp_RetortCurrent->setText(QString(" Current: %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
 {
     QString PositionStr = PostionToStr(RVTubeFlag, RVPosition);
 
-    mp_RotaryValvePosition->setText(QString("  Position : %1").arg(PositionStr));
-    mp_RotaryValveTemp1->setText(QString("  Temp1 : %1\260C").arg(RVTemp1));
-    mp_RotaryValveTemp2->setText(QString("  Temp2 : %1\260C").arg(RVTemp2));
-    mp_RotaryValveCurrent->setText(QString("  Current : %1mA").arg(RVCurrent));
+    mp_RotaryValvePosition->setText(QString(" Position: %1").arg(PositionStr));
+    mp_RotaryValveTemp1->setText(QString(" Temp1: %1\260C").arg(RVTemp1));
+    mp_RotaryValveTemp2->setText(QString(" Temp2: %1\260C").arg(RVTemp2));
+    mp_RotaryValveCurrent->setText(QString(" Current: %1mA").arg(RVCurrent));
 }
 
 QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)
@@ -592,14 +592,14 @@ QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)
 
 void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, qreal Current)
 {
-    mp_AirHeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
-    mp_AirHeatingTubeCurrent->setText(QString("  Current : %1mA").arg(Current));
+    mp_AirHeatingTubeTemp->setText(QString(" Temp: %1\260C").arg(Temp));
+    mp_AirHeatingTubeCurrent->setText(QString(" Current: %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current)
 {
-    mp_HeatingTubeTemp->setText(QString("   Temp : %1\260C").arg(Temp));
-    mp_HeatingTubeCurrent->setText(QString("  Current : %1mA").arg(Current));
+    mp_HeatingTubeTemp->setText(QString(" Temp: %1\260C").arg(Temp));
+    mp_HeatingTubeCurrent->setText(QString(" Current: %1mA").arg(Current));
 }
 
 void CSVCDashboardWidget::UpdatePressureLabel(qreal Pressure)
