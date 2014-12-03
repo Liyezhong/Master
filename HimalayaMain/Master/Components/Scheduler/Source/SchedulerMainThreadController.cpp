@@ -4363,7 +4363,10 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+    if(m_CurProgramStepInfo.reagentGroup == "RG6")
+    {
+        RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+    }
 }
 
 void SchedulerMainThreadController::OnPreTestDone()
