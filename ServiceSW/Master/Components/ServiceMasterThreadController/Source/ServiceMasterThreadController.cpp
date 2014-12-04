@@ -1522,11 +1522,12 @@ void ServiceMasterThreadController::DownloadFirmware()
     bool Ret      = false;
     QString Color = "red";
     QString Information("");
-    NetworkClient::IENetworkClient IEClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
+
     try {
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString FirmFolder = mp_ServiceDataContainer->ServiceParameters->GetFirmwareFolderPath();
+        NetworkClient::IENetworkClient IEClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
         if (!IEClient.PerformHostReachableTest())
         {
