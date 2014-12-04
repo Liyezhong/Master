@@ -90,7 +90,6 @@ private:
     bool m_EnableBlink;       ///<  Definition/Declaration of variable m_EnableBlink
     bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
-    QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
     QPixmap m_PixmapRetortUnlocked, m_PixmapRetortLocked01, m_PixmapRetortLocked02;
     QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
     QPixmap m_PixmapLabel, m_PixmapReagentName;
@@ -157,13 +156,6 @@ public:
      */
     /****************************************************************************/
     void PrepareReagentName();
-    /****************************************************************************/
-    /*!
-     *  \brief Prepare cleaning Reagent strip to draw.
-     *
-     */
-    /****************************************************************************/
-    void PrepareCleaningReagentStrip();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DrawStationItemLabel

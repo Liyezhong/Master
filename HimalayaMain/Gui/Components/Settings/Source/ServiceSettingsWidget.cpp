@@ -46,7 +46,6 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
     mp_Ui->setupUi(GetContentFrame());
     CONNECTSIGNALSLOT(mp_Ui->btnResetOperationHour, clicked(), this, OnResetOperationDays());
     CONNECTSIGNALSLOT(mp_Ui->btnResetCarbonFilter, clicked(), this, OnResetCarbonFilter());
-    CONNECTSIGNALSLOT(mp_Ui->checkBoxUseExhaustSystem, clicked(bool), this, OnCheckBoxUseExhaustSystem(bool));
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSaveSetting());
     CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnPrepareShutdown());
     CONNECTSIGNALSLOT(mp_Ui->btnStartServiceApp, clicked(), this, OnStartServiceApp());
@@ -178,19 +177,6 @@ void CServiceSettingsWidget::showEvent(QShowEvent *p_Event)
         mp_Ui->labelResetOperationDate->setText(GetFormattedDateString(lastResetDate));
     }
 
-    mp_Ui->checkBoxUseExhaustSystem->setChecked(mp_UserSettings->GetUseExhaustSystem() == 1);
-
-    if (1 == mp_UserSettings->GetUseExhaustSystem())
-    {
-        mp_Ui->labelWarningThreshold->setText("300");
-        mp_Ui->labelAlarmThreshold->setText("480");
-    }
-    else
-    {
-        mp_Ui->labelWarningThreshold->setText("45");
-        mp_Ui->labelAlarmThreshold->setText("60");
-    }
-
     if ("" == mp_UserSettings->GetActiveCarbonLastResetDate())
     {
         mp_Ui->labelResetCarbonFilterDate->setText(dateStr);
@@ -232,22 +218,6 @@ void CServiceSettingsWidget::OnResetCarbonFilter()
     QString dateStr = GetFormattedCurrentDateString();
     mp_Ui->labelResetCarbonFilterDate->setText(dateStr);
     emit ResetOperationDays(DataManager::RESETOPERATIONHOURS_ACTIVECARBONFILTER);
-}
-
-void CServiceSettingsWidget::OnCheckBoxUseExhaustSystem(bool checked)
-{
-    if (checked)
-    {
-        m_UserSettingsTemp.SetUseExhaustSystem(1);
-        mp_Ui->labelWarningThreshold->setText("300");
-        mp_Ui->labelAlarmThreshold->setText("480");
-    }
-    else
-    {
-        m_UserSettingsTemp.SetUseExhaustSystem(0);
-        mp_Ui->labelWarningThreshold->setText("45");
-        mp_Ui->labelAlarmThreshold->setText("60");
-    }
 }
 
 void CServiceSettingsWidget::OnSaveSetting()
@@ -312,19 +282,22 @@ void CServiceSettingsWidget::ResetButtons()
          (!m_ProcessRunning) && Core::CGlobalHelper::CheckIfCanEdit() == true)
     {
         //Edit Mode
-        mp_Ui->btnResetOperationHour->setEnabled(true);
-        mp_Ui->checkBoxUseExhaustSystem->setEnabled(true);
         mp_Ui->btnResetCarbonFilter->setEnabled(true);
         mp_Ui->btnShutdown->setEnabled(true);
         if (m_CurrentUserRole == MainMenu::CMainWindow::Service)
+        {
             mp_Ui->btnStartServiceApp->setEnabled(true);
+            mp_Ui->btnResetOperationHour->setEnabled(true);
+        }
         else
+        {
             mp_Ui->btnStartServiceApp->setEnabled(false);
+            mp_Ui->btnResetOperationHour->setEnabled(false);
+        }
         mp_Ui->btnSave->setEnabled(true);
     }
     else {
         mp_Ui->btnResetOperationHour->setEnabled(false);
-        mp_Ui->checkBoxUseExhaustSystem->setEnabled(false);
         mp_Ui->btnResetCarbonFilter->setEnabled(false);
         mp_Ui->btnShutdown->setEnabled(false);
         mp_Ui->btnStartServiceApp->setEnabled(false);

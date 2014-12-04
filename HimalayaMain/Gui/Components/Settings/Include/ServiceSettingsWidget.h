@@ -120,12 +120,6 @@ private slots:
     void OnResetCarbonFilter();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of OnCheckBoxUseExhaustSystem
-     */
-    /****************************************************************************/
-    void OnCheckBoxUseExhaustSystem(bool checked);
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of OnSaveSetting
      */
     /****************************************************************************/

@@ -338,8 +338,6 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
             if (p_ReagentGroup->IsCleaningReagentGroup()) {
                 m_CurRMSMode = m_UserSettings.GetModeRMSCleaning();
-                if (RefreshFlag)
-                    PrepareCleaningReagentStrip();
             }
             else {
                 m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
@@ -385,29 +383,6 @@ void CDashboardStationItem::DrawStationItemImage()
 
     DrawStationItemLabel(Painter);
     update();
-}
-
-void CDashboardStationItem::PrepareCleaningReagentStrip()
-{
-    //For Cleaning Reagent, generate the raw image used for BDiagpattern
-#if 0
-    QPixmap pix(200, 200);
-    pix.fill(Qt::transparent);
-
-    QPainter painter(&pix);
-    painter.setBrush(Qt::white);
-    painter.setPen(Qt::white);
-
-    for (int i=0; i<200; i+=8)
-    {
-        painter.drawRect(i, 0, 4, 200);
-    }
-    QMatrix m;
-    (void)m.rotate(45.0);
-    QPixmap img = pix.transformed(m);
-    img = img.copy(100, 100, 100, 98);
-    m_RawImage4Cleaning = img;
-#endif
 }
 
 void CDashboardStationItem::PrepareReagentName()
@@ -527,7 +502,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     int fillRetortWidth;
     int fillRetortHeight;
     QString reagentColorValue;
-    bool isCleaningReagent = false;
 
     if(mp_DashboardStation)
     {
@@ -544,12 +518,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         (void)reagentColorValue.prepend("#");
 
         m_ReagentDisplayColorValue = reagentColorValue;
-
-        //Check whether the bottle contains cleaning reagnet for later use
-        if (p_ReagentGroup->IsCleaningReagentGroup())
-        {
-            isCleaningReagent = true;
-        }
     }
     else
     {
@@ -604,17 +572,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         }
 
         Painter.drawPath(path);
-        if (isCleaningReagent)
-        {
-            int startx = 4;
-            int starty = 38;
-            Painter.setClipPath(path);
-
-            //draw the final result
-            Painter.setBrush(Qt::white);
-            Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
-            Painter.setClipPath(path, Qt::NoClip);
-        }
     }
     else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {

@@ -162,13 +162,6 @@
           </item>
          </layout>
         </item>
-        <item>
-         <widget class="QCheckBox" name="checkBoxUseExhaustSystem">
-          <property name="text">
-           <string>Use exhausting system</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
