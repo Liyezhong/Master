@@ -55,6 +55,7 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     QString m_strChangeMeltPointConfirm12Hrs;
+    QString m_strConfirmChangeMeltingPoint;
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
     ~CSystemSetupSettingsWidget();

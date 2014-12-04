@@ -261,7 +261,12 @@ void CSystemSetupSettingsWidget::ResetButtons()
 void CSystemSetupSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
-   m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget", "If paraffin melting point is changed, %1 hours will be needed to melt paraffin, really change it?", 0, QApplication::UnicodeUTF8);
+   m_strConfirmChangeMeltingPoint =  QApplication::translate("Settings::CSystemSetupSettingsWidget",
+                                                             "Do you really want to change the melting point of paraffin?", 0, QApplication::UnicodeUTF8);
+   m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
+    "With melting point changed, if you put the solid paraffin in, please select 'Yes' to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select 'No' and no need to wait any time.",
+                                                              0, QApplication::UnicodeUTF8);
+
 }
 
 /****************************************************************************/
@@ -287,8 +292,29 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 void CSystemSetupSettingsWidget::OnApply()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
+    ConfirmationMessageDlg.SetTitle(CommonString::strWarning);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+    ConfirmationMessageDlg.SetText(m_strConfirmChangeMeltingPoint);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
+    ConfirmationMessageDlg.HideCenterButton();
+    if (!ConfirmationMessageDlg.exec())
+    {
+        return;
+    }
+
     int temp = mp_ScrollWheel->GetCurrentData().toInt();
+
+    int lastMeltPoint = 0;
+    if (mp_UserSettings)
+    {
+        lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
+        m_UserSettingsTemp = *mp_UserSettings;
+    }
+    m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
+
+    emit TemperatureChanged(m_UserSettingsTemp);
+
     if (temp <= 63)
     {
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("12"));
@@ -296,25 +322,13 @@ void CSystemSetupSettingsWidget::OnApply()
     else
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("15"));
 
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);//left
     ConfirmationMessageDlg.HideCenterButton();
     if (ConfirmationMessageDlg.exec())
     {
-        int lastMeltPoint = 0;
-        if (mp_UserSettings)
-        {
-            lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
-            m_UserSettingsTemp = *mp_UserSettings;
-        }
-        m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
-
-        emit TemperatureChanged(m_UserSettingsTemp);
         emit ParaffinMeltPointchanged(lastMeltPoint, temp);
     }
-
-
 }
 
 } // end namespace Settings

@@ -735,10 +735,12 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         return false;
     }
 
+    const DataManager::CProgram* pSelectedProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+    Q_ASSERT(pSelectedProgram);
     //Check if Leica program and RMS OFF?
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     bool bShowRMSOffWarning = false;
-    bool isLeicaProgram = mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram();
+    bool isLeicaProgram = pSelectedProgram->IsLeicaProgram();
     if (m_SelectedProgramId.at(0) == 'C')
     {
         if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
@@ -815,6 +817,34 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         }
     }
 
+    //Check the diff between paraffin melting point and the temprature of paraffin in program step
+    for (int stepIndex = 0; stepIndex < pSelectedProgram->GetNumberOfSteps(); stepIndex++) {
+        const DataManager::CProgramStep *step = pSelectedProgram->GetProgramStep(stepIndex);
+        if (step) {
+            DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(step->GetReagentID());
+            DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
+            if (p_ReagentGroup->IsParraffin())
+            {
+                 int paraffinBathTemp = userSetting->GetTemperatureParaffinBath();
+                 int stepTemp = step->GetTemperature().toInt();
+                 double diffSetting = qAbs(stepTemp - paraffinBathTemp);
+
+                 if (diffSetting > 2.0)
+                 {
+                    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+                    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+                    mp_MessageDlg->SetText(m_strDiffTemp);
+                    mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+                    mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+                    mp_MessageDlg->HideCenterButton();
+                    if (!mp_MessageDlg->exec())
+                        return false;
+                    else
+                        break;
+                 }
+            }
+        }
+    }
 
     //Check safe reagent
     if ((m_SelectedProgramId.at(0) != 'C') && (m_iWhichStepHasNoSafeReagent  != -1))
@@ -893,8 +923,9 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         }
     }
 
+    //show Datetime dialog
     if (m_SelectedProgramId.at(0) != 'C')
-    {   //show Datetime dialog
+    {
         mp_wdgtDateTime->UpdateProgramName();
         if (mp_wdgtDateTime->exec() == (int)QDialog::Rejected)
         {
@@ -1088,6 +1119,9 @@ void CDashboardWidget::RetranslateUI()
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
+    m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget",
+                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue?",
+                                            0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)

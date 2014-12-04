@@ -159,6 +159,7 @@ private:
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
+    QString m_strDiffTemp;       ///<  Declaration of variable m_strDiffTemp
     static QString m_SelectedProgramId;
     QList<QString> m_StationList;
     int m_TimeProposedForProgram;           //!< Time costed only for the whole program, exclude the time for the delayed time
