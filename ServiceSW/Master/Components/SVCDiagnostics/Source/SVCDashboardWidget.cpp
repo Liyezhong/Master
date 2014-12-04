@@ -11,6 +11,7 @@
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "SVCDiagnostics/Include/SVCRotaryValveDlg.h"
+#include "SVCDiagnostics/Include/SVCValveStateInfoDlg.h"
 
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 
@@ -90,6 +91,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_GV2, PartSelected(), this, Valve2Selected());
 
     CONNECTSIGNALSLOT(mp_SelectBtn, clicked(), this, OnSelectPosition());
+    CONNECTSIGNALSLOT(mp_ValveInfoBtn, clicked(), this, OnValveStateInfo());
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()
@@ -439,7 +441,19 @@ void CSVCDashboardWidget::OnSelectPosition()
     int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, pos);
     mp_MsgDlg->HideWaitingDialog();
 
+    if (Ret != Diagnostics::RETURN_OK) {
+        mp_MsgDlg->ShowRVMoveFailedDlg(Title);
+    }
+
     qDebug()<<"move position result :"<<Ret;
+}
+
+void CSVCDashboardWidget::OnValveStateInfo()
+{
+    CSVCValveStateInfoDlg* p_Dlg = new CSVCValveStateInfoDlg(true, false, true, this);
+    (void)p_Dlg->exec();
+
+    delete p_Dlg;
 }
 
 void CSVCDashboardWidget::TimerStart(bool IsStart)
