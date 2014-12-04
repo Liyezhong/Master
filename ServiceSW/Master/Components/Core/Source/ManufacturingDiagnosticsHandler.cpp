@@ -606,7 +606,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
                 .arg(VoltageRet).arg(Voltage).arg(CurrentRet).arg(Current);
 
         qDebug()<<"Show MessageBox " << ASBIndex;
-        mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        mp_ServiceConnector->ShowMessageDialog(Result ? Global::GUIMSGTYPE_INFO : Global::GUIMSGTYPE_ERROR, Text, true);
         qDebug()<<"End Show MessageBox "<<ASBIndex;
         mp_MainControlManuf->SetTestResult(Id, Result);
     }
