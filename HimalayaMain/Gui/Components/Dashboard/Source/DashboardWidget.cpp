@@ -65,7 +65,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
 
-    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
+    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this, mp_MainWindow);
     mp_wdgtDateTime->setModal(true);
     mp_wdgtDateTime->SetUserSettings(m_pUserSetting);
 
