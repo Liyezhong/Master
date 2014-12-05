@@ -873,8 +873,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
     QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+
     qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+
 
     Service::ModuleTestStatus testStat;
     (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
@@ -884,6 +887,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     int waitSeconds = 0;
     qreal curTemp = 0;
     int totalSeconds = 0;
+    int remainder = duration % 10;
+
+    duration /= 10;
 
     p_TestCase->ResetResult();
     int num = 10;
@@ -924,7 +930,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             mp_Utils->Pause(200);
         }
         else {            
-            waitSeconds = 5;
+            waitSeconds = remainder;
         }
 
         while (!m_UserAbort && waitSeconds) {
@@ -974,7 +980,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
-    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
     return 0;
 
@@ -982,7 +988,7 @@ ERROR_EXIT:
     (void)mp_TempLSensor->StopTemperatureControl();
     p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
-    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
     return -1;
 }
