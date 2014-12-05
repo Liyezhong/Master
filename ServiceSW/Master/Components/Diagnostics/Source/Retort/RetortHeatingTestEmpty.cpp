@@ -140,9 +140,9 @@ int CHeatingTestEmpty::Run(void)
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
-        if (retortTempSide > (retortSideTargetTemp + tempOffset)
+        if (i >= t1 && (retortTempSide > (retortSideTargetTemp + tempOffset)
                 || retortTempBottom1 > retortBottomTargetTemp + tempOffset
-                || retortTempBottom2 > retortBottomTargetTemp + tempOffset) {
+                || retortTempBottom2 > retortBottomTargetTemp + tempOffset)) {
             ret = RETURN_ERR_FAIL;
             break;
         }
