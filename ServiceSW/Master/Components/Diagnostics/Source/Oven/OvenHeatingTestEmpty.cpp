@@ -152,7 +152,7 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor1 = OvenTempSensor1;
         status.OvenTempSensor2 = OvenTempSensor2;
         status.OvenTempTop = OvenTempTop;
-        status.EDTime = t;
+        status.EDTime = t + 60;
         status.TempOffsetRangeMax = 0;
         status.TempOffsetRangeMin = 0;
 
