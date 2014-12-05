@@ -78,7 +78,7 @@ private:
     const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
     const int m_BottleCoverHeight;                       //!< Bottle Cover Height
 
-    int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
+    qreal m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 
     QTimer* mp_SuckDrainTimer;       ///<  Definition/Declaration of variable mp_SuckDrainTimer
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
