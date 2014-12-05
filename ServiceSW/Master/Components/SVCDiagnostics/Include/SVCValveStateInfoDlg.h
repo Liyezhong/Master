@@ -68,12 +68,19 @@ public:
 //    bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  To add data item to the table
+     *  \iparam State = Valve or pump state
+     *  \iparam Name  = part name
+     */
+    /****************************************************************************/
     void AddItem(bool State, const QString& Name);
 
 private:
     Ui::CSVCValveStateInfoDlg* mp_Ui;    //!< User interface
-    QStandardItemModel m_Model;
-    MainMenu::CBaseTable *mp_TableWidget;
+    QStandardItemModel m_Model;          //!< Model for the table
+    MainMenu::CBaseTable *mp_TableWidget;//!< Base Table widget
 };
 }//end of namespace SVCDiagnostics
 

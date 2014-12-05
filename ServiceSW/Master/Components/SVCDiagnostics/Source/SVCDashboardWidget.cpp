@@ -135,15 +135,15 @@ void CSVCDashboardWidget::InitLabel()
     mp_HeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
     mp_HeatingTubeTemp->setPos(358, 126);
     mp_HeatingTubeCurrent->setPos(358, 147);
-    mp_HeatingTubeTemp->setText("   Temp : 46\260C");
-    mp_HeatingTubeCurrent->setText("  Current : 1A");
+    mp_HeatingTubeTemp->setText(" Temp: 0\260C");
+    mp_HeatingTubeCurrent->setText(" Current: 0A");
 
     mp_AirHeatingTubeTemp    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_AirHeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
     mp_AirHeatingTubeTemp->setPos(596, 31);
     mp_AirHeatingTubeCurrent->setPos(596, 44);
-    mp_AirHeatingTubeTemp->setText("   Temp : 46\260C");
-    mp_AirHeatingTubeCurrent->setText("  Current : 1A");
+    mp_AirHeatingTubeTemp->setText(" Temp: 0\260C");
+    mp_AirHeatingTubeCurrent->setText(" Current : 0A");
 
     mp_OvenTemp1   = new SVCLabel(true, mp_Ui->graphicsView);
     mp_OvenTemp2   = new SVCLabel(true, mp_Ui->graphicsView);
@@ -153,10 +153,10 @@ void CSVCDashboardWidget::InitLabel()
     mp_OvenTemp2->setPos(17, 196);
     mp_OvenTemp3->setPos(17, 209);
     mp_OvenCurrent->setPos(17, 222);
-    mp_OvenTemp1->setText("  Oven1 : 90\260C");
-    mp_OvenTemp2->setText("  Oven2 : 30\260C");
-    mp_OvenTemp3->setText("  Oven3 : 60\260C");
-    mp_OvenCurrent->setText("  Current : 5A");
+    mp_OvenTemp1->setText(" Oven1: 0\260C");
+    mp_OvenTemp2->setText(" Oven2: 0\260C");
+    mp_OvenTemp3->setText(" Oven3: 0\260C");
+    mp_OvenCurrent->setText(" Current: 0A");
 
     mp_RetortTemp1 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortTemp2 = new SVCLabel(true, mp_Ui->graphicsView);
@@ -169,7 +169,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortTemp1->setText("Retort_Temperature1");
     mp_RetortTemp2->setText("Retort_Temperature2");
     mp_RetortTemp3->setText("Retort_Temperature3");
-    mp_RetortCurrent->setText("Current : 2A");
+    mp_RetortCurrent->setText(" Current: 0A");
 
     mp_RotaryValvePosition = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RotaryValveTemp1    = new SVCLabel(true, mp_Ui->graphicsView);
@@ -179,14 +179,14 @@ void CSVCDashboardWidget::InitLabel()
     mp_RotaryValveTemp1->setPos(137, 196);
     mp_RotaryValveTemp2->setPos(137, 209);
     mp_RotaryValveCurrent->setPos(137, 222);
-    mp_RotaryValvePosition->setText("  Position : 10");
-    mp_RotaryValveTemp1->setText("  Temp1 : 50\260C");
-    mp_RotaryValveTemp2->setText("  Temp1 : 50\260C");
-    mp_RotaryValveCurrent->setText("  Current : 2A");
+    mp_RotaryValvePosition->setText(" Position: Unknow");
+    mp_RotaryValveTemp1->setText(" Temp1: 0\260C");
+    mp_RotaryValveTemp2->setText(" Temp1: 0\260C");
+    mp_RotaryValveCurrent->setText(" Current: 0A");
 
     mp_PressureLabel = new SVCLabel(false, mp_Ui->graphicsView);
     mp_PressureLabel->setPos(636, 100);
-    mp_PressureLabel->setText(" 20kPa");
+    mp_PressureLabel->setText(" 0kPa");
 }
 
 CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos, bool Clickable)
@@ -390,6 +390,20 @@ void CSVCDashboardWidget::Valve2Selected()
         //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+    }
+}
+
+void CSVCDashboardWidget::PumpSelected()
+{
+    qDebug()<<"Pump selected.";
+
+    CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
     }
 }
 

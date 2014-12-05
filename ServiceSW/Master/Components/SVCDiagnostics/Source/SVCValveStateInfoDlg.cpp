@@ -37,9 +37,11 @@ CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(bool PumpState, bool Valve1State, b
 
     mp_TableWidget->resize(310, 240);
 
-    //mp_TableWidget->horizontalHeader()->show();
+    mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->setModel(&m_Model);
+
+    m_Model.setHorizontalHeaderLabels(QStringList()<<tr("Part")<<tr("State"));
 
     AddItem(PumpState, QString("Pump"));
     AddItem(Valve1State, QString("Valve1"));
