@@ -1,17 +1,17 @@
 /****************************************************************************/
-/*! \file HeatingBelt1Test.cpp
+/*! \file LiquidHeatingTubeTest.cpp
  *
- *  \brief Implementation of L&A System heating belt 1 test.
+ *  \brief Implementation of L&A liquid heating tube test
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-20
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
  *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
