@@ -29,7 +29,7 @@ SVCLabel::SVCLabel(bool isBig, QWidget *parent, Qt::WindowFlags f)
         height = 14;
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        width = 40;
+        width = 45;
         height = 14;
     }
     //setAlignment(Qt::AlignHCenter);
