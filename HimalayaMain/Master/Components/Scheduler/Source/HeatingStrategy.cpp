@@ -2015,28 +2015,62 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
     return true;
 }
 
-
-
-bool HeatingStrategy::CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor)
+void HeatingStrategy::Init260ParamList()
 {
-    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (userInputMeltingPoint <= 0)
+    m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
+    memset(&m_SensorsChecking, 0,sizeof(m_SensorsChecking));
+    m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    m_SensorsChecking.minTime = 5*60*1000;
+}
+
+bool HeatingStrategy::Check260SensorsTemp(const HardwareMonitor_t& strctHWMonitor)
+{
+    // temperature checking for Retort Bottom1
+    if (isEffectiveTemp(strctHWMonitor.TempRTBottom1) && !m_SensorsChecking.RTBottomPassed)
     {
-     return true;
+        if ((strctHWMonitor.TempRTBottom1+0.5) >= m_SensorsChecking.meltingPoint)
+        {
+            m_SensorsChecking.RTBottomPassed = true;
+        }
     }
 
-    if(!isEffectiveTemp(strctHWMonitor.TempRTSide) || !isEffectiveTemp(strctHWMonitor.TempRTBottom1) || !isEffectiveTemp(strctHWMonitor.TempRTBottom2)
-            || !isEffectiveTemp(strctHWMonitor.TempOvenTop) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom1) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom2)
-            || !isEffectiveTemp(strctHWMonitor.TempRV2) || !isEffectiveTemp(strctHWMonitor.TempALTube1) )
+    // temperature checking for Oven Top
+    if (isEffectiveTemp(strctHWMonitor.TempOvenTop) && !m_SensorsChecking.OvenTopPassed)
     {
-        return false;
+        if ((strctHWMonitor.TempOvenTop+0.5) >= m_SensorsChecking.meltingPoint)
+        {
+            m_SensorsChecking.OvenTopPassed = true;
+        }
     }
 
-    return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempRTBottom2>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenTop>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempOvenBottom1>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenBottom2>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempRV2>=userInputMeltingPoint)&&(strctHWMonitor.TempALTube1>=userInputMeltingPoint);
+    // temperature checking for RV #2
+    if (isEffectiveTemp(strctHWMonitor.TempRV2) && !m_SensorsChecking.RV2Passed)
+    {
+        if ((strctHWMonitor.TempRV2+0.5) >= m_SensorsChecking.meltingPoint)
+        {
+            m_SensorsChecking.RV2Passed = true;
+        }
+    }
 
+    // temperature checking for LA tube 1
+    if (isEffectiveTemp(strctHWMonitor.TempALTube1) && !m_SensorsChecking.LATube1Passed)
+    {
+        if ((strctHWMonitor.TempALTube1+0.5) >= m_SensorsChecking.meltingPoint)
+        {
+            m_SensorsChecking.LATube1Passed = true;
+        }
+    }
+
+    if ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime
+            && m_SensorsChecking.RTBottomPassed
+            && m_SensorsChecking.OvenTopPassed
+            && m_SensorsChecking.RV2Passed
+            && m_SensorsChecking.LATube1Passed)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 }// end of namespace Scheduler

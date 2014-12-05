@@ -88,6 +88,22 @@ struct RTLevelSensor : public HeatingSensor
 
 /****************************************************************************/
 /*!
+ * \brief struct of sensor checking in scenario 260
+ */
+/****************************************************************************/
+struct SensorsChecking
+{
+    qint64  startTime;
+    quint32 minTime;
+    qreal   meltingPoint;
+    bool    RTBottomPassed;
+    bool    OvenTopPassed;
+    bool    RV2Passed;
+    bool    LATube1Passed;
+};
+
+/****************************************************************************/
+/*!
  * \brief struct of retort bottom sensor
  */
 /****************************************************************************/
@@ -275,12 +291,21 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Initialize parameters when entering scenario 260
+     *  \param  void
+     *  \return void
+     */
+    /****************************************************************************/
+    void Init260ParamList();
+
+    /****************************************************************************/
+    /*!
      *  \brief  check the temperature of sensors in scenario 260
      **  \param strctHWMonitor - temperature list from Device Control
      *  \return bool
      */
     /****************************************************************************/
-    bool CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor);
+    bool Check260SensorsTemp(const HardwareMonitor_t& strctHWMonitor);
 
     /****************************************************************************/
     /*!
@@ -366,6 +391,7 @@ private:
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
     bool                                m_DiasbleOvenHeatingError;      //!< disable heating strategy error
+    SensorsChecking                     m_SensorsChecking;              //!< Checking list of sensors in scenario 260
 
     /****************************************************************************/
     /*!
