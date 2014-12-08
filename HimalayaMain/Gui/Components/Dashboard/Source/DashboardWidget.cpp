@@ -941,7 +941,8 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     {
         int EndTimeDelta = m_AsapEndDateTime.secsTo(m_EndDateTime);
         int delayTime = EndTimeDelta + m_TimeDelta;
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, delayTime);
+        int runDuration = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_EndDateTime);
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, delayTime, runDuration);
         ui->programPanelWidget->ChangeStartButtonToStopState();
     }
     else

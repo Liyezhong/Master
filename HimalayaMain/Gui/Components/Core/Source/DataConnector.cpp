@@ -1515,9 +1515,9 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
 
 void CDataConnector::SendProgramAction(const QString& ProgramID,
                                        DataManager::ProgramActionType_t ActionType,
-                                       int delayTime)
+                                       int delayTime, int runDuration)
 {
-    MsgClasses::CmdProgramAction Command(COMMAND_TIME_OUT, ProgramID, ActionType, delayTime);
+    MsgClasses::CmdProgramAction Command(COMMAND_TIME_OUT, ProgramID, ActionType, delayTime, runDuration);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 

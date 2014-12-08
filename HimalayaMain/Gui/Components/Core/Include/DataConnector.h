@@ -290,10 +290,11 @@ public slots:
      *  \param  ProgramID = the selected Program ID
      *  \param  ActionType = operation type, eg.start/pause/abort
      *  \param  delayTime = the time to delay
+     *  \param  runDuration = the time from now to End datetime
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
-                           int delayTime = 0);
+                           int delayTime = 0, int runDuration = 0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendKeepCassetteCount

@@ -2366,7 +2366,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 {
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.DelayTime())));
+                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
@@ -2378,9 +2378,9 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 
     if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
     {
-        if(Cmd.DelayTime() > 0) // start new program
+        if(Cmd.ProgramRunDuration() > 0) // start new program
         {
-            QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.DelayTime());
+            QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
             RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName
                        <<EndDateTime.toString()); //log
         }

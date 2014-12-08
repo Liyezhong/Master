@@ -183,7 +183,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             {               
                 if (m_IsResumeRun)
                 {
-                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0);
+                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0, 0);
                     ChangeStartButtonToStopState();
                     return;
                 }
