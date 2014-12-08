@@ -2911,14 +2911,15 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     (void)mp_DigitalOutputMainRelay->SetHigh();
 
-    (void)mp_TempRV->StartTemperatureControl(70);
-    (void)mp_TempRetortBottom->StartTemperatureControl(70);
-    (void)mp_TempRetortSide->StartTemperatureControl(70);
-    (void)mp_TempOvenBottom->StartTemperatureControl(70);
-    (void)mp_TempOvenTop->StartTemperatureControl(70);
+    // Miles change the target temperature to 120 for RV and 110 for Retort on Dec, 02, 2014
+    (void)mp_TempRV->StartTemperatureControl(120);
+    (void)mp_TempRetortBottom->StartTemperatureControl(110);
+//    (void)mp_TempRetortSide->StartTemperatureControl(70);
+//    (void)mp_TempOvenBottom->StartTemperatureControl(70);
+//    (void)mp_TempOvenTop->StartTemperatureControl(70);
 
     int i=0;
-    while(i<6)
+    while(i<10)
     {
         i++;
         mp_Utils->Pause(500);
@@ -2926,9 +2927,9 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRetortBottom->StopTemperatureControl();
-    (void)mp_TempRetortSide->StopTemperatureControl();
-    (void)mp_TempOvenBottom->StopTemperatureControl();
-    (void)mp_TempOvenTop->StopTemperatureControl();
+//    (void)mp_TempRetortSide->StopTemperatureControl();
+//    (void)mp_TempOvenBottom->StopTemperatureControl();
+//    (void)mp_TempOvenTop->StopTemperatureControl();
 
     (void)mp_DigitalOutputMainRelay->SetLow();
 #if 0 // Disabled by Sunny on Oct, 31, 2014.
