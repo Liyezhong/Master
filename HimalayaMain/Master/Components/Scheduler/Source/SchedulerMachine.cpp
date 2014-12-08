@@ -193,6 +193,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
+    //for safe reagent
+    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
+
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigStepProgramFinished()),mp_PssmFillingHeatingRVState.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigEnterDryStep()), mp_PssmCleaningDryStep.data());
