@@ -11,7 +11,10 @@
 	  <File Path="HimalayaStations.xml" />
       <File Path="UserSettings.xml" />
       <File Path="SW_Version.xml" />
+      <File Path="Slave_HW_Version.txt" />
       <File Path="hw_specification.xml" />
+	  <File Path="fctmodule_spec.xml" />
+	  <File Path="HimalayaProgramSettings.xml" />
 	  <File Path="DeviceConfiguration.xml" />
 	  <File Path="DeviceLifeCycleRecord.xml" />
 	  <File Path="InstrumentHistory.xml" />
