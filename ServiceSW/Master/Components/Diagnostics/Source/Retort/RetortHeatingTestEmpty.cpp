@@ -140,23 +140,26 @@ int CHeatingTestEmpty::Run(void)
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
-        if (i >= t1 && (retortTempSide > (retortSideTargetTemp + tempOffset)
-                || retortTempBottom1 > retortBottomTargetTemp + tempOffset
-                || retortTempBottom2 > retortBottomTargetTemp + tempOffset)) {
-            ret = RETURN_ERR_FAIL;
-            break;
-        }
-        if (retortTempSide >= retortSideTargetTemp
-                && retortTempBottom1 >= retortBottomTargetTemp
-                && retortTempBottom2 >= retortBottomTargetTemp) {
-            if (!--count)
-                break;
-        } else {
+
+        if (retortTempSide > (retortSideTargetTemp + tempOffset)
+            || retortTempBottom1 > (retortBottomTargetTemp + tempOffset)
+            || retortTempBottom2 > (retortBottomTargetTemp + tempOffset)) {
             if (i >= t1) {
                 ret = RETURN_ERR_FAIL;
                 break;
             }
             count = t2;
+        } else if (retortTempSide < retortSideTargetTemp
+            || retortTempBottom1 < retortBottomTargetTemp
+            || retortTempBottom2 < retortBottomTargetTemp) {
+            if (i >= t1) {
+                ret = RETURN_ERR_FAIL;
+                break;
+            }
+            count = t2;
+        } else {
+            if (!--count)
+                break;
         }
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
