@@ -203,7 +203,24 @@ public slots:
     void TimerStart(bool IsStart);
 private:
 
+    /****************************************************************************/
+    /*!
+     *  \brief Make position to string.
+     *  \iparam TubeFlag = flag of tube position
+     *  \iparam Position = target position
+     *  \return String of position
+     */
+    /****************************************************************************/
     QString PostionToStr(bool TubeFlag, qreal Position);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show failed dialog
+     *  \iparam Title = Dialog title
+     *  \iparam Text = Dialog text
+     */
+    /****************************************************************************/
+    void ShowFailedDlg(const QString& Title, const QString& Text);
 
     /****************************************************************************/
     /*!

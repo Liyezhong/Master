@@ -74,7 +74,7 @@ public:
      *  \iparam Ret = test result for set dialog type
      */
     /****************************************************************************/
-    virtual void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret);
+    virtual void ShowMessage(const QString& MessageTitle, const QString& MessageText, ErrorCode_t Ret);
 
     /****************************************************************************/
     /*!
@@ -83,7 +83,7 @@ public:
      *  \iparam MessageText  = the dialog text
      */
     /****************************************************************************/
-    virtual void ShowWaitingDialog(QString& MessageTitle, QString& MessageText);
+    virtual void ShowWaitingDialog(const QString& MessageTitle, const QString& MessageText);
 
     /****************************************************************************/
     /*!
@@ -92,13 +92,13 @@ public:
     /****************************************************************************/
     virtual void HideWaitingDialog();
 
-    virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type = YES_NO);
+    virtual int ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE type = YES_NO);
     QWidget *ParentWidget()
     {
         return mp_Parent;
     }
 
-    virtual void ShowRVMoveFailedDlg(QString& Title);
+    virtual void ShowRVMoveFailedDlg(const QString& Title);
 
 protected:
     QWidget        *mp_Parent;              //!< Parent widget

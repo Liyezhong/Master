@@ -43,7 +43,7 @@ CDiagnosticMessageDlg::~CDiagnosticMessageDlg()
     }
 }
 
-void CDiagnosticMessageDlg::ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret)
+void CDiagnosticMessageDlg::ShowMessage(const QString& MessageTitle, const QString& MessageText, ErrorCode_t Ret)
 {
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
     dlg->SetTitle(MessageTitle);
@@ -68,7 +68,7 @@ void CDiagnosticMessageDlg::ShowMessage(QString& MessageTitle, QString& MessageT
     delete dlg;
 }
 
-void CDiagnosticMessageDlg::ShowWaitingDialog(QString& MessageTitle, QString& MessageText)
+void CDiagnosticMessageDlg::ShowWaitingDialog(const QString& MessageTitle, const QString& MessageText)
 {
     qDebug()<<"CDiagnosticMessageDlg::ShowWaitingDialog title="<<MessageTitle<<" MessageText="<<MessageText;
 
@@ -99,7 +99,7 @@ void CDiagnosticMessageDlg::HideWaitingDialog()
     }
 }
 
-int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type)
+int CDiagnosticMessageDlg::ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE type)
 {
     qDebug()<<"CDiagnosticMessageDlg::ShowConfirmMessage title="<<MessageTitle<<"  MessageText="<<MessageText;
 
@@ -138,7 +138,7 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(QString& MessageTitle, QString& Me
     return Ret;
 }
 
-void CDiagnosticMessageDlg::ShowRVMoveFailedDlg(QString& Title)
+void CDiagnosticMessageDlg::ShowRVMoveFailedDlg(const QString& Title)
 {
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
     dlg->SetTitle(Title);
