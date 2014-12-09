@@ -673,7 +673,7 @@ void CSVCDashboardWidget::UpdatePartStatus()
         mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
     }
 
-    //mp_Pump->SetStatus(p_DevProc->PumpGetStatus() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
+    mp_Pump->SetStatus(p_DevProc->PumpGetStatus() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
 }
 
 void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current)
