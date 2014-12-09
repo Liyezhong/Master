@@ -93,6 +93,37 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
 
     CONNECTSIGNALSLOT(mp_SelectBtn, clicked(), this, OnSelectPosition());
     CONNECTSIGNALSLOT(mp_ValveInfoBtn, clicked(), this, OnValveStateInfo());
+
+    {
+        Diagnostics::ServiceDeviceProcess *dev = Diagnostics::ServiceDeviceProcess::Instance();
+
+        mp_Fan->SetStatus(dev->PumpGetFan() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
+
+        quint8 index, value;
+        index = 0;
+        dev->PumpGetValve(index, value);
+        if (value == 1) {
+            mp_GV1->SetStatus(CGraphicsItemPart::Working);
+            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        } else if (value == 0) {
+            mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+        }
+
+        index = 1;
+        dev->PumpGetValve(index, value);
+        if (value == 1) {
+            mp_GV2->SetStatus(CGraphicsItemPart::Working);
+            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        } else if (value == 0) {
+            mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+        }
+    }
 }
 
 CSVCDashboardWidget::~CSVCDashboardWidget()

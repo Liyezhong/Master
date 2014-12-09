@@ -565,6 +565,23 @@ public:
 
     /****************************************************************************/
     /**
+     *  \brief To get fan state
+     *  \return Error Code
+     */
+    /****************************************************************************/
+    bool PumpGetFan();
+
+
+    /****************************************************************************/
+    /**
+     *  \brief To get pump state
+     *  \return Error Code
+     */
+    /****************************************************************************/
+    bool PumpGetStatus();
+
+   /****************************************************************************/
+    /**
      *  \brief To set valve of pump
      *  \iparam ValveIndex = index of valve
      *  \iparam ValveState = state of valve
@@ -572,6 +589,15 @@ public:
      */
     /****************************************************************************/
     int PumpSetValve(quint8 ValveIndex, quint8 ValveState);
+
+    /****************************************************************************/
+     /**
+      *  \brief To get valve of pump
+     *  \iparam ValveIndex = index of valve
+     *  \iparam ValveState = state of valve
+      */
+     /****************************************************************************/
+     void PumpGetValve(quint8 &ValveIndex, quint8 &ValveState);
 
     /****************************************************************************/
     /**
@@ -640,6 +666,8 @@ private:
     QMap<QString, QEventLoop*>      m_EventLoopMap;  //!< store event loop
     QMap<QString, QStringList>      m_ResultsMap;    //!< store results
     bool                            m_IsInitialized;    //!< flag of initialized
+    bool                            m_FanStatus;     //!< store fan status, on/off
+    QMap<qint8, qint8>                  m_ValveStatus;     //!< store valve status
 
 public slots:
 

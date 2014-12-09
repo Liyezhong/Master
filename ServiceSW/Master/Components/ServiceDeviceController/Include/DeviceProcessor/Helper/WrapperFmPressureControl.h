@@ -86,6 +86,10 @@ class WrapperFmPressureControl : public WrapperBase
     bool SetPressure(quint8 flag, float NominalPressure);
     float ReadPressureDrift(void);
     void WritePressureDrift(float PressureDrift);
+
+    bool GetPumpStatus();
+private:
+    bool pumpStatus;
 #endif
 private slots:
     void OnGetPressure(quint32, ReturnCode_t ReturnCode, quint8 Index, float Pressure);

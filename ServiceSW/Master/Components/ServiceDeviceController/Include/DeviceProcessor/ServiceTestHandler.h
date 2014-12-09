@@ -610,6 +610,15 @@ private:
 
     /****************************************************************************/
     /**
+     *  \brief To get pump status
+     *  \iparam ReqName = the name of request
+     *  \iparam Params = the list of param
+     */
+    /****************************************************************************/
+    void PumpGetStatus(QString& ReqName, QStringList& Params);
+
+    /****************************************************************************/
+    /**
      *  \brief To start sucking
      *  \iparam ReqName = the name of request
      *  \iparam Params = the list of param

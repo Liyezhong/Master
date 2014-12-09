@@ -1536,6 +1536,24 @@ void ServiceTestHandler::PumpStopCompressor(QString& ReqName, QStringList& Param
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
 
+void ServiceTestHandler::PumpGetStatus(QString& ReqName, QStringList& Params)
+{
+    Q_UNUSED(Params);
+
+    QStringList Results;
+    Results.clear();
+
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool status = mp_PressPump->GetPumpStatus();
+    Results.append(QString("%1").arg((int)status));
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
 void ServiceTestHandler::PumpSucking(QString& ReqName, QStringList& Params)
 {
     QStringList Results;
@@ -1833,6 +1851,10 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "GetSlaveModuleReportError") {
         GetSlaveModuleReportError(ReqName, Params);
     }
+    else if (ReqName == "PumpGetStatus") {
+        GetSlaveModuleReportError(ReqName, Params);
+    }
+
 }
 
 } // end namespace DeviceControl
