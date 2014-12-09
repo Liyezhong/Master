@@ -594,10 +594,10 @@ public:
      /**
       *  \brief To get valve of pump
      *  \iparam ValveIndex = index of valve
-     *  \iparam ValveState = state of valve
+     *  \oparam ValveState = state of valve
       */
      /****************************************************************************/
-     void PumpGetValve(quint8 &ValveIndex, quint8 &ValveState);
+     void PumpGetValve(quint8 ValveIndex, quint8 &ValveState);
 
     /****************************************************************************/
     /**

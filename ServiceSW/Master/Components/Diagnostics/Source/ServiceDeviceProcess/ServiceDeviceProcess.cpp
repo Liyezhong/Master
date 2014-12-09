@@ -1211,7 +1211,7 @@ int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
     return Ret;
 }
 
-void ServiceDeviceProcess::PumpGetValve(quint8 &ValveIndex, quint8 &ValveState)
+void ServiceDeviceProcess::PumpGetValve(quint8 ValveIndex, quint8 &ValveState)
 {
     ValveState = m_ValveStatus.value(ValveIndex);
 }
