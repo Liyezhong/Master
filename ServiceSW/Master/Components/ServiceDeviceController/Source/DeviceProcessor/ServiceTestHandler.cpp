@@ -1852,7 +1852,7 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
         GetSlaveModuleReportError(ReqName, Params);
     }
     else if (ReqName == "PumpGetStatus") {
-        GetSlaveModuleReportError(ReqName, Params);
+        PumpGetStatus(ReqName, Params);
     }
 
 }
