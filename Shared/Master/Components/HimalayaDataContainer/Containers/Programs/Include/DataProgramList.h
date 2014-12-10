@@ -144,7 +144,7 @@ public:
      *  \return Number of programs
      */
     /****************************************************************************/
-    int  GetNumberOfPrograms() {return m_ProgramList.count();}
+    int  GetNumberOfPrograms() const {return m_ProgramList.count();}
 
     // the CreateProgram functions won't add the created program to the internal program list! This is the job of AddProgramm.
     /****************************************************************************/
@@ -184,7 +184,7 @@ public:
      *  \iparam Index Index
      *  \return return CProgram
      */
-    CProgram* GetProgram(const unsigned int Index); // uses order index
+    CProgram* GetProgram(const unsigned int Index) const; // uses order index
 
     /*!
      *  \brief  GetProgram

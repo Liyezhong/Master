@@ -44,6 +44,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     DataManager::CHimalayaUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
     if (p_Settings) {
         mp_Ui->pageSystemSetup->SetUserSettings(p_Settings);
+        mp_Ui->pageSystemSetup->SetDataConnector(mp_Data);
         mp_Ui->pageAlarm->SetUserSettings(p_Settings);
         mp_Ui->pageDateTime->SetUserSettings(p_Settings);
         mp_Ui->pageInstallation->SetUserSettings(p_Settings);
@@ -81,11 +82,14 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
                       mp_Data, SendResetOperationDays(DataManager::ResetOperationHoursType_t));
 
 
-    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup,TemperatureChanged(DataManager::CUserSettings &),
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, TemperatureChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
 
-    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup,ParaffinMeltPointchanged(int, int),
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, ParaffinMeltPointchanged(int, int),
                       mp_Data, SendParaffinTemperatureChanged(int, int));
+
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, UpdateProgram(DataManager::CProgram &),
+                      mp_Data, SendProgramUpdate(DataManager::CProgram &));
 
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),
             mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
