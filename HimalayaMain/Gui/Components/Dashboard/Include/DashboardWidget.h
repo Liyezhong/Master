@@ -321,6 +321,12 @@ private slots:
     void OnPauseButtonEnable(bool bEnable);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of OnStartButtonEnable
+     */
+    /****************************************************************************/
+    void OnStartButtonEnable(bool bEnable);
+    /****************************************************************************/
+    /*!
     *  \brief  Definition/Declaration of OnPauseTimeout15Mintues
     */
     /****************************************************************************/

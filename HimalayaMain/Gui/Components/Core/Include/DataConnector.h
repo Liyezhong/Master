@@ -741,6 +741,13 @@ signals:
     void EnablePauseButton(bool bEnable);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal EnableStartButton
+     * \iparam  bEnable enabled/disabled
+     */
+    /****************************************************************************/
+    void EnableStartButton(bool bEnable);
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal PauseTimeout15Mintues
      */
     /****************************************************************************/

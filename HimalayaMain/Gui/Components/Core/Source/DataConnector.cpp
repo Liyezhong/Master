@@ -1710,6 +1710,17 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit EnablePauseButton(false);
         }
         break;
+        case DataManager::PROGRAM_START_ENABLE:
+        {
+            emit EnableStartButton(true);
+        }
+        break;
+        case DataManager::PROGRAM_START_DISABLE:
+        {
+            emit EnableStartButton(false);
+        }
+        break;
+
         case DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES:
         {
             emit PauseTimeout15Mintues();

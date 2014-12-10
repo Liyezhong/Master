@@ -147,6 +147,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
                               this, OnProgramPaused());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, EnableStartButton(bool),
+                              this, OnStartButtonEnable(bool));
+
     CONNECTSIGNALSLOT(mp_DataConnector, EnablePauseButton(bool),
                               this, OnPauseButtonEnable(bool));
 
@@ -615,6 +618,11 @@ void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
     ui->programPanelWidget->ResumePauseRunningStatus(bEnable);
 }
 
+void CDashboardWidget::OnStartButtonEnable(bool bEnable)
+{
+    ui->programPanelWidget->EnableStartButton(bEnable);
+}
+
 void CDashboardWidget::OnPauseTimeout15Mintues()
 {
     ui->programPanelWidget->ChangeStartButtonToStopState();
@@ -741,14 +749,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     bool bShowRMSOffWarning = false;
     bool isLeicaProgram = pSelectedProgram->IsLeicaProgram();
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
-        {
-            bShowRMSOffWarning = true;
-        }
-    }
-    else
+    if (m_SelectedProgramId.at(0) != 'C')
     {
         if ((Global::RMS_OFF == userSetting->GetModeRMSProcessing()) && isLeicaProgram)
         {
