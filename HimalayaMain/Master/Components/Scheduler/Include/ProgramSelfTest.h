@@ -160,8 +160,8 @@ private:
      */
     /****************************************************************************/
     typedef enum{
-        SET_VOLTAGE_ASB3_AWITCH,
-        SET_VOLTAGE_ASB5_AWITCH,
+        SET_VOLTAGE_ASB3_SWITCH,
+        SET_VOLTAGE_ASB5_SWITCH,
         START_HEATING_ACMODE,
         STOP_HEATING_ACMODE,
         CHECK_VOLTAGE_RANGE,

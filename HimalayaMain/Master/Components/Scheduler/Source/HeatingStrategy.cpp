@@ -124,19 +124,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
     }
 
-
-    //the scenario is 2,don't check heating overtime and statrt time is hard code
-    if(2 == scenario)
-    {
-        m_CurScenario = 2;
-        return retCode;
-    }
-
-    /***************************************************
-     *
-    Set temperature for each sensor
-    *
-    ***************************************************/
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
@@ -216,7 +203,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
                 (void)this->StopTemperatureControl("RTBottom");
             }
         }
-
     }
 
     // For Level Sensor, we need set two times (high and low) in each scenario
@@ -394,7 +380,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     return retCode;
 }
 
-ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName)
+ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature)
 {
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
@@ -424,6 +410,22 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     if ("RTBottom" == HeaterName)
     {
         m_RTBottom.curModuleId = "1";
+        qreal TempRTBottom = 80;
+        if(NotSureTemperature)
+        {
+            TempRTBottom = mp_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+            if(isEffectiveTemp(TempRTBottom))
+            {
+                if(TempRTBottom < m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature - 25)
+                {
+                    TempRTBottom += 20;
+                }
+                else
+                {
+                    TempRTBottom = m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature - 5;
+                }
+            }
+        }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -461,8 +463,24 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     {
         m_RV_1_HeatingRod.curModuleId = "3";
         m_RV_2_Outlet.curModuleId = "3";
+        qreal TempRV1 = 80;
+        if(NotSureTemperature)
+        {
+            TempRV1 = mp_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+            if(isEffectiveTemp(TempRV1))
+            {
+                if(TempRV1 < m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature - 25)
+                {
+                    TempRV1 += 20;
+                }
+                else
+                {
+                    TempRV1 = m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature - 5;
+                }
+            }
+        }
         pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRV1);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(130);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(1212);

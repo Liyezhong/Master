@@ -2772,7 +2772,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         mp_HeatingStrategy->SetHeatingStrategyScenario(0);
     }
     // Run Heating Strategy
-    if ("ERROR" != StepID && 0 != Scenario)
+    if ("ERROR" != StepID && Scenario > 2)
     {
         m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);

@@ -990,7 +990,7 @@
 	    <Event Code="" ErrorID="67174674" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_ASB5_SAME_ASB3" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174674" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174675" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67174675" ErrorType="WARNING" AlarmType="No" Name="EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174675" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174676" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS" LogLevel="High" UserLog="FALSE">

@@ -222,10 +222,11 @@ public:
     /*!
      *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name
+     *  \param  NotSureTemperature - bool whether sure temperature
      *  \return ReturnCode_t
      */
     /****************************************************************************/
-    ReturnCode_t StartTemperatureControlForSelfTest(const QString& HeaterName);
+    ReturnCode_t StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature = false);
 
     /****************************************************************************/
     /*!
