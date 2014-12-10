@@ -586,7 +586,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
                        << m_CurProgramStepInfo.stationID
                        <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                       <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                       <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                        <<PVMode);
 
             //send command to main controller to tell the left time
@@ -1144,7 +1144,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
                                << m_CurProgramStepInfo.stationID
                                <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                               <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                               <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                                <<PVMode);
                     m_SchedulerMachine->NotifyStepProgramFinished();
                     //send command to main controller to tell the left time
