@@ -384,6 +384,7 @@ void CNetworkSettingsWidget::OnProxyPort()
     // [0-9] is used to allow user to enter only 0 to 9 digits
     mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
+    mp_KeyBoardWidget->SetLineEditSelected();
     mp_KeyBoardWidget->show();
     // Connect signals and slots to keyboard.
     ConnectKeyBoardSignalSlots();

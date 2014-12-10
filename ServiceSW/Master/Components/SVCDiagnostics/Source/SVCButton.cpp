@@ -17,61 +17,57 @@
  *
  */
 /****************************************************************************/
-
+#include <QFont>
 #include "SVCDiagnostics/Include/SVCButton.h"
 
-SVCButton::SVCButton(bool isBig, QWidget *parent)
-    : QPushButton(parent)
+SVCButton::SVCButton(bool isBig, QWidget *_parent)
+    : QPushButton(_parent)
 {
     QFont Font;
-    Font.setWeight(QFont::Black);
+    Font.setWeight((int)QFont::Black);
     Font.setPointSize(9);
     setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }");
     if (isBig) {
          // big background
-        width = 110;
-        height = 28;
-    } else {    
-        width = 97;
-        height = 28;
+        resize(110, 28);
+    } else {
+        resize(97, 28);
     }
     setFont(Font);
     //setAutoFillBackground(true);
     setFocusPolicy(Qt::NoFocus);
 }
 
-SVCButton::SVCButton(const QString &text, bool isBig, QWidget *parent)
-    : QPushButton(text, parent)
+SVCButton::SVCButton(const QString &_text, bool isBig, QWidget *_parent)
+    : QPushButton(_text, _parent)
 {
     QFont Font;
-    Font.setWeight(QFont::Bold);
+    Font.setWeight((int)QFont::Bold);
+
     if (isBig) {
         Font.setPointSize(14);
         setFont(Font);
         setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }"); // big background
-    }
-    else {
+    } else {
         Font.setPointSize(9);
         setFont(Font);
         setStyleSheet("QPushButton { border-image: url(:/Images/Button1) }"); // little
-   }
-   setFocusPolicy(Qt::NoFocus);
+    }
+
+    setFocusPolicy(Qt::NoFocus);
 }
 
-void SVCButton::setPos(int x, int y)
+void SVCButton::setPos(int _x, int _y)
 {
-    setGeometry(QRect(x, y, width, height));
+    setGeometry(QRect(_x, _y, frameSize().width(), frameSize().height()));
 }
 
-void SVCButton::setPos(QPoint pos)
+void SVCButton::setPos(QPoint _pos)
 {
-    setGeometry(QRect(pos.x(), pos.y(), width, height));
+    setGeometry(QRect(_pos.x(), _pos.y(), frameSize().width(), frameSize().height()));
 }
 
-void SVCButton::setSize(int width, int height)
+void SVCButton::setSize(int _width, int _height)
 {
-    this->width = width;
-    this->height = height;
-
-    setGeometry(QRect(geometry().x(), geometry().y(), width, height));
+    resize(_width, _height);
 }

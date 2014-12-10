@@ -20,52 +20,45 @@
 
 #include "SVCDiagnostics/Include/SVCLabel.h"
 
-SVCLabel::SVCLabel(bool isBig, QWidget *parent, Qt::WindowFlags f)
-	: QLabel(parent, f)
+SVCLabel::SVCLabel(bool isBig, QWidget *_parent, Qt::WindowFlags f)
+    : QLabel(_parent, f)
 {
     if (isBig) {
         setStyleSheet("QLabel { border-image: url(:/Images/Label2) }"); // big background
-        width = 95;
-        height = 14;
+        resize(95, 14);
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        width = 45;
-        height = 14;
+        resize(45, 14);
     }
     //setAlignment(Qt::AlignHCenter);
-    setFont(QFont("WenQuanYi Zen Hei", 8, QFont::Bold));
+    setFont(QFont("WenQuanYi Zen Hei", 8, (int)QFont::Bold));
 }
 
-SVCLabel::SVCLabel(const QString &text, bool isBig, QWidget *parent, Qt::WindowFlags f)
-	: QLabel(text, parent, f)
+SVCLabel::SVCLabel(const QString &_text, bool isBig, QWidget *_parent, Qt::WindowFlags f)
+    : QLabel(_text, _parent, f)
 {
     if (isBig) {
         setStyleSheet("QLabel { border-image: url(:/Images/Label2) }"); // big background
-        width = 95;
-        height = 14;
+        resize(95, 14);
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        width = 40;
-        height = 14;
+        resize(40, 14);
     }
-    setFont(QFont("WenQuanYi Zen Hei", 8, QFont::Bold));
+    setFont(QFont("WenQuanYi Zen Hei", 8, (int)QFont::Bold));
 }
 
-void SVCLabel::setPos(int x, int y)
+void SVCLabel::setPos(int _x, int _y)
 {
-    setGeometry(QRect(x, y, width, height));
+    setGeometry(QRect(_x, _y, frameSize().width(), frameSize().height()));
 }
 
-void SVCLabel::setPos(QPoint pos)
+void SVCLabel::setPos(QPoint _pos)
 {
-    setGeometry(QRect(pos.x(), pos.y(), width, height));
+    setGeometry(QRect(_pos.x(), _pos.y(), frameSize().width(), frameSize().height()));
 }
 
-void SVCLabel::setSize(int width, int height)
+void SVCLabel::setSize(int _width, int _height)
 {
-    this->width = width;
-    this->height = height;
-
-    setGeometry(QRect(geometry().x(), geometry().y(), width, height));
+    resize(_width, _height);
 }
 

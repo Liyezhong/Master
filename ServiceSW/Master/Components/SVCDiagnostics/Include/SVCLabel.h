@@ -41,7 +41,7 @@ public:
      *  \iparam f = window flag
      */
     /****************************************************************************/
-    explicit SVCLabel(bool isBig = true, QWidget *parent=0, Qt::WindowFlags f=0);
+    explicit SVCLabel(bool isBig = true, QWidget *_parent=0, Qt::WindowFlags f=0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCLabel
@@ -51,7 +51,7 @@ public:
      *  \iparam f = window flag
      */
     /****************************************************************************/
-    explicit SVCLabel(const QString &text, bool isBig = true, QWidget *parent=0, Qt::WindowFlags f=0);
+    explicit SVCLabel(const QString &_text, bool isBig = true, QWidget *_parent=0, Qt::WindowFlags f=0);
 
 public:
     /****************************************************************************/
@@ -59,23 +59,19 @@ public:
      *  \brief  Definition/Declaration of function setPos, change label position;
      */
     /****************************************************************************/
-    void setPos(int x, int y);
+    void setPos(int _x, int _y);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change label position;
      */
     /****************************************************************************/
-    void setPos(QPoint pos);
+    void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setSize;, change label size;
      */
     /****************************************************************************/
-    void setSize(int width, int height);
-
-private:
-    int width; //!< label width
-    int height; //!< label height
+    void setSize(int _width, int _height);
 };
 
 #endif // SVC_LABEL_H

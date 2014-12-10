@@ -61,24 +61,24 @@ QPainterPath CGraphicsPixmapItem::shape() const
 void CGraphicsPixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
            QWidget *)
 {
-    QPixmap pixmap = this->pixmap();
-    QRect rect = pixmap.rect();
+    QPixmap _pixmap = this->pixmap();
+    QRect rect = _pixmap.rect();
 
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->drawPixmap(rect, pixmap);
+    painter->drawPixmap(rect, _pixmap);
 }
 
-void CGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void CGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *_event)
 {
     SetState(true);
     emit Clicked(tag);
-    QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(_event);
 }
 
-void CGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void CGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *_event)
 {
     update(boundingRect());
-    QGraphicsItem::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(_event);
 }
 
 void CGraphicsPixmapItem::SetState(bool status)
@@ -89,14 +89,15 @@ void CGraphicsPixmapItem::SetState(bool status)
         setPixmap(pixmapDisable);
 }
 
-void CGraphicsPixmapItem::SetTag(int tag)
+void CGraphicsPixmapItem::SetTag(int _tag)
 {
-    this->tag = tag;
+    this->tag = _tag;
 }
 
-CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
-    MainMenu::CDialogFrame(p_Parent),
-    ui(new Ui::CRotaryValveDlg)
+CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent)
+    : MainMenu::CDialogFrame(p_Parent)
+    , ui(new Ui::CRotaryValveDlg)
+    , tag(0)
 {
     ui->setupUi(GetContentFrame());
     setModal(true);
@@ -114,7 +115,6 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     mp_Scene->setBackgroundBrush(QImage(":/Images/RotaryValveDetail.png"));
     ui->graphicsView->setScene(mp_Scene);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
-
 
     QPen pen;
     pen.setColor(QColor(82, 103,111));
@@ -193,7 +193,7 @@ CSVCRotaryValveDlg::~CSVCRotaryValveDlg()
     }
 }
 
-void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
+void CSVCRotaryValveDlg::RotaryValveClicked(int _tag)
 {
     qreal angle;
 

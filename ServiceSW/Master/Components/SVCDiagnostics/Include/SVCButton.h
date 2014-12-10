@@ -40,7 +40,7 @@ public:
      *  \iparam parent = the parent graphics item
      */
     /****************************************************************************/
-    explicit SVCButton(bool isBig = true, QWidget *parent=0);
+    explicit SVCButton(bool isBig = true, QWidget *_parent=0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCButton
@@ -49,7 +49,7 @@ public:
      *  \iparam parent = the parent graphics item
      */
     /****************************************************************************/
-    explicit SVCButton(const QString &text, bool isBig = true, QWidget *parent=0);
+    explicit SVCButton(const QString &_text, bool isBig = true, QWidget *_parent=0);
 
 public:
     /****************************************************************************/
@@ -57,23 +57,19 @@ public:
      *  \brief  Definition/Declaration of function setPos, change button position;
      */
     /****************************************************************************/
-    void setPos(int x, int y);
+    void setPos(int _x, int _y);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change button position;
      */
     /****************************************************************************/
-    void setPos(QPoint pos);
+    void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setSize, change button size;
      */
     /****************************************************************************/
-    void setSize(int width, int height);
-
-private:
-    int width; //!< label width
-    int height; //!< label height
+    void setSize(int _width, int _height);
 };
 
 #endif // SVC_BUTTON_H

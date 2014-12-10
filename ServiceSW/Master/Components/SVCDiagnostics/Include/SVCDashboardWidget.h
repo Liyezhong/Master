@@ -238,7 +238,7 @@ private:
      *  \return the pointer of the CGraphiscsItemPart
      */
     /****************************************************************************/
-    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos, bool Clickable = true);
+    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& _pos, bool Clickable = true);
 
     /****************************************************************************/
     /*!

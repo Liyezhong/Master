@@ -189,7 +189,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_PressureLabel->setText(" 0kPa");
 }
 
-CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& pos, bool Clickable)
+CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& _pos, bool Clickable)
 {
     QString normalImg = ":/Images/" + partResName + ".png";
     CGraphicsItemPart* pGraphicsItemPart = NULL;
@@ -204,7 +204,7 @@ CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, c
 //        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg));
 //    }
     mp_Scene->addItem(pGraphicsItemPart);
-    pGraphicsItemPart->setPos(pos);
+    pGraphicsItemPart->setPos(_pos);
     return pGraphicsItemPart;
 }
 
@@ -234,13 +234,13 @@ void CSVCDashboardWidget::RetortSelected()
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
         delete p_TempSelectionDlg;
 
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Retort", "Retort start heating failed.");
             mp_Retort->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating() !=(int) Diagnostics::RETURN_OK) {
             ShowFailedDlg("Retort", "Retort stop heating failed.");
             mp_Retort->SetStatus(CGraphicsItemPart::Working);
         }
@@ -265,13 +265,13 @@ void CSVCDashboardWidget::OvenSelected()
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
         delete p_TempSelectionDlg;
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Oven", "Oven start heating failed.");
             mp_Oven->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Oven", "Oven stop heating failed.");
             mp_Oven->SetStatus(CGraphicsItemPart::Working);
         }
@@ -296,13 +296,13 @@ void CSVCDashboardWidget::RotaryValveSelected()
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Rotary Valve", "Rotary valve start heating failed.");
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Rotary Valve", "Rotary valve stop heating failed.");
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Working);
         }
@@ -328,13 +328,13 @@ void CSVCDashboardWidget::AirTubeSelected()
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
 
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Air heating tube", "Air heating tube start heating failed.");
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Air Heating Tube", "Air heating tube stop heating failed.");
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Working);
         }
@@ -360,13 +360,13 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
         qDebug()<<"Liquid tube heating result:"<<Ret;
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Liquid Heating Tube", "Liquid heating tube start heating failed.");
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Liquid Heating Tube", "Liquid heating tube stop heating failed.");
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Working);
         }
@@ -382,13 +382,13 @@ void CSVCDashboardWidget::FanSelected()
     CGraphicsItemPart::PartStatus Status = mp_Fan->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(1) != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(1) != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Exhaust Fan", "Exhaust fan open failed.");
             mp_Fan->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(0) != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(0) != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Exhaust Fan", "Exhaust fan close failed.");
             mp_Fan->SetStatus(CGraphicsItemPart::Working);
         }
@@ -402,7 +402,7 @@ void CSVCDashboardWidget::Valve1Selected()
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1) == Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1) == (int)Diagnostics::RETURN_OK) {
             //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
             mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
             mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
@@ -413,7 +413,7 @@ void CSVCDashboardWidget::Valve1Selected()
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0) == Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0) == (int)Diagnostics::RETURN_OK) {
             //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
             mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
             mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
@@ -432,7 +432,7 @@ void CSVCDashboardWidget::Valve2Selected()
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1) == Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1) == (int)Diagnostics::RETURN_OK) {
             //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
             mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
             mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
@@ -443,7 +443,7 @@ void CSVCDashboardWidget::Valve2Selected()
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0) == Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0) == (int)Diagnostics::RETURN_OK) {
             //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
             mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
             mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
@@ -462,7 +462,7 @@ void CSVCDashboardWidget::PumpSelected()
     CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        int Ret = Diagnostics::RETURN_OK;
+        int Ret = (int)Diagnostics::RETURN_OK;
         if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 1 is Open
             qDebug()<<"To create pressure";
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
@@ -479,13 +479,13 @@ void CSVCDashboardWidget::PumpSelected()
             mp_Pump->SetStatus(CGraphicsItemPart::Normal);
         }
 
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Pump", "Pump open failed.");
             mp_Pump->SetStatus(CGraphicsItemPart::Normal);
         }
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() != Diagnostics::RETURN_OK) {
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Pump", "Pump close failed.");
             mp_Pump->SetStatus(CGraphicsItemPart::Working);
         }
@@ -503,7 +503,7 @@ void CSVCDashboardWidget::OnSelectPosition()
         Text = "Can't get current position, Do you want to initialize position?";
         int Ret = mp_MsgDlg->ShowConfirmMessage(Title, Text, Diagnostics::CDiagnosticMessageDlg::OK_ABORT);
 
-        if (Ret == Diagnostics::CDiagnosticMessageDlg::ABORT) {
+        if (Ret == (int)Diagnostics::CDiagnosticMessageDlg::ABORT) {
             return;
         }
 
@@ -512,7 +512,7 @@ void CSVCDashboardWidget::OnSelectPosition()
         Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVInitialize();
         mp_MsgDlg->HideWaitingDialog();
 
-        if (Ret != Diagnostics::RETURN_OK) {
+        if (Ret != (int)Diagnostics::RETURN_OK) {
             Text = "Rotary valve initialize failed.";
             mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
             return;
@@ -529,18 +529,18 @@ void CSVCDashboardWidget::OnSelectPosition()
         return;
 
     bool flag;
-    qint32 pos;
-    rotaryValveDlg.GetPos(flag, pos);
+    qint32 _pos;
+    rotaryValveDlg.GetPos(flag, _pos);
 
-    if ( flag == CurrentTubeFlag && pos == CurrentPosition)
+    if ( flag == CurrentTubeFlag && _pos == CurrentPosition)
         return;
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(flag, pos));
+    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(flag, _pos));
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
-    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, pos);
+    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, _pos);
     mp_MsgDlg->HideWaitingDialog();
 
-    if (Ret != Diagnostics::RETURN_OK) {
+    if (Ret != (int)Diagnostics::RETURN_OK) {
         mp_MsgDlg->ShowRVMoveFailedDlg(Title);
     }
 

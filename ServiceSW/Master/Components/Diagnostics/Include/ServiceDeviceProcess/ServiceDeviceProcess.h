@@ -667,7 +667,7 @@ private:
     QMap<QString, QStringList>      m_ResultsMap;    //!< store results
     bool                            m_IsInitialized;    //!< flag of initialized
     bool                            m_FanStatus;     //!< store fan status, on/off
-    QMap<qint8, qint8>                  m_ValveStatus;     //!< store valve status
+    QMap<qint8, qint8>              m_ValveStatus;     //!< store valve status
 
 public slots:
 

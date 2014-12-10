@@ -68,7 +68,7 @@ public:
      *  \iparam tag
      */
     /****************************************************************************/
-    void SetTag(int tag);
+    void SetTag(int _tag);
 
 signals:
     /****************************************************************************/
@@ -77,11 +77,11 @@ signals:
      *  \iparam tag
      */
     /****************************************************************************/
-    void Clicked(int tag);
+    void Clicked(int _tag);
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *_event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *_event);
 
 private:
     QPixmap pixmapEnable;     //!< save pixmap enable state
@@ -136,7 +136,7 @@ private Q_SLOTS:
      *  \brief  Slot for rotary valve position button clicked
      */
     /****************************************************************************/
-    void RotaryValveClicked(int tag);
+    void RotaryValveClicked(int _tag);
 
 private:
     Ui::CRotaryValveDlg* ui;    //!< User interface
