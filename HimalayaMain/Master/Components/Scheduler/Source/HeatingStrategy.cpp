@@ -1678,7 +1678,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         return true;
     }
 
-    if ((heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)<= HWTemp)
+    if ((heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)<= HWTemp && isEffectiveTemp(HWTemp))
     {
         heatingSensor.OTCheckPassed = true;
     }
@@ -1815,14 +1815,14 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     if (meltingPoint < 68.0)
     {
-        if (HWTemp >= meltingPoint)
+        if (HWTemp >= meltingPoint && isEffectiveTemp(HWTemp))
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
     }
     else
     {
-        if (HWTemp >= 68.0)
+        if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
@@ -2036,9 +2036,8 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
 void HeatingStrategy::Init260ParamList()
 {
     m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
-    memset(&m_SensorsChecking, 0,sizeof(m_SensorsChecking));
-    m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (m_SensorsChecking.meltingPoint <= 64.0)
+    qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if (meltingPoint <= 64.0)
     {
         m_SensorsChecking.minTime = 5*60*1000;
     }
@@ -2050,66 +2049,12 @@ void HeatingStrategy::Init260ParamList()
 
 bool HeatingStrategy::Check260SensorsTemp(const HardwareMonitor_t& strctHWMonitor)
 {
-    // temperature checking for Retort Bottom1
-    if (isEffectiveTemp(strctHWMonitor.TempRTBottom1) && !m_SensorsChecking.RTBottomPassed)
-    {
-        if ((strctHWMonitor.TempRTBottom1+1) >= m_SensorsChecking.meltingPoint)
-        {
-            m_SensorsChecking.RTBottomPassed = true;
-        }
-    }
-
-    // temperature checking for Retort Side
-    if (isEffectiveTemp(strctHWMonitor.TempRTSide) && !m_SensorsChecking.RTSidePassed)
-    {
-        if ((strctHWMonitor.TempRTSide+1) >= m_SensorsChecking.meltingPoint)
-        {
-            m_SensorsChecking.RTSidePassed = true;
-        }
-    }
-
-    // temperature checking for Oven Top
-    if (isEffectiveTemp(strctHWMonitor.TempOvenTop) && !m_SensorsChecking.OvenTopPassed)
-    {
-        if ((strctHWMonitor.TempOvenTop+1) >= m_SensorsChecking.meltingPoint)
-        {
-            m_SensorsChecking.OvenTopPassed = true;
-        }
-    }
-
-    // temperature checking for RV #2
-    if (isEffectiveTemp(strctHWMonitor.TempRV2) && !m_SensorsChecking.RV2Passed)
-    {
-        if (m_SensorsChecking.meltingPoint < 68.0)
-        {
-            if ((strctHWMonitor.TempRV2) >= m_SensorsChecking.meltingPoint)
-            {
-                m_SensorsChecking.RV2Passed = true;
-            }
-        }
-        else
-        {
-            if ((strctHWMonitor.TempRV2) >= 68.0)
-            {
-                m_SensorsChecking.RV2Passed = true;
-            }
-        }
-    }
-
-    // temperature checking for LA tube 1
-    if (isEffectiveTemp(strctHWMonitor.TempALTube1) && !m_SensorsChecking.LATube1Passed)
-    {
-        if ((strctHWMonitor.TempALTube1+1) >= m_SensorsChecking.meltingPoint)
-        {
-            m_SensorsChecking.LATube1Passed = true;
-        }
-    }
-
     if ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime
-            && m_SensorsChecking.RTBottomPassed
-            && m_SensorsChecking.OvenTopPassed
-            && m_SensorsChecking.RV2Passed
-            && m_SensorsChecking.LATube1Passed)
+            && m_RTTop.OTCheckPassed
+            && m_RTBottom.OTCheckPassed
+            && m_OvenTop.OTCheckPassed
+            && m_RV_2_Outlet.OTCheckPassed
+            && m_LARVTube.OTCheckPassed)
     {
         return true;
     }

@@ -129,6 +129,7 @@
        <event id="500040531"    name="EVENT_LA_TubeHeating_TSensor2_OutofRange"/>
        <event id="500040541"    name="EVENT_LA_TubeHeating_Tube1_NotReachTargetTemp"/>
        <event id="500040551"    name="EVENT_LA_TubeHeating_Tube2_NotReachTargetTemp"/>
+       <event id="500040561"    name="EVENT_LA_PRESSURE_TEST"/>
   </group>
  <group name="Main Control">
        <event id="500050001"    name="EVENT_MC_DC_5V_ASB3_OutofRange"/>

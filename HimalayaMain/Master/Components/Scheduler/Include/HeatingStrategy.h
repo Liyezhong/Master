@@ -95,12 +95,6 @@ struct SensorsChecking
 {
     qint64  startTime;
     quint32 minTime;
-    qreal   meltingPoint;
-    bool    RTBottomPassed;
-    bool    RTSidePassed;
-    bool    OvenTopPassed;
-    bool    RV2Passed;
-    bool    LATube1Passed;
 };
 
 /****************************************************************************/
