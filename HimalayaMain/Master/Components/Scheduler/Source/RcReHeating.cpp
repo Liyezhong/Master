@@ -286,7 +286,7 @@ void CRcReHeating::CheckTheTemperature()
         // for parrafin program
         if(QFile::exists("TEST_GINA"))
         {
-            if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
+            if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
             {
                 emit SigGetRVPosition();
             }
@@ -308,7 +308,7 @@ void CRcReHeating::CheckTheTemperature()
             }
             if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
             {
-                if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
+                if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
                 {
                     emit SigGetRVPosition();
                 }

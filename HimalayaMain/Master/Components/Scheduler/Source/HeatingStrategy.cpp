@@ -2047,7 +2047,7 @@ void HeatingStrategy::Init260ParamList()
     }
 }
 
-bool HeatingStrategy::Check260SensorsTemp(const HardwareMonitor_t& strctHWMonitor)
+bool HeatingStrategy::Check260SensorsTemp()
 {
     if ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime
             && m_RTTop.OTCheckPassed

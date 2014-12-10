@@ -818,7 +818,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
             if(m_CurProgramStepInfo.reagentGroup == "RG6")
             {
-                if(mp_HeatingStrategy->Check260SensorsTemp(m_SchedulerCommandProcessor->HardwareMonitor()))
+                if(mp_HeatingStrategy->Check260SensorsTemp())
                 {
                     LogDebug("Program Step Heating Rotary Valve heating rod OK");
                     m_SchedulerMachine->NotifyRVRodHeatingReady();

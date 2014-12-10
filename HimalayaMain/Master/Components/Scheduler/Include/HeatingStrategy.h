@@ -296,11 +296,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  check the temperature of sensors in scenario 260
-     **  \param strctHWMonitor - temperature list from Device Control
+     *  \param  void
      *  \return bool
      */
     /****************************************************************************/
-    bool Check260SensorsTemp(const HardwareMonitor_t& strctHWMonitor);
+    bool Check260SensorsTemp();
 
     /****************************************************************************/
     /*!
