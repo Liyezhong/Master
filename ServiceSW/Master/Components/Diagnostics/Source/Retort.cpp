@@ -44,6 +44,9 @@ CRetort::CRetort(QWidget *p_Parent) :
 
     mp_MessageDlg = new CDiagnosticMessageDlg(this);
 
+    mp_Ui->testLevelSensorDetection->setEnabled(false);
+    mp_Ui->testHeatingWater->setEnabled(false);
+
     (void)connect(mp_Ui->testLidLock,
                   SIGNAL(clicked()),
                   this,
@@ -79,6 +82,12 @@ CRetort::~CRetort()
     catch (...) {
 
     }
+}
+
+void CRetort::OnEnableTestButton()
+{
+    mp_Ui->testLevelSensorDetection->setEnabled(true);
+    mp_Ui->testHeatingWater->setEnabled(true);
 }
 
 void CRetort::StartLidLockTest(void)

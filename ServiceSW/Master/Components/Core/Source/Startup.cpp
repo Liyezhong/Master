@@ -182,6 +182,9 @@ CStartup::CStartup() : QObject(),
     mp_System           = new Diagnostics::CSystem;
     mp_MainControl      = new Diagnostics::CMainControl;
 
+    CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_Retort, OnEnableTestButton());
+    CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_System, OnEnableTestButton());
+
     //Service Diagnostics
     mp_SVCDashboardWidget = new SVCDiagnostics::CSVCDashboardWidget();
 

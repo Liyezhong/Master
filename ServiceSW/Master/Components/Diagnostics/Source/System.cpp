@@ -45,6 +45,10 @@ CSystem::CSystem(QWidget *p_Parent) :
 
     mp_MessageDlg = new CDiagnosticMessageDlg(this);
 
+    mp_Ui->testSealing->setEnabled(false);
+    mp_Ui->testLiquidHose->setEnabled(false);
+    mp_Ui->testFillingDraining->setEnabled(false);
+
     (void)connect(mp_Ui->testSealing,
                   SIGNAL(clicked()),
                   this,
@@ -96,6 +100,13 @@ CSystem::~CSystem()
     catch (...) {
 
     }
+}
+
+void CSystem::OnEnableTestButton()
+{
+    mp_Ui->testSealing->setEnabled(true);
+    mp_Ui->testLiquidHose->setEnabled(true);
+    mp_Ui->testFillingDraining->setEnabled(true);
 }
 
 void CSystem::StartSealingTest(void)

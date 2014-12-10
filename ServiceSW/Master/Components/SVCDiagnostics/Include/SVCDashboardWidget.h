@@ -274,13 +274,13 @@ private:
     CGraphicsItemPart* mp_Line2;     //!< connect line2 item part
     CGraphicsItemPart* mp_Line3;     //!< connect line3 item part
 
-    CGraphicsItemPart* mp_GV1StateUp;
-    CGraphicsItemPart* mp_GV1StateLeft;
-    CGraphicsItemPart* mp_GV1StateRight;
+    CGraphicsItemPart* mp_GV1StateUp;       //!< valve1 up state
+    CGraphicsItemPart* mp_GV1StateLeft;     //!< valve1 left state
+    CGraphicsItemPart* mp_GV1StateRight;    //!< valve1 right state
 
-    CGraphicsItemPart* mp_GV2StateUp;
-    CGraphicsItemPart* mp_GV2StateLeft;
-    CGraphicsItemPart* mp_GV2StateRight;
+    CGraphicsItemPart* mp_GV2StateUp;       //!< valve2 up state
+    CGraphicsItemPart* mp_GV2StateLeft;     //!< valve2 left state
+    CGraphicsItemPart* mp_GV2StateRight;    //!< valve2 right state
 
     SVCButton* mp_SelectBtn;         //!< The button of select position
     SVCButton* mp_ValveInfoBtn;      //!< The button of valve state info
@@ -307,8 +307,6 @@ private:
     SVCLabel* mp_RotaryValveCurrent;    //!< Rotary valve current label
 
     SVCLabel* mp_PressureLabel;         //!< Pressure label
-
-    bool m_IsFristMoveRV;    //!< Flag for move rotary valve position
 };
 
 }//end of namespace

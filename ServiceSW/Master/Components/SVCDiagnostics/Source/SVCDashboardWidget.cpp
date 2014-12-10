@@ -20,8 +20,7 @@ using namespace SVCDiagnostics;
 
 CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     QWidget(p_Parent),
-    mp_Ui(new Ui::CSVCDashboardWidget),
-    m_IsFristMoveRV(true)
+    mp_Ui(new Ui::CSVCDashboardWidget)
 {
     mp_Ui->setupUi(this);
     mp_Ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
@@ -465,9 +464,11 @@ void CSVCDashboardWidget::PumpSelected()
     if (Status == CGraphicsItemPart::Working) {
         int Ret = Diagnostics::RETURN_OK;
         if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 1 is Open
+            qDebug()<<"To create pressure";
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
         }
         else if (mp_GV1->Status() == CGraphicsItemPart::Working) { //valve 2 is open
+            qDebug()<<"To create vaccum";
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -30);//vaccum
         }
         else {

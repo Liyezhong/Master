@@ -1444,7 +1444,7 @@ void ServiceTestHandler::PumpSetPressure(QString& ReqName, QStringList& Params)
         return ;
     }
     quint8 Flag = Params.at(0).toInt();
-    float Pressure = Params.at(0).toFloat();
+    float Pressure = Params.at(1).toFloat();
 
     bool Ret = mp_PressPump->SetPressure(Flag, Pressure);
 

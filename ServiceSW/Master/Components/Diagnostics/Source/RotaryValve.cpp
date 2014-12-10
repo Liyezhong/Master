@@ -61,6 +61,7 @@ void CRotaryValve::StartMovementTest(void)
     RotaryValve::CMovementTest test(mp_MessageDlg);
 
     if (test.Run() == RETURN_OK) {
+        emit EnableTestButton();
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_SUCCESS);
     }
     else {
