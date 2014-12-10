@@ -12,14 +12,14 @@
 		<string id="17039371" text1="Event %1 is not properly configured in column %2" text2=""/>
 		<string id="17039372" text1="Event Code: %1,  Scenario: %2,  Action: %3,  Action Result: %4." text2=""/>
 		<string id="17825795" text1="Switch off not allowed. Wait until transportation is completed." text2=""/>
-		<string id="16973834" text1="Data logging is disabled. Please contact yor service specialist." text2=""/>
+		<string id="16973834" text1="Data logging is disabled. Please contact your service specialist." text2=""/>
 		<string id="16973828" text1="Event Id %1 does not exist in the event string xml file" text2=""/>
 		<string id="16973829" text1="Unable to create file %1" text2=""/>
 		<string id="16973832" text1="Unable to flush to file %1" text2=""/>
 		<string id="16973825" text1="Unable to open the file %1" text2=""/>
 		<string id="16973830" text1="Unable to remove file %1" text2=""/>
 		<string id="16973831" text1="Unable to write to file %1" text2=""/>
-		<string id="19529732" text1="Can not change the date and time less/more than 24 hours of the current system date time is %1." text2=""/>
+		<string id="19529732" text1="Can not change the date and time less/more than 24 hours if the current system date time is %1." text2=""/>
 		<string id="17235997" text1="Check user log for more info." text2=""/>
 		<string id="17235986" text1="DeviceConfiguration Verification Failed" text2=""/>
 		<string id="17235984" text1="Device Configuration XML file Read failed" text2=""/>
@@ -30,7 +30,7 @@
 		<string id="17235976" text1="Translations for language  %1  not found." text2=""/>
 		<string id="17235973" text1="%1  is not a supported language." text2=""/>
 		<string id="17235972" text1="%1  is not a valid number." text2=""/>
-		<string id="17235977" text1="Password does not fit requirements. Length between 4 and 16 characters." text2=""/>
+		<string id="17235977" text1="Password does not fit requirements.Required length between 4 and 16 characters." text2=""/>
 		<string id="17235969" text1="Error reading xml start element  %1  in  %2 ." text2=""/>
 		<string id="17760264" text1="Error Sound Level values are Out Of Range" text2=""/>
 		<string id="17760263" text1="Error Sound Number values are Out Of Range" text2=""/>
@@ -91,7 +91,7 @@
 		<string id="19071002" text1="RCConfig: remote session name %1 length is out of range min %2 max %3." text2=""/>
 		<string id="19267598" text1="Internal Software Error. Reagent Add failed. " text2=""/>
 		<string id="19267600" text1="Internal Software Error. Reagent Delete failed. " text2=""/>
-		<string id="19267589" text1="Reagents count exceeds the limit. Max 100 allowed." text2=""/>
+		<string id="19267589" text1="Reagent count exceeds the limit. Max 100 allowed." text2=""/>
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
 		<string id="19267585" text1="Reagent name %1 already in use. Please choose different reagent name." text2=""/>
@@ -126,7 +126,7 @@
 		<string id="17498128" text1="EPD. Process %1: NetworkServerDevicewas could not be started." text2=""/>
 		<string id="17039361" text1="Primaris has switched to error state" text2=""/>
 		<string id="17039364" text1="Internal software error: EventId is missing %1" text2=""/>
-		<string id="17629209" text1="Export failed. Advance Encryption Standard is not initialized" text2=""/>
+		<string id="17629209" text1="Export failed. Advance Encryption Standard has not initialized" text2=""/>
 		<string id="17629201" text1="Export failed. Cannot open the file for reading" text2=""/>
 		<string id="17629202" text1="Export failed. Cannot open the file for writing" text2=""/>
 		<string id="18939905" text1="ExportConfig:Empty file name found in file list of %1 configuration." text2=""/>
@@ -141,7 +141,7 @@
 		<string id="17629194" text1="Export failed." text2=""/>
 		<string id="17629186" text1="Export failed. File copying failed" text2=""/>
 		<string id="17629213" text1="Export failed. Hash-based message authentication code computation already started" text2=""/>
-		<string id="17629208" text1="Export failed. Hash-based message authentication code is not initialized" text2=""/>
+		<string id="17629208" text1="Export failed. Hash-based message authentication code has not initialized" text2=""/>
 		<string id="17629205" text1="Export failed. Hash chain index and USB device indexes are matching" text2=""/>
 		<string id="17629190" text1="Export failed. Container initialization failed" text2=""/>
 		<string id="17629210" text1="Export failed. Size of the array shall be either 4 or 2 or 1" text2=""/>
@@ -202,7 +202,7 @@
 		<string id="16843304" text1="Heated cuvette is %1 for the Reagent %2 and temperature is %3" text2=""/>
 		<string id="16843302" text1="Heated cuvette start mode is changed to %1 for the Reagent %2" text2=""/>
 		<string id="16843303" text1="Heated cuvette temperature is changed to %1 for the Reagent %2" text2=""/>
-		<string id="16843295" text1="OFF" text2=""/>
+		<string id="16843295" text1="Off" text2=""/>
 		<string id="16843294" text1="On" text2=""/>
 		<string id="16843289" text1="Agitation speed changed to %1" text2=""/>
 		<string id="16843292" text1="Alarm error sound note changed" text2=""/>
@@ -246,7 +246,7 @@
 		<string id="19398686" text1="NetworkClient: Client %1. Authentication failed." text2=""/>
 		<string id="19398693" text1="NetworkClient: Client %1. config parameter(s) missing." text2=""/>
 		<string id="19398692" text1="NetworkClient: Client %1. setting config parameters failed." text2=""/>
-		<string id="19398685" text1="NetworkClient: Client %1. Working conenction lost." text2=""/>
+		<string id="19398685" text1="NetworkClient: Client %1. Working connection lost." text2=""/>
 		<string id="19398694" text1="NetworkClientDevice: IP %1. initializing NetworkDevice/Client failed." text2=""/>
 		<string id="19398699" text1="NetworkClientDevice: IP %1. Missing input." text2=""/>
 		<string id="19398695" text1="NetworkClientDevice: IP %1. Message handler registration failed." text2=""/>
@@ -317,7 +317,7 @@
         <string id="19464199" text1="RCManager.Value %1 of data item %2 is invalid." text2=""/>
         <string id="19464200" text1="RCManager.Type %1 of data item %2 is invalid." text2=""/>
         <string id="19464201" text1="RCManager.RemoteCare subscription is not set." text2=""/>
-		<string id="17825803" text1="Shutdown will take some seconds." text2=""/>
+		<string id="17825803" text1="The Master Software will shutdown in few seconds." text2=""/>
 		<string id="17891329" text1="SoftSwitch monitor started" text2=""/>
 		<string id="17825796" text1="Shutdown is not possible at the moment. System is in initialization phase. Please wait till initialization completes" text2=""/>
 		<string id="17825797" text1="Shutdown is not possible at the moment. %1 is in progress. Please wait till %1 completes" text2=""/>
@@ -325,7 +325,7 @@
 		<string id="17367045" text1="Error adding state  %1 ." text2=""/>
 		<string id="17367042" text1="Error adding transition between states  %1  and  %2  for index %3." text2=""/>
 		<string id="17367044" text1="Error removing all state transitions between states  %1  and  %2 ." text2=""/>
-		<string id="17367047" text1="Can not remove state  %1 . It is the current state." text2=""/>
+		<string id="17367047" text1="Cannot remove state  %1 . It is the current state." text2=""/>
 		<string id="17367046" text1="Error removing state  %1 ." text2=""/>
 		<string id="17367043" text1="Error removing transition between states  %1  and  %2  for index %3." text2=""/>
 		<string id="17367041" text1="Transition between states  %1  and  %2  for index %3 already exists." text2=""/>
@@ -335,7 +335,7 @@
 		<string id="19005442" text1="Software update failed" text2=""/>
 		<string id="19005443" text1="Software update rollback failed" text2=""/>
 		<string id="19005447" text1="Software update successful." text2=""/>
-		<string id="19005448" text1="Software update exited since never version of Software is not available." text2=""/>
+		<string id="19005448" text1="Software update exited since newer version of Software is not available." text2=""/>
 		<string id="18874369" text1="The release date or version is empty in SW_Version.xml." text2=""/>
 		<string id="18874373" text1="The SW Component %1 already exists in SW_Version.xml." text2=""/>
 		<string id="18874372" text1="The SW Component %1 already exists in the SW_Version.xml." text2=""/>
@@ -389,7 +389,7 @@
 		<string id="33816631" text1="Internal Software Error. Program delete failed. Please contact service." text2=""/>
 		<string id="33816623" text1="Program ID %1 associated with Program %2 is not unique ." text2=""/>
 		<string id="33816620" text1="Program step(s) in Program %1 contains invalid duration format" text2=""/>
-		<string id="33818117" text1="Length of the Program name exceeds limit for the program  %1 . Valid Range  %2  -  %3  characters." text2=""/>
+		<string id="33818117" text1="Length of the Program name exceeds limitation for the program  %1 . Valid Range  %2  -  %3  characters." text2=""/>
 		<string id="33818113" text1="Program name  %1  already in use. Please choose different Program name." text2=""/>
 		<string id="33816596" text1="Invalid Index in program hash table." text2=""/>
 		<string id="33816592" text1="Verifying Programs.xml failed." text2=""/>
@@ -404,7 +404,7 @@
 		<string id="33816840" text1="Reagent  %1  Name is too long (max 32 Characters)" text2=""/>
 		<string id="33817864" text1="unknow RMS cleaning model" text2=""/>
 		<string id="33817863" text1="unknown RMS processing model" text2=""/>
-		<string id="33818115" text1="User Program name can not contain  leica  word." text2=""/>
+		<string id="33818115" text1="User Program name can not contain the word Leica." text2=""/>
 		<string id="50331649" text1="Export failed. No enough space on SD card." text2=""/>
 		<string id="50331672" text1="Export failed. No enough space on USB storage." text2=""/>
 		<string id="16842767" text1="Error deleting file %1." text2=""/>
@@ -484,7 +484,7 @@
 		<string id="50331710" text1="empty" text2=""/>
 		<string id="50331711" text1="error" text2=""/>
 		<string id="50331708" text1="not full" text2=""/>
-		<string id="50331707" text1="Ok" text2=""/>
+		<string id="50331707" text1="OK" text2=""/>
 		<string id="50331712" text1="timeout" text2=""/>
 		<string id="50331713" text1="unexpected" text2=""/>
 		<string id="50331704" text1="checking bottle %1" text2=""/>

@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings version="1">
+    <language name="zh">
+        <string id="16843520" text1="警报的声音文件丢失" text2=""/>
+		<string id="19398660" text1="连接管理器：客户端 %1 版本认证失败。" text2=""/>
+		<string id="19398659" text1="连接管理器：使用版本 %2 的客户端 %1 已连接。" text2=""/>
+		<string id="19398657" text1="连接管理器：客户端 %1 消息尚未完成。" text2=""/>
+		<string id="19398658" text1="连接管理器：传入 XMl 文档的客户端 %1 解析在 %2 处失败。" text2=""/>
+		<string id="19398661" text1="连接管理器：客户端 %1 无法将传出的 QString 消息转换为 QDomDocument！错误：%2" text2=""/>
+		<string id="19398662" text1="连接管理器：传出 QByteArray 的客户端 %1 为空。" text2=""/>
+		<string id="19398663" text1="连接管理器：客户端 %1 将传出数据写入到套接字失败！" text2=""/>
+		<string id="17039371" text1="列 %2 中的事件 %1 配置不正确" text2=""/>
+		<string id="17825795" text1="不允许关闭。等待，直到完成传输。" text2=""/>
+		<string id="16973834" text1="数据记录被禁用。请联系您的服务专员。" text2=""/>
+		<string id="16973828" text1="事件字符串 xml 文件中没有 Id 为 %1 的事件" text2=""/>
+		<string id="16973829" text1="无法创建文件 %1" text2=""/>
+		<string id="16973832" text1="无法缓存到文件 %1" text2=""/>
+		<string id="16973825" text1="无法打开文件 %1" text2=""/>
+		<string id="16973830" text1="无法删除文件 %1" text2=""/>
+		<string id="16973831" text1="无法写入到文件 %1" text2=""/>
+		<string id="19529732" text1="如果当前系统日期时间为 %1，无法更改为少于/超过 24 小时的日期和时间。" text2=""/>
+		<string id="17235997" text1="如要了解更多信息，请检查用户日志。" text2=""/>
+		<string id="17235986" text1="设备配置验证失败" text2=""/>
+		<string id="17235984" text1="设备配置 XML 文件读取失败" text2=""/>
+		<string id="17760268" text1="%1 不是有效的 DirectConnection 开/关状态" text2=""/>
+		<string id="17760271" text1="%1 不是有效的代理 IP 地址。" text2=""/>
+		<string id="17760272" text1="%1 不是有效的代理 IP 端口。" text2=""/>
+		<string id="17760267" text1="%1 不是有效的 RemoteCare 开/关状态。" text2=""/>
+		<string id="17235976" text1="语言 %1 的翻译未找到。" text2=""/>
+		<string id="17235973" text1="%1 不是受支持的语言。" text2=""/>
+		<string id="17235972" text1="%1 不是有效编号。" text2=""/>
+		<string id="17235977" text1="密码与要求不符。所需长度为 4 至 16 个字符。" text2=""/>
+		<string id="17235969" text1="读取 %2 中的 xml 起始元素 %1 出错。" text2=""/>
+		<string id="17760264" text1="错误：声级值超出范围" text2=""/>
+		<string id="17760263" text1="错误：声量值超出范围" text2=""/>
+		<string id="17235970" text1="意外的 xml 起始元素 %1。预期：%2 在 %3 中" text2=""/>
+		<string id="17235975" text1="%2 中不支持版本 %1。" text2=""/>
+		<string id="17235971" text1="xml 属性未找到：%1 在 %2 中。" text2=""/>
+		<string id="17235988" text1="%1 文件打开操作失败" text2=""/>
+		<string id="17235995" text1="组验证失败" text2=""/>
+		<string id="17235987" text1="%1 初始化错误" text2=""/>
+		<string id="17235979" text1="%1 不是有效的日期格式。" text2=""/>
+		<string id="17760270" text1="%1 不是有效的代理密码。" text2=""/>
+		<string id="17760269" text1="%1 不是有效的代理用户名。" text2=""/>
+		<string id="17235974" text1="%1 不是有效的开/关状态。" text2=""/>
+		<string id="17235981" text1="%1 不是有效的温度格式。" text2=""/>
+		<string id="17235980" text1="%1 不是有效的时间格式。" text2=""/>
+		<string id="17235996" text1="数据管理器组件中的 NULL 指针错误" text2=""/>
+		<string id="19070983" text1="RCConfig：证书文件名 %1 长度超出范围，最小长度为 %2，最大长度为 %3。" text2=""/>
+		<string id="17236007" text1="验证 RCConfig.xml 失败。" text2=""/>
+		<string id="17236006" text1="读取 RCConfig.xml 失败。" text2=""/>
+		<string id="19071009" text1="RCConfig：%1 数据项具有无效质量。" text2=""/>
+		<string id="19071008" text1="RCConfig：%1 数据项具有无效类型。" text2=""/>
+		<string id="19070991" text1="RCConfig：设备 Id %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070992" text1="RCConfig：设备类型 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070981" text1="RCConfig：加密级别大小 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070984" text1="RCConfig：执行时间超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070982" text1="RCConfig：%1 不是有效的认证开/关状态。" text2=""/>
+		<string id="19071007" text1="RCConfig：%1 不是有效的压缩开/关状态。" text2=""/>
+		<string id="19070979" text1="RCConfig：%1 不是有效的调试开/关状态。" text2=""/>
+		<string id="19070978" text1="RCConfig：%1 不是有效的 HTTP 连接持续性开/关状态。" text2=""/>
+		<string id="19070980" text1="RCConfig：%1 不是有效的 HTTP 安全连接开/关状态。" text2=""/>
+		<string id="19071004" text1="RCConfig：%1 不是有效的远程会话 IP 地址。" text2=""/>
+		<string id="19071006" text1="RCConfig：最大数据块大小 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070994" text1="RCConfig：代理协议 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070977" text1="RCConfig：队列大小 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19071002" text1="RCConfig：远程会话名称 %1 长度超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070988" text1="RCConfig：服务器 Id %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070985" text1="RCConfig：服务器类型 %1 超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070987" text1="RCConfig：服务器 URL %1 长度超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19070986" text1="RCConfig：目标数据库 %1 长度超出范围，最小值为 %2，最大值为 %3。" text2=""/>
+		<string id="19267589" text1="试剂计数超出限值。允许的最大值为 100。" text2=""/>
+		<string id="19267588" text1="列表中不存在试剂 %2 的试剂 ID %1。" text2=""/>
+		<string id="19267587" text1="试剂 2% 的试剂 ID %1 已被使用。" text2=""/>
+		<string id="19267585" text1="试剂名称 %1 已被使用。请选择一个不同的试剂名称。" text2=""/>
+		<string id="19267599" text1="内部软件错误。%1 失败。" text2=""/>
+		<string id="17236009" text1="验证 Reagents.xml 失败。" text2=""/>
+		<string id="17236008" text1="读取 Reagents.xml 失败。" text2=""/>
+		<string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
+		<string id="17235985" text1="用户设置验证失败" text2=""/>
+		<string id="17235983" text1="用户设置 XML 文件读取失败" text2=""/>
+		<string id="17235998" text1="关机期间写入 XML %1 失败。" text2=""/>
+		<string id="17236013" text1="读取 InstrumentHistory.xml 失败。" text2=""/>
+		<string id="17236010" text1="读取 Stations.xml 失败。" text2=""/>
+		<string id="17236011" text1="验证 Station.xml 失败。" text2=""/>
+		<string id="17235990" text1="%1 流入操作失败" text2=""/>
+		<string id="17235991" text1="%1 流出操作失败" text2=""/>
+		<string id="17760266" text1="警告：声级值超出范围" text2=""/>
+		<string id="17760265" text1="警告：声量值超出范围" text2=""/>
+		<string id="17235994" text1="%1 XML 读取文件失败" text2=""/>
+		<string id="17235992" text1="%1 XML 文件不存在" text2=""/>
+		<string id="17235993" text1="%1 XML 存储文件失败" text2=""/>
+		<string id="17498130" text1="ConfigfileLoader 进程 %1：打开文件 %2 出错。" text2=""/>
+		<string id="17498122" text1="EPC 进程 %1：无法在 %3 调度事件 %2。" text2=""/>
+		<string id="17498131" text1="EPC 进程 %1：无法在 %2 终止外部进程。" text2=""/>
+		<string id="17498124" text1="EPC 进程 %1：%2 处的 NULL 指针。" text2=""/>
+		<string id="17498132" text1="EPC 进程 %1：无法在 %2 启动设备/进程。" text2=""/>
+		<string id="17498126" text1="EPC 进程 %1：初始状态为 %2 的启动状态机在 %3 处失败" text2=""/>
+		<string id="17498133" text1="进程：%1 退出，代码 %2。" text2=""/>
+		<string id="17498125" text1="EPC 进程 %1：初始化在 %2 处失败。" text2=""/>
+		<string id="17498123" text1="EPC 进程 %1：报告错误 %2。" text2=""/>
+		<string id="17498129" text1="EPD 进程 %1：外部进程登录超时。" text2=""/>
+		<string id="17498127" text1="EPD 进程 %1：丢失输入。" text2=""/>
+		<string id="17498128" text1="EPD 进程 %1：网络服务器设备无法启动。" text2=""/>
+		<string id="17039361" text1="Colorado 已切换到错误状态" text2=""/>
+		<string id="17039364" text1="内部软件错误：事件 ID 丢失 %1" text2=""/>
+		<string id="17629209" text1="导出失败。高级加密标准尚未初始化" text2=""/>
+		<string id="17629201" text1="导出失败。无法打开文件进行读取" text2=""/>
+		<string id="17629202" text1="导出失败。无法打开文件进行写入" text2=""/>
+		<string id="18939905" text1="ExportConfig：在 %1 配置的文件列表中找到空文件名。" text2=""/>
+		<string id="18939906" text1="ExportConfig：在 %1 配置的组文件列表中找到空文件名。" text2=""/>
+		<string id="18939908" text1="ExportConfig：空的源目录名。" text2=""/>
+		<string id="18939909" text1="ExportConfig：空的目标文件名。" text2=""/>
+		<string id="18939907" text1="ExportConfig：%1 配置的数据包类型无效，数据包类型应为本地或非本地型。" text2=""/>
+		<string id="17629200" text1="导出失败。正在尝试运行一个以上 Cryptoservice" text2=""/>
+		<string id="17629185" text1="导出失败。目录创建失败" text2=""/>
+		<string id="17629203" text1="导出失败。读取文件出错" text2=""/>
+		<string id="17629204" text1="导出失败。写入文件出错" text2=""/>
+		<string id="17629194" text1="导出失败。" text2=""/>
+		<string id="17629186" text1="导出失败。文件复制失败" text2=""/>
+		<string id="17629213" text1="导出失败。基于哈希的消息认证码计算已经开始" text2=""/>
+		<string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化" text2=""/>
+		<string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配" text2=""/>
+		<string id="17629190" text1="导出失败。容器初始化失败" text2=""/>
+		<string id="17629210" text1="导出失败。数组大小应为 4、2 或 1" text2=""/>
+		<string id="17629199" text1="导出失败。请求导出的类型无效" text2=""/>
+		<string id="17629212" text1="导出失败。检测到错误的文件模式" text2=""/>
+		<string id="17629207" text1="导出失败。密钥文件大小与内置的密钥文件大小不一致" text2=""/>
+		<string id="17629206" text1="导出失败。密钥文件大小大于哈希块大小" text2=""/>
+		<string id="17629197" text1="导出失败。日志目录不存在" text2=""/>
+		<string id="17629211" text1="导出失败。没有为计算设置最高有效位" text2=""/>
+		<string id="17629195" text1="导出失败。源目录不存在" text2=""/>
+		<string id="17629193" text1="导出成功。" text2=""/>
+		<string id="17629196" text1="导出失败。目标目录不存在" text2=""/>
+		<string id="17629198" text1="导出失败。目标文件名格式错误" text2=""/>
+		<string id="17629192" text1="导出失败。无法归档文件" text2=""/>
+		<string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件" text2=""/>
+		<string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件" text2=""/>
+		<string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件" text2=""/>
+		<string id="17629191" text1="导出失败。容器验证失败" text2=""/>
+		<string id="17629215" text1="导出失败。系统中未找到压缩命令" text2=""/>
+		<string id="17629214" text1="导出失败。无法压缩文件" text2=""/>
+		<string id="17629216" text1="导出失败。压缩需要长时间才能完成请求" text2=""/>
+		<string id="17498118" text1="创建者仿函数已经注册用于：%1。" text2=""/>
+		<string id="17498114" text1="初始化外部进程设备出错。" text2=""/>
+		<string id="17498116" text1="初始化全状态机出错。" text2=""/>
+		<string id="17498117" text1="初始化进程管理器出错。" text2=""/>
+		<string id="17498115" text1="初始化单状态机出错。" text2=""/>
+		<string id="17498113" text1="载入设置出错。" text2=""/>
+		<string id="17498119" text1="错误：没有为类 %1 注册创建者仿函数。" text2=""/>
+		<string id="17498120" text1="错误：识别号已经为命令 %2 注册了 %1。" text2=""/>
+		<string id="17498121" text1="外部进程控制器：未知的命令识别号 %1。文件 %2 行 %3" text2=""/>
+		<string id="16846859" text1="当前时间偏移为 %1 秒" text2=""/>
+		<string id="16842774" text1="无法计算新命令基准" text2=""/>
+		<string id="16842765" text1="创建文件 %1 出错。" text2=""/>
+		<string id="16842766" text1="打开文件 %1 出错。" text2=""/>
+		<string id="16842755" text1="捕获到标准异常 (内存分配错误)：文件：%1 行：%2。" text2=""/>
+		<string id="16842763" text1="读取单调时钟出错。" text2=""/>
+		<string id="16842756" text1="NULL_POINTER：%1 文件：%2 行：%3。" text2=""/>
+		<string id="16842758" text1="命令或确认没有接收器 (命令 %1 - 通道 %2 )" text2=""/>
+		<string id="16842775" text1="接收到意外的信号" text2=""/>
+		<string id="16842759" text1="信号未连接至任何插槽" text2=""/>
+		<string id="16842754" text1="捕获到未知异常：文件：%1 行：%2。" text2=""/>
+		<string id="16842777" text1="在 %3 的行 %4 中捕获到全局异常 (事件代码 %1 插入到 %2 中)" text2=""/>
+		<string id="16842778" text1="在 %2 的行 %3 中捕获到标准异常 (%1)" text2=""/>
+		<string id="16846862" text1="用户通过按下按钮进行确认" text2=""/>
+		<string id="16846848" text1="调试消息：%1 " text2=""/>
+		<string id="16846854" text1="调试" text2=""/>
+		<string id="16846851" text1="错误" text2=""/>
+		<string id="16846850" text1="严重错误" text2=""/>
+		<string id="16846853" text1="信息" text2=""/>
+		<string id="16846849" text1="未定义类型" text2=""/>
+		<string id="16846852" text1="警告" text2=""/>
+		<string id="16846861" text1="已解决：" text2=""/>
+		<string id="16846857" text1="正在关闭设备" text2=""/>
+		<string id="16842776" text1="捕获到未处理的异常" text2=""/>
+		<string id="16842753" text1="未知字符串 ID" text2=""/>
+		<string id="16843278" text1="用户登录" text2=""/>
+		<string id="16843304" text1="试剂 %2 的加热试管为 %1，温度为 %3" text2=""/>
+		<string id="16843302" text1="对于试剂 %2，加热试管的启动模式更改为 %1" text2=""/>
+		<string id="16843303" text1="对于试剂 %2，加热试管的温度更改为 %1" text2=""/>
+		<string id="16843295" text1="关" text2=""/>
+		<string id="16843294" text1="开" text2=""/>
+		<string id="16843289" text1="搅拌速度已更改为 %1" text2=""/>
+		<string id="16843292" text1="警报：错误音未更改" text2=""/>
+		<string id="16843301" text1="警报：错误音量未更改" text2=""/>
+		<string id="16843291" text1="警报：警告音未更改" text2=""/>
+		<string id="16843300" text1="警报：警告音量未更改" text2=""/>
+		<string id="16843288" text1="日期格式已更改为 %1" text2=""/>
+		<string id="16843272" text1="语言设为 %1" text2=""/>
+		<string id="16843275" text1="网络设置已更改" text2=""/>
+		<string id="16843285" text1="烤箱启动模式已更改为 %1" text2=""/>
+		<string id="16843298" text1="永久" text2=""/>
+		<string id="16843299" text1="程序启动" text2=""/>
+		<string id="16843274" text1="烤箱温度已更改为 %1" text2=""/>
+		<string id="16843293" text1="RMS 状态已更改为 %1" text2=""/>
+		<string id="16843286" text1="温度格式已更改为 %1" text2=""/>
+		<string id="16843287" text1="时间格式已更改为 %1" text2=""/>
+		<string id="16843284" text1="水类型已更改为 %1" text2=""/>
+		<string id="16843297" text1="蒸馏水" text2=""/>
+		<string id="16843296" text1="自来水" text2=""/>
+		<string id="17825801" text1="GPIO 错误：%1。" text2=""/>
+		<string id="17825802" text1="GPIO：信息：%1" text2=""/>
+		<string id="17039363" text1="GUI 可用" text2=""/>
+		<string id="17039365" text1="仪器初始化失败" text2=""/>
+		<string id="17039370" text1="在限制条件下完成了初始化阶段 %1。" text2=""/>
+		<string id="17039369" text1="在限制条件下完成了仪器初始化。但可以进行染色。" text2=""/>
+		<string id="17039368" text1="阶段 %1 初始化失败" text2=""/>
+		<string id="17039367" text1="阶段 %1 初始化成功完成" text2=""/>
+		<string id="17039366" text1="仪器初始化成功" text2=""/>
+		<string id="19398669" text1="消息检查器：无法在 %1 载入消息。错误 %2。" text2=""/>
+		<string id="19398671" text1="消息检查器错误：传入的 MSG 文档无效。" text2=""/>
+		<string id="19398670" text1="消息检查器错误：验证器为 NULL。" text2=""/>
+		<string id="19398665" text1="主链接控制器：IP %1。连接链接设备信号 &quot;&quot;%2&quot;&quot; 失败。" text2=""/>
+		<string id="19398664" text1="主链接控制器：IP %1。无法在 %2 上创建/初始化 MasterClient。" text2=""/>
+		<string id="19398666" text1="主链接控制器：IP %1。消息发射信号未连接。" text2=""/>
+		<string id="19398667" text1="主链接设备：连接链接设备信号 &quot;&quot;%1&quot;&quot; 失败。" text2=""/>
+		<string id="19398668" text1="主链接设备：无法初始化网络对象。" text2=""/>
+		<string id="19398675" text1="消息加载器：解析命令：无有效消息。" text2=""/>
+		<string id="19398672" text1="消息加载器：打开文件 %1 失败。" text2=""/>
+		<string id="19398673" text1="消息加载器：解析文件 %1 失败。" text2=""/>
+		<string id="19398674" text1="消息加载器：文件 %1 元素标记和标记 %2 不匹配。" text2=""/>
+		<string id="19398686" text1="网络客户端：客户端 %1 认证失败。" text2=""/>
+		<string id="19398693" text1="网络客户端：客户端 %1 配置参数丢失。" text2=""/>
+		<string id="19398692" text1="网络客户端：客户端 %1 设置配置参数失败。" text2=""/>
+		<string id="19398685" text1="网络客户端：客户端 %1 工作连接丢失。" text2=""/>
+		<string id="19398694" text1="网络客户端设备：IP %1 初始化网络设备/客户端失败。" text2=""/>
+		<string id="19398699" text1="网络客户端设备：IP %1 丢失输入。" text2=""/>
+		<string id="19398695" text1="网络客户端设备：IP %1 消息句柄注册失败。" text2=""/>
+		<string id="19398698" text1="网络客户端设备：IP %1 网络错误 %2。" text2=""/>
+		<string id="19398688" text1="网络客户端：客户端 %1 消息句柄指针在 %2 处为空。" text2=""/>
+		<string id="19398689" text1="网络客户端：客户端 %1 无法将传出的 QString 消息转换为 QDomDocument！错误：%2" text2=""/>
+		<string id="19398690" text1="网络客户端：传出 QByteArray 的客户端 %1 为空。" text2=""/>
+		<string id="19398684" text1="网络客户端：客户端 %1 套接字错误 %2。" text2=""/>
+		<string id="19398691" text1="网络客户端：客户端 %1 写入到套接字失败。" text2=""/>
+		<string id="19398687" text1="网络客户端：由于错误的服务器消息，客户端 %1 连接失败。" text2=""/>
+		<string id="19398708" text1="网络设备：命令元素 %1 未找到。" text2=""/>
+		<string id="19398709" text1="网络设备：命令元素 %1 为空。" text2=""/>
+		<string id="19398703" text1="网络设备：带 REF %1 的命令已经在哈希函数中。" text2=""/>
+		<string id="19398704" text1="网络设备：创建 %1 命令失败" text2=""/>
+		<string id="19398705" text1="网络设备：%1 命令执行失败。" text2=""/>
+		<string id="19398710" text1="网络设备：命令 %1 无法初始化。" text2=""/>
+		<string id="19398701" text1="网络设备：无法载入消息。" text2=""/>
+		<string id="19398707" text1="网络设备：无法解析消息！错误 %1。" text2=""/>
+		<string id="19398706" text1="网络设备：未知的消息类型 %1。" text2=""/>
+		<string id="19398700" text1="网络设备：无法初始化类型错误的设备 %1。" text2=""/>
+		<string id="19398720" text1="网络层：属性 %1 在 %2 上为空。" text2=""/>
+		<string id="19398721" text1="网络层：消息发送失败，状态为 %1。" text2=""/>
+		<string id="19398724" text1="网络层：命令 %1 对应于 2% 上的无效识别号。" text2=""/>
+		<string id="19398722" text1="网络层：命令 %1 在 %2 上为空。" text2=""/>
+		<string id="19398723" text1="网络层：命令 %1 在 %2 上不是正在运行的命令。" text2=""/>
+		<string id="19398697" text1="网络层：IP/客户端 %1 在 %2 上的空指针错误。" text2=""/>
+		<string id="17039362" text1="Colorado 已切换到正常状态" text2=""/>
+		<string id="19398719" text1="网络服务器设备：客户端 %1：DateTimeSync 无法启动。" text2=""/>
+		<string id="19398717" text1="网络服务器设备：客户端 %1：无法初始化服务器。" text2=""/>
+		<string id="19398718" text1="网络服务器设备：客户端 %1：无法注册协议处理机。" text2=""/>
+		<string id="19398712" text1="网络服务器：IP %1：未能破坏管理器对象 %2。" text2=""/>
+		<string id="19398696" text1="网络服务器设备：初始化网络设备/服务器失败。" text2=""/>
+		<string id="19398716" text1="网络服务器设备：客户端 %1：网络服务器已报告故障 %2。" text2=""/>
+		<string id="19398715" text1="网络服务器：IP %1：端口 %2：侦听失败。" text2=""/>
+		<string id="19398714" text1="网络服务器：IP %1：载入设置失败原因：%2。" text2=""/>
+		<string id="19398711" text1="网络服务器：IP %1：端口 %2：连接尝试失败：无空闲插槽。" text2=""/>
+		<string id="19398713" text1="网络服务器：IP %1：服务器断开原因 %2。" text2=""/>
+		<string id="19398678" text1="网络设置：元素标记 %1 与标记 %2 不匹配。" text2=""/>
+		<string id="19398677" text1="网络设置：文件解析出现错误 %1。" text2=""/>
+		<string id="19398679" text1="网络设置：版本与 %1 不匹配。" text2=""/>
+		<string id="19398681" text1="网络设置：连接设置为空。" text2=""/>
+		<string id="19398676" text1="网络设置：打开文件 %1 失败。" text2=""/>
+		<string id="19398683" text1="网络设置：无认证值。" text2=""/>
+		<string id="19398682" text1="网络设置：无有效的客户端连接。" text2=""/>
+		<string id="19398680" text1="网络设置：%1 处的指针为空。" text2=""/>
+		<string id="19529731" text1="密码更改成功。" text2=""/>
+		<string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
+		<string id="17694727" text1="服务认证失败。服务用户未受过该仪器的培训。" text2=""/>
+		<string id="17694724" text1="服务认证失败。服务密钥文件无效。" text2=""/>
+		<string id="17694725" text1="服务认证失败。培训日期过期。" text2=""/>
+		<string id="17694726" text1="服务认证失败。服务密钥文件中无仪器名称。" text2=""/>
+		<string id="17694723" text1="服务认证失败。服务 PIN 无效。" text2=""/>
+		<string id="17694722" text1="服务认证失败。无法从 USB 读取服务密钥文件。" text2=""/>
+		<string id="17694728" text1="服务登录成功，服务 ID 为 %1" text2=""/>
+		<string id="17694721" text1="服务认证失败。未找到 USB 设备。" text2=""/>
+		<string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
+		<string id="17825800" text1="系统电源故障已恢复。" text2=""/>
+		<string id="17825798" text1="电源故障阶段 1。" text2=""/>
+		<string id="17825799" text1="电源故障！正在关闭系统。" text2=""/>
+		<string id="17825793" text1="若要关闭，再次按下按钮" text2=""/>
+		<string id="17825794" text1="染色程序仍在执行中。若要关闭，再次按下按钮。" text2=""/>
+		<string id="19464197" text1="RCManager RCA 已停止工作" text2=""/>
+		<string id="19464193" text1="RCManager 已接收来自 RCA 的命令 %1 及数据 %n。" text2=""/>
+		<string id="19464195" text1="RCManager 远程会话请求已被用户接受。" text2=""/>
+		<string id="19464194" text1="RCManager 远程会话请求被拒绝。%1。" text2=""/>
+		<string id="19464196" text1="RCManager 已将命令 %1 及数据 %n 发送到 RCA。" text2=""/>
+		<string id="17825803" text1="管理软件正在关闭。" text2=""/>
+		<string id="17891329" text1="软开关监视器已启动" text2=""/>
+		<string id="17825796" text1="此时无法关机。系统处于初始化阶段。请等待初始化完成" text2=""/>
+		<string id="17825797" text1="此时无法关机。%1 正在执行中。请等待 %1 完成" text2=""/>
+		<string id="17891330" text1="启动后初次按下软开关" text2=""/>
+		<string id="17367045" text1="添加状态 %1 出错。" text2=""/>
+		<string id="17367042" text1="为索引 %3 添加状态 %1 和 %2 之间的过渡出错。" text2=""/>
+		<string id="17367044" text1="删除状态 %1 和 %2 之间的所有状态过渡出错。" text2=""/>
+		<string id="17367047" text1="无法删除状态 %1。它是当前状态。" text2=""/>
+		<string id="17367046" text1="删除状态 %1 出错。" text2=""/>
+		<string id="17367043" text1="为索引 %3 删除状态 %1 和 %2 之间的过渡出错。" text2=""/>
+		<string id="17367041" text1="索引 %3 状态 %1 和 %2 之间的过渡已存在。" text2=""/>
+		<string id="17367048" text1="未知状态 %1。" text2=""/>
+		<string id="19595266" text1="RMS/数据记录/配置文件的文件写入失败。不接受任何玻片架" text2=""/>
+		<string id="19005441" text1="由于错误，无法启动软件更新" text2=""/>
+		<string id="19005442" text1="软件更新失败" text2=""/>
+		<string id="19005443" text1="软件更新回退失败" text2=""/>
+		<string id="19005447" text1="软件更新成功。" text2=""/>
+		<string id="19005448" text1="由于较新版本的软件不可用，软件更新已退出。" text2=""/>
+		<string id="18874369" text1="SW_Version.xml 中的发布日期或版本为空。" text2=""/>
+		<string id="18874373" text1="SW_Version.xml 中已存在软件组件 %1。" text2=""/>
+		<string id="18874372" text1="SW_Version.xml 中已存在软件组件 %1。" text2=""/>
+		<string id="18874370" text1="SW_Version.xml 中组件 %1 的发布日期或版本为空。" text2=""/>
+		<string id="18874371" text1="SW_Version.xml 中的软件组件名称为空。" text2=""/>
+		<string id="17891331" text1="系统初始化完成" text2=""/>
+		<string id="19595268" text1="调试消息：%1 已创建并初始化。" text2=""/>
+		<string id="19595267" text1="调试消息：%1 正在运行" text2=""/>
+		<string id="16908300" text1="仿函数已经注册，用于确认：%1。" text2=""/>
+		<string id="16908299" text1="仿函数已经注册，用于命令：%1。" text2=""/>
+		<string id="16908304" text1="错误：命令 %1 超时。" text2=""/>
+		<string id="16908302" text1="命令超时 %1 (基准 %2)" text2=""/>
+		<string id="16908291" text1="没有从 ID 为 %1 的线程接收到 Heartbeat 信号" text2=""/>
+		<string id="16908305" text1="与 %2 交叉运行的 %1 Heartbeat 信号计数丢失：重启动线程。" text2=""/>
+		<string id="16908306" text1="与 %2 交叉运行的 %1 Heartbeat 信号计数丢失：正在关闭系统。" text2=""/>
+		<string id="16908295" text1="发送识别号为 %2 的确认 %1 出错" text2=""/>
+		<string id="16908290" text1="线程 %1 没有在 %2 毫秒内停止" text2=""/>
+		<string id="16908301" text1="仿函数已经注册，用于超时：%1。" text2=""/>
+		<string id="16908296" text1="未知的命令识别号 %1 来自线程 ID %2 及命令名称 %3" text2=""/>
+		<string id="16908293" text1="从未知来源接收到 ID 为 %1 的 Heartbeat 信号" text2=""/>
+		<string id="16908298" text1="不支持确认 %1" text2=""/>
+		<string id="16908297" text1="不支持命令 %1" text2=""/>
+		<string id="16908292" text1="线程控制器的 Heartbeat 信号检查被禁用" text2=""/>
+		<string id="16973837" text1="取消" text2=""/>
+		<string id="16973840" text1="继续" text2=""/>
+		<string id="16973839" text1="否" text2=""/>
+		<string id="16973836" text1="确定" text2=""/>
+		<string id="16973841" text1="停止" text2=""/>
+		<string id="16973838" text1="是" text2=""/>
+		<string id="33619990" text1="无法将系统日期和时间更改为超过 24 小时的日期和时间" text2=""/>
+		<string id="33817094" text1="组验证失败。基本容器未初始化。" text2=""/>
+		<string id="33817095" text1="组验证失败。容器类型无效。" text2=""/>
+		<string id="33817097" text1="组验证失败。程序容器未初始化。" text2=""/>
+		<string id="33817088" text1="ID 为 %1 的试剂位于程序列表中但不位于试剂列表中" text2=""/>
+		<string id="33817092" text1="ID 为 %1 的试剂位于用户设置中但不位于试剂列表中" text2=""/>
+		<string id="33817096" text1="组验证失败。试剂容器未初始化。" text2=""/>
+		<string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中" text2=""/>
+		<string id="33817098" text1="组验证失败。站点容器未初始化。" text2=""/>
+		<string id="33817101" text1="组验证失败。用于用户设置的容器未初始化。" text2=""/>
+		<string id="33818114" text1="步骤 %2 和步骤 %3 的程序 %1 试剂不兼容。" text2=""/>
+		<string id="33817861" text1="声级参数超出范围" text2=""/>
+		<string id="33817860" text1="音量参数超出范围" text2=""/>
+		<string id="33817859" text1="声音周期参数超出范围" text2=""/>
+		<string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
+		<string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
+		<string id="33816608" text1="程序 %1 中的步骤 ID %2 无效" text2=""/>
+		<string id="33817862" text1="石蜡温度超出范围" text2=""/>
+		<string id="33816626" text1="内部软件错误。添加程序失败。请联系维修人员。" text2=""/>
+		<string id="33816597" text1="程序列表中包含超过 %1 个程序。仅允许使用 %1 个程序" text2=""/>
+		<string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
+		<string id="33816631" text1="内部软件错误。程序删除失败。请联系维修人员。" text2=""/>
+		<string id="33816623" text1="与程序 %2 关联的程序 ID %1 不唯一。" text2=""/>
+		<string id="33816620" text1="程序 %1 中的程序步骤包含无效的持续时间格式" text2=""/>
+		<string id="33818117" text1="程序名称长度超出程序 %1 的限制。有效范围：%2 至 %3 个字符。" text2=""/>
+		<string id="33818113" text1="程序名称 %1 已被使用。请选择一个不同的程序名称。" text2=""/>
+		<string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
+		<string id="33816592" text1="验证 Programs.xml 失败。" text2=""/>
+		<string id="33816584" text1="读取 Programs.xml 失败。" text2=""/>
+		<string id="33816605" text1="程序 %1 中的步骤数超出限值。最多允许 14 个步骤。" text2=""/>
+		<string id="33818116" text1="程序 %1 必须至少包含 %2 个步骤。" text2=""/>
+		<string id="33818118" text1="程序 %2 步骤 %1 中的持续时间超出限值，有效范围为：%3 - %4。" text2=""/>
+		<string id="33818119" text1="程序 %2 步骤 %1 中的温度超出限值，有效范围为：%3 - %4 (摄氏度)。" text2=""/>
+		<string id="33816606" text1="程序验证器在程序 %1 中找到无效试剂 ID %2。" text2=""/>
+		<string id="33816846" text1="试剂列表读取 %1 试剂失败" text2=""/>
+		<string id="33816845" text1="试剂列表写入 %1 试剂失败" text2=""/>
+		<string id="33816840" text1="试剂 %1 名称太长 (最多 32 个字符)" text2=""/>
+		<string id="33817864" text1="未知的 RMS 清洁模式" text2=""/>
+		<string id="33817863" text1="未知的 RMS 脱水模式" text2=""/>
+		<string id="33818115" text1="用户程序名称不能包含词“Leica”" text2=""/>
+		<string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
+		<string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
+		<string id="16842767" text1="删除文件 %1 出错。" text2=""/>
+		<string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
+		<string id="16842772" text1="时间偏移太大，%1 秒。允许值：%2 秒。" text2=""/>
+		<string id="16846858" text1="将日期/时间设为 %1。" text2=""/>
+		<string id="33619971" text1="着色机已启动 (序列号为 %1，型号为 %2)" text2=""/>
+		<string id="33947653" text1="导入失败。导入文件的格式错误" text2=""/>
+		<string id="50331760" text1="导入失败。软件版本不匹配，不能导入文件" text2=""/>
+		<string id="50331763" text1="未在要导出文件的系统中找到 USB 设备" text2=""/>
+		<string id="50331762" text1="未在要导入文件的系统中找到 USB 设备" text2=""/>
+		<string id="33947665" text1="ImportExport 线程已经运行" text2=""/>
+		<string id="33947664" text1="导入失败。" text2=""/>
+		<string id="33947657" text1="导入失败。容器初始化失败" text2=""/>
+		<string id="33947661" text1="语言导入文件不可用" text2=""/>
+		<string id="33947652" text1="导入失败。没有要导入数据的文件" text2=""/>
+		<string id="33947655" text1="导入失败。所需文件不能用于导入" text2=""/>
+		<string id="33947659" text1="导入失败。回退失败" text2=""/>
+		<string id="33947662" text1="导入成功。请生成新的容器区" text2=""/>
+		<string id="33947663" text1="导入成功。语言文件已更新" text2=""/>
+		<string id="33947656" text1="导入失败。软件版本不匹配，不能导入文件" text2=""/>
+		<string id="50331759" text1="导入失败。归档文件被篡改" text2=""/>
+		<string id="50331761" text1="导入类型无效" text2=""/>
+		<string id="33947660" text1="导入失败。更新回退失败" text2=""/>
+		<string id="33947658" text1="导入失败。容器验证失败" text2=""/>
+		<string id="33619974" text1="密码更改成功。" text2=""/>
+		<string id="33619972" text1="登录失败。密码错误。" text2=""/>
+		<string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
+		<string id="33619978" text1="封片机设备已连接" text2=""/>
+		<string id="33619975" text1="着色机 GUI 进程已停止" text2=""/>
+		<string id="50331719" text1="活性炭滤网已过期，请更换新的活性炭滤网！" text2=""/>
+		<string id="50331718" text1="请联系维修工程师进行维修保养！" text2=""/>
+		<string id="33619977" text1="下列站点发生故障：%n。使用故障站点的程序将无法再启动。" text2=""/>
+		<string id="50331683" text1="程序名称 %1 当前步骤 %2 当前试剂 %3 剩余时间 %4s" text2=""/>
+		<string id="50331651" text1="LeicaBiopsie" text2=""/>
+		<string id="50331652" text1="清洁程序" text2=""/>
+		<string id="50331650" text1="LeicaOvernight" text2=""/>
+		<string id="50331671" text1="清洁酒精" text2=""/>
+		<string id="50331670" text1="清洁用二甲苯" text2=""/>
+		<string id="50331666" text1="酒精 100%" text2=""/>
+		<string id="50331662" text1="酒精 70%" text2=""/>
+		<string id="50331663" text1="酒精 80%" text2=""/>
+		<string id="50331664" text1="酒精 90%" text2=""/>
+		<string id="50331665" text1="酒精 95%" text2=""/>
+		<string id="50331661" text1="福尔马林" text2=""/>
+		<string id="50331660" text1="清洁酒精" text2=""/>
+		<string id="50331659" text1="清洁剂" text2=""/>
+		<string id="50331657" text1="透明" text2=""/>
+		<string id="50331656" text1="脱水，无水" text2=""/>
+		<string id="50331655" text1="脱水，稀释" text2=""/>
+		<string id="50331653" text1="固定" text2=""/>
+		<string id="50331658" text1="石蜡" text2=""/>
+		<string id="50331654" text1="水" text2=""/>
+		<string id="50331668" text1="石蜡" text2=""/>
+		<string id="50331669" text1="脱水" text2=""/>
+		<string id="50331667" text1="二甲苯" text2=""/>
+		<string id="50331678" text1="错误" text2=""/>
+		<string id="50331720" text1="计划表执行命令 %1" text2=""/>
+		<string id="50331721" text1="计划表执行命令 %1，结果 %2" text2=""/>
+		<string id="50331684" text1="完成程序 %1" text2=""/>
+		<string id="50331676" text1="空闲" text2=""/>
+		<string id="50331675" text1="初始化" text2=""/>
+		<string id="50331716" text1="终止程序" text2=""/>
+		<string id="50331717" text1="排水" text2=""/>
+		<string id="50331715" text1="暂停程序" text2=""/>
+		<string id="50331714" text1="启动程序" text2=""/>
+		<string id="50331705" text1="瓶检查结果：%1" text2=""/>
+		<string id="50331709" text1="堵塞" text2=""/>
+		<string id="50331710" text1="清空" text2=""/>
+		<string id="50331711" text1="错误" text2=""/>
+		<string id="50331708" text1="未满" text2=""/>
+		<string id="50331707" text1="确定" text2=""/>
+		<string id="50331712" text1="超时" text2=""/>
+		<string id="50331713" text1="意外情况" text2=""/>
+		<string id="50331704" text1="检查瓶 %1" text2=""/>
+		<string id="50331703" text1="检查温度和压力" text2=""/>
+		<string id="50331706" text1="自检已完成" text2=""/>
+		<string id="50331702" text1="启动自检" text2=""/>
+		<string id="50331681" text1="当前程序步骤状态：%1" text2=""/>
+		<string id="50331699" text1="已终止" text2=""/>
+		<string id="50331700" text1="正在终止" text2=""/>
+		<string id="50331693" text1="正在排水" text2=""/>
+		<string id="50331696" text1="错误" text2=""/>
+		<string id="50331690" text1="正在填充" text2=""/>
+		<string id="50331695" text1="已完成" text2=""/>
+		<string id="50331686" text1="正在加热液位传感器 1" text2=""/>
+		<string id="50331687" text1="正在加热液位传感器 2" text2=""/>
+		<string id="50331689" text1="正在移至排水管" text2=""/>
+		<string id="50331688" text1="正在移至填充管" text2=""/>
+		<string id="50331697" text1="暂停" text2=""/>
+		<string id="50331698" text1="排水期间暂停" text2=""/>
+		<string id="50331694" text1="排水准备就绪" text2=""/>
+		<string id="50331691" text1="正在密封" text2=""/>
+		<string id="50331692" text1="正在浸润" text2=""/>
+		<string id="50331685" text1="步骤正在初始化" text2=""/>
+		<string id="50331701" text1="未知" text2=""/>
+		<string id="50331677" text1="运行" text2=""/>
+		<string id="50331674" text1="计划表主控制器状态：%1" text2=""/>
+		<string id="50331680" text1="计划表收到来自 GUI 的动作命令：%1" text2=""/>
+		<string id="50331682" text1="启动程序 %1" text2=""/>
+		<string id="50331679" text1="意外状态" text2=""/>
+		<string id="67176192" text1="[错误 ID %1！排水时间超过 2 分钟。]" text2=""/>
+		<string id="67176193" text1="[错误 ID %1！填充时间超过 2 分钟。]" text2=""/>
+		<string id="67176194" text1="[错误 ID %1！在干燥情况下密封失败。]" text2=""/>
+		<string id="67176195" text1="[错误 ID %1！在脱水情况下密封失败。]" text2=""/>
+		<string id="67176196" text1="[错误 ID %1！蜡缸烤箱盖打开。]" text2=""/>
+		<string id="67176197" text1="[错误 ID %1！交流电压不稳定。]" text2=""/>
+		<string id="67176198" text1="瓶检查失败！请按用户手册所述清洁密封环以及脱水缸上部。通过确认“重试”按钮关闭脱水缸。" text2=""/>
+		<string id="67176199" text1="瓶 X 似乎没有完全注满。请根据用户手册检查瓶。然后按下“重试”按钮。" text2=""/>
+		<string id="67176200" text1="脱水缸排水失败！请按用户手册所述清洁密封环以及脱水缸上部。通过确认“重试”按钮关闭脱水缸。" text2=""/>
+		<string id="67176201" text1="错误 ID %1！请联系维修人员！" text2=""/>
+		<string id="67176202" text1="错误 ID %1！排气系统故障！请通知维修人员！" text2=""/>
+		<string id="67176203" text1="错误 ID %1！请联系维修人员！" text2=""/>
+		<string id="67176204" text1="错误 ID %1！请取下并保护样品。请联系维修人员！" text2=""/>
+		<string id="67176205" text1="错误 ID %1！请将重启动仪器作为第一选择，如果问题再次发生，请联系维修人员！" text2=""/>
+		<string id="67176206" text1="液位传感器故障，请按用户手册中的建议打开脱水缸盖，并清洁液位传感器，然后关闭脱水缸盖，按下“重试”按钮。" text2=""/>
+		<string id="67176207" text1="本地报警系统未连接！请将设备连接至本地报警系统" text2=""/>
+		<string id="67176208" text1="请关闭石蜡烤箱盖！" text2=""/>
+		<string id="67176209" text1="请关闭脱水缸盖，并确认“重试”按钮。" text2=""/>
+		<string id="67176210" text1="压力测试失败！请按用户手册所述清洁密封环以及脱水缸上部。通过确认“重试”按钮关闭脱水缸。" text2=""/>
+		<string id="67176211" text1="远程报警系统未连接！请将设备连接至远程报警系统。" text2=""/>
+		<string id="67176212" text1="站点 X 填充不足！请检查填充液位，进行更正，然后按下“重试”按钮。" text2=""/>
+		<string id="67176213" text1="真空测试失败！请按用户手册所述清洁密封环以及脱水缸上部。通过确认“重试”按钮关闭脱水缸。" text2=""/>
+
+    </language>
+</strings>
