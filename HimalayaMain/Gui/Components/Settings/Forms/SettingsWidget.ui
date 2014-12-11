@@ -29,7 +29,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="Settings::CLanguageWidget" name="pageLanguage"/>
      <widget class="Settings::CRegionalSettingsWidget" name="pageRegionalSettings"/>
