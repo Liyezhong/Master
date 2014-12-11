@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file SVCValveStateInfoDlg.cpp
+/*! \file SVCValveStateInfoDlg.h
  *
  *  \brief Declaration of Valve state info dialog.
  *

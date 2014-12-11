@@ -66,6 +66,7 @@ CSVCValveStateInfoDlg::~CSVCValveStateInfoDlg()
 {
     try {
         delete mp_Ui;
+        delete mp_TableWidget;
     }
     catch (...) {
 

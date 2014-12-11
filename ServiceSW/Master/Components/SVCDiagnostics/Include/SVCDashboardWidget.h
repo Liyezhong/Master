@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file SVCDashboardWidget.h
+ *
+ *  \brief SVC Diagnostics dashboard widget definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-10-02
+ *   $Author:  $ Abe Yang
+ *
+ *   \b Company:
+ *
+ * 		 Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #ifndef SVCDASHBOARDWIDGET_H
 #define SVCDASHBOARDWIDGET_H
 

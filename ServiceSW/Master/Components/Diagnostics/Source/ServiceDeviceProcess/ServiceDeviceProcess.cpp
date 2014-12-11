@@ -1182,8 +1182,9 @@ int ServiceDeviceProcess::PumpSetFan(quint8 OnFlag)
     int Ret = GetResponse(ReqName);
 
     // store fan status
-    if (Ret)
+    if (Ret) {
         m_FanStatus = OnFlag;
+    }
 
     return Ret;
 }
@@ -1205,8 +1206,9 @@ int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
 
     int Ret = GetResponse(ReqName);
 
-    if (Ret)
+    if (Ret) {
         m_ValveStatus.insert(ValveIndex, ValveState);
+    }
 
     return Ret;
 }
@@ -1245,8 +1247,9 @@ bool ServiceDeviceProcess::PumpGetStatus()
 
     QStringList Results = m_ResultsMap.value(ReqName);
 
-    if (Results.size() > 0)
+    if (Results.size() > 0) {
         ret = Results.at(0).toInt();
+    }
 
     (void)m_ResultsMap.remove(ReqName);
 

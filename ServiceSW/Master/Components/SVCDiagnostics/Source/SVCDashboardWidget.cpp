@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file SVCDashboardWidget.cpp
+ *
+ *  \brief Implementation of SVC Diagnostics dashboard widget.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-11-02
+ *   $Author:  $ Abe Yang
+ *
+ *   \b Company:
+ *
+ * 		 Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #include "SVCDiagnostics/Include/SVCDashboardWidget.h"
 #include "ui_SVCDashboardWidget.h"
 #include <QPainter>
@@ -522,22 +541,24 @@ void CSVCDashboardWidget::OnSelectPosition()
         CurrentPosition = 1;
     }
 
-    SVCDiagnostics::CSVCRotaryValveDlg rotaryValveDlg(this);
-    rotaryValveDlg.SetDialogTitle(tr("Rotary valve dialog"));
-    rotaryValveDlg.SetPos(CurrentTubeFlag, CurrentPosition);
-    if (rotaryValveDlg.exec() == 0)
+    SVCDiagnostics::CSVCRotaryValveDlg RotaryValveDlg(this);
+    RotaryValveDlg.SetDialogTitle(tr("Rotary valve dialog"));
+    RotaryValveDlg.SetPos(CurrentTubeFlag, CurrentPosition);
+    if (RotaryValveDlg.exec() == 0) {
         return;
+    }
 
-    bool flag;
-    qint32 _pos;
-    rotaryValveDlg.GetPos(flag, _pos);
+    bool Flag;
+    qint32 Postion;
+    RotaryValveDlg.GetPos(Flag, Postion);
 
-    if ( flag == CurrentTubeFlag && _pos == CurrentPosition)
+    if ( Flag == CurrentTubeFlag && Postion == CurrentPosition) {
         return;
+    }
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(flag, _pos));
+    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(Flag, Postion));
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
-    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(flag, _pos);
+    int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(Flag, Postion);
     mp_MsgDlg->HideWaitingDialog();
 
     if (Ret != (int)Diagnostics::RETURN_OK) {
