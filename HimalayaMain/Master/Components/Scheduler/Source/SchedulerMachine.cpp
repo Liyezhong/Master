@@ -183,7 +183,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmProcessingSRState.data(), entered(), mp_SchedulerThreadController, SendTissueProtectMsg());
     mp_PssmProcessingSRState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
-    CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, OnRVMoveToTube());
+    CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, InitRVMoveToTubeState());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
@@ -367,6 +367,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = PSSMABORT_RELEASE_PRESSURE;
+    m_PssmMVTubeSeq = 0;
     m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
 }
 
@@ -399,9 +400,11 @@ void CSchedulerStateMachine::OnRVMoveToSeal()
     mp_SchedulerThreadController->MoveRV(SEAL_POS);
 }
 
-void CSchedulerStateMachine::OnRVMoveToTube()
+void CSchedulerStateMachine::InitRVMoveToTubeState()
 {
-    mp_SchedulerThreadController->MoveRV(TUBE_POS);
+    m_PssmMVTubeSeq = 0;
+    mp_SchedulerThreadController->Pressure();
+    m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
 }
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
@@ -1825,6 +1828,86 @@ void CSchedulerStateMachine::HandlePSSMAbortingWorkFlow(const QString& cmdName, 
         break;
     default:
         break;
+    }
+}
+
+void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+{
+    if (0 == m_PssmMVTubeSeq)
+    {
+        if ("Scheduler::ALPressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+            else
+            {
+                m_PssmMVTubeSeq++;
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+    }
+    else if (1 == m_PssmMVTubeSeq)
+    {
+        if ((QDateTime::currentMSecsSinceEpoch() - m_PssmMVTubePressureTime) > 30*1000)
+        {
+            m_PssmMVTubeSeq = 0;
+            mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
+        }
+        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= 25.0)
+        {
+            mp_SchedulerThreadController->ReleasePressure();
+            m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
+            m_PssmMVTubeSeq++;
+        }
+    }
+    else if (2 == m_PssmMVTubeSeq)
+    {
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                 m_PssmMVTubeSeq = 0;
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
+            }
+            else
+            {
+                 m_PssmMVTubeSeq++;
+            }
+        }
+        else
+        {
+            // Do nothing, just wait
+        }
+    }
+    else if (3 == m_PssmMVTubeSeq)
+    {
+        mp_SchedulerThreadController->MoveRV(TUBE_POS);
+        m_PssmMVTubeSeq++;
+    }
+    else if (4 == m_PssmMVTubeSeq)
+    {
+        if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
+        {
+            m_PssmMVTubeSeq = 0;
+            this->NotifyRVMoveToTubeReady();
+        }
+        else
+        {
+            if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    m_PssmMVTubeSeq = 0;
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
+            }
+
+        }
     }
 }
 

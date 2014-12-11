@@ -209,8 +209,10 @@ private:
         PSSMABORT_FORCE_DRAIN,
         PSSMABORT_MOVE_NEXTTUBE
     } PSSM_ABORTING_t;
-    PSSM_ABORTING_t m_PssmAbortingSeq;                                                  ///< Sequence of PSSM_ABORTING
-    bool    m_EnableLowerPressure;                                                      ///< Enable lower pressure
+    PSSM_ABORTING_t m_PssmAbortingSeq;                                          ///< Sequence of PSSM_ABORTING
+    bool    m_EnableLowerPressure;                                              ///< Enable lower pressure
+    quint8  m_PssmMVTubeSeq;                                                    ///< Sequence of PSSM_MoveTube
+    qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
 
 private:
     /****************************************************************************/
@@ -983,6 +985,8 @@ public:
      */
     /****************************************************************************/
     void HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+
     /****************************************************************************/
     /*!
      *  \brief  Handle PSSM Aborting work flow
@@ -992,6 +996,16 @@ public:
      */
     /****************************************************************************/
     void HandlePSSMAbortingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle PSSM Move to Tube work flow
+     *  \param  cmdName - command name
+     *  \param  retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1036,15 +1050,6 @@ private slots:
      */
     /****************************************************************************/
     void OnRVMoveToSeal();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to enter RV_Move_To_Tube state.
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRVMoveToTube();
 
     /****************************************************************************/
     /*!
@@ -1148,6 +1153,17 @@ private slots:
      */
     /****************************************************************************/
     void OnEnterHeatingLevelSensor();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to initialize Pssm_MoveToTube
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void InitRVMoveToTubeState();
 signals:
     /****************************************************************************/
     /*!

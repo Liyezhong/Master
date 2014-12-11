@@ -1047,6 +1047,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
             }
 
+            m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
+#if 0
+
             if(IsRVRightPosition(TUBE_POS))
             {
                 m_SchedulerMachine->NotifyRVMoveToTubeReady();
@@ -1063,6 +1066,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
 
             }
+#endif
         }
         else if(PSSM_DRAINING == stepState)
         {
