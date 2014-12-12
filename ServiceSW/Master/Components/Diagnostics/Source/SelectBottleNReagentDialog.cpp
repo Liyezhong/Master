@@ -28,13 +28,6 @@
 
 namespace Diagnostics {
 
-/****************************************************************************/
-/*!
- *  \brief Constructor
- *
- *  \iparam p_Parent = Parent widget
- */
-/****************************************************************************/
 CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSelectBottleNReagentDialog),

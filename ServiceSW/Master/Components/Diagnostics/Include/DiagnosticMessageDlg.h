@@ -36,20 +36,25 @@ class CDiagnosticMessageDlg : public QObject
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Enum Button type Mode.
+     */
+    /****************************************************************************/
     enum BUTTON_TYPE {
-        YES_NO = 0,
-        OK_ABORT = 1,
-        NEXT_CANCEL = 2,
-        NEXT_CANCEL_DISABLE = 3,
+        YES_NO = 0,     //!< YES and No
+        OK_ABORT = 1,   //!< OK and Abort
+        NEXT_CANCEL = 2,    //!< Next and Cancel
+        NEXT_CANCEL_DISABLE = 3,    //!< Next disable
 
-        NEXT = 1,
-        CANCEL = 0,
+        NEXT = 1,       //!< Next
+        CANCEL = 0,     //!< Cancel
 
-        OK = 1,
-        ABORT = 0,
+        OK = 1,         //!< Ok
+        ABORT = 0,      //!< Abort
 
-        YES = 1,
-        NO = 0
+        YES = 1,        //!< Yes
+        NO = 0          //!< No
     };
     /****************************************************************************/
     /*!
@@ -92,12 +97,33 @@ public:
     /****************************************************************************/
     virtual void HideWaitingDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Show confirm message
+     *  \iparam MessageTitle = message dialog title
+     *  \iparam MessageText  = message dialog text
+     *  \iparam Type = message dialog type
+     */
+    /****************************************************************************/
     virtual int ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE type = YES_NO);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get parent widget.
+     *  \return Pointer of parent widget
+     */
+    /****************************************************************************/
     QWidget *ParentWidget()
     {
         return mp_Parent;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Show failed dialog when rotary valve move failed.
+     *  \iparam Title = dialog title string
+     */
+    /****************************************************************************/
     virtual void ShowRVMoveFailedDlg(const QString& Title);
 
 protected:

@@ -46,7 +46,7 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam p_DataConnector = Service GUI connector object
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent=NULL);
@@ -85,7 +85,7 @@ signals:
     /*!
      *  \brief Signal emitted for refresh status
      *  \iparam Type = The pre test module type
-     *  \Ret  = The pre test result
+     *  \iparam Ret  = The pre test result
      */
     /****************************************************************************/
     void RefreshStatusToGUI(Service::InitialSystemTestType Type, int Ret);

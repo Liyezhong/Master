@@ -32,19 +32,29 @@ namespace Ui {
     class CSealingTestReportDialog;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the diagnostics Seaing test report dialog
+ */
+/****************************************************************************/
 class CSealingTestReportDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
+    /****************************************************************************/
+    /**
+     * \brief Struct for Label group data.
+     */
+    /****************************************************************************/
     struct LabelGroup {
         LabelGroup(QLabel* label1, QLabel*label2, QLabel*label3) {
             positionLabel = label1;
             pressureLabel = label2;
             resultLabel   = label3;
         }
-        QLabel* positionLabel;
-        QLabel* pressureLabel;
-        QLabel* resultLabel;
+        QLabel* positionLabel;      //!< Position text label
+        QLabel* pressureLabel;      //!< Pressure text label
+        QLabel* resultLabel;        //!< result text label
     };
 public:
     /****************************************************************************/
@@ -117,9 +127,9 @@ protected:
 private:
     Ui::CSealingTestReportDialog *mp_Ui;     //!< User interface
     QList<LabelGroup*> m_LabelGroups;     //!< label group
-    int m_Index;
-    bool m_IsOkButton;
-    bool m_IsAbort;
+    int m_Index;                        //!< label index
+    bool m_IsOkButton;                  //!< flag of Ok button
+    bool m_IsAbort;                     //!< flag of Abort button
 
     /****************************************************************************/
     /*!

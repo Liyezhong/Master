@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ABSTest.cpp
+/*! \file ASBTest.cpp
  *
  *  \brief Implementation of Main Control ASB test..
  *

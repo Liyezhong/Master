@@ -47,7 +47,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *
+     *  \iparam TestCaseId  = Module test case id number
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -83,7 +83,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Get input value
-     *
+     *  \iparam Index = index of line edit
+     *  \return line edit text
      */
     /****************************************************************************/
 
@@ -134,6 +135,14 @@ private slots:
     void RetranslateUI();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event filter
+     *  \iparam p_Object = QObject
+     *  \iparam p_Event = event object
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private:

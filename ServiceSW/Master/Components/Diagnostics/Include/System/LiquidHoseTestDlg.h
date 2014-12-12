@@ -61,7 +61,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_MessageDlg = The pointer of message dlg.
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -105,6 +105,7 @@ protected:
      *  \brief Event filter
      *  \iparam p_Object = QObject
      *  \iparam p_Event = event object
+     *  \return true or false
      */
     /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);

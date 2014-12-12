@@ -27,6 +27,12 @@ namespace Diagnostics {
 
 namespace Retort{
 
+/****************************************************************************/
+/**
+ * \brief This class is class of retort drain reagent test
+ *
+ */
+/****************************************************************************/
 class CDrainReagentTest : public CTestBase
 {
     Q_OBJECT
@@ -34,7 +40,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_MessageDlg = The pointer of message dlg.
      *  \iparam p_Parent    = Parent widget
      */
     /****************************************************************************/

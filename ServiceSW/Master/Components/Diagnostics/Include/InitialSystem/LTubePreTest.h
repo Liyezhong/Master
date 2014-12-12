@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CLTubePreTest(QWidget *p_Parent=NULL);
@@ -79,7 +79,7 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief To show the fail message dialog
-     *  \iparam Error = the error type
+     *  \iparam ErrorCode = the error type
      */
     /****************************************************************************/
     virtual void ShowFailMessage(int ErrorCode);

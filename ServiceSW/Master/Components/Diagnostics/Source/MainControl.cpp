@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file MainContril.cpp
+/*! \file Diagnostics/Include/MainControl.cpp
  *
  *  \brief Implementation of Main control test.
  *

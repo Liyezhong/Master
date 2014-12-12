@@ -28,6 +28,11 @@ namespace Diagnostics {
 
 namespace RotaryValve {
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the Rotary valve movement test
+ */
+/****************************************************************************/
 class CMovementTest : public Diagnostics::CTestBase
 {
     Q_OBJECT

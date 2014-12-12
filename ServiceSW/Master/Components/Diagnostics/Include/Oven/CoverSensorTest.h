@@ -81,6 +81,7 @@ protected:
      *  \iparam title = dialog title
      *  \iparam text =  dialog text
      *  \iparam value = cover sensor status
+     *  \return clicked code.
      */
     /****************************************************************************/
     virtual int CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value);

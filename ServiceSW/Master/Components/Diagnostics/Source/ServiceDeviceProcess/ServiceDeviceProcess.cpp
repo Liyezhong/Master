@@ -24,8 +24,8 @@
 
 namespace Diagnostics {
 
-#define RV_MOVE_OK      1
-#define RESPONSE_TIMEOUT        0
+#define RV_MOVE_OK      1           //!< define rotary valve move ok value
+#define RESPONSE_TIMEOUT        0   //!< define response time out value
 
 ServiceDeviceProcess* ServiceDeviceProcess::mp_Instance = NULL;
 

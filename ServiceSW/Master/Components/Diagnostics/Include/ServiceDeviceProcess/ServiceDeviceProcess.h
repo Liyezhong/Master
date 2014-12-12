@@ -31,11 +31,16 @@
 
 namespace Diagnostics {
 
+/****************************************************************************/
+/**
+ * \brief Enum containing device process error code.
+ */
+/****************************************************************************/
 typedef enum {
-    RETURN_OK = 1,
-    RETURN_ERR_NULL_POINTER = -1,
-    RETURN_ERR_FAIL = -2,
-    RETURN_ABORT = -3
+    RETURN_OK = 1,          //!< Ok
+    RETURN_ERR_NULL_POINTER = -1,   //!< null pointer
+    RETURN_ERR_FAIL = -2,   //!< failed
+    RETURN_ABORT = -3       //!< user abort
 } ErrorCode_t;
 
 /****************************************************************************/
@@ -163,6 +168,9 @@ public:
     /****************************************************************************/
     /**
      *  \brief To stop oven heating
+     *  \oparam RetTempTop = result of top temperature
+     *  \oparam RetTempBottom1 = result of bottom 1 temperature
+     *  \oparam RetTempBottom2 = result of bottom 2 temperature
      *  \return Error Code
      */
     /****************************************************************************/
@@ -648,7 +656,7 @@ public:
      *  \brief To get slave module retort error
      *  \iparam ErrorCode = the code of error
      *  \iparam DevName  = device of name
-     *  \ipram SensorName = name of sensor
+     *  \iparam SensorName = name of sensor
      *  \return Error Code
      */
     /****************************************************************************/

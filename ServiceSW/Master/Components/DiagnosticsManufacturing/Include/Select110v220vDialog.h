@@ -32,6 +32,11 @@ namespace Ui {
     class CSelect110v220vDialog;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the diagnostics select 110V&220V dialog
+ */
+/****************************************************************************/
 class CSelect110v220vDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
@@ -64,6 +69,11 @@ public:
         return m_SelectedVoltage;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief Update label for service
+     */
+    /****************************************************************************/
     void UpdateLabelForService();
 
 private slots:
@@ -96,7 +106,7 @@ private:
     Ui::CSelect110v220vDialog *mp_Ui;     //!< User interface
     //MainMenu::CScrollWheel *mp_ScrollWheel;         //!< Temperature scroll wheel
 
-    QButtonGroup* mp_ButtonGroup;
+    QButtonGroup* mp_ButtonGroup;       //!< Store button group
     int m_SelectedVoltage;             //!< selected voltage test 110v or 220v
 
 

@@ -30,7 +30,7 @@ namespace Diagnostics {
 
 namespace System {
 
-QString FILLINGNDRAINING_TITLE("System Filling & Draining Test");
+QString FILLINGNDRAINING_TITLE("System Filling & Draining Test");  //!< this dialog title string
 
 CFillingNDrainingTest::CFillingNDrainingTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),

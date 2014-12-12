@@ -149,6 +149,11 @@ signals:
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update device configuration
+     */
+    /****************************************************************************/
     void UpdateDeviceConfiguration(DataManager::CDeviceConfiguration*);
 
 private slots:

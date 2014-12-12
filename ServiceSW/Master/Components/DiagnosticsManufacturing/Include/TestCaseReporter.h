@@ -32,6 +32,11 @@
 
 namespace DiagnosticsManufacturing {
 
+/****************************************************************************/
+/**
+ * \brief This class to report test report
+ */
+/****************************************************************************/
 class CTestCaseReporter: public QObject
 {
     Q_OBJECT
@@ -77,10 +82,22 @@ public:
         m_SerialNumber = SerialNumber;
     }
 
+    /****************************************************************************/
+    /**
+     * \brief Add test case Id number.
+     * \param Id = test calse Id.
+     */
+    /****************************************************************************/
     void AddTestCaseId(Service::ModuleTestCaseID Id) {
         m_TestCaseList.insert(Id);
     }
 
+    /****************************************************************************/
+    /**
+     * \brief To check system serial number.
+     * \return false if serial number is empty
+     */
+    /****************************************************************************/
     bool CheckSystemSN();
 
 private:

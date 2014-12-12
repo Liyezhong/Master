@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Retort.h
+/*! \file Diagnostics/Include/Retort.h
  *
  *  \brief Declaration of Retort test.
  *

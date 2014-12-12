@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Oven.cpp
+/*! \file Diagnostics/Include/Oven.cpp
  *
  *  \brief Implementation of Oven test.
  *

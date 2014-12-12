@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CACVoltageTest(QWidget *p_Parent=NULL);

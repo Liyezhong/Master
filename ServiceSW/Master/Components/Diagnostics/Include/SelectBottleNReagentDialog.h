@@ -75,12 +75,52 @@ public:
         return m_Option;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Set radio button visible
+     *  \iparam Visible = flag visible.
+     */
+    /****************************************************************************/
     void SetRadioButtonVisible(bool Visible);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Set scrool wheel visible
+     *  \iparam Visible = flag visible.
+     */
+    /****************************************************************************/
     void SetScrollWheelVisible(bool Visible);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Set this dialog title
+     *  \iparam Title = title string.
+     */
+    /****************************************************************************/
     void SetTitle(QString& Title);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Set this label text
+     *  \iparam Text = text string.
+     */
+    /****************************************************************************/
     void SetLableText(QString& Text);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Set this radio button text
+     *  \iparam Button1 = button 1 text string.
+     *  \iparam Button2 = button 2 text string
+     */
+    /****************************************************************************/
     void SetRadioButtonText(QString& Button1, QString& Button2);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Hide dialog when clicked abort
+     */
+    /****************************************************************************/
     void HideAbort();
 protected:
     /****************************************************************************/

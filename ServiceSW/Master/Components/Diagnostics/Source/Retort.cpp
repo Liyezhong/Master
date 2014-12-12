@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Retort.cpp
+/*! \file Diagnostics/Include/Retort.cpp
  *
  *  \brief Implementation of Retort test.
  *

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Oven.h
+/*! \file Diagnostics/Include/Oven.h
  *
  *  \brief Declaration of Oven test.
  *

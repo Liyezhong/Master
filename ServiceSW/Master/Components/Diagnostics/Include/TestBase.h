@@ -59,7 +59,7 @@ public:
     /****************************************************************************/
     virtual int Run(void) = 0;
 
-    static bool IsTestRuning;
+    static bool IsTestRuning;  //!< Store the test runing flag
 
 protected:
     /****************************************************************************/
@@ -88,6 +88,13 @@ protected:
     /****************************************************************************/
     virtual void HideWaitingDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Show confirm message dialog
+     *  \iparam MessageTitle = message title string
+     *  \iparam MessageText = message text string
+     */
+    /****************************************************************************/
     virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText);
 
 protected:

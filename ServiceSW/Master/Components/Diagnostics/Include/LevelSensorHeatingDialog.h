@@ -42,7 +42,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam MeltingPoint = The default melting point
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/

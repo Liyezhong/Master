@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RotaryValve.h
+/*! \file Diagnostics/Include/RotaryValve.h
  *
  *  \brief Declaration of RotaryValve test.
  *

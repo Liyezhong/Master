@@ -28,6 +28,11 @@ namespace Ui {
 class RetortTimingDialog;
 }
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to retort timing dialog
+*/
+/****************************************************************************/
 class RetortTimingDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT

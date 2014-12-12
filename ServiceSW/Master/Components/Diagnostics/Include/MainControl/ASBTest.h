@@ -44,7 +44,7 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam SlaveType = the slave type of 3, 5,15
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CASBTest(HimSlaveType_t SlaveType, QWidget *p_Parent=NULL);

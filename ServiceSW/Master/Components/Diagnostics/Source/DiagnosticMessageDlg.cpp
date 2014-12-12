@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DiagnosticsMessageDlg.cpp
+/*! \file DiagnosticMessageDlg.cpp
  *
  *  \brief Implementation of Diagnostics message dialog.
  *

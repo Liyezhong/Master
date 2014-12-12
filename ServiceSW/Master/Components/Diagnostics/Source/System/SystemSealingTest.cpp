@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file SystemSealing.cpp
+/*! \file SystemSealingTest.cpp
  *
  *  \brief Implementation of System System sealing test.
  *
