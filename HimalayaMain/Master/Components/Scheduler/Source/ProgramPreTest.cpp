@@ -429,41 +429,28 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         break;
     case BOTTLES_CHECKING:
-        if(0 == m_IsLoged)
+        if(!mp_SchedulerThreadController->IsNeedBottleCheck())
         {
-            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK);
-            m_IsLoged++;
+            emit MoveToTube();
         }
-        if (true == m_BottleChkFlag)  // Send out IDBottleCheck command
+        else
         {
-            if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
+            if(0 == m_IsLoged)
             {
-                m_BottleChkFlag = false;
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK);
+                m_IsLoged++;
             }
-            else // all the bottle check (for 16 bottles) has been done
+            if (true == m_BottleChkFlag)  // Send out IDBottleCheck command
             {
-                m_IsLoged = 0;
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
-                m_BottleSeq = 0; //reset
-                if (m_IsAbortRecv)
+                if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
                 {
-                    emit TasksAborted();
-                    break;
+                    m_BottleChkFlag = false;
                 }
-                else
+                else // all the bottle check (for 16 bottles) has been done
                 {
-                    emit MoveToTube();
-                }
-            }
-        }
-        else // Wait for command response
-        {
-            if ( "Scheduler::IDBottleCheck" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
+                    m_IsLoged = 0;
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
                     m_BottleSeq = 0; //reset
-                    m_BottleChkFlag = true; //reset
                     if (m_IsAbortRecv)
                     {
                         emit TasksAborted();
@@ -471,14 +458,34 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                     }
                     else
                     {
-                        mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                        emit MoveToTube();
                     }
                 }
-                else
+            }
+            else // Wait for command response
+            {
+                if ( "Scheduler::IDBottleCheck" == cmdName)
                 {
-                    //dequeue the current bottle
-                    m_BottleSeq++;
-                    m_BottleChkFlag = true;
+                    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                    {
+                        m_BottleSeq = 0; //reset
+                        m_BottleChkFlag = true; //reset
+                        if (m_IsAbortRecv)
+                        {
+                            emit TasksAborted();
+                            break;
+                        }
+                        else
+                        {
+                            mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                        }
+                    }
+                    else
+                    {
+                        //dequeue the current bottle
+                        m_BottleSeq++;
+                        m_BottleChkFlag = true;
+                    }
                 }
             }
         }

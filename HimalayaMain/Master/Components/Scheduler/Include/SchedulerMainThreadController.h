@@ -269,6 +269,7 @@ typedef struct
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
         bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
+        bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1152,6 +1153,14 @@ protected:
             RaiseError(0,EventId, m_CurrentScenario, true);
             m_SchedulerMachine->SendErrorSignal();
         }
+
+        /****************************************************************************/
+        /**
+         *  \brief  whether need bottle check
+         *  \return bool, true - continue; false - done;
+         */
+        /****************************************************************************/
+        bool IsNeedBottleCheck(){return m_IsNeedBottleCheck;}
 
         /****************************************************************************/
         /**

@@ -117,6 +117,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
         ,m_RestartDryStep(true)
+        ,m_IsNeedBottleCheck(true)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -2031,6 +2032,15 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     m_ProgramStationList.clear();
     m_StationList.clear();
+    QMap<int, ProgramStationInfo_t> StationForNoParrffinMap;
+    QMap<QString, ProgramStationInfo_t> StationForParrffinMap;
+
+    bool normalProgramFlag = false;
+    bool cleaningProgramFlag = false;
+    if (pProgram)
+    {
+        normalProgramFlag = pProgram->GetBottleCheck();
+    }
 
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
@@ -2044,17 +2054,61 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
-        m_ProgramStationList.enqueue(stationInfo);
+        QString stationName = stationInfo.StationID;
+        if(normalProgramFlag)
+        {
+            m_IsNeedBottleCheck = true;
+            if("RG6" == stationInfo.ReagentGroupID)
+            {
+                StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
+            }
+            else
+            {
+                StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+            }
+        }
+        else
+        {
+            if(i == beginStep && "RG1" == stationInfo.ReagentGroupID)
+            {
+                m_IsNeedBottleCheck = true;
+                StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+            }
+            else
+            {
+                m_IsNeedBottleCheck = false;
+            }
+        }
         m_StationList.push_back(stationInfo.StationID);
     }
-
     // Add two cleaning bottles for bottle check
-    stationInfo.ReagentGroupID = "RG7";
-    stationInfo.StationID = "S12";
-    m_ProgramStationList.enqueue(stationInfo);
-    stationInfo.ReagentGroupID = "RG8";
-    stationInfo.StationID = "S13";
-    m_ProgramStationList.enqueue(stationInfo);
+    if(mp_DataManager->GetProgramList()->GetProgram("C01"))
+    {
+        cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
+        if(cleaningProgramFlag)
+        {
+            m_IsNeedBottleCheck = true;
+            stationInfo.ReagentGroupID = "RG7";
+            stationInfo.StationID = "S12";
+            StationForNoParrffinMap.insert(12, stationInfo);
+            stationInfo.ReagentGroupID = "RG8";
+            stationInfo.StationID = "S13";
+            StationForNoParrffinMap.insert(13, stationInfo);
+        }
+    }
+
+    QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
+    for(; iter != StationForNoParrffinMap.end(); iter++)
+    {
+        m_ProgramStationList.enqueue(iter.value());
+    }
+    QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
+    for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
+    {
+        m_ProgramStationList.enqueue(iterParraffin.value());
+    }
+    StationForNoParrffinMap.clear();
+    StationForParrffinMap.clear();
     return true;
 }
 
@@ -2443,10 +2497,10 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     int whichStep = 0;
     if (m_CurProgramStepIndex != -1)
     {
-        timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
-
         m_FirstProgramStepIndex = m_CurProgramStepIndex;
+        m_IsNeedBottleCheck = true;
         (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+        timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
         m_CurProgramStepIndex = -1;
 
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
