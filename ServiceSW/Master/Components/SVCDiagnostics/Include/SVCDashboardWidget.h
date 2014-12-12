@@ -143,6 +143,11 @@ private slots:
     /****************************************************************************/
     void OnSelectPosition();
 
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when clicked the Valve State Info button
+     */
+    /****************************************************************************/
     void OnValveStateInfo();
 
 public slots:

@@ -566,14 +566,14 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         {
             emit LogOnSystem();
         }
+        mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
+        Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
+        CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
+
         Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
         p_InitSystem->setFixedSize(800, 600);
         (void)p_InitSystem->exec();
         delete p_InitSystem;
-
-        mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
-        Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
-        CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {

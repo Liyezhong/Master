@@ -46,7 +46,18 @@ class CSelectTestOptions : public QObject
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     */
+    /****************************************************************************/
     CSelectTestOptions();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CSelectTestOptions();
     /****************************************************************************/
     /**
@@ -56,6 +67,13 @@ public:
      */
     /****************************************************************************/
     static ManufacturalTestMode_t GetCurTestMode();
+
+    /****************************************************************************/
+    /**
+     * \brief Set current test mode.
+     * iparam testMod = test mode.
+     */
+    /****************************************************************************/
     static void SetCurTestMode(ManufacturalTestMode_t testMod);
 private:
     static ManufacturalTestMode_t m_TestMod; ///< The one and only instance.

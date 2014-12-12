@@ -32,8 +32,8 @@ namespace Calibration {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CPressureSensor::CPressureSensor(QWidget *parent) :
-    QWidget(parent),
+CPressureSensor::CPressureSensor(QWidget *p_Parent) :
+    QWidget(p_Parent),
     mp_Ui(new Ui::CPressureSensor)
 {
     mp_Ui->setupUi(this);

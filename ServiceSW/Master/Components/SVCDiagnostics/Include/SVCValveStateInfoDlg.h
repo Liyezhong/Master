@@ -54,19 +54,6 @@ public:
     /****************************************************************************/
     ~CSVCValveStateInfoDlg();
 
-    //void SetState(bool PumpState, bool Valve1State, bool Valve2State);
-
-//protected:
-//    /****************************************************************************/
-//    /*!
-//     *  \brief  Definition/Declaration of function changeEvent
-//     *  \param p_Object = The event object
-//     *  \param p_Event = QEvent type parameter
-//     *  \return ture or false
-//     */
-//    /****************************************************************************/
-//    bool eventFilter(QObject *p_Object, QEvent *p_Event);
-
 private:
     /****************************************************************************/
     /*!

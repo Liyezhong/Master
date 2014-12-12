@@ -41,14 +41,18 @@
 
 namespace Core {
 
-// Message box buttons
+/****************************************************************************/
+/**
+ * \brief Enum Clicked button Types.
+ */
+/****************************************************************************/
 enum ClickedButton_t {
-    OK_BUTTON,
-    YES_BUTTON,
-    CONTINUE_BUTTON,
-    NO_BUTTON,
-    CANCEL_BUTTON,
-    STOP_BUTTON
+    OK_BUTTON,      //!< OK
+    YES_BUTTON,     //!< Yes
+    CONTINUE_BUTTON,//!< Continue
+    NO_BUTTON,      //!< No
+    CANCEL_BUTTON,  //!< Cancel
+    STOP_BUTTON     //!< Stop
 };
 
 /****************************************************************************/
@@ -93,31 +97,135 @@ class CServiceGUIConnector : public QObject
     //MainMenu::CBasicColorTestDlg                 *mp_ColorTestDialog;                //!< Displayed when ColorTest needs to be done
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     CServiceGUIConnector(MainMenu::CMainWindow *p_Parent);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CServiceGUIConnector();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To get wait dialog pointer.
+     *  \return the pointer of wait dialog
+     */
+    /****************************************************************************/
     MainMenu::CWaitDialog* GetWaitDlgPtr() {return mp_WaitDialog;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief To set module list container
+     *  \iparam ModuleList = module list
+     *  \iparam ModuleListArchive = module list archive
+     */
+    /****************************************************************************/
     void SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList, ServiceDataManager::CInstrumentHistory *ModuleListArchive);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To set device configuration interface
+     *  \iparam DeviceConfigInterface = the pointer of device config
+     */
+    /****************************************************************************/
     void SetDeviceConfigurationInterface(
             DataManager::CDeviceConfigurationInterface *DeviceConfigInterface);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Set User setting interface
+     *  \iparam UserSettingInterface = the pointer of user setting interface.
+     */
+    /****************************************************************************/
     void SetUserSettingInterface(
             DataManager::CUserSettingsInterface *UserSettingInterface);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show message dialog
+     *  \iparam MessageType = message type
+     *  \iparam MessageText = message text
+     *  \iparam NeedClickFalg = flag of need click
+     */
+    /****************************************************************************/
     void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText, bool NeedClickFlag=false);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Show Busy dialog
+     *  \iparam MessageText = message text
+     *  \iparam HideAbort = flag of hide abort
+     */
+    /****************************************************************************/
     void ShowBusyDialog(QString MessageText, bool HideAbort = true);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Show busy dialog
+     */
+    /****************************************************************************/
     void ShowBusyDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Hide busy dialog
+     */
+    /****************************************************************************/
     void HideBusyDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Get module list container
+     *  \return The pointer of Module Data list
+     */
+    /****************************************************************************/
     ServiceDataManager::CModuleDataList* GetModuleListContainer();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Get module list archive container
+     *  \return The pointer of CInstrumentHistory
+     */
+    /****************************************************************************/
     ServiceDataManager::CInstrumentHistory* GetModuleListArchiveContainer();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Get Device config interface
+     *  \return The pointer of CDeviceConfigurationInterface
+     */
+    /****************************************************************************/
     DataManager::CDeviceConfigurationInterface *GetDeviceConfigInterface(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To Get user setting interface
+     *  \return The pointer of CUserSettingsInterface
+     */
+    /****************************************************************************/
     DataManager::CUserSettingsInterface *GetUserSettingInterface(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get service parameters
+     *  \return The pointer of CServiceParameters
+     */
+    /****************************************************************************/
     DataManager::CServiceParameters* GetServiceParameters();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Set service parameters container
+     *  \iparam ServiceParameters = The pointer of CServiceParameters
+     */
+    /****************************************************************************/
     void SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters);
 
 public slots:
@@ -129,18 +237,66 @@ public slots:
     /****************************************************************************/
     void SetLanguage(PlatformService::Languages_t SelectedLanguage);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of current tab changed
+     *  \iparam CurrentTabIndex = Index of current tab
+     */
+    /****************************************************************************/
     void OnCurrentTabChanged(int CurrentTabIndex);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of pop up button clicked
+     *  \iparam button = button index
+     */
+    /****************************************************************************/
     void onPopUpButtonClicked(qint32 button);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of message dialog closed
+     */
+    /****************************************************************************/
     void onMessageDialogClosed();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of send Module update
+     *  \iparam Module = The module data
+     */
+    /****************************************************************************/
     void SendModuleUpdate(ServiceDataManager::CModule &Module);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for send add module
+     *  \iparam Module = The module data
+     */
+    /****************************************************************************/
     void SendAddModule(ServiceDataManager::CModule &Module);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for service parameters update
+     *  \iparam ServiceParameters = The pointer of CServiceParameters
+     */
+    /****************************************************************************/
     void ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for handle timeout
+     */
+    /****************************************************************************/
     void HandleTimeout();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for send device configuration update
+     *  \iparam DeviceConfiguration = The pointer of Device Configuration.
+     */
+    /****************************************************************************/
     void SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration);
 
     /****************************************************************************/

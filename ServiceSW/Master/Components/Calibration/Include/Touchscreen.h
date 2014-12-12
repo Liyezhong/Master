@@ -42,10 +42,30 @@ class CTouchscreen : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_MainWindow = parent windows
+     */
+    /****************************************************************************/
     explicit CTouchscreen(MainMenu::CMainWindow *p_MainWindow = NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CTouchscreen();
 
 protected:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Event handler for change events
+     *
+     *  \iparam p_Event = Change event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private:
@@ -53,6 +73,12 @@ private:
     Ui::CTouchscreen *mp_Ui;                //!< User interface
 
 public slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for touch screen calibration
+     */
+    /****************************************************************************/
     void TouchScreenCalibration();
 
 signals:
