@@ -14,7 +14,7 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     //QWidget(p_Parent),
     ui(new Ui::CSVCScreenLockWidget),
     mp_KeyBoardWidget(NULL),
-    m_LockStatus(false)
+    m_LockStatus(true)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -24,9 +24,9 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     mp_MessageDlg->setModal(true);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD, NULL, this);
     m_timer = new QTimer(this);
-    m_timer->setInterval(1200000);//20 mintues
+    m_timer->setInterval(60000);//20 mintues
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
-    m_timer->start();
+    //m_timer->start();
 }
 
 CSVCScreenLockWidget::~CSVCScreenLockWidget()
@@ -40,6 +40,11 @@ CSVCScreenLockWidget::~CSVCScreenLockWidget()
     }
     catch(...)
     {}
+}
+
+void CSVCScreenLockWidget::StartTimer()
+{
+    m_timer->start();
 }
 
 void CSVCScreenLockWidget::AppIdleForLongTime()

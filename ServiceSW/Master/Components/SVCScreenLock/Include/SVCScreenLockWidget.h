@@ -58,6 +58,8 @@ public:
     /****************************************************************************/
     ~CSVCScreenLockWidget();
 
+    void StartTimer();
+
     void SetLockStatus(bool Status) {
         m_LockStatus = Status;
     }

@@ -454,7 +454,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
     qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble();
     qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toDouble();
-    qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
+    //qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal MinTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
     //qreal MaxTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
 
