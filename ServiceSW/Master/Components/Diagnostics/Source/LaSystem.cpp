@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Diagnostics/Include/LaSystem.cpp
+/*! \file Diagnostics/Source/LaSystem.cpp
  *
  *  \brief Implementation of Liquid and air system test.
  *

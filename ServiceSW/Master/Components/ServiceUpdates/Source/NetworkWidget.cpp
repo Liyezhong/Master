@@ -473,7 +473,6 @@ void CNetworkWidget::KeyBoardValidateEnteredString(QString& Value)
 /****************************************************************************/
 /*!
  *  \brief Sets the Save button status
- *  \iparam p_ServiceGUIConnector = Data connector object
  */
 /****************************************************************************/
 void CNetworkWidget::SetSaveButtonStatus()

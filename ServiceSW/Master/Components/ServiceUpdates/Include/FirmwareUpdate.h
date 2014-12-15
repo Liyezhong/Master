@@ -46,7 +46,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam p_DataConnector = service Gui connector
+     * /iparam p_Parent = parent widget
      */
     /****************************************************************************/
     explicit CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
@@ -62,7 +63,8 @@ public:
     /*!
      *  \brief  To add data item to the table
      *  \iparam Slave = ASB name
-     *  \iparam SoftwareVersionInfo = Software version Info
+     *  \iparam CurrentVersion = current version number
+     *  \iparam LatestVersion = latest version number
      */
     /****************************************************************************/
     void AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion);
@@ -87,9 +89,10 @@ signals:
 
     /****************************************************************************/
     /**
-       * \brief Signal emitted to perform manufacturing tests
-       * \iparam Test = Test name
-       */
+     * \brief Signal emitted to perform manufacturing tests
+     * \iparam Test = Test name
+     * \iparam AbortId = Test case abort id
+     */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 

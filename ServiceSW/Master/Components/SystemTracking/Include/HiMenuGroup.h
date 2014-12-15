@@ -47,18 +47,59 @@ class CHiMenuGroup : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam Parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CHiMenuGroup(QWidget *Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CHiMenuGroup();
 
+    /****************************************************************************/
+    /**
+     *  \brief Set dialog title
+     *  \iparam Title = title string.
+     */
+    /****************************************************************************/
     void SetTitle(const QString &Title);
 
+
+    /****************************************************************************/
+    /**
+     *  \brief Add panel for dialog
+     *  \iparam Title = panel title string.
+     *  \iparam p_Content = content widget
+     *  \iparam FramePanel = flag for frame panel
+     */
+    /****************************************************************************/
     void AddPanel (const QString &Title,
                    QWidget *p_Content,
                    bool FramePanel = true);
 
+
+    /****************************************************************************/
+    /**
+     *  \brief Get current panel widget
+     *  \return Current panel widget
+     */
+    /****************************************************************************/
     QWidget *GetCurrentPanel(void);
 
 private:
+
+    /****************************************************************************/
+    /**
+     *  \brief Add button for dialog
+     *  \iparam Text = button text
+     */
+    /****************************************************************************/
     void AddButton (const QString &Text);
 
     Ui::CHiMenuGroup *ui;               //!< User interface
@@ -76,9 +117,22 @@ private:
     int m_ItemCount;                    //!< Number of items grouped by this screen
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event handler for change events
+     *
+     *  \iparam p_Event = Change event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for button pressed
+     *  \iparam Number = index of button
+     */
+    /****************************************************************************/
     void ButtonPressed(int Number);
 };
 

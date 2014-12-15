@@ -86,7 +86,7 @@
             </SubModule>
             <SubModule name="Lid Lock" type="Lock" description="Lid Lock">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationCycles" unit="cycles"></parameter>
+                <parameter name="OperationCycles" unit="cycles">0</parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>

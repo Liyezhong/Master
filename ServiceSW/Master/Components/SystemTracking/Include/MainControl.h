@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file MainControl.h
+/*! \file SystemTracking/Include/MainControl.h
  *
  *  \brief Declaration of Main control configuration class.
  *

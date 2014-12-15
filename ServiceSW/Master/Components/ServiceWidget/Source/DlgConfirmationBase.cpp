@@ -23,8 +23,8 @@
 
 namespace MainMenu {
 
-CDlgConfirmationBase::CDlgConfirmationBase(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+CDlgConfirmationBase::CDlgConfirmationBase(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent),
     ui(new Ui::CDlgConfirmationBase)
 {
     ui->setupUi(this->GetContentFrame());

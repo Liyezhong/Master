@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file MainControl.cpp
+/*! \file SystemTracking/Source/MainControl.cpp
  *
  *  \brief Implementation of Main control configuration class.
  *

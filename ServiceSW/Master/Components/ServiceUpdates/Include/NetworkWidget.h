@@ -35,20 +35,28 @@ namespace Ui {
     class CNetworkWidget;
 }
 
-//!< Button Type -UserName, Password, IP Address or Port
+/****************************************************************************/
+/**
+ * \brief Button Type -UserName, Password, IP Address or Port
+ */
+/****************************************************************************/
 typedef enum {
-    USERNAME_BTN_CLICKED = 1,
-    PASSWORD_BTN_CLICKED,
-    IP_ADDRESS_BTN_CLICKED,
-    PORT_BTN_CLICKED,
-    INVALID
+    USERNAME_BTN_CLICKED = 1,   //!< user name
+    PASSWORD_BTN_CLICKED,       //!< password
+    IP_ADDRESS_BTN_CLICKED,     //!< Ip
+    PORT_BTN_CLICKED,           //!< port
+    INVALID                     //!< invalid
 }ButtonType_t;
 
-//!< Ip Type - proxy, server
+/****************************************************************************/
+/**
+ * \brief Button Type -Ip Type - proxy, server
+ */
+/****************************************************************************/
 typedef enum {
-    UNDEFINE,
-    PROXY_IP,
-    SERVER_IP
+    UNDEFINE,       //!< undefine
+    PROXY_IP,       //!< proxy Ip
+    SERVER_IP       //!< service Ip
 }IPType_t;
 
 /****************************************************************************/
@@ -64,7 +72,7 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam parent = parent of widget
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CNetworkWidget(QWidget *p_Parent = 0);
@@ -150,8 +158,6 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  This signal is emitted when the ServiceParameter is changed.
-     *
-     *  \iparam ServiceParameters = ServiceParameters reference.
      */
     /****************************************************************************/
     void SaveIPAddress(QString, IPType_t);

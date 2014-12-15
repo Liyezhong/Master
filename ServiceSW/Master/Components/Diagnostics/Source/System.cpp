@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Diagnostics/Include/System.cpp
+/*! \file Diagnostics/Source/System.cpp
  *
  *  \brief Implementation of System test.
  *

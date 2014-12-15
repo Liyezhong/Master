@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Diagnostics/Include/RotaryValve.cpp
+/*! \file Diagnostics/Source/RotaryValve.cpp
  *
  *  \brief Implementation of RotaryValve test.
  *

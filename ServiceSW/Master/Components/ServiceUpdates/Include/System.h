@@ -44,7 +44,7 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam parent = parent of widget
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CSystem(QWidget *p_Parent = 0);

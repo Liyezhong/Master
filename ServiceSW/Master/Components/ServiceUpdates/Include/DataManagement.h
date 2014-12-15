@@ -42,28 +42,67 @@ class CDataManagement : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_Parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CDataManagement(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CDataManagement(void);
 
 Q_SIGNALS:
+    /****************************************************************************/
+    /**
+     * \brief Signal emit for import&export request.
+     */
+    /****************************************************************************/
     void ServiceImportExportRequested(bool IsImport);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /**
+     * \brief Slot for export finished
+     * \iparam Failed = export result.
+     */
+    /****************************************************************************/
     void ExportFinished(bool Failed);
 
+    /****************************************************************************/
+    /**
+     * \brief Slot for import finished
+     *  \iparam Failed = import result.
+     */
+    /****************************************************************************/
     void ImportFinished(bool Failed);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /**
+     * \brief Slot for export.
+     */
+    /****************************************************************************/
     void Export(void);
 
+    /****************************************************************************/
+    /**
+     * \brief Slot for import.
+     */
+    /****************************************************************************/
     void Import(void);
 
 private:
-    Ui::CDataManagement   *mp_Ui;
+    Ui::CDataManagement   *mp_Ui;       //!< user interface
 
-    MainMenu::CWaitDialog *mp_WaitDialog;
+    MainMenu::CWaitDialog *mp_WaitDialog;   //!< wait dialog
 
-    MainMenu::CMessageDlg *mp_MessageDlg;
+    MainMenu::CMessageDlg *mp_MessageDlg;   //!< message dialog
 
 };
 
