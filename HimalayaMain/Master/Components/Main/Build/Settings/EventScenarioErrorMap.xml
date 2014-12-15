@@ -1179,27 +1179,6 @@
             <scenario type="single" id="287"/>
             <scenario type="single" id="297"/>
         </error>
-        <error errorid="513030095">
-            <scenario type="single" id="200"/>
-            <scenario type="single" id="213"/>
-            <scenario type="single" id="215"/>
-            <scenario type="single" id="223"/>
-            <scenario type="single" id="225"/>
-            <scenario type="single" id="233"/>
-            <scenario type="single" id="235"/>
-            <scenario type="single" id="243"/>
-            <scenario type="single" id="245"/>
-            <scenario type="single" id="253"/>
-            <scenario type="single" id="255"/>
-            <scenario type="single" id="273"/>
-            <scenario type="single" id="275"/>
-        </error>
-        <error errorid="513030096">
-            <scenario type="single" id="283"/>
-            <scenario type="single" id="285"/>
-            <scenario type="single" id="293"/>
-            <scenario type="single" id="295"/>
-        </error>
     </event>
     <event eventid="500040001">
         <error errorid="513040001">
