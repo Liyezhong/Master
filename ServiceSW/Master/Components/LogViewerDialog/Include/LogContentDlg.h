@@ -48,7 +48,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *
+     *  \iparam HeaderLabels = The header labels of the table widget
+     *  \iparam Columns = Columns for the table widget
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/

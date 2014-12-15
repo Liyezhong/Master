@@ -1586,4 +1586,5 @@ void ImportExportThreadController::CopyEventStringFiles(const QDir &Directory, c
     }
 }
 
-}
+} // end of namepace ImportExport
+

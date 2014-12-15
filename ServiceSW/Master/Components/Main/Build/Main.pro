@@ -82,6 +82,7 @@ HIMALAYA_COMPONENTS = TestCases  \
 
 ################# list himalaya shared libraries #################
 HIMALAYA_SHAREDCOMPONENTS_DIR = ../../../../../Shared/Master/Components
+HIMALAYA_SHAREDCOMPONENTS = HimalayaDataContainer
 
 
 ################# own sources #################
@@ -146,6 +147,13 @@ for(TheComponent, SHARED_COMPONENTS) {
 ################# include himalaya main libraries and set dependencies
 for(TheComponent, HIMALAYA_MAIN_COMPONENTS) {
     THELIBPATH       = $$HIMALAYA_MAIN_COMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
+    PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
+    LIBS            += $$THELIBPATH/lib$${TheComponent}.a
+}
+
+################# include himalaya shared libraries and set dependencies
+for(TheComponent, HIMALAYA_SHAREDCOMPONENTS) {
+    THELIBPATH       = $$HIMALAYA_SHAREDCOMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
     PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
     LIBS            += $$THELIBPATH/lib$${TheComponent}.a
 }

@@ -33,6 +33,7 @@
  *
  *  \iparam Argc = Command line argument count
  *  \iparam p_Argv = List of command line arguments
+ *  \return true or errors
  */
 /****************************************************************************/
 int main(int Argc, char *p_Argv[])

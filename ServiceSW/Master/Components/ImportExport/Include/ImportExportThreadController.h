@@ -417,7 +417,7 @@ private:
 protected:
     /****************************************************************************/
     /**
-     * \brief This method is called when the base class received the \ref Go signal.
+     * \brief This method is called when the base class received the Go signal.
      *
      * This means that everything is fine and normal operation started.
      * We are running in our own thread now.\n
@@ -428,7 +428,7 @@ protected:
     virtual void OnGoReceived();
     /****************************************************************************/
     /**
-     * \brief This method is called when the base class received the \ref Stop signal.
+     * \brief This method is called when the base class received the Stop signal.
      *
      * This means that normal operation will stop after processing this signal.
      * We are still running in our own thread.\n
@@ -452,7 +452,6 @@ public:
      * \brief Constructor.
      *
      * \param[in]       TheSource       Logging source to be used.
-     * \param[in,out]   RefDataManager  Take the reference of the main data manager
      * \param[in]       SourceType      Source type of the thread.
      * \param[in]       CommandValue    Command data which is stored in bytearray
      */

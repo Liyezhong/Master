@@ -49,7 +49,7 @@ private:
     QStandardItemModel m_Model; //!< Model for the log dialog table
     QStandardItemModel m_SubModel; //!< no use ?
     QMap<QString, QString> m_FileInfo;//!< The map of file info
-    quint32   m_LogIndex;
+    quint32   m_LogIndex; //!< The log index
 
     /****************************************************************************/
     /*!
@@ -100,22 +100,22 @@ private:
     void ReleaseModelItem();
 
 public:
-    static quint8 m_AllTypes;
+    static quint8 m_AllTypes;   //!< store type bit
 
 public:
     /****************************************************************************/
     /*!
-     *  \brief Constructor
-     *  \iparam Flilename = Log file name
+     *  \brief Constructor.
+     *  \iparam Filename = Log file name
      *  \iparam Columns = Columns for the table widget
-     *  \iparam p_Parent = Parent widget
+     *  \iparam NeedClassify = flag for classify
      */
     /****************************************************************************/
     CLogFilter(const QString& Filename, const QList<qint32>& Columns, bool NeedClassify=false);
 
     /****************************************************************************/
     /*!
-     *  \brief Destructor
+     *  \brief Destructor.
      */
     /****************************************************************************/
     ~CLogFilter();
@@ -143,9 +143,7 @@ public:
      *  \return The file info map
      */
     /****************************************************************************/
-    const QMap<QString, QString>& GetFileInfo( );
-
-
+    const QMap<QString, QString>& GetFileInfo();
 };
 }
 

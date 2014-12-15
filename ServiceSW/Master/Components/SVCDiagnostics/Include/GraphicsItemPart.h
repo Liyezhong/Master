@@ -37,7 +37,7 @@ public:
      *  \brief  Definition/Declaration of function CGraphicsItemPart
      *  \iparam pixmapNormal = the normal pixmap
      *  \iparam p_Parent = the parent graphics item
-     *  \iparam scence = the graphics scence
+     *  \iparam p_Scene = the graphics scence
      */
     /****************************************************************************/
     CGraphicsItemPart(const QPixmap &pixmapNormal,
@@ -49,7 +49,9 @@ public:
      *  \brief  Definition/Declaration of function CGraphicsItemPart
      *  \iparam pixmapNormal = the normal pixmap
      *  \iparam pixmapDisabled = the disbaled pixmap
-     *  \iparam scence = the working pixmap
+     *  \iparam pixmapWorking = the working pixmap
+     *
+     *  \iparam Clickable = clickable flag
      */
     /****************************************************************************/
     CGraphicsItemPart(const QPixmap &pixmapNormal,

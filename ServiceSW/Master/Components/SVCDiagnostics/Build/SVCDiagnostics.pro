@@ -10,12 +10,9 @@
 
 TARGET = SVCDiagnostics
 
-HEADERS += ../Include/*.h \      # header file location
-    ../Include/SVCValveStateInfoDlg.h
-SOURCES += ../Source/*.cpp \     # source file location
-    ../Source/SVCValveStateInfoDlg.cpp
-FORMS   += ../Forms/*.ui \       # form file location
-    ../Forms/SVCValveStateInfoDlg.ui
+HEADERS += ../Include/*.h      # header file location
+SOURCES += ../Source/*.cpp      # source file location
+FORMS   += ../Forms/*.ui        # form file location
 RESOURCES *= ../Resource/SVCDiagnostics.qrc # resource file location
 
 

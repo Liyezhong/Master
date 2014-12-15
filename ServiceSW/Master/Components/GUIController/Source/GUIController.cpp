@@ -35,7 +35,7 @@ namespace GUIControl {
 /*!
  *  \brief    Constructor for the GUIController
  *
- *  \return
+ * \param[in]   TheHeartBeatSource                 heart beat source type.
  *
  ****************************************************************************/
 GUIController::GUIController(Global::gSourceType TheHeartBeatSource)

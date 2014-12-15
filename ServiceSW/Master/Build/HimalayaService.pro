@@ -31,6 +31,7 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../../../../Platform/ServiceSW/Components/IENetworkClient/Build/IENetworkClient.pro \
           ../../../../Platform/ServiceSW/Components/ServiceImportExport/Build/ServiceImportExport.pro \
           ../../../Shared/Gui/Components/Images/Build/Images.pro \
+          ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
           ../Components/TestCases/Build/TestCases.pro \
           ../Components/ServiceWidget/Build/ServiceWidget.pro \
           ../Components/SVCDiagnostics/Build/SVCDiagnostics.pro \
