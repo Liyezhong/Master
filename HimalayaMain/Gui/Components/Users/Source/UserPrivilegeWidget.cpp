@@ -148,14 +148,14 @@ void CUserPrivilegeWidget::OnBtnUserClicked()
     m_UserLevel = MainMenu::CMainWindow::Operator;
     if (mp_MainWindow) {
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_USER_ACTIVITY_OPERATOR_LOGIN);
-
         // set user role to be operator.
         m_UserLevel = MainMenu::CMainWindow::Operator;
+        mp_MainWindow->SetUserRole(m_UserLevel);
+
         QByteArray ByteArray;
         QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
         int UserLevel = (int) m_UserLevel; // to avoid PC-Lint
         UserLevelInfo << UserLevel << "";
-
         emit UserLevelClicked(UserLevelInfo);
     }
 }
