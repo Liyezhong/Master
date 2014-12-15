@@ -616,6 +616,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             // Start up PssmPrecheck state machine
             m_SchedulerMachine->StartPreCheck();
 
+            //Initialize parameter list in scenario 260
+            mp_HeatingStrategy->Init260ParamList();
+
             //whether cleaning program or not
             if ( 'C' == ProgramName.at(0) )
             {
@@ -3680,6 +3683,15 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
             return false;
         }
         break;
+    case RETORT_NOSIGNAL:
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
+        {
+            return false;
+        }
+        break;
     case OVEN:
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
@@ -3721,14 +3733,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
     default:
         break;
     }
-    LogDebug(QString("The temp1:%1, the temp2:%2, The temp3:%3").arg(temp1).arg(temp2).arg(temp3));
-    //Check No-Signal error
-    if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
-    {
-        return false;
-    }
     return true;
-
 }
 
 void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck)
@@ -4138,6 +4143,12 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     {
         return LATUBE2;
     }
+    else if (DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == m_CurErrEventID
+             || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == m_CurErrEventID
+             || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == m_CurErrEventID)
+    {
+        return RETORT_NOSIGNAL;
+    }
     else if ("50001" == QString::number(m_CurErrEventID).left(5))
     {
         return RETORT;
@@ -4421,9 +4432,6 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-    //Initialize parameter list in scenario 260
-    mp_HeatingStrategy->Init260ParamList();
 
     if(m_CurProgramStepInfo.reagentGroup == "RG6")
     {

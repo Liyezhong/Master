@@ -94,7 +94,10 @@ struct RTLevelSensor : public HeatingSensor
 struct SensorsChecking
 {
     qint64  startTime;
+    qreal   meltingPoint;
     quint32 minTime;
+    bool    firstBottle;
+    bool    ovenTopPass;
 };
 
 /****************************************************************************/

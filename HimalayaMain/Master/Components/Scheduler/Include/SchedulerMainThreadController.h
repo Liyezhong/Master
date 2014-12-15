@@ -157,6 +157,7 @@ typedef enum
     LATUBE1,
     LATUBE2,
     RETORT,
+    RETORT_NOSIGNAL,
     OVEN,
     RV,
     ASB5,

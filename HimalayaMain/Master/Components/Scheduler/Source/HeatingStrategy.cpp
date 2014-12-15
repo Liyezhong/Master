@@ -1298,7 +1298,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
                 heatingSensor.OTCheckPassed = false;
             }
 
-            iter->OTTargetTemperature = iter->TemperatureOffset -1;
+            iter->OTTargetTemperature = iter->TemperatureOffset -2;
 
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
@@ -2053,9 +2053,13 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
 
 void HeatingStrategy::Init260ParamList()
 {
+    memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
+    m_SensorsChecking.firstBottle = true;
+
     m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
-    qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (meltingPoint <= 64.0)
+    m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+
+    if (m_SensorsChecking.meltingPoint <= 64.0)
     {
         m_SensorsChecking.minTime = 5*60*1000;
     }
@@ -2063,21 +2067,37 @@ void HeatingStrategy::Init260ParamList()
     {
         m_SensorsChecking.minTime = 8*60*1000;
     }
+
+    m_SensorsChecking.ovenTopPass = false;
 }
 
 bool HeatingStrategy::Check260SensorsTemp()
 {
-    if ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime
-            && m_RTTop.OTCheckPassed
-            && m_RTBottom.OTCheckPassed
-            && m_OvenTop.OTCheckPassed
-            && m_RV_2_Outlet.OTCheckPassed
-            && m_LARVTube.OTCheckPassed)
+    if (false == m_SensorsChecking.ovenTopPass)
     {
-        return true;
+        qreal ovenTopTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenTop;
+        if (ovenTopTemp >= (m_SensorsChecking.meltingPoint-4))
+        {
+            m_SensorsChecking.ovenTopPass = true;
+        }
     }
 
-    return false;
+    // for NON-first bottle, we need not check minimal time
+    bool ret = m_RTTop.OTCheckPassed && m_RTBottom.OTCheckPassed && m_SensorsChecking.ovenTopPass
+            && m_RV_2_Outlet.OTCheckPassed && m_LARVTube.OTCheckPassed && m_LAWaxTrap.OTCheckPassed;
+
+    if (m_SensorsChecking.firstBottle)
+    {
+        ret = ret && ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime);
+
+        // when first bottle checking is done, set the flag to be false
+        if (ret)
+        {
+            m_SensorsChecking.firstBottle = false;
+        }
+    }
+
+    return ret;
 }
 
 }// end of namespace Scheduler
