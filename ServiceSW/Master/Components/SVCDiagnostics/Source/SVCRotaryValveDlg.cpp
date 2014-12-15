@@ -197,6 +197,8 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int _tag)
 {
     qreal angle;
 
+    tag = _tag;
+
     if (tag < 16)
         angle = 22.5 * tag;
     else
@@ -208,7 +210,6 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int _tag)
             rotaryValvePos[i]->SetState(false);
     }
 
-    this->tag = tag;
     rotaryValvePointer->setTransform(
               QTransform().translate(rotaryValvePointer->pixmap().width()/2, rotaryValvePointer->pixmap().height() - 12)
              .rotate(angle)
