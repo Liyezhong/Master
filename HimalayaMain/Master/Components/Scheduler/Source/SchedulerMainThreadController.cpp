@@ -1423,7 +1423,14 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RS_TISSUE_PROTECT == ctrlCmd)
         {
             LogDebug("Go to RS_Tissue_Protect");
-            m_SchedulerMachine->EnterRsTissueProtect();
+            if (PSSM_PROCESSING_SR == m_CurrentStepState)
+            {
+                m_SchedulerMachine->EnterRcRestart();
+            }
+            else
+            {
+                m_SchedulerMachine->EnterRsTissueProtect();
+            }
         }
         else if (CTRL_CMD_RC_CHECK_RTLOCK == ctrlCmd)
         {
