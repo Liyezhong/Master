@@ -193,14 +193,17 @@ bool CLiquidHoseTestDlg::CreatePressure(float TargetPressure, int TimeOut)
     if (PreRet == RETURN_OK) {
         float CurrentPressure(0);
         while (TimeOut) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
             (void)p_DevProc->PumpGetPressure(&CurrentPressure);
             qDebug()<<"Liquid hose test current pressure:"<<CurrentPressure;
             if (m_Abort || CurrentPressure >= TargetPressure) {
                 Ret = true;
                 break;
             }
-            p_DevProc->Pause(1000);
+
             TimeOut--;
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            p_DevProc->Pause(MSec);
         }
     }
 
@@ -217,10 +220,13 @@ float CLiquidHoseTestDlg::GetRecordPressure(int RecordTime)
         if (m_Abort) {
             break;
         }
+        QTime EndTime = QTime().currentTime().addSecs(1);
         (void)ServiceDeviceProcess::Instance()->PumpGetPressure(&Pressure);
-        ServiceDeviceProcess::Instance()->Pause(1000);
+
         PressureSum += Pressure;
         WaitSec--;
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        ServiceDeviceProcess::Instance()->Pause(MSec);
     }
 
     return PressureSum/RecordTime;

@@ -146,14 +146,17 @@ bool CSystemSealingTest::TestCreatePressure(float TargetPressure)
     if (PreRet == RETURN_OK) {
         float CurrentPressure(0);
         while (WaitSec) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
             (void)p_DevProc->PumpGetPressure(&CurrentPressure);
             if ((TargetPressure > 0 && CurrentPressure >= TargetPressure) ||
                     (TargetPressure < 0 && CurrentPressure <= TargetPressure)) {
                 Ret = true;
                 break;
             }
-            p_DevProc->Pause(1000);
+
             WaitSec--;
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            p_DevProc->Pause(MSec);
         }
     }
 

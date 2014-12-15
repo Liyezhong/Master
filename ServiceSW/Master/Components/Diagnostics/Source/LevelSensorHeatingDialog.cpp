@@ -72,6 +72,7 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
 
     (void)p_DevProc->LSStartHeating(true, !XyleneFlag);
     while (WaitSeconds) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
         if (m_Abort) {
             (void)p_DevProc->LSStopHeating();
             return false;
@@ -80,9 +81,11 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
         if (CurrentTemp >= ExchangePIDTemp) {
             break;
         }
-        p_DevProc->Pause(1000);
+
         WaitSeconds--;
         UpdateUI(120-WaitSeconds, 120, TargetTemp, CurrentTemp);
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        p_DevProc->Pause(MSec);
     }
 
     (void)p_DevProc->LSStopHeating();
@@ -90,6 +93,7 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
     (void)p_DevProc->LSStartHeating(false, !XyleneFlag);
     p_DevProc->Pause(1000);
     while (WaitSeconds) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
         if (m_Abort) {
             (void)p_DevProc->LSStopHeating();
             return false;
@@ -98,9 +102,12 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
         if (CurrentTemp > ExchangePIDTemp) {
             break;
         }
-        p_DevProc->Pause(1000);
+
         WaitSeconds--;
         UpdateUI(120-WaitSeconds, 120, TargetTemp, CurrentTemp);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        p_DevProc->Pause(MSec);
     }
 
     accept();

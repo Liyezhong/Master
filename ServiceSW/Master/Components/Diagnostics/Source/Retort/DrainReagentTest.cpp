@@ -332,13 +332,18 @@ bool CDrainReagentTest::BuildVacuum()
 
     float CurrentPressure(0);
     while (WaitTime) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
         (void)p_Dev->PumpGetPressure(&CurrentPressure);
         if (CurrentPressure < TargetPressure) {
             mp_MessageDlg->HideWaitingDialog();
             return true;
         }
-        p_Dev->Pause(1000);
+
+        WaitTime--;
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        p_Dev->Pause(MSec);
     }
+
     mp_MessageDlg->HideWaitingDialog();
     return false;
 }
