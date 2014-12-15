@@ -342,6 +342,11 @@
 		<string id="18874370" text1="The release date or version of component %1 is empty in SW_Version.xml." text2=""/>
 		<string id="18874371" text1="Empty SW component name in SW_Version.xml." text2=""/>
 		<string id="17891331" text1="System initialization complete" text2=""/>
+		<string id="17891335" text1="Please turn off the switch on the back of machine to shutdown the machine." text2=""/>
+		<string id="17891336" text1="Installation is finished,  please unplug usb disk,  then reboot the machine." text2=""/>
+		<string id="17891337" text1="SW Update Rollback running ... Don't touch anything." text2=""/>
+		<string id="17891338" text1="SW Update running ... Don't touch anything." text2=""/>
+		<string id="17891339" text1="Unexpected error. Please call Service." text2=""/>
 		<string id="19595268" text1="Debug message: %1 thread create and initialize is called" text2=""/>
 		<string id="19595267" text1="Debug message: %1 thread on go received" text2=""/>
 		<string id="16908300" text1="Functor already registered for acknowledge:  %1 ." text2=""/>
