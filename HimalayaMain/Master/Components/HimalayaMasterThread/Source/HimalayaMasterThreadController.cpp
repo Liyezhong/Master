@@ -874,7 +874,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     else {        
         // send ack is NOK
         if (EventCode != 0) {
-            Global::EventObject::Instance().RaiseEvent(EventCode, false);
+            Global::EventObject::Instance().RaiseEvent(EventCode, true);
         }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
