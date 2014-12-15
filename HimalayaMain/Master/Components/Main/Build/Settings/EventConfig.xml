@@ -441,9 +441,8 @@
 		</Event>
 		<Event Code="" ErrorID="513040006" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175984" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" NextStepOnTimeOut="3" TimeOut="15m" StatusBar="YES"/>
+			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
-			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040007" ErrorType="WARNING" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175984" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
