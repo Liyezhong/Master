@@ -414,6 +414,7 @@ void CModifyProgramDlg::OnEdit()
 /****************************************************************************/
 void CModifyProgramDlg::OnNew()
 {
+    m_Icon.clear();
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->NewProgramStep();
     mp_ModifyProgStepDlg ->SetButtonType(NEW_BTN_CLICKED);
@@ -520,13 +521,6 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    if (m_bIconSelected == false || m_Icon.isEmpty()) {
-        mp_MessageDlg->SetText(m_strSeclectIcon);
-        (void) mp_MessageDlg->exec();
-        mp_Ui->btnSave->setEnabled(true);
-        return;
-    }
-
     if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
         m_Program.SetName(m_strLastProgName);
     }
@@ -537,23 +531,42 @@ void CModifyProgramDlg::OnSave()
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
-    else if (m_ButtonType == COPY_BTN_CLICKED) {
-        m_Program.SetFavorite(false);
-        m_Program.SetNameID("");
-        m_Program.SetBottleCheck(true);
-        emit AddProgram(m_Program);
-    }
-    else {
+    else
+    {
+        DataManager::CProgram* pProgram = NULL;
+        if (m_ButtonType == COPY_BTN_CLICKED) {
+            pProgram = &m_Program;
+        }
+        else //new program
+        {
+            mp_NewProgram->SetIcon(m_Icon);
+            pProgram = mp_NewProgram;
+        }
 
+        //Check it has an icon?
+        if (pProgram->GetIcon().isEmpty()) {
+            mp_MessageDlg->SetText(m_strSeclectIcon);
+            (void) mp_MessageDlg->exec();
+            mp_Ui->btnSave->setEnabled(true);
+            return;
+        }
 
-        if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
-            mp_NewProgram->SetName(m_strLastProgName);
+        if (m_ButtonType == COPY_BTN_CLICKED) {
+            m_Program.SetFavorite(false);
+            m_Program.SetNameID("");
+            m_Program.SetBottleCheck(true);
+            emit AddProgram(m_Program);
         }
         else {
-            mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+            if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
+                mp_NewProgram->SetName(m_strLastProgName);
+            }
+            else {
+                mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+            }
+
+            emit AddProgram(*mp_NewProgram);
         }
-        mp_NewProgram->SetIcon(m_Icon);
-        emit AddProgram(*mp_NewProgram);
     }
 }
 
