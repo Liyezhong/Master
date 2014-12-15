@@ -571,7 +571,6 @@
     <event eventid="500010261">
         <error errorid="513010260">
             <scenario type="single" id="200"/>
-            <scenario type="single" id="203"/>
             <scenario type="single" id="206"/>
             <scenario type="single" id="211"/>
             <scenario type="single" id="212"/>
@@ -613,6 +612,7 @@
         </error>
         <error errorid="513010263">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="203"/>
             <scenario type="single" id="281"/>
             <scenario type="single" id="282"/>
             <scenario type="single" id="283"/>
