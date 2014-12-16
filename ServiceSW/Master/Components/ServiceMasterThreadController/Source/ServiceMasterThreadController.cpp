@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file HimalayaServiceMasterThreadController.cpp
+/*! \file ServiceMasterThreadController.cpp
  *
- *  \brief Implementation file for class HimalayaServiceMasterThreadController.
+ *  \brief Implementation file for class ServiceMasterThreadController.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-02-06
