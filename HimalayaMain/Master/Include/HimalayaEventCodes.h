@@ -13,6 +13,7 @@
 #define HIMALAYAEVENTCODES_H
 
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
+const quint32 EVENT_DATE_TIME_SET_DATE_TIME	= 33619991;	///< User set the current system date time to  %1.
 
 
 const quint32 EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED	= 33817094;	///< Group verification failed. Base container is not initialized.
@@ -336,5 +337,8 @@ const quint32 EVENT_WAIT_DRAINING_FINISH = 50331770;   ///< when press "Pause", 
 
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM	= 50331771;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
+const quint32 EVENT_DM_PROG_ADD_NEW_PROGRAM = 50331772;	///< User add the program %1.
+const quint32 EVENT_DM_PROG_UPDATE_PROGRAM = 50331773;	///< User update the program %1.
+const quint32 EVENT_DM_PROG_REMMOVE_PROGRAM = 50331774;	///< User remove the program %1.
 #endif // HIMALAYAEVENTCODES_H
 

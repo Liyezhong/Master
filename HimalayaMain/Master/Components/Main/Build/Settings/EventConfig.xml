@@ -657,6 +657,9 @@
 		<Event Code="" ErrorID="33619990" ErrorType="WARNING" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="33619991" ErrorType="INFO" AlarmType="" Name="EVENT_DATE_TIME_SET_DATE_TIME" LogLevel="Medium" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="33619991" ButtonType="" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="33817094" ErrorType="Error" AlarmType="" Name="EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33817094" ButtonType="Ok" StatusBar=""/>
 		</Event>
@@ -869,6 +872,15 @@
 		</Event>
 		<Event Code="" ErrorID="50331771" ErrorType="Warning" AlarmType="AL_LOCAL" Name="EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331771" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331772" ErrorType="INFO" Name="EVENT_DM_PROG_ADD_NEW_PROGRAM" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331772" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331773" ErrorType="INFO" Name="EVENT_DM_PROG_UPDATE_PROGRAM" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331773" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331774" ErrorType="INFO" Name="EVENT_DM_PROG_REMMOVE_PROGRAM" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331774" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331718" ErrorType="Warning" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_OVERDUE" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" StatusBar=""/>

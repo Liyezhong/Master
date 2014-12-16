@@ -323,10 +323,11 @@ void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
 void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Global::CmdDateAndTime &Cmd,
                                                  Threads::CommandChannel &AckCommandChannel) {
 
+    QString DateTime;
     if(!MasterThreadController::SetAdjustedDateTimeOffset(Cmd.GetDateTime())) {
 
         // remove the offset seconds from the Adjusted time
-        QString DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs
+        DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs
                 (-Global::AdjustedTime::Instance().GetOffsetSeconds()).toString();
         // raise the event
         Global::EventObject::Instance().RaiseEvent(EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS,
@@ -342,6 +343,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
     else {
         // send ACK
         SendAcknowledgeOK(Ref, AckCommandChannel);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DATE_TIME_SET_DATE_TIME,Global::tTranslatableStringList()<< DateTime);
     }
 
 }

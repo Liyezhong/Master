@@ -204,6 +204,10 @@
 		<string id="16843303" text1="Heated cuvette temperature is changed to %1 for the Reagent %2" text2=""/>
 		<string id="16843295" text1="Off" text2=""/>
 		<string id="16843294" text1="On" text2=""/>
+		<string id="16843314" text1="Cleaning RMS state changed to %1." text2=""/>
+		<string id="16843315" text1="Cassettes" text2=""/>
+		<string id="16843316" text1="Cycles" text2=""/>
+		<string id="16843317" text1="Days" text2=""/>
 		<string id="16843289" text1="Agitation speed changed to %1" text2=""/>
 		<string id="16843292" text1="Alarm error sound note changed" text2=""/>
 		<string id="16843301" text1="Alarm error volume note tone changed" text2=""/>
@@ -216,7 +220,7 @@
 		<string id="16843298" text1="Permanent" text2=""/>
 		<string id="16843299" text1="Program Start" text2=""/>
 		<string id="16843274" text1="Oven temperature changed to %1" text2=""/>
-		<string id="16843293" text1="RMS state changed to %1" text2=""/>
+		<string id="16843293" text1="Processing RMS state changed to %1" text2=""/>
 		<string id="16843286" text1="Temperature format changed to %1" text2=""/>
 		<string id="16843287" text1="Time format changed to %1" text2=""/>
 		<string id="16843284" text1="Water type changed to %1" text2=""/>
@@ -371,6 +375,7 @@
 		<string id="16973841" text1="Stop" text2=""/>
 		<string id="16973838" text1="Yes" text2=""/>
 		<string id="33619990" text1="Can not change the date and time more than 24 hours of the current system date time is %1." text2=""/>
+		<string id="33619991" text1="User set the current system date time to  %1" text2=""/>
 		<string id="33817094" text1="Group verification failed. Base container is not initialized." text2=""/>
 		<string id="33817095" text1="Group verification failed. Container type is not valid." text2=""/>
 		<string id="33817097" text1="Group verification failed. Program container is not initialized." text2=""/>
@@ -442,6 +447,9 @@
 		<string id="33619975" text1="GUI has stopped" text2=""/>
 		<string id="50331719" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
 		<string id="50331771" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
+		<string id="50331772" text1="User add the program %1." text2=""/>
+		<string id="50331773" text1="User update the program %1." text2=""/>
+		<string id="50331774" text1="User remove the program %1." text2=""/>
 		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
 		<string id="50331765" text1="Active carbon filter operation time was reset." text2=""/>
 		<string id="50331764" text1="Machine operation time was reset." text2=""/>
