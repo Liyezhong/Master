@@ -913,6 +913,7 @@ void CReagentRMSWidget::OnReagentUpdated()
 
 void CReagentRMSWidget::OnReagentAdded()
 {
+    m_ReagentRMSModel.UpdateReagentList();
     if (mp_ModifiyReagentRMSDlg) {
         mp_ModifiyReagentRMSDlg->accept();
     }

@@ -360,14 +360,7 @@ typedef struct
          */
         /****************************************************************************/
         bool IsCleaningReagent(const QString& ReagentID);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function UpdateStationReagentStatus
-         *
-         *  \return from UpdateStationReagentStatus
-         */
-        /****************************************************************************/
-        void UpdateStationReagentStatus();
+
 
         /****************************************************************************/
         /*!
@@ -588,6 +581,12 @@ signals:
           */
          /****************************************************************************/
          void NotifyResume();
+         /****************************************************************************/
+         /*!
+          *  \brief  signal to update station status
+          */
+         /****************************************************************************/
+         void signalStationReagentStatus();
 
 private slots:
          /****************************************************************************/
@@ -737,6 +736,14 @@ private slots:
           */
          /****************************************************************************/
          void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+          *
+          *  \return from UpdateStationReagentStatus
+          */
+         /****************************************************************************/
+         void UpdateStationReagentStatus();
 protected:
 
         /****************************************************************************/

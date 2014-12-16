@@ -201,7 +201,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
                      this, ResetActiveCarbonFilterLifetime());
-
+    CONNECTSIGNALSLOT(this, signalStationReagentStatus(), this, UpdateStationReagentStatus());
     m_TickTimer.setInterval(500);
 
     //command queue reset
@@ -1129,12 +1129,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if (0 == m_PssmStepFinSeq)
             {
-                UpdateStationReagentStatus();
                 RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
                 m_PssmStepFinSeq++;
             }
             else if (1 == m_PssmStepFinSeq)
             {
+                emit signalStationReagentStatus();
                 (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
                 if(m_CurProgramStepIndex != -1)
                 {

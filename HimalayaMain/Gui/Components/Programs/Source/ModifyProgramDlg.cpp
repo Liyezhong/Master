@@ -232,6 +232,10 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     }
 
     if (m_ButtonType == EDIT_BTN_CLICKED) {
+        if (m_Program.GetNumberOfSteps() >= MAX_PROGRAM_STEPS){
+             mp_Ui->btnNew->setEnabled(false);
+        }
+
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         // Pass a value same as the one passed to SetVisibleRows()
 
@@ -826,7 +830,10 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
                     mp_Ui->btnCancel->setText(m_strClose);
                 }
                 else {
-                    mp_Ui->btnNew->setEnabled(true);
+                    int NumOfSteps = m_Program.GetNumberOfSteps();
+                    if (NumOfSteps < MAX_PROGRAM_STEPS) {
+                        mp_Ui->btnNew->setEnabled(true);
+                    }
                     mp_Ui->btnCancel->setEnabled(true);
                     mp_Ui->btnSave->setEnabled(true);
                     mp_Ui->btnDelete->setEnabled(false);

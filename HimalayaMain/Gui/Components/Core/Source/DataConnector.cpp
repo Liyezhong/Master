@@ -760,8 +760,20 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+
+        DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+        Global::RMSOptions_t rmsOption;
+        if (pReagentGroup->IsCleaningReagentGroup())
+        {
+            rmsOption = CReagentStatusModel::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            rmsOption = CReagentStatusModel::RMSPROCESSINGOPTION;
+        }
+        switch (rmsOption) {
             default:
                  QString("");
                 break;
@@ -805,8 +817,21 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+
+        DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+        Global::RMSOptions_t rmsOption;
+        if (pReagentGroup->IsCleaningReagentGroup())
+        {
+            rmsOption = CReagentStatusModel::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            rmsOption = CReagentStatusModel::RMSPROCESSINGOPTION;
+        }
+
+        switch (rmsOption) {
             default:
                  QString("");
                 break;
