@@ -28,7 +28,7 @@ SVCLabel::SVCLabel(bool isBig, QWidget *_parent, Qt::WindowFlags f)
         resize(95, 14);
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        resize(50, 14);
+        resize(45, 14);
     }
     //setAlignment(Qt::AlignHCenter);
     setFont(QFont("WenQuanYi Zen Hei", 8, (int)QFont::Bold));
@@ -42,7 +42,7 @@ SVCLabel::SVCLabel(const QString &_text, bool isBig, QWidget *_parent, Qt::Windo
         resize(95, 14);
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        resize(50, 14);
+        resize(45, 14);
     }
     setFont(QFont("WenQuanYi Zen Hei", 8, (int)QFont::Bold));
 }
