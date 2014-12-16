@@ -1234,7 +1234,7 @@ int ServiceDeviceProcess::PumpStopCompressor()
 bool ServiceDeviceProcess::PumpGetStatus()
 {
     QString ReqName = "PumpGetStatus";
-    bool ret;
+    bool ret = false;
     QStringList Params;
     Params.clear();
 
@@ -1242,7 +1242,7 @@ bool ServiceDeviceProcess::PumpGetStatus()
 
     int Ret = GetResponse(ReqName);
     if (Ret == RESPONSE_TIMEOUT) {
-        return false;
+        return ret;
     }
 
     QStringList Results = m_ResultsMap.value(ReqName);
