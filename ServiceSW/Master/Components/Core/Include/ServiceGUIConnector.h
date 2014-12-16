@@ -152,7 +152,7 @@ public:
      *  \brief To show message dialog
      *  \iparam MessageType = message type
      *  \iparam MessageText = message text
-     *  \iparam NeedClickFalg = flag of need click
+     *  \iparam NeedClickFlag = flag of need click
      */
     /****************************************************************************/
     void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText, bool NeedClickFlag=false);

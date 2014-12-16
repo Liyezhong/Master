@@ -136,6 +136,7 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
 /*!
  *  \brief Slot called for Module tests for manufacturing SW
  *  \iparam ModuleName = Name of the module
+ *  \iparam TestCaseList = list of test case
  */
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QList<Service::ModuleTestCaseID> &TestCaseList)

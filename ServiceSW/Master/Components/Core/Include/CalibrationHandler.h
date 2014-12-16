@@ -131,6 +131,7 @@ signals:
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortTestID = abort test id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);
