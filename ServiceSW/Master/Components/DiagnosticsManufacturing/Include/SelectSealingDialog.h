@@ -91,6 +91,7 @@ protected:
      *  \brief Filter Event function.
      *  \iparam p_Object = pointer of object
      *  \iparam p_Event = event object
+     *  \return true or false
      */
     /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);

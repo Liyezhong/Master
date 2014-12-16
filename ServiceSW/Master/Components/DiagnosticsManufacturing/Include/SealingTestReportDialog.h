@@ -102,6 +102,7 @@ signals:
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortTestCaseId = abort test id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);
@@ -120,6 +121,7 @@ protected:
      *  \brief Event filter
      *  \iparam p_Object = QObject
      *  \iparam p_Event = event object
+     *  \return true or false
      */
     /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);

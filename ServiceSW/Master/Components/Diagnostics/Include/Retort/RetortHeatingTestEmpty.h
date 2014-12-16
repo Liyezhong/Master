@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HeatingTestEmpty.h
+/*! \file RetortHeatingTestEmpty.h
  *
  *  \brief Declaration of Retort Heating test empty.
  *

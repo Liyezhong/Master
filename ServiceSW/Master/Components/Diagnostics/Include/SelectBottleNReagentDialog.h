@@ -44,10 +44,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam MaxBottleNum = max bottle number to select
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CSelectBottleNReagentDialog(int MaxBottleNum, QWidget *parent = 0);
+    explicit CSelectBottleNReagentDialog(int MaxBottleNum, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!

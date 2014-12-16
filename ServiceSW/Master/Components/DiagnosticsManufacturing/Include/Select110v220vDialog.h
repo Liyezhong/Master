@@ -98,6 +98,7 @@ protected:
      *  \brief Event filter
      *  \iparam p_Object = object
      *  \iparam p_Event = event
+     *  \return true or false
      */
     /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);

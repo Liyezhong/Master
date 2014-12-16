@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HeatingTestWithLiquid.h
+/*! \file RetortHeatingTestWithLiquid.h
  *
  *  \brief Declaration of Retort heating test with water.
  *

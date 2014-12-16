@@ -56,10 +56,11 @@ public:
         YES = 1,        //!< Yes
         NO = 0          //!< No
     };
+
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CDiagnosticMessageDlg(QWidget *p_Parent=NULL);
@@ -103,9 +104,10 @@ public:
      *  \iparam MessageTitle = message dialog title
      *  \iparam MessageText  = message dialog text
      *  \iparam Type = message dialog type
+     *  \return reject or except
      */
     /****************************************************************************/
-    virtual int ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE type = YES_NO);
+    virtual int ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE Type = YES_NO);
 
     /****************************************************************************/
     /*!

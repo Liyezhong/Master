@@ -93,6 +93,7 @@ protected:
      *  \brief To Show confirm message dialog
      *  \iparam MessageTitle = message title string
      *  \iparam MessageText = message text string
+     *  \return reject or except
      */
     /****************************************************************************/
     virtual int ShowConfirmMessage(QString& MessageTitle, QString& MessageText);

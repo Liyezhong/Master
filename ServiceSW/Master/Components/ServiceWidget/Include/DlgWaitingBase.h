@@ -81,7 +81,7 @@ public Q_SLOTS:
      *  \iparam Milliseconds = Timeout in milliseconds
      */
     /****************************************************************************/
-    void SetTimeout(int MilliSeconds);
+    void SetTimeout(int Milliseconds);
 
     /****************************************************************************/
     /*!

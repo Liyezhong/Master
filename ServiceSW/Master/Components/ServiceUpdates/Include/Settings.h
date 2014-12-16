@@ -45,7 +45,7 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector
+     * \iparam p_ServiceDataConnector = service Gui connector
      * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/

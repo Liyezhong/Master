@@ -47,7 +47,7 @@ public:
     /**
      * \brief  Default constructor.
      * \iparam p_DataConnector = service Gui connector
-     * /iparam p_Parent = parent widget
+     * \iparam p_Parent = parent widget
      */
     /****************************************************************************/
     explicit CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
