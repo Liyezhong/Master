@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CmdModuleEndTest.cpp
+/*! \file CmdModuleManufacturingTest.cpp
  *
  *  \brief Implementation file for class CmdModuleManufacturingTest.
  *

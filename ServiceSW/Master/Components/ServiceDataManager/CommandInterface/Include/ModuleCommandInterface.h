@@ -40,6 +40,12 @@ public:
     CModuleCommandInterface(CServiceDataManager *p_DataManager, Threads::ServiceMasterThreadController *p_MasterThreadController,
                             ServiceDataContainer *p_DataContainer);
 
+	/****************************************************************************/
+	/**
+	 * \brief rearrange module list information
+     * \iparam InstrumentHistory = module list pointer
+	 */
+	/****************************************************************************/
     void RearrangeModuleListInfo(CModuleDataList* InstrumentHistory);
 
 private:

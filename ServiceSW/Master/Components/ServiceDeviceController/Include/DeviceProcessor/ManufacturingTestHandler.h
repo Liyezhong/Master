@@ -11,7 +11,7 @@
  *
  *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -51,7 +51,7 @@ typedef enum {
     TEST_OVENLID_REF_RUN,
     TEST_DRAWER_REF_RUN,
     TEST_OTHER_RUNS
-}TestState_t;
+}TestState_t; ///<! test state enumeration
 
 typedef enum {
     RV_INITIALIZING = 0,
@@ -69,7 +69,7 @@ typedef enum {
     WAIT_CONFIRM2,
     HIDE_MESSAGE,
     INFORM_DONE
-} TestCurStatus_t;
+} TestCurStatus_t; ///<! test state enumeration
 
 /****************************************************************************/
 /**
@@ -89,8 +89,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]   ServiceDeviceController     Reference of ServiceDeviceController.
-     * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
+     * \param[in]   iDevProc           Reference of IDeviceProcessing.
      */
     /****************************************************************************/
     ManufacturingTestHandler(IDeviceProcessing &iDevProc);
@@ -121,8 +120,8 @@ public slots:
      * \brief Handle Command of type CmdAbortTest received.
      *
      * \param[in]       Ref                 Reference of command.
-     * \param[in]       id                 Test case id.
-     * \param[in]       AbortTestCaseId                It is only for abort
+     * \param[in]       id                  Test case id.
+     * \param[in]       AbortTestCaseIds    It is only for abort
      */
     /****************************************************************************/
     void OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseIds=0);
@@ -132,6 +131,7 @@ public slots:
      * \brief Module Manufacturing Test for Himalaya Manufacturing Diagnostic
      *
      * \iparam       TestId            Module Test Case Id
+     * \param[in]       AbortTestCaseId    It is only for abort
      */
     /****************************************************************************/
     void PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId, Service::ModuleTestCaseID AbortTestCaseId = Service::TEST_CASE_ID_UNUSED);
@@ -175,6 +175,15 @@ signals:
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
 
+    /****************************************************************************/
+    /**
+     * \brief Returns service request message to Main Thread Controller.
+     *
+     * \iparam   ReqName = request name
+     * \iparam   ErrorCode = error code
+     * \iparam   Results = store result
+     */
+    /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 private:

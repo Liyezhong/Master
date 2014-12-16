@@ -58,7 +58,6 @@ WrapperFmBootLoader::WrapperFmBootLoader(QString Name, CBootLoader *pBootLoader,
  *  component of the base module.
  *
  *  Examples:
- *  \dontinclude bootloader.js
  *  \skipline [BootLoader.UpdateFirmware]
  *  \until    [BootLoader.UpdateFirmware]
  *
@@ -87,7 +86,6 @@ bool WrapperFmBootLoader::UpdateFirmware(const QString &FirmwarePath)
  *  in a wait state.
  *
  *  Examples:
- *  \dontinclude bootloader.js
  *  \skipline [BootLoader.BootFirmware]
  *  \until    [BootLoader.BootFirmware]
  *
@@ -170,7 +168,6 @@ void WrapperFmBootLoader::OnUpdateFirmware(quint32 InstanceID, ReturnCode_t Retu
  *      ...
  *
  *  Examples:
- *  \dontinclude bootloader.js
  *  \skipline [BootLoader.UpdateInfo]
  *  \until    [BootLoader.UpdateInfo]
  *

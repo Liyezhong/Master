@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Tools/protoTest/Source/WrapperFmPressureControl.cpp
+/*! \file WrapperFmPressureControl.cpp
  *
  *  \brief wrapper file for pressure control function module.
  *

@@ -48,7 +48,7 @@ typedef enum {
     RETURN_OK = 1,
     RETURN_ERR_NULL_POINTER = -1,
     RETURN_ERR_FAIL = -2
-} ErrorCode_t;
+} ErrorCode_t;  ///<! return result enumeration
 
 /****************************************************************************/
 /**
@@ -720,7 +720,7 @@ signals:
     /**
      *  \brief signal for return service request result
      *  \iparam ReqName = name of request
-     *  \iparam ErroCode = code of error
+     *  \iparam ErrorCode = code of error
      *  \iparam Results = list of result
      */
     /****************************************************************************/

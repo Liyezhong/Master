@@ -42,6 +42,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CSVCValveStateInfoDlg
+     *  \iparam PumpState = pump state(on/off)
+     *  \iparam Valve1State = valve1's state(on/off)
+     *  \iparam Valve2State = valve2's state(on/off)
      *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/

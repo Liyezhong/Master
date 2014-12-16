@@ -40,7 +40,7 @@
 
 namespace DeviceControl {
 
-#define RV_MOVE_OK      1
+#define RV_MOVE_OK      1  ///<! rotary valve move result
 
 ServiceTestHandler* ServiceTestHandler::mp_Instance = NULL;
 

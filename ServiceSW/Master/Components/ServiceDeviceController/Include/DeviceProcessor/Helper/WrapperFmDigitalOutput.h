@@ -38,7 +38,6 @@ class CResetData;
  *  modules.
  *
  *  Examples:
- *   \dontinclude DigitalOutput.js
  *   \skipline [WrapperFmDigitalOutput]
  *   \until    [WrapperFmDigitalOutput]
  */

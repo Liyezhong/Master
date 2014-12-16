@@ -53,11 +53,12 @@ WrapperFmAnalogOutput::WrapperFmAnalogOutput(QString Name, CAnalogOutput *pAnalo
  *  this method.
  *
  *  Examples:
- *  \dontinclude analogoutput.js
  *  \skipline [AnalogOut.SetValue]
  *  \until    [AnalogOut.SetValue]
  *
  *  \iparam OutputValue The output value to be set
+ *  \iparam Duration  duration time
+ *  \iparam Delay delay time
  *
  *  \return true, if the setting value is success else false
  *

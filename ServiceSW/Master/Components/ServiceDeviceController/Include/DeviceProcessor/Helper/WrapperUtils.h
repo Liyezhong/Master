@@ -49,6 +49,10 @@ public:
 
 public slots:
     void Pause(quint32 MilliSeconds);
+    /****************************************************************************/
+    /*!  \brief abort pause
+     */
+    /****************************************************************************/
     void AbortPause();
     void Stop();
     void SendTestSignal(qint32 value);

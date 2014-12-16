@@ -180,7 +180,6 @@ public slots:
      *  \iparam RVPosition = rotary valve position
      *  \iparam RVTemp1    = rotary valve temperature 1
      *  \iparam RVTemp2    = rotary valve temperature 2
-     *  \iparam RVTemp3    = rotary valve temperature 3
      *  \iparam RVCurrent  = rotary valve Current
      */
     /****************************************************************************/

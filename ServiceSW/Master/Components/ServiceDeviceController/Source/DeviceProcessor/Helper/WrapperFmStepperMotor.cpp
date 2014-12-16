@@ -1096,7 +1096,6 @@ void WrapperFmStepperMotor::OnReferenceRun(quint32 /*InstanceID*/, ReturnCode_t 
  *  \brief  Script-API: Set speed for a speed movement.
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [Start/DriveSpeed]
  *  \until    [Start/DriveSpeed]
  *
@@ -1127,7 +1126,6 @@ bool WrapperFmStepperMotor::DriveSpeed(qint16 Speed)
  *  For a detailed description of the Timeout parameter, please see \ref TimeoutIntro .
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [MoveToPosition]
  *  \until    [MoveToPosition]
  *
@@ -1153,7 +1151,6 @@ bool WrapperFmStepperMotor::MoveToPosition(qint32 Position, qint32 Timeout)
  *  For a detailed description of the Timeout parameter, please see \ref TimeoutIntro .
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [MoveFromPosition]
  *  \until    [MoveFromPosition]
  *
@@ -1307,7 +1304,6 @@ void WrapperFmStepperMotor::OnSetPosition(quint32 /*InstanceID*/, ReturnCode_t R
  *  For a detailed description of the Timeout parameter, please see \ref TimeoutIntro .
  *
  *  Examples:
- *  \dontinclude loader.js
  *  \skipline [Loader.Open/Close]
  *  \until    [Loader.Open/Close]
  *
@@ -1352,7 +1348,6 @@ bool WrapperFmStepperMotor::Wait(qint32 Timeout)
  *  \brief  Script-API: Get the actual position
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [MoveFromPosition]
  *  \until    [MoveFromPosition]
  *
@@ -1381,7 +1376,6 @@ QString WrapperFmStepperMotor::GetPosition()
  *  \brief  Script-API: Get the current limit switch code
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [GetLimitSwitchCode]
  *  \until    [GetLimitSwitchCode]
  *
@@ -1544,7 +1538,6 @@ void WrapperFmStepperMotor::OnGetLifeCycleData(quint32 /*InstanceID*/, ReturnCod
  *  \iparam Profile profile index as configured for the stepper motor
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [SetProfile]
  *  \until    [SetProfile]
  *
@@ -1581,7 +1574,6 @@ qint8 WrapperFmStepperMotor::GetProfile()
  *  \brief  Script-API: Get the actual speed
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [GetSpeed]
  *  \until    [GetSpeed]
  *
@@ -1717,7 +1709,6 @@ void WrapperFmStepperMotor::OnSetState(quint32 /*InstanceID*/, ReturnCode_t Retu
  *
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [DigitalOut.ReqDataReset]
  *  \until    [DigitalOut.ReqDataReset]
  *
@@ -1773,7 +1764,6 @@ void WrapperFmStepperMotor::Reset()
  *
  *
  *  Examples:
- *  \dontinclude steppermotor.js
  *  \skipline [ApplyNewParameterSet]
  *  \until    [ApplyNewParameterSet]
  *
@@ -3733,8 +3723,5 @@ void WrapperFmStepperMotor::OnError(quint32 InstanceID, quint16 ErrorGroup, quin
     Q_UNUSED(ErrorTime);
     Log(tr("Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4").arg(InstanceID).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
 }
-
-
-
 
 // vi: set ts=4 sw=4 et:

@@ -89,6 +89,14 @@ public:
      */
     /****************************************************************************/
     virtual bool DisconnectSignals() { return true; }
+
+    /****************************************************************************/
+    /*!
+     *   \brief  get name by instance id
+     *   \param  instanceID = request id
+     *   \return name
+     */
+    /****************************************************************************/
     QString GetNameByInstanceID(quint32 instanceID);
 public slots:
     void Log(const QString &);

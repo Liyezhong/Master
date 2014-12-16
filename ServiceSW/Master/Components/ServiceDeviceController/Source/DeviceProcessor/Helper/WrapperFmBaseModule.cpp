@@ -387,7 +387,6 @@ QString WrapperFmBaseModule::GetHWInfo()
 /*!
  *  \brief  Slot for hardware info
  *
- *  \iparam InstanceID      ID of the FM (currently not needed)
  *  \iparam ReturnCode      ReturnCode of DeviceControl Layer
  *  \iparam VersionMajor    Version major number
  *  \iparam VersionMinor    Version minor number

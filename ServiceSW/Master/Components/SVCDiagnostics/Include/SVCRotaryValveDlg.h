@@ -42,14 +42,25 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CGraphicsPixmapItem
-     *  \iparam file = image enable path
-     *  \iparam diable = image disable path
+     *  \iparam enableState = image enable path
+     *  \iparam diableState = image disable path
      */
     /****************************************************************************/
     CGraphicsPixmapItem(QString enableState, QString diableState = "");
 
-    //virtual function
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function boundingRect
+     *  \return QRectF
+     */
+    /****************************************************************************/
     QRectF boundingRect() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function shape
+     *  \return QPainterPath
+     */
+    /****************************************************************************/
     QPainterPath shape() const;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
@@ -65,7 +76,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Set tag
-     *  \iparam tag
+     *  \iparam _tag
      */
     /****************************************************************************/
     void SetTag(int _tag);
@@ -74,13 +85,25 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief when pixamp is Clicked, send a signal
-     *  \iparam tag
+     *  \iparam _tag
      */
     /****************************************************************************/
     void Clicked(int _tag);
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief when pixamp is Pressed, send a event
+     *  \iparam _event = the event when mouse press
+     */
+    /****************************************************************************/
     void mousePressEvent(QGraphicsSceneMouseEvent *_event);
+    /****************************************************************************/
+    /*!
+     *  \brief when pixamp is Released, send a event
+     *  \iparam _event = the event when mouse release
+     */
+    /****************************************************************************/
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *_event);
 
 private:

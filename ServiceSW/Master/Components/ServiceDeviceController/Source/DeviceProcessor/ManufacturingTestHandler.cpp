@@ -39,7 +39,7 @@
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
-#define RV_MOVE_OK              1
+#define RV_MOVE_OK              1 ///<! rotary valve move result
 namespace DeviceControl {
 
 /****************************************************************************/

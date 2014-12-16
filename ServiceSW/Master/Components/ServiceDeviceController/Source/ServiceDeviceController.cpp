@@ -223,7 +223,7 @@ void ServiceDeviceController::OnStopReceived(){
 /****************************************************************************/
 /**
  * \brief Power will fail shortly.
- *
+ * \iparam PowerFailStage = power fail stage
  * Power will fail shortly.
  */
 /****************************************************************************/
@@ -276,8 +276,6 @@ void ServiceDeviceController::OnAcknowledge(Global::tRefType, const Global::AckO
 /*****************************************************************************/
 /**
  *  \brief     Normal operation mode start notification
- *
- *  \param     HdlInfo    = Return code, DCL_ERR_FCT_CALL_SUCCESS if successfull, otherwise error return code
  */
 /****************************************************************************/
 void ServiceDeviceController::ConnectDevices()

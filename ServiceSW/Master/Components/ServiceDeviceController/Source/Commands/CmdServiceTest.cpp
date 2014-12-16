@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CmdModuleEndTest.cpp
+/*! \file CmdServiceTest.cpp
  *
  *  \brief Implementation file for class CmdServiceTest.
  *
