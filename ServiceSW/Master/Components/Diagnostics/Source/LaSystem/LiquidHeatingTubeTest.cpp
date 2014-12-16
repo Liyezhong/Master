@@ -81,7 +81,7 @@ int CLiquidHeatingTubeTest::Run(void)
                  "user that the Instrument is operated out of the "
                  "operating temperature range of  %1\260C-%2\260C.").arg(roomTempMin).arg(roomTempMax);
        dlg->ShowMessage(title, text, RETURN_ABORT);
-       return RETURN_OK;
+       return RETURN_ABORT;
     }
 
     text = tr("Please look into the retort to identify if it is empty. If yes, click "
@@ -91,7 +91,7 @@ int CLiquidHeatingTubeTest::Run(void)
                "the original position. Thereafter flush the retort if necessary.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
@@ -174,8 +174,10 @@ int CLiquidHeatingTubeTest::Run(void)
         dev->Pause(MSec);
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        ret = RETURN_ABORT;
         goto __abort__;
+    }
 
     timingDialog->accept();
     if (ret != RETURN_OK)

@@ -63,10 +63,11 @@ void CRotaryValve::StartMovementTest(void)
     if (test.Run() == RETURN_OK) {
         emit EnableTestButton();
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_SUCCESS);
-    }
-    else {
+    } else if (test.Run() == RETURN_ABORT) {
+            emit EnableTestButton();
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"rotary valve movement");
+    } else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_FAILURE);
-    }
 }
 
 } // namespace Diagnostics

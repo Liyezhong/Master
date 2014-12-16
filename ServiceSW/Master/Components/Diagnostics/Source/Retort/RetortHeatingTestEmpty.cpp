@@ -77,7 +77,7 @@ int CHeatingTestEmpty::Run(void)
               "rotate lock to closed position.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestEmpty");
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
@@ -174,7 +174,7 @@ int CHeatingTestEmpty::Run(void)
     (void)dev->RetortStopHeating();
 
     if (!timingDialog->isVisible())
-        return RETURN_OK;
+        return RETURN_ABORT;
     timingDialog->accept();
     if (ret != RETURN_OK || count > 0) {
         // fail

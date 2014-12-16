@@ -131,7 +131,7 @@ __fail__:
     return RETURN_ERR_FAIL;
 
 __cancel__:
-    return RETURN_OK;
+    return RETURN_ABORT;
 }
 
 } // namespace Oven

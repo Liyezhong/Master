@@ -185,8 +185,10 @@ int CHeatingTestEmpty::Run(void)
             dev->Pause(MSec);
         }
 
-        if (!timingDialog->isVisible())
+        if (!timingDialog->isVisible()) {
+           ret = RETURN_ABORT;
            goto _abort_;
+        }
 
         timingDialog->accept();
         if (ret != RETURN_OK || count > 0) {
@@ -292,8 +294,10 @@ int CHeatingTestEmpty::Run(void)
         RefreshWaitingDialog(&status);
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        ret = RETURN_ABORT;
         goto _abort_;
+    }
 
     timingDialog->accept();
 

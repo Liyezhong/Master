@@ -81,7 +81,7 @@ int CHeatingTestWithWater::Run(void)
               "calibrated external thermometer.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     text = tr(" Please put reagent bottle with water to reagent "
               "bottle position 13. And confirm the retort is empty and "
@@ -90,7 +90,7 @@ int CHeatingTestWithWater::Run(void)
               "to closed position.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestWithWater");
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
@@ -243,7 +243,7 @@ int CHeatingTestWithWater::Run(void)
         dlg->ShowWaitingDialog(title, text);
         (void)dev->PumpDraining();
         dlg->HideWaitingDialog();
-        return RETURN_OK;
+        return RETURN_ABORT;
     }
     timingDialog->accept();
 
