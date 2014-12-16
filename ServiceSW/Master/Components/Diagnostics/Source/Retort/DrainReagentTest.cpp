@@ -122,7 +122,7 @@ int CDrainReagentTest::Run(void)
     }
 
     for (int i = 0; i < 2; ++i) {
-        Text = QString("Rotary Valve is moving to tube position %1").arg(TargetPosition);
+        Text = QString("Rotary Valve is rotating to tube position %1").arg(TargetPosition);
         mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
         Ret = p_Dev->RVMovePosition(true, TargetPosition);
         mp_MessageDlg->HideWaitingDialog();
