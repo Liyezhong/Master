@@ -115,8 +115,12 @@ void CSystem::StartSealingTest(void)
     qDebug() << "System: start sealing test";
 
     System::CSystemSealingTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
+    int Ret = Test.Run();
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"System sealing");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE);
@@ -129,8 +133,13 @@ void CSystem::StartFillingNDrainingTest(void)
     qDebug() << "System: start filling and draining test";
 
     System::CFillingNDrainingTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
+    int Ret = Test.Run();
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
+                                                   Global::tTranslatableStringList()<<"System Filling&Draining");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
@@ -143,8 +152,13 @@ void CSystem::StartLiquidHoseTest(void)
     qDebug() << "System: start liquid hose test";
 
     System::CLiquidHoseTest Test(mp_MessageDlg, this);
+    int Ret = Test.Run();
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
+                                                   Global::tTranslatableStringList()<<"System liquid hose");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_FAILURE);

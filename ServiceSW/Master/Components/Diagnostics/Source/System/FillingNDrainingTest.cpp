@@ -49,7 +49,7 @@ int CFillingNDrainingTest::Run(void)
     int Ret = 0;
 
     if (ShowConfirmDlg(1) == 0 || ShowConfirmDlg(2) == 0) {
-        return RETURN_ERR_FAIL;
+        return RETURN_ABORT;
     }
 
     qreal RVTempSensor1(0);
@@ -81,7 +81,7 @@ int CFillingNDrainingTest::Run(void)
 
     if ( p_SelectDlg->exec() == 0) {
         delete p_SelectDlg;
-        return RETURN_ERR_FAIL;
+        return RETURN_ABORT;
     }
 
     int ReagentGroup = p_SelectDlg->GetOption();

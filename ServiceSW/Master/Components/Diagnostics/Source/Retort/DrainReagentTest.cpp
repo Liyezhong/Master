@@ -50,7 +50,7 @@ int CDrainReagentTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    QString Text = "Select the content/condition within the retor.";
+    QString Text = "Select the content/condition within the retort.";
     QString Button1 = "Other Reagent";
     QString Button2 = "Paraffin";
     CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
@@ -122,7 +122,10 @@ int CDrainReagentTest::Run(void)
     }
 
     for (int i = 0; i < 2; ++i) {
+        Text = QString("Rotary Valve is moving to sealing position %1").arg(TargetPosition);
+        mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
         Ret = p_Dev->RVMovePosition(true, TargetPosition);
+        mp_MessageDlg->HideWaitingDialog();
         if (Ret == RETURN_OK) {
             break;
         }

@@ -62,7 +62,7 @@ CLiquidHoseTestDlg::~CLiquidHoseTestDlg()
     catch (...) {}
 }
 
-bool CLiquidHoseTestDlg::RunTest()
+int CLiquidHoseTestDlg::RunTest()
 {
     int BottleNumber;
     bool CreatePressureRet = true;
@@ -83,7 +83,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
-        return false;
+        return RETURN_ERR_FAIL;
     }
 
     QString Text = "Rotary valve is initializing...";
@@ -92,7 +92,7 @@ bool CLiquidHoseTestDlg::RunTest()
     mp_MessageDlg->HideWaitingDialog();
     if (Ret != RETURN_OK) {
         ShowFinishDlg(2);
-        return false;
+        return RETURN_ERR_FAIL;
     }
 
     this->show();
@@ -159,7 +159,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     if (m_Abort) {
         mp_MessageDlg->HideWaitingDialog();
-        return false;
+        return RETURN_ABORT;
     }
 
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
@@ -170,7 +170,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     (void)this->exec();
 
-    return CreatePressureRet;
+    return CreatePressureRet ? RETURN_OK : RETURN_ERR_FAIL;
 }
 
 void CLiquidHoseTestDlg::AddBottleNumber(int BottleNumber)

@@ -44,7 +44,7 @@ int CSystemSealingTest::Run(void)
     int Ret(0);
 
     if (ShowConfirmDlg() == 0) {
-        return Ret;
+        return RETURN_ABORT;
     }
 
     qreal RVTempSensor1(0);
