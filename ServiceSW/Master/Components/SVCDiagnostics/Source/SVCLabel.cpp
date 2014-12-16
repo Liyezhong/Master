@@ -42,7 +42,7 @@ SVCLabel::SVCLabel(const QString &_text, bool isBig, QWidget *_parent, Qt::Windo
         resize(95, 14);
     } else {
         setStyleSheet("QLabel { border-image: url(:/Images/Label1) }"); // little
-        resize(40, 14);
+        resize(50, 14);
     }
     setFont(QFont("WenQuanYi Zen Hei", 8, (int)QFont::Bold));
 }
