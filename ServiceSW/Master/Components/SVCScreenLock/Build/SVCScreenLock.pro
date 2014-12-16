@@ -12,8 +12,6 @@ TARGET = SVCScreenLock
 
 HEADERS += ../Include/*.h      # header file location
 SOURCES += ../Source/*.cpp     # source file location
-FORMS   += ../Forms/*.ui \
-    ../Forms/SVCScreenLockWidget.ui      # form file location
-RESOURCES *= ../Resource/SVCScreenLock.qrc # resource file location
+FORMS   += ../Forms/*.ui
 
 
