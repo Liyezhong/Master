@@ -25,6 +25,7 @@
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include <QDebug>
 
 namespace Diagnostics {
@@ -249,6 +250,7 @@ void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure
 
     QString BottleStr;
     QString ResultStr;
+    QString PressureStr;
     if (BottleNumber == 14) {
         BottleStr = "P1";
     }
@@ -271,9 +273,13 @@ void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure
     else {
         ResultStr = "Ok";
     }
+    PressureStr = QString::number(Pressure);
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_POSITION,
+                                               Global::tTranslatableStringList()<<BottleStr<<PressureStr<<ResultStr);
 
     Labels->bottleLabel->setText(BottleStr);
-    Labels->pressureLabel->setText(QString::number(Pressure));
+    Labels->pressureLabel->setText(PressureStr);
     Labels->resultLabel->setText(ResultStr);
 }
 

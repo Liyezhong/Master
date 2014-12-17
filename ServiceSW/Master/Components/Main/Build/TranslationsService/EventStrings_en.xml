@@ -119,54 +119,55 @@
 		<string id="100728948" text1="Main control touch screen completed successfully" text2=""/>
 		<string id="100728949" text1="Main control touch screen test failed" text2=""/>
 		<string id="100728950" text1="System liquid hose test is requested" text2=""/>
-		<string id="100728951" text1="System liquid hose test completed successfully" text2=""/>
+		<string id="100728951" text1="System liquid hose test finished" text2=""/>
 		<string id="100728952" text1="System liquid hose test failed" text2=""/>
-		<string id="100728953" text1="System sealing function test is requested" text2=""/>
-		<string id="100728954" text1="System sealing function test completed successfully" text2=""/>
-		<string id="100728955" text1="System sealing function test failed" text2=""/>
-		<string id="100728956" text1="System exhaust fun test is requested" text2=""/>
-		<string id="100728957" text1="System exhaust fun test completed successfully" text2=""/>
-		<string id="100728958" text1="System exhaust fun test failed" text2=""/>
-		<string id="100728959" text1="System ventilation fun test is requested" text2=""/>
-		<string id="100728960" text1="System ventilation fun test completed successfully" text2=""/>
-		<string id="100728961" text1="System ventilation fun test failed" text2=""/>
-		<string id="100728962" text1="System filling and draining test is requested" text2=""/>
-		<string id="100728963" text1="System filling and draining test completed successfully" text2=""/>
-		<string id="100728964" text1="System filling and draining test failed" text2=""/>
-		<string id="100728965" text1="System overflow test is requested" text2=""/>
-		<string id="100728966" text1="System overflow test completed successfully" text2=""/>
-		<string id="100728967" text1="System overflow test failed" text2=""/>
-		<string id="100728968" text1="System speaker test is requested" text2=""/>
-		<string id="100728969" text1="System speaker test completed successfully" text2=""/>
-		<string id="100728970" text1="System speaker test failed" text2=""/>
-		<string id="100728971" text1="System remote local alarm test is requested" text2=""/>
-		<string id="100728972" text1="System remote local alarm test completed successfully" text2=""/>
-		<string id="100728973" text1="System remote local alarm test is failed" text2=""/>
-		<string id="100728974" text1="System usb test is requested" text2=""/>
-		<string id="100728975" text1="System usb test completed successfully" text2=""/>
-		<string id="100728976" text1="System usb test failed" text2=""/>
-		<string id="100728977" text1="System mains relay test is requested" text2=""/>
-		<string id="100728978" text1="System mains relay test completed successfully" text2=""/>
-		<string id="100728979" text1="System mains relay test is failed" text2=""/>
-		<string id="100728980" text1="System 110V/220V switching test is requested" text2=""/>
-		<string id="100728981" text1="System 110V/220V switching test completed successfully" text2=""/>
-		<string id="100728982" text1="System 110V/220V switching test failed" text2=""/>
-		<string id="100728983" text1="Cleaning system test is requested" text2=""/>
-		<string id="100728984" text1="Cleaning system test completed successfully" text2=""/>
-		<string id="100728985" text1="Cleaning system test failed" text2=""/>
-		<string id="100728986" text1="Manufacturing: Retort module test is requested" text2=""/>
-		<string id="100728987" text1="Manufacturing: Retort send test report" text2=""/>
-		<string id="100728988" text1="Manufacturing: Oven module test is requested" text2=""/>
-		<string id="100728989" text1="Manufacturing: Oven send test report" text2=""/>
-		<string id="100728990" text1="Manufacturing: Retort valve module test is requested" text2=""/>
-		<string id="100728991" text1="Manufacturing: Retort valve send test report" text2=""/>
-		<string id="100728992" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
-		<string id="100728993" text1="Manufacturing: L&amp;A system send test report" text2=""/>
-		<string id="100728994" text1="Manufacturing: Main control module test is requested" text2=""/>
-		<string id="100728995" text1="Manufacturing: Main control send test report" text2=""/>
-		<string id="100728996" text1="Manufacturing: System module test is requested" text2=""/>
-		<string id="100728997" text1="Manufacturing: System send test report" text2=""/>
-		<string id="100728998" text1="Manufacturing: Cleaning system test is requested" text2=""/>
-		<string id="100728999" text1="Manufacturing: Cleaning system send test report" text2=""/>
+		<string id="100728953" text1="System liquid hose test position is tube %1 pressure is %1Kpa result is %1" text2=""/>
+		<string id="100728954" text1="System sealing function test is requested" text2=""/>
+		<string id="100728955" text1="System sealing function test completed successfully" text2=""/>
+		<string id="100728956" text1="System sealing function test failed" text2=""/>
+		<string id="100728957" text1="System exhaust fun test is requested" text2=""/>
+		<string id="100728958" text1="System exhaust fun test completed successfully" text2=""/>
+		<string id="100728959" text1="System exhaust fun test failed" text2=""/>
+		<string id="100728960" text1="System ventilation fun test is requested" text2=""/>
+		<string id="100728961" text1="System ventilation fun test completed successfully" text2=""/>
+		<string id="100728962" text1="System ventilation fun test failed" text2=""/>
+		<string id="100728963" text1="System filling and draining test is requested" text2=""/>
+		<string id="100728964" text1="System filling and draining test completed successfully" text2=""/>
+		<string id="100728965" text1="System filling and draining test failed" text2=""/>
+		<string id="100728966" text1="System overflow test is requested" text2=""/>
+		<string id="100728967" text1="System overflow test completed successfully" text2=""/>
+		<string id="100728968" text1="System overflow test failed" text2=""/>
+		<string id="100728969" text1="System speaker test is requested" text2=""/>
+		<string id="100728970" text1="System speaker test completed successfully" text2=""/>
+		<string id="100728971" text1="System speaker test failed" text2=""/>
+		<string id="100728972" text1="System remote local alarm test is requested" text2=""/>
+		<string id="100728973" text1="System remote local alarm test completed successfully" text2=""/>
+		<string id="100728974" text1="System remote local alarm test is failed" text2=""/>
+		<string id="100728975" text1="System usb test is requested" text2=""/>
+		<string id="100728976" text1="System usb test completed successfully" text2=""/>
+		<string id="100728977" text1="System usb test failed" text2=""/>
+		<string id="100728978" text1="System mains relay test is requested" text2=""/>
+		<string id="100728979" text1="System mains relay test completed successfully" text2=""/>
+		<string id="100728980" text1="System mains relay test is failed" text2=""/>
+		<string id="100728981" text1="System 110V/220V switching test is requested" text2=""/>
+		<string id="100728982" text1="System 110V/220V switching test completed successfully" text2=""/>
+		<string id="100728983" text1="System 110V/220V switching test failed" text2=""/>
+		<string id="100728984" text1="Cleaning system test is requested" text2=""/>
+		<string id="100728985" text1="Cleaning system test completed successfully" text2=""/>
+		<string id="100728986" text1="Cleaning system test failed" text2=""/>
+		<string id="100728987" text1="Manufacturing: Retort module test is requested" text2=""/>
+		<string id="100728988" text1="Manufacturing: Retort send test report" text2=""/>
+		<string id="100728989" text1="Manufacturing: Oven module test is requested" text2=""/>
+		<string id="100728990" text1="Manufacturing: Oven send test report" text2=""/>
+		<string id="100728991" text1="Manufacturing: Retort valve module test is requested" text2=""/>
+		<string id="100728992" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100728993" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
+		<string id="100728994" text1="Manufacturing: L&amp;A system send test report" text2=""/>
+		<string id="100728995" text1="Manufacturing: Main control module test is requested" text2=""/>
+		<string id="100728996" text1="Manufacturing: Main control send test report" text2=""/>
+		<string id="100728997" text1="Manufacturing: System module test is requested" text2=""/>
+		<string id="100728998" text1="Manufacturing: System send test report" text2=""/>
+		<string id="100728999" text1="Manufacturing: Cleaning system test is requested" text2=""/>
+		<string id="100729000" text1="Manufacturing: Cleaning system send test report" text2=""/>
 	</language>
 </strings>
