@@ -41,14 +41,16 @@ CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(bool PumpState, bool Valve1State, b
 
     mp_TableWidget->setModel(&m_Model);
 
-    m_Model.setHorizontalHeaderLabels(QStringList()<<tr("Name")<<tr("State"));
+    m_Model.setHorizontalHeaderLabels(QStringList()<<tr("")<<tr("Pressure")<<tr("Vaccum")<<tr("Ambient"));
 
-    AddItem(PumpState, QString("Pump"));
-    AddItem(Valve1State, QString("Valve1"));
-    AddItem(Valve2State, QString("Valve2"));
+    AddItem("Pump", "On", "On", "Off");
+    AddItem("Valve1", "On", "Off", "Off");
+    AddItem("Valve2", "Off", "On", "Off");
 
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 144);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 144);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 70);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 70);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 70);
 
 //    mp_TableWidget->verticalHeader()->resizeSection(0,150);
 //    mp_TableWidget->verticalHeader()->resizeSection(1,150);
@@ -73,18 +75,13 @@ CSVCValveStateInfoDlg::~CSVCValveStateInfoDlg()
     }
 }
 
-void CSVCValveStateInfoDlg::AddItem(bool State, const QString& Name)
+void CSVCValveStateInfoDlg::AddItem(const QString& Name, const QString& State1, const QString& State2, const QString& State3)
 {
-    QString StateStr;
-    if (State) {
-        StateStr = "On";
-    }
-    else {
-        StateStr = "Off";
-    }
     QList<QStandardItem *> ItemList;
     ItemList << new QStandardItem(Name);
-    ItemList << new QStandardItem(StateStr);
+    ItemList << new QStandardItem(State1);
+    ItemList << new QStandardItem(State2);
+    ItemList << new QStandardItem(State3);
 
     m_Model.appendRow(ItemList);
 }

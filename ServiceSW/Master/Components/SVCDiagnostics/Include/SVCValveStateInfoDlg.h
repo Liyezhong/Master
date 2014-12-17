@@ -61,11 +61,13 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  To add data item to the table
-     *  \iparam State = Valve or pump state
      *  \iparam Name  = part name
+     *  \iparam State1 = state of one
+     *  \iparam State2 = state of two
+     *  \iparam State3 = state of
      */
     /****************************************************************************/
-    void AddItem(bool State, const QString& Name);
+    void AddItem(const QString& Name, const QString& State1, const QString& State2, const QString& State3);
 
 private:
     Ui::CSVCValveStateInfoDlg* mp_Ui;    //!< User interface
