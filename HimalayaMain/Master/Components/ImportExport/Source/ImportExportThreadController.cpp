@@ -1003,6 +1003,7 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
                                 + QDir::separator() + DIRECTORY_IMPORT + QDir::separator());
                 }
                 catch (...) {
+                    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_TAMPERED_ARCHIVE_FILE,true);
                     m_EventCode = EVENT_IMPORT_TAMPERED_ARCHIVE_FILE;
                     IsImported = false;
                 }
@@ -1010,6 +1011,7 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
         }
         else {
             // device name is not matching
+            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING,true);
             m_EventCode = EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING;
             IsImported = false;
         }
@@ -1082,8 +1084,9 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
     // check file count
     if (RequiredFilesImported) {
         // create the temporary directory
-        if (QProcess::execute(COMMAND_MKDIR + Global::SystemPaths::Instance().GetTempPath()
-                              + QDir::separator() + DIRECTORY_IMPORT) >= 0) {
+        if (QDir(Global::SystemPaths::Instance().GetTempPath()+ QDir::separator() + DIRECTORY_IMPORT).exists() ||
+                QProcess::execute(COMMAND_MKDIR + Global::SystemPaths::Instance().GetTempPath()
+                              + QDir::separator() + DIRECTORY_IMPORT) == 0) {
             // write all the files
             foreach(QString KeyName, RFile.getFiles().uniqueKeys()) {
                 foreach (QByteArray FileData, RFile.getFiles().values(KeyName)) {
@@ -1096,7 +1099,9 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                             FileWrite.close();
                         }
                         catch (...) {
-                            // got a exception
+                            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+                            m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
+                            m_EventRaised = true;
                             return false;
                         }
                     }
@@ -1120,6 +1125,12 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                     }
                 }
             }
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+            m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
+            m_EventRaised = true;
         }
     }
     else {
