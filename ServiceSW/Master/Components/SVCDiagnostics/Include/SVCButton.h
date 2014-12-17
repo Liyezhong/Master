@@ -37,16 +37,16 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SVCButton
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      */
     /****************************************************************************/
     explicit SVCButton(bool isBig = true, QWidget *_parent=0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCButton
-     *  \iparam text = button text
+     *  \iparam _text = button text
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      */
     /****************************************************************************/
     explicit SVCButton(const QString &_text, bool isBig = true, QWidget *_parent=0);

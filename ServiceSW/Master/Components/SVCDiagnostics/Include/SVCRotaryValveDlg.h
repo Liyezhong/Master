@@ -55,6 +55,7 @@ public:
      */
     /****************************************************************************/
     QRectF boundingRect() const;
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function shape
@@ -63,6 +64,12 @@ public:
     /****************************************************************************/
     QPainterPath shape() const;
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function paint
+     *  \iparam painter
+     */
+    /****************************************************************************/
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
 public:

@@ -37,7 +37,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SVCLabel
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      *  \iparam f = window flag
      */
     /****************************************************************************/
@@ -45,9 +45,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCLabel
-     *  \iparam text = text for label display
+     *  \iparam _text = text for label display
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      *  \iparam f = window flag
      */
     /****************************************************************************/
