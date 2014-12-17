@@ -1872,7 +1872,7 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                  m_PssmMVTubeSeq = 0;
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
             }
             else
             {

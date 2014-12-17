@@ -979,7 +979,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = iter->TemperatureOffset;
+            iter->OTTargetTemperature = iter->TemperatureOffset -1;
         }
     }
 

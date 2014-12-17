@@ -361,31 +361,31 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         }
         else if (3 == m_PressureCalibrationSeq)
         {
-            currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
-            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_GET_CURRENT_PRESSURE, QStringList()<<QString::number(currentPressure));
-            if (qAbs(currentPressure) > 1.5) //Retry, at most 3 times
+            // Firstly, check if calibration has been 3 times
+            if (3 == m_PressureCalibrationCounter)
             {
                 m_PressureCalibrationSeq = 0;
-                m_PressureCalibrationCounter++;
-                if (3 == m_PressureCalibrationCounter)
-                {
-                    m_PressureCalibrationSeq = 0;
-                    m_PressureCalibrationCounter = 0;
-                    mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
-                }
-                else
-                {
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_PRESSURE_CALIBRATION);
-                }
+                m_PressureCalibrationCounter = 0;
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
             }
-            else if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
+            else if (m_PressureCalibrationCounter > 0)
+            {
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_PRESSURE_CALIBRATION);
+            }
+
+            m_PressureCalibrationCounter++;
+
+            currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_GET_CURRENT_PRESSURE, QStringList()<<QString::number(currentPressure));
+
+            if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
             {
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS);
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter = 0;
                 emit PressureSealingChecking();
             }
-            else //offset the calibration
+            else if (qAbs(currentPressure) <= 2.0) //offset the calibration
             {
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
