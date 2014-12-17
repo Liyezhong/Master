@@ -4004,7 +4004,7 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.RvPos = ret;
+    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 
@@ -4027,7 +4027,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.RvPos = ret;
+    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 
