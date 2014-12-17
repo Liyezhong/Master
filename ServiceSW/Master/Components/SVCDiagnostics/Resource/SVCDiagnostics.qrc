@@ -51,5 +51,6 @@
         <file>Images/RotaryValveSealingDisable.png</file>
         <file>Images/ValveState.png</file>
         <file>Images/ValveStateDisabled.png</file>
+        <file>Images/ScreenLock.png</file>
     </qresource>
 </RCC>

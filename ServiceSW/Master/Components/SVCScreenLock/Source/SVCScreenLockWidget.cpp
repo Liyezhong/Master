@@ -20,11 +20,17 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->move(0, 0);
 
+    QFont Font;
+    //Font.setWeight((int)QFont::Black);
+    Font.setPointSize(15);
+    ui->labelText->setFont(Font);
+
     mp_MessageDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_MessageDlg->setModal(true);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD, NULL, this);
     m_timer = new QTimer(this);
-    m_timer->setInterval(1200000);//20 mintues
+    //m_timer->setInterval(1200000);//20 mintues
+    m_timer->setInterval(30000);//0.5 mins for test
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     //m_timer->start();
 }
@@ -58,12 +64,17 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
 
     if (m_LockStatus) {
         //this->setStyleSheet("QWidget { background-image: url(:/Images/ScreenLock1.png) }");
-        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock1.png) }");
+//        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
+//                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock1.png) }");
+        ui->labelText->setText(QString("<font color='Red'>%1</font>").arg("Instrument was left in a critical stage and must be switched off immediately.<br>"
+                               "Do not open the retort and do not remove any reagent bottle or wax bath before<br>"
+                               "switching off! Incompliance might harm your health!"));
     }
     else {
-        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock2.png) }");
+//        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
+//                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock2.png) }");
+        ui->labelText->setText("Instrument was left in service software.<br>"
+                               "Touch the screen to reenter the service software or switch the instrument off.");
     }
 
     this->show();
