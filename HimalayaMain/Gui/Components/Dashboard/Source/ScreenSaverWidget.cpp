@@ -8,6 +8,7 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    this->setAttribute(Qt::WA_AcceptTouchEvents);
     this->move(0, 0);
     m_timer = new QTimer(this);
     m_timer->setInterval(900000);//, here should be 30 mintues, 1800000
