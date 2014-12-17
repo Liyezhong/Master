@@ -909,7 +909,6 @@ bool CDataProgramList::UpdateReagentIDList()
             return false;
         }
     }
-   (void)m_ReagentIDList.removeDuplicates();
    return true;
 }
 

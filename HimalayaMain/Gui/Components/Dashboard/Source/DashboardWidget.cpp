@@ -484,8 +484,8 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
 
     if (!IsRetortContaminated)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetTitle(CommonString::strInforMsg);
         QString strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
         mp_MessageDlg->SetText(strTemp);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
