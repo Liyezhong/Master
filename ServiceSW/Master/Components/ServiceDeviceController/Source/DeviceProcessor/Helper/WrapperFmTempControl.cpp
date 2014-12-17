@@ -179,7 +179,7 @@ void WrapperFmTempControl::OnSetTemp(quint32 /*InstanceID*/, ReturnCode_t Return
 
  *  \skipline [TempControl.GetTemperature]
  *  \until    [TempControl.GetTemperature]
- *
+ *  \iparam   Index   sensor index
  *  \return actualtemperature, else UNDEFINED in caseof error
  *
  */

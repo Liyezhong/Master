@@ -30,7 +30,7 @@
 
 using namespace DeviceControl;
 
-#define MAX_TEMP_SENSOR_NUM  50   ///<! sensor number
+#define MAX_TEMP_SENSOR_NUM  50   //!< sensor number
 
 
 /****************************************************************************/
@@ -50,13 +50,13 @@ class WrapperFmTempControl : public WrapperBase
 
  public:
     typedef struct {
-        quint8 Sensors; ///<! sensor number
-        quint8 Fans;    ///<! fan number
-        quint8 Heaters; ///<! heater number
-        quint8 Pids;    ///<! pid number
-        quint16 Current; ///<! current
-        quint8 HeaterSwitchType; ///<! type of the heater switch
-    } HardwareStatus_t; ///<! hardware status struct
+        quint8 Sensors; //!< sensor number
+        quint8 Fans;    //!< fan number
+        quint8 Heaters; //!< heater number
+        quint8 Pids;    //!< pid number
+        quint16 Current; //!< current
+        quint8 HeaterSwitchType; //!< type of the heater switch
+    } HardwareStatus_t; //!< hardware status struct
 
     WrapperFmTempControl(QString Name, CTemperatureControl *pTempControl, QObject *pParent);
 

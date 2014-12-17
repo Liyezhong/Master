@@ -116,7 +116,6 @@ void WrapperFmAnalogOutput::OnSetValue(quint32 /*InstanceID*/, ReturnCode_t Retu
  *  Output function module.
  *
  *  Examples:
- *  \dontinclude analogoutput.js
  *  \skipline [AnalogOut.GetValue]
  *  \until    [AnalogOut.GetValue]
  *

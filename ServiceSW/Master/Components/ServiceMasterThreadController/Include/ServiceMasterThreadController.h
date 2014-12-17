@@ -705,6 +705,8 @@ protected:
      *
      * \param[in]   pController         Pointer to controller.
      * \param[in]   pCommandChannel     Pointer to command channel.
+     * \param[in]   ControllerNumber         controller number
+     * \param[in]   BasicThreadController    basic thread controller flag
      */
     /****************************************************************************/
     void AddAndConnectController(ThreadController *pController, CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController = false);
@@ -1078,14 +1080,6 @@ public:
      */
     /****************************************************************************/
     virtual const DataManager::CServiceDataManager *GetServiceDataManager() { return mp_ServiceDataManager; }
-    /****************************************************************************/
-    /**
-     * \brief Return the command channel object requested
-     * \iparam CommandChannelSelector = Command channel to return
-     * \return CommandChannel object
-     */
-    /****************************************************************************/
-    //virtual Threads::CommandChannel & GetCommandChannel(CommandChannelSelector_t CommandChannelSelector) =0;
 
     /****************************************************************************/
     /**

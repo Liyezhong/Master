@@ -103,7 +103,6 @@ void WrapperFmAnalogInput::OnSetState(quint32 /*InstanceID*/, ReturnCode_t Retur
  *  This method performs reading input value of a Analog Input function module.
  *
  *  Examples:
- *  \dontinclude analoginput.js
  *  \skipline [AnalogIn.GetValue]
  *  \until    [AnalogIn.GetValue]
  *

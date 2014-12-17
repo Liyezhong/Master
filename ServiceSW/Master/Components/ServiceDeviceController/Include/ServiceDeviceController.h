@@ -267,7 +267,8 @@ signals:
     /****************************************************************************/
     /**
      * \brief ModuleManufacturingTest Signal
-     * \iparam       CmdType         Module Test Name
+     * \iparam       TestName         Module Test Name
+     * \iparam       AbortTestCaseId
      */
     /****************************************************************************/
     void ModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
@@ -288,7 +289,7 @@ protected:
      * This means that everything is fine and normal operation started.
      * We are running in our own thread.\n
      * We create all controllers used (the according method in derived classes
-     * \ref CreateControllersAndThreads is also called), then initialize the controllers
+     *  CreateControllersAndThreads is also called), then initialize the controllers
      * and finally attach them to the corresponding threads and start them.\n
      * If something goes wrong, the master thread (and application) will be stopped.
      */

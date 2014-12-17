@@ -44,32 +44,22 @@ class ServiceDeviceController;
 class IDeviceProcessing;
 
 typedef enum {
-    TEST_X_REF_RUN,
-    TEST_YZ_REF_RUN,
-    TEST_AGITATOR_REF_RUN,
-    TEST_TRANSTN_REF_RUN,
-    TEST_OVENLID_REF_RUN,
-    TEST_DRAWER_REF_RUN,
-    TEST_OTHER_RUNS
-}TestState_t; ///<! test state enumeration
-
-typedef enum {
-    RV_INITIALIZING = 0,
-    RV_MOVE_TO_TUBE_POSITION,
-    RV_MOVE_TO_SEALING_POSITION,
-    LS_HEATING,
-    RETORT_FILLING,
-    RETORT_DRAINING,
-    PUMP_CREATE_PRESSURE,
-    PUMP_KEEP_PRESSURE,
-    PUMP_RELEASE_PRESSURE,
-    PUMP_CURRENT_PRESSURE,
-    SYSTEM_FLUSH,
-    WAIT_CONFIRM,
-    WAIT_CONFIRM2,
-    HIDE_MESSAGE,
-    INFORM_DONE
-} TestCurStatus_t; ///<! test state enumeration
+    RV_INITIALIZING = 0, //!< rotary valve initialize
+    RV_MOVE_TO_TUBE_POSITION, //!< rotary valve position move to tube
+    RV_MOVE_TO_SEALING_POSITION, //!<  rotary valve position move to sealing
+    LS_HEATING, //!< level sensor heating
+    RETORT_FILLING, //!< retort filling
+    RETORT_DRAINING, //!< retort draining
+    PUMP_CREATE_PRESSURE, //!< pump create pressure
+    PUMP_KEEP_PRESSURE, //!< pump keep pressure
+    PUMP_RELEASE_PRESSURE, //!< pump release pressure
+    PUMP_CURRENT_PRESSURE, //!< pump current pressure
+    SYSTEM_FLUSH, //!< flush system
+    WAIT_CONFIRM, //!< waiting confirm
+    WAIT_CONFIRM2, //!< waiting confirm
+    HIDE_MESSAGE,  //!< hide message
+    INFORM_DONE //!< inform done
+} TestCurStatus_t; //!< test state enumeration
 
 /****************************************************************************/
 /**

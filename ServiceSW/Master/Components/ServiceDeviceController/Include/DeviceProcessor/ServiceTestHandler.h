@@ -45,10 +45,10 @@ namespace DeviceControl {
 //class DeviceControl::IDeviceProcessing;
 
 typedef enum {
-    RETURN_OK = 1,
-    RETURN_ERR_NULL_POINTER = -1,
-    RETURN_ERR_FAIL = -2
-} ErrorCode_t;  ///<! return result enumeration
+    RETURN_OK = 1, //!< result ok
+    RETURN_ERR_NULL_POINTER = -1, //!< return error because of null pointer
+    RETURN_ERR_FAIL = -2 //!< return error
+} ErrorCode_t;
 
 /****************************************************************************/
 /**
