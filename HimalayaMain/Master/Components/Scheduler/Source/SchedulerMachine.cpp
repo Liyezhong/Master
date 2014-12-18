@@ -1618,7 +1618,6 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case BUILD_VACUUM:
         if(0 == startReq)
         {
-            mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
             CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
             cmd->SetTargetPressure(-1.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
