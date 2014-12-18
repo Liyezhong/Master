@@ -163,11 +163,7 @@ int CHeatingTestEmpty::Run(void)
             ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
                 break;
-            status.OvenTempSensor1 = OvenTempSensor1Cur;
-            status.OvenTempSensor2 = OvenTempSensor2Cur;
-            status.OvenTempTop = OvenTempTopCur;
-            status.UsedTime++;
-            RefreshWaitingDialog(&status);
+
             if (max - OvenTempTopCur >= TempOffset
                     && max - OvenTempSensor1Cur >= TempOffset
                     && max - OvenTempSensor2Cur >= TempOffset) {
@@ -183,6 +179,11 @@ int CHeatingTestEmpty::Run(void)
 
             int MSec = QTime().currentTime().msecsTo(EndTime);
             dev->Pause(MSec);
+            status.OvenTempSensor1 = OvenTempSensor1Cur;
+            status.OvenTempSensor2 = OvenTempSensor2Cur;
+            status.OvenTempTop = OvenTempTopCur;
+            status.UsedTime++;
+            RefreshWaitingDialog(&status);
         }
 
         if (!timingDialog->isVisible()) {

@@ -106,7 +106,8 @@ int CAirHeatingTubeTest::Run(void)
                   "Please check Air heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
-            goto __fail__;
+        ret = RETURN_ERR_FAIL;
+        goto __fail__;
     }
 
     timingDialog->SetTitle(title);

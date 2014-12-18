@@ -118,7 +118,8 @@ int CLiquidHeatingTubeTest::Run(void)
                   "Please check liquid heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
-            goto __fail__;
+        ret = RETURN_ERR_FAIL;
+        goto __fail__;
     }
 
 
