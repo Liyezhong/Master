@@ -56,6 +56,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for test start run
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -63,6 +64,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for start pre heating
+     *  \iparam MeltPoint = melt point of oxygen
      */
     /****************************************************************************/
     void StartPreHeating(qreal MeltPoint);

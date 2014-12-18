@@ -59,6 +59,7 @@ public:
     /****************************************************************************/
     /**
      * \brief To get shut donw flag.
+     * \return flag of shut down
      */
     /****************************************************************************/
     bool GetFlag() {
@@ -95,6 +96,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to shut down system
+     *  \iparam NeedUpdate = flag of need update
      */
     /*******************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);

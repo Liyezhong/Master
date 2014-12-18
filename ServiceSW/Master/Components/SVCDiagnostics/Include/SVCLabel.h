@@ -63,12 +63,15 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change label position;
+     *  \iparam _pos = point of pos
      */
     /****************************************************************************/
     void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function setSize;, change label size;
+     *  \brief  Definition/Declaration of function setSize;change label size;
+     *  \iparam _width = size width
+     *  \iparam _height = size height
      */
     /****************************************************************************/
     void setSize(int _width, int _height);

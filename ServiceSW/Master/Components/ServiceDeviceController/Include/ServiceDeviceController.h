@@ -227,14 +227,20 @@ signals:
 
     /****************************************************************************/
     /**
-     * \brief SDC_AbortTest signal to abort test
+     *  \brief SDC_AbortTest signal to abort test
+     *  \iparam Ref = ref type
+     *  \iparam id = id number
      */
     /****************************************************************************/
     void SDC_AbortTest(Global::tRefType Ref, quint32 id);
 
     /****************************************************************************/
     /**
-     * \brief SDC_HeatingTest signal to test heating
+     *  \brief SDC_HeatingTest signal to test heating
+     *  \iparam Ref = ref type
+     *  \iparam id = key of id
+     *  \iparam HeatingIndex = index of heating
+     *  \iparam CmdType = type of cmd
      */
     /****************************************************************************/
     void SDC_HeatingTest(Global::tRefType Ref, quint32 id,
@@ -242,7 +248,11 @@ signals:
 
     /****************************************************************************/
     /**
-     * \brief SDC_RotaryValveTest signal to test rotary valve movement
+     *  \brief SDC_RotaryValveTest signal to test rotary valve movement
+     *  \iparam Ref = ref type
+     *  \iparam id = id number
+     *  \iparam Position = target position
+     *  \iparam CmdType = type of cmd
      */
     /****************************************************************************/
     void SDC_RotaryValveTest(Global::tRefType Ref, quint32 id,
@@ -250,7 +260,10 @@ signals:
 
     /****************************************************************************/
     /**
-     * \brief SDC_LSensorDetectingTest signal to test level sensor detecting
+     *  \brief SDC_LSensorDetectingTest signal to test level sensor detecting
+     *  \iparam Ref = ref of type
+     *  \iparam id = id number
+     *  \iparam Position = target position
      */
     /****************************************************************************/
     void SDC_LSensorDetectingTest(Global::tRefType Ref, quint32 id,

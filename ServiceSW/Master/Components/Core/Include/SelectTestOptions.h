@@ -71,7 +71,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Set current test mode.
-     * iparam testMod = test mode.
+     * \iparam testMod = test mode.
      */
     /****************************************************************************/
     static void SetCurTestMode(ManufacturalTestMode_t testMod);

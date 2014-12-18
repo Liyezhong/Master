@@ -65,6 +65,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To start heating.
+     *  \iparam XyleneFlag = falg of xylene
+     *  \return true or false
      */
     /****************************************************************************/
     bool StartHeating(bool XyleneFlag);

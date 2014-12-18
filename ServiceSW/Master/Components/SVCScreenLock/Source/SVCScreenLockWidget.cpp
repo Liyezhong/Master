@@ -63,16 +63,11 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
     }
 
     if (m_LockStatus) {
-        //this->setStyleSheet("QWidget { background-image: url(:/Images/ScreenLock1.png) }");
-//        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-//                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock1.png) }");
         ui->labelText->setText(QString("<font color='Red'>%1</font>").arg("Instrument was left in a critical stage and must be switched off immediately.<br>"
                                "Do not open the retort and do not remove any reagent bottle or wax bath before<br>"
                                "switching off! Incompliance might harm your health!"));
     }
     else {
-//        this->setStyleSheet(this->property("defaultStyleSheet").toString() +
-//                      "QWidget { background-image: url(:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenLock2.png) }");
         ui->labelText->setText("Instrument was left in service software.<br>"
                                "Touch the screen to reenter the service software or switch the instrument off.");
     }

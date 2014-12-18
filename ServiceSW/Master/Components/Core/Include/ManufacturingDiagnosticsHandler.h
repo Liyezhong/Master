@@ -152,11 +152,11 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for begin manufacturing test
-     *  \iparam ModuleNames = The name of module
+     *  \iparam ModuleName = The name of module
      *  \iparam TestCaseList = The list of test case
      */
     /****************************************************************************/
-    void BeginManufacturingSWTests(Service::ModuleNames_t ModuleNames, const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
     /****************************************************************************/
     /*!

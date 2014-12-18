@@ -614,6 +614,8 @@ protected:
     /****************************************************************************/
     /**
      * \brief Stop the specified controllers and threads.
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void StopSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
@@ -621,6 +623,8 @@ protected:
     /****************************************************************************/
     /**
      * \brief Remove controllers and threads from the list.
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void RemoveSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
@@ -675,6 +679,8 @@ protected:
     /****************************************************************************/
     /**
      * \brief Starts the export controller thread
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      *
      ****************************************************************************/
     void StartSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
@@ -682,6 +688,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Destroy all registered controllers and threads.
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void DestroyControllersAndThreads(const bool BasicThreadController = false);
@@ -892,6 +899,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Attach controllers to corresponding threads and start threads.
+     * \iparam BasicController = flag of basic controller
      */
     /****************************************************************************/
     void AttachControllersAndStartThreads(bool BasicController = false);

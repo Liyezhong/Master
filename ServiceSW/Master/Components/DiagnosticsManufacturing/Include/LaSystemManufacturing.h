@@ -117,9 +117,11 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal emitted for module test
+     *  \iparam Names = module names
+     *  \iparam TestCaseList = list of test case id
      */
     /****************************************************************************/
-    void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void BeginModuleTest(Service::ModuleNames_t Names, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
     /****************************************************************************/
     /*!

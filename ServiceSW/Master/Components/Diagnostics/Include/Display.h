@@ -66,9 +66,11 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal emitted for module(factory) test
+     *  \iparam Names = name of module
+     *  \iparam TestCaseList = list of test case
      */
     /****************************************************************************/
-    void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void BeginModuleTest(Service::ModuleNames_t Names, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
 private slots:
     void RetranslateUI();

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RetortHeatingTestWithLiquid.h
+/*! \file RetortHeatingTestWithWater.h
  *
  *  \brief Declaration of Retort heating test with water.
  *
@@ -79,6 +79,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);

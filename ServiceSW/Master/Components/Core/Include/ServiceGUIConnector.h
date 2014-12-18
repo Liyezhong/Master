@@ -309,8 +309,8 @@ public slots:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief Signal is emitted when ModuleList data container is
-     *  initialized
+     *  \brief Signal is emitted when ModuleList data container is initialized
+     *  \iparam ModuleList = list of module
      */
     /****************************************************************************/
     void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);

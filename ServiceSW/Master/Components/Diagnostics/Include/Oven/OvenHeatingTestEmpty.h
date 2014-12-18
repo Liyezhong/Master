@@ -78,6 +78,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -94,6 +95,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief To show waiting dialog for test case.
+     *  \iparam buf = heating test status
+     *  \iparam isShow = flag of show
      */
     /****************************************************************************/
     virtual void RefreshWaitingDialog(struct heatingTestStatus *buf, bool isShow = false);

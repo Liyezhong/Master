@@ -85,6 +85,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to shut down system
+     *  \iparam NeedUpdate = flag of need update
      */
     /*******************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);

@@ -61,6 +61,7 @@ Q_SIGNALS:
     /****************************************************************************/
     /**
      * \brief Signal emit for import&export request.
+     * \iparam IsImport = flag of import or export
      */
     /****************************************************************************/
     void ServiceImportExportRequested(bool IsImport);

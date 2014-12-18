@@ -55,18 +55,23 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change button position;
+     *  \iparam _x = position of x
+     *  \iparam _y = position of y
      */
     /****************************************************************************/
     void setPos(int _x, int _y);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change button position;
+     *  \iparam _pos = pointer of position
      */
     /****************************************************************************/
     void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setSize, change button size;
+     *  \iparam _width = width of value
+     *  \iparam _heigth = heigth of value
      */
     /****************************************************************************/
     void setSize(int _width, int _height);

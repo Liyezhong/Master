@@ -43,7 +43,10 @@ class CTestCaseReporter: public QObject
 public:
     /****************************************************************************/
     /**
-     * \brief Default constructor.
+     *  \brief Default constructor.
+     *  \iparam ModuleName = name of module
+     *  \iparam p_DataConnector = pointer of data connector
+     *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/
     CTestCaseReporter(const QString ModuleName, Core::CServiceGUIConnector *p_DataConnector = NULL,

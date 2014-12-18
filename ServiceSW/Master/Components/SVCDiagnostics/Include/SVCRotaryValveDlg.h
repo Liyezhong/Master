@@ -147,6 +147,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Set rotary valve position
+     *  \iparam flag = sealing or tube flag
+     *  \iparam position = target position
      */
     /****************************************************************************/
     void SetPos(bool flag, qint32 position);
@@ -154,6 +156,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Get rotary valve selected position
+     *  \iparam flag = sealing or tube flag
+     *  \oparam position = target position
      */
     /****************************************************************************/
     void GetPos(bool &flag, qint32 &position);
@@ -164,6 +168,7 @@ private Q_SLOTS:
     /****************************************************************************/
     /*!
      *  \brief  Slot for rotary valve position button clicked
+     *  \iparam _tag = tag of image
      */
     /****************************************************************************/
     void RotaryValveClicked(int _tag);

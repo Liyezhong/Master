@@ -221,6 +221,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for timer start
+     *  \iparam IsStart = flag of start
      */
     /****************************************************************************/
     void TimerStart(bool IsStart);

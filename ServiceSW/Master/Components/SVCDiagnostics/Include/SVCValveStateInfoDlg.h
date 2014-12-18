@@ -64,7 +64,7 @@ private:
      *  \iparam Name  = part name
      *  \iparam State1 = state of one
      *  \iparam State2 = state of two
-     *  \iparam State3 = state of
+     *  \iparam State3 = state of three
      */
     /****************************************************************************/
     void AddItem(const QString& Name, const QString& State1, const QString& State2, const QString& State3);
