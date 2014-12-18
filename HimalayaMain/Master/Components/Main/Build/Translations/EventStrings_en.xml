@@ -135,11 +135,11 @@
 		<string id="18939909" text1="ExportConfig:Empty target file name." text2=""/>
 		<string id="18939907" text1="ExportConfig:The package type of %1 configuration is invalid it should be native or nonnative." text2=""/>
 		<string id="17629200" text1="Export failed. Trying to run more than one Cryptoservice" text2=""/>
-		<string id="17629185" text1="Export failed. Directory creation failed" text2=""/>
-		<string id="17629203" text1="Export failed. Error in reading file" text2=""/>
-		<string id="17629204" text1="Export failed. Error in writing file" text2=""/>
+		<string id="17629185" text1="Directory creation failed" text2=""/>
+		<string id="17629203" text1="Error in reading file" text2=""/>
+		<string id="17629204" text1="Error in writing file" text2=""/>
 		<string id="17629194" text1="Export failed." text2=""/>
-		<string id="17629186" text1="Export failed. File copying failed" text2=""/>
+		<string id="17629186" text1="File copying failed" text2=""/>
 		<string id="17629213" text1="Export failed. Hash-based message authentication code computation already started" text2=""/>
 		<string id="17629208" text1="Export failed. Hash-based message authentication code has not initialized" text2=""/>
 		<string id="17629205" text1="Export failed. Hash chain index and USB device indexes are matching" text2=""/>
@@ -433,7 +433,7 @@
 		<string id="33947652" text1="Import failed. There are no files to Import the data" text2=""/>
 		<string id="33947655" text1="Import failed. Required files are not available to Import" text2=""/>
 		<string id="33947659" text1="Import failed. Rollback failed" text2=""/>
-		<string id="33947662" text1="Import successful. Please generate new bathlayout" text2=""/>
+		<string id="33947662" text1="Import successful." text2=""/>
 		<string id="33947663" text1="Import successful. Language files are updated" text2=""/>
 		<string id="33947656" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
 		<string id="50331759" text1="Import failed. Archive file is tampered" text2=""/>
