@@ -301,6 +301,11 @@ void CProgramRunningPanelWidget::EnableProgramDetailButton(bool bEnable)
     ui->btnProgramDetail->setEnabled(bEnable);
 }
 
+void CProgramRunningPanelWidget::SetSelectedProgramId(const QString& programID)
+{
+    m_selectedProgramId = programID;
+}
+
 void CProgramRunningPanelWidget::OnProcessStateChanged()
 {
    bool bProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();

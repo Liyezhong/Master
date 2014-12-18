@@ -1125,6 +1125,16 @@ private slots:
     void OnEnterErrorState();
     /****************************************************************************/
     /*!
+     *  \brief  Slot to enter power failure state
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnPowerFailureState();
+    /****************************************************************************/
+    /*!
      *  \brief  Slot to enter busy state
      *
      *  \param  void

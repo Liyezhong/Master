@@ -67,6 +67,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_BusyState.data(), entered(), this, OnEnterBusyState());
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     CONNECTSIGNALSLOT(mp_ErrorState.data(), entered(), this, OnEnterErrorState());
+    CONNECTSIGNALSLOT(mp_PowerFailureState.data(), entered(), this, OnPowerFailureState());
 
     // Layer two states (for Init state)
     mp_SelfTestState = QSharedPointer<QState>(new QState(mp_InitState.data()));
@@ -2007,19 +2008,25 @@ void CSchedulerStateMachine::OnEnterSelfTest()
 
 void CSchedulerStateMachine::OnEnterIdleState()
 {
-    EventHandler::StateHandler::Instance().setActivityUpdate(false,0);
+    EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
 }
 
 void CSchedulerStateMachine::OnEnterErrorState()
 {
     mp_SchedulerThreadController->InitProgramStatus();
+    EventHandler::StateHandler::Instance().setAvailability(true, EVENT_SCHEDULER_IN_ERROR_STATE);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_ERROR_STATE);
+}
+
+void CSchedulerStateMachine::OnPowerFailureState()
+{
+    EventHandler::StateHandler::Instance().setAvailability(true, EVENT_SCHEDULER_POWER_FAILURE);
 }
 
 void CSchedulerStateMachine::OnEnterBusyState()
 {
-    EventHandler::StateHandler::Instance().setActivityUpdate(true,0);
+    EventHandler::StateHandler::Instance().setActivityUpdate(true, 0);
 }
 
 void CSchedulerStateMachine::OnEnterPretest()

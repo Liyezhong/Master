@@ -323,6 +323,12 @@ private slots:
      */
     /****************************************************************************/
     void OnPreTestDone();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateProgramTimerStatus
+     */
+    /****************************************************************************/
+    void UpdateProgramTimerStatus(bool enable);
 private:
     /****************************************************************************/
     /*!
@@ -374,6 +380,8 @@ private:
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
     QTimer* m_Timer;       ///<  Definition/Declaration of program resume remider m_Timer
+    bool m_startButtonDisabledAsSysError;
+    bool m_pauseButtonDisabledAsSysError;
 };
 
 }// end namespace Dashboard

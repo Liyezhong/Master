@@ -631,28 +631,19 @@ void HimalayaMasterThreadController::OnInitStateCompleted()
 }
 
 void HimalayaMasterThreadController::SendStateChange(QString state) {
+    NetCommands::ProcessStateType stateType;
     if (state == "BusyState")
     {
-        // inform gui
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
-    }
-
-    if (state == "IdleState")
+        stateType = NetCommands::BusyState;
+    } else if (state == "IdleState")
     {
-        // inform gui
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
-    }
-
-    if (state == "ErrorState")
+       stateType = NetCommands::IdleState;
+    } else if (state == "ErrorState")
     {
-
+        stateType = NetCommands::ErrorState;
     }
-
-    if (state == "NormalState")
-    {
-
-    }
-
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(5000,
+                                                     stateType)), m_CommandChannelGui);
 }
 
 /****************************************************************************/

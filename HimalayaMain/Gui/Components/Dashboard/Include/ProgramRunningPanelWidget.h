@@ -89,6 +89,16 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void EnableProgramDetailButton(bool bEnable);
+        /****************************************************************************/
+        /*!
+         *  \brief  Set Selected Program Id
+         *
+         *  \param programID = QString type parameter, program ID
+         *
+         *  \return void
+         */
+        /****************************************************************************/
+        void SetSelectedProgramId(const QString& programID);
     public slots:
         /****************************************************************************/
         /*!

@@ -991,12 +991,13 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands::CmdProcessState &Command)
 {
     bool Result = false;
-    if (Command.GetProcessState()) {
-        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
-
+    NetCommands::ProcessStateType processStateType = Command.GetProcessState();
+    if (NetCommands::ProcessStateType::InitState == processStateType ||
+            NetCommands::ProcessStateType::IdleState == processStateType) {
+        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
     }
     else {
-        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     mp_WaitDialog->accept();
