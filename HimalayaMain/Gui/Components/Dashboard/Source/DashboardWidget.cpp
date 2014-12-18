@@ -615,7 +615,7 @@ void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
         }
     }
 
-    ui->programPanelWidget->ResumePauseRunningStatus(bEnable);
+    //ui->programPanelWidget->ResumePauseRunningStatus(bEnable);
 }
 
 void CDashboardWidget::OnStartButtonEnable(bool bEnable)
