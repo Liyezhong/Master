@@ -69,6 +69,7 @@ CStartup::CStartup() : QObject()
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
     CONNECTSIGNALSLOT(mp_Programs, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
+    CONNECTSIGNALSLOT(mp_Settings, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
 
     Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());

@@ -329,6 +329,15 @@ void CSystemSetupSettingsWidget::OnApply()
         if ((strTemp == "0") && !(pProgram->GetBottleCheck()))
             continue;
 
+        bool bRevertSelectedProgram = false;
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, pProgram->GetID()))
+            return;//cancel
+
+        if (bRevertSelectedProgram)
+        {
+            emit UnselectProgram();
+        }
+
         if (strTemp == "1")
             pProgram->SetBottleCheck(true);
         else

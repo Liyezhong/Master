@@ -91,6 +91,9 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, UpdateProgram(DataManager::CProgram &),
                       mp_Data, SendProgramUpdate(DataManager::CProgram &));
 
+    CONNECTSIGNALSIGNAL(mp_Ui->pageSystemSetup, UnselectProgram(),
+                      this, UnselectProgram());
+
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),
             mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, PlayTestTone(quint8 , quint8 , bool ),
