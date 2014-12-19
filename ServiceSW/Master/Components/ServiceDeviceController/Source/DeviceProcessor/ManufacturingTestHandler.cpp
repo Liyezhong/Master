@@ -889,7 +889,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     int totalSeconds = 0;
     int remainder = duration % 10;
 
-    duration /= 10;
+    duration -= remainder;
 
     p_TestCase->ResetResult();
     int num = 10;
