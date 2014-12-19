@@ -220,13 +220,14 @@ int CHeatingTestWithWater::Run(void)
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+
         heatingStatus.UsedTime++;
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
         this->RefreshWaitingDialog(&heatingStatus);
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     if (!timingDialog->isVisible()) {

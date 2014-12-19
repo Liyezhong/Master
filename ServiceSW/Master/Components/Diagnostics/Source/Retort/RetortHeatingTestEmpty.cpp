@@ -162,13 +162,13 @@ int CHeatingTestEmpty::Run(void)
                 break;
         }
 
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
         heatingStatus.UsedTime++;
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
-        this->RefreshWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);        
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     (void)dev->RetortStopHeating();

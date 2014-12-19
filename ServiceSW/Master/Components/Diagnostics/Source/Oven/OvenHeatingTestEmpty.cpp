@@ -285,14 +285,13 @@ int CHeatingTestEmpty::Run(void)
             break;
         }
 
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
-
         status.OvenTempTop = OvenTempTopCur;
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
         RefreshWaitingDialog(&status);
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     if (!timingDialog->isVisible()) {

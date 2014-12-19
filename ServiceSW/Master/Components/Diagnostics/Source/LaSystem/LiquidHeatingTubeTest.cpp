@@ -171,8 +171,7 @@ int CLiquidHeatingTubeTest::Run(void)
         heatingStatus.CurrentTemp = currentTemp;
         this->RefreshWaitingDialog(&heatingStatus);
 
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     if (!timingDialog->isVisible()) {
