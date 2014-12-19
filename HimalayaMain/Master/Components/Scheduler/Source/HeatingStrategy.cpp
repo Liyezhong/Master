@@ -299,12 +299,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         //Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if (strctHWMonitor.TempALTube1 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube1 < (userInputMeltingPoint -1) || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
         }
 
-        if (strctHWMonitor.TempALTube2 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
         }
