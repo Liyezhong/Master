@@ -630,6 +630,7 @@ EXCLUDE_SYMLINKS       = NO
 
 EXCLUDE_PATTERNS       = *moc_* 
 EXCLUDE_PATTERNS      += */Build/*
+EXCLUDE_PATTERNS	  += */Test/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the

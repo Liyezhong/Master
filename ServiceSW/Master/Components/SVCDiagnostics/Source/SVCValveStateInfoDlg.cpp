@@ -24,7 +24,7 @@
 
 namespace SVCDiagnostics {
 
-CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(bool PumpState, bool Valve1State, bool Valve2State, QWidget* p_Parent):
+CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(QWidget* p_Parent):
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSVCValveStateInfoDlg)
 {

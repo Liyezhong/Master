@@ -570,10 +570,7 @@ void CSVCDashboardWidget::OnSelectPosition()
 
 void CSVCDashboardWidget::OnValveStateInfo()
 {  
-    bool Valve1Flag = mp_GV1->Status() == CGraphicsItemPart::Working;
-    bool Valve2Flag = mp_GV2->Status() == CGraphicsItemPart::Working;
-    bool PumpFlag   = mp_Pump->Status() == CGraphicsItemPart::Working;
-    CSVCValveStateInfoDlg* p_Dlg = new CSVCValveStateInfoDlg(PumpFlag, Valve1Flag, Valve2Flag, this);
+    CSVCValveStateInfoDlg* p_Dlg = new CSVCValveStateInfoDlg(this);
     (void)p_Dlg->exec();
 
     delete p_Dlg;
