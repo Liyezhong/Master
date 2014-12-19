@@ -140,8 +140,10 @@ int CHeatingTestEmpty::Run(void)
                           "the paraffin oven. Then please leave the oven cover "
                           "opened to speed up the cooling process."));
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
 
         qreal TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
         int t = p_TestCase->GetParameter("t").toInt();
@@ -177,13 +179,13 @@ int CHeatingTestEmpty::Run(void)
                 count = 60;
             }
 
-            int MSec = QTime().currentTime().msecsTo(EndTime);
-            dev->Pause(MSec);
             status.OvenTempSensor1 = OvenTempSensor1Cur;
             status.OvenTempSensor2 = OvenTempSensor2Cur;
             status.OvenTempTop = OvenTempTopCur;
             status.UsedTime++;
             RefreshWaitingDialog(&status);
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            dev->Pause(MSec);
         }
 
         if (!timingDialog->isVisible()) {
@@ -201,16 +203,20 @@ int CHeatingTestEmpty::Run(void)
 
         text = tr("Please close oven cover.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
     } else {
         text = tr("Please make sure there are no "
                   "paraffin baths present in the paraffin oven.<br/>"
                   "Verify the oven surfaces are dry and clean, "
                   "and the oven cover is closed.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
     }
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
