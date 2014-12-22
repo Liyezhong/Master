@@ -11,7 +11,7 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     this->setAttribute(Qt::WA_AcceptTouchEvents);
     this->move(0, 0);
     m_timer = new QTimer(this);
-    m_timer->setInterval(900000);//, here should be 30 mintues, 1800000
+    m_timer->setInterval(200000);//, here should be 30 mintues, 1800000
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_timer->start();
 }
