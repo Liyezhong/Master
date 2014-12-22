@@ -905,7 +905,7 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
-    if ( heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature < HWTemp )
+    if ( heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <= HWTemp )
      {
         return false;
     }
