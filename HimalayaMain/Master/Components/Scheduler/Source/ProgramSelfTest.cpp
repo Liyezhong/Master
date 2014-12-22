@@ -282,15 +282,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 //first time
                 if( (1 == m_ASB5SwitchType || 2 == m_ASB5SwitchType) && (m_ASB5SwitchType == m_ASB3SwitchType) )
                 {
-                    emit SigDCHeating();
+                    m_StateACVoltageStep = VOLTAGE_TEST_DONE;
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5_SAME_ASB3);
                 }
                 else
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_AC_VOLTAGE_TEST);
                     m_StateACVoltageStepCount++;
+                    m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
                 }
-                m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
             }
             else
             {
@@ -300,8 +300,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     if(m_ASB5SwitchType == m_ASB3SwitchType)
                     {
                         // is the same pass
-                        emit SigDCHeating();
-                        m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
+                        m_StateACVoltageStep = VOLTAGE_TEST_DONE;
                         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_ASB5_SAME_ASB3);
                     }
                     else
@@ -337,7 +336,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
                         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SET_ASB3VOLTAGE_WITH_ASB5_SUCCESS);
-                        emit SigDCHeating();
+                        m_StateACVoltageStep = VOLTAGE_TEST_DONE;
                     }
                     else
                     {
@@ -345,9 +344,12 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                         SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
-                    m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
                 }
             }
+            break;
+        case VOLTAGE_TEST_DONE:
+            emit SigDCHeating();
+            m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
             break;
         default:
             break;

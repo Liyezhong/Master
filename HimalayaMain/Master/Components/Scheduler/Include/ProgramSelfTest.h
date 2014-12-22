@@ -165,7 +165,8 @@ private:
         START_HEATING_ACMODE,
         STOP_HEATING_ACMODE,
         CHECK_VOLTAGE_RANGE,
-        CHECK_VOLTAGE_RANGE_AGAIN
+        CHECK_VOLTAGE_RANGE_AGAIN,
+        VOLTAGE_TEST_DONE
     }StepACVoltage_t;
 
     /****************************************************************************/
@@ -180,6 +181,7 @@ private:
         STOPHEATING_LATBUBE2,
         STARTHEATING_LEVELSENSOR,
         STOPHEATING_LEVELSENSOR,
+        DCHEATING_DONE
     }StepDCHeating_t;
 
     /****************************************************************************/
@@ -195,7 +197,8 @@ private:
         START_VALVE2,
         STOP_VALVE2,
         START_EXHAUSTFAN,
-        STOP_EXHAUSTFAN
+        STOP_EXHAUSTFAN,
+        PRESSURE_TEST_DONE
     }StepPressurePumpValve_t;
 
     /****************************************************************************/
@@ -214,6 +217,7 @@ private:
         STOPHEATING_OVENBOTTOM,
         STARTHEATING_RV,
         STOPHEATING_RV,
+        ACHEATING_DONE
     }StepACHeating_t;
 
     /****************************************************************************/
