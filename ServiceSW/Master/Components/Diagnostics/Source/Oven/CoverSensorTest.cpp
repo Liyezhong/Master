@@ -29,7 +29,6 @@
 
 #include "ServiceWidget/Include/DlgWizardText.h"
 #include "ServiceWidget/Include/DlgConfirmationStatus.h"
-//#include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
 #include "Diagnostics/Include/Oven/StatusConfirmDialog.h"
 
 namespace Diagnostics {

@@ -52,8 +52,9 @@ CStatusConfirmDialog::CStatusConfirmDialog(QWidget *p_Parent) : MainMenu::CDialo
 //    CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, accept());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
-    CONNECTSIGNALSIGNALGUI(&m_Timer, timeout(), this, Timeout());    
+    CONNECTSIGNALSIGNALGUI(&m_Timer, timeout(), this, Timeout());
 
+//    mp_Ui->labelStatusValue->set
 }
 
 /****************************************************************************/
@@ -91,25 +92,23 @@ void CStatusConfirmDialog::SetText(const QString& Text)
 /****************************************************************************/
 void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Status)
 {
-    qDebug()<<Status;
-    QString CoverSensorStatus = Status.value("OvenCoverSensorStatus");
+    qDebug() << Status;
+
+    QString CoverSensorStatus = "Cover Sensor Status: " + Status.value("OvenCoverSensorStatus");
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
-//    mp_Ui->groupBox->setAutoFillBackground(true);
-    mp_Ui->labelStatusValue->setAutoFillBackground(true);
-//    mp_Ui->labelStatus->setAutoFillBackground(true);
-    QPalette palette;
-    if (CoverSensorStatus == "Open"){
-        palette.setColor(QPalette::Background,QColor(255,255,0,255));
-    }
-    else if(CoverSensorStatus == "Close"){
-        palette.setColor(QPalette::Background,QColor(0,255,0,255));
-    }
-    else{
-        palette.setColor(QPalette::Background,QColor(255,0,0,255));
-    }
-    mp_Ui->labelStatusValue->setPalette(palette);
-//    mp_Ui->labelStatus->setPalette(palette);
-//    mp_Ui->groupBox->setPalette(palette);
+
+    if (CoverSensorStatus == "Open")
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(255, 241, 44);");
+    else if(CoverSensorStatus == "Close")
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(85, 255, 0);");
+    else
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                       "border-width:1px; border-style:solid;"
+                                       "background-color: rgb(255, 0, 0);");
 }
 
 /****************************************************************************/
