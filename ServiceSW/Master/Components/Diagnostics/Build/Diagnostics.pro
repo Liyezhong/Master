@@ -58,7 +58,8 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/System/LiquidHoseTest.cpp \
     ../Source/System/LiquidHoseTestDlg.cpp \
     ../Source/System/SystemSealingTest.cpp \
-    ../Source/Retort/DrainReagentTest.cpp
+    ../Source/Retort/DrainReagentTest.cpp \
+    ../Source/Oven/StatusConfirmDialog.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \
@@ -73,4 +74,5 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/LaTimingDialog.ui \
     ../Forms/RetortTimingDialog.ui \
     ../Forms/RetortInputDialog.ui \
-    ../Forms/LiquidHoseTestDlg.ui
+    ../Forms/LiquidHoseTestDlg.ui \
+    ../Forms/StatusConfirmDialog.ui
