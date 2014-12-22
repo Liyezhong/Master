@@ -78,7 +78,15 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
-#define TIME_FOR_CLEANING_DRY_STEP   720    ///< seconds spending in dry step
+#define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
+#define TIME_FOR_FIX_TIME                     180    ///< seconds for fix time
+#define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
+#define TIME_FOR_FILLING                      60     ///< seconds for filling
+#define TIME_FOR_MOVE_SEAL                    2      ///< seconds for move seal
+#define TIME_FOR_PRESSURE_CHECK               20     ///< seconds for pressure check before move tube
+#define TIME_FOR_MOVE_TUBE                    3      ///< seconds for move tube
+#define TIME_FOR_DRAIN                        60     ///< seconds for draing
+#define TIME_FOR_MOVE_NEXT_TUBE               4      ///< seconds for move next tube
 
 /****************************************************************************/
 /*!
@@ -163,6 +171,22 @@ typedef enum
     ASB5,
     FAN
 } HeaterType_t;
+
+typedef struct
+{
+    bool    WarningFlagForTime;                         ///< the warning flag for time
+    int     FirstParaffinIndex;                         ///< the first paraffin index
+    quint32 PreTestTime;                                ///< the time of pretest (second unit)
+    quint32 ParaffinStepsCostTime;                      ///< the paraffin steps cost time (second unit)
+    quint32 Scenario260CostTime;                        ///< the scenario cost time (second unit)
+    qint64  GapTime;                                    ///< the gap of step time (millisecond unit)
+    qint64  StartTime;                                  ///< the start time of move tube (millisecond unit)
+    qint64  EndTime;                                    ///< the end time of move seal (millisecond unit)
+    qint64  UserSetEndTime;                             ///< user input the end time (millisecond unit)
+    qint64  BufferTime;                                 ///< the buffer time (millisecond unit)
+    qint64  TotalParaffinProcessingTime;               ///< the total paraffin processing time (second unit)
+    qint64  LastParaffinProcessingTime;                ///< the last paraffin processing time (second unit)
+}ProgramEndTime_t;
 
 /****************************************************************************/
 /*!
@@ -271,6 +295,7 @@ typedef struct
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
         bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
+        ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -380,12 +405,11 @@ typedef struct
           *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
           *
           *  \param ProgramID = const QString type parameter
-          *  \param SpecifiedStepIndex =  int type parameter
           *
           *  \return from GetLeftProgramStepsNeededTime
           */
          /****************************************************************************/
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
+         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
@@ -1051,11 +1075,37 @@ protected:
 
         /****************************************************************************/
         /**
+         *  \brief reset the time parameter
+         */
+        /****************************************************************************/
+        void ResetTheTimeParameter();
+
+        /****************************************************************************/
+        /**
+         *  \brief Calculate the gap time(in seconds)
+         *  \param IsStartTime - bool flag
+         *  \param IsEndTime - bool flag
+         */
+        /****************************************************************************/
+        void CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime);
+
+        /****************************************************************************/
+        /**
          *  \brief Get the time(in seconds) that PreTest
          *  \return from GetPreTestTime of qint64
          */
         /****************************************************************************/
-        qint64 GetPreTestTime();
+        quint32 GetPreTestTime();
+
+        /****************************************************************************/
+        /**
+         *  \brief Get the RV moving steps
+         *  \param firstPos - qint32
+         *  \param endPos - qint32
+         *  \return from GetMoveSteps of quint32
+         */
+        /****************************************************************************/
+        quint32 GetMoveSteps(qint32 firstPos, qint32 endPos);
 
         /****************************************************************************/
         /**

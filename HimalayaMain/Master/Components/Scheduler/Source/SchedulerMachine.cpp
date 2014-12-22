@@ -1893,6 +1893,8 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
     {
         if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
         {
+            //startTime
+            mp_SchedulerThreadController->CalculateTheGapTimeAndBufferTime(true, false);
             m_PssmMVTubeSeq = 0;
             this->NotifyRVMoveToTubeReady();
         }

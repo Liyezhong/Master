@@ -140,6 +140,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_PssmStepFinSeq = 0;
     m_AbortingSeq = 0;
 
+    ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
 }
 
@@ -397,7 +398,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
-                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
                                                                     m_ProgramStatusInfor.GetLastReagentGroup(),
                                                                     m_ProgramStatusInfor.GetStationList()));
             Q_ASSERT(commandPtr);
@@ -421,7 +422,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
-                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
                                                                     m_ProgramStatusInfor.GetLastReagentGroup(),
                                                                     m_ProgramStatusInfor.GetStationList()));
             Q_ASSERT(commandPtr);
@@ -593,18 +594,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //send command to main controller to tell the left time
             if (m_NewProgramID.at(0) != 'C')
             {
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
                 MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
                                                                                                               Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
-                                                                                                              m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            }
-            else
-            {
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+                                                                                                              m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -882,6 +874,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
             if(IsRVRightPosition(SEAL_POS))
             {
+                if(m_CurProgramStepIndex > 0)
+                {
+                    //endTime
+                    CalculateTheGapTimeAndBufferTime(false, true);
+                }
+                else
+                {
+                    LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+                }
                 m_SchedulerMachine->NotifyRVMoveToSealReady();
             }
             else
@@ -936,24 +937,42 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     //if it is Cleaning program, need not notify user
                     if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
                     {
-                         //this is last step, need to notice user
-                         if(!m_completionNotifierSent)
-                         {
-                             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                             Q_ASSERT(commandPtrFinish);
-                             Global::tRefType fRef = GetNewCommandRef();
-                             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                             m_completionNotifierSent = true;
-                         }
-                         if(CTRL_CMD_DRAIN == ctrlCmd)
-                         {
-                              LogDebug(QString("last Program Processing(Soak) Process finished"));
-                              m_SchedulerMachine->NotifyProcessingFinished();
-                              m_TimeStamps.CurStepSoakStartTime = 0;
-                              m_completionNotifierSent = false;
-                              m_IsReleasePressureOfSoakFinish = false;
-                              m_ReleasePressureSucessOfSoakFinish = false;
-                         }
+                        if("RG6" == m_CurProgramStepInfo.reagentGroup)
+                        {
+                            if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
+                            {
+                                //this is last step, need to notice user
+                                if(!m_completionNotifierSent)
+                                {
+                                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                    Q_ASSERT(commandPtrFinish);
+                                    Global::tRefType fRef = GetNewCommandRef();
+                                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                    m_completionNotifierSent = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //this is last step, need to notice user
+                            if(!m_completionNotifierSent)
+                            {
+                                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                Q_ASSERT(commandPtrFinish);
+                                Global::tRefType fRef = GetNewCommandRef();
+                                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                m_completionNotifierSent = true;
+                            }
+                        }
+                        if(CTRL_CMD_DRAIN == ctrlCmd)
+                        {
+                            LogDebug(QString("last Program Processing(Soak) Process finished"));
+                            m_SchedulerMachine->NotifyProcessingFinished();
+                            m_TimeStamps.CurStepSoakStartTime = 0;
+                            m_completionNotifierSent = false;
+                            m_IsReleasePressureOfSoakFinish = false;
+                            m_ReleasePressureSucessOfSoakFinish = false;
+                        }
                     }
                     else
                     {
@@ -1050,7 +1069,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                EnablePauseButton();
                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
             }
-
             m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
 #if 0
 
@@ -1155,13 +1173,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                                <<PVMode);
                     m_SchedulerMachine->NotifyStepProgramFinished();
-                    //send command to main controller to tell the left time
-                    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-
-                    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                    Q_ASSERT(commandPtr);
-                    Global::tRefType Ref = GetNewCommandRef();
-                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                 }
                 else
                 {
@@ -2273,8 +2284,125 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
     return -1;
 }
 
+void SchedulerMainThreadController::ResetTheTimeParameter()
+{
+    m_EndTimeAndStepTime.WarningFlagForTime = false;
+    m_EndTimeAndStepTime.FirstParaffinIndex = 0;
+    m_EndTimeAndStepTime.PreTestTime = 0;
+    m_EndTimeAndStepTime.ParaffinStepsCostTime = 0;
+    m_EndTimeAndStepTime.Scenario260CostTime = 0;
+    m_EndTimeAndStepTime.GapTime = 0;
+    m_EndTimeAndStepTime.StartTime = 0;
+    m_EndTimeAndStepTime.EndTime = 0;
+    m_EndTimeAndStepTime.UserSetEndTime = 0;
+    m_EndTimeAndStepTime.BufferTime = 0;
+    m_EndTimeAndStepTime.TotalParaffinProcessingTime = 0;
+    m_EndTimeAndStepTime.LastParaffinProcessingTime = 0;
+}
 
-quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
+void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime)
+{
+    if(IsStartTime)
+    {
+        m_EndTimeAndStepTime.StartTime = QDateTime::currentMSecsSinceEpoch();
+    }
+    else if(IsEndTime && (m_CurProgramID.at(0) != 'C'))
+    {
+        m_EndTimeAndStepTime.EndTime = QDateTime::currentMSecsSinceEpoch();
+        if(m_CurProgramStepIndex == m_EndTimeAndStepTime.FirstParaffinIndex)
+        {
+            //this time shall not count in the period between StartTime and EndTime of secnario 260
+            m_EndTimeAndStepTime.EndTime -= m_EndTimeAndStepTime.Scenario260CostTime * 1000;
+        }
+        if(m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime > 4000 * 60)
+        {
+            m_EndTimeAndStepTime.WarningFlagForTime = true;
+            RaiseEvent(EVENT_SCHEDULER_FOR_WARNING_FLAG, QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)<<QString("[%1]").arg(m_CurProgramStepIndex+1));
+        }
+        if(m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime - m_EndTimeAndStepTime.GapTime < TIME_FOR_FIX_TIME)
+        {
+            m_EndTimeAndStepTime.GapTime = TIME_FOR_FIX_TIME - m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime - m_EndTimeAndStepTime.GapTime;
+        }
+        else
+        {
+            m_EndTimeAndStepTime.GapTime = 0;
+        }
+        LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+
+        if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+        {
+            m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.UserSetEndTime - QDateTime::currentMSecsSinceEpoch() - m_EndTimeAndStepTime.LastParaffinProcessingTime * 1000;
+            if(m_EndTimeAndStepTime.WarningFlagForTime)
+            {
+                //RaiseError(0, , m_CurrentScenario, true);
+            }
+            if(m_EndTimeAndStepTime.BufferTime < 0)
+            {
+                m_EndTimeAndStepTime.BufferTime = 0;
+                //RaiseError(0, , m_CurrentScenario, true);
+            }
+            else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
+            {
+                //RaiseError(0, , m_CurrentScenario, true);
+                m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
+            }
+            LogDebug(QString("The last program step:%1 buffer is:%2").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
+        }
+    }
+}
+
+quint32 SchedulerMainThreadController::GetMoveSteps(qint32 firstPos, qint32 endPos)
+{
+    quint32 MoveSteps = 0;
+    MoveSteps = ((endPos > firstPos)?(endPos - firstPos):(firstPos - endPos));//lint !e656 !e641
+    if(MoveSteps > 15)
+    {
+        if(MoveSteps < 32)
+        {
+            MoveSteps = 32 - MoveSteps;
+        }
+        else
+        {
+            MoveSteps = 0;
+        }
+    }
+    return MoveSteps;
+}
+
+quint32 SchedulerMainThreadController::GetPreTestTime()
+{
+    //level heating + RV move initialize  + pressure calibration + sealing check
+    qint64 preTesttTime = 20 + 30 + 45 + 55 + 60;
+
+    //bottle check time
+    qint64 bottleTime = 0;
+    qint32 firstPosition = 2;
+    qreal  tmpTime = 0.0;
+
+    if(m_IsNeedBottleCheck)
+    {
+        for(int i = 0; i < m_ProgramStationList.size(); i++)
+        {
+            ProgramStationInfo_t stationInfo = m_ProgramStationList.at(i);
+            RVPosition_t targetPos = GetRVTubePositionByStationID(stationInfo.StationID);
+            tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos) + 18;
+            firstPosition = (qint32)targetPos;
+        }
+    }
+
+    //move first tube position
+    if(!m_StationList.isEmpty())
+    {
+        QString StationID = m_StationList.at(0);
+        RVPosition_t targetPos = GetRVTubePositionByStationID(StationID);
+        tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos);
+    }
+    bottleTime = tmpTime;
+    preTesttTime += bottleTime;
+    return preTesttTime;
+}
+
+quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
 
@@ -2296,43 +2424,84 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    int Index = SpecifiedStepIndex;
-    if (-1 == Index)
+    if (!pProgram)
     {
-        int programStepIDIndex(-1);
-        if (-1 == m_CurProgramStepIndex)
-        {
-            programStepIDIndex = 0;
-        }
-        else
-        {
-            programStepIDIndex = m_CurProgramStepIndex ;
-        }
-        Index = programStepIDIndex;
+        Q_ASSERT(false);
+        return 0;
     }
 
-    for (int i = Index; i < pProgram->GetNumberOfSteps(); i++)
+    bool IsFirstParraffin = false;
+    bool CleaningProgram = false;
+
+    if(pProgram->IsCleaningProgram())
+    {
+        CleaningProgram = true;
+    }
+    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
-        leftTime += soakTime;
-        leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
-        leftTime += 60; //suppose need 60 seconds to fill
-        leftTime += 40; //suppose need 40 seconds to drain
-        leftTime += 20; //suppose need 20 seconds to heat level sensor
-
-        if ("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
+        if(CleaningProgram)
         {
-            leftTime += 10 * 60;
+            //Cleaning program
+            leftTime += soakTime;
+            leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+            leftTime += TIME_FOR_FILLING;
+            leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE + TIME_FOR_MOVE_NEXT_TUBE;
+            leftTime += TIME_FOR_PRESSURE_CHECK;
+            leftTime += TIME_FOR_DRAIN;
         }
-        if (0 == i)
+        else
         {
-            leftTime += m_delayTime;
+            //normal program
+            leftTime += soakTime;
+            if(0 == i)
+            {
+                leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+                leftTime += TIME_FOR_FILLING;
+                leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE;
+                leftTime += TIME_FOR_PRESSURE_CHECK;
+                leftTime += TIME_FOR_FIX_TIME * (pProgram->GetNumberOfSteps() - 1);
+            }
+            if ("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
+            {
+                if(!IsFirstParraffin)
+                {
+                    m_EndTimeAndStepTime.FirstParaffinIndex = i;
+                    IsFirstParraffin = true;
+                    int userInputMeltingPoint = 70;
+                    if(mp_DataManager->GetUserSettings())
+                    {
+                        userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+                    }
+                    if(50 <= userInputMeltingPoint && userInputMeltingPoint <= 64)
+                    {
+                        m_EndTimeAndStepTime.Scenario260CostTime = 7 * 60;
+                    }
+                    else if(65 <= userInputMeltingPoint && userInputMeltingPoint <= 70)
+                    {
+                        m_EndTimeAndStepTime.Scenario260CostTime = 10 * 60;
+                    }
+                    leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
+                    m_EndTimeAndStepTime.ParaffinStepsCostTime += m_EndTimeAndStepTime.Scenario260CostTime;
+                }
+                if(i == (pProgram->GetNumberOfSteps() - 1))
+                {
+                    m_EndTimeAndStepTime.LastParaffinProcessingTime = soakTime;
+                }
+                m_EndTimeAndStepTime.TotalParaffinProcessingTime += soakTime;
+                m_EndTimeAndStepTime.ParaffinStepsCostTime += TIME_FOR_FIX_TIME;
+            }
         }
     }
-    if(pProgram && pProgram->IsCleaningProgram()) // if cleaning program, add time for dry step
+    if(CleaningProgram) // if cleaning program, add time for dry step
     {
         leftTime += TIME_FOR_CLEANING_DRY_STEP;
+    }
+    else
+    {
+        m_EndTimeAndStepTime.PreTestTime = GetPreTestTime();
+        leftTime += m_EndTimeAndStepTime.PreTestTime;
     }
     return leftTime;
 }
@@ -2374,17 +2543,25 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     {
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
-        leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
-        leftTime += 60; //suppose need 60 seconds to fill
-        leftTime += 40; //suppose need 40 seconds to drain
-        leftTime += 20; //suppose need 20 seconds to heat level sensor
-        if (m_CurProgramStepInfo.reagentGroup == "RG6")
+
+        leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+        leftTime += TIME_FOR_FILLING;
+        leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE + TIME_FOR_MOVE_NEXT_TUBE;
+        leftTime += TIME_FOR_PRESSURE_CHECK;
+        leftTime += TIME_FOR_DRAIN + (m_EndTimeAndStepTime.GapTime / 1000);
+
+        if (programStepIDIndex == m_EndTimeAndStepTime.FirstParaffinIndex)
         {
-            leftTime += 10 * 60;
+            leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
         }
         if (0 == programStepIDIndex)
         {
             leftTime += m_delayTime;
+        }
+
+        if(IsLastStep(programStepIDIndex, m_CurProgramID))
+        {
+            leftTime += m_EndTimeAndStepTime.BufferTime;
         }
     }
     return leftTime;
@@ -2442,6 +2619,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         if(Cmd.ProgramRunDuration() > 0) // start new program
         {
             QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
+            m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
             RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName
                        <<EndDateTime.toString()); //log
         }
@@ -2494,6 +2672,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     m_CurProgramStepIndex = -1;
     (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
 
+    ResetTheTimeParameter();
     unsigned int timeProposed = 0;
     unsigned int paraffinMeltCostedtime = 0;
     unsigned int costedTimeBeforeParaffin = 0;
@@ -2503,14 +2682,14 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         m_FirstProgramStepIndex = m_CurProgramStepIndex;
         m_IsNeedBottleCheck = true;
         (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-        timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
+        timeProposed = GetLeftProgramStepsNeededTime(curProgramID);
         m_CurProgramStepIndex = -1;
 
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
         if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
         {
             m_hasParaffin = true;
-            costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
+            costedTimeBeforeParaffin = timeProposed - m_EndTimeAndStepTime.ParaffinStepsCostTime;
         }
 
         //cheack safe reagent
@@ -3882,7 +4061,7 @@ void SchedulerMainThreadController::Drain()
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
-    cmd->SetDelayTime(5000);
+    cmd->SetDelayTime(5000 + m_EndTimeAndStepTime.GapTime);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
@@ -4083,21 +4262,6 @@ void SchedulerMainThreadController::InitProgramStatus()
         RaiseEvent(EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL);
     }
 	m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint);
-}
-
-qint64 SchedulerMainThreadController::GetPreTestTime()
-{
-    quint32 BottleCount = m_ProgramStationList.size();
-    qint64 preTesttTime = 0;
-    if( (BottleCount - 2) > 0)
-    {
-        preTesttTime = (4 + 1 * (BottleCount - 2)) * 60;
-    }
-    else
-    {
-        preTesttTime = 4 * 60;
-    }
-    return preTesttTime;
 }
 
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
