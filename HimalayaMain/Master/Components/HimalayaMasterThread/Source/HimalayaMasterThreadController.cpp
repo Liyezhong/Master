@@ -866,8 +866,14 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     }
     else {        
         // send ack is NOK
-        if (EventCode != 0) {
-            Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        if(IsImport && EventCode != 0){
+            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+        }
+        else if(IsImport && EventCode == 0){
+            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
+        }
+        else{
+            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
         }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
@@ -879,6 +885,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     m_RemoteCareExportRequestInitiated = false;
 
     // clear the thread
+    m_ExportProcessIsFinished = true;
     StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     // enable the timer slot to destroy the objects after one second
     RemoveAndDestroyObjects();
