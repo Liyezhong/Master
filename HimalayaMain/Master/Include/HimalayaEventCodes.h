@@ -145,9 +145,9 @@ const quint32 EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE	= 33947655;	///< Import 
 
 const quint32 EVENT_IMPORT_ROLLBACK_FAILED	= 33947659;	///< Import failed. Rollback failed
 
-const quint32 EVENT_IMPORT_SUCCESS	= 33947662;	///< Import successful. Please generate new bathlayout
+const quint32 EVENT_IMPORT_SUCCESS	= 33947662;	///< Import successful!
 
-const quint32 EVENT_IMPORT_SUCCESS_LANGUAGE	= 33947663;	///< Import successful. Language files are updated
+const quint32 EVENT_IMPORT_SUCCESS_LANGUAGE	= 33947663;	///< Import successful.
 
 const quint32 EVENT_IMPORT_SWVERSION_NOT_MATCHING	= 33947656;	///< Import failed. SW versions are not matching to Import the files
 

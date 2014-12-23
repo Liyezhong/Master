@@ -434,7 +434,7 @@
 		<string id="33947655" text1="Import failed. Required files are not available to Import" text2=""/>
 		<string id="33947659" text1="Import failed. Rollback failed" text2=""/>
 		<string id="33947662" text1="Import successful." text2=""/>
-		<string id="33947663" text1="Import successful. Language files are updated" text2=""/>
+		<string id="33947663" text1="Import successful." text2=""/>
 		<string id="33947656" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
 		<string id="50331759" text1="Import failed. Archive file is tampered" text2=""/>
 		<string id="50331761" text1="Type of import is not valid" text2=""/>

@@ -1003,26 +1003,27 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
                                 + QDir::separator() + DIRECTORY_IMPORT + QDir::separator());
                 }
                 catch (...) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_TAMPERED_ARCHIVE_FILE,true);
+                    //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_TAMPERED_ARCHIVE_FILE,true);
                     m_EventCode = EVENT_IMPORT_TAMPERED_ARCHIVE_FILE;
+                    m_EventRaised = true;
                     IsImported = false;
                 }
             }
         }
         else {
             // device name is not matching
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING,true);
+            //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING,true);
             m_EventCode = EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING;
+            m_EventRaised = true;
             IsImported = false;
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER, true);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER, true);
         m_EventCode = EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER;
         m_EventRaised = true;
         IsImported = false;
     }
-    qDebug() << QDir::currentPath();
 
     if (IsImported) {
         // check the type of Import, for the language file we cannot predict how many files can be present
@@ -1099,7 +1100,7 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                             FileWrite.close();
                         }
                         catch (...) {
-                            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+                            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
                             m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
                             m_EventRaised = true;
                             return false;
@@ -1128,13 +1129,13 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
         }
         else
         {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
             m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
             m_EventRaised = true;
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE, true);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE, true);
         m_EventCode = EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE;
         m_EventRaised = true;
     }
