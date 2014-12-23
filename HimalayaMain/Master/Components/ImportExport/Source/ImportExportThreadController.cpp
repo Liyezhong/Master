@@ -263,7 +263,7 @@ void ImportExportThreadController::OnGoReceived() {
             if (ErrorInThreadExecution) {
                 // if the event is not raised then display an error due to any reason
                 if (!m_EventRaised) {
-                    Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
+                    //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
                     m_EventCode = Global::EVENT_EXPORT_FAILED;
                 }
                 // emit the thread finished flag - with error code
@@ -535,7 +535,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
     if (ErrorInExecution) {
         // if the event is not raised then display an error due to any reason
         if (!m_EventRaised) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
+           // Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
             m_EventCode = Global::EVENT_EXPORT_FAILED;
         }
         // emit the thread finished flag - with error code

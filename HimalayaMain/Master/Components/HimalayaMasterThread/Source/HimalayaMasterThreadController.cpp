@@ -872,6 +872,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         else if(IsImport && EventCode == 0){
             Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
         }
+        else if(!IsImport && EventCode != 0){
+            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+        }
         else{
             Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
         }
