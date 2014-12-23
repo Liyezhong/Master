@@ -140,6 +140,13 @@ public slots:
     /****************************************************************************/
     void UpdateGUI();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating slave_hw_version.xml sw_version.xml
+     */
+    /****************************************************************************/
+    void UpdateSlaveVersion();
+
 private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
     Core::CServiceGUIConnector *mp_DataConnector;  //!< Data Connector object

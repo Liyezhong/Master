@@ -76,6 +76,12 @@ Q_SIGNALS:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  signal for Slave version update.
+     */
+    /****************************************************************************/
+    void UpdateSlaveVersion(void);
 public Q_SLOTS:
     /****************************************************************************/
     /*!

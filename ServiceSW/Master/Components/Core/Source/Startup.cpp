@@ -217,6 +217,9 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(RefreshLatestVersion()),
                   mp_FirmwareUpdate, SLOT(RefreshLatestVersion()));
 
+    CONNECTSIGNALSLOT(mp_MainControlConfig, UpdateSlaveVersion(), mp_FirmwareUpdate, UpdateSlaveVersion());
+    CONNECTSIGNALSLOT(mp_RotaryValveConfig, UpdateSlaveVersion(), mp_FirmwareUpdate, UpdateSlaveVersion());
+
 
     if (!connect(mp_Clock, SIGNAL(timeout()), this, SLOT(UpdateDateTime())))
     {
@@ -555,6 +558,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 {
     qDebug()<<"CStartup::InitializeGui  "<<SoftwareMode;
 
+    RemoveFiles();
     SetCurrentUserMode(UserMode);
     if (SoftwareMode == PlatformService::SERVICE_MODE)
     {
@@ -758,6 +762,23 @@ int CStartup::FileExistanceCheck()
     }
     return 0;
 #endif
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Remove some files when start S&M SW
+ */
+/****************************************************************************/
+void CStartup::RemoveFiles()
+{
+    QString FilePath = Global::SystemPaths::Instance().GetSettingsPath();
+
+    if (!QFile::remove(FilePath + QDir::separator() + "ProgramStatus.txt")) {
+        qDebug()<<"CStartup: RemoveFiles ProgramStatus.txt file failed.";
+    }
+    if (!QFile::remove(FilePath + QDir::separator() + "BootConfig.txt")) {
+        qDebug()<<"CStartup: RemoveFiles BootConfig.txt file failed.";
+    }
 }
 
 /****************************************************************************/

@@ -274,6 +274,7 @@ private slots:
     void OnSelectTestOptions(int Index);
 	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
     int FileExistanceCheck();
+    void RemoveFiles();
 
     void OnCurrentTabChanged(int TabIndex);
 private:
