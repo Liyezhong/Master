@@ -23,7 +23,7 @@
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include "Diagnostics/Include/Oven/StatusConfirmDialog.h"
+#include "Diagnostics/Include/StatusConfirmDialog.h"
 #include "ui_StatusConfirmDialog.h"
 #include <QDebug>
 
@@ -94,14 +94,17 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
 {
     qDebug() << Status;
 
-    QString CoverSensorStatus = "Cover Sensor Status: " + Status.value("OvenCoverSensorStatus");
+    QString CoverSensorStatus = QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
+                                                        "cover sensor status:", 0, QApplication::UnicodeUTF8) + Status.value("OvenCoverSensorStatus");
+    if (Status.value("OvenCoverSensorStatus").isEmpty())
+        return;
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 
-    if (CoverSensorStatus == "Open")
+    if (Status.value("OvenCoverSensorStatus") == "Open")
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                                "border-width:1px; border-style:solid;"
                                                "background-color: rgb(255, 241, 44);");
-    else if(CoverSensorStatus == "Close")
+    else if(Status.value("OvenCoverSensorStatus") == "Close")
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                                "border-width:1px; border-style:solid;"
                                                "background-color: rgb(85, 255, 0);");
@@ -120,12 +123,24 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
 /****************************************************************************/
 void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &Status)
 {
-//    mp_Ui->labelStatus->setText(QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
-//                                                        "Retort lid lock status:", 0, QApplication::UnicodeUTF8));
-    QString CoverSensorStatus = Status.value("LidLockerStatus");
-    if (CoverSensorStatus != "") {
-        mp_Ui->labelStatusValue->setText(CoverSensorStatus);
-    }
+    QString CoverSensorStatus = QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
+                                                        "Retort lid lock status:", 0, QApplication::UnicodeUTF8) + Status.value("LidLockerStatus");
+    if (Status.value("LidLockerStatus").isEmpty())
+        return;
+    mp_Ui->labelStatusValue->setText(CoverSensorStatus);
+
+    if (Status.value("LidLockerStatus") == "Open")
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(255, 241, 44);");
+    else if(Status.value("LidLockerStatus") == "Close")
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(85, 255, 0);");
+    else
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                       "border-width:1px; border-style:solid;"
+                                       "background-color: rgb(255, 0, 0);");
 }
 
 void CStatusConfirmDialog::HideLabel()

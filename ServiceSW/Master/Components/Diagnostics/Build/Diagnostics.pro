@@ -58,8 +58,7 @@ SOURCES *= ../Source/*.cpp\   # source file location
     ../Source/System/LiquidHoseTest.cpp \
     ../Source/System/LiquidHoseTestDlg.cpp \
     ../Source/System/SystemSealingTest.cpp \
-    ../Source/Retort/DrainReagentTest.cpp \
-    ../Source/Oven/StatusConfirmDialog.cpp
+    ../Source/Retort/DrainReagentTest.cpp
 
 FORMS   *= ../Forms/*.ui \     # form file location
     #../Forms/System/*.ui \
