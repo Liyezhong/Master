@@ -50,9 +50,9 @@
 		<Event Code="" ErrorID="513010332" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67175936" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="2" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="ACT" Action="RC_Restart"/>
-			<Step ID="2" Type="MSG" StringID="67176200" ButtonType="RETRY" StatusBar="YES" NextStepOnClickRetry="3"/>
+			<Step ID="2" Type="MSG" StringID="67176206" ButtonType="RETRY" StatusBar="YES" NextStepOnClickRetry="3"/>
 			<Step ID="3" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="5"/>
-			<Step ID="4" Type="MSG" StringID="67176200" ButtonType="RETRY" StatusBar="YES"/>
+			<Step ID="4" Type="MSG" StringID="67176206" ButtonType="RETRY" StatusBar="YES"/>
 			<Step ID="5" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513040011" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67175937" EventSource="SCHEDULER">
