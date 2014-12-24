@@ -635,6 +635,8 @@ void CStartup::ServiceGuiInit()
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
 
+    mp_FirmwareUpdate->SetEnableUpdate(false);
+
     mp_MainWindow->SetTabWidgetIndex(0);
 }
 

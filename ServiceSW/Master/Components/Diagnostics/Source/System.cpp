@@ -153,7 +153,7 @@ void CSystem::StartLiquidHoseTest(void)
 
     System::CLiquidHoseTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
-    if (Test.Run() == RETURN_OK) {
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_SUCCESS);
     }
     else if (Ret == RETURN_ABORT) {

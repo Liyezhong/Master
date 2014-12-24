@@ -147,6 +147,14 @@ public slots:
     /****************************************************************************/
     void UpdateSlaveVersion();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  To set firmware update enable
+     *  \param Enable = flag of enable
+     */
+    /****************************************************************************/
+    void SetEnableUpdate(bool Enable);
+
 private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
     Core::CServiceGUIConnector *mp_DataConnector;  //!< Data Connector object

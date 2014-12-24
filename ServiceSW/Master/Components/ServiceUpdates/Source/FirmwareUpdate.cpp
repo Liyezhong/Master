@@ -307,6 +307,11 @@ void CFirmwareUpdate::UpdateSlaveVersion()
     }
 }
 
+void CFirmwareUpdate::SetEnableUpdate(bool Enable)
+{
+    mp_Ui->updateBtn->setEnabled(Enable);
+}
+
 void CFirmwareUpdate::RetranslateUI()
 {
     m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("ServiceUpdates::CFirmwareUpdate",

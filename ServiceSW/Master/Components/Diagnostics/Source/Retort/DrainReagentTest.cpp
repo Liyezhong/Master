@@ -112,16 +112,10 @@ int CDrainReagentTest::Run(void)
     }
 
     ServiceDeviceProcess* p_Dev = ServiceDeviceProcess::Instance();
-    Text = "Rotary valve is initializing...";
-    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
-    int Ret = p_Dev->RVInitialize(CurrentTubeFlag, CurrentPosition);
-    mp_MessageDlg->HideWaitingDialog();
 
-    if (Ret != RETURN_OK) {
-        qDebug()<<"Retort drain reagent initializing rotary valve failed.";
-    }
-
+    int Ret;
     for (int i = 0; i < 2; ++i) {
+        (void)p_Dev->RVInitialize(CurrentTubeFlag, CurrentPosition);
         Text = QString("Rotary Valve is rotating to tube position %1").arg(TargetPosition);
         mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
         Ret = p_Dev->RVMovePosition(true, TargetPosition);
