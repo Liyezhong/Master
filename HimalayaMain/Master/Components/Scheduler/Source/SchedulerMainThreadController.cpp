@@ -263,17 +263,10 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
-    Q_UNUSED(instanceID);
-    Q_UNUSED(usErrorGroup);
-    Q_UNUSED(usErrorID);
-    Q_UNUSED(usErrorData);
-    Q_UNUSED(timeStamp);
-#if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
     RaiseError(0, DCL_ERR_DEV_INTER_SW_ERROR, m_CurrentScenario, true);
-#endif
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -3875,6 +3868,7 @@ void SchedulerMainThreadController::RCDrain()
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
+    cmd->SetIgnorePressure(true);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     LogDebug("Notice GUI Draining started");
