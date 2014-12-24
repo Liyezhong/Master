@@ -91,7 +91,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
-    CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
+    CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNewStep());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
     CONNECTSIGNALSLOT(mp_Ui->btnDelete, clicked(), this, OnDelete());
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
@@ -416,9 +416,8 @@ void CModifyProgramDlg::OnEdit()
  *  \brief Inserts a new program step and shows the edit dialog
  */
 /****************************************************************************/
-void CModifyProgramDlg::OnNew()
+void CModifyProgramDlg::OnNewStep()
 {
-    m_Icon.clear();
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->NewProgramStep();
     mp_ModifyProgStepDlg ->SetButtonType(NEW_BTN_CLICKED);

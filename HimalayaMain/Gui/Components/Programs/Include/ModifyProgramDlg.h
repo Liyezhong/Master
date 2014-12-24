@@ -170,10 +170,10 @@ private slots:
     void OnEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of OnNew
+     *  \brief  Definition/Declaration of OnNewStep
      */
     /****************************************************************************/
-    void OnNew();
+    void OnNewStep();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnCopy
