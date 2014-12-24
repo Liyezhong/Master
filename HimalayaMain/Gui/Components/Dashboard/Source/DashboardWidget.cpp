@@ -1104,7 +1104,7 @@ void CDashboardWidget::RetranslateUI()
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
     m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.", 0, QApplication::UnicodeUTF8);
-    m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Porgam will be delayed for some mintues in the first step as the paraffin is not melted completly. Would you like to continue?", 0, QApplication::UnicodeUTF8);
+    m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
