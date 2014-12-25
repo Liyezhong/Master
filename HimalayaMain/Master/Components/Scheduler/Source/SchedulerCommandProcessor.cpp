@@ -165,7 +165,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 
 #ifndef GOOGLE_MOCK
     //Initialize IDeviceProcessing
-    mp_IDeviceProcessing = new DP(200);
+    mp_IDeviceProcessing = new DP(20);
 #endif
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
