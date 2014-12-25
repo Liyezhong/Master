@@ -69,6 +69,7 @@ int CHeatingTestWithWater::Run(void)
     qDebug() << "Retort Heating test empty starts!";    
 
     QString title((tr("Retort Heating Test (with Water)")));
+    QString titleRVMoveFail(tr("Test failed"));
     QString text;
     int ret, i;
     struct HeatingStatus heatingStatus;
@@ -138,7 +139,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVInitialize();
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Rotating Rotary Valve to tube position 13");
@@ -146,7 +147,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     dlg->HideWaitingDialog();
@@ -175,7 +176,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(false, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Release pressure...");
@@ -237,7 +238,7 @@ int CHeatingTestWithWater::Run(void)
         ret = dev->RVMovePosition(true, 13);
         if (ret != RETURN_OK) {
             dlg->HideWaitingDialog();
-            dlg->ShowRVMoveFailedDlg(title);
+            dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
             return RETURN_ERR_FAIL;
         }
         text = tr("Start draining");
@@ -268,7 +269,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Start draining");
@@ -296,7 +297,7 @@ __fail__:
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Start draining");
