@@ -2069,6 +2069,7 @@ void HeatingStrategy::Init260ParamList()
     }
 
     m_SensorsChecking.ovenTopPass = false;
+    m_SensorsChecking.LATube1Pass = false;
 }
 
 bool HeatingStrategy::Check260SensorsTemp()
@@ -2082,9 +2083,23 @@ bool HeatingStrategy::Check260SensorsTemp()
         }
     }
 
+    if (false == m_SensorsChecking.LATube1Pass)
+    {
+        qreal LATube1Temp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
+        if (LATube1Temp >= (m_SensorsChecking.meltingPoint+2))
+        {
+            m_SensorsChecking.LATube1Pass = true;
+        }
+    }
+
+    // For LA tube2, we only check it heating status. If it is off, we just log it.
+    if (false == mp_SchedulerCommandProcessor->HardwareMonitor().LATube2HeatingStatus)
+    {
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LATBUE2_OFF);
+    }
     // for NON-first bottle, we need not check minimal time
     bool ret = m_RTTop.OTCheckPassed && m_RTBottom.OTCheckPassed && m_SensorsChecking.ovenTopPass
-            && m_RV_2_Outlet.OTCheckPassed && m_LARVTube.OTCheckPassed && m_LAWaxTrap.OTCheckPassed;
+            && m_RV_2_Outlet.OTCheckPassed && m_SensorsChecking.LATube1Pass;
 
     if (m_SensorsChecking.firstBottle)
     {
@@ -2095,6 +2110,13 @@ bool HeatingStrategy::Check260SensorsTemp()
         {
             m_SensorsChecking.firstBottle = false;
         }
+    }
+
+    // Reset OvenTop and LATbue1 when checking passed
+    if (ret)
+    {
+        m_SensorsChecking.ovenTopPass = false;
+        m_SensorsChecking.LATube1Pass = false;
     }
 
     return ret;

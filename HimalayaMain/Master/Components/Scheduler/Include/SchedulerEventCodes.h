@@ -136,6 +136,7 @@ const quint32 EVENT_SCHEDULER_HEATING_RETORT = SCHEDULER_BASE_ID + 0x254; ///< S
 const quint32 EVENT_SCHEDULER_HEATING_OVEN = SCHEDULER_BASE_ID + 0x255; ///< Start wax bath(%1) heating in scenario:%2,the target temperature:%3.
 const quint32 EVENT_SCHEDULER_HEATING_RV = SCHEDULER_BASE_ID + 0x256; ///< Start rotary valve heating in scenario:%1,the target temperature:%2.
 const quint32 EVENT_SCHEDULER_HEATING_LA = SCHEDULER_BASE_ID + 0x257; ///< Start LA system(%1) heating in scenario:%2,the target temperature:%3.
+const quint32 EVENT_SCHEDULER_HEATING_LATBUE2_OFF = SCHEDULER_BASE_ID + 0x258; ///< LA Tube2 heating status is off.
 
 // running program
 // 1. Power failudre

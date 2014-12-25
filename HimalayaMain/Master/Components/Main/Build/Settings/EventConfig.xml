@@ -1205,6 +1205,9 @@
 	    <Event Code="" ErrorID="67174999" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_LA" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174999" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="67175000" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING__LATBUE2_OFF" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67175000" ButtonType="" StatusBar=""/>
+	    </Event>
 	    <Event Code="" ErrorID="67175168" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175168" ButtonType="" StatusBar=""/>
 	    </Event>

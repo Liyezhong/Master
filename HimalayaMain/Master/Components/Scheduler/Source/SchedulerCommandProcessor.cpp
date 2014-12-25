@@ -151,6 +151,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.OvenHeatingStatus    = mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_BOTTOM) && mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_TOP) ;
     strctHWMonitor.LocalAlarmStatus     = mp_IDeviceProcessing->PerGetRecentAlarmStatus(0);
     strctHWMonitor.RemoteAlarmStatus    = mp_IDeviceProcessing->PerGetRecentAlarmStatus(1);
+    strctHWMonitor.LATube1HeatingStatus = mp_IDeviceProcessing->ALGetHeatingStatus(AL_TUBE1);
+    strctHWMonitor.LATube2HeatingStatus = mp_IDeviceProcessing->ALGetHeatingStatus(AL_TUBE2);
     return strctHWMonitor;
 }
 

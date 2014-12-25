@@ -98,6 +98,7 @@ struct SensorsChecking
     quint32 minTime;
     bool    firstBottle;
     bool    ovenTopPass;
+    bool    LATube1Pass;
 };
 
 /****************************************************************************/

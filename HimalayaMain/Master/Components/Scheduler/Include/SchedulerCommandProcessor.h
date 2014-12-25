@@ -86,6 +86,8 @@ typedef struct
     quint16         Slave15Current;         ///< Slave15 Current
     quint16         LocalAlarmStatus;       ///< Local alarm status
     quint16         RemoteAlarmStatus;      ///< Remote alarm status
+    bool            LATube1HeatingStatus;   ///< LA tube1 heating status
+    bool            LATube2HeatingStatus;   ///< LA tube2 heating status
 
     /****************************************************************************/
     /*!
