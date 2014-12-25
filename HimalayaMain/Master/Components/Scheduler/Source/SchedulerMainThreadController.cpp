@@ -132,7 +132,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsCleaningProgram = false;
     m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
-    m_IsSafeReagentState = false;
+    m_IsSafeReagent = false;
     m_ReEnterFilling = 0;
     m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
@@ -733,7 +733,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeProcessing();
                     break;
                 case PSSM_PROCESSING_SR:
-                    m_IsSafeReagentState = false;
                      m_SchedulerMachine->SendResumeProcessingSR();
                      break;
                case PSSM_RV_MOVE_TO_TUBE:
@@ -1019,7 +1018,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 CloseTheAlarm();
                 m_ProgramStatusInfor.SetErrorFlag(0);
                 m_completionSRSent = false;
-                m_IsSafeReagentState = true;
+                m_IsSafeReagent = true;
                 m_SchedulerMachine->NotifyProcessingFinished();
             }
         }
@@ -1069,7 +1068,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                    if(m_IsSafeReagentState)
+                    if(m_IsSafeReagent)
                     {
                         m_SchedulerMachine->NotifyProgramFinished();
                     }
@@ -1164,11 +1163,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->SendRunComplete();
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
-            if(m_IsCleaningProgram && !m_IsSafeReagentState)
+
+            if(m_IsCleaningProgram && !m_IsSafeReagent)
             {
-                m_IsSafeReagentState = false;
                 m_IsCleaningProgram = false;
                 m_ProgramStatusInfor.SetProgramFinished();
+            }
+            if(m_IsSafeReagent)
+            {
+                m_IsSafeReagent = false;
             }
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
@@ -3876,7 +3879,10 @@ void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID
     cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
-    m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
+    if(!m_IsCleaningProgram)
+    {
+        m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
+    }
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, StationID, true, true, false));
     Q_ASSERT(commandPtr);

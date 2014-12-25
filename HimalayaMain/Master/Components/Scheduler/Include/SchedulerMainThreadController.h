@@ -79,14 +79,14 @@ typedef struct {
 } ProgramStepInfor;
 
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
-#define TIME_FOR_FIX_TIME                     180    ///< seconds for fix time
+#define TIME_FOR_FIX_TIME                     195    ///< seconds for fix time
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
 #define TIME_FOR_FILLING                      60     ///< seconds for filling
-#define TIME_FOR_MOVE_SEAL                    2      ///< seconds for move seal
-#define TIME_FOR_PRESSURE_CHECK               20     ///< seconds for pressure check before move tube
-#define TIME_FOR_MOVE_TUBE                    3      ///< seconds for move tube
+#define TIME_FOR_MOVE_SEAL                    3      ///< seconds for move seal
+#define TIME_FOR_PRESSURE_CHECK               15     ///< seconds for pressure check before move tube
+#define TIME_FOR_MOVE_TUBE                    5      ///< seconds for move tube
 #define TIME_FOR_DRAIN                        60     ///< seconds for draing
-#define TIME_FOR_MOVE_NEXT_TUBE               4      ///< seconds for move next tube
+#define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 
 /****************************************************************************/
 /*!
@@ -285,7 +285,7 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
-        bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
+        bool    m_IsSafeReagent;                              ///< Scheduler is in RS_Tissue_Protect state
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
