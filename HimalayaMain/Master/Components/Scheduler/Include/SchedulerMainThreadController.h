@@ -259,6 +259,7 @@ typedef struct
         QStringList m_UsedStationIDs;        ///< in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+        QList<ProgramStationInfo_t> m_StationAndReagentList;    ///<    Definition/Declaration of variable m_StationList
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
@@ -1359,14 +1360,6 @@ protected:
         {
             m_CurProgramStepInfo.stationID = StationID;
             m_CurProgramStepInfo.reagentGroup = ReagentGroup;
-            if("RG6" == ReagentGroup)
-            {
-                m_CurProgramStepInfo.nextStationID = "S12";
-            }
-            else
-            {
-                m_CurProgramStepInfo.nextStationID = "S13";
-            }
         }
         /****************************************************************************/
         /*!
@@ -1392,6 +1385,17 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetSafeReagentForSpecial just for scenario 200
+         *  \param  index - int type
+         *  \param  reagentGroupID - QString type
+         *  \param  stationList - QList<QString>
+         *  \return from bool
+         */
+        /****************************************************************************/
+        bool GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!

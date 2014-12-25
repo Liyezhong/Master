@@ -130,7 +130,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState.data());
     mp_InitState->addTransition(this, SIGNAL(SigPowerFailure()), mp_PowerFailureState.data());
 
-    mp_IdleState->addTransition(this, SIGNAL(CleaningSignal()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState.data());
     mp_BusyState->addTransition(this, SIGNAL(RunComplete()), mp_IdleState.data());
     mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
@@ -189,12 +188,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
     CONNECTSIGNALSLOT(this, sigDrainFinished(), mp_SchedulerThreadController, DisablePauseButton());
+    //for safe reagent
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
-    //for safe reagent
-    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigStepProgramFinished()),mp_PssmFillingHeatingRVState.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
@@ -457,11 +455,6 @@ void CSchedulerStateMachine::SendSchedulerInitComplete()
 void CSchedulerStateMachine::SendRunSignal()
 {
     emit RunSignal();
-}
-
-void CSchedulerStateMachine::SendCleaningSignal()
-{
-    emit CleaningSignal();
 }
 
 void CSchedulerStateMachine::SendRunComplete()

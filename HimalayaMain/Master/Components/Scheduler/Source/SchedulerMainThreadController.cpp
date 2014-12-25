@@ -493,17 +493,6 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_IsCleaningProgram = true;
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
-    else
-    {
-        if("RG6" == reagentID)
-        {
-            m_CurProgramStepInfo.nextStationID = "S12";
-        }
-        else
-        {
-            m_CurProgramStepInfo.nextStationID = "S13";
-        }
-    }
 
     RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
     m_SchedulerMachine->SendErrorSignal();
@@ -592,15 +581,12 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                        <<PVMode);
 
             //send command to main controller to tell the left time
-            if (m_NewProgramID.at(0) != 'C')
-            {
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
-                                                                                                              Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
-                                                                                                              m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            }
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
+                                                                                                          Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
+                                                                                                          m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
@@ -611,31 +597,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //Initialize parameter list in scenario 260
             mp_HeatingStrategy->Init260ParamList();
 
-            //whether cleaning program or not
-            if ( 'C' == ProgramName.at(0) )
-            {
-                RaiseEvent(EVENT_SCHEDULER_SET_RV_POSITION,QStringList()<<QString("[%1]").arg(m_ProgramStatusInfor.GetLastRVPosition()));
-                CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
-                cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
-                m_SchedulerCommandProcessor->pushCmd(cmdSet);
-
-                SchedulerCommandShPtr_t resCmdPtr;
-                PopDeviceControlCmdQueue(resCmdPtr,"Scheduler::RVReqMoveToInitialPosition");
-                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                (void)resCmdPtr->GetResult(retCode);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    RaiseError(0, retCode, 0, true);
-                }
-                else
-                {
-                    m_SchedulerMachine->SendCleaningSignal();
-                }
-            }
-            else
-            {
-                m_SchedulerMachine->SendRunSignal();
-            }
+            m_SchedulerMachine->SendRunSignal();
         }
         break;
     default:
@@ -771,6 +733,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeProcessing();
                     break;
                 case PSSM_PROCESSING_SR:
+                    m_IsSafeReagentState = false;
                      m_SchedulerMachine->SendResumeProcessingSR();
                      break;
                case PSSM_RV_MOVE_TO_TUBE:
@@ -1106,7 +1069,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                    m_SchedulerMachine->NotifyDrainFinished();
+                    if(m_IsSafeReagentState)
+                    {
+                        m_SchedulerMachine->NotifyProgramFinished();
+                    }
+                    else
+                    {
+                        m_SchedulerMachine->NotifyDrainFinished();
+                    }
                 }
                 else
                 {
@@ -1121,15 +1091,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_RV_POS_CHANGE;
             if(IsRVRightPosition(NEXT_TUBE_POS))
             {
-               if (false == m_IsSafeReagentState)
-               {
-                   m_SchedulerMachine->NotifyStepFinished();
-               }
-               else
-               {
-                   m_IsSafeReagentState = false; // Reset
-                   m_SchedulerMachine->NotifyProgramFinished();
-               }
+                m_SchedulerMachine->NotifyStepFinished();
             }
             else
             {
@@ -1202,8 +1164,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->SendRunComplete();
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
-            if(m_IsCleaningProgram)
+            if(m_IsCleaningProgram && !m_IsSafeReagentState)
             {
+                m_IsSafeReagentState = false;
                 m_IsCleaningProgram = false;
                 m_ProgramStatusInfor.SetProgramFinished();
             }
@@ -1278,18 +1241,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(0 == m_AbortingSeq)
             {
                 m_CurrentStepState = PSSM_ABORTING;
-                if(m_ProgramStatusInfor.IsRetortContaminted())
-                {
-                    if("RG6" == m_ProgramStatusInfor.GetLastReagentGroup())
-                    {
-                        m_CurProgramStepInfo.nextStationID = "S12";
-                    }
-                    else
-                    {
-                        m_CurProgramStepInfo.nextStationID = "S13";
-                    }
-                }
-
             }
             m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
         }
@@ -1911,22 +1862,9 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         //next station
         if((m_CurProgramStepIndex + 1) == count)
         {
-            if(ProgramID.at(0) != 'C')
-            {
-                if("RG6" == programStepInfor.reagentGroup)
-                {
-                    programStepInfor.nextStationID = "S12";
-                }
-                else
-                {
-                    programStepInfor.nextStationID = "S13";
-                }
-            }
-            else
-            {
-                programStepInfor.nextStationID = programStepInfor.stationID;
-            }
-        }        else
+            programStepInfor.nextStationID = programStepInfor.stationID;
+        }
+        else
         {
             programStepInfor.nextStationID = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
         }
@@ -2046,12 +1984,18 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     m_ProgramStationList.clear();
     m_StationList.clear();
+    m_StationAndReagentList.clear();
     QMap<int, ProgramStationInfo_t> StationForNoParrffinMap;
     QMap<QString, ProgramStationInfo_t> StationForParrffinMap;
 
     bool normalProgramFlag = false;
     bool cleaningProgramFlag = false;
-    if (pProgram)
+    bool cleaningProgram = false;
+    if (ProgramID.at(0) == 'C')
+    {
+        cleaningProgram = true;
+    }
+    else if (pProgram)
     {
         normalProgramFlag = pProgram->GetBottleCheck();
     }
@@ -2069,60 +2013,77 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
         QString stationName = stationInfo.StationID;
-        if(normalProgramFlag)
+        if(!cleaningProgram)
         {
-            m_IsNeedBottleCheck = true;
-            if("RG6" == stationInfo.ReagentGroupID)
-            {
-                StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
-            }
-            else
-            {
-                StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
-            }
-        }
-        else
-        {
-            if(i == beginStep && "RG1" == stationInfo.ReagentGroupID)
+            if(normalProgramFlag)
             {
                 m_IsNeedBottleCheck = true;
-                StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                if("RG6" == stationInfo.ReagentGroupID)
+                {
+                    StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
+                }
+                else
+                {
+                    StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                }
             }
             else
             {
-                m_IsNeedBottleCheck = false;
+                if(i == beginStep && "RG1" == stationInfo.ReagentGroupID)
+                {
+                    m_IsNeedBottleCheck = true;
+                    StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                }
+                else
+                {
+                    m_IsNeedBottleCheck = false;
+                }
             }
         }
         m_StationList.push_back(stationInfo.StationID);
+        m_StationAndReagentList.push_back(stationInfo);
     }
     // Add two cleaning bottles for bottle check
-    if(mp_DataManager->GetProgramList()->GetProgram("C01"))
+    if(!cleaningProgram)
     {
-        cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
-        if(cleaningProgramFlag)
+        if(mp_DataManager->GetProgramList()->GetProgram("C01"))
         {
-            m_IsNeedBottleCheck = true;
-            stationInfo.ReagentGroupID = "RG7";
-            stationInfo.StationID = "S12";
-            StationForNoParrffinMap.insert(12, stationInfo);
-            stationInfo.ReagentGroupID = "RG8";
-            stationInfo.StationID = "S13";
-            StationForNoParrffinMap.insert(13, stationInfo);
+            cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
+            if(cleaningProgramFlag)
+            {
+                m_IsNeedBottleCheck = true;
+                stationInfo.ReagentGroupID = "RG7";
+                stationInfo.StationID = "S12";
+                StationForNoParrffinMap.insert(12, stationInfo);
+                stationInfo.ReagentGroupID = "RG8";
+                stationInfo.StationID = "S13";
+                StationForNoParrffinMap.insert(13, stationInfo);
+            }
         }
-    }
 
-    QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
-    for(; iter != StationForNoParrffinMap.end(); iter++)
-    {
-        m_ProgramStationList.enqueue(iter.value());
-    }
-    QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
-    for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
-    {
-        m_ProgramStationList.enqueue(iterParraffin.value());
+        QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
+        for(; iter != StationForNoParrffinMap.end(); iter++)
+        {
+            m_ProgramStationList.enqueue(iter.value());
+        }
+        QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
+        for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
+        {
+            m_ProgramStationList.enqueue(iterParraffin.value());
+        }
     }
     StationForNoParrffinMap.clear();
     StationForParrffinMap.clear();
+    return true;
+}
+
+bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList)
+{
+    if(index >= m_StationAndReagentList.size())
+        return;
+    ProgramStationInfo_t stationInfo = m_StationAndReagentList.at(index);
+    reagentGroupID = stationInfo.ReagentGroupID;
+    stationList.push_back(stationInfo.StationID);
     return true;
 }
 
@@ -2494,14 +2455,12 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
             }
         }
     }
+
+    m_EndTimeAndStepTime.PreTestTime = GetPreTestTime();
+    leftTime += m_EndTimeAndStepTime.PreTestTime;
     if(CleaningProgram) // if cleaning program, add time for dry step
     {
         leftTime += TIME_FOR_CLEANING_DRY_STEP;
-    }
-    else
-    {
-        m_EndTimeAndStepTime.PreTestTime = GetPreTestTime();
-        leftTime += m_EndTimeAndStepTime.PreTestTime;
     }
     return leftTime;
 }
@@ -2814,14 +2773,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_INIT:
         break;
     case PSSM_PRETEST:
-        if(m_IsCleaningProgram)
-        {
-            scenario = 0;
-        }
-        else
-        {
-            scenario = 200;
-        }
+        scenario = 200;
         break;
     case PSSM_PAUSE:
         if(ReagentGroup == "RG6")
