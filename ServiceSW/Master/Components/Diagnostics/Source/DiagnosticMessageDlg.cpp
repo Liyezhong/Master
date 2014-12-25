@@ -143,7 +143,7 @@ void CDiagnosticMessageDlg::ShowRVMoveFailedDlg(const QString& Title)
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
     dlg->SetTitle(Title);
     dlg->SetIcon(QMessageBox::Critical);
-    dlg->SetText("Rotating Rotary Valve failed.");
+    dlg->SetText("Rotary Valve movement failed. Please perform the Rotary Valve Movement Test. If it fails, exchange the rotary valve.");
     dlg->HideButtons();
     dlg->SetButtonText(1, "OK");
     dlg->setModal(true);

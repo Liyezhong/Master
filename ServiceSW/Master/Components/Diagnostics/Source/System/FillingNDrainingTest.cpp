@@ -108,7 +108,7 @@ int CFillingNDrainingTest::Run(void)
 
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
-        return RETURN_ERR_FAIL;
+        return RETURN_ABORT;
     }
 
     delete p_HeatingDlg;
@@ -136,13 +136,23 @@ int CFillingNDrainingTest::Run(void)
 
     Text = QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
-    (void)p_DevProc->RVMovePosition(false, BottleNumber);
+    Ret = p_DevProc->RVMovePosition(false, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
+    if (RETURN_OK != Ret)
+    {
+        mp_MessageDlg->ShowRVMoveFailedDlg(FILLINGNDRAINING_TITLE);
+        return RETURN_ERR_FAIL;
+    }
 
     Text = QString("Rotary Valve is moving to tube position %1").arg(BottleNumber);
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
-    (void)p_DevProc->RVMovePosition(true, BottleNumber);
+    Ret = p_DevProc->RVMovePosition(true, BottleNumber);
     mp_MessageDlg->HideWaitingDialog();
+    if (RETURN_OK != Ret)
+    {
+        mp_MessageDlg->ShowRVMoveFailedDlg(FILLINGNDRAINING_TITLE);
+        return RETURN_ERR_FAIL;
+    }
 
     Text = "Retort was successfully filled. Start Draining";
     mp_MessageDlg->ShowWaitingDialog(FILLINGNDRAINING_TITLE, Text);
