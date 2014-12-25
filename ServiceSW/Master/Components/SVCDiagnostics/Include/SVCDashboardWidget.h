@@ -256,13 +256,13 @@ private:
     /****************************************************************************/
     /*!
      *  \brief Create all part
-     *  \iparam partResName = the name of the part
-     *  \iparam pos = the pos of the part
+     *  \iparam PartResName = the name of the part
+     *  \iparam Pos = the pos of the part
      *  \iparam Clickable = the flag the part Clickable
      *  \return the pointer of the CGraphiscsItemPart
      */
     /****************************************************************************/
-    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& _pos, bool Clickable = true);
+    CGraphicsItemPart* CreatePart(const QString& PartResName, const QPoint& Pos, bool Clickable = true);
 
     /****************************************************************************/
     /*!

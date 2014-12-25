@@ -68,7 +68,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
     mp_WaitDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_WaitDlg->SetTitle(InitialSystem::MSG_TITLE);
     mp_WaitDlg->SetIcon(QMessageBox::Information);
-    mp_WaitDlg->SetText(tr("System is initializing..."));
+    mp_WaitDlg->SetText(tr("System is initializing ..."));
     mp_WaitDlg->HideAllButtons();
     mp_WaitDlg->setModal(true);
 

@@ -56,11 +56,11 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_MsgDlg = new Diagnostics::CDiagnosticMessageDlg(this);
     InitLabel();
 
-    mp_Retort = CreatePart("Retort", QPoint(406, 30));
+    mp_Retort = CreatePart("Retort", QPoint(404, 30));
     mp_Oven = CreatePart("Oven", QPoint(7, 70));
     mp_RotaryValve = CreatePart("RotaryValve", QPoint(220, 152));
 
-    mp_AirHeatingTube = CreatePart("AirHeatingTube", QPoint(489, 50));
+    mp_AirHeatingTube = CreatePart("AirHeatingTube", QPoint(490, 50));
     mp_HeatingTube = CreatePart("HeatingTube", QPoint(250, 116));
 
     mp_Fan = CreatePart("Fan", QPoint(266, 20));
@@ -77,7 +77,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_Connect2 = CreatePart("ConnectPart", QPoint(569, 256), false);
     mp_Connect3 = CreatePart("ConnectPart", QPoint(517, 360), false);
     mp_Line1    = CreatePart("Line1", QPoint(10, 100), false);
-    mp_Line2    = CreatePart("Line2", QPoint(434, 76), false);
+    mp_Line2    = CreatePart("Line2", QPoint(432, 78), false);
     mp_Line3    = CreatePart("Line3", QPoint(227, 274), false);
 
     mp_GV1StateUp    = CreatePart("ValveState", QPoint(512, 167), false);
@@ -152,8 +152,8 @@ void CSVCDashboardWidget::InitLabel()
 {
     mp_HeatingTubeTemp    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_HeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_HeatingTubeTemp->setPos(358, 126);
-    mp_HeatingTubeCurrent->setPos(358, 147);
+    mp_HeatingTubeTemp->setPos(358, 122);
+    mp_HeatingTubeCurrent->setPos(358, 150);
     mp_HeatingTubeTemp->setText(" Temp: 0\260C");
     mp_HeatingTubeCurrent->setText(" Current: 0A");
 
@@ -181,9 +181,9 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortTemp2 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortTemp3 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortCurrent = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_RetortTemp1->setPos(504, 68);
-    mp_RetortTemp2->setPos(504, 81);
-    mp_RetortTemp3->setPos(504, 94);
+    mp_RetortTemp1->setPos(504, 72);
+    mp_RetortTemp2->setPos(504, 85);
+    mp_RetortTemp3->setPos(504, 98);
     mp_RetortCurrent->setPos(504, 116);
     mp_RetortTemp1->setText("Retort_Temperature1");
     mp_RetortTemp2->setText("Retort_Temperature2");
@@ -208,32 +208,25 @@ void CSVCDashboardWidget::InitLabel()
     mp_PressureLabel->setText(" 0kPa");
 }
 
-CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& partResName, const QPoint& _pos, bool Clickable)
+CGraphicsItemPart* CSVCDashboardWidget::CreatePart(const QString& PartResName, const QPoint& Pos, bool Clickable)
 {
-    QString normalImg = ":/Images/" + partResName + ".png";
-    CGraphicsItemPart* pGraphicsItemPart = NULL;
-    //if (Clickable) {
-        QString disabledImg = ":/Images/" + partResName + "Disabled.png";
-        QString glowImg = ":/Images/" + partResName + "Glow.png";
-        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg),
-                                                QPixmap(disabledImg),
-                                                QPixmap(glowImg), Clickable);
-//    }
-//    else {
-//        pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg));
-//    }
+    QString normalImg   = ":/Images/" + PartResName + ".png";
+    QString disabledImg = ":/Images/" + PartResName + "Disabled.png";
+    QString glowImg     = ":/Images/" + PartResName + "Glow.png";
+    CGraphicsItemPart* pGraphicsItemPart = new CGraphicsItemPart(QPixmap(normalImg), QPixmap(disabledImg),
+                                                                 QPixmap(glowImg), Clickable);
     mp_Scene->addItem(pGraphicsItemPart);
-    pGraphicsItemPart->setPos(_pos);
+    pGraphicsItemPart->setPos(Pos);
     return pGraphicsItemPart;
 }
 
-void CSVCDashboardWidget::paintEvent(QPaintEvent* pPaintEvent)
+void CSVCDashboardWidget::paintEvent(QPaintEvent* p_PaintEvent)
 {
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
     //style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-    QWidget::paintEvent(pPaintEvent);
+    QWidget::paintEvent(p_PaintEvent);
 }
 
 void CSVCDashboardWidget::RetortSelected()

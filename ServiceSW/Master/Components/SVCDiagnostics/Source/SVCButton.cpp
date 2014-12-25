@@ -26,7 +26,7 @@ SVCButton::SVCButton(bool isBig, QWidget *_parent)
     QFont Font;
     Font.setWeight((int)QFont::Black);
     Font.setPointSize(9);
-    setStyleSheet("QPushButton { border-image: url(:/Images/Button2) }");
+    setStyleSheet("QPushButton { border-image: url(:/Images/Button) }");
     if (isBig) {
          // big background
         resize(110, 28);
