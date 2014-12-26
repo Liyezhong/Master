@@ -78,7 +78,15 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
-#define TIME_FOR_CLEANING_DRY_STEP   720    ///< seconds spending in dry step
+#define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
+#define TIME_FOR_FIX_TIME                     195    ///< seconds for fix time
+#define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
+#define TIME_FOR_FILLING                      60     ///< seconds for filling
+#define TIME_FOR_MOVE_SEAL                    3      ///< seconds for move seal
+#define TIME_FOR_PRESSURE_CHECK               15     ///< seconds for pressure check before move tube
+#define TIME_FOR_MOVE_TUBE                    5      ///< seconds for move tube
+#define TIME_FOR_DRAIN                        60     ///< seconds for draing
+#define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 
 /****************************************************************************/
 /*!
@@ -164,6 +172,22 @@ typedef enum
     FAN
 } HeaterType_t;
 
+typedef struct
+{
+    bool    WarningFlagForTime;                         ///< the warning flag for time
+    int     FirstParaffinIndex;                         ///< the first paraffin index
+    quint32 PreTestTime;                                ///< the time of pretest (second unit)
+    quint32 ParaffinStepsCostTime;                      ///< the paraffin steps cost time (second unit)
+    quint32 Scenario260CostTime;                        ///< the scenario cost time (second unit)
+    qint64  GapTime;                                    ///< the gap of step time (millisecond unit)
+    qint64  StartTime;                                  ///< the start time of move tube (millisecond unit)
+    qint64  EndTime;                                    ///< the end time of move seal (millisecond unit)
+    qint64  UserSetEndTime;                             ///< user input the end time (millisecond unit)
+    qint64  BufferTime;                                 ///< the buffer time (millisecond unit)
+    qint64  TotalParaffinProcessingTime;               ///< the total paraffin processing time (second unit)
+    qint64  LastParaffinProcessingTime;                ///< the last paraffin processing time (second unit)
+}ProgramEndTime_t;
+
 /****************************************************************************/
 /*!
  *  \brief struct for Received command
@@ -235,6 +259,7 @@ typedef struct
         QStringList m_UsedStationIDs;        ///< in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+        QList<ProgramStationInfo_t> m_StationAndReagentList;    ///<    Definition/Declaration of variable m_StationList
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
@@ -260,7 +285,7 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
-        bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
+        bool    m_IsSafeReagent;                              ///< Scheduler is in RS_Tissue_Protect state
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
@@ -271,6 +296,7 @@ typedef struct
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
         bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
+        ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -373,12 +399,11 @@ typedef struct
           *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
           *
           *  \param ProgramID = const QString type parameter
-          *  \param SpecifiedStepIndex =  int type parameter
           *
           *  \return from GetLeftProgramStepsNeededTime
           */
          /****************************************************************************/
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
+         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
@@ -1058,11 +1083,37 @@ protected:
 
         /****************************************************************************/
         /**
+         *  \brief reset the time parameter
+         */
+        /****************************************************************************/
+        void ResetTheTimeParameter();
+
+        /****************************************************************************/
+        /**
+         *  \brief Calculate the gap time(in seconds)
+         *  \param IsStartTime - bool flag
+         *  \param IsEndTime - bool flag
+         */
+        /****************************************************************************/
+        void CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime);
+
+        /****************************************************************************/
+        /**
          *  \brief Get the time(in seconds) that PreTest
          *  \return from GetPreTestTime of qint64
          */
         /****************************************************************************/
-        qint64 GetPreTestTime();
+        quint32 GetPreTestTime();
+
+        /****************************************************************************/
+        /**
+         *  \brief Get the RV moving steps
+         *  \param firstPos - qint32
+         *  \param endPos - qint32
+         *  \return from GetMoveSteps of quint32
+         */
+        /****************************************************************************/
+        quint32 GetMoveSteps(qint32 firstPos, qint32 endPos);
 
         /****************************************************************************/
         /**
@@ -1316,14 +1367,6 @@ protected:
         {
             m_CurProgramStepInfo.stationID = StationID;
             m_CurProgramStepInfo.reagentGroup = ReagentGroup;
-            if("RG6" == ReagentGroup)
-            {
-                m_CurProgramStepInfo.nextStationID = "S12";
-            }
-            else
-            {
-                m_CurProgramStepInfo.nextStationID = "S13";
-            }
         }
         /****************************************************************************/
         /*!
@@ -1349,6 +1392,17 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetSafeReagentForSpecial just for scenario 200
+         *  \param  index - int type
+         *  \param  reagentGroupID - QString type
+         *  \param  stationList - QList<QString>
+         *  \return from bool
+         */
+        /****************************************************************************/
+        bool GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!

@@ -56,6 +56,7 @@ class  CRsTissueProtect : public QObject
     typedef enum
     {
         UNKNOWN,
+        FIRST_STEP,
         Fixation,
         Fixation_Overflow,
         Concentration_Dehydration,

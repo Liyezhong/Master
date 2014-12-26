@@ -467,6 +467,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
+    if(200 == Scenario)
+    {
+        return FIRST_STEP;
+    }
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
 
     //Firstly, check if the event id is related with Level Sensor or not
@@ -518,7 +522,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 #endif
 
     ReagentType_t ret = UNKNOWN;
-    if (false == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
+    if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
     {
         ret = Fixation;
     }
@@ -535,7 +539,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
         ret = Paraffin;
     }
 
-    if (true == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
+    if (true == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
     {
         ret = Fixation_Overflow;
     }
@@ -561,9 +565,14 @@ QString CRsTissueProtect::GetStationID()
     ReagentType_t reagentType = this->GetReagentType();
 
     QList<QString> stationList;
+    QString ReagentGroupID="";
     bool ret = false;
     switch (reagentType)
     {
+    case FIRST_STEP:
+        ret = mp_SchedulerController->GetSafeReagentForSpecial(0, ReagentGroupID, stationList);
+        m_ReagentGroup = ReagentGroupID;
+        break;
     case Fixation:
     case Fixation_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG1", stationList);

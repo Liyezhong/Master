@@ -173,6 +173,7 @@ const quint32 EVENT_SCHEDULER_PROGRAM_STEP_START = SCHEDULER_BASE_ID + 0x0330; /
 const quint32 EVENT_SCHEDULER_PROGRAM_FINISHED = SCHEDULER_BASE_ID + 0x0331; ///< Finished Program %1.
 const quint32 EVENT_SCHEDULER_START_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0332; ///< Start the dry processing.
 const quint32 EVENT_SCHEDULER_FINISHED_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0333; ///< Finished the dry processing.
+const quint32 EVENT_SCHEDULER_FOR_WARNING_FLAG = SCHEDULER_BASE_ID + 0x0334; ///< Time between step %1 and step %2 exceed 4 minutes.
 
 
 /// strings
