@@ -541,10 +541,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            else
-            {
-                emit TasksDone(true);
-            }
+            emit TasksDone(true);
         }
         else
         {
