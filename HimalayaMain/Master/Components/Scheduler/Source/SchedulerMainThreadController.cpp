@@ -2083,7 +2083,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList)
 {
     if(index >= m_StationAndReagentList.size())
-        return;
+        return false;
     ProgramStationInfo_t stationInfo = m_StationAndReagentList.at(index);
     reagentGroupID = stationInfo.ReagentGroupID;
     stationList.push_back(stationInfo.StationID);
