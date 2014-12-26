@@ -62,7 +62,8 @@ CStartup::CStartup() : QObject(),
     m_WindowStatusResetTimer(this),
     mp_HeatingStatusDlg(NULL),
     mp_SealingStatusDlg(NULL),
-    m_CurrentTabIndex(0)
+    m_CurrentTabIndex(0),
+    m_ShutDownFlag(false)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -1781,7 +1782,7 @@ void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStr
 
 void CStartup::OnCurrentTabChanged(int TabIndex)
 {
-    if (mp_MainWindow->GetSaMUserMode() == "Service" && !mp_UpdateSystem->GetFlag()) {
+    if (mp_MainWindow->GetSaMUserMode() == "Service" && !m_ShutDownFlag) {
         if (TabIndex == 3) {//SVCDiagnostics
             MainMenu::CMessageDlg *p_MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
             p_MsgDlg->SetTitle("WARNING!");

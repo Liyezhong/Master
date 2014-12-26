@@ -1347,6 +1347,7 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
+    mp_GUIStartup->SetShutDownFlag(true);
     if (NeedUpdate) {
         sendManufacturingTestCommand(Service::SYSTEM_SHUTDOWN);
 

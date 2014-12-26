@@ -56,16 +56,6 @@ public:
     /****************************************************************************/
     ~CSystem(void);
 
-    /****************************************************************************/
-    /**
-     * \brief To get shut donw flag.
-     * \return flag of shut down
-     */
-    /****************************************************************************/
-    bool GetFlag() {
-        return m_ShutDownFlag;
-    }
-
 private Q_SLOTS:
 
     /****************************************************************************/
@@ -105,8 +95,6 @@ private:
     Ui::CServiceSystem   *mp_Ui;            //!< User Interface
 
     MainMenu::CMessageDlg *mp_MessageDlg;   //!< Information dialog
-
-    bool m_ShutDownFlag;                    //!< Flag for shut down.
 };
 
 } // end namespace ServiceUpdates

@@ -191,6 +191,16 @@ public:
         return m_CurrentUserMode;
     }
 
+    /****************************************************************************/
+    /**
+     * \brief Set shut down flag
+     * \iparam Flag = flag of shut down
+     */
+    /****************************************************************************/
+    void SetShutDownFlag(bool Flag) {
+        m_ShutDownFlag = Flag;
+    }
+
 private:
 
     bool        m_SelfTestFinished;                     //!< Check if system self test is finished.
@@ -266,7 +276,8 @@ private:
 
     Diagnostics::ServiceDeviceProcess* mp_ServDevProc;
 
-    int m_CurrentTabIndex;
+    int m_CurrentTabIndex;  //!< Store current tab index
+    bool m_ShutDownFlag;    //!< Flag of shut down for current tab change
 
 private slots:
     void SetDateTime(QDateTime DateTime);
