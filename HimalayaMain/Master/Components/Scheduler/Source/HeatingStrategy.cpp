@@ -859,34 +859,6 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
     }
     return 0; // Have not got the time out
 }
-bool HeatingStrategy::CheckLASensorStatus(const QString& HeaterName, qreal HWTemp)
-{
-    if ("LATube1" == HeaterName)
-    {
-        if (HWTemp >= m_LARVTube.functionModuleList[m_LARVTube.curModuleId].OTTargetTemperature
-                && HWTemp < m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    if ("LATube2" == HeaterName)
-    {
-        if (HWTemp >= m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].OTTargetTemperature
-                && HWTemp < m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {

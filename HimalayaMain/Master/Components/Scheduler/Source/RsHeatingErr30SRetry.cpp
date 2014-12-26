@@ -192,17 +192,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
         else
         {
             bool ret = true;
-            if (heaterType == LATUBE1)
-            {
-                qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
-                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLASensorStatus("LATube1",HWTemp);
-            }
-            else if (heaterType == LATUBE2)
-            {
-                qreal HWTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube2;
-                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLASensorStatus("LATube2",HWTemp);
-            }
-            else if (heaterType == FAN)
+            if (heaterType == FAN)
             {
                 // Do nothing, we need NOT check temperature in this case
             }

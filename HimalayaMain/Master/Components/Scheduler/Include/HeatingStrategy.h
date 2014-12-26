@@ -281,16 +281,6 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief check LA Sensor status
-     *  \param HeaterName - sensor's name
-     *  \param HWTemp = qreal temperature
-     *  \return bool true - success, false - failed
-     */
-    /****************************************************************************/
-    bool CheckLASensorStatus(const QString& HeaterName, qreal HWTemp);
-
-    /****************************************************************************/
-    /*!
      *  \brief  Initialize parameters when entering scenario 260
      *  \param  void
      *  \return void
