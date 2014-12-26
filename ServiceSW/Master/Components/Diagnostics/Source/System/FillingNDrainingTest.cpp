@@ -220,7 +220,7 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
     }
     else if (RetNum == 4) {
         Text = "System Filling & Draining Test failed.<br>"\
-                "Level sensor’mp_ParentWidgets target temperature was not "\
+                "Level sensor's target temperature was not "\
                 "reached in time. Clean level sensor, repeat this "\
                 "test. If still failed, exchange the level sensor.";
     }
