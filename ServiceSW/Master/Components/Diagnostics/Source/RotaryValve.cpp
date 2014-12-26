@@ -59,12 +59,11 @@ void CRotaryValve::StartMovementTest(void)
     qDebug() << "Rotary Valve: start movement test";
 
     RotaryValve::CMovementTest test(mp_MessageDlg);
-
-    if (test.Run() == RETURN_OK) {
+    ErrorCode_t ret = (ErrorCode_t)test.Run();
+    if (ret == RETURN_OK) {
         emit EnableTestButton();
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_SUCCESS);
-    } else if (test.Run() == RETURN_ABORT) {
-            emit EnableTestButton();
+    } else if (ret == RETURN_ABORT) {
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"rotary valve movement");
     } else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_FAILURE);
