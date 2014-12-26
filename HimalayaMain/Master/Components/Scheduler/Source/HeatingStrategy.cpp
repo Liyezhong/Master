@@ -428,7 +428,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
         }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRTBottom);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(107);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(6000);
