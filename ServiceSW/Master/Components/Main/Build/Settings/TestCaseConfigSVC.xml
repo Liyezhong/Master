@@ -10,7 +10,7 @@
 		<SLTubePreTest LTubeTargetTemp="80" LTubeRangeTemp="100" PreHeatingTargetTemp="80"/>
 	</InitialSystem>
 	<Oven>
-		<HeatingTestEmpty  OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="1800" t2="60"/>
+                <HeatingTestEmpty  OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="900" t2="60"/>
 	</Oven>
 	<RotaryValve>
 		<MovementTest RVSensor1TempMin="80" RVSensor2TempMin="40"/>
