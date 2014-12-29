@@ -90,7 +90,7 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     mp_SelectBtn    = new SVCButton(false, mp_Ui->graphicsView);
     mp_ValveInfoBtn = new SVCButton(true, mp_Ui->graphicsView);
     mp_SelectBtn->setText("Select Position");
-    mp_SelectBtn->setPos(137,238);
+    mp_SelectBtn->setPos(133,238);
     mp_ValveInfoBtn->setText("Valve State Info");
     mp_ValveInfoBtn->setPos(400, 420);
 
@@ -194,10 +194,10 @@ void CSVCDashboardWidget::InitLabel()
     mp_RotaryValveTemp1    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RotaryValveTemp2    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RotaryValveCurrent  = new SVCLabel(true, mp_Ui->graphicsView);
-    mp_RotaryValvePosition->setPos(137, 183);
-    mp_RotaryValveTemp1->setPos(137, 196);
-    mp_RotaryValveTemp2->setPos(137, 209);
-    mp_RotaryValveCurrent->setPos(137, 222);
+    mp_RotaryValvePosition->setPos(133, 183);
+    mp_RotaryValveTemp1->setPos(133, 196);
+    mp_RotaryValveTemp2->setPos(133, 209);
+    mp_RotaryValveCurrent->setPos(133, 222);
     mp_RotaryValvePosition->setText(" Position: Unknow");
     mp_RotaryValveTemp1->setText(" Temp1: 0\260C");
     mp_RotaryValveTemp2->setText(" Temp1: 0\260C");
