@@ -124,7 +124,7 @@ int CDrainReagentTest::Run(void)
             break;
         }
 
-        if (Ret == 1100) {//Time out
+        if (Ret == -3) {//Time out
             ShowFinishDlg(6);
             return RETURN_ERR_FAIL;
         }
