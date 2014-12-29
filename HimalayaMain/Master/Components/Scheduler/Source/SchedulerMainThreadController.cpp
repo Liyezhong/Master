@@ -384,7 +384,6 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
-        LogDebug("Self test is done");
         if(m_ProgramStatusInfor.GetErrorFlag() == 1)
         {
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(

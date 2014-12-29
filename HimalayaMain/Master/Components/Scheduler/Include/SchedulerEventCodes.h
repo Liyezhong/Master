@@ -106,6 +106,7 @@ const quint32 EVENT_SCHEDULER_START_OVENBOT_TEMP = SCHEDULER_BASE_ID + 0x139; //
 const quint32 EVENT_SCHEDULER_START_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0x13A; ///< Start heating oven bottom successfully.
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP = SCHEDULER_BASE_ID + 0x13B; ///< Stop heating oven bottom.
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0x14C; ///< Stop heating oven bottom successfully.
+const quint32 EVENT_SCHEDULER_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x14D; ///< Self test success.
 
 // Pre test
 const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 0x0200; ///< Start the pretest.

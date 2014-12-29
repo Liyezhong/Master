@@ -1127,6 +1127,9 @@
 	    <Event Code="" ErrorID="67174732" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174732" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="67174733" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67174733" ButtonType="" StatusBar=""/>
+	    </Event>
 	    <Event Code="" ErrorID="67174912" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_START_PRETEST" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174912" ButtonType="" StatusBar=""/>
 	    </Event>
@@ -1297,6 +1300,9 @@
 	    </Event>
 	    <Event Code="" ErrorID="67175219" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_FINISHED_DRY_PROCESSING" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175219" ButtonType="" StatusBar=""/>
+	    </Event>
+	    <Event Code="" ErrorID="67175220" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_FOR_WARNING_FLAG" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175220" ButtonType="" StatusBar=""/>
 	    </Event>
 	</Source>
 </EventConfigure>

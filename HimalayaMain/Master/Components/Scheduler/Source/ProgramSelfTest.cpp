@@ -79,6 +79,7 @@ void CProgramSelfTest::SendSignalSelfTestDone(bool flag)
     if(flag)
     {
         emit SigSelfTestDone(true);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SUCCESSFULLY);
     }
     else
     {

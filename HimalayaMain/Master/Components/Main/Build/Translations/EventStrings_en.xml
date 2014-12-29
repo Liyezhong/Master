@@ -638,6 +638,7 @@
    		<string id="67174714" text1="Start heating oven bottom successfully." text2="" />
    		<string id="67174715" text1="Stop heating oven bottom." text2="" />
    		<string id="67174732" text1="Stop heating oven bottom successfully." text2="" />
+   		<string id="67174733" text1="Self test success." text2="" />
    		<string id="67174912" text1="Start the pretest." text2="" />
    		<string id="67174913" text1="Check the level sensor temperature." text2="" />
    		<string id="67174914" text1="Check the level sensor temperature passed." text2="" />
