@@ -2031,14 +2031,17 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
             }
             else
             {
-                if(i == beginStep && "RG1" == stationInfo.ReagentGroupID)
+                if(i == beginStep)
                 {
-                    m_IsNeedBottleCheck = true;
-                    StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
-                }
-                else
-                {
-                    m_IsNeedBottleCheck = false;
+                    if("RG1" == stationInfo.ReagentGroupID)
+                    {
+                        m_IsNeedBottleCheck = true;
+                        StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                    }
+                    else
+                    {
+                        m_IsNeedBottleCheck = false;
+                    }
                 }
             }
         }
