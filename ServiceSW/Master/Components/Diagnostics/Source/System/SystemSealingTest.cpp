@@ -75,8 +75,12 @@ int CSystemSealingTest::Run(void)
 
     Text = "Rotary Valve is moving to sealing position 1";
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
-    (void)p_DevProc->RVMovePosition(false, 1);
+    Ret = p_DevProc->RVMovePosition(false, 1);
     mp_MessageDlg->HideWaitingDialog();
+    if (Ret != RETURN_OK) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return RETURN_ERR_FAIL;
+    }
 
 Create_Pressure_Test:
 

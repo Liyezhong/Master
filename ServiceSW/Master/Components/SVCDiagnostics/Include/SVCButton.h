@@ -71,7 +71,7 @@ public:
     /*!
      *  \brief  Definition/Declaration of function setSize, change button size;
      *  \iparam _width = width of value
-     *  \iparam _heigth = heigth of value
+     *  \iparam _height = heigth of value
      */
     /****************************************************************************/
     void setSize(int _width, int _height);

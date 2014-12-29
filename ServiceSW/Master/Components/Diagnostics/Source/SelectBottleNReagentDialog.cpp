@@ -76,7 +76,7 @@ CSelectBottleNReagentDialog::CSelectBottleNReagentDialog(int MaxBottleNum, QWidg
 
     CONNECTSIGNALSLOTGUI(mp_Ui->okBtn, clicked(), this, OnOk());
 
-    CONNECTSIGNALSLOTGUI(mp_Ui->abortBtn, clicked(), this, OnAbort());
+    CONNECTSIGNALSLOTGUI(mp_Ui->abortBtn, clicked(), this, reject());
 }
 
 /****************************************************************************/

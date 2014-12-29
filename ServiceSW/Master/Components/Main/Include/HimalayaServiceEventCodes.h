@@ -22,8 +22,8 @@
 
 #include <QtGlobal>
 
-const quint32 EVENT_GROUP_HIMALAYASERVICE                                     = 0x06;
-const quint32 EVENT_GROUP_HIMALAYASERVICE_MAIN                                = ((EVENT_GROUP_HIMALAYASERVICE << 8) + 0x01) << 16;
+const quint32 EVENT_GROUP_HIMALAYASERVICE                                     = 0x06;   //!< Service EVENT group ID
+const quint32 EVENT_GROUP_HIMALAYASERVICE_MAIN                                = ((EVENT_GROUP_HIMALAYASERVICE << 8) + 0x01) << 16; //!< event group main id
 
 const quint32 EVENT_LOGIN_MANUFACTURING                                       = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0001;  ///< 100728833 Manufacturing user logged in
 const quint32 EVENT_LOGIN_SERVICE                                             = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0002;  ///< 100728834 Service user logged in
