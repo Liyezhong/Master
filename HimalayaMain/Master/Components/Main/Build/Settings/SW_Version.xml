@@ -11,9 +11,9 @@
     <file Filename="himalaya_service" Version="SERV_0.001" Date="2013-09-10"></file>
   </Master_SW>
   <Firmware>
-    <file Filename="ASB3_0.bin" Version="0.001" Date="2012-06-22"></file>
-    <file Filename="ASB5_0.bin" Version="0.001" Date="2012-06-22"></file>
-    <file Filename="ASB15_0.bin" Version="0.001" Date="2012-06-22"></file>
+    <file Filename="ASB3.bin" Version="0" Date="2012-06-22"></file>
+    <file Filename="ASB5.bin" Version="0" Date="2012-06-22"></file>
+    <file Filename="ASB15.bin" Version="0" Date="2012-06-22"></file>
   </Firmware>
   <InitScripts>
 	  <file Filename="InitScripts" Version="INT_0.001" Date="2012-06-22"/>
