@@ -249,7 +249,7 @@ void SchedulerMainThreadController::OnReportFillingTimeOut2Min()
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if (0 != Scenario)
     {
-        RaiseError(0, DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, m_CurrentScenario, true);
+        SendOutErrMsg(DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, false);
     }
 }
 void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
@@ -258,7 +258,7 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if (0 != Scenario)
     {
-        RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
+        SendOutErrMsg(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, false);
     }
 }
 
@@ -267,7 +267,7 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
-    RaiseError(0, DCL_ERR_DEV_INTER_SW_ERROR, m_CurrentScenario, true);
+    SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -486,8 +486,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
 
-    RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
-    m_SchedulerMachine->SendErrorSignal();
+    SendOutErrMsg( DCL_ERR_DEV_POWERFAILURE);
 }
 
 
@@ -811,8 +810,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Filling failed"));
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
             }
         }
@@ -845,8 +843,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
+                        SendOutErrMsg(retCode);
                     }
                 }
             }
@@ -884,8 +881,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         }
                         else
                         {
-                            RaiseError(0, retCode, m_CurrentScenario, true);
-                            m_SchedulerMachine->SendErrorSignal();
+                            SendOutErrMsg(retCode);
                         }
                     }
                     //if it is Cleaning program, need not notify user
@@ -988,12 +984,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 if (0 == m_ProcessingPV) // for Pressure
                                 {
                                     m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, m_CurrentScenario, true);
+                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
                                 }
                                 else if (1 == m_ProcessingPV)
                                 {
                                     m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
                                 }
                             }
                         }
@@ -1024,25 +1020,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
             }
             m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
-#if 0
-
-            if(IsRVRightPosition(TUBE_POS))
-            {
-                m_SchedulerMachine->NotifyRVMoveToTubeReady();
-            }
-            else
-            {
-                if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
-                {
-                    if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                    {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
-                    }
-                }
-
-            }
-#endif
         }
         else if(PSSM_DRAINING == stepState)
         {
@@ -1072,8 +1049,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
              }
         }
@@ -1090,8 +1066,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
+                        SendOutErrMsg(retCode);
                     }
                 }
             }
@@ -1523,10 +1498,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         LogDebug("In Rs_Rv_MoveToPosition3.5");
         m_SchedulerMachine->HandleRsMoveToPSeal(cmdName, retCode);
     }
-//    else
-//    {
-//        LogDebug(QString("In ERROR state unknown currentState: %1").arg(currentState));
-//    }
 }
 
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
@@ -1762,16 +1733,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     return CTRL_CMD_UNKNOWN;
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
-
-#if 0
-void SchedulerMainThreadController::DequeueNonDeviceCommand()
-{
-        if(!m_SchedulerCmdQueue.isEmpty())
-        {
-            m_SchedulerCmdQueue.dequeue();
-        }
-}
-#endif
 
 bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString& ProgramID,
                                                                   ProgramStepInfor& programStepInfor,
@@ -2976,8 +2937,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-            RaiseError(0, retCode, Scenario, true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(retCode);
         }
     }
 
@@ -2992,12 +2952,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
         {
-            RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+            SendOutErrMsg(DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, false);
             m_CheckRemoteAlarmStatus = false;
         }
         if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
         {
-            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+            SendOutErrMsg(DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, false);
             m_CheckLocalAlarmStatus = false;
         }
     }
@@ -3012,8 +2972,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave3Voltage < slave3LowerLimit || strctHWMonitor.Slave3Voltage > slave3UpperLimit)
         {
             LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE);
         }
 
         quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
@@ -3021,8 +2980,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave5Voltage < slave5LowerLimit || strctHWMonitor.Slave5Voltage > slave5UpperLimit)
         {
             LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE);
         }
 
         quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
@@ -3030,22 +2988,19 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
         {
             LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
         }
 
         // For current related
         if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
         {
             LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
-            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
         }
         if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
         {
             LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
-            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
         }
 
     }
@@ -3058,12 +3013,10 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             if(qAbs(m_PressureAL) >40.0 )
             {
                 LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
-                RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
-                m_SchedulerMachine->SendErrorSignal();
+                SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE);
             }
         }
 	}
-
 
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALLevelSensor))
 	{
@@ -3090,8 +3043,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
-                RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
+                SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME);
             }
 #endif
         }
@@ -3121,15 +3073,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                  || (Scenario >= 281 && Scenario <= 297) )
             {
                 LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(Scenario));
-                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
             }
             if(Scenario >= 271 && Scenario <= 277)
             {
                 if ("ERROR" != StepID && "IDLE" != StepID)
                 {
                     ReleasePressure();
-                    RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
                 }
             }
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
@@ -3161,14 +3112,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    RaiseError(0, retCode, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
                 SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
                 if((currentState & 0xF) == SM_BUSY && currentState != PSSM_PAUSE)
                 {
-                    RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
                 }
 
                 // Notify retort lid is opened
@@ -3197,8 +3146,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    RaiseError(0, retCode, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
             }
 
@@ -3213,25 +3161,21 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     //Check No-Signal error for Retort sensors
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom1))
     {
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
     {
         LogDebug("The RT bottom2 no signal");
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTSide))
     {
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
     }
     //the Level Scenario no signal is the same with over range
     if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
     {
-        RaiseError(0, DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
     }
     m_PositionRV = strctHWMonitor.PositionRV;
 }
@@ -3483,10 +3427,9 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             }
             else
             {
-                RaiseError(0, retCode, m_CurrentScenario, true);
                 CurrentState = CDS_READY;
-                m_SchedulerMachine->SendErrorSignal();
                 StepStartTime = 0;
+                SendOutErrMsg(retCode);
             }
         }
         break;
@@ -3506,10 +3449,9 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                RaiseError(0, retCode, m_CurrentScenario, true);
                 CurrentState = CDS_READY;
-                m_SchedulerMachine->SendErrorSignal();
-                StepStartTime = 0;;
+                StepStartTime = 0;
+                SendOutErrMsg(retCode);
             }
             else
             {
@@ -3531,7 +3473,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             warningReport = true;
             if (qAbs(m_PressureAL) < 25.0)
             {
-                RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
             }
         }
         break;
@@ -4363,54 +4305,45 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     if (reportError1.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError2.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError3.instanceID != 0 )
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError4.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError5.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-        //m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError6.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-       // m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError7.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-       // m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError8.instanceID != 0)
     {
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
-        RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
     }
 
     if (reportError9.instanceID != 0)
     {
         LogDebug(QString("In RV heating error state, the current is :%1").arg(reportError9.errorData));
-        RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
     }
 }
 
@@ -4664,6 +4597,61 @@ void SchedulerMainThreadController::CloseTheAlarm()
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
     cmd->SetRmtLocOpcode(-1);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+}
+
+void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
+{
+    bool ret = false;
+    ret = RaiseError(0, EventId, m_CurrentScenario, true);
+    if(!ret)
+    {
+        //log
+        //RaiseEvent();
+    }
+    else
+    {
+        if(IsErrorMsg)
+        {
+            m_SchedulerMachine->SendErrorSignal();
+        }
+    }
+}
+
+/*lint -e641 */
+bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
+                          const bool ActionResult, const bool Active)
+{
+    if(EventKey == 0)
+    {
+        // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
+        if (EventID < 0x1000)
+        {
+            LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
+            EventID = DCL_ERR_DEV_INTER_SW_ERROR;
+        }
+
+        quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
+        if(ErrorID == 0)//unknow error
+        {
+            return false;
+        }
+        // We only update current event ID when current status is NOT error.
+        SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+        if (SM_ERROR != (currentState & 0xFF))
+        {
+            m_CurErrEventID = EventID;
+        }
+
+        Global::tTranslatableStringList EventStringParList;
+        Global::tTranslatableStringList EventRDStringParList;
+        GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
+        Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
+    }
+    else
+    {
+        Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
+    }
+    return true;
 }
 
 }

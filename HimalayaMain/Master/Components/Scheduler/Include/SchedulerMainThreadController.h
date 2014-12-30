@@ -335,16 +335,7 @@ typedef struct
          */
         /****************************************************************************/
         ControlCommandType_t PeekNonDeviceCommand();
-#if 0
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function DequeueNonDeviceCommand
-         *
-         *  \return from DequeueNonDeviceCommand
-         */
-        /****************************************************************************/
-        void DequeueNonDeviceCommand();
-#endif
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetReagentName
@@ -806,12 +797,6 @@ protected:
           */
          /****************************************************************************/
          void OnAcknowledge(Global::tRefType Ref, const Global::AckOKNOK &Ack);
-        /****************************************************************************/
-        /**
-         *  \brief Called when a local/remote alarm raises.
-         */
-        /****************************************************************************/
-//        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
          /****************************************************************************/
          /**
@@ -927,42 +912,13 @@ protected:
          *  \iparam    Scenario
          *  \iparam    ActionResult
          *  \iparam    Active
+         *  \return    bool for RaiseError
          */
          /****************************************************************************/
         /*lint -e641 */
-        virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
-                                  const bool ActionResult, const bool Active = true)
-        {
-            if(EventKey == 0)
-            {                // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
-                if (EventID < 0x1000)
-                {
-                    LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
-                    EventID = DCL_ERR_DEV_INTER_SW_ERROR;
-                }
+        bool RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
+                                  const bool ActionResult, const bool Active = true);
 
-                quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
-                if(ErrorID == 0)// not find
-                {
-                    ErrorID = EventID;
-                }
-                // We only update current event ID when current status is NOT error.
-                SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-                if (SM_ERROR != (currentState & 0xFF))
-                {
-                    m_CurErrEventID = EventID;
-                }
-
-                Global::tTranslatableStringList EventStringParList;
-                Global::tTranslatableStringList EventRDStringParList;
-                GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
-                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
-            }
-            else
-            {
-                Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
-            }
-        }
         /****************************************************************************/
         /**
          * @brief raise event to event handler
@@ -1204,14 +1160,11 @@ protected:
         /****************************************************************************/
         /**
          *  \brief  Send out Error message
-         *  \param  EventId
+         *  \param  EventId - ReturnCodde_t
+         *  \param  IsErrorMsg - bool type
          */
         /****************************************************************************/
-        void SendOutErrMsg(ReturnCode_t EventId)
-        {
-            RaiseError(0,EventId, m_CurrentScenario, true);
-            m_SchedulerMachine->SendErrorSignal();
-        }
+        void SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg = true);
 
         /****************************************************************************/
         /**

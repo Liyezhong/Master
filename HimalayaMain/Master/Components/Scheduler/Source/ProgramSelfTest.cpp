@@ -171,8 +171,8 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     else
                     {
                         m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -201,8 +201,8 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     else
                     {
                         m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -225,15 +225,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 else
                 {
                     m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             else
             {
                 m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOP_HEATING_ACMODE:
@@ -261,15 +261,15 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     else
                     {
                         m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                        mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                 }
                 else
                 {
                     m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -313,8 +313,8 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 else
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_UNKNOW_ASB5_SWITCHTYPE);
-                    //mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_ASB5_VOLTAGE_VALUE_UNKNOW, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                        SendSignalSelfTestDone(false);
                     m_StateACVoltageStep = SET_VOLTAGE_ASB3_SWITCH;
                     m_StateACVoltageStepCount = 0;
                 }
@@ -341,8 +341,8 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                     }
                     else
                     {
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -376,8 +376,8 @@ void CProgramSelfTest::HandleStateDCHeating()
             }
             else
             {
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_LATUBE1:
@@ -400,8 +400,8 @@ void CProgramSelfTest::HandleStateDCHeating()
                 else
                 {
                     m_StateDCHeatingStep = STARTHEATING_LATUBE1;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -417,8 +417,8 @@ void CProgramSelfTest::HandleStateDCHeating()
             else
             {
                 m_StateDCHeatingStep = STARTHEATING_LATUBE1;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_LATBUBE2:
@@ -441,8 +441,8 @@ void CProgramSelfTest::HandleStateDCHeating()
                 else
                 {
                     m_StateDCHeatingStep = STARTHEATING_LATUBE1;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -458,8 +458,8 @@ void CProgramSelfTest::HandleStateDCHeating()
             else
             {
                 m_StateDCHeatingStep = STARTHEATING_LATUBE1;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_LEVELSENSOR:
@@ -483,8 +483,8 @@ void CProgramSelfTest::HandleStateDCHeating()
                 else
                 {
                     m_StateDCHeatingStep = STARTHEATING_LATUBE1;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -571,8 +571,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     else
                     {
                         m_StatePressureStep = START_PUMP;
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -608,8 +608,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                         else
                         {
                             m_StatePressureStep = START_PUMP;
-                            mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                            SendSignalSelfTestDone(false);
+                            if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                                SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
                         m_IsLoged = 0;
@@ -640,8 +640,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     else
                     {
                         m_StatePressureStep = START_PUMP;
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -677,8 +677,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                         else
                         {
                             m_StatePressureStep = START_PUMP;
-                            mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                            SendSignalSelfTestDone(false);
+                            if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                                SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
                         m_IsLoged = 0;
@@ -707,8 +707,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                     else
                     {
                         m_StatePressureStep = START_PUMP;
-                        mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                        SendSignalSelfTestDone(false);
+                        if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                            SendSignalSelfTestDone(false);
                     }
                     m_StartReq = 0;
                 }
@@ -743,8 +743,8 @@ void CProgramSelfTest::HandlePressure(const QString& cmdName, DeviceControl::Ret
                         else
                         {
                             m_StatePressureStep = START_PUMP;
-                            mp_SchedulerThreadController->RaiseError(0, retCode, 2, true);
-                            SendSignalSelfTestDone(false);
+                            if(mp_SchedulerThreadController->RaiseError(0, retCode, 2, true))
+                                SendSignalSelfTestDone(false);
                         }
                         m_StartReq = 0;
                         m_IsLoged = 0;
@@ -776,8 +776,8 @@ void CProgramSelfTest::HandleStateACHeating()
             else
             {
                 m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_RETORTOP:
@@ -800,8 +800,8 @@ void CProgramSelfTest::HandleStateACHeating()
                 else
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -817,8 +817,8 @@ void CProgramSelfTest::HandleStateACHeating()
             else
             {
                 m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_RETORTBOTTOM:
@@ -841,8 +841,8 @@ void CProgramSelfTest::HandleStateACHeating()
                 else
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -858,8 +858,8 @@ void CProgramSelfTest::HandleStateACHeating()
             else
             {
                 m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_OVENTOP:
@@ -882,8 +882,8 @@ void CProgramSelfTest::HandleStateACHeating()
                 else
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -899,8 +899,8 @@ void CProgramSelfTest::HandleStateACHeating()
             else
             {
                 m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_OVENBOTTOM:
@@ -923,8 +923,8 @@ void CProgramSelfTest::HandleStateACHeating()
                 else
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
@@ -940,8 +940,8 @@ void CProgramSelfTest::HandleStateACHeating()
             else
             {
                 m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                SendSignalSelfTestDone(false);
+                if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                    SendSignalSelfTestDone(false);
             }
             break;
         case STOPHEATING_RV:
@@ -965,8 +965,8 @@ void CProgramSelfTest::HandleStateACHeating()
                 else
                 {
                     m_StateACHeatingStep = STARTHEATING_RETORTTOP;
-                    mp_SchedulerThreadController->RaiseError(0, ret, 2, true);
-                    SendSignalSelfTestDone(false);
+                    if(mp_SchedulerThreadController->RaiseError(0, ret, 2, true))
+                        SendSignalSelfTestDone(false);
                 }
             }
             break;
