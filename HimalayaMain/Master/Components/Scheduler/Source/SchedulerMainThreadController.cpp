@@ -1075,6 +1075,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if (0 == m_PssmStepFinSeq)
             {
+                m_UnknownErrorLogVector.clear();
                 RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
                 m_PssmStepFinSeq++;
             }
@@ -4606,7 +4607,12 @@ void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsE
     if(!ret)
     {
         //log
-        //RaiseEvent();
+        QString temp = QString::number(EventId) + QString::number(m_CurrentScenario);
+        if(-1 == m_UnknownErrorLogVector.indexOf(temp))
+        {
+            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(m_CurrentScenario));
+            m_UnknownErrorLogVector.push_back(temp);
+        }
     }
     else
     {

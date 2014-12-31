@@ -1309,5 +1309,8 @@
 	    <Event Code="" ErrorID="67175220" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_FOR_WARNING_FLAG" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175220" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="67175221" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_UNKNOW_ERROR" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175221" ButtonType="" StatusBar=""/>
+	    </Event>
 	</Source>
 </EventConfigure>

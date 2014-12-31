@@ -297,6 +297,7 @@ typedef struct
         bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
+        QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
