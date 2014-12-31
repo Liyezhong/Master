@@ -68,19 +68,33 @@ bool CProgramStatusInfor::InitProgramStatus(quint32 ParaffinMeltPoint)
    m_FirstStopHeatingTime = 0;
    if(CalculateTime(HeatingTime,UnHeatingTime))
    {
-       if(UnHeatingTime > 4 * TIME_1_HOUR)
+       if(HeatingTime <= m_MaxMeltTime)
        {
-           m_RemainTime = m_MaxMeltTime;
-       }
-       else
-       {
-           if((m_MaxMeltTime + 2 * UnHeatingTime + TIME_1_HOUR) >= m_MaxMeltTime + HeatingTime)
+           if(UnHeatingTime > 4 * TIME_1_HOUR)
            {
                m_RemainTime = m_MaxMeltTime;
            }
            else
            {
-               m_RemainTime = m_MaxMeltTime - HeatingTime + 2 * UnHeatingTime + TIME_1_HOUR;
+               if((m_MaxMeltTime + 2 * UnHeatingTime + TIME_1_HOUR) > m_MaxMeltTime + HeatingTime)
+               {
+                   m_RemainTime = m_MaxMeltTime;
+               }
+               else
+               {
+                   m_RemainTime = m_MaxMeltTime - HeatingTime + 2 * UnHeatingTime + TIME_1_HOUR;
+               }
+           }
+       }
+       else
+       {
+           if(UnHeatingTime > 4 * TIME_1_HOUR)
+           {
+               m_RemainTime = m_MaxMeltTime;
+           }
+           else
+           {
+               m_RemainTime =  2 * UnHeatingTime + TIME_1_HOUR;
            }
        }
    }
