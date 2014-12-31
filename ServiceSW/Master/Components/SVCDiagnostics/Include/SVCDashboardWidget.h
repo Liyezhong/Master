@@ -229,6 +229,14 @@ private:
 
     /****************************************************************************/
     /*!
+     *  \brief To check rotary valve sensor temperature
+     *  \return Is the rotary valve sensor reach the target temperature
+     */
+    /****************************************************************************/
+    bool CheckRVTemperature();
+
+    /****************************************************************************/
+    /*!
      *  \brief Make position to string.
      *  \iparam TubeFlag = flag of tube position
      *  \iparam Position = target position

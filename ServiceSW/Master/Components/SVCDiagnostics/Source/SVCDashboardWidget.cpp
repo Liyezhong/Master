@@ -33,6 +33,7 @@
 #include "SVCDiagnostics/Include/SVCValveStateInfoDlg.h"
 
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 
 using namespace SVCDiagnostics;
@@ -233,6 +234,9 @@ void CSVCDashboardWidget::RetortSelected()
 {
     qDebug()<<"retort selected.";
 
+    quint32 EventId;
+    Global::tTranslatableStringList StrList;
+    StrList<<"Retort";
     CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
 
     if (Status == CGraphicsItemPart::Working) {
@@ -249,21 +253,31 @@ void CSVCDashboardWidget::RetortSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Retort", "Retort start heating failed.");
             mp_Retort->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING;
+        StrList<<QString::number(TargetTemp);
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->RetortStopHeating() !=(int) Diagnostics::RETURN_OK) {
             ShowFailedDlg("Retort", "Retort stop heating failed.");
             mp_Retort->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EventId, StrList);
     //qDebug()<<"get Retort status:"<<Status;
 }
 
 void CSVCDashboardWidget::OvenSelected()
 {
     qDebug()<<"Oven selected.";
+
+    quint32 EventId;
+    Global::tTranslatableStringList StrList;
+    StrList<<"Oven";
 
     CGraphicsItemPart::PartStatus Status = mp_Oven->Status();
 
@@ -280,21 +294,31 @@ void CSVCDashboardWidget::OvenSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Oven", "Oven start heating failed.");
             mp_Oven->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING;
+        StrList<<QString::number(TargetTemp);
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->OvenStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Oven", "Oven stop heating failed.");
             mp_Oven->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
-
+    Global::EventObject::Instance().RaiseEvent(EventId, StrList);
     //qDebug()<<"get Oven status:"<<Status;
 }
 
 void CSVCDashboardWidget::RotaryValveSelected()
 {
     qDebug()<<"Rotary Valve selected.";
+
+    quint32 EventId;
+    Global::tTranslatableStringList StrList;
+    StrList<<"Rotary Valve";
 
     CGraphicsItemPart::PartStatus Status = mp_RotaryValve->Status();
 
@@ -311,21 +335,32 @@ void CSVCDashboardWidget::RotaryValveSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Rotary Valve", "Rotary valve start heating failed.");
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+
+         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING;
+         StrList<<QString::number(TargetTemp);
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->RVStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Rotary Valve", "Rotary valve stop heating failed.");
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EventId, StrList);
     //qDebug()<<"get RotaryValve status:"<<Status;
 }
 
 void CSVCDashboardWidget::AirTubeSelected()
 {
     qDebug()<<"Air Heating Tube selected.";
+
+    quint32 EventId;
+    Global::tTranslatableStringList StrList;
+    StrList<<"Air Tube";
 
     CGraphicsItemPart::PartStatus Status = mp_AirHeatingTube->Status();
 
@@ -343,21 +378,32 @@ void CSVCDashboardWidget::AirTubeSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Air heating tube", "Air heating tube start heating failed.");
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING;
+        StrList<<QString::number(TargetTemp);
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Air Heating Tube", "Air heating tube stop heating failed.");
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EventId, StrList);
     //qDebug()<<"get AirHeatingTube status:"<<Status;
 }
 
 void CSVCDashboardWidget::LiquidTubeSelected()
 {
     qDebug()<<"Liquid Heating Tube selected.";
+
+    quint32 EventId;
+    Global::tTranslatableStringList StrList;
+    StrList<<"Liquid Tube";
 
     CGraphicsItemPart::PartStatus Status = mp_HeatingTube->Status();
 
@@ -375,15 +421,22 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Liquid Heating Tube", "Liquid heating tube start heating failed.");
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING;
+        StrList<<QString::number(TargetTemp);
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStopHeating() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Liquid Heating Tube", "Liquid heating tube stop heating failed.");
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EventId, StrList);
     //qDebug()<<"get LiquidHeatingTube status:"<<Status;
 }
 
@@ -391,25 +444,35 @@ void CSVCDashboardWidget::FanSelected()
 {
     qDebug()<<"Fan selected.";
 
+    quint32 EventId;
+
     CGraphicsItemPart::PartStatus Status = mp_Fan->Status();
 
     if (Status == CGraphicsItemPart::Working) {
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(1) != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Exhaust Fan", "Exhaust fan open failed.");
             mp_Fan->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetFan(0) != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Exhaust Fan", "Exhaust fan close failed.");
             mp_Fan->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+
+    Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Exhaust Fan");
 }
 
 void CSVCDashboardWidget::Valve1Selected()
 {
     qDebug()<<"Valve1 selected.";
+
+    quint32 EventId;
 
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
 
@@ -422,7 +485,9 @@ void CSVCDashboardWidget::Valve1Selected()
         else {
             ShowFailedDlg("Valve1", "Valve1 open failed");
             mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0) == (int)Diagnostics::RETURN_OK) {
@@ -433,13 +498,19 @@ void CSVCDashboardWidget::Valve1Selected()
         else {
             ShowFailedDlg("Valve1", "Valve1 close failed");
             mp_GV1->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+
+    Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve1");
 }
 
 void CSVCDashboardWidget::Valve2Selected()
 {
     qDebug()<<"Valve1 selected.";
+
+    quint32 EventId;
 
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
 
@@ -452,7 +523,9 @@ void CSVCDashboardWidget::Valve2Selected()
         else {
             ShowFailedDlg("Valve2", "Valve2 open failed");
             mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0) == (int)Diagnostics::RETURN_OK) {
@@ -463,13 +536,19 @@ void CSVCDashboardWidget::Valve2Selected()
         else {
             ShowFailedDlg("Valve2", "Valve2 close failed");
             mp_GV2->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+
+    Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve2");
 }
 
 void CSVCDashboardWidget::PumpSelected()
 {
     qDebug()<<"Pump selected.";
+
+    quint32 EventId;
 
     CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
 
@@ -494,18 +573,27 @@ void CSVCDashboardWidget::PumpSelected()
         if (Ret != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Pump", "Pump open failed.");
             mp_Pump->SetStatus(CGraphicsItemPart::Normal);
-        }
+            return;
+        }      
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() != (int)Diagnostics::RETURN_OK) {
             ShowFailedDlg("Pump", "Pump close failed.");
             mp_Pump->SetStatus(CGraphicsItemPart::Working);
+            return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+
+    Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Pump");
 }
 
 void CSVCDashboardWidget::OnSelectPosition()
 {
+    if (!CheckRVTemperature()) {
+        return;
+    }
     QString Title = tr("Select Position");
     QString Text;
     bool CurrentTubeFlag = true;
@@ -549,15 +637,21 @@ void CSVCDashboardWidget::OnSelectPosition()
         return;
     }
 
-    Text = QString("Rotating Rotary Valve to position %1").arg(PostionToStr(Flag, Postion));
+    QString PositionStr = PostionToStr(Flag, Postion);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_SELECTED_POSITION, Global::tTranslatableStringList()<<PositionStr);
+
+    Text = QString("Rotating Rotary Valve to position %1").arg(PositionStr);
     mp_MsgDlg->ShowWaitingDialog(Title, Text);
     int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVMovePosition(Flag, Postion);
     mp_MsgDlg->HideWaitingDialog();
 
     if (Ret != (int)Diagnostics::RETURN_OK) {
         mp_MsgDlg->ShowRVMoveFailedDlg(Title);
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_MOVE_POSITION_FAILED);
     }
-
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_MOVE_POSITION_SUCCESS);
+    }
     qDebug()<<"move position result :"<<Ret;
 }
 
@@ -712,6 +806,30 @@ void CSVCDashboardWidget::UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPositi
     mp_RotaryValveTemp1->setText(QString(" Temp1: %1\260C").arg(RVTemp1));
     mp_RotaryValveTemp2->setText(QString(" Temp2: %1\260C").arg(RVTemp2));
     mp_RotaryValveCurrent->setText(QString(" Current: %1mA").arg(RVCurrent));
+}
+
+bool CSVCDashboardWidget::CheckRVTemperature()
+{
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("MovementTest");
+    qreal RVSensor1TempMin = p_TestCase->GetParameter("RVSensor1TempMin").toFloat();
+    qreal RVSensor2TempMin = p_TestCase->GetParameter("RVSensor2TempMin").toFloat();
+    qreal RVSensor1TempCurrent;
+    qreal RVSensor2TempCurrent;
+
+    int ret = Diagnostics::ServiceDeviceProcess::Instance()->RVGetTemp(&RVSensor1TempCurrent, &RVSensor2TempCurrent);
+    if (ret != Diagnostics::RETURN_OK || RVSensor1TempCurrent < RVSensor1TempMin
+            || RVSensor2TempCurrent < RVSensor2TempMin) {
+        QString text = tr("Rotary Valve cannot rotate, due to the minimum "
+                  "temperature has not been reached. Please check "
+                  "resistance of temperature sensors, current of heating "
+                  "element and function of ASB3. If no root cause "
+                  "found, check main relay on ASB15 and cable "
+                  "connections in addition. Exchange part accordingly.");
+        mp_MsgDlg->ShowMessage("Select Position ", text, Diagnostics::RETURN_ERR_FAIL);
+        return false;
+    }
+
+    return true;
 }
 
 QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)

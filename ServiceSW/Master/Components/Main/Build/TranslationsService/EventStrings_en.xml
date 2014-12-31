@@ -155,19 +155,27 @@
 		<string id="100728984" text1="Cleaning system test is requested" text2=""/>
 		<string id="100728985" text1="Cleaning system test completed successfully" text2=""/>
 		<string id="100728986" text1="Cleaning system test failed" text2=""/>
-		<string id="100728987" text1="Manufacturing: Retort module test is requested" text2=""/>
-		<string id="100728988" text1="Manufacturing: Retort send test report" text2=""/>
-		<string id="100728989" text1="Manufacturing: Oven module test is requested" text2=""/>
-		<string id="100728990" text1="Manufacturing: Oven send test report" text2=""/>
-		<string id="100728991" text1="Manufacturing: Retort valve module test is requested" text2=""/>
-		<string id="100728992" text1="Manufacturing: Retort valve send test report" text2=""/>
-		<string id="100728993" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
-		<string id="100728994" text1="Manufacturing: L&amp;A system send test report" text2=""/>
-		<string id="100728995" text1="Manufacturing: Main control module test is requested" text2=""/>
-		<string id="100728996" text1="Manufacturing: Main control send test report" text2=""/>
-		<string id="100728997" text1="Manufacturing: System module test is requested" text2=""/>
-		<string id="100728998" text1="Manufacturing: System send test report" text2=""/>
-		<string id="100728999" text1="Manufacturing: Cleaning system test is requested" text2=""/>
-		<string id="100729000" text1="Manufacturing: Cleaning system send test report" text2=""/>
+		<string id="100728987" text1="Enter the SVC diagnostics screen is accept risk" text2=""/>
+		<string id="100728988" text1="Enter the SVC diagnostics screen is abort" text2=""/>
+		<string id="100728989" text1="Heating %1 activated and set temperature was %2℃" text2=""/>
+		<string id="100728990" text1="%1 is activated" text2=""/>
+		<string id="100728991" text1="%1 is deactivated" text2=""/>
+		<string id="100728992" text1="Selected position %1 for Rotary valve" text2=""/>
+		<string id="100728993" text1="Selected position is reached" text2=""/>
+		<string id="100728994" text1="Selected position is not reached" text2=""/>
+		<string id="100728995" text1="Manufacturing: Retort module test is requested" text2=""/>
+		<string id="100728996" text1="Manufacturing: Retort send test report" text2=""/>
+		<string id="100728997" text1="Manufacturing: Oven module test is requested" text2=""/>
+		<string id="100728998" text1="Manufacturing: Oven send test report" text2=""/>
+		<string id="100728999" text1="Manufacturing: Retort valve module test is requested" text2=""/>
+		<string id="100729000" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100729001" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
+		<string id="100729002" text1="Manufacturing: L&amp;A system send test report" text2=""/>
+		<string id="100729003" text1="Manufacturing: Main control module test is requested" text2=""/>
+		<string id="100729004" text1="Manufacturing: Main control send test report" text2=""/>
+		<string id="100729005" text1="Manufacturing: System module test is requested" text2=""/>
+		<string id="100729006" text1="Manufacturing: System send test report" text2=""/>
+		<string id="100729007" text1="Manufacturing: Cleaning system test is requested" text2=""/>
+		<string id="100729008" text1="Manufacturing: Cleaning system send test report" text2=""/>
 	</language>
 </strings>

@@ -1799,10 +1799,11 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
             if (p_MsgDlg->exec() == 0) {
                 mp_MainWindow->SetTabWidgetIndex(m_CurrentTabIndex);
                 delete p_MsgDlg;
+                Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_ABORT);
                 return;
             }
             delete p_MsgDlg;
-
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_ACCEPT_RISK);
             mp_SVCDashboardWidget->TimerStart(true);
             mp_SVCDashboardWidget->UpdatePartStatus();
             mp_SVCSceenLockWidget->SetLockStatus(true);
