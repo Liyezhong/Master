@@ -78,8 +78,9 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
+const qint64 TIME_FOR_FIX_TIME = 195;    ///< seconds for fix time
+
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
-#define TIME_FOR_FIX_TIME                     195    ///< seconds for fix time
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
 #define TIME_FOR_FILLING                      60     ///< seconds for filling
 #define TIME_FOR_MOVE_SEAL                    3      ///< seconds for move seal
