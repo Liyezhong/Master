@@ -107,8 +107,6 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
     try
     {
         QString ModuleName("");
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-
         if(Cmd.m_Error)
         {
             Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_INFO_NOT_FOUND, Global::tTranslatableStringList() << Cmd.DeviceType());

@@ -100,9 +100,6 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         return;
     }
     else {
-        if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        }
         (void) ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
          if(mp_MasterThreadController){
@@ -209,11 +206,6 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     }
     else
     {
-//        *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList) = TempProgramList;
-        //Send Ack
-        if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        }
         (void)ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
         if(mp_MasterThreadController){

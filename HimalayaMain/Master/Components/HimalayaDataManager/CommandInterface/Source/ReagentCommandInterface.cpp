@@ -95,7 +95,6 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
     else {
         //BroadCast Command
         (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetNextFreeReagentID(true);
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         ReagentData.clear();
         (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
@@ -173,8 +172,6 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
     }
     else {
-        //BroadCast Command
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         ReagentData.clear();
         (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
