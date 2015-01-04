@@ -917,7 +917,7 @@
 	     <Step ID="0" Type="MSG" StringID="67174401" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174402" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE" LogLevel="High" UserLog="FALSE">
-	     <Step ID="0" Type="MSG" StringID="67174402" ButtonType="" StatusBar=""/>
+	     <Step ID="0" Type="MSG" StringID="67174402" ButtonType="OK" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174403" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174403" ButtonType="" StatusBar=""/>
