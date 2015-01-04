@@ -38,6 +38,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+#include <QDebug>
 
 #define RV_MOVE_OK              1 //!< rotary valve move result
 namespace DeviceControl {
@@ -2147,7 +2148,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
+    qint32 UsedTimeSec(0);
     quint32 KeepSeconds(0);
+    QTime StartTime;
+    qint32 StartTimeSec(0);
 
     Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_HEATING_STATION;
 
@@ -2219,10 +2223,20 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRV->StartTemperatureControl(TargetTempSensor1);
-
-    while (!m_UserAbort && WaitSec)
+    StartTime = QTime::currentTime();
+    StartTimeSec = StartTime.hour()*60*60+StartTime.minute()*60+StartTime.second();
+    while (!m_UserAbort && UsedTimeSec <= WaitSec+1)
     {
-        QTime EndTime = QTime().currentTime().addSecs(1);
+        qDebug()<<"\n UsedTime: "<<UsedTimeSec;
+        //QTime EndTime = QTime().currentTime().addSecs(1);
+        QTime CurTime = QTime::currentTime();
+        qint32 CurTimeSec = CurTime.hour()*60*60+CurTime.minute()*60+CurTime.second();
+        UsedTimeSec = CurTimeSec - StartTimeSec + 1;
+        qDebug()<<"\n StartTime: "<<StartTimeSec;
+        qDebug()<<"\n CurTime: "<<CurTimeSec;
+        if (UsedTimeSec < 0){
+            UsedTimeSec = 24*60*60+60-StartTimeSec +CurTimeSec;
+        }
 
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
@@ -2255,7 +2269,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 #else
         if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
             // if more than target temp in 1 minute, then the test pass
-            if (KeepSeconds > 60) {
+            if (KeepSeconds > 120) {
                 RVStatus = 1;
                 break;
             }
@@ -2265,19 +2279,22 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
         else {
             KeepSeconds=0;
-            if (WaitSec <= 60) {
+            //if (WaitSec <= 60) {
+            if (UsedTimeSec > WaitSec - 60){
                 break;
             }
         }
 #endif
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
-        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+        //UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+        UsedTime = QTime().addSecs(UsedTimeSec).toString("hh:mm:ss");
 
         (void)Status.insert("UsedTime", UsedTime);
         (void)Status.insert("CurrentTempSensor1", Sensor1Value);
         (void)Status.insert("CurrentTempSensor2", Sensor2Value);
-        if (WaitSec == SumSec) {
+        //if (WaitSec == SumSec) {
+        if(UsedTimeSec <= 1){
             QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);
             (void)Status.insert("TargetTemp", TargetTempStr);
 
@@ -2289,15 +2306,97 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        WaitSec--;
+        //WaitSec--;
+        mp_Utils->Pause(500);
 
-        int offset = 0;
-        if (WaitSec%10 == 0) {
-            offset = 8;
-        }
-        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
-        mp_Utils->Pause(MSec);
+//        int offset = 0;
+//        if (WaitSec%10 == 0) {
+//            //offset = 8;
+//            offset = 4; //added by jack
+//        }
+//        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+//        mp_Utils->Pause(MSec);
     }
+
+//    while (!m_UserAbort && WaitSec)
+//    {
+//        QTime EndTime = QTime().currentTime().addSecs(1);
+
+//        CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
+//        CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
+
+//        qDebug()<<"1111111111   "<<CurrentTempSensor1<<"      "<<CurrentTempSensor2;
+
+
+//#if 0
+//        if ( (SumSec-WaitSec) >= WaitSecSensor1 ) {
+
+//            // if less than target temp in duration time (1h), than exit from this process and report fail.
+//            if (CurrentTempSensor1 < (TargetTempSensor1+DepartureLow)) {
+//                break;
+//            }
+
+//            if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+//                // if more than target temp in 1 minute, then the test pass
+//                if (KeepSeconds > 60) {
+//                    RVStatus = 1;
+//                    break;
+//                }
+//                else {
+//                    KeepSeconds++;
+//                }
+//            }
+//            else {
+//                KeepSeconds=0;
+//            }
+//        }
+//#else
+//        if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+//            // if more than target temp in 1 minute, then the test pass
+//            if (KeepSeconds > 60) {
+//                RVStatus = 1;
+//                break;
+//            }
+//            else {
+//                KeepSeconds++;
+//            }
+//        }
+//        else {
+//            KeepSeconds=0;
+//            if (WaitSec <= 60) {
+//                break;
+//            }
+//        }
+//#endif
+//        Sensor1Value = QString("%1").arg(CurrentTempSensor1);
+//        Sensor2Value = QString("%1").arg(CurrentTempSensor2);
+//        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
+//        (void)Status.insert("UsedTime", UsedTime);
+//        (void)Status.insert("CurrentTempSensor1", Sensor1Value);
+//        (void)Status.insert("CurrentTempSensor2", Sensor2Value);
+//        if (WaitSec == SumSec) {
+//            QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);
+//            (void)Status.insert("TargetTemp", TargetTempStr);
+
+
+//            QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+//            (void)Status.insert("Duration", Duration);
+//            p_TestCase->AddResult("Duration", Duration);
+//            p_TestCase->AddResult("TargetTemp", TargetTempStr);
+//        }
+
+//        emit RefreshTestStatustoMain(TestCaseName, Status);
+//        WaitSec--;
+
+//        int offset = 0;
+//        if (WaitSec%10 == 0) {
+//            //offset = 8;
+//            offset = 4; //added by jack
+//        }
+//        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+//        mp_Utils->Pause(MSec);
+//    }
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_DigitalOutputMainRelay->SetLow();
