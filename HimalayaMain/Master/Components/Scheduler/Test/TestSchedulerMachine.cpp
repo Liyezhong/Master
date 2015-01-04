@@ -157,9 +157,9 @@ signals:
 void TestSchedulerMachine::TestAPIs()
 {
     m_pSchedulerMachine->Stop();
-    m_pSchedulerMachine->SendRunSignal();
+    //m_pSchedulerMachine->SendRunSignal();
     //m_pSchedulerMachine->SendCleaningSignal();
-    m_pSchedulerMachine->SendRunComplete();
+    //m_pSchedulerMachine->SendRunComplete();
     m_pSchedulerMachine->SendResumeFillingRVRodHeating();
     m_pSchedulerMachine->SendResumeFillingLevelSensorHeating();
     m_pSchedulerMachine->SendResumeFiling();
@@ -171,7 +171,7 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->SendResumeRVPosChange();
     m_pSchedulerMachine->SendResumeDryStep();
     m_pSchedulerMachine->SendResumeAborting();
-    m_pSchedulerMachine->SendErrorSignal();
+   // m_pSchedulerMachine->SendErrorSignal();
     m_pSchedulerMachine->GetPreviousState();
     m_pSchedulerMachine->NotifyStInitOK();
     m_pSchedulerMachine->NotifyStTempOK();
