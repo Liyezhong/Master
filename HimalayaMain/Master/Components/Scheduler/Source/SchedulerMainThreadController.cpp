@@ -267,7 +267,11 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
-    SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+    if (false == m_InternalErrorRecv)
+    {
+        m_InternalErrorRecv = true;
+        SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+    }
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -299,8 +303,8 @@ void SchedulerMainThreadController::OnAcknowledge(Global::tRefType Ref, const Gl
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
-#if 0
-    if (CTRL_CMD_RS_SWEXIT == newControllerCmd)
+
+    if (CTRL_CMD_RS_SHUTDOWN == newControllerCmd)
     {
         //send shutdown command to MasterThreadController
         SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new Global::CmdShutDown(true)));
@@ -308,7 +312,7 @@ void SchedulerMainThreadController::OnTickTimer()
         m_SchedulerCommandProcessor->ShutDownDevice();
         return;
     }
-#endif
+
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
         m_TickTimer.stop();
@@ -1726,9 +1730,9 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
                 return  CTRL_CMD_ALARM_ALL_OFF;
             }
         }
-        if(cmd == "rs_swexit")
+        if(cmd == "rs_shutdown")
         {
-            return CTRL_CMD_RS_SWEXIT;
+            return CTRL_CMD_RS_SHUTDOWN;
         }
     }
     return CTRL_CMD_UNKNOWN;

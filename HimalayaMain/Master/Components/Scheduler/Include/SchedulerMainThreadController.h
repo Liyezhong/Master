@@ -294,11 +294,12 @@ typedef struct
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
-        QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
-        bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
+        QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
+        bool    m_RestartDryStep;                             ///< flag for do the dry step from beginning
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
+        bool    m_InternalErrorRecv;                          ///< Internal error was received
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

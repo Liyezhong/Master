@@ -19,7 +19,7 @@
 		</Event>
 		<Event Code="" ErrorID="520070300" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="Main">
 			<Step ID="0" Type="MSG" StringID="67176218" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
-			<Step ID="1" Type="ACT" Action="RS_SWExit"/>
+			<Step ID="1" Type="ACT" Action="RS_Shutdown"/>
 		</Event>
 		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="Main">
 			<Step ID="0" Type="MSG" StringID="67176219" ButtonType="OK" StatusBar="YES"/>
