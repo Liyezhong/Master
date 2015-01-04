@@ -52,8 +52,10 @@ int CSystemSealingTest::Run(void)
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemSealing");
     qreal TargetTemp1    = p_TestCase->GetParameter("RVTargetTemp1").toFloat();
     qreal TargetTemp2    = p_TestCase->GetParameter("RVTargetTemp2").toFloat();
-    float TargetPressure = p_TestCase->GetParameter("TargetPressure1").toFloat();
+    float TargetPressure = p_TestCase->GetParameter("TargetPressure").toFloat();
+    float Offset         = p_TestCase->GetParameter("Offset").toFloat();
     float PressureDiff   = p_TestCase->GetParameter("PressureDiff").toFloat();
+    int WaitTime         = p_TestCase->GetParameter("WaitTime").toFloat();
     int KeepDuration     = p_TestCase->GetParameter("KeepDuration").toInt();
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
@@ -84,13 +86,13 @@ int CSystemSealingTest::Run(void)
 
 Create_Pressure_Test:
 
-    Ret = TestCreatePressure(TargetPressure);
+    Ret = TestCreatePressure(TargetPressure, Offset, WaitTime);
 
     if (Ret != RETURN_OK) {
         TestReleasePressure();
         ShowFinishDlg(3);
 
-        Ret = TestCreatePressure(TargetPressure);
+        Ret = TestCreatePressure(TargetPressure, Offset, WaitTime);
 
         TestReleasePressure();
         if (Ret == RETURN_OK) {
@@ -108,7 +110,7 @@ Create_Pressure_Test:
 
     if (TestKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
         ShowFinishDlg(3);
-        if (!TestCreatePressure(TargetPressure)) {
+        if (!TestCreatePressure(TargetPressure, Offset, WaitTime)) {
             TestReleasePressure();
 
             ShowFinishDlg(6);
@@ -138,10 +140,9 @@ Create_Pressure_Test:
     return RETURN_OK;
 }
 
-bool CSystemSealingTest::TestCreatePressure(float TargetPressure)
+bool CSystemSealingTest::TestCreatePressure(float TargetPressure, float Offset, int WaitSec)
 {
     bool Ret = false;
-    int WaitSec = 60;
     QString Text = QString("Creating pressure to %1Kpa...").arg(TargetPressure);
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
@@ -152,8 +153,8 @@ bool CSystemSealingTest::TestCreatePressure(float TargetPressure)
         while (WaitSec) {
             QTime EndTime = QTime().currentTime().addSecs(1);
             (void)p_DevProc->PumpGetPressure(&CurrentPressure);
-            if ((TargetPressure > 0 && CurrentPressure >= TargetPressure) ||
-                    (TargetPressure < 0 && CurrentPressure <= TargetPressure)) {
+            if ((TargetPressure > 0 && CurrentPressure >= TargetPressure - Offset) ||
+                    (TargetPressure < 0 && CurrentPressure <= TargetPressure + Offset)) {
                 Ret = true;
                 break;
             }

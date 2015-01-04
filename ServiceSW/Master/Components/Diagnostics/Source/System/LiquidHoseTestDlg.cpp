@@ -256,6 +256,9 @@ bool CLiquidHoseTestDlg::eventFilter(QObject *p_Object, QEvent *p_Event)
 void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure)
 {
     LabelGroup* Labels = m_LabelGroups.at(Index);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemLiquidHose");
+    qreal PressureLeak(0);
+    qreal PressureRestriction(0);
 
     QString BottleStr;
     QString ResultStr;
@@ -273,10 +276,19 @@ void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure
         BottleStr = QString::number(BottleNumber);
     }
 
-    if (Pressure < 0.5) {
+    if (BottleStr.at(0) == 'P') {
+        PressureLeak = p_TestCase->GetParameter("PressureLeakP").toFloat();
+        PressureRestriction = p_TestCase->GetParameter("PressureRestrictionP").toFloat();
+    }
+    else {
+        PressureLeak = p_TestCase->GetParameter("PressureLeak").toFloat();
+        PressureRestriction = p_TestCase->GetParameter("PressureRestriction").toFloat();
+    }
+
+    if (Pressure < PressureLeak) {
         ResultStr = "Leak";
     }
-    else if (Pressure > 10) {
+    else if (Pressure > PressureRestriction) {
         ResultStr = "Restriction";
     }
     else {

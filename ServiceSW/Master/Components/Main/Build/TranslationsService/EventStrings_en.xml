@@ -157,7 +157,7 @@
 		<string id="100728986" text1="Cleaning system test failed" text2=""/>
 		<string id="100728987" text1="Enter the SVC diagnostics screen is accept risk" text2=""/>
 		<string id="100728988" text1="Enter the SVC diagnostics screen is abort" text2=""/>
-		<string id="100728989" text1="Heating %1 activated and set temperature was %2℃" text2=""/>
+		<string id="100728989" text1="Heating %1 activated and set temperature was %2\260C" text2=""/>
 		<string id="100728990" text1="%1 is activated" text2=""/>
 		<string id="100728991" text1="%1 is deactivated" text2=""/>
 		<string id="100728992" text1="Selected position %1 for Rotary valve" text2=""/>

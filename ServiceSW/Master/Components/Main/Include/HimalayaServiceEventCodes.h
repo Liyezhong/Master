@@ -22,8 +22,8 @@
 
 #include <QtGlobal>
 
-const quint32 EVENT_GROUP_HIMALAYASERVICE                                     = 0x06;
-const quint32 EVENT_GROUP_HIMALAYASERVICE_MAIN                                = ((EVENT_GROUP_HIMALAYASERVICE << 8) + 0x01) << 16;
+const quint32 EVENT_GROUP_HIMALAYASERVICE                                     = 0x06; //!< Event service group id
+const quint32 EVENT_GROUP_HIMALAYASERVICE_MAIN                                = ((EVENT_GROUP_HIMALAYASERVICE << 8) + 0x01) << 16; //!< Event service group main id
 
 const quint32 EVENT_LOGIN_MANUFACTURING                                       = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0001;  ///< 100728833 Manufacturing user logged in
 const quint32 EVENT_LOGIN_SERVICE                                             = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0002;  ///< 100728834 Service user logged in
@@ -181,7 +181,7 @@ const quint32 EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS              = 
 const quint32 EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE              = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009A;  ///< 100728986 Cleaning system test failed
 const quint32 EVENT_GUI_SVCDIAGNOSTICS_ACCEPT_RISK                            = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009B;  ///< 100728987 Enter the SVC diagnostics screen is accept risk
 const quint32 EVENT_GUI_SVCDIAGNOSTICS_ABORT                                  = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009C;  ///< 100728988 Enter the SVC diagnostics screen is abort
-const quint32 EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009D;  ///< 100728989 Heating %1 activated and set temperature was %2℃
+const quint32 EVENT_GUI_SVCDIAGNOSTICS_PART_HEATING                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009D;  ///< 100728989 Heating %1 activated and set temperature was %2\260C
 const quint32 EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE                          = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009E;  ///< 100728990 %1 is activated
 const quint32 EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE                        = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009F;  ///< 100728991 %1 is deactivated
 const quint32 EVENT_GUI_SVCDIAGNOSTICS_SELECTED_POSITION                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x00A0;  ///< 100728992 Selected position %1 for Rotary valve

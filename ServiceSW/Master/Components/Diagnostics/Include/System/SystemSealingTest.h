@@ -84,10 +84,12 @@ private:
     /*!
      *  \brief To create pressure and show status to GUI.
      *  \iparam TargetPressure = the target pressure.
+     *  \iparam Offset = target pressure offset
+     *  \iparam WaitSec = wait time for seconds
      *  \return true or false.
      */
     /****************************************************************************/
-    bool TestCreatePressure(float TargetPressure);
+    bool TestCreatePressure(float TargetPressure, float Offset, int WaitSec);
 
     /****************************************************************************/
     /*!
