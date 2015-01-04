@@ -169,6 +169,7 @@ public:
     MOCK_METHOD0(OvenGetRecentLidStatus, quint16());
 
     MOCK_METHOD1(OvenGetTemperatureControlState, TempCtrlState_t(OVENTempCtrlType_t Type));
+    MOCK_METHOD1(ALGetHeatingStatus, bool(ALTempCtrlType_t Type));
 
     MOCK_METHOD7(OvenStartTemperatureControlWithPID, ReturnCode_t(OVENTempCtrlType_t Type, qreal NominalTemperature, quint8 SlopeTempChange, \
                 quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime));
