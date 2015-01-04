@@ -121,9 +121,19 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of OnCurrentProgramStepInforUpdated
+         *  \param  cmd = CmdCurrentProgramStepInfor
          */
         /****************************************************************************/
-        void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
+        void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of OnCurrentProgramStepInforUpdated
+         *  \param  stepName = program step name
+         *  \param  stepRemainingTime = the current program step remaining time
+         *  \param  totalRemainingTime = total progarm remaining time
+         *  \param  stepIndex = step Index
+         */
+        /****************************************************************************/
         void OnCurrentProgramStepInforUpdated(const QString& stepName,
                                               int stepRemainingTime,
                                               int totalRemainingTime,

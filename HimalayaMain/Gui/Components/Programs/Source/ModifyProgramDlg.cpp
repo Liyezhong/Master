@@ -293,6 +293,7 @@ void CModifyProgramDlg::NewProgram()
         delete mp_NewProgram;
 
     mp_NewProgram = new DataManager::CProgram();
+    m_Icon.clear();
     //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.SetProgram(NULL,NULL, NULL, NULL, 5);

@@ -54,12 +54,15 @@ class CDashboardWidget : public QWidget
     Q_OBJECT
     
 public:
+    ///Program stage status, some stage(filling/draining) the "Pause" button can not be pressed.
+    ///so it should be disabled.
     typedef enum {
         Undefined,
         Enabled,
         Disabled
     } ProgramStageStatus_t;
 
+    ///Program status, defined for "Start", "Abort" button status control
     typedef enum {
         Undefined_ProgramStatus,
         ProgramRunning,

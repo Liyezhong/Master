@@ -410,7 +410,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         mp_MessageDlg->SetText(strTemp);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
         m_ProgramStatus = Undefined_ProgramStatus;
     }
 
@@ -868,7 +868,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     if (m_SelectedProgramId.at(0) != 'C')
     {
         int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
-        GetASAPTime(m_TimeProposedForProgram,
+        (void)GetASAPTime(m_TimeProposedForProgram,
                                       m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, timeDelta, bCanNotRun);
     }
     else

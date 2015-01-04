@@ -181,6 +181,7 @@ public:
      *  \brief  Definition/Declaration of function SetContainerStatus
      *
      *  \param containerStatus = DataManager::ContainerStatusType_t type parameter
+     *  \param reagentGroupID = reagent group ID
      *
      *  \return from SetContainerStatus
      */

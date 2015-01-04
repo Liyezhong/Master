@@ -76,6 +76,7 @@ static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of v
 CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
+    mp_TableWidget(NULL),
     mp_DataConnector(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
