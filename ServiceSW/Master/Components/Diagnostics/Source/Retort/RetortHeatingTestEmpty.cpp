@@ -103,7 +103,7 @@ int CHeatingTestEmpty::Run(void)
 
     DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
     qreal retortTargetTemp1 = p_TestCase1->GetParameter("RetortTargetTemp").toFloat();
-    (void)dev->RetortStartHeating(retortTargetTemp1 + 7, retortTargetTemp1 + 2);
+    (void)dev->RetortStartHeating(retortTargetTemp1, retortTargetTemp1);
     text = tr("Start heating retort...");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
