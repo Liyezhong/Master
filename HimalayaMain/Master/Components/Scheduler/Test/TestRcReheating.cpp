@@ -112,7 +112,6 @@ void TestRcReheating::UTAllCase()
         mp_ReHeating->HandleInint();
         mp_ReHeating->GetRvPosition("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
         mp_ReHeating->ProcessDraining("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
-        mp_ReHeating->MoveCleaningTubePos("Scheduler::RVReqMoveToRVPosition", DCL_ERR_FCT_CALL_SUCCESS);
     }
 }
 

@@ -158,7 +158,7 @@ void TestSchedulerMachine::TestAPIs()
 {
     m_pSchedulerMachine->Stop();
     m_pSchedulerMachine->SendRunSignal();
-    m_pSchedulerMachine->SendCleaningSignal();
+    //m_pSchedulerMachine->SendCleaningSignal();
     m_pSchedulerMachine->SendRunComplete();
     m_pSchedulerMachine->SendResumeFillingRVRodHeating();
     m_pSchedulerMachine->SendResumeFillingLevelSensorHeating();
