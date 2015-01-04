@@ -486,6 +486,7 @@ void CProgramWidget::ProgramUpdated()
 
 void CProgramWidget::ProgramAdded()
 {
+    ResetButtons();
     mp_ModifyProgramDlg->accept();
     mp_ModifyProgramDlg->EnablebtnSave();
 }
