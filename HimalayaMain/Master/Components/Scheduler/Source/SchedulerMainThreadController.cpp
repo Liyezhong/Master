@@ -2271,16 +2271,16 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
             m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.UserSetEndTime - QDateTime::currentMSecsSinceEpoch() - m_EndTimeAndStepTime.LastParaffinProcessingTime * 1000;
             if(m_EndTimeAndStepTime.WarningFlagForTime)
             {
-                //RaiseError(0, , m_CurrentScenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
             }
             if(m_EndTimeAndStepTime.BufferTime < 0)
             {
                 m_EndTimeAndStepTime.BufferTime = 0;
-                //RaiseError(0, , m_CurrentScenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
             }
             else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
             {
-                //RaiseError(0, , m_CurrentScenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
                 m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
             }
             LogDebug(QString("The last program step:%1 buffer is:%2").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
@@ -4594,6 +4594,10 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
         case 512040053:
             EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_PressureAL);
+            break;
+        case 513060020:
+            EventStringParList<<QString("%1").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(ErrorID);
             break;
         default:
             EventStringParList << QString("%1").arg(ErrorID);

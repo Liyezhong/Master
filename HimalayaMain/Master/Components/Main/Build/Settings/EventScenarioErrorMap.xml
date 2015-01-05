@@ -140,9 +140,13 @@
        <event id="500050401"    name="EVENT_MC_RemoteAlarm_Unconnected"/>
        <event id="500050411"    name="EVENT_MC_LocalAlarm_Unconnected"/>
        <event id="500050501"    name="EVENT_ASB5_AC_Current_OutofRange"/>
+       <event id="500060020"    name="EVENT_ASB5_Voltage_Value_unknow"/>
+
   </group>
  <group name="System">
        <event id="500060100"    name="EVENT_PowerFailure"/>
+       <event id="500040231"    name="EVENT_LA_Process_Interval_TimeOut_4min"/>
+       <event id="500040251"    name="EVENT_LA_Endtime_TimeOut"/>
   </group>
  <group name="Internal">
        <event id="500070001"    name="EVENT_INTER_TISSUE_PROTECT_REPORT"/>
@@ -175,6 +179,11 @@
         <error errorid="520060003">
             <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="277"/>
+        </error>
+    </event>
+    <event eventid="500060020">
+        <error errorid="513060020">
+            <scenario type="single" id="002"/>
         </error>
     </event>
     <event eventid="500050501">
@@ -1371,6 +1380,16 @@
             <scenario type="single" id="296"/>
         </error>
     </event>
+    <event eventid="500040231">
+        <error errorid="511040231">
+            <scenario type="single" id="274"/>
+        </error>
+    </event>
+    <event eventid="500040251">
+        <error errorid="511040251">
+            <scenario type="single" id="274"/>
+        </error>
+    </event>
     <event eventid="500040241">
         <error errorid="513040241">
             <scenario type="single" id="216"/>
@@ -1560,6 +1579,17 @@
     <event eventid="500040551">
         <error errorid="513040551">
             <scenario type="single" id="260"/>
+        </error>
+    </event>
+    <event eventid="500040561">
+        <error errorid="513040561">
+            <scenario type="single" id="215"/>
+            <scenario type="single" id="225"/>
+            <scenario type="single" id="235"/>
+            <scenario type="single" id="245"/>
+            <scenario type="single" id="255"/>
+            <scenario type="single" id="275"/>
+            <scenario type="single" id="285"/>
         </error>
     </event>
     <event eventid="500050001">

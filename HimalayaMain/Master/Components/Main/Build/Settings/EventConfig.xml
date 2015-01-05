@@ -626,6 +626,14 @@
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
 		</Event>
+		<Event Code="" ErrorID="513060020" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67176019" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="513040561" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
+		</Event>
 		<Event Code="" ErrorID="512020090" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176009" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176208" ButtonType="OK" StatusBar="YES"/>
 		</Event>
@@ -658,6 +666,12 @@
 		</Event>
 		<Event Code="" ErrorID="511040221" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="FALSE" ServiceString="67176018" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176192" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="511040231" ErrorType="WARNING" AlarmType="" LogLevel="High" UserLog="FALSE" ServiceString="67176020" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67176221" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="511040251" ErrorType="WARNING" AlarmType="" LogLevel="High" UserLog="FALSE" ServiceString="67176021" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67176222" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="33619990" ErrorType="WARNING" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" StatusBar=""/>

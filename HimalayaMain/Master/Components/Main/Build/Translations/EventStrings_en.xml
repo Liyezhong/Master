@@ -784,6 +784,9 @@
         <string id="67176016" text1="Air System: Vacuum did not reach target value during processing. The vacuum reached max. %1 kPa. " text2=""/>
         <string id="67176017" text1="Filling of retort from station no. 1% failed during processing! Filling time exceeds 2 minutes." text2=""/>
         <string id="67176018" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 2 minutes. " text2=""/>
+        <string id="67176019" text1="Error ID%1!The AC voltage is not stable." text2=""/>
+        <string id="67176020" text1="Process interval time out 4 minutes." text2=""/>
+        <string id="67176021" text1="Process end time out." text2=""/>
 
         <string id="67176192" text1="Error ID %1!  Draining time more than 2 minutes." text2=""/>
         <string id="67176193" text1="Error ID %1!  Filling time more than 2 minutes." text2=""/>
@@ -811,8 +814,10 @@
         <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service. If you want to enter the normal state next time. Please shut down the program by the Shutdown button." text2=""/>
-	<string id="67176218" text1="SW encountered fatal error and will exit." text2=""/>
+	<string id="67176218" text1="Error ID %1!  Software internal error." text2=""/>
 	<string id="67176219" text1="Safe reagent failed. Please call service." text2=""/>
 	<string id="67176220" text1="Please clear level sensor by sourcing pad." text2=""/>
+	<string id="67176221" text1="Error ID %1!  Process interval time out 4 minutes." text2=""/>
+	<string id="67176222" text1="Error ID %1!  Process end time out." text2=""/>
 	</language>
 </strings>
