@@ -792,7 +792,7 @@
         <string id="67176193" text1="Error ID %1!  Filling time more than 2 minutes." text2=""/>
         <string id="67176194" text1="Error ID %1!  Sealing failed in dry scenario." text2=""/>
         <string id="67176195" text1="Error ID %1!  Sealing failed in processing scenario." text2=""/>
-        <string id="67176196" text1="Error ID %1!  Wax bath oven cover open." text2=""/>
+        <string id="67176196" text1="Error ID %1!  Wax bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
         <string id="67176197" text1="Error ID %1! AC Voltage is not stable." text2=""/>
         <string id="67176198" text1="Bottle check failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
         <string id="67176199" text1="Bottle %1 seems to be insufficent filled. Please check bottle according to user manual. After that press Retry button." text2=""/>
