@@ -2,11 +2,11 @@
 <!DOCTYPE TestCaseConfig>
 <TestCaseConfig Version="1">
 	<InitialSystem>
-		<SMainsRelay RVTargetTemp="120" OvenTopTargetTemp="90" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrent="150"/>
-		<SACVoltage RVTargetTemp="80" RetortBottomTargetTemp="80" />
-		<SRVPreTest RVTargetTemp="120" RVDiffTemp="100" PreHeatingTargetTemp="115"/>
+		<SMainsRelay RVTargetTemp="125" OvenTopTargetTemp="90" ASB3CurrentLow="164" ASB3CurrentHigh="1358" ASB5CurrentLow="183" ASB5CurrentHigh="1484"  SwitchOffCurrent="150"/>
+		<SACVoltage RVTargetTemp="125" RetortBottomTargetTemp="102" />
+		<SRVPreTest RVTargetTemp="125" RVDiffTemp="100" PreHeatingTargetTemp="115"/>
 		<SOvenPreTest OvenTopTargetTemp="90" OvenBottomTargetTemp="90" OvenDiffTemp="20" PreHeatingMoreTargetTemp1="3" PreHeatingMoreTargetTemp2="4"/>
-		<SRetortPreTest RetortTargetTemp="70" RetortDiffTemp="20" PreHeatingMoreTargetTemp="15"/>
+		<SRetortPreTest RetortTargetTemp="100" RetortDiffTemp="20" PreHeatingMoreTargetTemp="15"/>
 		<SLTubePreTest LTubeTargetTemp="80" LTubeRangeTemp="100" PreHeatingTargetTemp="80"/>
 	</InitialSystem>
 	<Oven>

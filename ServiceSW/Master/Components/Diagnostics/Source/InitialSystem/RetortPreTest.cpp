@@ -121,7 +121,7 @@ void CRetortPreTest::ShowFailMessage(int ErrorCode)
         Text = "Pre-test Retort failed .<br>" \
                 "Current of heating elements is out of specifications. Sequentially check " \
                 "function of ASB5 and retort heating elements." \
-                "Exchange ASB5 or retort accordingly and repeat this test .";
+                "Exchange ASB5 or retort accordingly and repeat this test.";
     }
 
     ShowMessage(Title, Text, RETURN_ERR_FAIL);
