@@ -32,7 +32,8 @@ namespace Retort {
 CDrainReagentTest::CDrainReagentTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),
       mp_MessageDlg(p_MessageDlg),
-      m_MessageTitle("Retort Drain Reagent")
+      m_MessageTitle("Retort Drain Reagent"),
+      m_ParaffinMeltingPoint(0)
 {
 }
 
@@ -75,6 +76,9 @@ int CDrainReagentTest::Run(void)
     delete p_SelectDlg;
     qDebug()<<"Select ParaffinOption option :"<<ParaffinOption;
     if (ParaffinOption == 1) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
+        m_ParaffinMeltingPoint = p_TestCase->GetParameter("PMeltingPoint").toInt();
+
         if (ShowConfirmDlg(1) == 0) {
             return RETURN_ERR_FAIL;
         }
@@ -354,7 +358,8 @@ bool CDrainReagentTest::CheckRVTemp(bool IsParaffin)
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
     if (IsParaffin) {
         RVTargetTemp1 = p_TestCase->GetParameter("RVPTargetTemp1").toInt();
-        RVTargetTemp2 = p_TestCase->GetParameter("RVPTargetTemp2").toInt();
+        RVTargetTemp2 = m_ParaffinMeltingPoint;
+        //RVTargetTemp2 = p_TestCase->GetParameter("RVPTargetTemp2").toInt();
     }
     else {
         RVTargetTemp1 = p_TestCase->GetParameter("RVTargetTemp1").toInt();
@@ -372,10 +377,7 @@ bool CDrainReagentTest::CheckRVTemp(bool IsParaffin)
 
 bool CDrainReagentTest::CheckLTubeTemp()
 {
-    qreal TargetTemp(0);
     qreal LTubeCurrentTemp(0);
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
-    TargetTemp = p_TestCase->GetParameter("PMeltingPoint").toInt();
 
     int Ret = ServiceDeviceProcess::Instance()->LiquidTubeGetTemp(&LTubeCurrentTemp);
     if (Ret != RETURN_OK) {
@@ -383,7 +385,7 @@ bool CDrainReagentTest::CheckLTubeTemp()
         return false;
     }
 
-    return LTubeCurrentTemp >= TargetTemp;
+    return LTubeCurrentTemp >= m_ParaffinMeltingPoint;
 }
 
 bool CDrainReagentTest::CheckOvenTemp()
@@ -392,14 +394,11 @@ bool CDrainReagentTest::CheckOvenTemp()
     qreal OvenTempB1(0);
     qreal OvenTempB2(0);
 
-    qreal MeltingPointTemp(0);
     qreal TargetTemp(0);
     qreal DiffTemp(0);
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
-    DataManager::CTestCase* p_TestCase2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
-    DiffTemp = p_TestCase2->GetParameter("OvenDiffTemp").toInt();
-    MeltingPointTemp = p_TestCase->GetParameter("PMeltingPoint").toInt();
-    TargetTemp = MeltingPointTemp - DiffTemp;
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
+    DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toInt();
+    TargetTemp = m_ParaffinMeltingPoint - DiffTemp;
 
     int Ret = ServiceDeviceProcess::Instance()->OvenGetTemp(&OvenTempT, &OvenTempB1, &OvenTempB2);
 

@@ -125,6 +125,7 @@ private:
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;      //!< The pointer of message dialog.
     QString                 m_MessageTitle;     //!< The message dialog title string.
+    int                     m_ParaffinMeltingPoint; //!< Store Paraffin melting point.
 };
 
 }// namespace Retort
