@@ -143,7 +143,7 @@ int CDrainReagentTest::Run(void)
                 return RETURN_ERR_FAIL;
             }
 
-            if (!SelectPosition(3, TargetTubeFlag, TargetPosition)) {
+            if (!SelectPosition(3, CurrentTubeFlag, CurrentPosition)) {
                 return RETURN_ERR_FAIL;
             }
         }
