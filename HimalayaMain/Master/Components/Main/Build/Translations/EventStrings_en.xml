@@ -785,7 +785,7 @@
         <string id="67176017" text1="Filling of retort from station no. 1% failed during processing! Filling time exceeds 2 minutes." text2=""/>
         <string id="67176018" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 2 minutes. " text2=""/>
         <string id="67176019" text1="Error ID%1!The AC voltage is not stable." text2=""/>
-        <string id="67176020" text1="Process interval time out 4 minutes." text2=""/>
+        <string id="67176020" text1="In whole processing, some process interval time out 4 minutes." text2=""/>
         <string id="67176021" text1="Process end time out." text2=""/>
 
         <string id="67176192" text1="Error ID %1!  Draining time more than 2 minutes." text2=""/>
