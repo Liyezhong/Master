@@ -461,7 +461,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 {
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
-                        m_BottleSeq = 0; //reset
                         m_BottleChkFlag = true; //reset
                         if (m_IsAbortRecv)
                         {
