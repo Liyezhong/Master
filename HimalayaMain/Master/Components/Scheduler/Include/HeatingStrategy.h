@@ -93,12 +93,12 @@ struct RTLevelSensor : public HeatingSensor
 /****************************************************************************/
 struct SensorsChecking
 {
-    qint64  startTime;
-    qreal   meltingPoint;
-    quint32 minTime;
-    bool    firstBottle;
-    bool    ovenTopPass;
-    bool    LATube1Pass;
+    qint64  startTime;                              //!< the startTime
+    qreal   meltingPoint;                           //!< the paraffin melting point
+    quint32 minTime;                                //!< minimum time
+    bool    firstBottle;                            //!< the first paraffin step
+    bool    ovenTopPass;                            //!< oven top temperature pass
+    bool    LATube1Pass;                            //!< LA tube1 termperature pass
 };
 
 /****************************************************************************/
@@ -282,8 +282,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Initialize parameters when entering scenario 260
-     *  \param  void
-     *  \return void
      */
     /****************************************************************************/
     void Init260ParamList();
@@ -291,7 +289,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  check the temperature of sensors in scenario 260
-     *  \param  void
      *  \return bool
      */
     /****************************************************************************/

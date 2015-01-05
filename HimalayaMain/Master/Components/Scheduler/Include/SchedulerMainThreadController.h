@@ -173,6 +173,11 @@ typedef enum
     FAN
 } HeaterType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief struct for ProgramEndTime
+ */
+/****************************************************************************/
 typedef struct
 {
     bool    WarningFlagForTime;                         ///< the warning flag for time
@@ -1085,6 +1090,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Set the pressure offset for powerfailure
+         *  \param pressureOffset - qreal type
          */
         /****************************************************************************/
         void SetLastPressureOffset(qreal pressureOffset);

@@ -4285,6 +4285,7 @@ bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, q
 
 void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Scenario)
 {
+    Q_UNUSED(Scenario);
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));
     ReportError_t reportError2;
