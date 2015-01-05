@@ -28,7 +28,6 @@
 #include "Core/Include/ServiceGUIConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "IENetworkClient/Include/IENetworkClient.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -104,12 +103,6 @@ public:
     bool CheckSystemSN();
 
 private:
-    /****************************************************************************/
-    /**
-     * \brief Init IE network client.
-     */
-    /****************************************************************************/
-    void InitIEClient();
 
     /****************************************************************************/
     /**
@@ -120,7 +113,6 @@ private:
 
     QString m_ModuleName;                            //!< Stores module name
     Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
-    NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
     QSet<Service::ModuleTestCaseID> m_TestCaseList;  //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
     QString m_ReportDir;                             //!< The server report folder
