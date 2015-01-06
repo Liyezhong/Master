@@ -56,6 +56,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     {
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED);
     }
+    memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
