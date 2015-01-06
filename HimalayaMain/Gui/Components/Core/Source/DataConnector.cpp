@@ -925,7 +925,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         case NetCommands::PROGRAM:
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
-            emit ProgramsInitialized(false);
+            emit ProgramsInitialized();
             break;
 
         case NetCommands::REAGENT:

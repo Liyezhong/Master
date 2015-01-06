@@ -20,7 +20,8 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
     mp_DataConnector(NULL),
     m_LastCanBeSelectedButtonId(-1),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    m_OnlyAddCleaningProgram(false)
 {
     ui->setupUi(this);
     SetButtonGroup();
@@ -114,9 +115,13 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
     }
 }
 
+void CFavoriteProgramsPanelWidget::ProgramsInitialized()
+{
+    AddItemsToFavoritePanel(m_OnlyAddCleaningProgram);
+}
+
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
-
     UndoProgramSelection();
     //loop all program buttons
     for(int i = 0; i < 5; i++)
@@ -167,6 +172,8 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         label->setText(ProgramName);
         CONNECTSIGNALSLOT(m_ButtonGroup.button(j), toggled(bool), label, setHighlight(bool));
     }
+
+    m_OnlyAddCleaningProgram = bOnlyAddCleaningProgram;
 }
 
 

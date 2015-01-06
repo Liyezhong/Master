@@ -74,6 +74,13 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of ProgramsInitialized
+         *
+         */
+        /****************************************************************************/
+        void ProgramsInitialized();
     private slots:
         void OnResetFocus(bool reset);
         /****************************************************************************/
@@ -153,6 +160,7 @@ namespace Dashboard {
         QStringList m_FavProgramIDs;       ///<  Definition/Declaration of variable m_FavProgramIDs
         QString m_NewSelectedProgramId;       ///<  Definition/Declaration of variable m_NewSelectedProgramId
         QDateTime m_EndDateTime;       ///<  Definition/Declaration of variable m_EndDateTime
+        bool m_OnlyAddCleaningProgram;
 
     };
 }

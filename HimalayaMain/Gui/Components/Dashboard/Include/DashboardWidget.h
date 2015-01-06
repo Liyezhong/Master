@@ -397,6 +397,12 @@ private slots:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal ProgramsInitialized
+     */
+    /****************************************************************************/
+    void ProgramsInitialized();
+    /****************************************************************************/
+    /*!
      *  \brief  when selete a program, emit signal ProgramSelected
      *  \param  programId = the seleted program ID
      *  \param  selectedStationList = the used station for the selected program

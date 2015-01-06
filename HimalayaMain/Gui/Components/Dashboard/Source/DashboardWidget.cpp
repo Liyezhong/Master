@@ -77,6 +77,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, ResetFocus(bool), ui->programPanelWidget, ResetFocus(bool));
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
+    CONNECTSIGNALSIGNAL(this, ProgramsInitialized(), ui->programPanelWidget, ProgramsInitialized());
+
     CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));

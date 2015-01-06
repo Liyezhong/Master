@@ -421,7 +421,7 @@ signals:
      *  \brief  Definition/Declaration of signal ProgramsInitialized
      */
     /****************************************************************************/
-    void ProgramsInitialized(bool);
+    void ProgramsInitialized();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramDeleted

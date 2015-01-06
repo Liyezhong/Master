@@ -180,6 +180,12 @@ signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal ProgramsInitialized
+     */
+    /****************************************************************************/
+    void ProgramsInitialized();
+    /****************************************************************************/
+    /*!
      *  \brief  send signal PrepareSelectedProgramChecking to master, for checking program
      *  \param selectedProgramId = the selected program id
      *  \param bCheckEndDatetimeAgain = whether check end datetime again or not
