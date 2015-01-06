@@ -139,6 +139,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
     m_AbortingSeq = 0;
+    m_IsDrainDelay = false;
+    m_DrainDelayBeginTime = 0;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -1040,14 +1042,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    LogDebug(QString("Program Step Draining succeed!"));
-                    if(m_IsSafeReagent)
+                    if(m_EndTimeAndStepTime.GapTime > 0)
                     {
-                        m_SchedulerMachine->NotifyProgramFinished();
+                        m_IsDrainDelay = true;
+                        m_DrainDelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                     }
                     else
                     {
-                        m_SchedulerMachine->NotifyDrainFinished();
+                        LogDebug(QString("Program Step Draining succeed!"));
+                        if(m_IsSafeReagent)
+                        {
+                            m_SchedulerMachine->NotifyProgramFinished();
+                        }
+                        else
+                        {
+                            m_SchedulerMachine->NotifyDrainFinished();
+                        }
                     }
                 }
                 else
@@ -1055,6 +1065,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
                     SendOutErrMsg(retCode);
                 }
+             }
+             if(m_IsDrainDelay)
+             {
+                 if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
+                 {
+                     LogDebug(QString("Program Step Draining succeed!"));
+                     if(m_IsSafeReagent)
+                     {
+                         m_SchedulerMachine->NotifyProgramFinished();
+                     }
+                     else
+                     {
+                         m_SchedulerMachine->NotifyDrainFinished();
+                     }
+                     m_IsDrainDelay = false;
+                 }
              }
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
@@ -3974,7 +4000,7 @@ void SchedulerMainThreadController::Drain()
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
-    cmd->SetDelayTime(5000 + m_EndTimeAndStepTime.GapTime);
+    cmd->SetDelayTime(5000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));

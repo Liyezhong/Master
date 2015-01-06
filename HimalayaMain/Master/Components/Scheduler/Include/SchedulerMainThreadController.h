@@ -305,6 +305,8 @@ typedef struct
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
         bool    m_InternalErrorRecv;                          ///< Internal error was received
+        bool    m_IsDrainDelay;                               ///< wether drain delay
+        qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

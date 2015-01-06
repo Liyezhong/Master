@@ -787,6 +787,7 @@
         <string id="67176019" text1="Error ID%1!The AC voltage is not stable." text2=""/>
         <string id="67176020" text1="In whole processing, some process interval time out 4 minutes." text2=""/>
         <string id="67176021" text1="Process end time out." text2=""/>
+	<string id="67176022" text1="Pressure test time out before RV move to tube position for draining." text2=""/>
 
         <string id="67176192" text1="Error ID %1!  Draining time more than 2 minutes." text2=""/>
         <string id="67176193" text1="Error ID %1!  Filling time more than 2 minutes." text2=""/>

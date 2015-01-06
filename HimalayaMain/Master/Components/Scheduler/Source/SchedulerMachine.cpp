@@ -853,16 +853,28 @@ void CSchedulerStateMachine::NotifyDrainFinished()
 void CSchedulerStateMachine::NotifyStepFinished()
 {
     emit sigStepFinished();
+    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmStepFinish.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 void CSchedulerStateMachine::NotifyProgramFinished()
 {
     emit sigProgramFinished();
+    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmProgramFinish.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 void CSchedulerStateMachine::NotifyEnterCleaningDryStep()
 {
     emit sigEnterDryStep();
+    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmCleaningDryStep.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 void CSchedulerStateMachine::NotifyStepProgramFinished()

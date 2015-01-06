@@ -1590,6 +1590,7 @@
             <scenario type="single" id="255"/>
             <scenario type="single" id="275"/>
             <scenario type="single" id="285"/>
+            <scenario type="single" id="295"/>
         </error>
     </event>
     <event eventid="500050001">
