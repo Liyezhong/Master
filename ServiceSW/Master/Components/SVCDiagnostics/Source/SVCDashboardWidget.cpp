@@ -244,7 +244,11 @@ void CSVCDashboardWidget::RetortSelected()
         int DefTarget = p_TestCase->GetParameter("RetortTargetTemp").toInt();
         CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Retort Target Temperature");
-        (void)p_TempSelectionDlg->exec();
+        if (p_TempSelectionDlg->exec() == 0) {
+            mp_Retort->SetStatus(CGraphicsItemPart::Normal);
+            delete p_TempSelectionDlg;
+            return;
+        }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
@@ -286,7 +290,11 @@ void CSVCDashboardWidget::OvenSelected()
         int DefTarget = p_TestCase->GetParameter("OvenTopTargetTemp").toInt();
         CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Paraffin Oven Target Temperature");
-        (void)p_TempSelectionDlg->exec();
+        if (p_TempSelectionDlg->exec() == 0) {
+            mp_Oven->SetStatus(CGraphicsItemPart::Normal);
+            delete p_TempSelectionDlg;
+            return;
+        }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
@@ -327,7 +335,11 @@ void CSVCDashboardWidget::RotaryValveSelected()
         int DefTarget = p_TestCase->GetParameter("RVTargetTemp").toInt();
         CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Rotary Valve Target Temperature");
-        (void)p_TempSelectionDlg->exec();
+        if (p_TempSelectionDlg->exec() == 0) {
+            mp_RotaryValve->SetStatus(CGraphicsItemPart::Normal);
+            delete p_TempSelectionDlg;
+            return;
+        }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
@@ -369,7 +381,11 @@ void CSVCDashboardWidget::AirTubeSelected()
         int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
         CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Air Heating Tube Target Temperature");
-        (void)p_TempSelectionDlg->exec();
+        if (p_TempSelectionDlg->exec() == 0) {
+            mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Normal);
+            delete p_TempSelectionDlg;
+            return;
+        }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
@@ -412,7 +428,11 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
         CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Liquid Heating Tube Target Temperature");
-        (void)p_TempSelectionDlg->exec();
+        if (p_TempSelectionDlg->exec() == 0) {
+            mp_HeatingTube->SetStatus(CGraphicsItemPart::Normal);
+            delete p_TempSelectionDlg;
+            return;
+        }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
@@ -554,11 +574,11 @@ void CSVCDashboardWidget::PumpSelected()
 
     if (Status == CGraphicsItemPart::Working) {
         int Ret = (int)Diagnostics::RETURN_OK;
-        if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 1 is Open
+        if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 2 is Open
             qDebug()<<"To create pressure";
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
         }
-        else if (mp_GV1->Status() == CGraphicsItemPart::Working) { //valve 2 is open
+        else if (mp_GV1->Status() == CGraphicsItemPart::Working) { //valve 1 is open
             qDebug()<<"To create vaccum";
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -30);//vaccum
         }

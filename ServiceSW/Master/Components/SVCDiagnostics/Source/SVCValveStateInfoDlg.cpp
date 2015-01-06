@@ -44,8 +44,8 @@ CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(QWidget* p_Parent):
     m_Model.setHorizontalHeaderLabels(QStringList()<<tr("")<<tr("Pressure")<<tr("Vaccum")<<tr("Ambient"));
 
     AddItem("Pump", "On", "On", "Off");
-    AddItem("Valve1", "On", "Off", "Off");
-    AddItem("Valve2", "Off", "On", "Off");
+    AddItem("Valve1", "Off", "On", "Off");
+    AddItem("Valve2", "On", "Off", "Off");
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 70);

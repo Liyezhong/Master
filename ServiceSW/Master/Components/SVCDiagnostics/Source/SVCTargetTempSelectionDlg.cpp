@@ -51,6 +51,7 @@ CSVCTargetTempSelectionDlg::CSVCTargetTempSelectionDlg(int DefaultTemp, int MinT
     mp_Ui->scrollPanelWidget->SetSubtitle(tr("Target Temperature"), 0);
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonOk, clicked(), this, OnOk());
+    CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonCancel, clicked(), this, reject());
 }
 
 CSVCTargetTempSelectionDlg::~CSVCTargetTempSelectionDlg()
@@ -70,7 +71,7 @@ bool CSVCTargetTempSelectionDlg::eventFilter(QObject *p_Object, QEvent *p_Event)
         return true;
     }
     else {
-        // standard event processing
+        //standard event processing
         return QObject::eventFilter(p_Object, p_Event);
     }
 }
