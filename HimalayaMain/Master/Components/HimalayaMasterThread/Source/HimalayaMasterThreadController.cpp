@@ -631,7 +631,7 @@ void HimalayaMasterThreadController::OnInitStateCompleted()
 }
 
 void HimalayaMasterThreadController::SendStateChange(QString state) {
-    NetCommands::ProcessStateType stateType;
+    NetCommands::ProcessStateType stateType = NetCommands::InitState;
     if (state == "BusyState")
     {
         stateType = NetCommands::BusyState;

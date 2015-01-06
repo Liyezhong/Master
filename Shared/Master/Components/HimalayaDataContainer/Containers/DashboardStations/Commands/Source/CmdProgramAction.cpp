@@ -38,7 +38,8 @@ CmdProgramAction::CmdProgramAction():
     Command(0),
     m_ProgramID(""),
     m_ActionType(DataManager::PROGRAM_UNDEFINED),
-    m_DelayTime(0)
+    m_DelayTime(0),
+    m_ProgramRunDuration(0)
 {
 }
 
