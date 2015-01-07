@@ -98,6 +98,11 @@ class MockServiceDeviceProcess : public ServiceDeviceProcess {
         return mock;
     }
 
+    ~MockServiceDeviceProcess()
+    {
+        mp_Instance = NULL;
+    }
+
   MOCK_METHOD0(Initialize,
       void());
   MOCK_METHOD0(IsInitialized,
