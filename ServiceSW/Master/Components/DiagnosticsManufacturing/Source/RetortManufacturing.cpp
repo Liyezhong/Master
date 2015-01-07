@@ -61,6 +61,9 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     if (mp_DataConnector->GetModuleListContainer()) {
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Retort");
     }
+    if (mp_Module) {
+        m_RetortSNString = mp_Module->GetSerialNumber();
+    }
     mp_Ui->retortSNEdit->installEventFilter(this);
     mp_Ui->retortSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 

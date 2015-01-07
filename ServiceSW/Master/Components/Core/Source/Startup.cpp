@@ -57,8 +57,8 @@ CStartup::CStartup() : QObject(),
     mp_SystemLogViewer(NULL),
     mp_ServiceHelpText(NULL),
     mp_ServiceLogViewer(NULL),
-    mp_LogContentDlg(NULL),
     mp_SoftwareUpdateLogViewer(NULL),
+    mp_LogContentDlg(NULL),
     mp_SystemLogContentDlg(NULL),
     mp_SVCSceenLockWidget(NULL),
     m_CurrentUserMode(""),
@@ -156,24 +156,6 @@ CStartup::CStartup() : QObject(),
 
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
-//    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
-//    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
-//    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
-
-//    mp_SystemLogViewer = new LogViewer::CLogViewer("HISTOCOREPRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
-//    mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
-//    mp_ServiceLogViewer = new LogViewer::CLogViewer("HISTOCOREPRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
-//    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
-
-//    CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-//    CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-//    CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-//    CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-
-//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
-//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
-//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
-//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
