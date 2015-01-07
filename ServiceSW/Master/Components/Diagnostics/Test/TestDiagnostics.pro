@@ -25,7 +25,5 @@ UsePlatformLibs(DataManager Global)
 # UseSharedLibs(HimalayaDataContainer)
 UsePlatformScroller(QtScroller)
 
-LIBS += -L/usr/local/lib/gmock -lgmock
-LIBS += -L/usr/local/lib/gtest -lgtest
 LIBS += -ldl
 
