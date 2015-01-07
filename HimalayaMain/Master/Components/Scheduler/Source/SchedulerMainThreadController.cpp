@@ -2397,9 +2397,22 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     bool IsFirstParraffin = false;
     bool CleaningProgram = false;
 
+    QString strLastReagentGroupId("");
+    QString CurrentReagentID("");
+    QStringList list;
+    quint32 CleaningKnowonTime = 0;
+    bool SkipCurrentStep = false;
+
     if(pProgram->IsCleaningProgram())
     {
         CleaningProgram = true;
+        strLastReagentGroupId = m_ProgramStatusInfor.GetLastReagentGroup();
+        list << "RG1"<<"RG2"<<"RG3"<<"RG4"<<"RG5";
+        CleaningKnowonTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+        CleaningKnowonTime += TIME_FOR_FILLING;
+        CleaningKnowonTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE;
+        CleaningKnowonTime += TIME_FOR_PRESSURE_CHECK;
+        CleaningKnowonTime += TIME_FOR_DRAIN;
     }
     for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
     {
@@ -2408,12 +2421,22 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         if(CleaningProgram)
         {
             //Cleaning program
-            leftTime += soakTime;
-            leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
-            leftTime += TIME_FOR_FILLING;
-            leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE + TIME_FOR_MOVE_NEXT_TUBE;
-            leftTime += TIME_FOR_PRESSURE_CHECK;
-            leftTime += TIME_FOR_DRAIN;
+            if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+            {
+                CurrentReagentID = pProgramStep->GetReagentID();
+                const CReagent* pCurReagent = pReagentList->GetReagent(CurrentReagentID);
+                if (list.contains(strLastReagentGroupId) && pCurReagent->GetGroupID() == "RG7")
+                {
+                    SkipCurrentStep = true;
+                }
+                else
+                    SkipCurrentStep = false;
+            }
+            if(!SkipCurrentStep)
+            {
+                leftTime += soakTime;
+                leftTime += CleaningKnowonTime;
+            }
         }
         else
         {
@@ -2463,6 +2486,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     leftTime += m_EndTimeAndStepTime.PreTestTime;
     if(CleaningProgram) // if cleaning program, add time for dry step
     {
+        leftTime += TIME_FOR_MOVE_NEXT_TUBE;
         leftTime += TIME_FOR_CLEANING_DRY_STEP;
     }
     return leftTime;
