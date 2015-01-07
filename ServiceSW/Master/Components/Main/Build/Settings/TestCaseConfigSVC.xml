@@ -10,7 +10,7 @@
 		<SLTubePreTest LTubeTargetTemp="80" LTubeRangeTemp="100" PreHeatingTargetTemp="80"/>
 	</InitialSystem>
 	<Oven>
-                <HeatingTestEmpty  OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="900" t2="60"/>
+        <HeatingTestEmpty OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="900" t2="60"/>
 	</Oven>
 	<RotaryValve>
 		<MovementTest RVSensor1TempMin="80" RVSensor2TempMin="40"/>
@@ -33,7 +33,7 @@
 	</System>
 	<Retort>
 		<SRetortDrainReagent RVTargetTemp1="80" RVTargetTemp2="40" RVPTargetTemp1="100" RVPTargetTemp2="70" TargetPressure="-0.5" TimeOut="10" OvenDiffTemp="3" />
-		<SRetortLevelSensorDetection XyleneTargetTemp="115" OtherTargetTemp="95" TimeOut="120">
+		<SRetortLevelSensorDetection XyleneTargetTemp="115" OtherTargetTemp="95" TimeOut="120" />
 		<RetortHeatingTestEmpty RetortSideTargetTemp="70" RetortBottomTargetTemp="70" RetortDiffTemp="20" TempOffset="15" t="3" t1="900" t2="60"/>
 		<RetortHeatingTestWithWater RetortSideTargetTemp="95" RetortBottomTargetTemp="95" RetortSideTargetTemp1="50" RetortBottomTargetTemp1="50" RetortDiffTemp="20" TempOffset="6" TempOffset1="9" t="3" t1="3600"/>
 	</Retort>
