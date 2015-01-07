@@ -53,6 +53,7 @@
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
@@ -526,7 +527,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
-        MsgClasses::CmdProgramAcknowledge* commandEnterCleaning(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING));
+        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));

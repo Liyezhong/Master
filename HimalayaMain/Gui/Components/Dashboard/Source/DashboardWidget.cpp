@@ -158,8 +158,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PauseTimeout15Mintues(),
                               this, OnPauseTimeout15Mintues());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, TakeoutSpecimenWaitRunCleaning(),
-                              this, TakeOutSpecimenAndWaitRunCleaning());
+    CONNECTSIGNALSLOT(mp_DataConnector, TakeoutSpecimenWaitRunCleaning(const QString&),
+                              this, TakeOutSpecimenAndWaitRunCleaning(const QString&));
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
@@ -393,7 +393,7 @@ void CDashboardWidget::OnProgramBeginAbort()
 }
 
 //this function will be invoked after program Abort and completed
-void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
+void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReagentGroupID)
 {
     if (m_ProgramStatus == Completed ||
         m_ProgramStatus == Aborted)
@@ -424,7 +424,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     if (mp_MessageDlg->exec())
     {
         //represent the retort as contaminated status
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, "");
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
 
         mp_MessageDlg->SetText(m_strRetortContaminated);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);

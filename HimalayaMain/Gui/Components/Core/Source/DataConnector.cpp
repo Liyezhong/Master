@@ -24,6 +24,7 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
@@ -110,6 +111,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     // Dashboard Command Handlers
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAcknowledge>(&CDataConnector::ProgramAcknowledgeHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdEnterCleaningProgram>(&CDataConnector::EnterCleaningProgramHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAborted>(&CDataConnector::ProgramAbortedHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSuckDrain>(&CDataConnector::StationParaffinBathStatusHandler, this);
 
@@ -1683,6 +1685,12 @@ void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const M
     emit CurrentProgramStepInforUpdated(Command);
 }
 
+void CDataConnector::EnterCleaningProgramHandler(Global::tRefType Ref, const MsgClasses::CmdEnterCleaningProgram& Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit TakeoutSpecimenWaitRunCleaning(Command.LastReagentGroupID());
+}
+
 void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
@@ -1775,11 +1783,6 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::RETORT_COVER_OPERN:
         {
             emit RetortCoverOpen();
-        }
-        break;
-        case DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING:
-        {
-            emit TakeoutSpecimenWaitRunCleaning();
         }
         break;
         case DataManager::PROGRAM_PRETEST_DONE:

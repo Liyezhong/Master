@@ -81,6 +81,7 @@
 namespace MsgClasses
 {
     class CmdProgramAcknowledge;
+    class CmdEnterCleaningProgram;
     class CmdProgramAborted;
     class CmdLockStatus;
 }
@@ -661,9 +662,10 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TakeoutSpecimenWaitRunCleaning
+     *  \param lastReagentGroupID = lastReagentGroupID
      */
     /****************************************************************************/
-    void TakeoutSpecimenWaitRunCleaning();
+    void TakeoutSpecimenWaitRunCleaning(const QString& lastReagentGroupID);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RetortLockStatusChanged
@@ -861,6 +863,17 @@ private:
      */
     /****************************************************************************/
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterCleaningProgramHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdEnterCleaningProgram type parameter
+     *
+     *  \return from EnterCleaningProgramHandler
+     */
+    /****************************************************************************/
+    void EnterCleaningProgramHandler(Global::tRefType Ref, const MsgClasses::CmdEnterCleaningProgram& Command);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ProgramAbortedHandler

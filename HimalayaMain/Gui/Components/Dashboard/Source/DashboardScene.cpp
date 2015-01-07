@@ -1061,6 +1061,22 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
 {
    m_IsSuck = IsSuck;
    m_SuckDrainStationId = StationId;
+
+    //find Station and check it is visible or not,if it is invisible, let it be visible
+   for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+   {
+       Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+       if (item->GetStationItemID() == m_SuckDrainStationId)
+       {
+           if (!item->isVisible())
+           {
+               item->StationSelected(true);
+               item->setVisible(true);
+           }
+           break;
+       }
+   }
+
    ClearCurrentWorkingPipe();
    if (IsStart)
    {

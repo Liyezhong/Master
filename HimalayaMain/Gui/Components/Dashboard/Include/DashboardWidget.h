@@ -374,11 +374,11 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function TakeOutSpecimenAndWaitRunCleaning
-     *
+     *  \param  lastReagentGroupId = last ReagentGroupId
      *  \return from TakeOutSpecimenAndWaitRunCleaning
      */
     /****************************************************************************/
-    void TakeOutSpecimenAndWaitRunCleaning();
+    void TakeOutSpecimenAndWaitRunCleaning(const QString& lastReagentGroupId);
 
  signals:
     /****************************************************************************/
