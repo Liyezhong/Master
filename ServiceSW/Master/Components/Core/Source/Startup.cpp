@@ -382,7 +382,8 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
                                                                                 //0, QApplication::UnicodeUTF8));
 
         // Log Viewer
-        QString FileName = m_DeviceName.remove(QRegExp("\\s")).append("_");
+        QString FileName = m_DeviceName;
+        FileName.remove(QRegExp("\\s")).append("_");
         mp_SystemLogViewer = new LogViewer::CLogViewer(FileName, Global::SystemPaths::Instance().GetLogfilesPath());
         mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
         mp_ServiceLogViewer = new LogViewer::CLogViewer(FileName + "Service", Global::SystemPaths::Instance().GetLogfilesPath());
