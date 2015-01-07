@@ -56,7 +56,8 @@ typedef enum {
 class ServiceDeviceProcess : public QObject
 {
     Q_OBJECT
-private:
+    friend class CTestDiagnostics;
+public:
     static ServiceDeviceProcess* mp_Instance;  ///< The one and only instance.
 
     /****************************************************************************/
@@ -89,14 +90,14 @@ public:
      * \brief  To initiatize devices
      */
     /****************************************************************************/
-    void Initialize();
+    virtual void Initialize();
     /****************************************************************************/
     /**
      * \brief Get Pointer to DataManager Object
      * \return True if Device Initialization is completed.
      */
     /****************************************************************************/
-    bool IsInitialized();
+    virtual bool IsInitialized();
 
     /****************************************************************************/
     /**
@@ -105,7 +106,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int MainRelaySetOnOff(bool OnFlag);
+    virtual int MainRelaySetOnOff(bool OnFlag);
 
     /****************************************************************************/
     /**
@@ -115,7 +116,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AlarmSetOnOff(int LocalRemote, bool OnFlag);
+    virtual int AlarmSetOnOff(int LocalRemote, bool OnFlag);
 
     /****************************************************************************/
     /**
@@ -125,7 +126,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AlarmGetState(int LocalRemote, qint32 *RetState);
+    virtual int AlarmGetState(int LocalRemote, qint32 *RetState);
 
     /****************************************************************************/
     /**
@@ -135,7 +136,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int MainControlGetCurrent(quint8 SlaveType, quint16 *RetCurrent);
+    virtual int MainControlGetCurrent(quint8 SlaveType, quint16 *RetCurrent);
 
     /****************************************************************************/
     /**
@@ -145,7 +146,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int MainControlGetVoltage(quint8 SlaveType, quint16 *RetVoltage);
+    virtual int MainControlGetVoltage(quint8 SlaveType, quint16 *RetVoltage);
 
     /****************************************************************************/
     /**
@@ -155,7 +156,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenStartHeating(qreal TargetTempTop, qreal TargetTempBottom);
+    virtual int OvenStartHeating(qreal TargetTempTop, qreal TargetTempBottom);
 
     /****************************************************************************/
     /**
@@ -163,7 +164,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenStopHeating();
+    virtual int OvenStopHeating();
 
     /****************************************************************************/
     /**
@@ -174,7 +175,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2);
+    virtual int OvenGetTemp(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2);
 
     /****************************************************************************/
     /**
@@ -184,7 +185,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom);
+    virtual int OvenGetCurrent(quint16 *RetCurrentTop, quint16 *RetCurrentBottom);
 
     /****************************************************************************/
     /**
@@ -193,7 +194,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenGetCoverSensorState(qint32 *RetCoverSensorState);
+    virtual int OvenGetCoverSensorState(qint32 *RetCoverSensorState);
 
     /****************************************************************************/
     /**
@@ -202,7 +203,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenGetSwitchType(int *RetSwithType);
+    virtual int OvenGetSwitchType(int *RetSwithType);
 
     /****************************************************************************/
     /**
@@ -211,7 +212,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int OvenTempControlIsOn(bool *RetIsOn);
+    virtual int OvenTempControlIsOn(bool *RetIsOn);
 
     /****************************************************************************/
     /**
@@ -221,7 +222,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom);
+    virtual int RetortStartHeating(qreal TargetTempSide, qreal TargetTempBottom);
 
     /****************************************************************************/
     /**
@@ -229,7 +230,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortStopHeating();
+    virtual int RetortStopHeating();
 
     /****************************************************************************/
     /**
@@ -240,7 +241,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2);
+    virtual int RetortGetTemp(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2);
 
     /****************************************************************************/
     /**
@@ -250,7 +251,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortGetCurrent(quint16 *RetCurrentSide, quint16 *RetCurrentBottom);
+    virtual int RetortGetCurrent(quint16 *RetCurrentSide, quint16 *RetCurrentBottom);
 
     /****************************************************************************/
     /**
@@ -259,7 +260,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortGetLidLockState(qint32 *RetLidLockState);
+    virtual int RetortGetLidLockState(qint32 *RetLidLockState);
 
     /****************************************************************************/
     /**
@@ -269,7 +270,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
+    virtual int RetortSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
 
     /****************************************************************************/
     /**
@@ -278,7 +279,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortGetHeaterSwitchType(quint8 *RetSwitchType);
+    virtual int RetortGetHeaterSwitchType(quint8 *RetSwitchType);
 
     /****************************************************************************/
     /**
@@ -287,7 +288,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RetortTempControlIsOn(bool *RetIsOn);
+    virtual int RetortTempControlIsOn(bool *RetIsOn);
 
     /****************************************************************************/
     /**
@@ -296,7 +297,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LiquidTubeStartHeating(qreal TargetTemp);
+    virtual int LiquidTubeStartHeating(qreal TargetTemp);
 
     /****************************************************************************/
     /**
@@ -304,7 +305,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LiquidTubeStopHeating();
+    virtual int LiquidTubeStopHeating();
 
     /****************************************************************************/
     /**
@@ -313,7 +314,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LiquidTubeGetTemp(qreal *RetTemp);
+    virtual int LiquidTubeGetTemp(qreal *RetTemp);
 
     /****************************************************************************/
     /**
@@ -322,7 +323,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LiquidTubeGetCurrent(quint16 *RetCurrent);
+    virtual int LiquidTubeGetCurrent(quint16 *RetCurrent);
 
     /****************************************************************************/
     /**
@@ -331,7 +332,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LiquidTubeTempControlIsOn(bool *RetIsOn);
+    virtual int LiquidTubeTempControlIsOn(bool *RetIsOn);
 
     /****************************************************************************/
     /**
@@ -340,7 +341,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AirTubeStartHeating(qreal TargetTemp);
+    virtual int AirTubeStartHeating(qreal TargetTemp);
 
     /****************************************************************************/
     /**
@@ -348,7 +349,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AirTubeStopHeating();
+    virtual int AirTubeStopHeating();
 
     /****************************************************************************/
     /**
@@ -357,7 +358,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AirTubeGetTemp(qreal *RetTemp);
+    virtual int AirTubeGetTemp(qreal *RetTemp);
 
     /****************************************************************************/
     /**
@@ -366,7 +367,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AirTubeGetCurrent(quint16 *RetCurrent);
+    virtual int AirTubeGetCurrent(quint16 *RetCurrent);
 
     /****************************************************************************/
     /**
@@ -375,7 +376,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int AirTubeTempControlIsOn(bool *RetIsOn);
+    virtual int AirTubeTempControlIsOn(bool *RetIsOn);
 
     /****************************************************************************/
     /**
@@ -384,7 +385,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVStartHeating(qreal TargetTemp);
+    virtual int RVStartHeating(qreal TargetTemp);
 
     /****************************************************************************/
     /**
@@ -392,7 +393,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVStopHeating();
+    virtual int RVStopHeating();
 
     /****************************************************************************/
     /**
@@ -402,7 +403,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2);
+    virtual int RVGetTemp(qreal *RetTempSensor1, qreal* RetTempSensor2);
 
     /****************************************************************************/
     /**
@@ -411,7 +412,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVGetCurrent(quint16 *RetCurrent);
+    virtual int RVGetCurrent(quint16 *RetCurrent);
 
     /****************************************************************************/
     /**
@@ -421,7 +422,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVInitialize(bool TubeFlag=false, quint32 Position=0);
+    virtual int RVInitialize(bool TubeFlag=false, quint32 Position=0);
 
     /****************************************************************************/
     /**
@@ -431,7 +432,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVMovePosition(bool TubeFlag, int Position);
+    virtual int RVMovePosition(bool TubeFlag, int Position);
 
     /****************************************************************************/
     /**
@@ -441,7 +442,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVGetPosition(bool* TubeFlag, qint32 *Position);
+    virtual int RVGetPosition(bool* TubeFlag, qint32 *Position);
 
     /****************************************************************************/
     /**
@@ -451,7 +452,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
+    virtual int RVSetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
 
     /****************************************************************************/
     /**
@@ -460,7 +461,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVGetHeaterSwitchType(quint8 *RetSwitchType);
+    virtual int RVGetHeaterSwitchType(quint8 *RetSwitchType);
 
     /****************************************************************************/
     /**
@@ -469,7 +470,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int RVTempControlIsOn(bool *RetIsOn);
+    virtual int RVTempControlIsOn(bool *RetIsOn);
 
     /****************************************************************************/
     /**
@@ -479,7 +480,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSStartHeating(bool QuickFlag, bool WaterFlag);
+    virtual int LSStartHeating(bool QuickFlag, bool WaterFlag);
 
     /****************************************************************************/
     /**
@@ -487,7 +488,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSStopHeating();
+    virtual int LSStopHeating();
 
     /****************************************************************************/
     /**
@@ -496,7 +497,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSGetTemp(qreal *RetTemp);
+    virtual int LSGetTemp(qreal *RetTemp);
 
     /****************************************************************************/
     /**
@@ -505,7 +506,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSGetCurrent(quint16 *RetCurrent);
+    virtual int LSGetCurrent(quint16 *RetCurrent);
 
     /****************************************************************************/
     /**
@@ -514,7 +515,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSHeatingLevelSensor(bool WaterFlag);
+    virtual int LSHeatingLevelSensor(bool WaterFlag);
 
     /****************************************************************************/
     /**
@@ -523,7 +524,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int LSTempControlIsOn(bool *RetIsOn);
+    virtual int LSTempControlIsOn(bool *RetIsOn);
 
 
     /****************************************************************************/
@@ -533,7 +534,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpBuildPressure(float TargetPressure);
+    virtual int PumpBuildPressure(float TargetPressure);
 
     /****************************************************************************/
     /**
@@ -541,7 +542,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpReleasePressure();
+    virtual int PumpReleasePressure();
 
     /****************************************************************************/
     /**
@@ -551,7 +552,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpSetPressure(quint8 Flag, float Pressure);
+    virtual int PumpSetPressure(quint8 Flag, float Pressure);
 
     /****************************************************************************/
     /**
@@ -560,7 +561,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpGetPressure(float *RetPressure);
+    virtual int PumpGetPressure(float *RetPressure);
 
     /****************************************************************************/
     /**
@@ -569,7 +570,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpSetFan(quint8 OnFlag);
+    virtual int PumpSetFan(quint8 OnFlag);
 
     /****************************************************************************/
     /**
@@ -577,7 +578,7 @@ public:
      *  \return true if the fan is open
      */
     /****************************************************************************/
-    bool PumpGetFan();
+    virtual bool PumpGetFan();
 
 
     /****************************************************************************/
@@ -586,7 +587,7 @@ public:
      *  \return true if the pump is open
      */
     /****************************************************************************/
-    bool PumpGetStatus();
+    virtual bool PumpGetStatus();
 
    /****************************************************************************/
     /**
@@ -596,7 +597,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpSetValve(quint8 ValveIndex, quint8 ValveState);
+    virtual int PumpSetValve(quint8 ValveIndex, quint8 ValveState);
 
     /****************************************************************************/
      /**
@@ -605,7 +606,7 @@ public:
      *  \oparam ValveState = state of valve
       */
      /****************************************************************************/
-     void PumpGetValve(quint8 ValveIndex, quint8 &ValveState);
+     virtual void PumpGetValve(quint8 ValveIndex, quint8 &ValveState);
 
     /****************************************************************************/
     /**
@@ -613,7 +614,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpStopCompressor();
+    virtual int PumpStopCompressor();
 
     /****************************************************************************/
     /**
@@ -622,7 +623,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpSucking(quint32 DelayTime=0);
+    virtual int PumpSucking(quint32 DelayTime=0);
 
     /****************************************************************************/
     /**
@@ -631,7 +632,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpDraining(quint32 DelayTime=0);
+    virtual int PumpDraining(quint32 DelayTime=0);
 
     /****************************************************************************/
     /**
@@ -640,7 +641,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpReadPressureDrift(float *RetPressureDrift);
+    virtual int PumpReadPressureDrift(float *RetPressureDrift);
 
     /****************************************************************************/
     /**
@@ -649,7 +650,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int PumpWritePressureDrift(float PressureDrift);
+    virtual int PumpWritePressureDrift(float PressureDrift);
 
     /****************************************************************************/
     /**
@@ -660,7 +661,7 @@ public:
      *  \return Error Code
      */
     /****************************************************************************/
-    int GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName);
+    virtual int GetSlaveModuleReportError(quint8 ErrorCode, const QString& DevName, quint32 SensorName);
 
     /****************************************************************************/
     /**

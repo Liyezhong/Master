@@ -17,9 +17,15 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
+QMAKE_CXXFLAGS += -std=c++11
+
 UseLibs(Core ServiceDataManager Diagnostics DiagnosticsManufacturing)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global)
 # UseSharedLibs(HimalayaDataContainer)
 UsePlatformScroller(QtScroller)
+
+LIBS += -L/usr/local/lib/gmock -lgmock
+LIBS += -L/usr/local/lib/gtest -lgtest
+LIBS += -ldl
 

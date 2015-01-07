@@ -53,8 +53,173 @@
 #include <QMainWindow>
 #include "Global/Include/SystemPaths.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
+using ::testing::Return;
+using ::testing::AtLeast;
+using ::testing::_;
+using ::testing::Lt;
+using ::testing::DoAll;
+
+using ::std::plus;
+using ::std::string;
+using ::std::tr1::get;
+using ::std::tr1::make_tuple;
+using ::std::tr1::tuple;
+using ::std::tr1::tuple_element;
+using testing::_;
+using testing::Action;
+using testing::ActionInterface;
+using testing::DeleteArg;
+using testing::Invoke;
+using testing::Return;
+using testing::ReturnArg;
+using testing::ReturnPointee;
+using testing::SaveArg;
+using testing::SaveArgPointee;
+using testing::SetArgReferee;
+using testing::StaticAssertTypeEq;
+using testing::SetArgPointee;
+using testing::Unused;
+using testing::WithArg;
+using testing::WithoutArgs;
+using testing::internal::linked_ptr;
+
+
 
 namespace Diagnostics {
+
+class MockServiceDeviceProcess : public ServiceDeviceProcess {
+    Q_OBJECT
+ public:
+  MOCK_METHOD0(Initialize,
+      void());
+  MOCK_METHOD0(IsInitialized,
+      bool());
+  MOCK_METHOD1(MainRelaySetOnOff,
+      int(bool OnFlag));
+  MOCK_METHOD2(AlarmSetOnOff,
+      int(int LocalRemote, bool OnFlag));
+  MOCK_METHOD2(AlarmGetState,
+      int(int LocalRemote, qint32 *RetState));
+  MOCK_METHOD2(MainControlGetCurrent,
+      int(quint8 SlaveType, quint16 *RetCurrent));
+  MOCK_METHOD2(MainControlGetVoltage,
+      int(quint8 SlaveType, quint16 *RetVoltage));
+  MOCK_METHOD2(OvenStartHeating,
+      int(qreal TargetTempTop, qreal TargetTempBottom));
+  MOCK_METHOD0(OvenStopHeating,
+      int());
+  MOCK_METHOD3(OvenGetTemp,
+      int(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2));
+  MOCK_METHOD2(OvenGetCurrent,
+      int(quint16 *RetCurrentTop, quint16 *RetCurrentBottom));
+  MOCK_METHOD1(OvenGetCoverSensorState,
+      int(qint32 *RetCoverSensorState));
+  MOCK_METHOD1(OvenGetSwitchType,
+      int(int *RetSwithType));
+  MOCK_METHOD1(OvenTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD2(RetortStartHeating,
+      int(qreal TargetTempSide, qreal TargetTempBottom));
+  MOCK_METHOD0(RetortStopHeating,
+      int());
+  MOCK_METHOD3(RetortGetTemp,
+      int(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2));
+  MOCK_METHOD2(RetortGetCurrent,
+      int(quint16 *RetCurrentSide, quint16 *RetCurrentBottom));
+  MOCK_METHOD1(RetortGetLidLockState,
+      int(qint32 *RetLidLockState));
+  MOCK_METHOD2(RetortSetTemperatureSwitchState,
+      int(qint8 SwitchState, qint8 AutoSwitch));
+  MOCK_METHOD1(RetortGetHeaterSwitchType,
+      int(quint8 *RetSwitchType));
+  MOCK_METHOD1(RetortTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(LiquidTubeStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(LiquidTubeStopHeating,
+      int());
+  MOCK_METHOD1(LiquidTubeGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(LiquidTubeGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(LiquidTubeTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(AirTubeStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(AirTubeStopHeating,
+      int());
+  MOCK_METHOD1(AirTubeGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(AirTubeGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(AirTubeTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(RVStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(RVStopHeating,
+      int());
+  MOCK_METHOD2(RVGetTemp,
+      int(qreal *RetTempSensor1, qreal* RetTempSensor2));
+  MOCK_METHOD1(RVGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD2(RVInitialize,
+      int(bool, quint32));
+  MOCK_METHOD2(RVMovePosition,
+      int(bool TubeFlag, int Position));
+  MOCK_METHOD2(RVGetPosition,
+      int(bool* TubeFlag, qint32 *Position));
+  MOCK_METHOD2(RVSetTemperatureSwitchState,
+      int(qint8 SwitchState, qint8 AutoSwitch));
+  MOCK_METHOD1(RVGetHeaterSwitchType,
+      int(quint8 *RetSwitchType));
+  MOCK_METHOD1(RVTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD2(LSStartHeating,
+      int(bool QuickFlag, bool WaterFlag));
+  MOCK_METHOD0(LSStopHeating,
+      int());
+  MOCK_METHOD1(LSGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(LSGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(LSHeatingLevelSensor,
+      int(bool WaterFlag));
+  MOCK_METHOD1(LSTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(PumpBuildPressure,
+      int(float TargetPressure));
+  MOCK_METHOD0(PumpReleasePressure,
+      int());
+  MOCK_METHOD2(PumpSetPressure,
+      int(quint8 Flag, float Pressure));
+  MOCK_METHOD1(PumpGetPressure,
+      int(float *RetPressure));
+  MOCK_METHOD1(PumpSetFan,
+      int(quint8 OnFlag));
+  MOCK_METHOD0(PumpGetFan,
+      bool());
+  MOCK_METHOD0(PumpGetStatus,
+      bool());
+  MOCK_METHOD2(PumpSetValve,
+      int(quint8 ValveIndex, quint8 ValveState));
+  MOCK_METHOD2(PumpGetValve,
+      void(quint8 ValveIndex, quint8 &ValveState));
+  MOCK_METHOD0(PumpStopCompressor,
+      int());
+  MOCK_METHOD1(PumpSucking,
+      int(quint32));
+  MOCK_METHOD1(PumpDraining,
+      int(quint32));
+  MOCK_METHOD1(PumpReadPressureDrift,
+      int(float *RetPressureDrift));
+  MOCK_METHOD1(PumpWritePressureDrift,
+      int(float PressureDrift));
+  MOCK_METHOD3(GetSlaveModuleReportError,
+      int(quint8 ErrorCode, const QString& DevName, quint32 SensorName));
+};
 
 namespace InitialSystem {
 class LTubePreUT : public CLTubePreTest
@@ -468,6 +633,7 @@ private slots:
     /****************************************************************************/
     void cleanupTestCase();
 
+#if 0
     void LTubePreTest();
     void MainsRelayTest();
 
@@ -476,7 +642,9 @@ private slots:
     void ACVoltageTest();
     void OvenPreTest();
     void CoverSensorTest();
+#endif
     void RVMovementTest();
+#if 0
     void HeatingTestEmpty();
 
     void SystemAlarmTest();
@@ -499,7 +667,7 @@ private slots:
     void MainControlASBTest();
 
     void ServiceDeviceProcessTest();
-
+#endif
 
 }; // end class CTestDiagnostics
 
@@ -509,8 +677,9 @@ void CTestDiagnostics::initTestCase() {
     Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfigSVC.xml";
     DataManager::CTestCaseFactory::ServiceInstance().InitData(FileName);
-}
 
+}
+#if 0
 /****************************************************************************/
 void CTestDiagnostics::LTubePreTest()
 {
@@ -558,17 +727,37 @@ void CTestDiagnostics::CoverSensorTest()
 {
     CDiagnosticMessageDlgMock dlg;
     Oven::CCoverSensorTestMock ut(&dlg);
-    //QVERIFY(ut.Run() == RETURN_OK);
+    QVERIFY(ut.Run() == RETURN_OK);
 }
+#endif
 
 /****************************************************************************/
 void CTestDiagnostics::RVMovementTest()
 {
+    MockServiceDeviceProcess dev;
+    ServiceDeviceProcess::mp_Instance = &dev;
+
     CDiagnosticMessageDlgMock dlg;
+    
+
+    qreal RVSensor1TempCurrent = 90;
+    qreal RVSensor2TempCurrent = 50;
+
+    EXPECT_CALL(dev, RVGetTemp(_, _))
+            .WillOnce(DoAll(SetArgPointee<0>(RVSensor1TempCurrent), SetArgPointee<1>(RVSensor2TempCurrent), Return(RETURN_OK)));
+
+    EXPECT_CALL(dev, RVInitialize(_, _))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(dev, RVMovePosition(_, _))
+            .WillRepeatedly(Return(RETURN_OK));
+    
     RotaryValve::CMovementTest ut(&dlg);
-    QVERIFY(ut.Run() != RETURN_OK);
+    
+    QVERIFY(ut.Run() == RETURN_OK);
 }
 
+#if 0
 /****************************************************************************/
 void CTestDiagnostics::HeatingTestEmpty()
 {
@@ -766,6 +955,7 @@ void CTestDiagnostics::ServiceDeviceProcessTest()
 //    p_Dev->PumpGetValve(1, OutUint8);
 //    QVERIFY(OutUint8 == false);
 }
+#endif
 
 /****************************************************************************/
 void CTestDiagnostics::init() {
@@ -777,10 +967,19 @@ void CTestDiagnostics::cleanup() {
 
 /****************************************************************************/
 void CTestDiagnostics::cleanupTestCase() {
+
 }
 
 } // end namespace Diagnostics
 
-QTEST_MAIN(Diagnostics::CTestDiagnostics)
+//QTEST_MAIN(Diagnostics::CTestDiagnostics)
+int main(int argc, char*argv[])
+{
+    ::testing::GTEST_FLAG(throw_on_failure) = true;
+    ::testing::InitGoogleMock(&argc, argv);
+    QCoreApplication app(argc, argv);
+    Diagnostics::CTestDiagnostics tc;
+    return QTest::qExec(&tc, argc, argv);
+}
 #include "TestDiagnostics.moc"
 
