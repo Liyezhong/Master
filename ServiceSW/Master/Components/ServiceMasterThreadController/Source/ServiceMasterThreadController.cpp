@@ -835,6 +835,13 @@ void ServiceMasterThreadController::OnGoReceived()
     mp_GUIStartup->mp_ServiceConnector->SetUserSettingInterface(
                 mp_ServiceDataManager->GetDataContainer()->SettingsInterface);
 
+    QString DeviceName = mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface
+            ->GetDeviceConfiguration()->GetValue("DEVICENAME");
+    QString SerialNumber = mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface
+            ->GetDeviceConfiguration()->GetValue("SERIALNUMBER");
+    SetEventLoggerBaseFileName(DeviceName.remove(QRegExp("\\s")) + "_Service_");
+    SetSerialNumber(SerialNumber);
+
     try {
         // Initialize controllers
         InitializeControllers(true);

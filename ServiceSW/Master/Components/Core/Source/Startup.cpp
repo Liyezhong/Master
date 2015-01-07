@@ -54,7 +54,11 @@ CStartup::CStartup() : QObject(),
     mp_ManaufacturingDiagnosticsHandler(NULL),
     m_SelfTestFinished(false),
     mp_USBKeyValidator(NULL),
+    mp_SystemLogViewer(NULL),
+    mp_ServiceHelpText(NULL),
+    mp_ServiceLogViewer(NULL),
     mp_LogContentDlg(NULL),
+    mp_SoftwareUpdateLogViewer(NULL),
     mp_SystemLogContentDlg(NULL),
     mp_SVCSceenLockWidget(NULL),
     m_CurrentUserMode(""),
@@ -156,20 +160,20 @@ CStartup::CStartup() : QObject(),
 //    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
 //    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
 
-    mp_SystemLogViewer = new LogViewer::CLogViewer("PRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
-    mp_ServiceLogViewer = new LogViewer::CLogViewer("PRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
+//    mp_SystemLogViewer = new LogViewer::CLogViewer("HISTOCOREPRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
+//    mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
+//    mp_ServiceLogViewer = new LogViewer::CLogViewer("HISTOCOREPRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
+//    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
 
-    CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+//    CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+//    CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+//    CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+//    CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
 
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
+//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
+//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
+//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
+//    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
@@ -396,6 +400,22 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
                                                                                 //0, QApplication::UnicodeUTF8));
 
         // Log Viewer
+        QString FileName = m_DeviceName.remove(QRegExp("\\s")).append("_");
+        mp_SystemLogViewer = new LogViewer::CLogViewer(FileName, Global::SystemPaths::Instance().GetLogfilesPath());
+        mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
+        mp_ServiceLogViewer = new LogViewer::CLogViewer(FileName + "Service", Global::SystemPaths::Instance().GetLogfilesPath());
+        mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
+
+        CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
+
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_SystemLogViewer);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8)
@@ -814,7 +834,7 @@ void CStartup::UpdateParameters()
 
         qDebug()<<"CStartup::UpdateParameters-------- get device name:"<< m_DeviceName;
 
-        m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
+        //m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
     }
     emit SetDeviceName(m_DeviceName);
 }
@@ -1643,8 +1663,12 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
 
-    if (FileName.startsWith("PRIMARIS_")
-            && !FileName.startsWith("PRIMARIS_Service")) {  // System log
+    QString DeviceName = mp_ServiceConnector->GetDeviceConfigInterface()->GetDeviceConfiguration()
+            ->GetValue("DEVICENAME").remove(QRegExp("\\s"));
+
+
+    if (FileName.startsWith(DeviceName + "_")
+            && !FileName.startsWith(DeviceName +"_Service")) {  // System log
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
             delete mp_SystemLogContentDlg;
@@ -1662,7 +1686,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QStringList HeaderLabels;
         QList<int> Columns;
 
-        if (FileName.startsWith("PRIMARIS_Service")) {  // Service log
+        if (FileName.startsWith(DeviceName + "_Service")) {  // Service log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
