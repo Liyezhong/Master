@@ -86,13 +86,18 @@ using testing::WithArg;
 using testing::WithoutArgs;
 using testing::internal::linked_ptr;
 
-
-
 namespace Diagnostics {
 
 class MockServiceDeviceProcess : public ServiceDeviceProcess {
     Q_OBJECT
  public:
+    static MockServiceDeviceProcess *InstanceMock()
+    {
+        MockServiceDeviceProcess *mock = new MockServiceDeviceProcess;
+        mp_Instance = mock;
+        return mock;
+    }
+
   MOCK_METHOD0(Initialize,
       void());
   MOCK_METHOD0(IsInitialized,
@@ -219,6 +224,8 @@ class MockServiceDeviceProcess : public ServiceDeviceProcess {
       int(float PressureDrift));
   MOCK_METHOD3(GetSlaveModuleReportError,
       int(quint8 ErrorCode, const QString& DevName, quint32 SensorName));
+  MOCK_METHOD1(Pause,
+      void(quint32 MillSeconds));
 };
 
 namespace InitialSystem {
@@ -734,27 +741,26 @@ void CTestDiagnostics::CoverSensorTest()
 /****************************************************************************/
 void CTestDiagnostics::RVMovementTest()
 {
-    MockServiceDeviceProcess dev;
-    ServiceDeviceProcess::mp_Instance = &dev;
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
 
-    CDiagnosticMessageDlgMock dlg;
-    
+    CDiagnosticMessageDlgMock dlg;    
 
     qreal RVSensor1TempCurrent = 90;
     qreal RVSensor2TempCurrent = 50;
 
-    EXPECT_CALL(dev, RVGetTemp(_, _))
+    EXPECT_CALL(*dev, RVGetTemp(_, _))
             .WillOnce(DoAll(SetArgPointee<0>(RVSensor1TempCurrent), SetArgPointee<1>(RVSensor2TempCurrent), Return(RETURN_OK)));
 
-    EXPECT_CALL(dev, RVInitialize(_, _))
+    EXPECT_CALL(*dev, RVInitialize(_, _))
             .WillRepeatedly(Return(RETURN_OK));
 
-    EXPECT_CALL(dev, RVMovePosition(_, _))
+    EXPECT_CALL(*dev, RVMovePosition(_, _))
             .WillRepeatedly(Return(RETURN_OK));
     
     RotaryValve::CMovementTest ut(&dlg);
     
     QVERIFY(ut.Run() == RETURN_OK);
+    delete dev;
 }
 
 #if 0

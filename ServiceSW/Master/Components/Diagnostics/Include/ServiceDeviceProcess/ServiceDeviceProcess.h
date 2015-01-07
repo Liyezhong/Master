@@ -56,8 +56,7 @@ typedef enum {
 class ServiceDeviceProcess : public QObject
 {
     Q_OBJECT
-    friend class CTestDiagnostics;
-public:
+protected:
     static ServiceDeviceProcess* mp_Instance;  ///< The one and only instance.
 
     /****************************************************************************/
@@ -669,7 +668,7 @@ public:
      *  \iparam MillSeconds = target of pause time of mill senconds
      */
     /****************************************************************************/
-    void Pause(quint32 MillSeconds);
+    virtual void Pause(quint32 MillSeconds);
 
 private:
     QMap<QString, QEventLoop*>      m_EventLoopMap;  //!< store event loop
