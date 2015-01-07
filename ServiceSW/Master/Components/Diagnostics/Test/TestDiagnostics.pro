@@ -17,7 +17,7 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-QMAKE_CXXFLAGS += -std=c++0x
+#QMAKE_CXXFLAGS += -std=c++0x
 
 UseLibs(Core ServiceDataManager Diagnostics DiagnosticsManufacturing)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
