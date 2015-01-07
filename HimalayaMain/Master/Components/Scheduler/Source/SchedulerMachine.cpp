@@ -880,6 +880,11 @@ void CSchedulerStateMachine::NotifyEnterCleaningDryStep()
 void CSchedulerStateMachine::NotifyStepProgramFinished()
 {
     emit sigStepProgramFinished();
+
+    while (false == mp_SchedulerMachine->configuration().contains(mp_PssmFillingHeatingRVState.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+    }
 }
 
 void CSchedulerStateMachine::NotifyError()
@@ -938,26 +943,31 @@ void CSchedulerStateMachine::NotifyResumeDrain()
 
 void CSchedulerStateMachine::EnterRsStandBy()
 {
+    mp_RsStandby->Start();
     emit SigEnterRsStandBy();
 }
 
 void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
 {
+    mp_RsHeatingErr30SRetry->Start();
     emit SigEnterRsHeatingErr30SRetry();
 }
 
 void CSchedulerStateMachine::EnterRsPressureOverRange3SRetry()
 {
+    mp_RsPressureOverRange3SRetry->Start();
     emit SigEnterRsPressureOverRange3SRetry();
 }
 
 void CSchedulerStateMachine::EnterRsTSensorErr3MinRetry()
 {
+    mp_RsTSensorErr3MinRetry->Start();
     emit SigEnterRSTSensorErr3MinRetry();
 }
 
 void CSchedulerStateMachine::EnterRsStandByWithTissue()
 {
+    mp_RsStandbyWithTissue->Start();
     emit SigEnterRsStandByWithTissue();
 }
 
@@ -1013,6 +1023,7 @@ void CSchedulerStateMachine::EnterRsRVWaitingTempUp()
 
 void CSchedulerStateMachine::EnterRsTissueProtect()
 {
+    mp_RsTissueProtect->Start();
     emit SigEnterRsTissueProtect();
 }
 

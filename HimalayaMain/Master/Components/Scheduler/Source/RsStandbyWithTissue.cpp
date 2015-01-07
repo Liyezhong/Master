@@ -59,10 +59,27 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
+    m_ShutdownHeatersTime = 0;
+    m_StartCheckingTime = 0;
+}
+
+void CRsStandbyWithTissue::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+
     mp_StateMachine->start();
     m_ShutdownHeatersTime = 0;
     m_StartCheckingTime = 0;
-    }
+}
 
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {

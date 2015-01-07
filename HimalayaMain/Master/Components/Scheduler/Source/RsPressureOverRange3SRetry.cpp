@@ -55,7 +55,24 @@ CRsPressureOverRange3SRetry::CRsPressureOverRange3SRetry(SchedulerMainThreadCont
     mp_WaitFor1S->addTransition(this, SIGNAL(TasksDone(bool)), mp_CheckPressure.data());
     m_Counter = 0;
     m_CheckPressureTime = 0;
+}
+
+void CRsPressureOverRange3SRetry::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+
     mp_StateMachine->start();
+    m_Counter = 0;
+    m_CheckPressureTime = 0;
 }
 
 /****************************************************************************/

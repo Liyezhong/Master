@@ -78,7 +78,6 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
-    mp_StateMachine->start();
     m_IsLevelSensorRelated = false;
     m_DrainCurReagentSeq = 0;
     m_MoveToTubeSeq = 0;
@@ -86,7 +85,32 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
     m_IsFillingSuccessful = true;
+}
+
+
+void CRsTissueProtect::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
     }
+
+    mp_StateMachine->start();
+
+    m_IsLevelSensorRelated = false;
+    m_DrainCurReagentSeq = 0;
+    m_MoveToTubeSeq = 0;
+    m_FillSeq = 0;
+    m_LevelSensorSeq = 0;
+    m_MoveToSealSeq = 0;
+    m_IsFillingSuccessful = true;
+}
 
 CRsTissueProtect::~CRsTissueProtect()
 {

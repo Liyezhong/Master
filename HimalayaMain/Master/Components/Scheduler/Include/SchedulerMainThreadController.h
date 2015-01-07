@@ -216,6 +216,25 @@ typedef struct
     qreal Voltagerated24VDC;            //!< the voltage 24 VDC
     qreal VoltageTolerance24VDC;        //!< the voltage 24 VDC
 } SlaveAttr_t;
+
+/****************************************************************************/
+/*!
+ *  \brief struct for Cleaning Dry step
+ */
+/****************************************************************************/
+typedef enum
+{
+    CDS_READY,
+    CDS_MOVE_TO_SEALING_13,
+    CDS_WAIT_HIT_POSITION,
+    CDS_WAIT_HIT_TEMPERATURE,
+    CDS_VACUUM,
+    CDS_WAIT_HIT_PPRESSURE,
+    CDS_WAITING_DRY,
+    CDS_STOP_HEATING_VACUUM,
+    CDS_SUCCESS,
+    CDS_ERROR
+}DryStepsStateMachine;
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -607,13 +626,6 @@ signals:
           */
          /****************************************************************************/
          void NotifyResume();
-         /****************************************************************************/
-         /*!
-          *  \brief  signal to update station status
-          */
-         /****************************************************************************/
-         void signalStationReagentStatus();
-
 private slots:
          /****************************************************************************/
          /*!

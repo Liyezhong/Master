@@ -54,13 +54,29 @@ CRsTSensorErr3MinRetry::CRsTSensorErr3MinRetry(SchedulerMainThreadController* Sc
     mp_CheckTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
 
     mp_WaitBeginTime = 0;
-    mp_SchedulerMachine->start();
 }
 
 CRsTSensorErr3MinRetry::~CRsTSensorErr3MinRetry()
 {
     /*lint -e1551 */
     mp_SchedulerMachine->stop();
+}
+
+void CRsTSensorErr3MinRetry::Start()
+{
+    if (mp_SchedulerMachine->isRunning())
+    {
+        mp_SchedulerMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+
+    mp_SchedulerMachine->start();
+    mp_WaitBeginTime = 0;
 }
 
 CRsTSensorErr3MinRetry::StateList_t CRsTSensorErr3MinRetry::GetCurrentState(QSet<QAbstractState*> statesList)

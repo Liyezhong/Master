@@ -119,6 +119,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is15MinPause(false)
         ,m_RestartDryStep(true)
         ,m_IsNeedBottleCheck(true)
+        ,m_InternalErrorRecv(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -205,7 +206,6 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
                      this, ResetActiveCarbonFilterLifetime());
-    CONNECTSIGNALSLOT(this, signalStationReagentStatus(), this, UpdateStationReagentStatus());
     m_TickTimer.setInterval(500);
 
     //command queue reset
@@ -1112,7 +1112,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else if (1 == m_PssmStepFinSeq)
             {
-                emit signalStationReagentStatus();
+                // Update station reagent status
+                this->UpdateStationReagentStatus();
                 (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
                 if(m_CurProgramStepIndex != -1)
                 {
@@ -3431,19 +3432,6 @@ bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
 void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
     Q_UNUSED(ctrlCmd)
-    typedef enum
-    {
-        CDS_READY,
-        CDS_MOVE_TO_SEALING_13,
-        CDS_WAIT_HIT_POSITION,
-        CDS_WAIT_HIT_TEMPERATURE,
-        CDS_VACUUM,
-        CDS_WAIT_HIT_PPRESSURE,
-        CDS_WAITING_DRY,
-        CDS_STOP_HEATING_VACUUM,
-        CDS_SUCCESS,
-        CDS_ERROR
-    }DryStepsStateMachine;
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     static DryStepsStateMachine CurrentState = CDS_READY;
     static quint64 StepStartTime = 0;
@@ -3469,6 +3457,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         CurrentState = CDS_MOVE_TO_SEALING_13;
+        break;
     case CDS_MOVE_TO_SEALING_13:
         qDebug() << "CDS_MOVE_TO_SEALING_13";
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
@@ -3551,7 +3540,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         break;
     case CDS_ERROR:
         break;
-
     }
 }
 
