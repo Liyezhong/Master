@@ -16,9 +16,9 @@
 		<MovementTest RVSensor1TempMin="80" RVSensor2TempMin="40"/>
 	</RotaryValve>
 	<MainControl>
-		<SMCASB3 Voltage="24" VolTolerance="2.4" CurrentLow="0" CurrentHigh="300"/>
-		<SMCASB5 Voltage="24" VolTolerance="2.4" CurrentLow="0" CurrentHigh="500"/>
-		<SMCASB15 Voltage="24" VolTolerance="2.4" CurrentLow="0" CurrentHigh="800"/>
+		<SMCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="300"/>
+		<SMCASB5 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="500"/>
+		<SMCASB15 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="800"/>
 	</MainControl>
 	<LaSystem>
 		<LiquidHeatingTest RoomTempMin="10" RoomTempMax="35" LiquidTargetTemp="80" LiquidCurrentTempMin="10" LiquidCurrentTempMax="90" LiquidTempAbove="78" LiquidMaintainTime="60" LiquidTempMaintainRangeMin="75" LiquidTempMaintainRangeMax="85" LiquidRepeatTime="1800"/>
