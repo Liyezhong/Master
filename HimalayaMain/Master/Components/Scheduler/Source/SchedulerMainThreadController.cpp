@@ -117,7 +117,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
-        ,m_RestartDryStep(true)
         ,m_IsNeedBottleCheck(true)
         ,m_InternalErrorRecv(false)
 {
@@ -146,6 +145,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
+    memset(&m_CleaningDry, 0, sizeof(m_CleaningDry));
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -2199,7 +2199,9 @@ void SchedulerMainThreadController::OnEnterPssMStepFin()
 
 void SchedulerMainThreadController::OnEnterDryStepState()
 {
-    m_RestartDryStep = true;
+    m_CleaningDry.CurrentState = CDS_READY;
+    m_CleaningDry.StepStartTime = 0;
+    m_CleaningDry.warningReport = false;
 }
 
 /**
@@ -3433,94 +3435,85 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
 {
     Q_UNUSED(ctrlCmd)
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    static DryStepsStateMachine CurrentState = CDS_READY;
-    static quint64 StepStartTime = 0;
-    static bool warningReport = false;
     CmdRVReqMoveToRVPosition* CmdMvRV = NULL;
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr = NULL;
     Global::tRefType Ref;
 
-    if(m_RestartDryStep)
-    {
-        CurrentState = CDS_READY;
-        StepStartTime = 0;
-        warningReport = false;
-        m_RestartDryStep = false;
-    }
-    switch (CurrentState)
+    switch (m_CleaningDry.CurrentState)
     {
     case CDS_READY:
+        LogDebug(QString("CDS_READY"));
         RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
         commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
                                                                 m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        CurrentState = CDS_MOVE_TO_SEALING_13;
+        m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
         break;
     case CDS_MOVE_TO_SEALING_13:
-        qDebug() << "CDS_MOVE_TO_SEALING_13";
+        LogDebug(QString("CDS_MOVE_TO_SEALING_13"));
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
         CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
-        CurrentState = CDS_WAIT_HIT_POSITION;
+        m_CleaningDry.CurrentState = CDS_WAIT_HIT_POSITION;
         break;
     case CDS_WAIT_HIT_POSITION:
-        qDebug() << "CDS_WAIT_HIT_POSITION";
+        LogDebug(QString("CDS_WAIT_HIT_POSITION"));
         if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
         {
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
-                CurrentState = CDS_WAIT_HIT_TEMPERATURE;
+                m_CleaningDry.CurrentState = CDS_WAIT_HIT_TEMPERATURE;
             }
             else
             {
-                CurrentState = CDS_READY;
-                StepStartTime = 0;
+                m_CleaningDry.CurrentState = CDS_READY;
+                m_CleaningDry.StepStartTime = 0;
                 SendOutErrMsg(retCode);
             }
         }
         break;
     case CDS_WAIT_HIT_TEMPERATURE:
-        qDebug() << "CDS_WAIT_HIT_TEMPERATURE";
-        CurrentState = CDS_VACUUM;
+        LogDebug(QString("CDS_WAIT_HIT_TEMPERATURE"));
+        m_CleaningDry.CurrentState = CDS_VACUUM;
         break;
     case CDS_VACUUM:
-        qDebug() << "CDS_VACUUM";
+        LogDebug(QString("CDS_VACUUM"));
         Vaccum();
-        CurrentState = CDS_WAIT_HIT_PPRESSURE;
+        m_CleaningDry.CurrentState = CDS_WAIT_HIT_PPRESSURE;
         break;
     case CDS_WAIT_HIT_PPRESSURE:
-        qDebug() << "CDS_WAIT_HIT_PPRESSURE";
+        LogDebug(QString("CDS_WAIT_HIT_PPRESSURE"));
         if(cmd != NULL && ("Scheduler::ALVaccum" == cmd->GetName()))
         {
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                CurrentState = CDS_READY;
-                StepStartTime = 0;
+                m_CleaningDry.CurrentState = CDS_READY;
+                m_CleaningDry.StepStartTime = 0;
                 SendOutErrMsg(retCode);
             }
             else
             {
-                CurrentState = CDS_WAITING_DRY;
-                StepStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_CleaningDry.CurrentState = CDS_WAITING_DRY;
+                m_CleaningDry.StepStartTime = QDateTime::currentMSecsSinceEpoch();
             }
         }
         break;
     case CDS_WAITING_DRY:
-        qDebug() << "CDS_WAITING_DRY";
-        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 600000) // drying 10 minutes
+        LogDebug(QString("CDS_WAITING_DRY"));
+        if(QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 600000) // drying 10 minutes
         {
-            CurrentState = CDS_STOP_HEATING_VACUUM;
+            m_CleaningDry.CurrentState = CDS_STOP_HEATING_VACUUM;
         }
 
         //Check if pressure reaches negative 25kpa, if no, report out warning message
-        if (QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 120*1000 && warningReport == false)
+        if (QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 120*1000 && m_CleaningDry.warningReport == false)
         {
-            warningReport = true;
+           m_CleaningDry. warningReport = true;
             if (qAbs(m_PressureAL) < 25.0)
             {
                 SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
@@ -3528,15 +3521,16 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         }
         break;
     case CDS_STOP_HEATING_VACUUM:
-        qDebug() << "CDS_STOP_HEATING_VACUUM";
+        LogDebug(QString("CDS_STOP_HEATING_VACUUM"));
         ReleasePressure();
-        CurrentState = CDS_SUCCESS;
+        m_CleaningDry.CurrentState = CDS_SUCCESS;
         break;
     case CDS_SUCCESS:
+        LogDebug(QString("CDS_SUCCESS"));
         RaiseEvent(EVENT_SCHEDULER_FINISHED_DRY_PROCESSING);
         m_SchedulerMachine->NotifyProgramFinished();
-        CurrentState = CDS_READY;
-        StepStartTime = 0;
+        m_CleaningDry.CurrentState = CDS_READY;
+        m_CleaningDry.StepStartTime = 0;
         break;
     case CDS_ERROR:
         break;

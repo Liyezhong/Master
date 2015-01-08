@@ -219,7 +219,7 @@ typedef struct
 
 /****************************************************************************/
 /*!
- *  \brief struct for Cleaning Dry step
+ *  \brief enum for Cleaning Dry step
  */
 /****************************************************************************/
 typedef enum
@@ -235,6 +235,19 @@ typedef enum
     CDS_SUCCESS,
     CDS_ERROR
 }DryStepsStateMachine;
+
+/****************************************************************************/
+/*!
+ *  \brief struct for Cleaning Dry
+ */
+/****************************************************************************/
+typedef struct
+{
+    DryStepsStateMachine CurrentState;
+    quint64 StepStartTime;
+    bool warningReport;
+} CleaningDry_t;
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -319,13 +332,13 @@ typedef enum
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
-        bool    m_RestartDryStep;                             ///< flag for do the dry step from beginning
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
         bool    m_InternalErrorRecv;                          ///< Internal error was received
         bool    m_IsDrainDelay;                               ///< wether drain delay
         qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
+        CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
