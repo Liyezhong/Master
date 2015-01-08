@@ -996,10 +996,15 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
     NetCommands::ProcessStateType processStateType = Command.GetProcessState();
     if (NetCommands::ProcessStateType::InitState == processStateType ||
             NetCommands::ProcessStateType::IdleState == processStateType) {
-        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        mp_MainWindow->SetSystemErrorStatus(false);
+        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//not show running icon
     }
-    else {
-        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+    else
+    {
+        if (NetCommands::ProcessStateType::ErrorState == processStateType){
+           mp_MainWindow->SetSystemErrorStatus(true);
+        }
+        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//show running icon
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     mp_WaitDialog->accept();
