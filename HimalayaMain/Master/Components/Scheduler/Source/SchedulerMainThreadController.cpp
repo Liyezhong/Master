@@ -2806,16 +2806,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         scenario = 200;
         break;
     case PSSM_PAUSE:
-        if(ReagentGroup == "RG6")
-        {
-            scenario = 260;
-            reagentRelated = false;
-        }
-        else
-        {
-            scenario = 214;
-            reagentRelated = true;
-        }
+        scenario = 206;
         break;
     case PSSM_ABORTING:
         scenario = 206;
