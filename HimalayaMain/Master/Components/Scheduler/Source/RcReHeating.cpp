@@ -146,7 +146,7 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario)
+    if(200 == m_LastScenario || 203 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
         if(!m_IsNeedRunCleaning)
@@ -154,7 +154,7 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(211 <= m_LastScenario && m_LastScenario <= 257)
+    else if(212 <= m_LastScenario && m_LastScenario <= 257)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
         if(!m_IsNeedRunCleaning)
@@ -170,17 +170,9 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(281 <= m_LastScenario && m_LastScenario <= 287)
+    else if(281 <= m_LastScenario && m_LastScenario <= 297)
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_281);
-    }
-    else if(291 <= m_LastScenario && m_LastScenario <= 297)
-    {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_291);
-    }
-    else if(203 == m_LastScenario)
-    {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
 }
 

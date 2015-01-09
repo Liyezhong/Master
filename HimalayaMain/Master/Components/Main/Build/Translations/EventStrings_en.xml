@@ -667,12 +667,10 @@
    		<string id="67174999" text1="Start LA system(%1) heating in scenario:%2,the target temperature:%3." text2="" />
    		<string id="67175000" text1="LA Tube2 heating status is off." text2="" />
    		<string id="67175168" text1="Detect an unfinished program %1 at step %2." text2="" />
-   		<string id="67175169" text1="Reheating for scenario 200 and 260 step." text2="" />
-   		<string id="67175170" text1="Reheating for reagent step." text2="" />
+   		<string id="67175169" text1="Reheating for 200, 203, 211 and 260 step." text2="" />
+   		<string id="67175170" text1="Reheating for reagents step." text2="" />
    		<string id="67175171" text1="Reheating for paraffin step." text2="" />
-   		<string id="67175172" text1="Power failure back to scenario 281." text2="" />
-   		<string id="67175173" text1="Power failure back to scenario 291." text2="" />
-   		<string id="67175174" text1="Power failure back to RC_restart." text2="" />
+   		<string id="67175172" text1="Reheating for 281~297 step." text2="" />
    		<string id="67175184" text1="Scheduler enters the idle state." text2="" />
    		<string id="67175185" text1="Scheduler enters the error state." text2="" />
    		<string id="67175186" text1="Not found unfinished program,  please confirm." text2="" />
