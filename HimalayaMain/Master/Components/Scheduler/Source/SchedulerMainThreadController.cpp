@@ -1373,7 +1373,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if(CTRL_CMD_RS_CHECK_BLOCKAGE == ctrlCmd)
         {
             LogDebug("Go to RS_Check_Blockage");
-            m_SchedulerMachine->EnterRsCheckBlockage();;
+            m_SchedulerMachine->EnterRsCheckBlockage();
         }
         else if(CTRL_CMD_RS_PAUSE == ctrlCmd)
         {
