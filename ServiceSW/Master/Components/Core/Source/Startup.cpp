@@ -782,9 +782,9 @@ void CStartup::RemoveFiles()
     if (!QFile::remove(FilePath + QDir::separator() + "ProgramStatus.txt")) {
         qDebug()<<"CStartup: RemoveFiles ProgramStatus.txt file failed.";
     }
-    if (!QFile::remove(FilePath + QDir::separator() + "BootConfig.txt")) {
-        qDebug()<<"CStartup: RemoveFiles BootConfig.txt file failed.";
-    }
+//    if (!QFile::remove(FilePath + QDir::separator() + "BootConfig.txt")) {
+//        qDebug()<<"CStartup: RemoveFiles BootConfig.txt file failed.";
+//    }
 }
 
 /****************************************************************************/
