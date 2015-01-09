@@ -645,14 +645,19 @@ private slots:
     /****************************************************************************/
     void cleanupTestCase();
 
-#if 0
     void LTubePreTest();
-    void MainsRelayTest();
-
     void RetortPreTest();
+    void OvenPreTest();
     void RVPreTest();
     void ACVoltageTest();
-    void OvenPreTest();
+    void MainsRelayTest();
+
+#if 0
+
+
+
+
+
     void CoverSensorTest();
 #endif
     void RVMovementTest();
@@ -691,48 +696,192 @@ void CTestDiagnostics::initTestCase() {
     DataManager::CTestCaseFactory::ServiceInstance().InitData(FileName);
 
 }
-#if 0
+
 /****************************************************************************/
 void CTestDiagnostics::LTubePreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    qreal LTubeTempSensor = 90;
+
+    EXPECT_CALL(*dev, LiquidTubeGetTemp(_))
+            .WillOnce(DoAll(SetArgPointee<0>(LTubeTempSensor), Return(RETURN_OK)));
+
+    LTubeTempSensor = 80;
+    EXPECT_CALL(*dev, LiquidTubeStartHeating(LTubeTempSensor))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_, _, _))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, LiquidTubeStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::LTubePreUT ut;
-    QVERIFY(ut.Run() != 1);
-}
+    QVERIFY(ut.Run() == RETURN_OK);
 
-/****************************************************************************/
-void CTestDiagnostics::MainsRelayTest()
-{
-    InitialSystem::MainsRelayUT ut;
-    QVERIFY(ut.Run() != 1);
-}
-
-/****************************************************************************/
-void CTestDiagnostics::OvenPreTest()
-{
-    InitialSystem::OvenPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::RetortPreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal RetTempSide = 0;
+    qreal RetTempBottom1 = 45;
+    qreal RetTempBottom2 = 35;
+
+    EXPECT_CALL(*dev, RetortGetTemp(_,_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(RetTempSide), SetArgPointee<1>(RetTempBottom1), SetArgPointee<2>(RetTempBottom2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RetortStartHeating(100, 100))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::RetortPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
+}
+
+/****************************************************************************/
+void CTestDiagnostics::OvenPreTest()
+{
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal OvenTempTop = 0;
+    qreal OvenTempSensor1 = 45;
+    qreal OvenTempSensor2 = 35;
+
+    EXPECT_CALL(*dev, OvenGetTemp(_,_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(OvenTempTop), SetArgPointee<1>(OvenTempSensor1), SetArgPointee<2>(OvenTempSensor2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, OvenStartHeating(90, 90))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, OvenStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    InitialSystem::OvenPreUT ut;
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::RVPreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal RVTempSensor1 = 100;
+    qreal RVTempSensor2 = 50;
+
+    EXPECT_CALL(*dev, RVGetTemp(_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(RVTempSensor1), SetArgPointee<1>(RVTempSensor2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RVStartHeating(125))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::RVPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::ACVoltageTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVSetTemperatureSwitchState(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortSetTemperatureSwitchState(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStartHeating(_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStartHeating(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, Pause(_))
+            .Times(AtLeast(0));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    quint8 RVSwitchType = 1;
+    quint8 RetortSwitchType = 1;
+
+    EXPECT_CALL(*dev, RVGetHeaterSwitchType(_))
+            .WillOnce(DoAll(SetArgPointee<0>(RVSwitchType), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RetortGetHeaterSwitchType(_))
+            .WillOnce(DoAll(SetArgPointee<0>(RetortSwitchType), Return(RETURN_OK)));
+
     InitialSystem::ACVoltageUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
+
+/****************************************************************************/
+void CTestDiagnostics::MainsRelayTest()
+{
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStartHeating(_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, Pause(_))
+            .Times(AtLeast(0));
+
+    quint16 Current = 1000;
+
+    EXPECT_CALL(*dev, RVGetCurrent(_))
+            //.Times(AtLeast(0))
+            .WillRepeatedly(DoAll(SetArgPointee<0>(Current), Return(RETURN_OK)));
+
+    Current = 100;
+    EXPECT_CALL(*dev, RVGetCurrent(_))
+            .WillOnce(DoAll(SetArgPointee<0>(Current), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    InitialSystem::MainsRelayUT ut;
+    QVERIFY(ut.Run() != 1);
+
+    delete dev;
+}
+
+#if 0
+
 
 /****************************************************************************/
 void CTestDiagnostics::CoverSensorTest()
