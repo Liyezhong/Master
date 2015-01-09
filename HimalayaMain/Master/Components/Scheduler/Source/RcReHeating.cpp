@@ -146,7 +146,7 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario || 203 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
+    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
         if(!m_IsNeedRunCleaning)
@@ -170,7 +170,7 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(281 <= m_LastScenario && m_LastScenario <= 297)
+    else if(203 == m_LastScenario && 281 <= m_LastScenario && m_LastScenario <= 297)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
@@ -312,7 +312,7 @@ void CRcReHeating::CheckTheTemperature()
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     qreal CurrentPressure = 0.0;
-    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario || 203 == m_LastScenario)
+    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
     {
         if (0 == m_StartReq)
         {
