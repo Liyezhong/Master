@@ -407,7 +407,7 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
         Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
     }
     if (TargetTempTop > 0) {
-        Ret |= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
+        Ret &= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
     }
 
     if (Ret) {
@@ -562,7 +562,7 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
     mp_TempRetortSide->StopTemperatureControl();
 
     Ret = mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom);
-    Ret |= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
+    Ret &= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
 
     if (Ret) {
         m_RetortTempControlIsOn = true;
@@ -734,7 +734,7 @@ void ServiceTestHandler::LiquidTubeStartHeating(QString& ReqName, QStringList& P
 
     qreal TargetTemp = Params.at(0).toFloat();
 
-    mp_TempTubeLiquid->StopTemperatureControl();
+    (void)mp_TempTubeLiquid->StopTemperatureControl();
     Ret = mp_TempTubeLiquid->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
@@ -836,7 +836,7 @@ void ServiceTestHandler::AirTubeStartHeating(QString& ReqName, QStringList& Para
 
     qreal TargetTemp = Params.at(0).toFloat();
 
-    mp_TempTubeAir->StopTemperatureControl();
+    (void)mp_TempTubeAir->StopTemperatureControl();
     Ret = mp_TempTubeAir->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
@@ -1206,7 +1206,7 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
     bool Ret(false);
 
     Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGain, ResetTime, DerivativeTime);
-    Ret |= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
+    Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
 
     if (Ret == false) {
         mp_TempLSensor->StopTemperatureControl();
