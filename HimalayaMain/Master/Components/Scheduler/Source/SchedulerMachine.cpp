@@ -1003,6 +1003,7 @@ void CSchedulerStateMachine::EnterRcBottleCheckI()
 
 void CSchedulerStateMachine::EnterRsFillingAfterFlush()
 {
+    mp_RsFillingAfterFlush->Start();
     emit SigRsFillingAfterFlush();
 }
 
