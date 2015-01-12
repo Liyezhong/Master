@@ -142,7 +142,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(),
                               this, OnProgramCompleted());
-
+    CONNECTSIGNALSLOT(mp_DataConnector, CleanPrgmCompleteAsSafeReagent(),
+                              this, OnCleanPrgmCompleteAsSafeReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
                               this, OnProgramRunBegin());
 
@@ -395,49 +396,14 @@ void CDashboardWidget::OnProgramBeginAbort()
 //this function will be invoked after program Abort and completed
 void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReagentGroupID)
 {
-    if (m_ProgramStatus == Completed ||
-        m_ProgramStatus == Aborted)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(CommonString::strInforMsg);
-        QString strTemp;
-        if (m_ProgramStatus == Completed)
-        {
-            strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        }
-        else
-        {
-            strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        }
-        mp_MessageDlg->SetText(strTemp);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        (void)mp_MessageDlg->exec();
+     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
+     {
         m_ProgramStatus = Undefined_ProgramStatus;
-    }
-
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-    mp_MessageDlg->SetText(m_strTakeOutSpecimen);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
-    if (mp_MessageDlg->exec())
-    {
         //represent the retort as contaminated status
         ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
-
-        mp_MessageDlg->SetText(m_strRetortContaminated);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
-        mp_MessageDlg->EnableButton(1, true);//6.6 for test
-
         m_IsWaitingCleaningProgram = true;
-        if (mp_MessageDlg->exec())
-        {
-            //only show Cleaning program in the favorite panel
-            emit AddItemsToFavoritePanel(true);
-        }
+        //only show Cleaning program in the favorite panel
+        emit AddItemsToFavoritePanel(true);
 
         ui->programPanelWidget->ChangeStartButtonToStartState();
         ui->programPanelWidget->EnableStartButton(false);
@@ -449,7 +415,65 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
         //switch to the dashboard page
         mp_MainWindow->SetTabWidgetIndex();
         emit SwitchToFavoritePanel();
-    }
+     }
+     else
+     {
+             if (m_ProgramStatus == Completed ||
+            m_ProgramStatus == Aborted)
+            {
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+            QString strTemp;
+            if (m_ProgramStatus == Completed)
+            {
+                strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            }
+            else
+            {
+                strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            }
+            mp_MessageDlg->SetText(strTemp);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            (void)mp_MessageDlg->exec();
+            m_ProgramStatus = Undefined_ProgramStatus;
+            }
+
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+            mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                //represent the retort as contaminated status
+                ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
+
+                mp_MessageDlg->SetText(m_strRetortContaminated);
+                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                mp_MessageDlg->HideButtons();
+                //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
+                mp_MessageDlg->EnableButton(1, true);//6.6 for test
+
+                m_IsWaitingCleaningProgram = true;
+                if (mp_MessageDlg->exec())
+                {
+                    //only show Cleaning program in the favorite panel
+                    emit AddItemsToFavoritePanel(true);
+                }
+
+                ui->programPanelWidget->ChangeStartButtonToStartState();
+                ui->programPanelWidget->EnableStartButton(false);
+                ui->programPanelWidget->EnablePauseButton(false);
+                //show all Stations and pipes
+                m_StationList.clear();
+                QString programID("");
+                emit ProgramSelected(programID, m_StationList);
+                //switch to the dashboard page
+                mp_MainWindow->SetTabWidgetIndex();
+                emit SwitchToFavoritePanel();
+            }
+     }
 }
 
 void CDashboardWidget::SetCassetteNumber()
@@ -510,6 +534,15 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
             }
         }
     }
+}
+
+void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
+{
+    ui->programPanelWidget->IsResumeRun(false);
+    m_CurProgramStepIndex = -1;
+    m_IsDrainingWhenPrgrmCompleted = false;
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
+    m_ProgramStatus = Completed;
 }
 
 void CDashboardWidget::OnProgramCompleted()

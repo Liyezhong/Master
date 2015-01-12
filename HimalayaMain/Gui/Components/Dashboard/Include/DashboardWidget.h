@@ -301,6 +301,12 @@ private slots:
     void OnProgramBeginAbort();
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of OnCleanPrgmCompleteAsSafeReagent
+     */
+    /****************************************************************************/
+    void OnCleanPrgmCompleteAsSafeReagent();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/

@@ -1727,6 +1727,13 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
+        case DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT:
+        {
+             emit CleanPrgmCompleteAsSafeReagent();
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+
         case DataManager::PROGRAM_RUN_BEGIN:
         {
              emit ProgramRunBegin();
