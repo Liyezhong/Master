@@ -270,11 +270,13 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
+#if 0
     if (false == m_InternalErrorRecv)
     {
         m_InternalErrorRecv = true;
         SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
     }
+#endif
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -307,6 +309,7 @@ void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
 
+#if 0
     if (CTRL_CMD_RS_SHUTDOWN == newControllerCmd)
     {
         //send shutdown command to MasterThreadController
@@ -315,7 +318,7 @@ void SchedulerMainThreadController::OnTickTimer()
         m_SchedulerCommandProcessor->ShutDownDevice();
         return;
     }
-
+#endif
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
         m_TickTimer.stop();
