@@ -749,12 +749,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeDryStep();
                     break;
                 case PSSM_POWERFAILURE_FINISH:
-                    if(200 == m_ProgramStatusInfor.GetScenario() || 211 == m_ProgramStatusInfor.GetScenario())
+                    if(m_IsCleaningProgram && 200 == m_ProgramStatusInfor.GetScenario())
                     {
-                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
                         Q_ASSERT(commandPtrFinish);
                         Global::tRefType Ref = GetNewCommandRef();
                         SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                    }
+                    else
+                    {
+                        if( !m_ProgramStatusInfor.IsRetortContaminted() )
+                        {
+                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                            Q_ASSERT(commandPtrFinish);
+                            Global::tRefType Ref = GetNewCommandRef();
+                            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                        }
                     }
                     m_SchedulerMachine->SendRunComplete();
                     break;
@@ -1164,17 +1174,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
             m_SchedulerMachine->SendRunComplete();
-            //m_SchedulerMachine->Stop();
-            //todo: tell main controller that program is complete
 
             if(m_IsCleaningProgram && !m_IsSafeReagent)
             {
                 m_IsCleaningProgram = false;
                 m_ProgramStatusInfor.SetProgramFinished();
-            }
-            if(m_IsSafeReagent)
-            {
-                m_IsSafeReagent = false;
             }
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
@@ -1184,10 +1188,25 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             //send command to main controller to tell program finished
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-            Q_ASSERT(commandPtrFinish);
-            Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            if(m_IsCleaningProgram && m_IsSafeReagent)
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+                Q_ASSERT(commandPtrFinish);
+                Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            }
+            else
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                Q_ASSERT(commandPtrFinish);
+                Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            }
+
+            if(m_IsSafeReagent)
+            {
+                m_IsSafeReagent = false;
+            }
         }
         else if(PSSM_PAUSE == stepState)
         {
