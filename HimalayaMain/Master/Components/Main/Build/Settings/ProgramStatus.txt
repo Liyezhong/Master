@@ -1,2 +1,0 @@
-ErrorFlag:1
-HeatingOvenSlice:20150113-134724,20150113-134724
