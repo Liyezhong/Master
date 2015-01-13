@@ -77,10 +77,10 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for Select Retort Condition
-     *  \iparam Id = message box id
+     *
      */
     /****************************************************************************/
-    void SelectRetortCondition(quint64 Id);
+    void SelectRetortCondition();
 
 signals:
     /****************************************************************************/

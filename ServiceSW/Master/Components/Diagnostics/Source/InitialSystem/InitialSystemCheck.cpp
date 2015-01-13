@@ -171,9 +171,8 @@ void CInitialSystemCheck::RetortPreHeating()
     delete RetortPreTest;
 }
 
-void CInitialSystemCheck::SelectRetortCondition(quint64 Id)
+void CInitialSystemCheck::SelectRetortCondition()
 {
-    Q_UNUSED(Id);
     m_IsEmptyInRetort = true;
 }
 
