@@ -222,7 +222,7 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
     dlg->SetButtonText(2, tr("Other Reagent"));
     dlg->SetButtonText(3, tr("Paraffin"));
 
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(quint64), this, SelectRetortCondition(quint64));
+    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, SelectRetortCondition());
 
     dlg->setModal(true);
     int Ret = dlg->exec();
