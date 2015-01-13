@@ -616,7 +616,7 @@
 			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="513040561" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67176022" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="512020090" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176009" EventSource="SCHEDULER">
@@ -915,7 +915,7 @@
 	    <Event Code="" ErrorID="67174401" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174401" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174402" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67174402" ErrorType="ERROR" AlarmType="No" Name="EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_FAILURE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174402" ButtonType="OK" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174403" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_OPEN_MAIN_RELAY_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
