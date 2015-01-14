@@ -122,6 +122,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
+    m_CurrentScenario = 1;
     m_IsPrecheckMoveRV = false;
 
     m_lastPVTime = 0;
@@ -4490,7 +4491,7 @@ bool SchedulerMainThreadController::ConstructSlaveModuleAttrList(QString moduleN
 
 void SchedulerMainThreadController::OnSystemError()
 {
-    if(m_CurrentScenario != 2)
+    if(m_CurrentScenario > 2)
     {
         m_ProgramStatusInfor.SetErrorFlag(1);
     }
