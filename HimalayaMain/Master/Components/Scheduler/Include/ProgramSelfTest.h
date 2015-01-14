@@ -105,34 +105,6 @@ public:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief Signal for test the voltage of AC
-     */
-    /****************************************************************************/
-    void SigACVoltageSwitch();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the heating sensor of DC
-     */
-    /****************************************************************************/
-    void SigDCHeating();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the pressure sensor and pump and valve
-     */
-    /****************************************************************************/
-    void SigPressureSensorPumpValve();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the ac heating
-     */
-    /****************************************************************************/
-    void SigACHeating();
-
-    /****************************************************************************/
-    /*!
      *  \brief Signal for tasks done
      *  \param flag - bool
      */
@@ -150,7 +122,7 @@ private:
         SELFTEST_INIT,
         SELFTEST_AC_VOLTAGE,
         SELFTEST_DC_HEATING,
-        SELFTEST_PRESSURE,
+        SELFTEST_PRESSURE_MODE,
         SELFTEST_AC_HEATING
     }StateList_t;
 
@@ -222,15 +194,6 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Get current state
-     *  \param  void
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
-
-    /****************************************************************************/
-    /*!
      *  \brief  Handle the sub steps for Self Test
      *  \param  cmdName - command name
      *  \param  retCode - return code
@@ -254,7 +217,7 @@ private:
      *  \return void
      */
     /****************************************************************************/
-    void HandlePressure(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandlePressureMode(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -265,12 +228,7 @@ private:
 
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
-    QSharedPointer<QStateMachine>   mp_StateMachine;                    //!< State machine for Self-Test
-    QSharedPointer<QState>          mp_Initial;                         //!< State of Initialize
-    QSharedPointer<QState>          mp_StateACVoltage;                  //!< State of AC voltage test
-    QSharedPointer<QState>          mp_StateDCHeating;                  //!< State of DC heating sensor
-    QSharedPointer<QState>          mp_StatePressure;                   //!< State of Pressure
-    QSharedPointer<QState>          mp_StateACHeating;                  //!< State of AC Heating
+    StateList_t                     m_CurrentState;                     //!< the current state
     StepACVoltage_t                 m_StateACVoltageStep;               //!< the step of AC voltage state
     StepDCHeating_t                 m_StateDCHeatingStep;               //!< the step of DC heating sensor
     StepPressurePumpValve_t         m_StatePressureStep;                //!< the step of pressure
