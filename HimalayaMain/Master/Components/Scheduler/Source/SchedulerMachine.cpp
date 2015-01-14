@@ -140,6 +140,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
     mp_ErrorState->addTransition(this, SIGNAL(SigSelfRcRestart()), mp_InitState.data());
+    mp_ErrorState->addTransition(this, SIGNAL(SigIdleRcRestart()), mp_IdleState.data());
     CONNECTSIGNALSLOT(this, SigEnterRcRestart(), mp_SchedulerThreadController, OnEnterRcRestart());
     CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
 
@@ -1959,6 +1960,14 @@ void CSchedulerStateMachine::EnterRcRestart()
         while (false == mp_SchedulerMachine->configuration().contains(mp_InitState.data()))
         {
             QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+        }
+    }
+    else if(SM_IDLE == mp_SchedulerThreadController->GetCurrentStepState())
+    {
+        emit SigIdleRcRestart();
+        while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
         }
     }
     else

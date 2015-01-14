@@ -527,6 +527,7 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+    m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
