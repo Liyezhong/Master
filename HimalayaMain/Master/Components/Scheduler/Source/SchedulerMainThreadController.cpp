@@ -698,36 +698,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     break;
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
                 case PSSM_FILLING:
-                    if(0 == m_ReEnterFilling)
-                    {
-                        this->HighPressure();
-                        m_ReEnterFilling = 1;
-                    }
-                    else if (1 == m_ReEnterFilling)
-                    {
-                        if("Scheduler::ALPressure" == cmdName)
-                        {
-                            m_ReEnterFilling = 2;
-                            m_TimeReEnterFilling = QDateTime::currentMSecsSinceEpoch();
-                        }
-                        else
-                        {
-                            // Do nothing, just wait
-                        }
-                    }
-                    else if (2 == m_ReEnterFilling)
-                    {
-                        if ((QDateTime::currentMSecsSinceEpoch() - m_TimeReEnterFilling) > 20*1000)
-                        {
-                            m_ReEnterFilling = 0;
-                            m_TimeReEnterFilling = 0;
-                            m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
-                        }
-                        else
-                        {
-                            // Do nothing, just wait for timeout
-                        }
-                    }
+                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
                     m_SchedulerMachine->SendResumeRVMoveToSeal();
@@ -742,8 +713,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
-                    m_SchedulerMachine->HandleRcRestartAtDrain(cmdName, retCode);
-                    break;
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
                     break;
@@ -1554,6 +1523,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In Rs_Rv_MoveToPosition3.5");
         m_SchedulerMachine->HandleRsMoveToPSeal(cmdName, retCode);
+    }
+    else if (SM_ERR_RC_RESTART == currentState)
+    {
+        LogDebug("In RC_Restart");
+        m_SchedulerMachine->HandleRcRestart(cmdName);
     }
 }
 
@@ -4524,7 +4498,7 @@ void SchedulerMainThreadController::OnSystemError()
     m_TimeStamps.SystemErrorStartTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void SchedulerMainThreadController::OnEnterRcRestart()
+void SchedulerMainThreadController::OnBackToBusy()
 {
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_RC_RESTART;
     MsgClasses::CmdProgramAcknowledge* commandPtrRcRestart(new MsgClasses::CmdProgramAcknowledge(5000, type));

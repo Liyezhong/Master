@@ -753,7 +753,7 @@ private slots:
           *  \brief  Slot for restart program from HW error;
           */
          /****************************************************************************/
-         void OnEnterRcRestart();
+         void OnBackToBusy();
          /****************************************************************************/
          /*!
           *  \brief  Slot for begin to Heating RV befor filling

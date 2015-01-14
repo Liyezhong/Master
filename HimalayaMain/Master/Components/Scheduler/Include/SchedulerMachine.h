@@ -213,6 +213,8 @@ private:
     bool    m_EnableLowerPressure;                                              ///< Enable lower pressure
     quint8  m_PssmMVTubeSeq;                                                    ///< Sequence of PSSM_MoveTube
     qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
+    quint8  m_ErrorRcRestartSeq;                                                ///< Sequence of Error_RC_Restart
+    qint64  m_TimeReEnterFilling;                                               ///< Start time to re-enter filling
 
 private:
     /****************************************************************************/
@@ -956,10 +958,9 @@ public:
     /*!
      *  \brief  Handle Rc_Restart when the error occurs at Draining stage
      *  \param cmdName - command name
-     *  \param retCode - return code
      */
     /****************************************************************************/
-    void HandleRcRestartAtDrain(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+    void HandleRcRestart(const QString& cmdName);
 
     /****************************************************************************/
     /*!
@@ -978,6 +979,7 @@ public:
      */
     /****************************************************************************/
     void HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
 
 
     /****************************************************************************/
@@ -1167,6 +1169,17 @@ private slots:
      */
     /****************************************************************************/
     void InitRVMoveToTubeState();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to enter RC_Restart
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnEnteErrorRcRestartState();
 signals:
     /****************************************************************************/
     /*!
@@ -1323,6 +1336,14 @@ signals:
      */
     /****************************************************************************/
     void SigEnterRcRestart();
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to back to Busy state
+     */
+    /****************************************************************************/
+    void SigBackToBusy();
 
     /****************************************************************************/
     /*!
