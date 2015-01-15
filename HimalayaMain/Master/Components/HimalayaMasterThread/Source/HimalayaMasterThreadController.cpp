@@ -437,7 +437,7 @@ void HimalayaMasterThreadController::InitializeGUI() {
 
 /****************************************************************************/
 void HimalayaMasterThreadController::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack) {
-    if (m_ExpectedShutDownRef == Ref && Ack.GetStatus()) {
+    if ((Global::RefManager<Global::tRefType>::INVALID != m_ExpectedShutDownRef) && (m_ExpectedShutDownRef == Ref) && Ack.GetStatus()) {
         Shutdown();
     }
 }

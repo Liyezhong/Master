@@ -868,12 +868,14 @@ void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgC
 
                 pDashboardStation->SetDashboardReagentActualCassettes(
                             pDashboardStation->GetDashboardReagentActualCassettes() + Command.CassetteCount());
+                emit DashboardStationChangeReagent(Ids[i]);
 
             }
             else
             {
                 pDashboardStation->SetDashboardReagentActualCycles(
                             pDashboardStation->GetDashboardReagentActualCycles() + 1);
+                emit DashboardStationChangeReagent(Ids[i]);
             }
         }
         else

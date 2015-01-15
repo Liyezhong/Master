@@ -622,6 +622,10 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
     if (m_CurProgramID.at(0) == 'C')//process cleaning reagent
     {
+        QString nextStationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
+        if (nextStationID == m_CurProgramStepInfo.stationID)
+            return;
+
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
         if (rmsMode == Global::RMS_CYCLES)
         {

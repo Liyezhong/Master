@@ -723,7 +723,7 @@ void CDashboardScene::OnInteractStart()
     {
         ExpiredReagentStationBlinking(false);
         if (!(m_pStartBlinkingTimer->isActive()))
-            m_pStartBlinkingTimer->start();
+            m_pStartBlinkingTimer->start();//for the next blinking in 6 seconds
     }
 }
 
