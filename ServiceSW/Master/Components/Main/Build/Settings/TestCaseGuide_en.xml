@@ -131,6 +131,13 @@
 	</SystemMainsRelay>
 	<CleaningSystem Description="Cleaning system">
 		<Guide>
+			<Step>Confirm that retort is empty and locked well. Put 1 reagent bottle with 3.5L 100% alcohol into cabinet first position, and put 13 empty bottles into other cabinet position, put 3 empty wax bathes into oven.</Step>
+		</Guide>
+		<Guide>
+			<Step>1.Please pull out all reagent bottles and wax bathes.</Step>
+			<Step>2.Please dispose the alcohol.</Step>
+		</Guide>
+		<Guide>
 			<Step>Confirm that retort is empty and locked well.And all reagent bottles and paraffin bathes have been pulled out.</Step>
 		</Guide>
 		<Guide>

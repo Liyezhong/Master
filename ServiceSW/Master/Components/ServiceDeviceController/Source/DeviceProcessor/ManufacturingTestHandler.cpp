@@ -1746,44 +1746,98 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::CLEANING_SYSTEM_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    int TestStep = p_TestCase->GetParameter("TestStep").toInt();
+    QTime time1 = QTime::fromString(p_TestCase->GetParameter(QString("Time1")), "hh:mm:ss");
+    QTime time2 = QTime::fromString(p_TestCase->GetParameter(QString("Time2")), "hh:mm:ss");
+    QTime time3 = QTime::fromString(p_TestCase->GetParameter(QString("Time3")), "hh:mm:ss");
+    QTime blowTime = QTime::fromString(p_TestCase->GetParameter("BlowTime"), "hh:mm:ss");
+    int waitSec1 = time1.hour()*60*60 + time1.minute()*60 + time1.second();
+    int waitSec2 = time2.hour()*60*60 + time2.minute()*60 + time2.second();
+    int waitSec3 = time3.hour()*60*60 + time3.minute()*60 + time3.second();
+    int blowSec = blowTime.hour()*60*60 + blowTime.minute()*60 + blowTime.second();
+    int targetPressure1 = p_TestCase->GetParameter(QString("TargetPressure1")).toInt();
+    int targetPressure2 = p_TestCase->GetParameter(QString("TargetPressure2")).toInt();
+    int departure = p_TestCase->GetParameter("Departure").toInt();
+
     p_TestCase->ResetResult();
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+    if (mp_MotorRV->MoveToInitialPosition() != RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
         return -1;
     }
 
-    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
-    if (mp_MotorRV->MoveToSealPosition(1)!=RV_MOVE_OK) {
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
-        return -1;
+    if (TestStep == 1) {
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 1);
+        if (mp_MotorRV->MoveToTubePosition(1) != RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg("1"));
+            return -1;
+        }
+    }
+    else {
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
+        if (mp_MotorRV->MoveToSealPosition(1) != RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
+            return -1;
+        }
     }
 
+    if (TestStep == 1) {
+        int i = 1;
+        do {
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure1);
+            (void)mp_PressPump->SetFan(1);
+            (void)mp_PressPump->SetTargetPressure(9, targetPressure1);
+            mp_Utils->Pause(waitSec1*1000);
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
-    QTime time = QTime::fromString(p_TestCase->GetParameter("Time"), "hh:mm:ss");
-    QTime blowTime = QTime::fromString(p_TestCase->GetParameter("BlowTime"), "hh:mm:ss");
-    int waitSec = time.hour()*60*60 + time.minute()*60 + time.second();
-    int blowSec = blowTime.hour()*60*60 + blowTime.minute()*60 + blowTime.second();
-    int targetPressure = p_TestCase->GetParameter("TargetPressure").toInt();
-    int departure = p_TestCase->GetParameter("Departure").toInt();
-    (void)mp_PressPump->ReleasePressure();
-    (void)mp_PressPump->SetFan(1);
-    EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
+            (void)mp_PressPump->StopCompressor();
 
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
+            if (mp_MotorRV->MoveToSealPosition(i) != RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
 
-    if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
-        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
-        RetValue = -1;
-        goto CLEANING_EXIT;
-    }
-
-    for(int k=0; k<3; k++) {
-        for (int i = 1; i <= 16; ++i) {
+            mp_PressPump->ReleasePressure();
+            i++;
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
-            if (mp_MotorRV->MoveToTubePosition(i)!=RV_MOVE_OK) {
+            if (mp_MotorRV->MoveToTubePosition(i) != RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
+
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);
+            (void)mp_PressPump->SetFan(1);
+            (void)mp_PressPump->SetTargetPressure(1, targetPressure2);
+            mp_Utils->Pause(waitSec2*1000);
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+            mp_PressPump->ReleasePressure();
+        } while (i < 16);
+
+        return RetValue;
+    }
+    else {
+        for (int i = 1; i <= 16; ++i) {
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);
+            (void)mp_PressPump->SetFan(1);
+            if (!CreatePressure(waitSec3, targetPressure2, departure, TestCaseName)) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
+
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
+            if (mp_MotorRV->MoveToTubePosition(i) != RV_MOVE_OK) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
                 RetValue = -1;
@@ -1792,29 +1846,18 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
             mp_Utils->Pause(blowSec*1000);
 
-            if (i == 16 && k==2) {
-                break;
-            }
             mp_PressPump->ReleasePressure();
 
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
-            if (mp_MotorRV->MoveToSealPosition(i)!=RV_MOVE_OK) {
+            if (mp_MotorRV->MoveToSealPosition(i) != RV_MOVE_OK) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
-                RetValue = -1;
-                goto CLEANING_EXIT;
-            }
-
-            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
-            if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
-                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
                 RetValue = -1;
                 goto CLEANING_EXIT;
             }
         }
     }
 CLEANING_EXIT:
-    (void)mp_PressPump->SetFan(0);
     (void)mp_PressPump->ReleasePressure();
 
     return RetValue;

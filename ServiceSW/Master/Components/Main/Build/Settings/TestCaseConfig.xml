@@ -26,7 +26,7 @@
 	</LaSystem>
 	<System>
 		<System110v220vSwitch ConnectedVoltage="110"/>
-		<SystemSealing SealTargetPressure1="45" SealTargetPressure2="-45" SealDuration="00:01:00" SealKeepDuration="00:01:00" TubeTargetPressure="30" TubeDuration="00:02:00" TubeKeepDuration="00:00:30" Departure="5" />
+		<SystemSealing SealTargetPressure1="40" SealTargetPressure2="-40" SealDuration="00:01:00" SealKeepDuration="00:01:00" TubeTargetPressure="30" TubeDuration="00:02:00" TubeKeepDuration="00:00:30" Departure="5" />
 		<SystemOverflow DelayTime="00:01:10"/>
 		<SystemSpeaker VolumeFlag="0" LowVolume="80" HighVolume="100"/>
 		<SystemExhaustFan Position="1"/>
@@ -35,7 +35,7 @@
 		<SystemMainsRelay RelaySwitchStatus="1" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrentLow="150"/>
 	</System>
 	<Cleaning>
-		<CleaningSystem TargetPressure="30" Departure="3" Time="00:02:00" BlowTime="00:00:10"/>
+		<CleaningSystem TargetPressure1="-30" TargetPressure2="30" Time1="00:00:52" Time2="00:00:50" Time3="00:02:00" Departure="3" BlowTime="00:00:10" TestStep="1"/>
 	</Cleaning>
 	<Retort>
 		<RetortLidLock Parameter="N/A" />

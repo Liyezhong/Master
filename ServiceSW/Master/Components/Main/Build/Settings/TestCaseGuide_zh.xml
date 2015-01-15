@@ -131,13 +131,20 @@
 	</SystemMainsRelay>
 	<CleaningSystem Description="清洗系统">
 		<Guide>
-			<Step>确认反应罐（Retort）是空的且锁好，所有的试剂瓶和石蜡缸已拿出</Step>
+			<Step>请确认反应罐（Retort）是空的并且盖子是盖上且锁紧的.取装载了3.5L 100%酒精的试剂瓶放置在1号位,把13个空的试剂瓶放置在其他13个位置上,把3个空的石蜡缸放进石蜡烤箱中.</Step>
 		</Guide>
 		<Guide>
-			<Step>1.请清除试剂柜里的残留液体，并清理试剂滴盘</Step>
-			<Step>2.清除石蜡烤箱和烤箱门上的残留液体，并清理石蜡滴盘</Step>
-			<Step>3.所有的步骤结束后，请锁好反应罐（Retort）盖</Step>
-			<Step>4.请检查所有的外表并擦出任何的残留液体</Step>
+			<Step>1.请取出所有的试剂瓶和石蜡缸.</Step>
+			<Step>2.请处理酒精.</Step>
+		</Guide>
+		<Guide>
+			<Step>请确认反应罐（Retort）是空的并且盖子是盖上且锁紧的，确认机器里面是没有试剂瓶及石蜡缸</Step>
+		</Guide>
+		<Guide>
+			<Step>1.请清洁机器上承载试剂瓶的两层金属板，并清理下面的废液盘</Step>
+			<Step>2.请清洁石蜡烤箱并清理下面的废液盘</Step>
+			<Step>3.请清洁反应罐（Retort）及其盖子,清洁反应罐（Retort）里的过滤网,所有的关于反应罐（Retort）的部件清理完毕后,请关上盖子并锁紧</Step>
+			<Step>4.请检查机器外观表面是否完好，擦拭清洁</Step>
 		</Guide>
 	</CleaningSystem>
 	<RetortLidLock Description="反应罐（Retort）盖锁测试">

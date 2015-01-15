@@ -1235,11 +1235,31 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             FailureId = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS;
 
+            p_TestCase->SetParameter("TestStep", "1");
             ShowMessage(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN);
+
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+
+            if (!Result) {
+                break;
+            }
+
+            p_TestCase->SetParameter("TestStep", "2");
+
+            NextFlag = ShowGuide(Id, 1) && ShowGuide(Id, 2);
+            if (!NextFlag) {
+                break;
+            }
+
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
             HideMessage();
         default:
+            break;
+        }
+
+        if (!NextFlag) {
             break;
         }
 
@@ -1265,7 +1285,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
-            (void)ShowGuide(Id, 1, false);
+            (void)ShowGuide(Id, 3, false);
         }
         mp_CleaningManuf->SetTestResult(Id, Result);
     }
