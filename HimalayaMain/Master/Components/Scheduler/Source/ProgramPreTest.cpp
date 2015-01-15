@@ -457,7 +457,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 if ( "Scheduler::IDBottleCheck" == cmdName)
                 {
                     //dequeue the current bottle
-                    m_BottleSeq++;
                     m_BottleChkFlag = true;
                     if (m_IsAbortRecv)
                     {
@@ -466,7 +465,12 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                     }
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
+                        m_BottleSeq = 0;
                         mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                    }
+                    else
+                    {
+                        m_BottleSeq++;
                     }
                 }
             }
@@ -524,6 +528,7 @@ void CProgramPreTest::ResetVarList()
     m_BottleChkFlag = true;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
+    m_BottleSeq = 0;
     m_IsAbortRecv = false;
 }
 
