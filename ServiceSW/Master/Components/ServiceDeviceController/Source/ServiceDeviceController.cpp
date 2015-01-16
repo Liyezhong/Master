@@ -144,7 +144,6 @@ void ServiceDeviceController::ConnectSignalsnSlots()
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnCalibrationInitMessagetoMain' signal";
     }
 
-
     // for Manufacturing Diagnostic
     if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)),
                  mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)))) {

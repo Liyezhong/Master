@@ -117,7 +117,7 @@ QString CMessageString::MSG_DIAGNOSTICS_HEATING_BELT1;                     //!< 
 QString CMessageString::MSG_DIAGNOSTICS_HEATING_BELT2;                     //!< Heating Belt2 in progress...
 QString CMessageString::MSG_DIAGNOSTICS_HEATING_OVEN;                      //!< Heating Oven(empty) in progress...
 QString CMessageString::MSG_DIAGNOSTICS_VOLTAGE_TEST;                      //!< %1 V test
-QString CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!< (Current Voltage: %1 V)
+QString CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!< (ASB3 Current Voltage: %1 V, ASB5 Current Voltage: %2 V)
 QString CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE;                      //!< Close
 QString CMessageString::MSG_DIAGNOSTICS_STATUS_OPEN;                       //!< Open
 QString CMessageString::MSG_DIAGNOSTICS_STATUS_DISCONNECTED;               //!< Disconnected
@@ -262,7 +262,7 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_HEATING_BELT2                     = (QApplication::translate("Service", "Heating Belt2 in progress...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_HEATING_OVEN                      = (QApplication::translate("Service", "Heating Oven(empty) in progress...", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_VOLTAGE_TEST                      = (QApplication::translate("Service", "%1 V test", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_CURRENT_VOLTAGE                   = (QApplication::translate("Service", "(Current Voltage: %1 V)", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_CURRENT_VOLTAGE                   = (QApplication::translate("Service", "(ASB3 Current Voltage: %1 V, ASB5 Current Voltage: %2 V)", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_STATUS_CLOSE                      = (QApplication::translate("Service", "Close", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_STATUS_OPEN                       = (QApplication::translate("Service", "Open", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_STATUS_DISCONNECTED               = (QApplication::translate("Service", "Disconnected", 0, QApplication::UnicodeUTF8));

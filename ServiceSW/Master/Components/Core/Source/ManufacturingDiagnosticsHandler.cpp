@@ -1010,7 +1010,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Result = GetTestResponse();
 
             TestCaseDescription = Service::CMessageString::MSG_DIAGNOSTICS_VOLTAGE_TEST.arg(p_TestCase->GetParameter("ConnectedVoltage"));
-            StrResult = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE.arg(p_TestCase->GetResult().value("CurrentVoltage"));
+            StrResult = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE.arg(
+                        p_TestCase->GetResult().value("CurrentVoltage3"), p_TestCase->GetResult().value("CurrentVoltage5"));
 
             break;
         case Service::SYSTEM_EXHAUST_FAN:

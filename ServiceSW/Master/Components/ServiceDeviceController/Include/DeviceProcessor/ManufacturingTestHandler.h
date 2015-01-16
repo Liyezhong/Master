@@ -391,10 +391,11 @@ private:
 
     /****************************************************************************/
     /**
-     * \brief Auto set the heater switch type for ASB3 according to ASB5
+     *  \brief Auto set the heater switch type for ASB3 according to ASB5
+     *  \iparam Id = test case Id
      */
     /****************************************************************************/
-    qint32 AutoSetASB3HeaterSwitchType();
+    qint32 AutoSetASB3HeaterSwitchType(Service::ModuleTestCaseID Id);
 
     /****************************************************************************/
     /**

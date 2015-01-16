@@ -88,7 +88,7 @@
 	<SystemOverflow Description="Overflow test">
 		<Guide>
 			<Step>Begin Overflow test.</Step>
-			<Step>Please put a filling-block into block, cover the level sensor with tape and close the retort lid.</Step>
+			<Step>Please put a filling-block into block and close the retort lid.</Step>
 			<Step>Please insert position 1# with reagent bottle filled with water.</Step>
 		</Guide>
 	</SystemOverflow>

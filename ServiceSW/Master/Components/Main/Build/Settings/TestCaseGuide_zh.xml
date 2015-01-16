@@ -88,7 +88,7 @@
 	<SystemOverflow Description="溢出测试">
 		<Guide>
 			<Step>开始溢出测试</Step>
-			<Step>请将填充快放入反应罐（Retort）中,用胶带把液位传感器覆盖,然后关上反应罐（Retort）盖</Step>
+			<Step>请将填充快放入反应罐（Retort）中然后关上反应罐（Retort）盖</Step>
 			<Step>然后将装满水的瓶子放到位置1</Step>
 		</Guide>
 	</SystemOverflow>

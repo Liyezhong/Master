@@ -1394,26 +1394,42 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
 
 qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
 {
-    qint32 CurrentVoltage = 110;
+    qint32 CurrentVoltage3 = 110;
+    qint32 CurrentVoltage5 = 110;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
+    qint32 ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage").toInt();
 
-    quint8 SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
-    if (SwitchType == TEMPCTRL_VOLTAGE_220V) {
-        CurrentVoltage = 220;
+    quint8 ASB5SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+    quint8 ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
+
+
+
+    if (ASB3SwitchType == TEMPCTRL_VOLTAGE_220V) {
+        CurrentVoltage3 = 220;
     }
-    else if (SwitchType == TEMPCTRL_VOLTAGE_110V) {
-        CurrentVoltage = 110;
+    else if (ASB3SwitchType == TEMPCTRL_VOLTAGE_110V) {
+        CurrentVoltage3 = 110;
     }
     else {
-        CurrentVoltage = 0;
+        CurrentVoltage3 = 0;
     }
 
-    p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
+    if (ASB5SwitchType == TEMPCTRL_VOLTAGE_220V) {
+        CurrentVoltage5 = 220;
+    }
+    else if (ASB5SwitchType == TEMPCTRL_VOLTAGE_110V) {
+        CurrentVoltage5 = 110;
+    }
+    else {
+        CurrentVoltage5 = 0;
+    }
 
-    if (CurrentVoltage == ConnectedVoltage.toInt()) {
+    p_TestCase->AddResult("CurrentVoltage3", QString::number(CurrentVoltage3));
+    p_TestCase->AddResult("CurrentVoltage5", QString::number(CurrentVoltage5));
+
+    if (CurrentVoltage3 == ConnectedVoltage && CurrentVoltage5 == ConnectedVoltage) {
         p_TestCase->SetStatus(true);
         return 0;
     }
@@ -1826,9 +1842,9 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         return RetValue;
     }
     else {
+        (void)mp_PressPump->SetFan(1);
         for (int i = 1; i <= 16; ++i) {
-            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);
-            (void)mp_PressPump->SetFan(1);
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);           
             if (!CreatePressure(waitSec3, targetPressure2, departure, TestCaseName)) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
@@ -1846,7 +1862,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
             mp_Utils->Pause(blowSec*1000);
 
-            mp_PressPump->ReleasePressure();
+            //mp_PressPump->ReleasePressure();
 
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
             if (mp_MotorRV->MoveToSealPosition(i) != RV_MOVE_OK) {
@@ -1900,13 +1916,13 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
             }
 
         }
-        else if (targetPressure == 45) {
+        else if (targetPressure == 40) {
             if (pressure > (targetPressure-departure)) {
                 result = true;
                 break;
             }
         }
-        else if (targetPressure == -45) {
+        else if (targetPressure == -40) {
             if (pressure < (targetPressure-departure)) {
                 result = true;
                 break;
@@ -2671,7 +2687,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
 
          if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-             if ( KeepSeconds > 60 ) {
+             if ( KeepSeconds > 3 ) {
                  RVStatus = 1;
                  break;
              }
@@ -2681,7 +2697,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
          else {
              KeepSeconds = 0;
-             if (WaitSec <= 60) {
+             if (WaitSec <= 3) {
                  break;
              }
          }
@@ -2931,6 +2947,8 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     int FirstTime = p_TestCase->GetParameter("FirstTime").toInt();
+    float PressureHigh = p_TestCase->GetParameter("PressureHigh").toFloat();
+    float PressureLow  = p_TestCase->GetParameter("PressureLow").toFloat();
 
     if (FirstTime == 1) {
         p_TestCase->SetParameter("FirstTime", "0");
@@ -2946,10 +2964,10 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     float Drift(0);
 
 
-    if (qAbs(Pressure) > 1.5) {
+    if (qAbs(Pressure) > PressureHigh) {
         (void)Status.insert("Result", "2"); // open retort lid and retry
     }
-    else if (qAbs(Pressure) < 0.2) {
+    else if (qAbs(Pressure) < PressureLow) {
         (void)Status.insert("Result", "0"); // success
     }
     else {
@@ -3039,7 +3057,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
 }
 
-qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
+qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTestCaseID Id)
 {
     qint32 RetVal(0);
 
@@ -3053,9 +3071,15 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     (void)mp_DigitalOutputMainRelay->SetHigh();
 
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qreal RVTargetTemp = p_TestCase->GetParameter("RVTargetTemp").toInt();
+    qreal RetortTargetTemp = p_TestCase->GetParameter("RetortTargetTemp").toInt();
+
     // Miles change the target temperature to 120 for RV and 110 for Retort on Dec, 02, 2014
-    (void)mp_TempRV->StartTemperatureControl(120);
-    (void)mp_TempRetortBottom->StartTemperatureControl(110);
+    (void)mp_TempRV->StartTemperatureControl(RVTargetTemp);
+    (void)mp_TempRetortBottom->StartTemperatureControl(RetortTargetTemp);
 //    (void)mp_TempRetortSide->StartTemperatureControl(70);
 //    (void)mp_TempOvenBottom->StartTemperatureControl(70);
 //    (void)mp_TempOvenTop->StartTemperatureControl(70);
@@ -3113,7 +3137,7 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
         (void)mp_DOLocalAlarm->SetHigh();
     }
 
-    qint32 RetVal = AutoSetASB3HeaterSwitchType();
+    qint32 RetVal = AutoSetASB3HeaterSwitchType(Id);
 
     (void)Status.insert("CurState", "End");
     emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -3596,7 +3620,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         SetSlaveStandby();
         break;
     case Service::SYSTEM_110V_220V_AUTO_SWITCH:
-        (void)AutoSetASB3HeaterSwitchType();
+        (void)AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
         break;
     case Service::SYSTEM_SELF_TEST:
         (void)SystemSelfTest();

@@ -127,7 +127,7 @@ public :
     static QString MSG_DIAGNOSTICS_HEATING_BELT2;                     //!< Heating Belt2 in progress...
     static QString MSG_DIAGNOSTICS_HEATING_OVEN;                      //!< Heating Oven(empty) in progress...
     static QString MSG_DIAGNOSTICS_VOLTAGE_TEST;                      //!< %1 V test
-    static QString MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!< (Current Voltage: %1 V)
+    static QString MSG_DIAGNOSTICS_CURRENT_VOLTAGE;                   //!< (ASB3 Current Voltage: %1 V, ASB5 Current Voltage: %2 V)
     static QString MSG_DIAGNOSTICS_STATUS_CLOSE;                      //!< Close
     static QString MSG_DIAGNOSTICS_STATUS_OPEN;                       //!< Open
     static QString MSG_DIAGNOSTICS_STATUS_DISCONNECTED;               //!< Disconnected
