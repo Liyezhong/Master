@@ -130,7 +130,7 @@ Create_Pressure_Test:
     }
 
     if (TargetPressure > 0) {
-        TargetPressure = p_TestCase->GetParameter("TargetPressure2").toFloat();
+        TargetPressure = p_TestCase->GetParameter("TargetVacuum").toFloat();
         goto Create_Pressure_Test;
     }
 
