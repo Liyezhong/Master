@@ -4221,17 +4221,23 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     {
         return LEVELSENSOR;
     }
-    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == m_CurErrEventID
-             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == m_CurErrEventID
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP == m_CurErrEventID)
     {
         return LATUBE1;
     }
-    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == m_CurErrEventID
-             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == m_CurErrEventID)
     {
         return LATUBE2;
+    }
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == m_CurErrEventID)
+    {
+        return LATUBE1ABNORMAL;
+    }
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == m_CurErrEventID)
+    {
+        return LATUBE2ABNORMAL;
     }
     else if (DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == m_CurErrEventID
              || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == m_CurErrEventID

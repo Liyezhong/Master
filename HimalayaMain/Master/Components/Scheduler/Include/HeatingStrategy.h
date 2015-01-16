@@ -354,6 +354,15 @@ public:
     /****************************************************************************/
     void ResetTheOvenHeating();
 
+    /****************************************************************************/
+    /*!
+     *  \brief check LA tube temperture abnormal between scenario 271 to scenario 277
+     *  \param temp = temperature of LA tube
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool CheckLATbueTempAbnormal(qreal temp);
+
 private slots:
     /****************************************************************************/
     /*!

@@ -2094,5 +2094,16 @@ bool HeatingStrategy::Check260SensorsTemp()
 
     return ret;
 }
+bool HeatingStrategy::CheckLATbueTempAbnormal(qreal temp)
+{
+    //Parrifin melting point (user input)
+    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if (temp < (userInputMeltingPoint -1) || qAbs(temp - 299) <=0.000001)
+    {
+        return false;
+    }
+
+    return true;
+}
 
 }// end of namespace Scheduler

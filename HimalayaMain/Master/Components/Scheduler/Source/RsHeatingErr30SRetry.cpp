@@ -213,6 +213,14 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             {
                 // Do nothing, we need NOT check temperature in this case
             }
+            else if (heaterType == LATUBE1ABNORMAL)
+            {
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1);
+            }
+            else if (heaterType == LATUBE2ABNORMAL)
+            {
+                ret = mp_SchedulerController->GetHeatingStrategy()->CheckLATbueTempAbnormal(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube2);
+            }
             else
             {
                 ret = mp_SchedulerController->CheckSensorTempOverange();
