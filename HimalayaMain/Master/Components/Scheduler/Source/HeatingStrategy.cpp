@@ -1729,47 +1729,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
 
         if(0 == timeRange.first)
         {
-            if(OVEN_BOTTOM2_SENSOR == OvenType)
-            {
-                if(heatingSensor.OvenBottom2OTCheckPassed)
-                    return retCode;
-            }
-            else if(heatingSensor.OTCheckPassed)
-            {
-                return retCode;
-            }
-            if( timeElapse < (timeRange.second*1000 - 30*1000) )
-            {
-                if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
-                {
-                    if(OVEN_BOTTOM2_SENSOR == OvenType)
-                    {
-                        heatingSensor.OvenBottom2OTCheckPassed = true;
-                    }
-                    else
-                    {
-                        heatingSensor.OTCheckPassed = true;
-                    }
-                    return retCode;
-                }
-            }
-            else if( HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
-            {
-                switch(OvenType)
-                {
-                    case OVEN_TOP_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL;
-                        break;
-                    case OVEN_BOTTOM1_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL;
-                        break;
-                    case OVEN_BOTTOM2_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_ABNORMAL;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //the abnormal error was deleted
         }
         else
         {
