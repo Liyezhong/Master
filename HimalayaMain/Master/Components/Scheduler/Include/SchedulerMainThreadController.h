@@ -341,6 +341,7 @@ typedef struct
         bool    m_IsDrainDelay;                               ///< wether drain delay
         qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
         CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
+        bool    m_CheckOvenCover;                               ///< check the oven cover
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

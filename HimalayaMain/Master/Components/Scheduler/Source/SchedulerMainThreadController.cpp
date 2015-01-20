@@ -143,6 +143,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_AbortingSeq = 0;
     m_IsDrainDelay = false;
     m_DrainDelayBeginTime = 0;
+    m_CheckOvenCover = true;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -341,8 +342,13 @@ void SchedulerMainThreadController::OnTickTimer()
         m_CheckLocalAlarmStatus = true;
     }
 
+    if (CTRL_CMD_CHECK_OVEN_COVER == newControllerCmd)
+    {
+        m_CheckOvenCover = true;
+    }
     if (CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN == newControllerCmd)
     {
+        m_CheckOvenCover = true;
         quint32 ParaffinMeltPoint = 64;
         if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
         {
@@ -1738,6 +1744,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
         }
+        if (cmd == "checkovencover")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_CHECK_OVEN_COVER;
+        }
         if (cmd == "open_oven_change_heating_paraffin")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -2989,7 +3000,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     // Run Heating Strategy
     if ("ERROR" != StepID && Scenario > 2)
     {
-        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -3001,6 +3011,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     // Monitor the sensors' current
     if ("ERROR" != StepID && 0 != Scenario)
     {
+        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         this->CheckSlaveSensorCurrentOverRange(Scenario);
     }
 
@@ -3123,13 +3134,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
-        if ( (m_OvenLidStatus == 0) && (strctHWMonitor.OvenLidStatus == 1) )
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+        if (1 ==  m_OvenLidStatus)
         {
             //oven is open
-            if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
-                 || (Scenario >= 281 && Scenario <= 297) )
+            if(m_CheckOvenCover)
             {
-                SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
+                if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
+                     || (Scenario >= 281 && Scenario <= 297) )
+                {
+                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
+                    m_CheckOvenCover = false;
+                }
             }
             if(Scenario >= 271 && Scenario <= 277)
             {
@@ -3140,7 +3156,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 }
             }
         }
-        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
     }
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
 	{

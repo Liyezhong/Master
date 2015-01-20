@@ -594,9 +594,8 @@
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040303" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67176007" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
-			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513010601" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67176008" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
@@ -620,11 +619,13 @@
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="512020090" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176009" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176208" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176208" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="1" Type="ACT" Action="CheckOvenCover"/>
 		</Event>
 		<Event Code="" ErrorID="512020092" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176010" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176196" ButtonType="YES_NO" NextStepOnClickYES="1" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176196" ButtonType="YES_NO" NextStepOnClickYES="1" NextStepOnClickNO="2" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="open_oven_change_heating_paraffin"/>
+			<Step ID="2" Type="ACT" Action="CheckOvenCover"/>
 		</Event>
 		<Event Code="" ErrorID="511040022" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE"  ServiceString="67176011" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176194" ButtonType="OK" StatusBar="YES"/>
