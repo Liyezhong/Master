@@ -266,7 +266,7 @@
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="513010243" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175961" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513010243" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175961" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
@@ -402,7 +402,7 @@
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="513030053" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175977" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513030053" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175977" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176201" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
@@ -445,7 +445,7 @@
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="512040401" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175985" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="512040401" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175985" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176202" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RC_Restart"/>
