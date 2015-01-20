@@ -459,11 +459,19 @@ void CSchedulerStateMachine::Stop()
 void CSchedulerStateMachine::EnterPowerFailure()
 {
     emit SigPowerFailure();
+    while (false == mp_SchedulerMachine->configuration().contains(mp_PowerFailureState.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 void CSchedulerStateMachine::SendSchedulerInitComplete()
 {
     emit SchedulerInitComplete();
+    while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 void CSchedulerStateMachine::SendRunSignal()
