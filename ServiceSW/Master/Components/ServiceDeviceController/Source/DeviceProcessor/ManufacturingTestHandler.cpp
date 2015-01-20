@@ -882,7 +882,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     Service::ModuleTestStatus testStat;
     (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
-    (void)testStat.insert("Duration", durTime.addSecs(5).toString());
+    (void)testStat.insert("Duration", durTime.toString());
 
     int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
     int waitSeconds = 0;
