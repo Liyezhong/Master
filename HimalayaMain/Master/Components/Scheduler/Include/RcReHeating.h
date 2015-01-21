@@ -29,6 +29,7 @@ namespace Scheduler{
 
 #define RV_SENSOR2_TEMP (40)                    //!< RV sensor2 temperature
 #define WAIT_RV_SENSOR2_TEMP (1800)             //!< Wait RV Sensor2 time
+#define WAIT_PARAFFIN_TEMP_TIME (900)           //!< Wait paraffin timeout
 
 class SchedulerMainThreadController;
 /****************************************************************************/
@@ -274,7 +275,6 @@ private:
     qint64                          m_StartPressureTime;                //!< the start pressure time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     bool                            m_DrainIsOk;                        //!< is drain OK
-    int                             m_OvenRemainingTime;                //!< oven remaning time
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
     QString                         m_LastReagentID;                    //!< last reagent ID
 };

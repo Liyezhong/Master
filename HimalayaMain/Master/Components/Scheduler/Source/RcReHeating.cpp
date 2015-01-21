@@ -39,7 +39,6 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     ,m_StartPressureTime(0)
     ,m_IsNeedRunCleaning(false)
     ,m_DrainIsOk(false)
-    ,m_OvenRemainingTime(0)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
@@ -266,7 +265,8 @@ void CRcReHeating::CheckTheTemperature()
     else if(271 <= m_LastScenario && m_LastScenario <= 277)
     {
         // for parrafin program
-        if(QFile::exists("TEST_GINA"))
+        qint64 CurrentTime = QDateTime::currentMSecsSinceEpoch();
+        if( CurrentTime - m_StartHeatingTime > mp_SchedulerThreadController->GetOvenHeatingRemainingTime() )
         {
             if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
             {
@@ -274,31 +274,10 @@ void CRcReHeating::CheckTheTemperature()
             }
             else
             {
-                emit TasksDone(false);
-            }
-        }
-        else
-        {
-            if(0 == m_StartReq)
-            {
-                m_OvenRemainingTime = mp_SchedulerThreadController->GetOvenHeatingRemainingTime();
-            }
-            m_StartReq++;
-            if(2 == m_StartReq)
-            {
-                m_StartReq = 0;
-            }
-            if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
-            {
-                if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
-                {
-                    emit SigGetRVPosition();
-                }
-                else
+                if( CurrentTime - m_StartHeatingTime > WAIT_PARAFFIN_TEMP_TIME * 1000)
                 {
                     emit TasksDone(false);
                 }
-                m_StartReq = 0;
             }
         }
     }

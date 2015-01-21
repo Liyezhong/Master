@@ -1201,14 +1201,8 @@
 	    <Event Code="" ErrorID="67175171" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175171" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_281" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175172" ButtonType="" StatusBar=""/>
-	    </Event>
-	    <Event Code="" ErrorID="67175173" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_291" LogLevel="High" UserLog="TRUE">
-	     <Step ID="0" Type="MSG" StringID="67175173" ButtonType="" StatusBar=""/>
-	    </Event>
-	    <Event Code="" ErrorID="67175174" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP" LogLevel="High" UserLog="TRUE">
-	     <Step ID="0" Type="MSG" StringID="67175174" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175184" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_IDLE_STATE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175184" ButtonType="" StatusBar=""/>
