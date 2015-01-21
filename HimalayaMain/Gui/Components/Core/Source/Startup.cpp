@@ -76,10 +76,10 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
     CONNECTSIGNALSIGNAL(pApp, InteractStart(), mp_Dashboard, OnInteractStart());
 
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(), mp_Dashboard, ProgramsInitialized());
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(), mp_Dashboard, UpdateItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramDeleted(), mp_Dashboard, UpdateItemsToFavoritePanel());
 
-    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, UpdateItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
     CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));

@@ -180,10 +180,11 @@ signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramsInitialized
+     *  \brief Declaration of signal AddItemsToFavoritePanel
+     *
      */
     /****************************************************************************/
-    void ProgramsInitialized();
+    void AddItemsToFavoritePanel();
     /****************************************************************************/
     /*!
      *  \brief  send signal PrepareSelectedProgramChecking to master, for checking program

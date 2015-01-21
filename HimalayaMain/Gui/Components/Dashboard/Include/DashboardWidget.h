@@ -403,10 +403,11 @@ private slots:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal ProgramsInitialized
+     *  \brief  Definition/Declaration of signal UpdateItemsToFavoritePanel
+     *
      */
     /****************************************************************************/
-    void ProgramsInitialized();
+    void UpdateItemsToFavoritePanel();
     /****************************************************************************/
     /*!
      *  \brief  when selete a program, emit signal ProgramSelected

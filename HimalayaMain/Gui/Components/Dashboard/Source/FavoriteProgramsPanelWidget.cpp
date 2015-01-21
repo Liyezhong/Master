@@ -115,7 +115,7 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
     }
 }
 
-void CFavoriteProgramsPanelWidget::ProgramsInitialized()
+void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel()
 {
     AddItemsToFavoritePanel(m_OnlyAddCleaningProgram);
 }

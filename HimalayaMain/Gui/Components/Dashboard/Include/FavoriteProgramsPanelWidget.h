@@ -76,11 +76,11 @@ namespace Dashboard {
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of ProgramsInitialized
+         *  \brief  Definition/Declaration of AddItemsToFavoritePanel
          *
          */
         /****************************************************************************/
-        void ProgramsInitialized();
+        void AddItemsToFavoritePanel();
     private slots:
         void OnResetFocus(bool reset);
         /****************************************************************************/
