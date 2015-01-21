@@ -136,7 +136,7 @@ public:
 private:
     void InitDurationWidget();
     void ResizeHorizontalSection();
-    void InitTemperatureWidget(const DataManager::CReagent * pReagent);
+    void InitTemperatureWidget(const DataManager::CReagent * pReagent, DataManager::CProgramStep *pProgramStep);
 protected:
     void changeEvent(QEvent *p_Event);
 
