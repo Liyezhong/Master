@@ -72,6 +72,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     CONNECTSIGNALSLOTGUI(mp_RetortManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_CleaningManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
+    CONNECTSIGNALSLOTGUI(mp_RetortManuf, LockTest(bool), this, LockTest(bool));
 
     /* Manufacturing SW Reset status */
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_OvenManuf, ResetTestStatus());
@@ -147,25 +148,39 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         PerformManufDisplayTests(TestCaseList);
         break;
     case Service::OVEN:
+        LockTest(true);
         PerformManufOvenTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::MAIN_CONTROL:
+        LockTest(true);
         PerformManufMainControlTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::LA_SYSTEM:
+        LockTest(true);
         PerformManufLATests(TestCaseList);
+        LockTest(false);
         break;
     case Service::ROTARY_VALVE:
+        LockTest(true);
         PerformManufRVTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::RETORT:
+        LockTest(true);
         PerformManufRetortTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::SYSTEM:
+        LockTest(true);
         PerformManufSystemTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::CLEANING_SYSTEM:
+        LockTest(true);
         PerformManufCleaningSystem(TestCaseList);
+        LockTest(false);
         break;
     case Service::FIRMWARE:
         PerformFirmwareUpdate(TestCaseList);
@@ -1424,6 +1439,17 @@ void CManufacturingDiagnosticsHandler::ShowErrorMessage(const QString &Message)
 {
     mp_ServiceConnector->HideBusyDialog();
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
+}
+
+void CManufacturingDiagnosticsHandler::LockTest(bool LockFlag)
+{
+    bool enabled = !LockFlag;
+    mp_MainWindow->SetTabEnabled(0, enabled);
+    mp_MainWindow->SetTabEnabled(1, enabled);
+    mp_MainWindow->SetTabEnabled(3, enabled);
+    mp_MainWindow->SetTabEnabled(4, enabled);
+
+    mp_DiagnosticsManufGroup->setEnabled(enabled);
 }
 
 } // end of namespace Core

@@ -138,6 +138,8 @@ private:
 
     bool GetTestResponse();
 
+    void LockTest(bool LockFlag);
+
 signals:
     /****************************************************************************/
     /**
