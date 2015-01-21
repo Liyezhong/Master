@@ -955,6 +955,7 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
                         + QString("/EBox-Utils.sh") , QStringList() <<
                         QString("update_settings_to_rollback"));
     (void)Md5sumProcess.waitForFinished();
+    (void)QProcess::startDetached("sync &"); //WARNING: ubifs' f**k perf, sigh...
     // emit the thread finished flag
     emit ThreadFinished(true, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
 
