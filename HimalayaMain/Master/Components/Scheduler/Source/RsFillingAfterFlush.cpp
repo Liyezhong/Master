@@ -67,7 +67,24 @@ CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedC
 
     m_StartTime = 0;
     m_MoveToSealingSeq = 0;
+}
+
+void CRsFillingAfterFlush::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+
     mp_StateMachine->start();
+    m_StartTime = 0;
+    m_MoveToSealingSeq = 0;
 }
 
 CRsFillingAfterFlush::~CRsFillingAfterFlush()

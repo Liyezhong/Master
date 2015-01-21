@@ -13,6 +13,7 @@
 #define HIMALAYAEVENTCODES_H
 
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
+const quint32 EVENT_DATE_TIME_SET_DATE_TIME	= 33619991;	///< User set the current system date time to  %1.
 
 
 const quint32 EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED	= 33817094;	///< Group verification failed. Base container is not initialized.
@@ -144,9 +145,9 @@ const quint32 EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE	= 33947655;	///< Import 
 
 const quint32 EVENT_IMPORT_ROLLBACK_FAILED	= 33947659;	///< Import failed. Rollback failed
 
-const quint32 EVENT_IMPORT_SUCCESS	= 33947662;	///< Import successful. Please generate new bathlayout
+const quint32 EVENT_IMPORT_SUCCESS	= 33947662;	///< Import successful!
 
-const quint32 EVENT_IMPORT_SUCCESS_LANGUAGE	= 33947663;	///< Import successful. Language files are updated
+const quint32 EVENT_IMPORT_SUCCESS_LANGUAGE	= 33947663;	///< Import successful.
 
 const quint32 EVENT_IMPORT_SWVERSION_NOT_MATCHING	= 33947656;	///< Import failed. SW versions are not matching to Import the files
 
@@ -336,5 +337,8 @@ const quint32 EVENT_WAIT_DRAINING_FINISH = 50331770;   ///< when press "Pause", 
 
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM	= 50331771;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
+const quint32 EVENT_DM_PROG_ADD_NEW_PROGRAM = 50331772;	///< User add the program %1.
+const quint32 EVENT_DM_PROG_UPDATE_PROGRAM = 50331773;	///< User update the program %1.
+const quint32 EVENT_DM_PROG_REMMOVE_PROGRAM = 50331774;	///< User remove the program %1.
 #endif // HIMALAYAEVENTCODES_H
 

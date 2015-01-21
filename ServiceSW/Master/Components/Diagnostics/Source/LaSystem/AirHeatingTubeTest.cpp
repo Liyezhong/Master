@@ -80,7 +80,7 @@ int CAirHeatingTubeTest::Run(void)
                  "user that the Instrument is operated out of the "
                  "operating temperature range of  %1\260C-%2\260C.").arg(roomTempMin).arg(roomTempMax);
        dlg->ShowMessage(title, text, RETURN_ABORT);
-       return RETURN_OK;
+       return RETURN_ABORT;
     }
 
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
@@ -106,7 +106,8 @@ int CAirHeatingTubeTest::Run(void)
                   "Please check Air heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
-            goto __fail__;
+        ret = RETURN_ERR_FAIL;
+        goto __fail__;
     }
 
     timingDialog->SetTitle(title);
@@ -155,13 +156,13 @@ int CAirHeatingTubeTest::Run(void)
         heatingStatus.UsedTime++;
         heatingStatus.CurrentTemp = currentTemp;
         this->RefreshWaitingDialog(&heatingStatus);
-
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        ret = RETURN_ABORT;
         goto __abort__;
+    }
     timingDialog->accept();
     if (ret != RETURN_OK)
         text = tr("Air Heating Tube Test failed.<br/>"
@@ -174,6 +175,7 @@ int CAirHeatingTubeTest::Run(void)
 //__ok__:
 __fail__:
     dlg->ShowMessage(title, text, (ErrorCode_t)ret);
+
 __abort__:
     (void)dev->AirTubeStopHeating();
     return ret;

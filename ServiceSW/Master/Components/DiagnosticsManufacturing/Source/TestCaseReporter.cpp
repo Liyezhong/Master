@@ -28,6 +28,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Core/Include/ServiceUtils.h"
+#include "IENetworkClient/Include/IENetworkClient.h"
 
 //lint -e578
 
@@ -37,7 +38,6 @@ CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUI
                                      MainMenu::CMainWindow *p_Parent):
     m_ModuleName(ModuleName),
     mp_DataConnector(p_DataConnector),
-    mp_IEClient(NULL),
     m_ReportDir(""),
     m_SerialNumber(""),
     mp_MessageDlg(NULL),
@@ -47,16 +47,12 @@ CTestCaseReporter::CTestCaseReporter(const QString ModuleName, Core::CServiceGUI
     mp_WaitDlg    = new MainMenu::CWaitDialog(p_Parent);
     mp_WaitDlg->setModal(true);
 
-    InitIEClient();
 }
 
 CTestCaseReporter::~CTestCaseReporter()
 {
     try {
         delete mp_WaitDlg;
-        if (mp_IEClient) {
-            delete mp_IEClient;
-        }
         if (mp_MessageDlg) {
             delete mp_MessageDlg;
         }
@@ -163,14 +159,18 @@ bool CTestCaseReporter::SendReportFile()
     mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
     mp_MessageDlg->HideButtons();
 
-    if (!mp_IEClient) {
-        qDebug()<<"invalid ie client.";
-        return false;
+    NetworkClient::IENetworkClient *p_IEClient = NULL;
+    if (mp_DataConnector && mp_DataConnector->GetServiceParameters()) {
+        QString Username  = mp_DataConnector->GetServiceParameters()->GetUserName();
+        QString IPAddress = mp_DataConnector->GetServiceParameters()->GetProxyIPAddress();
+        m_ReportDir       = mp_DataConnector->GetServiceParameters()->GetTestReportFolderPath();
+
+        p_IEClient = new NetworkClient::IENetworkClient(IPAddress, Username, Global::SystemPaths::Instance().GetScriptsPath());
     }
 
 //    system("date");
     for(int i=0; i<3; i++) {
-        if (mp_IEClient->PerformHostReachableTest()) {
+        if (p_IEClient->PerformHostReachableTest()) {
             break;
         }
         else if (i==2) {
@@ -198,7 +198,7 @@ bool CTestCaseReporter::SendReportFile()
         else {
             ReportPath.append("/stationtest");
         }
-        if (mp_IEClient->SendReprotFile(m_TestReportFile, ReportPath)) {
+        if (p_IEClient->SendReprotFile(m_TestReportFile, ReportPath)) {
             Result = true;
             Msg = Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_OK;
         }
@@ -212,6 +212,8 @@ bool CTestCaseReporter::SendReportFile()
 //    system("date");
 
 Send_Finished:
+
+    delete p_IEClient;
 
     mp_MessageDlg->SetText(Msg);
     if (Result) {
@@ -246,17 +248,6 @@ void CTestCaseReporter::WriteReportFile(QTextStream& TextStream)
         }
     }
 
-}
-
-void CTestCaseReporter::InitIEClient()
-{
-    if (mp_DataConnector && mp_DataConnector->GetServiceParameters()) {
-        QString Username  = mp_DataConnector->GetServiceParameters()->GetUserName();
-        QString IPAddress = mp_DataConnector->GetServiceParameters()->GetProxyIPAddress();
-        m_ReportDir       = mp_DataConnector->GetServiceParameters()->GetTestReportFolderPath();
-
-        mp_IEClient = new NetworkClient::IENetworkClient(IPAddress, Username, Global::SystemPaths::Instance().GetScriptsPath());
-    }
 }
 
 }  // end of namespace DiagnosticsManufacturing

@@ -1,17 +1,17 @@
 /****************************************************************************/
-/*! \file HeatingBelt1Test.cpp
+/*! \file LiquidHeatingTubeTest.cpp
  *
- *  \brief Implementation of L&A System heating belt 1 test.
+ *  \brief Implementation of L&A liquid heating tube test
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-28
- *   $Author:  $ R.Wu
+ *   $Date:    $ 2014-10-20
+ *   $Author:  $ Arthur Li
  *
  *  \b Company:
  *
  *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -81,17 +81,17 @@ int CLiquidHeatingTubeTest::Run(void)
                  "user that the Instrument is operated out of the "
                  "operating temperature range of  %1\260C-%2\260C.").arg(roomTempMin).arg(roomTempMax);
        dlg->ShowMessage(title, text, RETURN_ABORT);
-       return RETURN_OK;
+       return RETURN_ABORT;
     }
 
-    text = tr("Please look into the retort to identify if it is empty. If yes, click"
+    text = tr("Please look into the retort to identify if it is empty. If yes, click "
                "OK to continue. If no, look at the reagent bottles to identify from which bottle the "
                "reagent came from. Then abort this test and change to the "
-               "\"Diagnostic_Retort_Drain Reagent\" function to drain the Air back to"
+               "\"Diagnostic_Retort_Drain Reagent\" function to drain the liquid back to "
                "the original position. Thereafter flush the retort if necessary.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
 
@@ -118,7 +118,8 @@ int CLiquidHeatingTubeTest::Run(void)
                   "Please check liquid heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
-            goto __fail__;
+        ret = RETURN_ERR_FAIL;
+        goto __fail__;
     }
 
 
@@ -170,12 +171,13 @@ int CLiquidHeatingTubeTest::Run(void)
         heatingStatus.CurrentTemp = currentTemp;
         this->RefreshWaitingDialog(&heatingStatus);
 
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        ret = RETURN_ABORT;
         goto __abort__;
+    }
 
     timingDialog->accept();
     if (ret != RETURN_OK)

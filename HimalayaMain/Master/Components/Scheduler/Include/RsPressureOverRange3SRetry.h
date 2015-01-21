@@ -21,6 +21,7 @@
 #define RS_PRESSURE_OVERRANGE_3S_RETRY_H
 #include <QSharedPointer>
 #include <QStateMachine>
+#include <QCoreApplication>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 
@@ -85,6 +86,13 @@ public:
      */
     /****************************************************************************/
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief start up state machine
+     */
+    /****************************************************************************/
+    void Start();
 
 signals:
     /****************************************************************************/

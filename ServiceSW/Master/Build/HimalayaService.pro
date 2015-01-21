@@ -6,53 +6,61 @@ TEMPLATE = subdirs
 #
 # Make sure your Main.pro is in the last line to ensure correct linking!
 #
-SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
-          ../../../../Platform/Master/Components/NetworkComponents/Build/NetworkComponents.pro \
-          ../../../../Platform/Master/Components/Threads/Build/Threads.pro \
-          ../../../../Platform/Master/Components/DataLogging/Build/DataLogging.pro \
-          ../../../../Platform/Master/Components/DataManager/Build/DataManager.pro \
-          ../../../../Platform/Master/Components/EventHandler/Build/EventHandler.pro \
-          ../../../../Platform/Master/Components/NetCommands/Build/NetCommands.pro \
-          ../../../../Platform/Gui/Components/Application/Build/Application.pro \
-          ../../../../Platform/Gui/Components/kineticscroller/qtscroller.pro \
-          ../../../../Platform/Gui/Components/MainMenu/Build/MainMenu.pro \
-          ../../../../Platform/Master/Components/DeviceControl/Build/DeviceControl.pro \
-          ../../../../Platform/Master/Components/DeviceCommandProcessor/Build/DeviceCommandProcessor.pro \
-          ../../../../Platform/Gui/Components/KeyBoard/Build/KeyBoard.pro \
-          ../../../../Platform/Master/Components/GPIOManager/Build/GPIOManager.pro \
-          ../../../../Platform/Master/Components/EncryptionDecryption/Build/EncryptionDecryption.pro \
-          ../../../../Platform/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro \
-          ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
-          ../../../../Platform/Master/Components/StateMachines/Build/StateMachines.pro \
-          ../../../../Platform/Master/Components/ExportController/Build/ExportController.pro \
-          ../../../../Platform/ServiceSW/Components/LogViewer/Build/LogViewer.pro \
-          ../../../../Platform/ServiceSW/Components/Settings/Build/Settings.pro \
-          ../../../../Platform/ServiceSW/Components/ServiceKeyValidator/Build/ServiceKeyValidator.pro \
-          ../../../../Platform/ServiceSW/Components/IENetworkClient/Build/IENetworkClient.pro \
-          ../../../../Platform/ServiceSW/Components/ServiceImportExport/Build/ServiceImportExport.pro \
-          ../../../Shared/Gui/Components/Images/Build/Images.pro \
-          ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
-          ../Components/TestCases/Build/TestCases.pro \
-          ../Components/ServiceWidget/Build/ServiceWidget.pro \
-          ../Components/SVCDiagnostics/Build/SVCDiagnostics.pro \
-          ../Components/SVCScreenLock/Build/SVCScreenLock.pro \
-          ../Components/Calibration/Build/Calibration.pro \
-          ../Components/SystemTracking/Build/SystemTracking.pro \
-          ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
-          ../Components/Diagnostics/Build/Diagnostics.pro \
-          ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
-          ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
-          ../Components/Core/Build/Core.pro \
-          ../Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
-          ../Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
-          ../Components/ServiceDataManager/Build/ServiceDataManager.pro \
-          ../Components/Main/Build/Main.pro
+
+# path
+HIMALAYA                = $$system(cd ../../../../Himalaya;pwd)
+SHARED                  = $${HIMALAYA}/Shared
+PLATFORM                = $$system(cd ../../../../Platform;pwd)
+PLATFORM_SERVICE_SW     = $${PLATFORM}/ServiceSW
+HIMALAYA_SERVICE_SW     = $${HIMALAYA}/ServiceSW
+
+SUBDIRS = $${PLATFORM}/Master/Components/Global/Build/Global.pro \
+          $${PLATFORM}/Master/Components/NetworkComponents/Build/NetworkComponents.pro \
+          $${PLATFORM}/Master/Components/Threads/Build/Threads.pro \
+          $${PLATFORM}/Master/Components/DataLogging/Build/DataLogging.pro \
+          $${PLATFORM}/Master/Components/DataManager/Build/DataManager.pro \
+          $${PLATFORM}/Master/Components/EventHandler/Build/EventHandler.pro \
+          $${PLATFORM}/Master/Components/NetCommands/Build/NetCommands.pro \
+          $${PLATFORM}/Gui/Components/Application/Build/Application.pro \
+          $${PLATFORM}/Gui/Components/kineticscroller/qtscroller.pro \
+          $${PLATFORM}/Gui/Components/MainMenu/Build/MainMenu.pro \
+          $${PLATFORM}/Master/Components/DeviceControl/Build/DeviceControl.pro \
+          $${PLATFORM}/Master/Components/DeviceCommandProcessor/Build/DeviceCommandProcessor.pro \
+          $${PLATFORM}/Gui/Components/KeyBoard/Build/KeyBoard.pro \
+          $${PLATFORM}/Master/Components/GPIOManager/Build/GPIOManager.pro \
+          $${PLATFORM}/Master/Components/EncryptionDecryption/Build/EncryptionDecryption.pro \
+          $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro \
+          $${PLATFORM}/Master/Components/PasswordManager/Build/PasswordManager.pro \
+          $${PLATFORM}/Master/Components/StateMachines/Build/StateMachines.pro \
+          $${PLATFORM}/Master/Components/ExportController/Build/ExportController.pro \
+          $${PLATFORM_SERVICE_SW}/Components/LogViewer/Build/LogViewer.pro \
+          $${PLATFORM_SERVICE_SW}/Components/Settings/Build/Settings.pro \
+          $${PLATFORM_SERVICE_SW}/Components/ServiceKeyValidator/Build/ServiceKeyValidator.pro \
+          $${PLATFORM_SERVICE_SW}/Components/IENetworkClient/Build/IENetworkClient.pro \
+          $${PLATFORM_SERVICE_SW}/Components/ServiceImportExport/Build/ServiceImportExport.pro \
+          $${SHARED}/Gui/Components/Images/Build/Images.pro \
+          $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/TestCases/Build/TestCases.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/ServiceWidget/Build/ServiceWidget.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/SVCDiagnostics/Build/SVCDiagnostics.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/SVCScreenLock/Build/SVCScreenLock.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/Calibration/Build/Calibration.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/SystemTracking/Build/SystemTracking.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/LogViewerDialog/Build/LogViewerDialog.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/Diagnostics/Build/Diagnostics.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/ServiceUpdates/Build/ServiceUpdates.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/Core/Build/Core.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/ServiceDataManager/Build/ServiceDataManager.pro \
+          $${HIMALAYA_SERVICE_SW}/Master/Components/Main/Build/Main.pro
 
 
 CONFIG += ordered
 
-TRANSLATIONS = ../Components/Main/Build/TranslationsService/HimalayaService_en.ts \
-               ../Components/Main/Build/TranslationsService/HimalayaService_zh.ts
+TRANSLATIONS = $${HIMALAYA_SERVICE_SW}/Master/Components/Main/Build/TranslationsService/HimalayaService_en.ts \
+               $${HIMALAYA_SERVICE_SW}/Master/Components/Main/Build/TranslationsService/HimalayaService_zh.ts
                #../Components/Main/Build/TranslationsService/Himalaya_ja.ts
 #TRANSLATIONS = ../Components/Main/Build/TranslationsService/HimalayaService_en.pm \
 #               ../Components/Main/Build/TranslationsService/HimalayaService_zh.pm

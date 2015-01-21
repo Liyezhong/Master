@@ -4,53 +4,46 @@
 <context>
     <name>CAirHeatingTubeTest</name>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="55"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="54"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="64"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="63"/>
         <source>Air Heating Tube Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="74"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="75"/>
         <source>Please check room temperature.&lt;br/&gt;Is it within %1°C-%2°C ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="78"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="79"/>
         <source>Test has to be aborted. Please inform the user that the Instrument is operated out of the operating temperature range of  %1°C-%2°C.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="85"/>
-        <source>Please look into the retort to identify if it is empty. If yes, clickOK to continue. If no, look at the reagent bottles to identify from which bottle the reagent came from. Then abort this test and change to the &quot;Diagnostic_Retort_Drain Reagent&quot; function to drain the Air back tothe original position. Thereafter flush the retort if necessary.</source>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="173"/>
+        <source>Air Heating Tube Test successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="113"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="147"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="186"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="105"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="168"/>
         <source>Air Heating Tube Test failed.&lt;br/&gt;Please check Air heating tube, cables and connections and ASB15 board. Replace the defective part accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="124"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="160"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="117"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="191"/>
-        <source>Air Heating Tube Test is successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CCalibrationHanlder</name>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="136"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="144"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,17 +68,17 @@
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/Oven/CoverSensorTest.cpp" line="90"/>
-        <source>OPEN</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/Oven/CoverSensorTest.cpp" line="92"/>
-        <source>CLOSE</source>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/Oven/CoverSensorTest.cpp" line="94"/>
-        <source>ERROR</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -324,105 +317,109 @@
 <context>
     <name>CHeatingTestEmpty</name>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="73"/>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="74"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="72"/>
         <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="76"/>
         <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="77"/>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="79"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="78"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="55"/>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="56"/>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="57"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="58"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="88"/>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="111"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="74"/>
+        <source>%1-%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="90"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="117"/>
         <source>Paraffin Oven Heating Test (Empty)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="119"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="125"/>
         <source>Paraffin Oven Heating Test (Empty) failed.&lt;br/&gt; Temperature sensors are out of specification. Please check resistance of temperature sensors to verify, exchange paraffin oven module and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="130"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="139"/>
         <source>Please remove any paraffin bath present in the paraffin oven. Then please leave the oven cover opened to speed up the cooling process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="172"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="198"/>
         <source>Paraffin Oven Heating Test (Empty) failed. ASB5 is damaged.Exchange it and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="178"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="204"/>
         <source>Please close oven cover.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="183"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="211"/>
         <source>Please make sure there are no paraffin baths present in the paraffin oven.&lt;br/&gt;Verify the oven surfaces are dry and clean, and the oven cover is closed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="194"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="224"/>
         <source>Oven Get Temp error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="243"/>
-        <source>Paraffin Oven Heating Test (Empty) failed. Temperature did not reach TM[current temperature +10°C ] within %1 mins?. Root cause might be damaged ASB5 or Paraffin Oven Module. Sequentially check resistance of heaters and function of ASB5. Exchange defective part accordingly and repeat this test.</source>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="311"/>
+        <source>Paraffin Oven Heating Test (Empty) failed. Temperature did not reach %1°C within %2 mins. Root cause might be damaged ASB5 or Paraffin Oven Module. Sequentially check resistance of heaters and function of ASB5. Exchange defective part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="281"/>
-        <source>Paraffin Oven Heating Test (Empty) failed. ASB5 is damaged. Exchange it and repeat this test.</source>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="319"/>
+        <source>Paraffin Oven Heating Test (Empty) failed. &lt;br/&gt;ASB5 is damaged. Exchange it and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="286"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="325"/>
         <source>Paraffin Oven Heating Test (Empty) successful. Please re-insert the paraffin baths and close the oven cover.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="70"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="69"/>
         <source>Retort Heating Test (Empty)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="75"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="74"/>
         <source>Please confirm the retort is empty and dry. (If not, use the &quot; Diagnostic_Retort_Drain Reagen&quot; function first). Close retort lid and rotate lock to closed position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="97"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="96"/>
         <source>Retort Heating Test(Empty) failed.&lt;br/&gt;Detection of Retort temperature failed. Sequentially check resistance of temperature sensor, function of ASB5 and retort heating elements. Exchange ASB5 or retort accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="106"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="107"/>
         <source>Start heating retort...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="113"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="114"/>
         <source> Retort Heating Test(Empty) failed.&lt;br/&gt;Current of heating elements is out of specifications. Sequentially check function of ASB5 and retort heating elements. Exchange ASB5 or retort accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="128"/>
-        <source>%1 ~ %2</source>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="130"/>
+        <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="167"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="181"/>
         <source>Retort Heating Test (Empty) failed.&lt;br/&gt;Sequentially check resistance of temperature sensor, function of ASB5 and retort. Exchange part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="176"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="190"/>
         <source>Retort Heating Test (Empty) successful.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -430,93 +427,104 @@
 <context>
     <name>CHeatingTestWithWater</name>
     <message>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="57"/>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="58"/>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="59"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="60"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="72"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="71"/>
         <source>Retort Heating Test (with Water)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="79"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="72"/>
+        <source>Test failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="80"/>
         <source>Please perform Retort Heating Test (Empty).&lt;br/&gt;This will save time eventually. For this test, you will need a calibrated external thermometer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="86"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="87"/>
         <source> Please put reagent bottle with water to reagent bottle position 13. And confirm the retort is empty and dry. (If not, use the &quot;Diagnostic_Retort_Drain Reagent&quot; function first). Close retort lid and rotate lock to closed position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="109"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="110"/>
         <source>Retort Heating Test(with Water) failed.&lt;br/&gt;Detection of Retort temperature failed. Sequentially check resistance of temperature sensor, function of ASB5 and retort heating elements. Exchange ASB5 or retort accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="118"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="121"/>
         <source>Start heating retort...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="125"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="128"/>
         <source>Retort Heating Test(with Water) failed.&lt;br/&gt;Current of heating elements is out of specifications. Sequentially check function of ASB5 and retort heating elements. Exchange ASB5 or retort accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="134"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="137"/>
         <source>Initializing the rotary valve...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="137"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="167"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="232"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="145"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="236"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="267"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="295"/>
         <source>Rotating Rotary Valve to tube position 13</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="149"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="163"/>
         <source>Retort Level Sensor Heating Test failed.&lt;br/&gt;Target temperature was not reached in time. Please perform Level Sensor Detection Test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="155"/>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="170"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="235"/>
         <source>Start filling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="158"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="174"/>
         <source>Rotating Rotary Valve to sealing position 13</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="164"/>
-        <source>Please put ht calibrated external thermometer into retort, and then close the retort lid lock.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="189"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="212"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="213"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="307"/>
         <source>Retort Heating Test (with Water) failed.&lt;br/&gt;Sequentially check resistance of temperature sensor, function of ASB5 and retort. Exchange part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="242"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="282"/>
         <source>Retort Heating Test (with Water) failed.&lt;br/&gt;Exchange the retort module and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="247"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="182"/>
+        <source>Release pressure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="244"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="275"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="303"/>
+        <source>Start draining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="286"/>
         <source>Retort Heating Test (with Water) successfully completed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -524,13 +532,13 @@
 <context>
     <name>CHiMenuGroup</name>
     <message>
-        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="54"/>
+        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="52"/>
         <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="108"/>
-        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="183"/>
+        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="106"/>
+        <location filename="../../../SystemTracking/Source/HiMenuGroup.cpp" line="181"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -539,7 +547,7 @@
     <name>CInitialSystem</name>
     <message>
         <location filename="../../../Diagnostics/Source/InitialSystem.cpp" line="71"/>
-        <source>System is initializing...</source>
+        <source>System is initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -648,37 +656,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="191"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="192"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="192"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="193"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="217"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="218"/>
         <source>Retort Condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="219"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="220"/>
         <source>Select the content/condition within the retort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="220"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="221"/>
         <source>Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="221"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="222"/>
         <source>Other Reagent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="222"/>
+        <location filename="../../../Diagnostics/Source/InitialSystem/InitialSystemCheck.cpp" line="223"/>
         <source>Paraffin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -686,34 +694,34 @@
 <context>
     <name>CLidLockTest</name>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="86"/>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="102"/>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="119"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="89"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="105"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="122"/>
         <source>Retort Lid Lock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="90"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="93"/>
         <source>Please unlock the retort lid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="93"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="96"/>
         <source>Please lock the retort lid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="107"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="110"/>
         <source> failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="110"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="113"/>
         <source> successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="120"/>
+        <location filename="../../../Diagnostics/Source/Retort/LidLockTest.cpp" line="123"/>
         <source>Do you see the retort lid &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -721,41 +729,39 @@
 <context>
     <name>CLiquidHeatingTubeTest</name>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="65"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="64"/>
         <source>Liquid Heating Tube Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="75"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="76"/>
         <source>Please check room temperature.&lt;br/&gt;Is it within %1°C-%2°C ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="79"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="80"/>
         <source>Test has to be aborted. Please inform the user that the Instrument is operated out of the operating temperature range of  %1°C-%2°C.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="86"/>
-        <source>Please look into the retort to identify if it is empty. If yes, clickOK to continue. If no, look at the reagent bottles to identify from which bottle the reagent came from. Then abort this test and change to the &quot;Diagnostic_Retort_Drain Reagent&quot; function to drain the liquid back tothe original position. Thereafter flush the retort if necessary.</source>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="87"/>
+        <source>Please look into the retort to identify if it is empty. If yes, click OK to continue. If no, look at the reagent bottles to identify from which bottle the reagent came from. Then abort this test and change to the &quot;Diagnostic_Retort_Drain Reagent&quot; function to drain the liquid back to the original position. Thereafter flush the retort if necessary.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="116"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="150"/>
         <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="189"/>
+        <source>Liquid Heating Tube Test successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="117"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="184"/>
         <source>Liquid Heating Tube Test failed.&lt;br/&gt;Please check liquid heating tube, cables and connections and ASB15 board. Replace the defective part accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="127"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="163"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="130"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="194"/>
-        <source>Liquid Heating Tube Test is successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -792,17 +798,17 @@
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="92"/>
-        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="116"/>
+        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="117"/>
         <source>Rotary Valve Movement Test failed. It might work in some minutes when solidified paraffin in the rotary valve is molten. Repeat initializing test again in about 15mins. If it still fails in the second try, exchange rotary valve, reboot the Service Software and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="113"/>
+        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="114"/>
         <source> Rotating Rotary Valve to tube position </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="127"/>
+        <location filename="../../../Diagnostics/Source/RotaryValve/MovementTest.cpp" line="128"/>
         <source>Rotary Valve Movement Test successful.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -810,37 +816,42 @@
 <context>
     <name>CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="211"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="219"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="504"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="512"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="109"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="280"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="288"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="567"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="494"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="549"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="495"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="550"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="499"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="500"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="555"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="505"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="560"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -861,7 +872,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="518"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="517"/>
         <source>&lt;font color=&apos;%1&apos;&gt;%2&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -877,7 +888,7 @@
 <context>
     <name>CRotaryValve</name>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Source/RotaryValveManufacturing.cpp" line="331"/>
+        <location filename="../../../DiagnosticsManufacturing/Source/RotaryValveManufacturing.cpp" line="338"/>
         <source>You can&apos;t do these tests until &apos;Get the initial position&apos; test is passed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -885,13 +896,103 @@
 <context>
     <name>CRotaryValveDevice</name>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1533"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1539"/>
         <source>Seal %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1537"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1543"/>
         <source>Tube %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSVCDashboardWidget</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="617"/>
+        <source>Select Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="646"/>
+        <source>Rotary valve dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="842"/>
+        <source>Rotary Valve cannot rotate, due to the minimum temperature has not been reached. Please check resistance of temperature sensors, current of heating element and function of ASB3. If no root cause found, check main relay on ASB15 and cable connections in addition. Exchange part accordingly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSVCRotaryValveDlg</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="230"/>
+        <source>Rotary valve current position :  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="232"/>
+        <source>X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="234"/>
+        <source>P1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="236"/>
+        <source>P2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="238"/>
+        <source>P3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCRotaryValveDlg.cpp" line="240"/>
+        <source>%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSVCScreenLock::CSVCScreenLockWidget</name>
+    <message>
+        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="167"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="178"/>
+        <source>Enter Pin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSVCTargetTempSelectionDlg</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCTargetTempSelectionDlg.cpp" line="51"/>
+        <source>Target Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CSVCValveStateInfoDlg</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCValveStateInfoDlg.cpp" line="44"/>
+        <source>Pressure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCValveStateInfoDlg.cpp" line="44"/>
+        <source>Vaccum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Source/SVCValveStateInfoDlg.cpp" line="44"/>
+        <source>Ambient</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -953,8 +1054,14 @@
     <name>CViewHistoryDlg</name>
     <message>
         <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="41"/>
-        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="66"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="67"/>
         <source>Module List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="42"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="68"/>
+        <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1065,63 +1172,63 @@
 <context>
     <name>Core::CCalibrationHanlder</name>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="93"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="138"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="181"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="97"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="146"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="191"/>
         <source>Pressure sensor calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="99"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="190"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="103"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="200"/>
         <source>Executing the first calibration, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="104"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="195"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="111"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="214"/>
         <source>Executing the second calibration, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="109"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="200"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="116"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="219"/>
         <source>Executing the third calibration, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="214"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="233"/>
         <source>Pressure sensor calibration success.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="225"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="244"/>
         <source>Please open the retort lid, and then click &apos;OK&apos; to retry.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="233"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="252"/>
         <source>Pressure sensor calibration failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="259"/>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="297"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="278"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="316"/>
         <source>Timeout expired: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="406"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="425"/>
         <source>Pressure Sensor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="408"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="427"/>
         <source>Touchscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="410"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="429"/>
         <source>Calibration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1177,131 +1284,131 @@
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="346"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="353"/>
         <source>Himalaya Service Software</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="358"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="365"/>
         <source>Current Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="368"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="375"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="371"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="378"/>
         <source>View History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="380"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="404"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="390"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="414"/>
         <source>System Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="378"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="402"/>
         <source>System Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="382"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="406"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="384"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="408"/>
         <source>Software Update Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="392"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
         <source>Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="407"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="431"/>
         <source>Firmware Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="411"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="435"/>
         <source>Data Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="413"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="437"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="415"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="439"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="417"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="441"/>
         <source>Service Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="650"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="683"/>
         <source>System is initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="718"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="751"/>
         <source>Missing Xml files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="721"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="754"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1196"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1251"/>
         <source>Alarm Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1612"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1629"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1674"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1691"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1613"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1630"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1675"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1692"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1614"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1621"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1632"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1676"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1683"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1694"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1620"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1682"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1622"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1684"/>
         <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1631"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1693"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1435,12 +1542,12 @@
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/LaSystem.ui" line="20"/>
-        <source>Liquid Heating Tube</source>
+        <source>Liquid Heating Tube Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/LaSystem.ui" line="92"/>
-        <source>Air Heating Tube</source>
+        <source>Air Heating Tube Test</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1448,37 +1555,57 @@
     <name>Diagnostics::CLevelSensorHeatingDialog</name>
     <message>
         <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="14"/>
-        <source>Form</source>
+        <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="24"/>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="26"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="38"/>
         <source>Used Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="44"/>
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="75"/>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="51"/>
         <source>00:00:00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="55"/>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="64"/>
         <source>Estimated Duration:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="86"/>
-        <source>Target Temperature(℃):</source>
+    <message>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="77"/>
+        <source>00:30:00</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="117"/>
-        <source>Current Temperature(℃):</source>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="90"/>
+        <source>Target Temperature(°C): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="163"/>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="103"/>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="129"/>
+        <source>50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="116"/>
+        <source>Current Temperature(°C): </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="156"/>
+        <source>Level sensor is heating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/LevelSensorHeatingDialog.ui" line="193"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1501,7 +1628,7 @@ Number</source>
         <location filename="../../../Diagnostics/Forms/LiquidHoseTestDlg.ui" line="40"/>
         <location filename="../../../Diagnostics/Forms/LiquidHoseTestDlg.ui" line="250"/>
         <source>Recorded
-Pressure</source>
+Pressure(kPa)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1560,12 +1687,12 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Oven.ui" line="74"/>
+        <location filename="../../../Diagnostics/Forms/Oven.ui" line="46"/>
         <source>Heating Test(Empty)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Oven.ui" line="150"/>
+        <location filename="../../../Diagnostics/Forms/Oven.ui" line="79"/>
         <source>Cover Sensor Test  </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1578,27 +1705,27 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Retort.ui" line="20"/>
+        <location filename="../../../Diagnostics/Forms/Retort.ui" line="27"/>
         <source>Heating Test (with Water)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Retort.ui" line="27"/>
+        <location filename="../../../Diagnostics/Forms/Retort.ui" line="20"/>
         <source>Lid Lock Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Retort.ui" line="47"/>
+        <location filename="../../../Diagnostics/Forms/Retort.ui" line="34"/>
+        <source>Level Sensor Detection Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/Retort.ui" line="48"/>
         <source>Heating Test (Empty)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/Retort.ui" line="67"/>
-        <source>Level Sensor Detection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/Retort.ui" line="74"/>
+        <location filename="../../../Diagnostics/Forms/Retort.ui" line="41"/>
         <source>Drain Reagent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1668,6 +1795,34 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
 </context>
 <context>
+    <name>Diagnostics::CStatusConfirmDialog</name>
+    <message>
+        <location filename="../../../Diagnostics/Forms/StatusConfirmDialog.ui" line="32"/>
+        <source>Heating Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/StatusConfirmDialog.ui" line="44"/>
+        <source>Do you see the cover sensor status shows &quot;Open&quot; ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/StatusConfirmDialog.ui" line="74"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/StatusConfirmDialog.ui" line="94"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/StatusConfirmDialog.ui" line="131"/>
+        <source>Cover Sensor Status:Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Diagnostics::CSystem</name>
     <message>
         <location filename="../../../Diagnostics/Forms/System.ui" line="14"/>
@@ -1676,42 +1831,42 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/System.ui" line="46"/>
-        <source>Local Alarm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="99"/>
-        <source>Ventilation Fan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="119"/>
-        <source>Remote Alarm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="126"/>
-        <source>Exhaust Fan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="146"/>
-        <source>System Sealing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="153"/>
-        <source>Liquid Hose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/System.ui" line="160"/>
-        <source>Filling&amp;&amp;Draining</source>
+        <source>Local Alarm Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/System.ui" line="92"/>
-        <source>Speaker</source>
+        <source>Speaker Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="99"/>
+        <source>Ventilation Fan Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="119"/>
+        <source>Remote Alarm Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="126"/>
+        <source>Exhaust Fan Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="146"/>
+        <source>System Sealing Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="153"/>
+        <source>Liquid Hose Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/System.ui" line="160"/>
+        <source>Filling&amp;&amp;Draining Test</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2153,6 +2308,12 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../Diagnostics/Source/StatusConfirmDialog.cpp" line="97"/>
+        <source>cover sensor status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Source/StatusConfirmDialog.cpp" line="126"/>
         <location filename="../../../DiagnosticsManufacturing/Source/StatusConfirmDialog.cpp" line="109"/>
         <source>Retort lid lock status:</source>
         <translation type="unfinished"></translation>
@@ -2305,7 +2466,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/LaTimingDialog.ui" line="156"/>
-        <source>Please waiting ...</source>
+        <source>Please wait ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2993,7 +3154,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     <name>MainMenu::CMainWindow</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="521"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="529"/>
         <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3039,18 +3200,18 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
 <context>
     <name>MainMenu::CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="86"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="82"/>
         <source>Information Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="93"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="89"/>
         <source>Warning Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="100"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="105"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="96"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="101"/>
         <source>Error Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3262,74 +3423,68 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="35"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="38"/>
         <source>Used Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="42"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="57"/>
         <source>00:00:00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="49"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="70"/>
         <source>Estimated Duration:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="56"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="89"/>
         <source>00:30:00</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="63"/>
-        <source>Target Temperature(top):</source>
+    <message utf8="true">
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="102"/>
+        <source>Target Temperature(°C): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="70"/>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="84"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="220"/>
+        <source>Please wait ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="115"/>
         <source>50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="77"/>
-        <source>Target Temperature(Bottom):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="91"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="141"/>
         <source>Current Temperature (Top):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="98"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="154"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="105"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="167"/>
         <source>Current Temeprature (Bottom 1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="112"/>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="126"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="180"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="206"/>
         <source>15</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="119"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="193"/>
         <source>Current Temperature (Bottom 2):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="142"/>
-        <source>Please waiting ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="179"/>
+        <location filename="../../../Diagnostics/Forms/OvenHeatingTestEmptyTimingDialog.ui" line="257"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3341,7 +3496,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="112"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="386"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="514"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1585"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1574"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="unfinished"></translation>
@@ -3351,7 +3506,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="124"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="398"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="525"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1597"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1586"/>
         <source>Parse error at line %1, column %2:
 %3</source>
         <translation type="unfinished"></translation>
@@ -3395,7 +3550,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="137"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1610"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1599"/>
         <source>The file is not a hardware config file. Tag &apos;hwconfig&apos; missed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3416,7 +3571,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1619"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1608"/>
         <source>The process settings file version is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3430,34 +3585,38 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../Diagnostics/Forms/RetortInputDialog.ui" line="36"/>
-        <source>Please enter the water temperature
+        <source>Please open the retort lid and use a calibrated 
+thermometer to measure the water temperature
+ in the middle of the retort (without contact to 
+the inner retort walls).
+Please enter the water temperature
 measured by calibrated external thermometer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/RetortInputDialog.ui" line="60"/>
+        <location filename="../../../Diagnostics/Forms/RetortInputDialog.ui" line="64"/>
         <source>Pease retype the same temperature value
 for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/RetortInputDialog.ui" line="77"/>
+        <location filename="../../../Diagnostics/Forms/RetortInputDialog.ui" line="81"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="52"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="56"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="63"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="67"/>
         <source>Retort Heating Test (with Water)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="52"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="63"/>
         <source>Edit box cannot be empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="56"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortInputDialog.cpp" line="67"/>
         <source>The input value is different!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3496,7 +3655,12 @@ for verification</source>
     </message>
     <message utf8="true">
         <location filename="../../../Diagnostics/Forms/RetortTimingDialog.ui" line="63"/>
-        <source>Target Temperature(℃):</source>
+        <source>Target Temperature(°C): </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Diagnostics/Forms/RetortTimingDialog.ui" line="128"/>
+        <source>Please wait ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3531,13 +3695,36 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/RetortTimingDialog.ui" line="128"/>
-        <source>Please waiting ...</source>
+        <location filename="../../../Diagnostics/Forms/RetortTimingDialog.ui" line="165"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SVCDiagnostics::CRotaryValveDlg</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/RotaryValveDlg.ui" line="29"/>
+        <source>Heating Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Forms/RetortTimingDialog.ui" line="165"/>
-        <source>Abort</source>
+        <location filename="../../../SVCDiagnostics/Forms/RotaryValveDlg.ui" line="41"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotary valve current position : &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/RotaryValveDlg.ui" line="48"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select rotary valve position :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/RotaryValveDlg.ui" line="95"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/RotaryValveDlg.ui" line="115"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3550,690 +3737,726 @@ for verification</source>
     </message>
 </context>
 <context>
-    <name>Service</name>
+    <name>SVCDiagnostics::CSVCTargetTempSelectionDlg</name>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="153"/>
-        <source>Error</source>
+        <location filename="../../../SVCDiagnostics/Forms/CSVCTargetTempSelectionDlg.ui" line="32"/>
+        <source>Heating Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="154"/>
-        <source>Information</source>
+        <location filename="../../../SVCDiagnostics/Forms/CSVCTargetTempSelectionDlg.ui" line="38"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select the target temperature :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="155"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="156"/>
-        <source>Please Wait</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="157"/>
-        <source>Communication Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="158"/>
-        <source>Serial Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="159"/>
-        <source>Enter Serial Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="160"/>
-        <source>Send Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="161"/>
-        <source>User Input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="162"/>
-        <source>Enter Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="163"/>
-        <source>Sealing Test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="164"/>
-        <source>System speaker test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="165"/>
-        <source>Mains relay test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="166"/>
-        <source>Confirm water level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="167"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="168"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="169"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="170"/>
-        <source>Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="171"/>
+        <location filename="../../../SVCDiagnostics/Forms/CSVCTargetTempSelectionDlg.ui" line="84"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../SVCDiagnostics/Forms/CSVCTargetTempSelectionDlg.ui" line="104"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SVCDiagnostics::CSVCValveStateInfoDlg</name>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/SVCValveStateInfoDlg.ui" line="26"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SVCDiagnostics/Forms/SVCValveStateInfoDlg.ui" line="54"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Service</name>
+    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="172"/>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="247"/>
-        <source>Close</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="173"/>
-        <source>Abort</source>
+        <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="174"/>
-        <source>PASS</source>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="175"/>
-        <source>FAIL</source>
+        <source>Please Wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="176"/>
-        <source>Retest</source>
+        <source>Communication Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="177"/>
-        <source>Display</source>
+        <source>Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="178"/>
-        <source>Main Control</source>
+        <source>Enter Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="179"/>
-        <source>Retort</source>
+        <source>Send Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="180"/>
-        <source>Paraffin Oven</source>
+        <source>User Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="181"/>
-        <source>Rotary Valve</source>
+        <source>Enter Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="182"/>
-        <source>L&amp;&amp;A System</source>
+        <source>Sealing Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="183"/>
-        <source>System</source>
+        <source>System speaker test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="184"/>
-        <source>Cleaning</source>
+        <source>Mains relay test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="185"/>
-        <source>Begin cleaning...</source>
+        <source>Confirm water level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="186"/>
-        <source>Diagnostics</source>
+        <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="187"/>
-        <source>SVC Diagnostics</source>
+        <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="188"/>
-        <source>Failed</source>
+        <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="189"/>
-        <source>Success</source>
+        <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="190"/>
-        <source>Please enter the serial number.</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="191"/>
-        <source>Please enter the system serial number.</source>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="266"/>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="192"/>
-        <source>Please select a test case.</source>
+        <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="193"/>
-        <source>Sending...</source>
+        <source>PASS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="194"/>
-        <source>Send test report ok.</source>
+        <source>FAIL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="195"/>
-        <source>Generation report file failed.</source>
+        <source>Retest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="196"/>
-        <source>The report file is not exists.</source>
+        <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="197"/>
-        <source>Nr.</source>
+        <source>Main Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="198"/>
-        <source>Tests</source>
+        <source>Retort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="199"/>
-        <source>Current Temperature:</source>
+        <source>Paraffin Oven</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="200"/>
-        <source>Current Temperature (Sensor 1):</source>
+        <source>Rotary Valve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="201"/>
-        <source>Current Temperature (Sensor 2):</source>
+        <source>L&amp;&amp;A System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="202"/>
-        <source>Current Temperature (Side):</source>
+        <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="203"/>
-        <source>Current Temperature (Bottom 1):</source>
+        <source>Cleaning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="204"/>
-        <source>Current Temperature (Bottom 2):</source>
+        <source>Begin cleaning...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="205"/>
-        <source>Left Sensor Temperature:</source>
+        <source>Diagnostics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="206"/>
-        <source>Middle Sensor Temperature:</source>
+        <source>SVC Diagnostics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="207"/>
-        <source>Right Sensor Temperature:</source>
+        <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="208"/>
-        <source>External sensor value:</source>
+        <source>Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="209"/>
-        <source>External sensor value (again):</source>
+        <source>Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="210"/>
-        <source>The two values you input are not same. Please check again.</source>
+        <source>Please enter the system serial number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="211"/>
-        <source>The value of Left sensor is wrong</source>
+        <source>Please select a test case.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="212"/>
-        <source>The external sensor value is wrong</source>
+        <source>Sending...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="213"/>
-        <source>The value of Middle sensor is wrong</source>
+        <source>Send test report ok.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="214"/>
-        <source>The external sensor value (again) is wrong</source>
+        <source>Generation report file failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="215"/>
-        <source>The value of Right sensor is wrong</source>
+        <source>The report file is not exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="216"/>
-        <source>The value of Original Pressure should be in</source>
+        <source>Nr.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="217"/>
-        <source>Position</source>
+        <source>Tests</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="218"/>
-        <source>Positon %1# is ready.</source>
+        <source>Current Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="219"/>
-        <source>Is the test pass?</source>
+        <source>Current Temperature (Sensor 1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="220"/>
-        <source>Do you see the retort lid &apos;%1&apos; ?</source>
+        <source>Current Temperature (Sensor 2):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="221"/>
-        <source>Do you see the cover sensor status shows &apos;%1&apos;</source>
+        <source>Current Temperature (Side):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="222"/>
-        <source>Did you hear the speaker test sound ?</source>
+        <source>Current Temperature (Bottom 1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="223"/>
-        <source>Did you hear a louder speaker test sound this time ?</source>
+        <source>Current Temperature (Bottom 2):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="224"/>
-        <source>Please confirm the alarm light is on and status is &apos;Connected&apos; ?</source>
+        <source>Left Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="225"/>
-        <source>Please confirm the alarm status is &apos;DisConnected&apos; ?</source>
+        <source>Middle Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="226"/>
-        <source>relay switch on Spec.%1mA-%2mA</source>
+        <source>Right Sensor Temperature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="227"/>
-        <source>relay switch off Spec.&amp;lt;%1mA</source>
+        <source>External sensor value:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="228"/>
-        <source>&lt;br&gt;ASB3 current:%1&lt;br&gt;Result:%2</source>
+        <source>External sensor value (again):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="229"/>
-        <source>Please check if the exhaust fan is runing and check if the air flow direction is out of device.</source>
+        <source>The two values you input are not same. Please check again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="230"/>
-        <source>Please check if the ventilation fan is runing and check if the air flow direction is out of device</source>
+        <source>The value of Left sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="231"/>
-        <source>Please adjust retort lid lock assembly then re-test...</source>
+        <source>The external sensor value is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="232"/>
-        <source>ASB %1 DC output voltage is %2 (%3 V). &lt;br&gt;and current is %4 (%5 mA).</source>
+        <source>The value of Middle sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="233"/>
-        <source>Open the retort lid. do you see water cover the level sensor?</source>
+        <source>The external sensor value (again) is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="234"/>
-        <source>Rotary valve selecting test in progress...</source>
+        <source>The value of Right sensor is wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="235"/>
-        <source>Rotary valve sealing test in progress...</source>
+        <source>The value of Original Pressure should be in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="236"/>
-        <source>Heating rotary valve in progress...</source>
+        <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="237"/>
-        <source>Initializing rotary valve in progress...</source>
+        <source>Positon %1# is ready.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="238"/>
-        <source>Detecting level sensor in progress...</source>
+        <source>Is the test pass?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="239"/>
-        <source>Heating level sensor in progress...</source>
+        <source>Do you see the retort lid &apos;%1&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="240"/>
-        <source>Heating retort(empty) in progress...</source>
+        <source>Do you see the cover sensor status shows &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="241"/>
-        <source>Heating retort(liquid) in progress...</source>
+        <source>Did you hear the speaker test sound ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="242"/>
-        <source>Heating Belt1 in progress...</source>
+        <source>Did you hear a louder speaker test sound this time ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="243"/>
-        <source>Heating Belt2 in progress...</source>
+        <source>Please confirm the alarm light is on and status is &apos;Connected&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="244"/>
-        <source>Heating Oven(empty) in progress...</source>
+        <source>Please confirm the alarm status is &apos;DisConnected&apos; ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="245"/>
-        <source>%1 V test</source>
+        <source>relay switch on Spec.%1mA-%2mA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="246"/>
-        <source>(Current Voltage: %1 V)</source>
+        <source>relay switch off Spec.&amp;lt;%1mA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="247"/>
+        <source>&lt;br&gt;ASB3 current:%1&lt;br&gt;Result:%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="248"/>
-        <source>Open</source>
+        <source>Please check if the exhaust fan is runing and check if the air flow direction is out of device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="249"/>
-        <source>Disconnected</source>
+        <source>Please check if the ventilation fan is runing and check if the air flow direction is out of device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="250"/>
-        <source>Connected</source>
+        <source>Please adjust retort lid lock assembly then re-test...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="251"/>
-        <source>Update Firmware for Slave %1. please wait...</source>
+        <source>ASB %1 DC output voltage is %2 (%3 V). &lt;br&gt;and current is %4 (%5 mA).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="252"/>
-        <source>Requested operation is in progress...</source>
+        <source>Open the retort lid. do you see water cover the level sensor?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="253"/>
-        <source>Rotate rotary valve to tube position #%1</source>
+        <source>Rotary valve selecting test in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="254"/>
-        <source>Rotate rotary valve to sealing position #%1</source>
+        <source>Rotary valve sealing test in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="255"/>
-        <source>Creating pressure to %1Kpa...</source>
+        <source>Heating rotary valve in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="256"/>
-        <source>Keep pressure for %1 seconds</source>
+        <source>Initializing rotary valve in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="257"/>
-        <source>Releasing pressure...</source>
+        <source>Detecting level sensor in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="258"/>
-        <source>Creating pressure, current pressure is %1Kpa</source>
+        <source>Heating level sensor in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="259"/>
-        <source>Rotary valve is initializing...</source>
+        <source>Heating retort(empty) in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="260"/>
-        <source>Heating level sensor...</source>
+        <source>Heating retort(liquid) in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="261"/>
-        <source>Filling...</source>
+        <source>Heating Belt1 in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="262"/>
-        <source>Draining...</source>
+        <source>Heating Belt2 in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="263"/>
-        <source>Air Blowing...</source>
+        <source>Heating Oven(empty) in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="264"/>
-        <source>Test is finished.</source>
+        <source>%1 V test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="265"/>
-        <source>Rotate rotary valve to tube position %1 failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="266"/>
-        <source>Rotate rotary valve to sealing position %1 failed</source>
+        <source>(ASB3 Current Voltage: %1 V, ASB5 Current Voltage: %2 V)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="267"/>
-        <source>create pressure failed.</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="268"/>
-        <source>Filling is failed.</source>
+        <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="269"/>
-        <source>Level sensor heating is failed.</source>
+        <source>Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="270"/>
-        <source>Rotary valve initializing is failed.</source>
+        <source>Update Firmware for Slave %1. please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="271"/>
-        <source>Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <source>Requested operation is in progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="272"/>
-        <source>Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)</source>
+        <source>Rotate rotary valve to tube position #%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="273"/>
-        <source>Level Sensor Current Temperature is (%1) which is not in (%2~%3)</source>
+        <source>Rotate rotary valve to sealing position #%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="274"/>
-        <source>Retort current temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <source>Creating pressure to %1Kpa...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="275"/>
-        <source>Tube Current Temperature is (%1) which is not in (%2~%3)</source>
+        <source>Keep pressure for %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="276"/>
-        <source>ERROR: Device is not responding restart the system!</source>
+        <source>Releasing pressure...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="277"/>
-        <source>Manufacturing Test Result</source>
+        <source>Creating pressure, current pressure is %1Kpa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="278"/>
-        <source>The server ip can&apos;t reachable.</source>
+        <source>Rotary valve is initializing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="279"/>
-        <source>Server folder can&apos;t access.</source>
+        <source>Heating level sensor...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="280"/>
-        <source>Download firmware files failed.</source>
+        <source>Filling...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="281"/>
-        <source>The current version is latest one.</source>
+        <source>Draining...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="282"/>
-        <source>Download firmware files success.</source>
+        <source>Air Blowing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="283"/>
-        <source>Send report file to server failed.</source>
+        <source>Test is finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="284"/>
-        <source>Checking host reachable...</source>
+        <source>Rotate rotary valve to tube position %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="285"/>
-        <source>Checking host access rights...</source>
+        <source>Rotate rotary valve to sealing position %1 failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="286"/>
-        <source>Check host finished.</source>
+        <source>create pressure failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="287"/>
-        <source>Error: Device Layer not yet Initialized. Please retry after some time...</source>
+        <source>Filling is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="288"/>
-        <source>ERROR: Release pressure failure.</source>
+        <source>Level sensor heating is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="289"/>
-        <source>ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!</source>
+        <source>Rotary valve initializing is failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="290"/>
+        <source>Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="291"/>
+        <source>Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="292"/>
+        <source>Level Sensor Current Temperature is (%1) which is not in (%2~%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="293"/>
+        <source>Retort current temperature is (%1 %2 %3) which is not in (%4~%5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="294"/>
+        <source>Tube Current Temperature is (%1) which is not in (%2~%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="295"/>
+        <source>ERROR: Device is not responding restart the system!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="296"/>
+        <source>Manufacturing Test Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="297"/>
+        <source>The server ip can&apos;t reachable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="298"/>
+        <source>Server folder can&apos;t access.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="299"/>
+        <source>Download firmware files failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="300"/>
+        <source>The current version is latest one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="301"/>
+        <source>Download firmware files success.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="302"/>
+        <source>Send report file to server failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="303"/>
+        <source>Checking host reachable...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="304"/>
+        <source>Checking host access rights...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="305"/>
+        <source>Check host finished.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="306"/>
+        <source>Error: Device Layer not yet Initialized. Please retry after some time...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="307"/>
+        <source>ERROR: Release pressure failure.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="308"/>
+        <source>ERROR: Pressure sensor calibration failure. Please confirm the air system is not blocked and open the retort lid do calibrate again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="309"/>
         <source>Pressure sensor calibration is successful! Pressure drift value(Kpa):</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4382,17 +4605,17 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="272"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="317"/>
         <source>Slave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="274"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="319"/>
         <source>Current Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="276"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="321"/>
         <source>Latest Version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4612,14 +4835,14 @@ for verification</source>
 <context>
     <name>ServiceUpdates::CSystem</name>
     <message>
-        <location filename="../../../ServiceUpdates/Source/System.cpp" line="36"/>
-        <location filename="../../../ServiceUpdates/Source/System.cpp" line="79"/>
+        <location filename="../../../ServiceUpdates/Source/System.cpp" line="37"/>
+        <location filename="../../../ServiceUpdates/Source/System.cpp" line="81"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/System.cpp" line="70"/>
-        <location filename="../../../ServiceUpdates/Source/System.cpp" line="80"/>
+        <location filename="../../../ServiceUpdates/Source/System.cpp" line="72"/>
+        <location filename="../../../ServiceUpdates/Source/System.cpp" line="82"/>
         <source>System is shutting down ...
 </source>
         <translation type="unfinished"></translation>
@@ -4768,8 +4991,8 @@ for verification</source>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Forms/NetworkSettingsWidget.ui" line="59"/>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="557"/>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="608"/>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="610"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="607"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="609"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4790,18 +5013,18 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="555"/>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="606"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="605"/>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/NetworkSettingsWidget.cpp" line="562"/>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="616"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="615"/>
         <source>Enter Proxy IP Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="620"/>
+        <location filename="../../../ServiceUpdates/Source/NetworkWidget.cpp" line="619"/>
         <source>Enter Server IP Address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4843,7 +5066,7 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/CurrentConfiguration.cpp" line="185"/>
-        <source>Please select a Module..</source>
+        <source>Please select a Module</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4891,7 +5114,7 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/CurrentConfigurationDlg.cpp" line="213"/>
-        <source>Please select a SubModule..</source>
+        <source>Please select a SubModule</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4932,44 +5155,45 @@ for verification</source>
     <name>SystemTracking::CLaSystem</name>
     <message>
         <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="58"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="361"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="220"/>
-        <source>Do you want to finalize the configuration for the L&amp;A System?</source>
+        <source>Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="235"/>
-        <source>L&amp;A System Module has been modified. Do you want to finalize the configuration?</source>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="241"/>
+        <source>L&amp;A System Module has been modified. Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="246"/>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="265"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="257"/>
         <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="275"/>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="287"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="285"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="297"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="248"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="259"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="268"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="278"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="278"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="288"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="290"/>
+        <location filename="../../../SystemTracking/Source/LaSystem.cpp" line="300"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5031,44 +5255,45 @@ for verification</source>
     <name>SystemTracking::CMainControl</name>
     <message>
         <location filename="../../../SystemTracking/Source/MainControl.cpp" line="57"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="355"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/MainControl.cpp" line="201"/>
-        <source>Do you want to finalize the configuration for the Main Control?</source>
+        <source>Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="216"/>
-        <source>Main Control Module has been modified. Do you want to finalize the configuration?</source>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="222"/>
+        <source>Main Control Module has been modified. Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="227"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="246"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="256"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="268"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="237"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="259"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="269"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="281"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="229"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="239"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="249"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="262"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="259"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="272"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="271"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="284"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5124,45 +5349,46 @@ for verification</source>
 <context>
     <name>SystemTracking::COven</name>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="54"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="55"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="349"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="196"/>
-        <source>Do you want to finalize the configuration for the Oven?</source>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="199"/>
+        <source>Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="211"/>
-        <source>Oven Module has been modified. Do you want to finalize the configuration?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="222"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="241"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="251"/>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="263"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="224"/>
-        <source>Cancel</source>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="225"/>
+        <source>Paraffin Oven Module has been modified. Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/Oven.cpp" line="244"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="262"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="272"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="284"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="246"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="265"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="254"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="275"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Oven.cpp" line="266"/>
+        <location filename="../../../SystemTracking/Source/Oven.cpp" line="287"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5203,45 +5429,46 @@ for verification</source>
 <context>
     <name>SystemTracking::CRetort</name>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="55"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="56"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="380"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="229"/>
-        <source>Do you want to finalize the configuration for the Retort?</source>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="232"/>
+        <source>Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="244"/>
-        <source>Retort Module has been modified. Do you want to finalize the configuration?</source>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="256"/>
+        <source>Retort Module has been modified. Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="255"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="274"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="284"/>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="296"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="275"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="293"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="303"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="315"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="257"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="277"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="277"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="296"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="287"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="306"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/Retort.cpp" line="299"/>
+        <location filename="../../../SystemTracking/Source/Retort.cpp" line="318"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5287,45 +5514,46 @@ for verification</source>
 <context>
     <name>SystemTracking::CRotaryValve</name>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="56"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="57"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="387"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="231"/>
-        <source>Do you want to finalize the configuration for the Rotary valve?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="246"/>
-        <source>Rotary valve Module has been modified. Do you want to finalize the configuration?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="257"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="276"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="286"/>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="298"/>
-        <source>Ok</source>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="234"/>
+        <source>Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="259"/>
-        <source>Cancel</source>
+        <source>Rotary valve Module has been modified. Do you want to overwrite the configuration of the following module or submodules?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="279"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="300"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="310"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="322"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="281"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="303"/>
         <source>Configuration file updated successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="289"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="313"/>
         <source>Configuration file updation failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="301"/>
+        <location filename="../../../SystemTracking/Source/RotaryValve.cpp" line="325"/>
         <source>Finalize Configuration Cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5488,17 +5716,17 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="116"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="118"/>
         <source>Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="119"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="121"/>
         <source>Operating Hours</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="122"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDlg.cpp" line="124"/>
         <source>Date Of Production</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5599,17 +5827,17 @@ for verification</source>
 <context>
     <name>WrapperFmAnalogInput</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="67"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="66"/>
         <source>SetState</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="96"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="95"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="126"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogInput.cpp" line="124"/>
         <source>error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5617,17 +5845,17 @@ for verification</source>
 <context>
     <name>WrapperFmAnalogOutput</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="68"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="69"/>
         <source>SetValue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="101"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="102"/>
         <source>ERROR: Analog Output not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="106"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="107"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmAnalogOutput.cpp" line="163"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
@@ -5646,64 +5874,64 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="412"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="377"/>
         <source>NOTICE: Unexpected action acknowledgement for GetHWInfo (version major: %1, version minor: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="476"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="441"/>
         <source>NOTICE: Unexpected action acknowledgement for GetSWInfo (version major: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="615"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="665"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="733"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="792"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="877"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="927"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="977"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1053"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1129"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1188"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1239"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1309"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="580"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="630"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="698"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="757"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="842"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="892"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="942"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1018"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1094"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1153"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1204"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1274"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="724"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1357"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="689"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1322"/>
         <source> (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="729"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="694"/>
         <source>End Test Result: %1; End Test Date: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="787"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="752"/>
         <source>Boot Loader Version: %1.%2; Boot Loader Release Date: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="873"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="838"/>
         <source>Operation Time: %1 minutes; Startup cycles: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="924"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="889"/>
         <source>Launch State: %1; Launch Date: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1046"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1011"/>
         <source>Voltage State: %1; Voltage: %2 mV; Failures: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1122"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1087"/>
         <source>Current State: %1; Current: %2 mA; Failures: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5711,8 +5939,8 @@ for verification</source>
 <context>
     <name>WrapperFmBootLoader</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBootLoader.cpp" line="125"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBootLoader.cpp" line="299"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBootLoader.cpp" line="123"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBootLoader.cpp" line="296"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5720,7 +5948,7 @@ for verification</source>
 <context>
     <name>WrapperFmDigitalInput</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalInput.cpp" line="98"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalInput.cpp" line="96"/>
         <source>ReadEdgeCount</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5728,24 +5956,24 @@ for verification</source>
 <context>
     <name>WrapperFmDigitalOutput</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="83"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="82"/>
         <source>SetHigh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="105"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="103"/>
         <source>SetLow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="161"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="158"/>
         <source>ERROR: Target output value not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="167"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="224"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="280"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="164"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="220"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmDigitalOutput.cpp" line="275"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5761,355 +5989,355 @@ for verification</source>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="137"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="165"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="183"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1266"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1368"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1463"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1516"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1572"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1628"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1691"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1279"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1381"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1476"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1529"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1585"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1641"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1704"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="311"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="325"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="339"/>
         <source>ERROR: invlaid flag: %1 for pressure: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="376"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="390"/>
         <source>Start Drainging procedure.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="386"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="400"/>
         <source>Set target pressure finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="394"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="453"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="534"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="686"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="903"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="937"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1058"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1093"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1189"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="408"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="467"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="548"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="700"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="917"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="951"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1072"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1107"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1203"/>
         <source>Current procedure has been interrupted, exit now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="405"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="419"/>
         <source>Pressure has been set up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="415"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="429"/>
         <source>Drain finished!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="422"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="436"/>
         <source>Draining time is: %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="434"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="448"/>
         <source>Warning: Draining do not finished in expected time(%1 seconds)!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="439"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="453"/>
         <source>Warning: Draining exceed maximum setup time(%1 seconds), exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="448"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="462"/>
         <source>Finished. start hold for %1 millisecond.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="508"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="522"/>
         <source>Start Agitation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="516"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="530"/>
         <source>Invalid position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="526"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="540"/>
         <source>Start Draining for %1 millseconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="530"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="544"/>
         <source>Start timer, please wait.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="539"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="553"/>
         <source>Draining finished. Now suck</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="613"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="627"/>
         <source>Start Sucking procedure.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="621"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="635"/>
         <source>Start Sucking now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="638"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="652"/>
         <source>Hit target level. Sucking Finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="645"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="650"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="656"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="661"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="659"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="664"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="670"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="675"/>
         <source>Delay for %1 milliseconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="675"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="689"/>
         <source>Sucking time is: %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="682"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="696"/>
         <source>Received 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="696"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="710"/>
         <source>Warning! Do not get level sensor data in %1 seconds!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="701"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="708"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="715"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="722"/>
         <source>Do not get level sensor data in %1 seconds, Time out! Exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="715"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="729"/>
         <source>Delay finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="740"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="791"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="819"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="754"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="805"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="833"/>
         <source>Overflow occured! Exit now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="744"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="758"/>
         <source>Over Flow Pressure %1 is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="752"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="766"/>
         <source>Insufficient reagent in the station! Exit now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="755"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="769"/>
         <source>Insufficient Pressure %1 is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="762"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="776"/>
         <source>Insufficient reagent in the station!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="827"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="841"/>
         <source>Unexpected level sensor state value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="877"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="891"/>
         <source>Start set up pressure procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="888"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="902"/>
         <source>Release pressure failed, exit now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="893"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="907"/>
         <source>Start to setup pressure now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="913"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1069"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="927"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1083"/>
         <source>Target pressure is getting steady now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="922"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="936"/>
         <source>Warning: Pressure exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="934"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1090"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="948"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1104"/>
         <source>Wait for 3 sec to get steady</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="947"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1102"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="961"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1116"/>
         <source>Finished, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1035"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1049"/>
         <source>Start set up vaccum procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1049"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1063"/>
         <source>Start to setup vaccum now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1077"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1091"/>
         <source>Warning: Vaccum exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1138"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1152"/>
         <source>Start release pressure procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1175"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1189"/>
         <source>Close Both Valves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1183"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1197"/>
         <source>Wait for current pressure get to ZERO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1196"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1210"/>
         <source>Warning: Release Pressure exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1220"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1234"/>
         <source>Shut down compressor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1280"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1293"/>
         <source>SetPressureCtrlON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1301"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1314"/>
         <source>StopPressureControl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1359"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1372"/>
         <source>ERROR: Target pressure control status is not reached.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1362"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1375"/>
         <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1390"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1403"/>
         <source>SetFullPowerMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1412"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1425"/>
         <source>SetPowerSaveMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1457"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1470"/>
         <source>ERROR: Target pressure ctrl operating mode not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1731"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1744"/>
         <source>GetPowerOperationMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1796"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1889"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1809"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1902"/>
         <source>GetPressureControlState</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1840"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1866"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1853"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1879"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1920"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1933"/>
         <source>New Level Sensor State is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1936"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1949"/>
         <source>Pressure control get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1969"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1982"/>
         <source>The Positive pressure is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1970"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1983"/>
         <source>The Negative pressure is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1981"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1994"/>
         <source>Cannot open %1.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2004"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2017"/>
         <source>%1;
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2016"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2033"/>
         <source>The Valve %1&apos;s operation time is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2024"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2041"/>
         <source>Successfully reset Valves&apos; state to 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2028"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2045"/>
         <source>Failed reset Valves&apos; state to 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6255,109 +6483,109 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1143"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1141"/>
         <source>MoveToPosition %1, Profile %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1169"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1166"/>
         <source>MoveFromPosition %1, Profile %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1176"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1173"/>
         <source>ERROR: Can&apos;t get current position for relative movement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1181"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1178"/>
         <source>(moving from %1 to %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1209"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1206"/>
         <source>ERROR: Task in progress.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1214"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1211"/>
         <source>(called asynchronously)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1229"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1342"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1226"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1338"/>
         <source>(timeout expired: %1 ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1266"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1290"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1263"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1287"/>
         <source>ERROR: Actual value (%1) differs from target value (%2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1270"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1267"/>
         <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1276"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1273"/>
         <source>NOTICE: Unexpected action acknowledgement for linear position (p: %1 s: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1297"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1294"/>
         <source>NOTICE: Unexpected action acknowledgement for rotation position (p: %1 s: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1433"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1427"/>
         <source>NOTICE: Unexpected action acknowledgement for GetPosition (p: %1, LS code: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1532"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1526"/>
         <source>NOTICE: Unexpected action acknowledgement for OnGetLfeCycleData (revolution count: %1, operation time: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1594"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1586"/>
         <source>GetSpeed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1629"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1621"/>
         <source>NOTICE: Unexpected action acknowledgement for GetSpeed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1648"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1640"/>
         <source>Enable Stepper Motor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1665"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1657"/>
         <source>Disable Stepper Motor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1708"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1700"/>
         <source>NOTICE: Unexpected action acknowledgement for SetState.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1786"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1776"/>
         <source>ApplyNewParameterSet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1852"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="1842"/>
         <source>NOTICE: Unexpected action acknowledgement for SetConfiguration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3734"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3724"/>
         <source>Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6394,14 +6622,14 @@ for verification</source>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="168"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="277"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="379"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="474"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="527"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="583"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="639"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="739"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="766"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1042"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="378"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="471"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="523"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="578"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="633"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="732"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="759"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1034"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6411,83 +6639,83 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="312"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="311"/>
         <source>StopTemperatureControl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="370"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="369"/>
         <source>ERROR: Target temp control status is not reached.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="373"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="372"/>
         <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="401"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="399"/>
         <source>SetFullPowerMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="423"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="420"/>
         <source>SetPowerSaveMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="468"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="465"/>
         <source>ERROR: Target temp ctrl operating mode not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="747"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="740"/>
         <source>New Level Sensor State is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="774"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="767"/>
         <source>Temp control get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="784"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="777"/>
         <source>Temp control temp in range, Instance ID: %1, temperature is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="788"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="781"/>
         <source>Temp control temp out of range, Instance ID: %1, temperature is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="830"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="822"/>
         <source>GetPowerOperationMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="896"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="888"/>
         <source>GetTemperatureControlState</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="941"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="967"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="933"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="959"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="990"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="982"/>
         <source>GetMainsVoltageState</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1011"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1003"/>
         <source>SetTemperaturePID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1021"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmTempControl.cpp" line="1013"/>
         <source>SetTemperatureSwitchState</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6510,13 +6738,13 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="149"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="172"/>
         <source>You input empty folder name, please re-enter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="181"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="209"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="218"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="254"/>
         <source>%1;%2;
 </source>
         <translation type="unfinished"></translation>

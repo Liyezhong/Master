@@ -29,19 +29,42 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for confirmation text dialog
+ */
+/****************************************************************************/
 class CDlgConfirmationText : public CDlgConfirmationBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgConfirmationText(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgConfirmationText(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgConfirmationText(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Set text for dialog
+     *  \iparam Text = text string
+     */
+    /****************************************************************************/
     void SetText(const QString &Text);
 
 private:
-    QLabel      *mp_Text;
+    QLabel      *mp_Text;   //!< text label
 };
 
 } // namespace MainMenu

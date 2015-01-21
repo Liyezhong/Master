@@ -53,6 +53,7 @@
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
@@ -116,10 +117,12 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
-        ,m_RestartDryStep(true)
+        ,m_IsNeedBottleCheck(true)
+        ,m_InternalErrorRecv(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
+    m_CurrentScenario = 1;
     m_IsPrecheckMoveRV = false;
 
     m_lastPVTime = 0;
@@ -131,15 +134,20 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsCleaningProgram = false;
     m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
-    m_IsSafeReagentState = false;
+    m_IsSafeReagent = false;
     m_ReEnterFilling = 0;
     m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
     m_AbortingSeq = 0;
+    m_IsDrainDelay = false;
+    m_DrainDelayBeginTime = 0;
+    m_CheckOvenCover = true;
 
+    ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
+    memset(&m_CleaningDry, 0, sizeof(m_CleaningDry));
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -200,7 +208,6 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportError(quint32, quint16, quint16, quint16, QDateTime),this, OnReportError(quint32, quint16, quint16, quint16, QDateTime));
     CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, ResetActiveCarbonFilterLifeTime(),
                      this, ResetActiveCarbonFilterLifetime());
-
     m_TickTimer.setInterval(500);
 
     //command queue reset
@@ -247,7 +254,7 @@ void SchedulerMainThreadController::OnReportFillingTimeOut2Min()
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if (0 != Scenario)
     {
-        RaiseError(0, DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, m_CurrentScenario, true);
+        SendOutErrMsg(DCL_ERR_DEV_LA_FILLING_TIMEOUT_2MIN, false);
     }
 }
 void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
@@ -256,22 +263,21 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if (0 != Scenario)
     {
-        RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, m_CurrentScenario, true);
+        SendOutErrMsg(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_EMPTY_2MIN, false);
     }
 }
 
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
-    Q_UNUSED(instanceID);
-    Q_UNUSED(usErrorGroup);
-    Q_UNUSED(usErrorID);
-    Q_UNUSED(usErrorData);
-    Q_UNUSED(timeStamp);
-#if 0
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
-    RaiseError(0, DCL_ERR_DEV_INTER_SW_ERROR, m_CurrentScenario, true);
+#if 0
+    if (false == m_InternalErrorRecv)
+    {
+        m_InternalErrorRecv = true;
+        SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+    }
 #endif
 }
 
@@ -304,8 +310,9 @@ void SchedulerMainThreadController::OnAcknowledge(Global::tRefType Ref, const Gl
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
+
 #if 0
-    if (CTRL_CMD_RS_SWEXIT == newControllerCmd)
+    if (CTRL_CMD_RS_SHUTDOWN == newControllerCmd)
     {
         //send shutdown command to MasterThreadController
         SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new Global::CmdShutDown(true)));
@@ -335,8 +342,13 @@ void SchedulerMainThreadController::OnTickTimer()
         m_CheckLocalAlarmStatus = true;
     }
 
+    if (CTRL_CMD_CHECK_OVEN_COVER == newControllerCmd)
+    {
+        m_CheckOvenCover = true;
+    }
     if (CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN == newControllerCmd)
     {
+        m_CheckOvenCover = true;
         quint32 ParaffinMeltPoint = 64;
         if (mp_DataManager != NULL && mp_DataManager->GetUserSettings() != NULL)
         {
@@ -389,11 +401,20 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
-        LogDebug("Self test is done");
-        //send command to main controller to tell self test OK
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
         {
-            if(m_ProgramStatusInfor.GetErrorFlag() == 1)
+
+            MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
+                        new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
+                                                                    m_ProgramStatusInfor.GetStepID(),
+                                                                    m_ProgramStatusInfor.GetScenario(),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
+                                                                    m_ProgramStatusInfor.GetLastReagentGroup(),
+                                                                    m_ProgramStatusInfor.GetStationList()));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            if(1 == m_ProgramStatusInfor.GetErrorFlag())
             {
                 RaiseError(0, DCL_ERR_DEV_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
                 m_SchedulerMachine->SendErrorSignal();
@@ -408,19 +429,13 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                 RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
                 m_SchedulerMachine->EnterPowerFailure();
             }
-            MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
-                        new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
-                                                                    m_ProgramStatusInfor.GetStepID(),
-                                                                    m_ProgramStatusInfor.GetScenario(),
-                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(),m_ProgramStatusInfor.GetStepID()),
-                                                                    m_ProgramStatusInfor.GetLastReagentGroup(),
-                                                                    m_ProgramStatusInfor.GetStationList()));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         else
         {
+            if(1 == m_ProgramStatusInfor.GetErrorFlag())
+            {
+                m_ProgramStatusInfor.SetErrorFlag(0);
+            }
             m_SchedulerMachine->SendSchedulerInitComplete();
             MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
             Q_ASSERT(commandPtr);
@@ -483,20 +498,8 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_IsCleaningProgram = true;
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
-    else
-    {
-        if("RG6" == reagentID)
-        {
-            m_CurProgramStepInfo.nextStationID = "S12";
-        }
-        else
-        {
-            m_CurProgramStepInfo.nextStationID = "S13";
-        }
-    }
 
-    RaiseError(0, DCL_ERR_DEV_POWERFAILURE, scenario, true);
-    m_SchedulerMachine->SendErrorSignal();
+    SendOutErrMsg( DCL_ERR_DEV_POWERFAILURE);
 }
 
 
@@ -526,11 +529,12 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+    m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
-        MsgClasses::CmdProgramAcknowledge* commandEnterCleaning(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING));
+        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
         Q_ASSERT(commandEnterCleaning);
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
@@ -578,28 +582,16 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
                        << m_CurProgramStepInfo.stationID
                        <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                       <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                       <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                        <<PVMode);
 
             //send command to main controller to tell the left time
-            if (m_NewProgramID.at(0) != 'C')
-            {
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
-                                                                                                              Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
-                                                                                                              m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            }
-            else
-            {
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            }
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
+                                                                                                          Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_PRECHECK),
+                                                                                                          m_CurProgramStepIndex, m_EndTimeAndStepTime.PreTestTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
@@ -607,31 +599,10 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             // Start up PssmPrecheck state machine
             m_SchedulerMachine->StartPreCheck();
 
-            //whether cleaning program or not
-            if ( 'C' == ProgramName.at(0) )
-            {
-                RaiseEvent(EVENT_SCHEDULER_SET_RV_POSITION,QStringList()<<QString("[%1]").arg(m_ProgramStatusInfor.GetLastRVPosition()));
-                CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
-                cmdSet->SetRVPosition(m_ProgramStatusInfor.GetLastRVPosition());
-                m_SchedulerCommandProcessor->pushCmd(cmdSet);
+            //Initialize parameter list in scenario 260
+            mp_HeatingStrategy->Init260ParamList();
 
-                SchedulerCommandShPtr_t resCmdPtr;
-                PopDeviceControlCmdQueue(resCmdPtr,"Scheduler::RVReqMoveToInitialPosition");
-                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                (void)resCmdPtr->GetResult(retCode);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    RaiseError(0, retCode, 0, true);
-                }
-                else
-                {
-                    m_SchedulerMachine->SendCleaningSignal();
-                }
-            }
-            else
-            {
-                m_SchedulerMachine->SendRunSignal();
-            }
+            m_SchedulerMachine->SendRunSignal();
         }
         break;
     default:
@@ -653,6 +624,10 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
     if (m_CurProgramID.at(0) == 'C')//process cleaning reagent
     {
+        QString nextStationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
+        if (nextStationID == m_CurProgramStepInfo.stationID)
+            return;
+
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
         if (rmsMode == Global::RMS_CYCLES)
         {
@@ -729,36 +704,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     break;
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
                 case PSSM_FILLING:
-                    if(0 == m_ReEnterFilling)
-                    {
-                        this->HighPressure();
-                        m_ReEnterFilling = 1;
-                    }
-                    else if (1 == m_ReEnterFilling)
-                    {
-                        if("Scheduler::ALPressure" == cmdName)
-                        {
-                            m_ReEnterFilling = 2;
-                            m_TimeReEnterFilling = QDateTime::currentMSecsSinceEpoch();
-                        }
-                        else
-                        {
-                            // Do nothing, just wait
-                        }
-                    }
-                    else if (2 == m_ReEnterFilling)
-                    {
-                        if ((QDateTime::currentMSecsSinceEpoch() - m_TimeReEnterFilling) > 20*1000)
-                        {
-                            m_ReEnterFilling = 0;
-                            m_TimeReEnterFilling = 0;
-                            m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
-                        }
-                        else
-                        {
-                            // Do nothing, just wait for timeout
-                        }
-                    }
+                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
                     m_SchedulerMachine->SendResumeRVMoveToSeal();
@@ -773,8 +719,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeRVMoveTube();
                     break;
                 case PSSM_DRAINING:
-                    m_SchedulerMachine->HandleRcRestartAtDrain(cmdName, retCode);
-                    break;
                 case PSSM_RV_POS_CHANGE:
                     m_SchedulerMachine->SendResumeRVPosChange();
                     break;
@@ -782,12 +726,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeDryStep();
                     break;
                 case PSSM_POWERFAILURE_FINISH:
-                    if(200 == m_ProgramStatusInfor.GetScenario() || 211 == m_ProgramStatusInfor.GetScenario())
+                    if(m_IsCleaningProgram && 200 == m_ProgramStatusInfor.GetScenario())
                     {
-                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
                         Q_ASSERT(commandPtrFinish);
                         Global::tRefType Ref = GetNewCommandRef();
                         SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                    }
+                    else
+                    {
+                        if( !m_ProgramStatusInfor.IsRetortContaminted() )
+                        {
+                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                            Q_ASSERT(commandPtrFinish);
+                            Global::tRefType Ref = GetNewCommandRef();
+                            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                        }
                     }
                     m_SchedulerMachine->SendRunComplete();
                     break;
@@ -810,7 +764,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
             if(m_CurProgramStepInfo.reagentGroup == "RG6")
             {
-                if(mp_HeatingStrategy->CheckSensorsTemp(m_SchedulerCommandProcessor->HardwareMonitor()))
+                if(mp_HeatingStrategy->Check260SensorsTemp())
                 {
                     LogDebug("Program Step Heating Rotary Valve heating rod OK");
                     m_SchedulerMachine->NotifyRVRodHeatingReady();
@@ -853,8 +807,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Filling failed"));
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
             }
         }
@@ -870,6 +823,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
             if(IsRVRightPosition(SEAL_POS))
             {
+                if(m_CurProgramStepIndex > 0)
+                {
+                    //endTime
+                    CalculateTheGapTimeAndBufferTime(false, true);
+                }
+                else
+                {
+                    LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+                }
                 m_SchedulerMachine->NotifyRVMoveToSealReady();
             }
             else
@@ -878,8 +840,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
+                        SendOutErrMsg(retCode);
                     }
                 }
             }
@@ -917,31 +878,48 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         }
                         else
                         {
-                            RaiseError(0, retCode, m_CurrentScenario, true);
-                            m_SchedulerMachine->SendErrorSignal();
+                            SendOutErrMsg(retCode);
                         }
                     }
                     //if it is Cleaning program, need not notify user
                     if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
                     {
-                         //this is last step, need to notice user
-                         if(!m_completionNotifierSent)
-                         {
-                             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                             Q_ASSERT(commandPtrFinish);
-                             Global::tRefType fRef = GetNewCommandRef();
-                             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                             m_completionNotifierSent = true;
-                         }
-                         if(CTRL_CMD_DRAIN == ctrlCmd)
-                         {
-                              LogDebug(QString("last Program Processing(Soak) Process finished"));
-                              m_SchedulerMachine->NotifyProcessingFinished();
-                              m_TimeStamps.CurStepSoakStartTime = 0;
-                              m_completionNotifierSent = false;
-                              m_IsReleasePressureOfSoakFinish = false;
-                              m_ReleasePressureSucessOfSoakFinish = false;
-                         }
+                        if("RG6" == m_CurProgramStepInfo.reagentGroup)
+                        {
+                            if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
+                            {
+                                //this is last step, need to notice user
+                                if(!m_completionNotifierSent)
+                                {
+                                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                    Q_ASSERT(commandPtrFinish);
+                                    Global::tRefType fRef = GetNewCommandRef();
+                                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                    m_completionNotifierSent = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //this is last step, need to notice user
+                            if(!m_completionNotifierSent)
+                            {
+                                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                Q_ASSERT(commandPtrFinish);
+                                Global::tRefType fRef = GetNewCommandRef();
+                                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                m_completionNotifierSent = true;
+                            }
+                        }
+                        if(CTRL_CMD_DRAIN == ctrlCmd)
+                        {
+                            LogDebug(QString("last Program Processing(Soak) Process finished"));
+                            m_SchedulerMachine->NotifyProcessingFinished();
+                            m_TimeStamps.CurStepSoakStartTime = 0;
+                            m_completionNotifierSent = false;
+                            m_IsReleasePressureOfSoakFinish = false;
+                            m_ReleasePressureSucessOfSoakFinish = false;
+                        }
                     }
                     else
                     {
@@ -1003,12 +981,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 if (0 == m_ProcessingPV) // for Pressure
                                 {
                                     m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, m_CurrentScenario, true);
+                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
                                 }
                                 else if (1 == m_ProcessingPV)
                                 {
                                     m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
                                 }
                             }
                         }
@@ -1025,7 +1003,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 CloseTheAlarm();
                 m_ProgramStatusInfor.SetErrorFlag(0);
                 m_completionSRSent = false;
-                m_IsSafeReagentState = true;
+                m_IsSafeReagent = true;
                 m_SchedulerMachine->NotifyProcessingFinished();
             }
         }
@@ -1038,23 +1016,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                EnablePauseButton();
                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
             }
-
-            if(IsRVRightPosition(TUBE_POS))
-            {
-                m_SchedulerMachine->NotifyRVMoveToTubeReady();
-            }
-            else
-            {
-                if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
-                {
-                    if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                    {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
-                    }
-                }
-
-            }
+            m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
         }
         else if(PSSM_DRAINING == stepState)
         {
@@ -1071,15 +1033,45 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    LogDebug(QString("Program Step Draining succeed!"));
-                    m_SchedulerMachine->NotifyDrainFinished();
+                    if(m_EndTimeAndStepTime.GapTime > 0)
+                    {
+                        m_IsDrainDelay = true;
+                        m_DrainDelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+                    }
+                    else
+                    {
+                        LogDebug(QString("Program Step Draining succeed!"));
+                        if(m_IsSafeReagent)
+                        {
+                            m_SchedulerMachine->NotifyProgramFinished();
+                        }
+                        else
+                        {
+                            m_SchedulerMachine->NotifyDrainFinished();
+                        }
+                    }
                 }
                 else
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
+             }
+             if(m_IsDrainDelay)
+             {
+                 if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
+                 {
+                     LogDebug(QString("Program Step Draining succeed!"));
+                     if(m_IsSafeReagent)
+                     {
+                         m_SchedulerMachine->NotifyProgramFinished();
+                     }
+                     else
+                     {
+                         m_SchedulerMachine->NotifyDrainFinished();
+                     }
+                     m_IsDrainDelay = false;
+                 }
              }
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
@@ -1087,15 +1079,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_CurrentStepState = PSSM_RV_POS_CHANGE;
             if(IsRVRightPosition(NEXT_TUBE_POS))
             {
-               if (false == m_IsSafeReagentState)
-               {
-                   m_SchedulerMachine->NotifyStepFinished();
-               }
-               else
-               {
-                   m_IsSafeReagentState = false; // Reset
-                   m_SchedulerMachine->NotifyProgramFinished();
-               }
+                m_SchedulerMachine->NotifyStepFinished();
             }
             else
             {
@@ -1103,8 +1087,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
-                        RaiseError(0, retCode, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
+                        SendOutErrMsg(retCode);
                     }
                 }
             }
@@ -1113,12 +1096,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if (0 == m_PssmStepFinSeq)
             {
-                UpdateStationReagentStatus();
+                m_UnknownErrorLogVector.clear();
                 RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
                 m_PssmStepFinSeq++;
             }
             else if (1 == m_PssmStepFinSeq)
             {
+                // Update station reagent status
+                this->UpdateStationReagentStatus();
                 (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
                 if(m_CurProgramStepIndex != -1)
                 {
@@ -1136,16 +1121,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
                                << m_CurProgramStepInfo.stationID
                                <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                               <<(m_CurProgramStepInfo.durationInSeconds > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                               <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
                                <<PVMode);
                     m_SchedulerMachine->NotifyStepProgramFinished();
-                    //send command to main controller to tell the left time
-                    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-
-                    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                    Q_ASSERT(commandPtr);
-                    Global::tRefType Ref = GetNewCommandRef();
-                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                 }
                 else
                 {
@@ -1173,9 +1151,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
             m_SchedulerMachine->SendRunComplete();
-            //m_SchedulerMachine->Stop();
-            //todo: tell main controller that program is complete
-            if(m_IsCleaningProgram)
+
+            if(m_IsCleaningProgram && !m_IsSafeReagent)
             {
                 m_IsCleaningProgram = false;
                 m_ProgramStatusInfor.SetProgramFinished();
@@ -1188,10 +1165,25 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
             //send command to main controller to tell program finished
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-            Q_ASSERT(commandPtrFinish);
-            Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            if(m_IsCleaningProgram && m_IsSafeReagent)
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+                Q_ASSERT(commandPtrFinish);
+                Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            }
+            else
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                Q_ASSERT(commandPtrFinish);
+                Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            }
+
+            if(m_IsSafeReagent)
+            {
+                m_IsSafeReagent = false;
+            }
         }
         else if(PSSM_PAUSE == stepState)
         {
@@ -1251,18 +1243,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(0 == m_AbortingSeq)
             {
                 m_CurrentStepState = PSSM_ABORTING;
-                if(m_ProgramStatusInfor.IsRetortContaminted())
-                {
-                    if("RG6" == m_ProgramStatusInfor.GetLastReagentGroup())
-                    {
-                        m_CurProgramStepInfo.nextStationID = "S12";
-                    }
-                    else
-                    {
-                        m_CurProgramStepInfo.nextStationID = "S13";
-                    }
-                }
-
             }
             m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
         }
@@ -1392,7 +1372,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if(CTRL_CMD_RS_CHECK_BLOCKAGE == ctrlCmd)
         {
             LogDebug("Go to RS_Check_Blockage");
-            m_SchedulerMachine->EnterRsCheckBlockage();;
+            m_SchedulerMachine->EnterRsCheckBlockage();
         }
         else if(CTRL_CMD_RS_PAUSE == ctrlCmd)
         {
@@ -1407,7 +1387,14 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RS_TISSUE_PROTECT == ctrlCmd)
         {
             LogDebug("Go to RS_Tissue_Protect");
-            m_SchedulerMachine->EnterRsTissueProtect();
+            if (PSSM_PROCESSING_SR == m_CurrentStepState)
+            {
+                m_SchedulerMachine->EnterRcRestart();
+            }
+            else
+            {
+                m_SchedulerMachine->EnterRsTissueProtect();
+            }
         }
         else if (CTRL_CMD_RC_CHECK_RTLOCK == ctrlCmd)
         {
@@ -1543,10 +1530,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         LogDebug("In Rs_Rv_MoveToPosition3.5");
         m_SchedulerMachine->HandleRsMoveToPSeal(cmdName, retCode);
     }
-//    else
-//    {
-//        LogDebug(QString("In ERROR state unknown currentState: %1").arg(currentState));
-//    }
+    else if (SM_ERR_RC_RESTART == currentState)
+    {
+        LogDebug("In RC_Restart");
+        m_SchedulerMachine->HandleRcRestart(cmdName);
+    }
 }
 
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
@@ -1752,6 +1740,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
         }
+        if (cmd == "checkovencover")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_CHECK_OVEN_COVER;
+        }
         if (cmd == "open_oven_change_heating_paraffin")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -1774,24 +1767,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
                 return  CTRL_CMD_ALARM_ALL_OFF;
             }
         }
-        if(cmd == "rs_swexit")
+        if(cmd == "rs_shutdown")
         {
-            return CTRL_CMD_RS_SWEXIT;
+            return CTRL_CMD_RS_SHUTDOWN;
         }
     }
     return CTRL_CMD_UNKNOWN;
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
-
-#if 0
-void SchedulerMainThreadController::DequeueNonDeviceCommand()
-{
-        if(!m_SchedulerCmdQueue.isEmpty())
-        {
-            m_SchedulerCmdQueue.dequeue();
-        }
-}
-#endif
 
 bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString& ProgramID,
                                                                   ProgramStepInfor& programStepInfor,
@@ -1884,22 +1867,9 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         //next station
         if((m_CurProgramStepIndex + 1) == count)
         {
-            if(ProgramID.at(0) != 'C')
-            {
-                if("RG6" == programStepInfor.reagentGroup)
-                {
-                    programStepInfor.nextStationID = "S12";
-                }
-                else
-                {
-                    programStepInfor.nextStationID = "S13";
-                }
-            }
-            else
-            {
-                programStepInfor.nextStationID = programStepInfor.stationID;
-            }
-        }        else
+            programStepInfor.nextStationID = programStepInfor.stationID;
+        }
+        else
         {
             programStepInfor.nextStationID = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
         }
@@ -2019,6 +1989,21 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     m_ProgramStationList.clear();
     m_StationList.clear();
+    m_StationAndReagentList.clear();
+    QMap<int, ProgramStationInfo_t> StationForNoParrffinMap;
+    QMap<QString, ProgramStationInfo_t> StationForParrffinMap;
+
+    bool normalProgramFlag = false;
+    bool cleaningProgramFlag = false;
+    bool cleaningProgram = false;
+    if (ProgramID.at(0) == 'C')
+    {
+        cleaningProgram = true;
+    }
+    else if (pProgram)
+    {
+        normalProgramFlag = pProgram->GetBottleCheck();
+    }
 
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
@@ -2032,17 +2017,81 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
-        m_ProgramStationList.enqueue(stationInfo);
+        QString stationName = stationInfo.StationID;
+        if(!cleaningProgram)
+        {
+            if(normalProgramFlag)
+            {
+                m_IsNeedBottleCheck = true;
+                if("RG6" == stationInfo.ReagentGroupID)
+                {
+                    StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
+                }
+                else
+                {
+                    StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                }
+            }
+            else
+            {
+                if(i == beginStep)
+                {
+                    if("RG1" == stationInfo.ReagentGroupID)
+                    {
+                        m_IsNeedBottleCheck = true;
+                        StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
+                    }
+                    else
+                    {
+                        m_IsNeedBottleCheck = false;
+                    }
+                }
+            }
+        }
         m_StationList.push_back(stationInfo.StationID);
+        m_StationAndReagentList.push_back(stationInfo);
     }
-
     // Add two cleaning bottles for bottle check
-    stationInfo.ReagentGroupID = "RG7";
-    stationInfo.StationID = "S12";
-    m_ProgramStationList.enqueue(stationInfo);
-    stationInfo.ReagentGroupID = "RG8";
-    stationInfo.StationID = "S13";
-    m_ProgramStationList.enqueue(stationInfo);
+    if(!cleaningProgram)
+    {
+        if(mp_DataManager->GetProgramList()->GetProgram("C01"))
+        {
+            cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
+            if(cleaningProgramFlag)
+            {
+                m_IsNeedBottleCheck = true;
+                stationInfo.ReagentGroupID = "RG7";
+                stationInfo.StationID = "S12";
+                StationForNoParrffinMap.insert(12, stationInfo);
+                stationInfo.ReagentGroupID = "RG8";
+                stationInfo.StationID = "S13";
+                StationForNoParrffinMap.insert(13, stationInfo);
+            }
+        }
+
+        QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
+        for(; iter != StationForNoParrffinMap.end(); iter++)
+        {
+            m_ProgramStationList.enqueue(iter.value());
+        }
+        QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
+        for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
+        {
+            m_ProgramStationList.enqueue(iterParraffin.value());
+        }
+    }
+    StationForNoParrffinMap.clear();
+    StationForParrffinMap.clear();
+    return true;
+}
+
+bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList)
+{
+    if(index >= m_StationAndReagentList.size())
+        return false;
+    ProgramStationInfo_t stationInfo = m_StationAndReagentList.at(index);
+    reagentGroupID = stationInfo.ReagentGroupID;
+    stationList.push_back(stationInfo.StationID);
     return true;
 }
 
@@ -2159,7 +2208,9 @@ void SchedulerMainThreadController::OnEnterPssMStepFin()
 
 void SchedulerMainThreadController::OnEnterDryStepState()
 {
-    m_RestartDryStep = true;
+    m_CleaningDry.CurrentState = CDS_READY;
+    m_CleaningDry.StepStartTime = 0;
+    m_CleaningDry.warningReport = false;
 }
 
 /**
@@ -2204,8 +2255,130 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
     return -1;
 }
 
+void SchedulerMainThreadController::ResetTheTimeParameter()
+{
+    m_EndTimeAndStepTime.WarningFlagForTime = false;
+    m_EndTimeAndStepTime.FirstParaffinIndex = 0;
+    m_EndTimeAndStepTime.PreTestTime = 0;
+    m_EndTimeAndStepTime.ParaffinStepsCostTime = 0;
+    m_EndTimeAndStepTime.Scenario260CostTime = 0;
+    m_EndTimeAndStepTime.GapTime = 0;
+    m_EndTimeAndStepTime.StartTime = 0;
+    m_EndTimeAndStepTime.EndTime = 0;
+    m_EndTimeAndStepTime.UserSetEndTime = 0;
+    m_EndTimeAndStepTime.BufferTime = 0;
+    m_EndTimeAndStepTime.TotalParaffinProcessingTime = 0;
+    m_EndTimeAndStepTime.LastParaffinProcessingTime = 0;
+}
 
-quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
+void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime)
+{
+    if(IsStartTime)
+    {
+        m_EndTimeAndStepTime.StartTime = QDateTime::currentMSecsSinceEpoch();
+    }
+    else if(IsEndTime && (m_CurProgramID.at(0) != 'C'))
+    {
+        m_EndTimeAndStepTime.EndTime = QDateTime::currentMSecsSinceEpoch();
+        if(m_CurProgramStepIndex == m_EndTimeAndStepTime.FirstParaffinIndex)
+        {
+            //this time shall not count in the period between StartTime and EndTime of secnario 260
+            m_EndTimeAndStepTime.EndTime -= m_EndTimeAndStepTime.Scenario260CostTime * 1000;
+        }
+        if(m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime > 4000 * 60)
+        {
+            m_EndTimeAndStepTime.WarningFlagForTime = true;
+            RaiseEvent(EVENT_SCHEDULER_FOR_WARNING_FLAG, QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)<<QString("[%1]").arg(m_CurProgramStepIndex+1));
+        }
+        qint64 LeftTime = m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime - m_EndTimeAndStepTime.GapTime;
+        if(0 < LeftTime && LeftTime < (TIME_FOR_FIX_TIME * 1000))
+        {
+            m_EndTimeAndStepTime.GapTime = TIME_FOR_FIX_TIME * 1000 - (m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime) - m_EndTimeAndStepTime.GapTime;
+            if(m_EndTimeAndStepTime.GapTime < 0)
+            {
+                m_EndTimeAndStepTime.GapTime = 0;
+            }
+        }
+        else
+        {
+            m_EndTimeAndStepTime.GapTime = 0;
+        }
+        LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+
+        if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+        {
+            m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.UserSetEndTime - QDateTime::currentMSecsSinceEpoch() - m_EndTimeAndStepTime.LastParaffinProcessingTime * 1000;
+            if(m_EndTimeAndStepTime.WarningFlagForTime)
+            {
+                SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
+            }
+            if(m_EndTimeAndStepTime.BufferTime < 0)
+            {
+                m_EndTimeAndStepTime.BufferTime = 0;
+                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+            }
+            else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
+            {
+                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+                m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
+            }
+            LogDebug(QString("The last program step:%1 buffer is:%2").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
+        }
+    }
+}
+
+quint32 SchedulerMainThreadController::GetMoveSteps(qint32 firstPos, qint32 endPos)
+{
+    quint32 MoveSteps = 0;
+    MoveSteps = ((endPos > firstPos)?(endPos - firstPos):(firstPos - endPos));//lint !e656 !e641
+    if(MoveSteps > 15)
+    {
+        if(MoveSteps < 32)
+        {
+            MoveSteps = 32 - MoveSteps;
+        }
+        else
+        {
+            MoveSteps = 0;
+        }
+    }
+    return MoveSteps;
+}
+
+quint32 SchedulerMainThreadController::GetPreTestTime()
+{
+    //level heating + RV move initialize  + pressure calibration + sealing check
+    qint64 preTesttTime = 20 + 30 + 45 + 55 + 60;
+
+    //bottle check time
+    qint64 bottleTime = 0;
+    qint32 firstPosition = 2;
+    qreal  tmpTime = 0.0;
+
+    if(m_IsNeedBottleCheck)
+    {
+        for(int i = 0; i < m_ProgramStationList.size(); i++)
+        {
+            ProgramStationInfo_t stationInfo = m_ProgramStationList.at(i);
+            RVPosition_t targetPos = GetRVTubePositionByStationID(stationInfo.StationID);
+            tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos) + 18;
+            firstPosition = (qint32)targetPos;
+        }
+    }
+
+    //move first tube position
+    if(!m_StationList.isEmpty())
+    {
+        QString StationID = m_StationList.at(0);
+        RVPosition_t targetPos = GetRVTubePositionByStationID(StationID);
+        tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos);
+    }
+    bottleTime = tmpTime;
+    preTesttTime += bottleTime;
+    return preTesttTime;
+}
+
+quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
 
@@ -2227,42 +2400,105 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    int Index = SpecifiedStepIndex;
-    if (-1 == Index)
+    if (!pProgram)
     {
-        int programStepIDIndex(-1);
-        if (-1 == m_CurProgramStepIndex)
-        {
-            programStepIDIndex = 0;
-        }
-        else
-        {
-            programStepIDIndex = m_CurProgramStepIndex ;
-        }
-        Index = programStepIDIndex;
+        Q_ASSERT(false);
+        return 0;
     }
 
-    for (int i = Index; i < pProgram->GetNumberOfSteps(); i++)
+    bool IsFirstParraffin = false;
+    bool CleaningProgram = false;
+
+    QString strLastReagentGroupId("");
+    QString CurrentReagentID("");
+    QStringList list;
+    quint32 CleaningKnowonTime = 0;
+    bool SkipCurrentStep = false;
+
+    if(pProgram->IsCleaningProgram())
+    {
+        CleaningProgram = true;
+        strLastReagentGroupId = m_ProgramStatusInfor.GetLastReagentGroup();
+        list << "RG1"<<"RG2"<<"RG3"<<"RG4"<<"RG5";
+        CleaningKnowonTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+        CleaningKnowonTime += TIME_FOR_FILLING;
+        CleaningKnowonTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE;
+        CleaningKnowonTime += TIME_FOR_PRESSURE_CHECK;
+        CleaningKnowonTime += TIME_FOR_DRAIN;
+    }
+    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
-        leftTime += soakTime;
-        leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
-        leftTime += 60; //suppose need 60 seconds to fill
-        leftTime += 40; //suppose need 40 seconds to drain
-        leftTime += 20; //suppose need 20 seconds to heat level sensor
-
-        if ("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
+        if(CleaningProgram)
         {
-            leftTime += 10 * 60;
+            //Cleaning program
+            if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+            {
+                CurrentReagentID = pProgramStep->GetReagentID();
+                const CReagent* pCurReagent = pReagentList->GetReagent(CurrentReagentID);
+                if (list.contains(strLastReagentGroupId) && pCurReagent->GetGroupID() == "RG7")
+                {
+                    SkipCurrentStep = true;
+                }
+                else
+                    SkipCurrentStep = false;
+            }
+            if(!SkipCurrentStep)
+            {
+                leftTime += soakTime;
+                leftTime += CleaningKnowonTime;
+            }
         }
-        if (0 == i)
+        else
         {
-            leftTime += m_delayTime;
+            //normal program
+            leftTime += soakTime;
+            if(0 == i)
+            {
+                leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+                leftTime += TIME_FOR_FILLING;
+                leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE;
+                leftTime += TIME_FOR_PRESSURE_CHECK;
+                leftTime += TIME_FOR_FIX_TIME * (pProgram->GetNumberOfSteps() - 1);
+            }
+            if ("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
+            {
+                if(!IsFirstParraffin)
+                {
+                    m_EndTimeAndStepTime.FirstParaffinIndex = i;
+                    IsFirstParraffin = true;
+                    int userInputMeltingPoint = 70;
+                    if(mp_DataManager->GetUserSettings())
+                    {
+                        userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+                    }
+                    if(50 <= userInputMeltingPoint && userInputMeltingPoint <= 64)
+                    {
+                        m_EndTimeAndStepTime.Scenario260CostTime = 7 * 60;
+                    }
+                    else if(65 <= userInputMeltingPoint && userInputMeltingPoint <= 70)
+                    {
+                        m_EndTimeAndStepTime.Scenario260CostTime = 10 * 60;
+                    }
+                    leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
+                    m_EndTimeAndStepTime.ParaffinStepsCostTime += m_EndTimeAndStepTime.Scenario260CostTime;
+                }
+                if(i == (pProgram->GetNumberOfSteps() - 1))
+                {
+                    m_EndTimeAndStepTime.LastParaffinProcessingTime = soakTime;
+                }
+                m_EndTimeAndStepTime.TotalParaffinProcessingTime += soakTime;
+                m_EndTimeAndStepTime.ParaffinStepsCostTime += TIME_FOR_FIX_TIME;
+            }
         }
     }
-    if(pProgram && pProgram->IsCleaningProgram()) // if cleaning program, add time for dry step
+
+    m_EndTimeAndStepTime.PreTestTime = GetPreTestTime();
+    leftTime += m_EndTimeAndStepTime.PreTestTime;
+    if(CleaningProgram) // if cleaning program, add time for dry step
     {
+        leftTime += TIME_FOR_MOVE_NEXT_TUBE;
         leftTime += TIME_FOR_CLEANING_DRY_STEP;
     }
     return leftTime;
@@ -2305,17 +2541,25 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     {
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
-        leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
-        leftTime += 60; //suppose need 60 seconds to fill
-        leftTime += 40; //suppose need 40 seconds to drain
-        leftTime += 20; //suppose need 20 seconds to heat level sensor
-        if (m_CurProgramStepInfo.reagentGroup == "RG6")
+
+        leftTime += TIME_FOR_HEATING_LEVEL_SENSOR;
+        leftTime += TIME_FOR_FILLING;
+        leftTime += TIME_FOR_MOVE_SEAL + TIME_FOR_MOVE_TUBE + TIME_FOR_MOVE_NEXT_TUBE;
+        leftTime += TIME_FOR_PRESSURE_CHECK;
+        leftTime += TIME_FOR_DRAIN + (m_EndTimeAndStepTime.GapTime / 1000);
+
+        if (programStepIDIndex == m_EndTimeAndStepTime.FirstParaffinIndex)
         {
-            leftTime += 10 * 60;
+            leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
         }
         if (0 == programStepIDIndex)
         {
             leftTime += m_delayTime;
+        }
+
+        if(IsLastStep(programStepIDIndex, m_CurProgramID))
+        {
+            leftTime += m_EndTimeAndStepTime.BufferTime;
         }
     }
     return leftTime;
@@ -2358,7 +2602,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 {
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.DelayTime())));
+                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
@@ -2370,9 +2614,10 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 
     if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
     {
-        if(Cmd.DelayTime() > 0) // start new program
+        if(Cmd.ProgramRunDuration() > 0) // start new program
         {
-            QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.DelayTime());
+            QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
+            m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
             RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName
                        <<EndDateTime.toString()); //log
         }
@@ -2425,23 +2670,24 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     m_CurProgramStepIndex = -1;
     (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
 
+    ResetTheTimeParameter();
     unsigned int timeProposed = 0;
     unsigned int paraffinMeltCostedtime = 0;
     unsigned int costedTimeBeforeParaffin = 0;
     int whichStep = 0;
     if (m_CurProgramStepIndex != -1)
     {
-        timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
-
         m_FirstProgramStepIndex = m_CurProgramStepIndex;
+        m_IsNeedBottleCheck = true;
         (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+        timeProposed = GetLeftProgramStepsNeededTime(curProgramID);
         m_CurProgramStepIndex = -1;
 
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
         if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
         {
             m_hasParaffin = true;
-            costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
+            costedTimeBeforeParaffin = timeProposed - m_EndTimeAndStepTime.ParaffinStepsCostTime;
         }
 
         //cheack safe reagent
@@ -2566,26 +2812,10 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_INIT:
         break;
     case PSSM_PRETEST:
-        if(m_IsCleaningProgram)
-        {
-            scenario = 0;
-        }
-        else
-        {
-            scenario = 200;
-        }
+        scenario = 200;
         break;
     case PSSM_PAUSE:
-        if(ReagentGroup == "RG6")
-        {
-            scenario = 260;
-            reagentRelated = false;
-        }
-        else
-        {
-            scenario = 214;
-            reagentRelated = true;
-        }
+        scenario = 206;
         break;
     case PSSM_ABORTING:
         scenario = 206;
@@ -2677,7 +2907,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
             scenario += 80;
         }
     }
-    if(m_ProgramStatusInfor.GetScenario() != scenario && scenario > 2)
+    if(m_ProgramStatusInfor.GetScenario() != scenario && scenario > 2 && scenario != 206)
     {
         m_ProgramStatusInfor.SetScenario(scenario);
     }
@@ -2764,21 +2994,20 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         mp_HeatingStrategy->SetHeatingStrategyScenario(0);
     }
     // Run Heating Strategy
-    if ("ERROR" != StepID && 0 != Scenario)
+    if ("ERROR" != StepID && Scenario > 2)
     {
-        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-            RaiseError(0, retCode, Scenario, true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(retCode);
         }
     }
 
     // Monitor the sensors' current
     if ("ERROR" != StepID && 0 != Scenario)
     {
+        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
         this->CheckSlaveSensorCurrentOverRange(Scenario);
     }
 
@@ -2787,12 +3016,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
         {
-            RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, Scenario, true);
+            SendOutErrMsg(DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, false);
             m_CheckRemoteAlarmStatus = false;
         }
         if (1 == strctHWMonitor.LocalAlarmStatus && m_CheckLocalAlarmStatus)
         {
-            RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, Scenario, true);
+            SendOutErrMsg(DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, false);
             m_CheckLocalAlarmStatus = false;
         }
     }
@@ -2807,8 +3036,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave3Voltage < slave3LowerLimit || strctHWMonitor.Slave3Voltage > slave3UpperLimit)
         {
             LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE);
         }
 
         quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
@@ -2816,8 +3044,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave5Voltage < slave5LowerLimit || strctHWMonitor.Slave5Voltage > slave5UpperLimit)
         {
             LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE);
         }
 
         quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
@@ -2825,22 +3052,19 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
         {
             LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
-            RaiseError(0,DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
         }
 
         // For current related
         if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
         {
             LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
-            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
         }
         if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
         {
             LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
-            RaiseError(0,DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
         }
 
     }
@@ -2853,12 +3077,10 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             if(qAbs(m_PressureAL) >40.0 )
             {
                 LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
-                RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
-                m_SchedulerMachine->SendErrorSignal();
+                SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE);
             }
         }
 	}
-
 
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALLevelSensor))
 	{
@@ -2885,8 +3107,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             if (m_TempRV2 < 40)
             {
                 LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
-                RaiseError(0, DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME, Scenario, true);
-                m_SchedulerMachine->SendErrorSignal();
+                SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME);
             }
 #endif
         }
@@ -2909,38 +3130,28 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
-        if ( (m_OvenLidStatus == 0) && (strctHWMonitor.OvenLidStatus == 1) )
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+        if (1 ==  m_OvenLidStatus)
         {
             //oven is open
-            if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
-                 || (Scenario >= 281 && Scenario <= 297) )
+            if(m_CheckOvenCover)
             {
-                LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(Scenario));
-                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
+                if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
+                     || (Scenario >= 281 && Scenario <= 297) )
+                {
+                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
+                    m_CheckOvenCover = false;
+                }
             }
             if(Scenario >= 271 && Scenario <= 277)
             {
                 if ("ERROR" != StepID && "IDLE" != StepID)
                 {
                     ReleasePressure();
-                    RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
                 }
             }
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
-        if ( (m_OvenLidStatus == 1) && (strctHWMonitor.OvenLidStatus == 0) )
-        {
-            //oven is closed
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        }
-        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
     }
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
 	{
@@ -2956,14 +3167,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    RaiseError(0, retCode, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
                 SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
                 if((currentState & 0xF) == SM_BUSY && currentState != PSSM_PAUSE)
                 {
-                    RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
                 }
 
                 // Notify retort lid is opened
@@ -2992,8 +3201,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 (void)pResHeatingCmd->GetResult(retCode);
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    RaiseError(0, retCode, Scenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    SendOutErrMsg(retCode);
                 }
             }
 
@@ -3008,25 +3216,21 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     //Check No-Signal error for Retort sensors
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom1))
     {
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
     {
         LogDebug("The RT bottom2 no signal");
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTSide))
     {
-        RaiseError(0, DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
     }
     //the Level Scenario no signal is the same with over range
     if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
     {
-        RaiseError(0, DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
     }
     m_PositionRV = strctHWMonitor.PositionRV;
 }
@@ -3221,129 +3425,106 @@ bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
 void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
     Q_UNUSED(ctrlCmd)
-    typedef enum
-    {
-        CDS_READY,
-        CDS_MOVE_TO_SEALING_13,
-        CDS_WAIT_HIT_POSITION,
-        CDS_WAIT_HIT_TEMPERATURE,
-        CDS_VACUUM,
-        CDS_WAIT_HIT_PPRESSURE,
-        CDS_WAITING_DRY,
-        CDS_STOP_HEATING_VACUUM,
-        CDS_SUCCESS,
-        CDS_ERROR
-    }DryStepsStateMachine;
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    static DryStepsStateMachine CurrentState = CDS_READY;
-    static quint64 StepStartTime = 0;
-    static bool warningReport = false;
     CmdRVReqMoveToRVPosition* CmdMvRV = NULL;
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr = NULL;
     Global::tRefType Ref;
 
-    if(m_RestartDryStep)
-    {
-        CurrentState = CDS_READY;
-        StepStartTime = 0;
-        warningReport = false;
-        m_RestartDryStep = false;
-    }
-    switch (CurrentState)
+    switch (m_CleaningDry.CurrentState)
     {
     case CDS_READY:
+        LogDebug(QString("CDS_READY"));
         RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
         commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
                                                                 m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        CurrentState = CDS_MOVE_TO_SEALING_13;
+        m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
+        break;
     case CDS_MOVE_TO_SEALING_13:
-        qDebug() << "CDS_MOVE_TO_SEALING_13";
+        LogDebug(QString("CDS_MOVE_TO_SEALING_13"));
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
         CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_13);
         m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
-        CurrentState = CDS_WAIT_HIT_POSITION;
+        m_CleaningDry.CurrentState = CDS_WAIT_HIT_POSITION;
         break;
     case CDS_WAIT_HIT_POSITION:
-        qDebug() << "CDS_WAIT_HIT_POSITION";
+        LogDebug(QString("CDS_WAIT_HIT_POSITION"));
         if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
         {
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
-                CurrentState = CDS_WAIT_HIT_TEMPERATURE;
+                m_CleaningDry.CurrentState = CDS_WAIT_HIT_TEMPERATURE;
             }
             else
             {
-                RaiseError(0, retCode, m_CurrentScenario, true);
-                CurrentState = CDS_READY;
-                m_SchedulerMachine->SendErrorSignal();
-                StepStartTime = 0;
+                m_CleaningDry.CurrentState = CDS_READY;
+                m_CleaningDry.StepStartTime = 0;
+                SendOutErrMsg(retCode);
             }
         }
         break;
     case CDS_WAIT_HIT_TEMPERATURE:
-        qDebug() << "CDS_WAIT_HIT_TEMPERATURE";
-        CurrentState = CDS_VACUUM;
+        LogDebug(QString("CDS_WAIT_HIT_TEMPERATURE"));
+        m_CleaningDry.CurrentState = CDS_VACUUM;
         break;
     case CDS_VACUUM:
-        qDebug() << "CDS_VACUUM";
+        LogDebug(QString("CDS_VACUUM"));
         Vaccum();
-        CurrentState = CDS_WAIT_HIT_PPRESSURE;
+        m_CleaningDry.CurrentState = CDS_WAIT_HIT_PPRESSURE;
         break;
     case CDS_WAIT_HIT_PPRESSURE:
-        qDebug() << "CDS_WAIT_HIT_PPRESSURE";
+        LogDebug(QString("CDS_WAIT_HIT_PPRESSURE"));
         if(cmd != NULL && ("Scheduler::ALVaccum" == cmd->GetName()))
         {
             (void)cmd->GetResult(retCode);
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                RaiseError(0, retCode, m_CurrentScenario, true);
-                CurrentState = CDS_READY;
-                m_SchedulerMachine->SendErrorSignal();
-                StepStartTime = 0;;
+                m_CleaningDry.CurrentState = CDS_READY;
+                m_CleaningDry.StepStartTime = 0;
+                SendOutErrMsg(retCode);
             }
             else
             {
-                CurrentState = CDS_WAITING_DRY;
-                StepStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_CleaningDry.CurrentState = CDS_WAITING_DRY;
+                m_CleaningDry.StepStartTime = QDateTime::currentMSecsSinceEpoch();
             }
         }
         break;
     case CDS_WAITING_DRY:
-        qDebug() << "CDS_WAITING_DRY";
-        if(QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 600000) // drying 10 minutes
+        LogDebug(QString("CDS_WAITING_DRY"));
+        if(QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 600000) // drying 10 minutes
         {
-            CurrentState = CDS_STOP_HEATING_VACUUM;
+            m_CleaningDry.CurrentState = CDS_STOP_HEATING_VACUUM;
         }
 
         //Check if pressure reaches negative 25kpa, if no, report out warning message
-        if (QDateTime::currentMSecsSinceEpoch() - StepStartTime >= 120*1000 && warningReport == false)
+        if (QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 120*1000 && m_CleaningDry.warningReport == false)
         {
-            warningReport = true;
+           m_CleaningDry. warningReport = true;
             if (qAbs(m_PressureAL) < 25.0)
             {
-                RaiseError(0, DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, m_CurrentScenario, true);
+                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
             }
         }
         break;
     case CDS_STOP_HEATING_VACUUM:
-        qDebug() << "CDS_STOP_HEATING_VACUUM";
+        LogDebug(QString("CDS_STOP_HEATING_VACUUM"));
         ReleasePressure();
-        CurrentState = CDS_SUCCESS;
+        m_CleaningDry.CurrentState = CDS_SUCCESS;
         break;
     case CDS_SUCCESS:
+        LogDebug(QString("CDS_SUCCESS"));
         RaiseEvent(EVENT_SCHEDULER_FINISHED_DRY_PROCESSING);
         m_SchedulerMachine->NotifyProgramFinished();
-        CurrentState = CDS_READY;
-        StepStartTime = 0;
+        m_CleaningDry.CurrentState = CDS_READY;
+        m_CleaningDry.StepStartTime = 0;
         break;
     case CDS_ERROR:
         break;
-
     }
 }
 
@@ -3614,6 +3795,15 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
             return false;
         }
         break;
+    case RETORT_NOSIGNAL:
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
+        if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
+        {
+            return false;
+        }
+        break;
     case OVEN:
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
@@ -3655,14 +3845,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
     default:
         break;
     }
-    LogDebug(QString("The temp1:%1, the temp2:%2, The temp3:%3").arg(temp1).arg(temp2).arg(temp3));
-    //Check No-Signal error
-    if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
-    {
-        return false;
-    }
     return true;
-
 }
 
 void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck)
@@ -3674,7 +3857,10 @@ void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID
     cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
-    m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
+    if(!m_IsCleaningProgram)
+    {
+        m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
+    }
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, StationID, true, true, false));
     Q_ASSERT(commandPtr);
@@ -3797,6 +3983,7 @@ void SchedulerMainThreadController::RCDrain()
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
+    cmd->SetIgnorePressure(true);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     LogDebug("Notice GUI Draining started");
@@ -3926,7 +4113,7 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.RvPos = ret;
+    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 
@@ -3949,7 +4136,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.RvPos = ret;
+    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 
@@ -4014,21 +4201,6 @@ void SchedulerMainThreadController::InitProgramStatus()
 	m_ProgramStatusInfor.InitProgramStatus(ParaffinMeltPoint);
 }
 
-qint64 SchedulerMainThreadController::GetPreTestTime()
-{
-    quint32 BottleCount = m_ProgramStationList.size();
-    qint64 preTesttTime = 0;
-    if( (BottleCount - 2) > 0)
-    {
-        preTesttTime = (4 + 1 * (BottleCount - 2)) * 60;
-    }
-    else
-    {
-        preTesttTime = 4 * 60;
-    }
-    return preTesttTime;
-}
-
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
 {
     if (currentProgramID.isNull() || currentProgramID.isEmpty())
@@ -4060,17 +4232,29 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     {
         return LEVELSENSOR;
     }
-    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == m_CurErrEventID
-             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == m_CurErrEventID
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP == m_CurErrEventID)
     {
         return LATUBE1;
     }
-    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == m_CurErrEventID
-             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == m_CurErrEventID)
     {
         return LATUBE2;
+    }
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == m_CurErrEventID)
+    {
+        return LATUBE1ABNORMAL;
+    }
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == m_CurErrEventID)
+    {
+        return LATUBE2ABNORMAL;
+    }
+    else if (DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == m_CurErrEventID
+             || DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == m_CurErrEventID
+             || DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == m_CurErrEventID)
+    {
+        return RETORT_NOSIGNAL;
     }
     else if ("50001" == QString::number(m_CurErrEventID).left(5))
     {
@@ -4131,6 +4315,7 @@ bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, q
 
 void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Scenario)
 {
+    Q_UNUSED(Scenario);
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));
     ReportError_t reportError2;
@@ -4161,54 +4346,45 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     if (reportError1.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError2.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError3.instanceID != 0 )
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError4.instanceID != 0)
     {
         LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
-        RaiseError(0,DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError5.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-        //m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError6.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-       // m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError7.instanceID != 0)
     {
-        //RaiseError(0,DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE, Scenario, true);
-       // m_SchedulerMachine->SendErrorSignal();
+        //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError8.instanceID != 0)
     {
         LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
-        RaiseError(0,DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
     }
 
     if (reportError9.instanceID != 0)
     {
         LogDebug(QString("In RV heating error state, the current is :%1").arg(reportError9.errorData));
-        RaiseError(0,DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE, Scenario, true);
-        m_SchedulerMachine->SendErrorSignal();
+        SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
     }
 }
 
@@ -4298,7 +4474,7 @@ bool SchedulerMainThreadController::ConstructSlaveModuleAttrList(QString moduleN
 
 void SchedulerMainThreadController::OnSystemError()
 {
-    if(m_CurrentScenario != 2)
+    if(m_CurrentScenario > 2)
     {
         m_ProgramStatusInfor.SetErrorFlag(1);
     }
@@ -4330,7 +4506,7 @@ void SchedulerMainThreadController::OnSystemError()
     m_TimeStamps.SystemErrorStartTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void SchedulerMainThreadController::OnEnterRcRestart()
+void SchedulerMainThreadController::OnBackToBusy()
 {
     ProgramAcknownedgeType_t type =  DataManager::PROGRAM_SYSTEM_RC_RESTART;
     MsgClasses::CmdProgramAcknowledge* commandPtrRcRestart(new MsgClasses::CmdProgramAcknowledge(5000, type));
@@ -4355,7 +4531,11 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-    RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+
+    if(m_CurProgramStepInfo.reagentGroup == "RG6")
+    {
+        RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
+    }
 }
 
 void SchedulerMainThreadController::OnPreTestDone()
@@ -4407,31 +4587,31 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
             break;
         case 513040203:
         case 513040201:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID)<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().PressureAL);
             break;
         case 513040014:
         case 513040241:
         case 511040101:
         case 511040221:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
             break;
         case 513040501:
         case 512040520:
         case 512040523:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1);
             break;
         case 513040511:
         case 512040530:
         case 512040533:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2);
             break;
         case 513030031:
         case 513030033:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             RVPosition = (quint32)m_ProgramStatusInfor.GetLastRVPosition();
             InternalSteps =m_SchedulerCommandProcessor->HardwareMonitor().PositionRV - RVPosition;
             EventRDStringParList<<QString("%1").arg(RVPosition)<<QString("%1").arg(m_CurrentBottlePosition.RvPos)
@@ -4443,11 +4623,15 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
         case 511040022:
         case 512040052:
         case 512040053:
-            EventStringParList<<QString("(%1)").arg(ErrorID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_PressureAL);
             break;
+        case 513060020:
+            EventStringParList<<QString("%1").arg(ErrorID);
+            EventRDStringParList<<QString("%1").arg(ErrorID);
+            break;
         default:
-            EventStringParList << QString("(%1)").arg(ErrorID);
+            EventStringParList << QString("%1").arg(ErrorID);
             break;
     }
 }
@@ -4458,6 +4642,66 @@ void SchedulerMainThreadController::CloseTheAlarm()
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
     cmd->SetRmtLocOpcode(-1);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+}
+
+void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
+{
+    bool ret = false;
+    ret = RaiseError(0, EventId, m_CurrentScenario, true);
+    if(!ret)
+    {
+        //log
+        QString temp = QString::number(EventId) + QString::number(m_CurrentScenario);
+        if(-1 == m_UnknownErrorLogVector.indexOf(temp))
+        {
+            RaiseEvent(EVENT_SCHEDULER_UNKNOW_ERROR, QStringList()<<QString("[%1]").arg(EventId)<<QString("[%1]").arg(m_CurrentScenario));
+            m_UnknownErrorLogVector.push_back(temp);
+        }
+    }
+    else
+    {
+        if(IsErrorMsg)
+        {
+            m_SchedulerMachine->SendErrorSignal();
+        }
+    }
+}
+
+/*lint -e641 */
+bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
+                          const bool ActionResult, const bool Active)
+{
+    if(EventKey == 0)
+    {
+        // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
+        if (EventID < 0x1000)
+        {
+            LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
+            EventID = DCL_ERR_DEV_INTER_SW_ERROR;
+        }
+
+        quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
+        if(ErrorID == 0)//unknow error
+        {
+            return false;
+        }
+        // We only update current event ID when current status is NOT error.
+        SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+        if (SM_ERROR != (currentState & 0xFF))
+        {
+            m_CurErrEventID = EventID;
+        }
+
+        Global::tTranslatableStringList EventStringParList;
+        Global::tTranslatableStringList EventRDStringParList;
+        GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
+        Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
+    }
+    else
+    {
+        Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
+    }
+    return true;
 }
 
 }

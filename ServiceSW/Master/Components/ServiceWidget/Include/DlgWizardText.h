@@ -27,19 +27,42 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for wizard selected test option dialog
+ */
+/****************************************************************************/
 class CDlgWizardText : public CDlgWizardBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgWizardText(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgWizardText(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgWizardText(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Set label text
+     *  \iparam Text = label text
+     */
+    /****************************************************************************/
     void SetText(const QString &Text);
 
 private:
-    QLabel *mp_Text;
+    QLabel *mp_Text;    //!< text label object
 };
 
 } // namespace MainMenu

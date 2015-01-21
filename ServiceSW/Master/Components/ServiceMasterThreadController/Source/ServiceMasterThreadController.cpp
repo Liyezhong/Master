@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file HimalayaServiceMasterThreadController.cpp
+/*! \file ServiceMasterThreadController.cpp
  *
- *  \brief Implementation file for class HimalayaServiceMasterThreadController.
+ *  \brief Implementation file for class ServiceMasterThreadController.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-02-06
@@ -835,6 +835,13 @@ void ServiceMasterThreadController::OnGoReceived()
     mp_GUIStartup->mp_ServiceConnector->SetUserSettingInterface(
                 mp_ServiceDataManager->GetDataContainer()->SettingsInterface);
 
+    QString DeviceName = mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface
+            ->GetDeviceConfiguration()->GetValue("DEVICENAME");
+    QString SerialNumber = mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface
+            ->GetDeviceConfiguration()->GetValue("SERIALNUMBER");
+    SetEventLoggerBaseFileName(DeviceName.remove(QRegExp("\\s")) + "_Service_");
+    SetSerialNumber(SerialNumber);
+
     try {
         // Initialize controllers
         InitializeControllers(true);
@@ -1347,6 +1354,7 @@ void ServiceMasterThreadController::ShutdownSystem(bool NeedUpdate)
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
+    mp_GUIStartup->SetShutDownFlag(true);
     if (NeedUpdate) {
         sendManufacturingTestCommand(Service::SYSTEM_SHUTDOWN);
 
@@ -1483,12 +1491,11 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString ReportPath = mp_ServiceDataContainer->ServiceParameters->GetTestReportFolderPath();
 
-        NetworkClient::IENetworkClient *IEClient(NULL);
-        IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
+        NetworkClient::IENetworkClient IEClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
         emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_REACHABLE, Color);
         for(int i=0; i<3; i++) {
-            if(IEClient->PerformHostReachableTest())
+            if(IEClient.PerformHostReachableTest())
             {
                 emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , true);
                 qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Successful for ip "<<IPAddress;
@@ -1502,7 +1509,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         }
 
         emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS, Color);
-        if(IEClient->PerformAccessRightsCheck(ReportPath))
+        if(IEClient.PerformAccessRightsCheck(ReportPath))
         {
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
             emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , true);
@@ -1511,36 +1518,9 @@ void ServiceMasterThreadController::PerformNetworkChecks()
         {
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , false);
             emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
-        }
-        emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_FINISHED, Color);
-#if 0
-        if(IEClient->PerformServiceAvailableTest())
-        {
-            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
-            qDebug() << " ServiceMasterThreadController::PerformServiceAvailableTest Successful for ip "<<IPAddress;
-        }
-        else
-        {
-            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , false);
-            qDebug() << " ServiceMasterThreadController::PerformServiceAvailableTest Failed for ip "<<IPAddress;
         }
 
-        if(IEClient->PerformAccessRightsCheck())
-        {
-            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , true);
-            qDebug() << " ServiceMasterThreadController::PerformAccessRightsCheck Successful for ip "<<IPAddress;
-        }
-        else
-        {
-            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
-            qDebug() << " ServiceMasterThreadController::PerformAccessRightsCheck Failed for ip "<<IPAddress;
-        }
-#endif
-        if(NULL != IEClient)
-        {
-            delete IEClient;
-            IEClient = NULL;
-        }
+        emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_FINISHED, Color);
     }
     CATCHALL();
 }
@@ -1550,28 +1530,28 @@ void ServiceMasterThreadController::DownloadFirmware()
     bool Ret      = false;
     QString Color = "red";
     QString Information("");
-    NetworkClient::IENetworkClient *IEClient(NULL);
+
     try {
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
         QString FirmFolder = mp_ServiceDataContainer->ServiceParameters->GetFirmwareFolderPath();
-        IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
+        NetworkClient::IENetworkClient IEClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
-        if (!IEClient->PerformHostReachableTest())
+        if (!IEClient.PerformHostReachableTest())
         {
             Information = Service::CMessageString::MSG_SERVER_IP_CANNOT_REACHABLE;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the ip can't reachable :"<<IPAddress;
             goto Download_Finished;
         }
 
-        if (!IEClient->PerformAccessRightsCheck(FirmFolder))
+        if (!IEClient.PerformAccessRightsCheck(FirmFolder))
         {
             Information = Service::CMessageString::MSG_SERVER_FOLDER_CANNOT_ACCESS;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: the folder can't access :"<<FirmFolder;
             goto Download_Finished;
         }
 
-        if (!IEClient->CheckForNewFiles(FirmFolder))
+        if (!IEClient.CheckForNewFiles(FirmFolder))
         {
             Ret = true;
             Color = "Green";
@@ -1580,7 +1560,7 @@ void ServiceMasterThreadController::DownloadFirmware()
             goto Download_Finished;
         }
 
-        if (!IEClient->DownloadFiles(FirmFolder))
+        if (!IEClient.DownloadFiles(FirmFolder))
         {
             Information = Service::CMessageString::MSG_SERVER_DOWNLOAD_FILES_FAILED;
             qDebug() << " ServiceMasterThreadController::Download firmware failed: download files failed :"<<FirmFolder;
@@ -1598,13 +1578,6 @@ void ServiceMasterThreadController::DownloadFirmware()
     CATCHALL();
 
 Download_Finished:
-
-    if(NULL != IEClient)
-    {
-        delete IEClient;
-        IEClient = NULL;
-    }
-
     emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , Ret);
     //Core::CServiceUtils::delay(500);
     emit SetInformationToNetworkSettings(Information, Color);

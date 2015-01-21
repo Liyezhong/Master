@@ -95,21 +95,81 @@ class CStartup : public QObject
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     */
+    /****************************************************************************/
     CStartup();
-    virtual ~CStartup();
-    qint32 NetworkInit();
-    void GuiInit();
-    void GuiInit(QString debugMode);
-    int Mode;
 
-    Core::CServiceGUIConnector *mp_ServiceConnector;
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
+    virtual ~CStartup();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init network
+     *  \return error code.
+     */
+    /****************************************************************************/
+    qint32 NetworkInit();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init Gui
+     */
+    /****************************************************************************/
+    void GuiInit();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init Gui by debug mode
+     */
+    /****************************************************************************/
+    void GuiInit(QString debugMode);
+    int Mode;       //!< mode code
+
+    Core::CServiceGUIConnector *mp_ServiceConnector;        //!< Service Gui connector object
     Core::CManufacturingDiagnosticsHandler *mp_ManaufacturingDiagnosticsHandler;    //!< Manufacturing diagnostics handler object
 
+    /****************************************************************************/
+    /*!
+     *  \brief Load Tracking and log viewer tab
+     *  \iparam bReInit = flag of reinit
+     */
+    /****************************************************************************/
+    void LoadCommonComponenetsOne(bool bReInit = false);
 
-    void LoadCommonComponenetsOne(bool bReInit = false);    // System Tracking and Log Viewer Tab
-    void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
+    /****************************************************************************/
+    /*!
+     *  \brief Load Calibration and Service Updates Tab
+     */
+    /****************************************************************************/
+    void LoadCommonComponenetsTwo();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init service gui
+     */
+    /****************************************************************************/
     void ServiceGuiInit();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init manufacturing gui
+     *  \iparam bReInit = flag of reinit
+     */
+    /****************************************************************************/
     void ManufacturingGuiInit(bool bReInit = false);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Init Manufacturing diagnostics
+     */
+    /****************************************************************************/
     void InitManufacturingDiagnostic();
   /****************************************************************************/
     /**
@@ -129,6 +189,16 @@ public:
     /****************************************************************************/
     QString GetCurrentUserMode() {
         return m_CurrentUserMode;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Set shut down flag
+     * \iparam Flag = flag of shut down
+     */
+    /****************************************************************************/
+    void SetShutDownFlag(bool Flag) {
+        m_ShutDownFlag = Flag;
     }
 
 private:
@@ -206,12 +276,16 @@ private:
 
     Diagnostics::ServiceDeviceProcess* mp_ServDevProc;
 
+    int m_CurrentTabIndex;  //!< Store current tab index
+    bool m_ShutDownFlag;    //!< Flag of shut down for current tab change
+
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
     void OnSelectTestOptions(int Index);
 	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
     int FileExistanceCheck();
+    void RemoveFiles();
 
     void OnCurrentTabChanged(int TabIndex);
 private:
@@ -239,38 +313,155 @@ private:
 
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief To Diaplay log information
+     *  \iparam FileName = log file name
+     *  \iparam FilePath = log file path
+     */
+    /****************************************************************************/
     void DisplayLogInformation(QString FileName, QString FilePath);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot of device init request.
+     */
+    /****************************************************************************/
     void OnDeviceInitRequest();
 
-    /* Return Message Slots */
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for show message
+     *  \iparam Message = messge text
+     */
+    /****************************************************************************/
     void ShowMessage(const QString &Message);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for show error message dialog
+     *  \iparam Message = Message text
+     */
+    /****************************************************************************/
     void ShowErrorMessage(const QString &Message);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for show calibration init message
+     *  \iparam Message = message text
+     *  \iparam OkStatus = status of ok
+     */
+    /****************************************************************************/
     void ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
-    /* Refresh heating status */
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Refresh test status
+     *  \iparam Message = message text
+     *  \iparam Status = Module test status
+     */
+    /****************************************************************************/
     void RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for return manufacutring message
+     *  \iparam Result = flag of result.
+     */
+    /****************************************************************************/
     void OnReturnManufacturingMsg(bool Result);
 
-    /* General slots */
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for abort test
+     */
+    /****************************************************************************/
     void OnGuiAbortTest();
 
-    /* Display slots*/
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for color test
+     */
+    /****************************************************************************/
     void OnBasicColorTest();
 
-
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for translate String
+     */
+    /****************************************************************************/
     void RetranslateUI();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for time out
+     */
+    /****************************************************************************/
     void IdleTimeout();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for reset timer of window status
+     */
+    /****************************************************************************/
     void ResetWindowStatusTimer();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for update parameters
+     */
+    /****************************************************************************/
     void UpdateParameters();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for timer start
+     */
+    /****************************************************************************/
     void StartTimer();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for start import&export process
+     *  \iparam Name = name of import or export
+     *  \iparam Type = type string
+     */
+    /****************************************************************************/
     void StartImportExportProcess(QString Name, QString Type);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for import&export completed
+     *  \iparam ExitCode = exit code
+     *  \iparam IsImport = flag of import or export
+     */
+    /****************************************************************************/
     void ImportExportCompleted(int ExitCode, bool IsImport);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for send file selection
+     *  \iparam FileList = file list to select
+     */
+    /****************************************************************************/
     void SendFileSelectionToGUI(QStringList FileList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for send files to master
+     *  \iparam FileList = file list to send
+     */
+    /****************************************************************************/
     void SendFilesToMaster(QStringList FileList);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for return service request result.
+     *  \iparam ReqName = The name of Request
+     *  \iparam ErrorCode = The code of error
+     *  \iparam Results = The list of result
+     */
+    /****************************************************************************/
     void OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 signals:
@@ -386,6 +577,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to shut down system
+     *  \iparam NeedUpdate = flag of need update
      */
     /*******************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);
@@ -422,8 +614,23 @@ signals:
     /*******************************************************************************/
     void DownloadFirmware();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted to send service request
+     *  \iparam ReqName = The name of request
+     *  \iparam Params = The list of param
+     */
+    /****************************************************************************/
     void SendServRequest(QString ReqName, QStringList Params);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted to return service request result
+     *  \iparam ReqName = The name of request
+     *  \iparam ErrorCode = The code of error
+     *  \iparam Result = The list of result.
+     */
+    /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Result);
 };
 

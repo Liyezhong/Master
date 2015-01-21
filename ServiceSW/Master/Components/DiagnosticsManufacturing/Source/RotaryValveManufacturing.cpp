@@ -61,6 +61,10 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
     }
 
+    if (mp_Module) {
+        m_RVSNString = mp_Module->GetSerialNumber();
+    }
+
     mp_Ui->rvSNEdit->installEventFilter(this);
     mp_Ui->rvSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 

@@ -24,24 +24,22 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     m_SelectedProgramId(""),
     mp_DataConnector(NULL),
     m_pUserSetting(NULL),
-    mp_ProgramList(NULL)
+    mp_ProgramList(NULL),
+    m_startButtonDisabledAsSysError(false),
+    m_pauseButtonDisabledAsSysError(false)
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
     CONNECTSIGNALSLOT(this, ResetFocus(bool), ui->favoriteProgramsPanel, OnResetFocus(bool));
     CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(bool), ui->favoriteProgramsPanel, AddItemsToFavoritePanel(bool));
+    CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(), ui->favoriteProgramsPanel, AddItemsToFavoritePanel());
+
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
-    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&),
+    CONNECTSIGNALSLOT(this, OnSelectEndDateTime(const QDateTime&),
                       ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequestAsapDateTime(), this, RequestAsapDateTime());
+
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, UpdateFavProgram(), this, OnUpdatePanelProgram());
-
-    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->favoriteProgramsPanel, SendAsapDateTime(int, bool));
-
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
-                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool, bool));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
                       ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
@@ -139,6 +137,38 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), ui->programRunningPanel, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramEndTime(int), ui->programRunningPanel, UpdateEndDateTime(int));
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramTimerStatus(bool), ui->programRunningPanel, UpdateProgramTimerStatus(bool));
+    CONNECTSIGNALSLOT(mp_DataConnector, UpdateProgramTimerStatus(bool), this, UpdateProgramTimerStatus(bool));
+}
+
+void CProgramPanelWidget::UpdateProgramTimerStatus(bool enable)
+{
+    if (enable)
+    {
+        if (m_startButtonDisabledAsSysError)
+        {
+            EnableStartButton(true);
+            m_startButtonDisabledAsSysError = false;
+        }
+        if (m_pauseButtonDisabledAsSysError)
+        {
+            EnablePauseButton(true);
+            m_pauseButtonDisabledAsSysError = false;
+        }
+    }
+    else
+    {
+        if (ui->startButton->isEnabled())
+        {
+            EnableStartButton(false);
+            m_startButtonDisabledAsSysError = true;
+        }
+
+        if (ui->pauseButton->isEnabled())
+        {
+            EnablePauseButton(false);
+            m_pauseButtonDisabledAsSysError = true;
+        }
+    }
 }
 
 void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation,
@@ -189,7 +219,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             {               
                 if (m_IsResumeRun)
                 {
-                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0);
+                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0, 0);
                     ChangeStartButtonToStopState();
                     return;
                 }
@@ -309,6 +339,7 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
 
     QString selectedProgramName = pProgram->GetName();
     ui->programRunningPanel->SetPanelTitle(selectedProgramName);
+    ui->programRunningPanel->SetSelectedProgramId(selectedProgramId);
     ui->programRunningPanel->EnableProgramDetailButton(true);
     QString strReagentID = pProgram->GetProgramStep(cmd.GetStepIndex())->GetReagentID();
     const DataManager::CReagent *p_Reagent = mp_DataConnector->ReagentList->GetReagent(strReagentID);

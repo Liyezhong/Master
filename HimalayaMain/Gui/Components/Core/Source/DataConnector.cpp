@@ -24,6 +24,7 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
@@ -110,6 +111,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     // Dashboard Command Handlers
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAcknowledge>(&CDataConnector::ProgramAcknowledgeHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdEnterCleaningProgram>(&CDataConnector::EnterCleaningProgramHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAborted>(&CDataConnector::ProgramAbortedHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSuckDrain>(&CDataConnector::StationParaffinBathStatusHandler, this);
 
@@ -760,8 +762,20 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+
+        DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+        Global::RMSOptions_t rmsOption;
+        if (pReagentGroup->IsCleaningReagentGroup())
+        {
+            rmsOption = CReagentStatusModel::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            rmsOption = CReagentStatusModel::RMSPROCESSINGOPTION;
+        }
+        switch (rmsOption) {
             default:
                  QString("");
                 break;
@@ -805,8 +819,21 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+
+        DataManager::CReagent* pReagent = ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+        Global::RMSOptions_t rmsOption;
+        if (pReagentGroup->IsCleaningReagentGroup())
+        {
+            rmsOption = CReagentStatusModel::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            rmsOption = CReagentStatusModel::RMSPROCESSINGOPTION;
+        }
+
+        switch (rmsOption) {
             default:
                  QString("");
                 break;
@@ -841,12 +868,14 @@ void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgC
 
                 pDashboardStation->SetDashboardReagentActualCassettes(
                             pDashboardStation->GetDashboardReagentActualCassettes() + Command.CassetteCount());
+                emit DashboardStationChangeReagent(Ids[i]);
 
             }
             else
             {
                 pDashboardStation->SetDashboardReagentActualCycles(
                             pDashboardStation->GetDashboardReagentActualCycles() + 1);
+                emit DashboardStationChangeReagent(Ids[i]);
             }
         }
         else
@@ -900,7 +929,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         case NetCommands::PROGRAM:
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
-            emit ProgramsInitialized(false);
+            emit ProgramsInitialized();
             break;
 
         case NetCommands::REAGENT:
@@ -966,12 +995,18 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands::CmdProcessState &Command)
 {
     bool Result = false;
-    if (Command.GetProcessState()) {
-        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
-
+    NetCommands::ProcessStateType processStateType = Command.GetProcessState();
+    if (NetCommands::ProcessStateType::InitState == processStateType ||
+            NetCommands::ProcessStateType::IdleState == processStateType) {
+        mp_MainWindow->SetSystemErrorStatus(false);
+        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//not show running icon
     }
-    else {
-        Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+    else
+    {
+        if (NetCommands::ProcessStateType::ErrorState == processStateType){
+           mp_MainWindow->SetSystemErrorStatus(true);
+        }
+        Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//show running icon
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     mp_WaitDialog->accept();
@@ -1515,9 +1550,9 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
 
 void CDataConnector::SendProgramAction(const QString& ProgramID,
                                        DataManager::ProgramActionType_t ActionType,
-                                       int delayTime)
+                                       int delayTime, int runDuration)
 {
-    MsgClasses::CmdProgramAction Command(COMMAND_TIME_OUT, ProgramID, ActionType, delayTime);
+    MsgClasses::CmdProgramAction Command(COMMAND_TIME_OUT, ProgramID, ActionType, delayTime, runDuration);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 
@@ -1657,6 +1692,12 @@ void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const M
     emit CurrentProgramStepInforUpdated(Command);
 }
 
+void CDataConnector::EnterCleaningProgramHandler(Global::tRefType Ref, const MsgClasses::CmdEnterCleaningProgram& Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit TakeoutSpecimenWaitRunCleaning(Command.LastReagentGroupID());
+}
+
 void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
@@ -1688,6 +1729,13 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
+        case DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT:
+        {
+             emit CleanPrgmCompleteAsSafeReagent();
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+
         case DataManager::PROGRAM_RUN_BEGIN:
         {
              emit ProgramRunBegin();
@@ -1710,6 +1758,17 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit EnablePauseButton(false);
         }
         break;
+        case DataManager::PROGRAM_START_ENABLE:
+        {
+            emit EnableStartButton(true);
+        }
+        break;
+        case DataManager::PROGRAM_START_DISABLE:
+        {
+            emit EnableStartButton(false);
+        }
+        break;
+
         case DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES:
         {
             emit PauseTimeout15Mintues();
@@ -1738,11 +1797,6 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::RETORT_COVER_OPERN:
         {
             emit RetortCoverOpen();
-        }
-        break;
-        case DataManager::TAKE_OUT_SPECIMEN_WAIT_RUN_CLEANING:
-        {
-            emit TakeoutSpecimenWaitRunCleaning();
         }
         break;
         case DataManager::PROGRAM_PRETEST_DONE:

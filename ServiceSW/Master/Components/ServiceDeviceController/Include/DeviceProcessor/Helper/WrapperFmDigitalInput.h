@@ -39,7 +39,6 @@ using namespace DeviceControl;
  *  modules.
  *
  *  Examples:
- *   \dontinclude DigitalInput.js
  *   \skipline [WrapperFmDigitalInput]
  *   \until    [WrapperFmDigitalInput]
  */
@@ -64,7 +63,6 @@ public slots:
     /*! \brief Signal which is emitted after input has changed
      *
      *  Examples:
-     *   \dontinclude DigitalInput.js
      *   \skipline [DigitalIn.ValueChanged]
      *   \until    [DigitalIn.ValueChanged]
      */

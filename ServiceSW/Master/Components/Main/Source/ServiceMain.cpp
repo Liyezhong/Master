@@ -33,6 +33,7 @@
  *
  *  \iparam Argc = Command line argument count
  *  \iparam p_Argv = List of command line arguments
+ *  \return true or errors
  */
 /****************************************************************************/
 int main(int Argc, char *p_Argv[])
@@ -87,7 +88,6 @@ int main(int Argc, char *p_Argv[])
 
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);
-    TheMasterThreadController.SetEventLoggerBaseFileName("PRIMARIS_Service");
 
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     (void)DataManager::CTestCaseFactory::Instance().InitData(FileName);

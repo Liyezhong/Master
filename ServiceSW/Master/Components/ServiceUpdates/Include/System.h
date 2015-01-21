@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file System.h
+/*! \file ServiceUpdates/Include/System.h
  *
  *  \brief CSystem class definition file
  *
@@ -44,7 +44,7 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam parent = parent of widget
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CSystem(QWidget *p_Parent = 0);
@@ -86,6 +86,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to shut down system
+     *  \iparam NeedUpdate = flag of need update
      */
     /*******************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);

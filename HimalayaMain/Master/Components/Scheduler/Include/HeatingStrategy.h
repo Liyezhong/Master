@@ -88,6 +88,21 @@ struct RTLevelSensor : public HeatingSensor
 
 /****************************************************************************/
 /*!
+ * \brief struct of sensor checking in scenario 260
+ */
+/****************************************************************************/
+struct SensorsChecking
+{
+    qint64  startTime;                              //!< the startTime
+    qreal   meltingPoint;                           //!< the paraffin melting point
+    quint32 minTime;                                //!< minimum time
+    bool    firstBottle;                            //!< the first paraffin step
+    bool    ovenTopPass;                            //!< oven top temperature pass
+    bool    LATube1Pass;                            //!< LA tube1 termperature pass
+};
+
+/****************************************************************************/
+/*!
  * \brief struct of retort bottom sensor
  */
 /****************************************************************************/
@@ -211,10 +226,11 @@ public:
     /*!
      *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name
+     *  \param  NotSureTemperature - bool whether sure temperature
      *  \return ReturnCode_t
      */
     /****************************************************************************/
-    ReturnCode_t StartTemperatureControlForSelfTest(const QString& HeaterName);
+    ReturnCode_t StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature = false);
 
     /****************************************************************************/
     /*!
@@ -265,22 +281,18 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief check LA Sensor status
-     *  \param HeaterName - sensor's name
-     *  \param HWTemp = qreal temperature
-     *  \return bool true - success, false - failed
+     *  \brief  Initialize parameters when entering scenario 260
      */
     /****************************************************************************/
-    bool CheckLASensorStatus(const QString& HeaterName, qreal HWTemp);
+    void Init260ParamList();
 
     /****************************************************************************/
     /*!
      *  \brief  check the temperature of sensors in scenario 260
-     **  \param strctHWMonitor - temperature list from Device Control
      *  \return bool
      */
     /****************************************************************************/
-    bool CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor);
+    bool Check260SensorsTemp();
 
     /****************************************************************************/
     /*!
@@ -342,6 +354,15 @@ public:
     /****************************************************************************/
     void ResetTheOvenHeating();
 
+    /****************************************************************************/
+    /*!
+     *  \brief check LA tube temperture abnormal between scenario 271 to scenario 277
+     *  \param temp = temperature of LA tube
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool CheckLATbueTempAbnormal(qreal temp);
+
 private slots:
     /****************************************************************************/
     /*!
@@ -366,6 +387,7 @@ private:
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
     bool                                m_DiasbleOvenHeatingError;      //!< disable heating strategy error
+    SensorsChecking                     m_SensorsChecking;              //!< Checking list of sensors in scenario 260
 
     /****************************************************************************/
     /*!

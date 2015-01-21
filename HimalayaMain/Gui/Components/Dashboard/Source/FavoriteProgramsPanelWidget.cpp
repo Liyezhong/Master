@@ -20,16 +20,11 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
     mp_DataConnector(NULL),
     m_LastCanBeSelectedButtonId(-1),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    m_OnlyAddCleaningProgram(false)
 {
     ui->setupUi(this);
     SetButtonGroup();
-
-    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
-    mp_wdgtDateTime->setModal(true);
-    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
-    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, RequestAsapDateTime(), this, RequestAsapDateTime());
-    CONNECTSIGNALSLOT(this, SendAsapDateTime(int, bool), mp_wdgtDateTime, OnGetASAPDateTime(int, bool));
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
@@ -42,7 +37,6 @@ CFavoriteProgramsPanelWidget::~CFavoriteProgramsPanelWidget()
 {
     try {
             delete ui;
-            delete mp_wdgtDateTime;
         }
         catch (...) {
             // to please Lint.
@@ -78,9 +72,8 @@ void CFavoriteProgramsPanelWidget::UpdateProgLabel()
 
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
 {
-    mp_wdgtDateTime->SetMainWindow(p_MainWindow);
+    Q_UNUSED(p_MainWindow);
     mp_DataConnector = p_DataConnector;
-	mp_wdgtDateTime->SetUserSettings(p_DataConnector->SettingsInterface->GetUserSettings());
 }
 
 void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
@@ -122,9 +115,13 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
     }
 }
 
+void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel()
+{
+    AddItemsToFavoritePanel(m_OnlyAddCleaningProgram);
+}
+
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
-
     UndoProgramSelection();
     //loop all program buttons
     for(int i = 0; i < 5; i++)
@@ -175,19 +172,14 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         label->setText(ProgramName);
         CONNECTSIGNALSLOT(m_ButtonGroup.button(j), toggled(bool), label, setHighlight(bool));
     }
+
+    m_OnlyAddCleaningProgram = bOnlyAddCleaningProgram;
 }
 
 
 void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
 {
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-}
-
-void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation)
-{
-    Q_UNUSED(programId);
-    Q_UNUSED(bProgramStartReady);
-    emit SendAsapDateTime(asapEndTime, bIsFirstStepFixation);
 }
 
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
@@ -206,9 +198,8 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 {
     if ((m_LastSelectedButtonId == m_ButtonGroup.checkedId()) && (m_FavProgramIDs.at(0) != "C01"))
-    {   //show Datetime dialog
-        mp_wdgtDateTime->UpdateProgramName();
-        mp_wdgtDateTime->show();
+    {
+
     }
     else
     {   //on selected a program

@@ -86,6 +86,7 @@ private:
     QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
     QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
     QString m_strConfirmChangeRMSMode;       ///<  prompt information when change RMS mode
+    QString m_strConfirmRMSOffMode;
     QButtonGroup m_ButtonGroupRMSMode;       ///<  manage the RMS mode radio buttons
     QButtonGroup m_ButtonGroupCleaningRMSMode;       ///<  manage the Cleaning RMS mode radio buttons
     int m_lastSelectRMSMoldeID;             ///< last selection of Cleaning RMS mode

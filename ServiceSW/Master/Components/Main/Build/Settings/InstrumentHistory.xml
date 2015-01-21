@@ -51,7 +51,7 @@
                 <parameter name="SoftwareVersion" unit="quint16">SW_VER</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">DATE</parameter>
                 <parameter name="SerialNumber" unit="QString">040/XXXX</parameter>
-                <parameter name="OperationTime" unit="hours">9</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">MAJOR_VER</parameter>
@@ -63,13 +63,13 @@
             </SubModule>
             <SubModule name="Touch Screen" type="Monitor" description="Touch screen">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">9</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>
             <SubModule name="Ventilation Fan" type="Monitor" description="Touch screen">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">9</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>
@@ -167,7 +167,7 @@
             </SubModule>
             <SubModule name="Pressure Sensor" type="Sensor" description="Pressure Sensor">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">9</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
                 <parameter name="CalibrationDate" unit="QDate">N/A</parameter>
             </SubModule>

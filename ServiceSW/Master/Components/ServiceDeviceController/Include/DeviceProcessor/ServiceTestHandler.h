@@ -45,9 +45,9 @@ namespace DeviceControl {
 //class DeviceControl::IDeviceProcessing;
 
 typedef enum {
-    RETURN_OK = 1,
-    RETURN_ERR_NULL_POINTER = -1,
-    RETURN_ERR_FAIL = -2
+    RETURN_OK = 1, //!< result ok
+    RETURN_ERR_NULL_POINTER = -1, //!< return error because of null pointer
+    RETURN_ERR_FAIL = -2 //!< return error
 } ErrorCode_t;
 
 /****************************************************************************/
@@ -610,6 +610,15 @@ private:
 
     /****************************************************************************/
     /**
+     *  \brief To get pump status
+     *  \iparam ReqName = the name of request
+     *  \iparam Params = the list of param
+     */
+    /****************************************************************************/
+    void PumpGetStatus(QString& ReqName, QStringList& Params);
+
+    /****************************************************************************/
+    /**
      *  \brief To start sucking
      *  \iparam ReqName = the name of request
      *  \iparam Params = the list of param
@@ -711,7 +720,7 @@ signals:
     /**
      *  \brief signal for return service request result
      *  \iparam ReqName = name of request
-     *  \iparam ErroCode = code of error
+     *  \iparam ErrorCode = code of error
      *  \iparam Results = list of result
      */
     /****************************************************************************/

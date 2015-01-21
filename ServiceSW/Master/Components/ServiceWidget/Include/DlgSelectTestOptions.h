@@ -31,23 +31,60 @@ namespace Ui {
     class CDlgSelectTestOptions;
 }
 
+/****************************************************************************/
+/**
+ * \brief This class for select test options dialog
+ */
+/****************************************************************************/
 class CDlgSelectTestOptions : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CDlgSelectTestOptions(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgSelectTestOptions(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgSelectTestOptions(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To enable next button
+     *  \iparam bEnable = falg for next button
+     */
+    /****************************************************************************/
     void EnableNextButton(bool bEnable);
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event handler for change events
+     *
+     *  \iparam p_Event = Change event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emit for radio button selected
+     *  \iparam radioBtnIndex = index of redio button
+     */
+    /****************************************************************************/
     void RadioBtnSelected(int radioBtnIndex);
 
 private:
-    Ui::CDlgSelectTestOptions *ui;
-    QButtonGroup* m_pButtonGroup;
+    Ui::CDlgSelectTestOptions *ui;  //!< user interface
+    QButtonGroup* m_pButtonGroup;   //!< group of button
 };
 
 } // namespace MainMenu

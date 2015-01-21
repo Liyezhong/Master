@@ -29,13 +29,23 @@ namespace Diagnostics {
 
 namespace LaSystem {
 
+/****************************************************************************/
+/**
+ * \brief Struct for air heating status data.
+ */
+/****************************************************************************/
 struct airHeatingStatus {
-   int UsedTime;
-   int EDTime;
-   QString TargetTemp;
-   qreal CurrentTemp;
+   int UsedTime;        //!< number of used time
+   int EDTime;          //!< number of end time
+   QString TargetTemp;  //!< string of target temperature
+   qreal CurrentTemp;   //!< current temperature value
 };
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the diagnostics Air heating tube test
+ */
+/****************************************************************************/
 class CAirHeatingTubeTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
@@ -58,6 +68,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);

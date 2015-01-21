@@ -56,6 +56,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     {
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED);
     }
+    memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
@@ -124,19 +125,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
     }
 
-
-    //the scenario is 2,don't check heating overtime and statrt time is hard code
-    if(2 == scenario)
-    {
-        m_CurScenario = 2;
-        return retCode;
-    }
-
-    /***************************************************
-     *
-    Set temperature for each sensor
-    *
-    ***************************************************/
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
@@ -150,17 +138,33 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         }
         else
         {
-            //For RTTop
-            retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            if(4 == m_CurScenario)
             {
-                return retCode;
+                retCode = StopTemperatureControl("RTSide");
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
+                retCode = StopTemperatureControl("RTBottom");
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
             }
-            //For RTBottom
-            retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            else
             {
-                return retCode;
+                //For RTTop
+                retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
+                //For RTBottom
+                retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    return retCode;
+                }
             }
         }
 
@@ -200,7 +204,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
                 (void)this->StopTemperatureControl("RTBottom");
             }
         }
-
     }
 
     // For Level Sensor, we need set two times (high and low) in each scenario
@@ -297,12 +300,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         //Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if (strctHWMonitor.TempALTube1 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube1 < (userInputMeltingPoint -1) || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
         }
 
-        if (strctHWMonitor.TempALTube2 < userInputMeltingPoint || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
         }
@@ -378,7 +381,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     return retCode;
 }
 
-ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName)
+ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature)
 {
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
@@ -408,9 +411,25 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     if ("RTBottom" == HeaterName)
     {
         m_RTBottom.curModuleId = "1";
+        qreal TempRTBottom = 80;
+        if(NotSureTemperature)
+        {
+            TempRTBottom = mp_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+            if(isEffectiveTemp(TempRTBottom))
+            {
+                if(TempRTBottom < m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature - 25)
+                {
+                    TempRTBottom += 20;
+                }
+                else
+                {
+                    TempRTBottom = m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature - 5;
+                }
+            }
+        }
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
-        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRTBottom);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(107);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(6000);
@@ -445,8 +464,24 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     {
         m_RV_1_HeatingRod.curModuleId = "3";
         m_RV_2_Outlet.curModuleId = "3";
+        qreal TempRV1 = 80;
+        if(NotSureTemperature)
+        {
+            TempRV1 = mp_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+            if(isEffectiveTemp(TempRV1))
+            {
+                if(TempRV1 < m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature - 25)
+                {
+                    TempRV1 += 20;
+                }
+                else
+                {
+                    TempRV1 = m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature - 5;
+                }
+            }
+        }
         pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRV1);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(130);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(1212);
@@ -825,34 +860,6 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
     }
     return 0; // Have not got the time out
 }
-bool HeatingStrategy::CheckLASensorStatus(const QString& HeaterName, qreal HWTemp)
-{
-    if ("LATube1" == HeaterName)
-    {
-        if (HWTemp >= m_LARVTube.functionModuleList[m_LARVTube.curModuleId].OTTargetTemperature
-                && HWTemp < m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    if ("LATube2" == HeaterName)
-    {
-        if (HWTemp >= m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].OTTargetTemperature
-                && HWTemp < m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {
@@ -871,7 +878,7 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
-    if ( heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature < HWTemp )
+    if ( heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <= HWTemp )
      {
         return false;
     }
@@ -945,7 +952,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = iter->TemperatureOffset;
+            iter->OTTargetTemperature = iter->TemperatureOffset -1;
         }
     }
 
@@ -1018,7 +1025,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
             qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-            iter->OTTargetTemperature =  meltingPoint;
+            iter->OTTargetTemperature =  meltingPoint -1;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -1263,14 +1270,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
             {
                 heatingSensor.OTCheckPassed = false;
             }
-            if (260 == m_CurScenario)
-            {
-                iter->OTTargetTemperature = iter->TemperatureOffset;
-            }
-            else
-            {
-                iter->OTTargetTemperature =  mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-            }
+
+            iter->OTTargetTemperature = iter->TemperatureOffset -2;
+
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -1667,7 +1669,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         return true;
     }
 
-    if ((heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature-0.5)<= HWTemp)
+    if ((heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)<= HWTemp && isEffectiveTemp(HWTemp))
     {
         heatingSensor.OTCheckPassed = true;
     }
@@ -1727,47 +1729,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
 
         if(0 == timeRange.first)
         {
-            if(OVEN_BOTTOM2_SENSOR == OvenType)
-            {
-                if(heatingSensor.OvenBottom2OTCheckPassed)
-                    return retCode;
-            }
-            else if(heatingSensor.OTCheckPassed)
-            {
-                return retCode;
-            }
-            if( timeElapse < (timeRange.second*1000 - 30*1000) )
-            {
-                if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
-                {
-                    if(OVEN_BOTTOM2_SENSOR == OvenType)
-                    {
-                        heatingSensor.OvenBottom2OTCheckPassed = true;
-                    }
-                    else
-                    {
-                        heatingSensor.OTCheckPassed = true;
-                    }
-                    return retCode;
-                }
-            }
-            else if( HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
-            {
-                switch(OvenType)
-                {
-                    case OVEN_TOP_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL;
-                        break;
-                    case OVEN_BOTTOM1_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL;
-                        break;
-                    case OVEN_BOTTOM2_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_ABNORMAL;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //the abnormal error was deleted
         }
         else
         {
@@ -1801,18 +1763,41 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         return true;
     }
-    if (HWTemp >= mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
+    qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if (meltingPoint < 68.0)
     {
-        m_RV_2_Outlet.OTCheckPassed = true;
+        if (HWTemp >= meltingPoint && isEffectiveTemp(HWTemp))
+        {
+            m_RV_2_Outlet.OTCheckPassed = true;
+        }
     }
+    else
+    {
+        if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+        {
+            m_RV_2_Outlet.OTCheckPassed = true;
+        }
+    }
+
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
     {
         if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
         {
-            if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
+
+            if (meltingPoint < 68.0)
             {
-                return false;
+                if (HWTemp < meltingPoint)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (HWTemp < 68.0)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -1999,28 +1984,86 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
     return true;
 }
 
-
-
-bool HeatingStrategy::CheckSensorsTemp(const HardwareMonitor_t& strctHWMonitor)
+void HeatingStrategy::Init260ParamList()
 {
-    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (userInputMeltingPoint <= 0)
+    memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
+    m_SensorsChecking.firstBottle = true;
+
+    m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
+    m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+
+    if (m_SensorsChecking.meltingPoint <= 64.0)
     {
-     return true;
+        m_SensorsChecking.minTime = 5*60*1000;
+    }
+    else
+    {
+        m_SensorsChecking.minTime = 8*60*1000;
     }
 
-    if(!isEffectiveTemp(strctHWMonitor.TempRTSide) || !isEffectiveTemp(strctHWMonitor.TempRTBottom1) || !isEffectiveTemp(strctHWMonitor.TempRTBottom2)
-            || !isEffectiveTemp(strctHWMonitor.TempOvenTop) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom1) || !isEffectiveTemp(strctHWMonitor.TempOvenBottom2)
-            || !isEffectiveTemp(strctHWMonitor.TempRV2) || !isEffectiveTemp(strctHWMonitor.TempALTube1) )
+    m_SensorsChecking.ovenTopPass = false;
+    m_SensorsChecking.LATube1Pass = false;
+}
+
+bool HeatingStrategy::Check260SensorsTemp()
+{
+    if (false == m_SensorsChecking.ovenTopPass)
+    {
+        qreal ovenTopTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenTop;
+        if (ovenTopTemp >= (m_SensorsChecking.meltingPoint-4))
+        {
+            m_SensorsChecking.ovenTopPass = true;
+        }
+    }
+
+    if (false == m_SensorsChecking.LATube1Pass)
+    {
+        qreal LATube1Temp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
+        if (LATube1Temp >= (m_SensorsChecking.meltingPoint+2))
+        {
+            m_SensorsChecking.LATube1Pass = true;
+        }
+    }
+
+    // For LA tube2, we only check it heating status. If it is off, we just log it.
+    if (false == mp_SchedulerCommandProcessor->HardwareMonitor().LATube2HeatingStatus)
+    {
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LATBUE2_OFF);
+    }
+    // for NON-first bottle, we need not check minimal time
+    bool ret = m_RTTop.OTCheckPassed && m_RTBottom.OTCheckPassed && m_SensorsChecking.ovenTopPass
+            && m_RV_2_Outlet.OTCheckPassed && m_SensorsChecking.LATube1Pass;
+
+    if (m_SensorsChecking.firstBottle)
+    {
+        ret = ret && ((QDateTime::currentMSecsSinceEpoch()-m_SensorsChecking.startTime) >= m_SensorsChecking.minTime);
+
+        // when first bottle checking is done, set the flag to be false
+        if (ret)
+        {
+            m_SensorsChecking.firstBottle = false;
+        }
+    }
+
+    // Reset OvenTop and LATbue1 when checking passed
+    if (ret)
+    {
+        m_SensorsChecking.ovenTopPass = false;
+        m_SensorsChecking.LATube1Pass = false;
+    }
+
+    return ret;
+}
+bool HeatingStrategy::CheckLATbueTempAbnormal(qreal temp)
+{
+    //Parrifin melting point (user input)
+    qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+    if (temp < (userInputMeltingPoint -1) || qAbs(temp - 299) <=0.000001)
     {
         return false;
     }
 
-    return (strctHWMonitor.TempRTSide>=userInputMeltingPoint)&&(strctHWMonitor.TempRTBottom1>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempRTBottom2>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenTop>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempOvenBottom1>=userInputMeltingPoint)&&(strctHWMonitor.TempOvenBottom2>=userInputMeltingPoint)
-         &&(strctHWMonitor.TempRV2>=userInputMeltingPoint)&&(strctHWMonitor.TempALTube1>=userInputMeltingPoint);
-
+    return true;
 }
 
 }// end of namespace Scheduler

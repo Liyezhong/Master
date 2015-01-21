@@ -31,6 +31,11 @@
 
 namespace LogViewer {
 
+/****************************************************************************/
+/*!
+ *  \brief test log viewer function
+ */
+/****************************************************************************/
 class CTestLogViewerDialog : public QObject
 {
     Q_OBJECT

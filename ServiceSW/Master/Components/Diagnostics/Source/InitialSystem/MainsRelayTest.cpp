@@ -45,8 +45,8 @@ int CMainsRelayTest::Run(void)
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
     qreal RVTargetTemp = p_TestCase->GetParameter("RVTargetTemp").toInt();
     qreal OvenTopTargetTemp = p_TestCase->GetParameter("OvenTopTargetTemp").toInt();
-    qint32 SwitchOnCurrentHigh = p_TestCase->GetParameter("SwitchOnCurrentHigh").toInt();
-    qint32 SwitchOnCurrentLow = p_TestCase->GetParameter("SwitchOnCurrentLow").toInt();
+    qint32 SwitchOnCurrentHigh = p_TestCase->GetParameter("ASB3CurrentHigh").toInt();
+    qint32 SwitchOnCurrentLow = p_TestCase->GetParameter("ASB3CurrentLow").toInt();
     qint32 SwitchOffCurrent = p_TestCase->GetParameter("SwitchOffCurrent").toInt();
 
     ShowWaitingMessage(true);
@@ -104,6 +104,9 @@ int CMainsRelayTest::Run(void)
 
         qDebug()<<"Initial System Check: Mains Relay test after oven top heating get current:---"<<Current;
 
+        SwitchOnCurrentHigh = p_TestCase->GetParameter("ASB5CurrentHigh").toInt();
+        SwitchOnCurrentLow  = p_TestCase->GetParameter("ASB5CurrentLow").toInt();
+
         if (Current>=SwitchOnCurrentLow && Current<=SwitchOnCurrentHigh) {
 
             p_DevProc->Pause(3000);
@@ -152,7 +155,7 @@ void CMainsRelayTest::ShowFailMessage(int Error)
     QString Title = "Mains Relay Self-test";
     QString Text;
     if (Error == 1) {
-        Text = "Mains Relay Selftest Failed. <br>Please exchange " \
+        Text = "Mains Relay Selftest Failed.<br>Please exchange " \
                 "Mains relay and repeat the test. If still not successful," \
                 "replace ASB15. <br>" \
                 "Unless this error is resolved, all test functions using AC " \

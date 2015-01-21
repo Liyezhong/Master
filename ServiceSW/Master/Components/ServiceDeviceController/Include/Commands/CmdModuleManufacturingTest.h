@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CmdModuleEndTest.h
+/*! \file CmdModuleManufacturingTest.h
  *
  *  \brief Definition file for class CmdModuleManufacturingTest.
  *
@@ -54,12 +54,13 @@ public:
     static QString  NAME;                                   ///< Command name.
 
     Service::ModuleTestCaseID m_CommandType;              ///< Type of end test requested
-    Service::ModuleTestCaseID m_AbortTestCaseId;
+    Service::ModuleTestCaseID m_AbortTestCaseId;          ///< id of abort test case
     /****************************************************************************/
     /**
      * \brief Constructor.
      *
      * \iparam CmdType = Command type
+     * \iparam AbortId = abort id
      */
     /****************************************************************************/
     CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType, Service::ModuleTestCaseID AbortId);

@@ -58,6 +58,18 @@ public:
     /****************************************************************************/
     ~CSVCScreenLockWidget();
 
+    /****************************************************************************/
+    /*!
+     *  \brief start timer
+     */
+    /****************************************************************************/
+    void StartTimer();
+    /****************************************************************************/
+    /*!
+     *  \brief set lock status
+     *  \param Status = status of lock
+     */
+    /****************************************************************************/
     void SetLockStatus(bool Status) {
         m_LockStatus = Status;
     }
@@ -81,8 +93,8 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;               //!< Information dialog
     QString m_EnteredPin;               //!< Service Pin
     QTimer* m_timer;       ///<  Definition/Declaration of variable m_timer
-    bool m_LockStatus;      //!< flag of lock status
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;             //!< KeyBoard widget
+    bool m_LockStatus;      //!< flag of lock status
 private slots:
     /****************************************************************************/
     /*!

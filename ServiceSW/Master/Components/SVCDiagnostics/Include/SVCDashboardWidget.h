@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file SVCDashboardWidget.h
+ *
+ *  \brief SVC Diagnostics dashboard widget definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-10-02
+ *   $Author:  $ Abe Yang
+ *
+ *   \b Company:
+ *
+ * 		 Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #ifndef SVCDASHBOARDWIDGET_H
 #define SVCDASHBOARDWIDGET_H
 
@@ -91,10 +110,31 @@ private slots:
 
     /****************************************************************************/
     /*!
-     *  \brief This function is called when clicked the pressure image
+     *  \brief This function is called when clicked the Fan image
      */
     /****************************************************************************/
-    void PressureSelected();
+    void FanSelected();
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when clicked the Valve1 image
+     */
+    /****************************************************************************/
+    void Valve1Selected();
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when clicked the Valve2 image
+     */
+    /****************************************************************************/
+    void Valve2Selected();
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when clicked the Pump image
+     */
+    /****************************************************************************/
+    void PumpSelected();
 
     /****************************************************************************/
     /*!
@@ -102,6 +142,13 @@ private slots:
      */
     /****************************************************************************/
     void OnSelectPosition();
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when clicked the Valve State Info button
+     */
+    /****************************************************************************/
+    void OnValveStateInfo();
 
 public slots:
     /****************************************************************************/
@@ -133,7 +180,6 @@ public slots:
      *  \iparam RVPosition = rotary valve position
      *  \iparam RVTemp1    = rotary valve temperature 1
      *  \iparam RVTemp2    = rotary valve temperature 2
-     *  \iparam RVTemp3    = rotary valve temperature 3
      *  \iparam RVCurrent  = rotary valve Current
      */
     /****************************************************************************/
@@ -175,12 +221,38 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for timer start
+     *  \iparam IsStart = flag of start
      */
     /****************************************************************************/
     void TimerStart(bool IsStart);
 private:
 
+    /****************************************************************************/
+    /*!
+     *  \brief To check rotary valve sensor temperature
+     *  \return Is the rotary valve sensor reach the target temperature
+     */
+    /****************************************************************************/
+    bool CheckRVTemperature();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Make position to string.
+     *  \iparam TubeFlag = flag of tube position
+     *  \iparam Position = target position
+     *  \return String of position
+     */
+    /****************************************************************************/
     QString PostionToStr(bool TubeFlag, qreal Position);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show failed dialog
+     *  \iparam Title = Dialog title
+     *  \iparam Text = Dialog text
+     */
+    /****************************************************************************/
+    void ShowFailedDlg(const QString& Title, const QString& Text);
 
     /****************************************************************************/
     /*!
@@ -192,13 +264,13 @@ private:
     /****************************************************************************/
     /*!
      *  \brief Create all part
-     *  \iparam partResName = the name of the part
-     *  \iparam pos = the pos of the part
+     *  \iparam PartResName = the name of the part
+     *  \iparam Pos = the pos of the part
      *  \iparam Clickable = the flag the part Clickable
      *  \return the pointer of the CGraphiscsItemPart
      */
     /****************************************************************************/
-    CGraphicsItemPart* CreatePart(const QString& partResName, const QPoint& pos, bool Clickable = true);
+    CGraphicsItemPart* CreatePart(const QString& PartResName, const QPoint& Pos, bool Clickable = true);
 
     /****************************************************************************/
     /*!
@@ -234,6 +306,14 @@ private:
     CGraphicsItemPart* mp_Line2;     //!< connect line2 item part
     CGraphicsItemPart* mp_Line3;     //!< connect line3 item part
 
+    CGraphicsItemPart* mp_GV1StateUp;       //!< valve1 up state
+    CGraphicsItemPart* mp_GV1StateLeft;     //!< valve1 left state
+    CGraphicsItemPart* mp_GV1StateRight;    //!< valve1 right state
+
+    CGraphicsItemPart* mp_GV2StateUp;       //!< valve2 up state
+    CGraphicsItemPart* mp_GV2StateLeft;     //!< valve2 left state
+    CGraphicsItemPart* mp_GV2StateRight;    //!< valve2 right state
+
     SVCButton* mp_SelectBtn;         //!< The button of select position
     SVCButton* mp_ValveInfoBtn;      //!< The button of valve state info
 
@@ -259,8 +339,6 @@ private:
     SVCLabel* mp_RotaryValveCurrent;    //!< Rotary valve current label
 
     SVCLabel* mp_PressureLabel;         //!< Pressure label
-
-    bool m_IsFristMoveRV;    //!< Flag for move rotary valve position
 };
 
 }//end of namespace

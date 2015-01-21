@@ -73,4 +73,5 @@ FORMS   *= ../Forms/*.ui \     # form file location
     ../Forms/LaTimingDialog.ui \
     ../Forms/RetortTimingDialog.ui \
     ../Forms/RetortInputDialog.ui \
-    ../Forms/LiquidHoseTestDlg.ui
+    ../Forms/LiquidHoseTestDlg.ui \
+    ../Forms/StatusConfirmDialog.ui

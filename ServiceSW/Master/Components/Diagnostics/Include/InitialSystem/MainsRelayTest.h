@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CMainsRelayTest(QWidget *p_Parent=NULL);
@@ -56,6 +56,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for test start run
+     *  \return Error code
      */
     /****************************************************************************/
     int Run(void);

@@ -22,7 +22,7 @@
 
 #include <QDebug>
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
-#include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
+#include "Diagnostics/Include/StatusConfirmDialog.h"
 
 namespace Diagnostics {
 
@@ -122,7 +122,7 @@ int CLidLockTest::ShowLidLockStatusDlg(int StepNum, QString& LidLockState)
     QString Title = tr("Retort Lid Lock");
     QString ConfirmString = tr("Do you see the retort lid '%1'?").arg(StepNum == 1 ? "Open" : "Close");
 
-    DiagnosticsManufacturing::CStatusConfirmDialog ConfirmDlg(mp_Parent);
+    Diagnostics::CStatusConfirmDialog ConfirmDlg(mp_Parent);
     ConfirmDlg.SetDialogTitle(Title);
     ConfirmDlg.SetText(ConfirmString);
     Service::ModuleTestStatus Status;

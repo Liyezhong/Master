@@ -42,16 +42,34 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CGraphicsPixmapItem
-     *  \iparam file = image enable path
-     *  \iparam diable = image disable path
+     *  \iparam enableState = image enable path
+     *  \iparam diableState = image disable path
      */
     /****************************************************************************/
     CGraphicsPixmapItem(QString enableState, QString diableState = "");
 
-    //virtual function
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function boundingRect
+     *  \return QRectF
+     */
+    /****************************************************************************/
     QRectF boundingRect() const;
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function shape
+     *  \return QPainterPath
+     */
+    /****************************************************************************/
     QPainterPath shape() const;
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function paint
+     *  \iparam painter
+     */
+    /****************************************************************************/
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
 public:
@@ -65,23 +83,35 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Set tag
-     *  \iparam tag
+     *  \iparam _tag
      */
     /****************************************************************************/
-    void SetTag(int tag);
+    void SetTag(int _tag);
 
 signals:
     /****************************************************************************/
     /*!
      *  \brief when pixamp is Clicked, send a signal
-     *  \iparam tag
+     *  \iparam _tag
      */
     /****************************************************************************/
-    void Clicked(int tag);
+    void Clicked(int _tag);
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    /****************************************************************************/
+    /*!
+     *  \brief when pixamp is Pressed, send a event
+     *  \iparam _event = the event when mouse press
+     */
+    /****************************************************************************/
+    void mousePressEvent(QGraphicsSceneMouseEvent *_event);
+    /****************************************************************************/
+    /*!
+     *  \brief when pixamp is Released, send a event
+     *  \iparam _event = the event when mouse release
+     */
+    /****************************************************************************/
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *_event);
 
 private:
     QPixmap pixmapEnable;     //!< save pixmap enable state
@@ -117,6 +147,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Set rotary valve position
+     *  \iparam flag = sealing or tube flag
+     *  \iparam position = target position
      */
     /****************************************************************************/
     void SetPos(bool flag, qint32 position);
@@ -124,6 +156,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Get rotary valve selected position
+     *  \iparam flag = sealing or tube flag
+     *  \oparam position = target position
      */
     /****************************************************************************/
     void GetPos(bool &flag, qint32 &position);
@@ -134,14 +168,10 @@ private Q_SLOTS:
     /****************************************************************************/
     /*!
      *  \brief  Slot for rotary valve position button clicked
+     *  \iparam _tag = tag of image
      */
     /****************************************************************************/
-    void RotaryValveClicked(int tag);
-
-//    void setPosIncrease_x();
-//    void setPosDecrease_x();
-//    void setPosIncrease_y();
-//    void setPosDecrease_y();
+    void RotaryValveClicked(int _tag);
 
 private:
     Ui::CRotaryValveDlg* ui;    //!< User interface
@@ -151,16 +181,6 @@ private:
     CGraphicsPixmapItem *rotaryValvePos[32]; //!< 0 - 15: tube, 16-31: sealing
 
     int tag; //!< save rotay valve position
-
-//private:
-//    QPushButton *buttonPosX_inc;
-//    QPushButton *buttonPosX_dec;
-
-//    QPushButton *buttonPosY_inc;
-//    QPushButton *buttonPosY_dec;
-
-//    QLineEdit *EditPos;
-//    QLineEdit *editIndex;
 };
 
 }//end of namespace SVCDiagnostics

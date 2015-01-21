@@ -140,8 +140,10 @@ int CHeatingTestEmpty::Run(void)
                           "the paraffin oven. Then please leave the oven cover "
                           "opened to speed up the cooling process."));
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
 
         qreal TempOffset = p_TestCase->GetParameter("TempOffset").toFloat();
         int t = p_TestCase->GetParameter("t").toInt();
@@ -152,7 +154,7 @@ int CHeatingTestEmpty::Run(void)
         status.OvenTempSensor1 = OvenTempSensor1;
         status.OvenTempSensor2 = OvenTempSensor2;
         status.OvenTempTop = OvenTempTop;
-        status.EDTime = t;
+        status.EDTime = t + 60;
         status.TempOffsetRangeMax = 0;
         status.TempOffsetRangeMin = 0;
 
@@ -163,11 +165,7 @@ int CHeatingTestEmpty::Run(void)
             ret = dev->OvenGetTemp(&OvenTempTopCur, &OvenTempSensor1Cur, &OvenTempSensor2Cur);
             if (ret != RETURN_OK)
                 break;
-            status.OvenTempSensor1 = OvenTempSensor1Cur;
-            status.OvenTempSensor2 = OvenTempSensor2Cur;
-            status.OvenTempTop = OvenTempTopCur;
-            status.UsedTime++;
-            RefreshWaitingDialog(&status);
+
             if (max - OvenTempTopCur >= TempOffset
                     && max - OvenTempSensor1Cur >= TempOffset
                     && max - OvenTempSensor2Cur >= TempOffset) {
@@ -181,12 +179,19 @@ int CHeatingTestEmpty::Run(void)
                 count = 60;
             }
 
+            status.OvenTempSensor1 = OvenTempSensor1Cur;
+            status.OvenTempSensor2 = OvenTempSensor2Cur;
+            status.OvenTempTop = OvenTempTopCur;
+            status.UsedTime++;
+            RefreshWaitingDialog(&status);
             int MSec = QTime().currentTime().msecsTo(EndTime);
             dev->Pause(MSec);
         }
 
-        if (!timingDialog->isVisible())
+        if (!timingDialog->isVisible()) {
+           ret = RETURN_ABORT;
            goto _abort_;
+        }
 
         timingDialog->accept();
         if (ret != RETURN_OK || count > 0) {
@@ -198,16 +203,20 @@ int CHeatingTestEmpty::Run(void)
 
         text = tr("Please close oven cover.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
     } else {
         text = tr("Please make sure there are no "
                   "paraffin baths present in the paraffin oven.<br/>"
                   "Verify the oven surfaces are dry and clean, "
                   "and the oven cover is closed.");
         ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
-        if (ret == CDiagnosticMessageDlg::ABORT)
+        if (ret == CDiagnosticMessageDlg::ABORT) {
+            ret = RETURN_ABORT;
             goto _abort_;
+        }
     }
 
     ret = dev->OvenGetTemp(&OvenTempTop, &OvenTempSensor1, &OvenTempSensor2);
@@ -282,18 +291,19 @@ int CHeatingTestEmpty::Run(void)
             break;
         }
 
-
         status.OvenTempTop = OvenTempTopCur;
         status.OvenTempSensor1 = OvenTempSensor1Cur;
         status.OvenTempSensor2 = OvenTempSensor2Cur;
         status.UsedTime++;
         RefreshWaitingDialog(&status);
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
-    if (!timingDialog->isVisible())
+    if (!timingDialog->isVisible()) {
+        ret = RETURN_ABORT;
         goto _abort_;
+    }
 
     timingDialog->accept();
 

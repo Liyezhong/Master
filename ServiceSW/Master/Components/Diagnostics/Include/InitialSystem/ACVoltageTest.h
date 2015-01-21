@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CACVoltageTest(QWidget *p_Parent=NULL);
@@ -56,6 +56,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for test start run
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -80,6 +81,7 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief To get current switch type
+     *  \return current switch type
      */
     /****************************************************************************/
     virtual int GetCurrentSwitchType();

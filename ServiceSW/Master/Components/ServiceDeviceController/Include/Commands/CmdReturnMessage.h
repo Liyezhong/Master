@@ -75,9 +75,9 @@ public:
     QString m_RefLiquidLevelFull;       ///< Full liquild level ref information
     QString m_RefLiquidLevelEmpty;      ///< Empty liquid level ref information
 
-    bool m_CalibStatus;
-    Service::ModuleTestStatus m_Status;
-    bool m_ModuleTestResult;
+    bool m_CalibStatus; ///< calibration status
+    Service::ModuleTestStatus m_Status; ///< store test status
+    bool m_ModuleTestResult; ///< module test status(true/false)
 
     QString m_ServReqName;                ///< Service Request Name
     QStringList m_ServResults;                ///< Service Request results
@@ -87,7 +87,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]   DevInstanceID       Instance ID of the concerned device.
+     * \param  ReturnMessage = message
      */
     /****************************************************************************/
     CmdReturnMessage(QString ReturnMessage);

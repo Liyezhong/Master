@@ -84,11 +84,11 @@ WrapperFmTempControl::WrapperFmTempControl(QString Name, CTemperatureControl *pT
  *  \brief Script-API:Set reference temperature
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.StartTemperatureControl]
  *  \until    [TempControl.StartTemperatureControl]
  *
  *  \iparam  NominalTemperature   Reference temperature
+ *  \iparam  SlopeTempChange      Reference temp change
  *
  *  \return true, if the set function succeeded, else false
  *
@@ -176,10 +176,10 @@ void WrapperFmTempControl::OnSetTemp(quint32 /*InstanceID*/, ReturnCode_t Return
  * This method performs reading of actual temperature
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
+
  *  \skipline [TempControl.GetTemperature]
  *  \until    [TempControl.GetTemperature]
- *
+ *  \iparam   Index   sensor index
  *  \return actualtemperature, else UNDEFINED in caseof error
  *
  */
@@ -299,7 +299,6 @@ bool WrapperFmTempControl::SetTempCtrlON()
  *   This method sets the temperature control status OFF
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.StopTemperatureControl]
  *  \until    [TempControl.StopTemperatureControl]
  *
@@ -388,7 +387,6 @@ void WrapperFmTempControl::OnTempControlStatus(quint32 /*InstanceID*/, ReturnCod
  *  power mode.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.SetFullPowerMode]
  *  \until    [TempControl.SetFullPowerMode]
  *
@@ -410,7 +408,6 @@ bool WrapperFmTempControl::SetFullPowerMode()
  *  power save mode.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.SetPowerSaveMode]
  *  \until    [TempControl.SetPowerSaveMode]
  *
@@ -483,7 +480,6 @@ void WrapperFmTempControl::OnSetTempCtrlOpMode(quint32, ReturnCode_t ReturnCode,
  *  back to null.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.ResetHeaterOperatingTime]
  *  \until    [TempControl.ResetHeaterOperatingTime]
  *
@@ -536,7 +532,6 @@ void WrapperFmTempControl::OnResetHeaterOperatingTime(quint32, ReturnCode_t Retu
  *  seconds.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.GetHeaterOperatingTime]
  *  \until    [TempControl.GetHeaterOperatingTime]
  *
@@ -592,7 +587,6 @@ void WrapperFmTempControl::OnGetHeaterOperatingTime(quint32, ReturnCode_t Return
  *  revelations per second.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.GetFanSpeed]
  *  \until    [TempControl.GetFanSpeed]
  *
@@ -650,7 +644,6 @@ void WrapperFmTempControl::OnGetFanSpeed(quint32, ReturnCode_t ReturnCode, quint
  *  through the heating circuit in milliamperes.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.GetHardwareStatus]
  *  \until    [TempControl.GetHardwareStatus]
  *
@@ -679,7 +672,7 @@ WrapperFmTempControl::HardwareStatus_t *WrapperFmTempControl::GetHardwareStatus(
  *  returns only current through the heating circuit in milliamperes.
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
+
  *  \skipline [TempControl.GetCurrent]
  *  \until    [TempControl.GetCurrent]
  *
@@ -816,7 +809,6 @@ void WrapperFmTempControl::Reset()
  *  \brief  Script-API: Checks the temperature control mode
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
  *  \skipline [TempControl.GetPowerOperationMode]
  *  \until    [TempControl.GetPowerOperationMode]
  *
@@ -844,7 +836,7 @@ QString WrapperFmTempControl::GetPowerOperationMode()
  *  This method checks if the temperature is ON
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
+
  *  \skipline [TempControl.IsTemperatureControllOn]
  *  \until    [TempControl.IsTemperatureControllOn]
  *
@@ -881,7 +873,7 @@ bool WrapperFmTempControl::IsTemperatureControlOff()
  *  Off/IsideRange/OutSideRange
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
+
  *  \skipline [TempControl.GetTemperatureControlState]
  *  \until    [TempControl.GetTemperatureControlState]
  *
@@ -976,7 +968,7 @@ bool WrapperFmTempControl::IsOutsideRange()
  *  range
  *
  *  Examples:
- *  \dontinclude tempcontrol.js
+
  *  \skipline [TempControl.GetMainsVoltageState]
  *  \until    [TempControl.GetMainsVoltageState]
  *

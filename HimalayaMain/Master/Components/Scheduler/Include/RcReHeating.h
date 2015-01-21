@@ -161,15 +161,6 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  function of MoveCleaningTubePos
-     *  \param  cmdName = QString
-     *  \param  retCode = DeviceControl::ReturnCode_t
-     */
-    /****************************************************************************/
-    void MoveCleaningTubePos(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
-
-    /****************************************************************************/
-    /*!
      *  \brief  conctruction of CRcReHeating
      *  \param  rhs = CRcReHeating
      */
@@ -237,13 +228,6 @@ signals:
     /****************************************************************************/
     void SigDrainCurrentReagent();
 
-    /****************************************************************************/
-    /*!
-     *  \brief Signal to move cleaning tube position
-     */
-    /****************************************************************************/
-    void SigMoveCleaningTubePos();
-
 private:
     /****************************************************************************/
     /*!
@@ -256,8 +240,7 @@ private:
         START_TEMPERATURE,
         CHECK_TEMPERATURE,
         GET_RV_POSOTION,
-        BEGIN_DRAIN,
-        MOVE_CLEANING_TUBE_POS
+        BEGIN_DRAIN
     }StateList_t;
 
     /****************************************************************************/
@@ -274,7 +257,7 @@ private:
         BUILD_VACUUM,
         MOVE_INITIALIZE_POSITION,
         MOVE_TUBEPOSITION,
-        REALSE_PRESSRE
+        REALSE_PRESSURE
     }RS_REAGENTCHECK_t;
 
 private:
@@ -285,7 +268,6 @@ private:
     QSharedPointer<QState>          mp_CheckSensorTemp;                 //!< Check all sensor temperature
     QSharedPointer<QState>          mp_GetRvPosition;                   //!< Get RV position
     QSharedPointer<QState>          mp_DrainCurrentReagent;             //!< Drain current reagent
-    QSharedPointer<QState>          mp_MoveCleaningTubePos;             //!< Move cleaning tube position
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time

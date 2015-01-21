@@ -38,7 +38,6 @@ using namespace DeviceControl;
  *  modules.
  *
  *  Examples:
- *   \dontinclude analogoutput.js
  *   \skipline [WrapperFmAnalogOutput]
  *   \until    [WrapperFmAnalogOutput]
  */

@@ -69,16 +69,17 @@ CStartup::CStartup() : QObject()
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
     CONNECTSIGNALSLOT(mp_Programs, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
+    CONNECTSIGNALSLOT(mp_Settings, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
 
     Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
     CONNECTSIGNALSIGNAL(pApp, InteractStart(), mp_Dashboard, OnInteractStart());
 
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(), mp_Dashboard, UpdateItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramDeleted(), mp_Dashboard, UpdateItemsToFavoritePanel());
 
-    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
+    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, UpdateItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
     CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));

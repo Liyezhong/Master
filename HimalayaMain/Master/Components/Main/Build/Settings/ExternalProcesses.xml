@@ -24,7 +24,7 @@
                 "nice -n %X% ./guiclient -qws -display VNC:linuxfb &"; 
             note:   %X% is the desired priority of the (linux) process
         -->
-        <startcmd>nice -n 5 ./himalaya_gui 127.0.0.16 8801 &amp;</startcmd>
+        <startcmd>nice -n 5 ./himalaya_gui 127.0.0.16 8801 -qws &amp;</startcmd>
         <!-- Remote login: Yes/No  (if empty, "No" is assumed) -->
         <!-- If External Process is not started by Master and its exact login timing is 
         undefined, remotelogin shall be set to "Yes". -->

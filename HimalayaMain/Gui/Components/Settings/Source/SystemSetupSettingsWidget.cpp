@@ -27,6 +27,7 @@
 #include "Core/Include/GlobalHelper.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "Dashboard/Include/CommonString.h"
+#include "Core/Include/DataConnector.h"
 
 namespace Settings {
 
@@ -74,15 +75,17 @@ static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of v
 /****************************************************************************/
 CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
-    m_CurrentUserRole(MainMenu::CMainWindow::Operator)
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator),
+    mp_TableWidget(NULL),
+    mp_DataConnector(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Oven"));
 
     mp_ScrollWheel = new MainMenu::CScrollWheel;
 
     mp_Ui->scrollPanelWidget->Init(1);
     mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheel, 0);
+
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnApply());
 }
 
@@ -95,6 +98,7 @@ CSystemSetupSettingsWidget::~CSystemSetupSettingsWidget()
 {
     try {
         delete mp_ScrollWheel;
+        delete mp_TableWidget;
         delete mp_Ui;
     }
     catch (...) {
@@ -123,6 +127,29 @@ void CSystemSetupSettingsWidget::changeEvent(QEvent *p_Event)
     }
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Sets pointer to DataConnector object
+ *
+ *  \iparam p_DataConnector = the data connector
+ */
+/****************************************************************************/
+void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataConnector)
+{
+    if (p_DataConnector)
+    {
+        mp_DataConnector = p_DataConnector;
+        m_PrecheckProgramModel.SetProgramList(p_DataConnector->ProgramList);
+
+        mp_TableWidget = new MainMenu::CBaseTable;
+        mp_TableWidget->setModel(&m_PrecheckProgramModel);
+        mp_Ui->programTable->SetContent(mp_TableWidget);
+        m_PrecheckProgramModel.SetVisibleRowCount(6);
+        mp_TableWidget->horizontalHeader()->show();
+        mp_TableWidget->SetVisibleRows(6);
+        mp_TableWidget->horizontalHeader()->resizeSection(0, 90);
+    }
+}
 
 /****************************************************************************/
 /*!
@@ -195,8 +222,8 @@ void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
 
         int Temp = mp_UserSettings->GetTemperatureParaffinBath();
         mp_ScrollWheel->SetCurrentData(Temp);
-         qDebug()<<"\n\n SystemSetup settings widget Temp " << Temp;
 
+        m_PrecheckProgramModel.SetProgramList(mp_DataConnector->ProgramList);
         ResetButtons();
     }
 }
@@ -208,6 +235,8 @@ void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
 /****************************************************************************/
 void CSystemSetupSettingsWidget::OnUserRoleChanged()
 {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    m_PrecheckProgramModel.SetUserRole(m_CurrentUserRole);
     ResetButtons();
 }
 
@@ -261,7 +290,12 @@ void CSystemSetupSettingsWidget::ResetButtons()
 void CSystemSetupSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
-   m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget", "If paraffin melting point is changed, %1 hours will be needed to melt paraffin, really change it?", 0, QApplication::UnicodeUTF8);
+   m_strConfirmChangeMeltingPoint =  QApplication::translate("Settings::CSystemSetupSettingsWidget",
+                                                             "Do you really want to change the melting point of paraffin?", 0, QApplication::UnicodeUTF8);
+   m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
+    "With melting point changed, if you put the solid paraffin in, please select 'Yes' to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select 'No' and no need to wait any time.",
+                                                              0, QApplication::UnicodeUTF8);
+
 }
 
 /****************************************************************************/
@@ -286,9 +320,54 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 
 void CSystemSetupSettingsWidget::OnApply()
 {
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
+    QStringList checkflags = m_PrecheckProgramModel.GetBottleCheckFlags();
+    for (int i = 0; i < checkflags.count(); i++)
+    {
+        DataManager::CProgram* pProgram = mp_DataConnector->ProgramList->GetProgram(i);
+        QString strTemp = checkflags[i];
+        if ((strTemp == "1") && (pProgram->GetBottleCheck()))
+            continue;
+        if ((strTemp == "0") && !(pProgram->GetBottleCheck()))
+            continue;
+
+        bool bRevertSelectedProgram = false;
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, pProgram->GetID()))
+            return;//cancel
+
+        if (bRevertSelectedProgram)
+        {
+            emit UnselectProgram();
+        }
+
+        if (strTemp == "1")
+            pProgram->SetBottleCheck(true);
+        else
+            pProgram->SetBottleCheck(false);
+
+        emit UpdateProgram(*pProgram);
+    }
+
     int temp = mp_ScrollWheel->GetCurrentData().toInt();
+    int lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
+    if (temp == lastMeltPoint)
+        return;
+
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+    ConfirmationMessageDlg.SetTitle(CommonString::strWarning);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+    ConfirmationMessageDlg.SetText(m_strConfirmChangeMeltingPoint);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
+    ConfirmationMessageDlg.HideCenterButton();
+    if (!ConfirmationMessageDlg.exec())
+    {
+        return;
+    }
+
+    m_UserSettingsTemp = *mp_UserSettings;
+    m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
+    emit TemperatureChanged(m_UserSettingsTemp);
+
     if (temp <= 63)
     {
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("12"));
@@ -296,25 +375,13 @@ void CSystemSetupSettingsWidget::OnApply()
     else
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("15"));
 
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);//left
     ConfirmationMessageDlg.HideCenterButton();
     if (ConfirmationMessageDlg.exec())
     {
-        int lastMeltPoint = 0;
-        if (mp_UserSettings)
-        {
-            lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
-            m_UserSettingsTemp = *mp_UserSettings;
-        }
-        m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
-
-        emit TemperatureChanged(m_UserSettingsTemp);
         emit ParaffinMeltPointchanged(lastMeltPoint, temp);
     }
-
-
 }
 
 } // end namespace Settings

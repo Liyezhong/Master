@@ -314,40 +314,6 @@ bool WrapperFmBaseModule::ExitEmergencyStop()
 
 /****************************************************************************/
 /*!
- *  \brief   slot for the firmware update
- *
- *  This slot is connected to the signal ReportUpdateFirmware.
- *
- *  \iparam InstanceID  Instance ID of the function module
- *  \iparam ReturnCode  ReturnCode of DeviceControl Layer
- *
- */
-/****************************************************************************/
-//void WrapperFmBaseModule::OnResetNode(quint32 InstanceID, ReturnCode_t ReturnCode)
-//{
-//    Q_UNUSED(InstanceID)
-//
-//    qint32 ret = 1;
-//    if (!HandleErrorCode(ReturnCode)) {
-//        ret = -1;
-//    }
-//    if (m_LoopResetNode.isRunning()) {
-//        m_LoopResetNode.exit(ret);
-//    } else {
-//        Log(tr("NOTICE: Unexpected action acknowledgement."));
-//    }
-//}
-
-
-
-
-
-
-
-
-
-/****************************************************************************/
-/*!
  *  \brief Script-API: Get hardware info
  *
  *  This method get the hardware version and production of a CAN node.
@@ -387,7 +353,6 @@ QString WrapperFmBaseModule::GetHWInfo()
 /*!
  *  \brief  Slot for hardware info
  *
- *  \iparam InstanceID      ID of the FM (currently not needed)
  *  \iparam ReturnCode      ReturnCode of DeviceControl Layer
  *  \iparam VersionMajor    Version major number
  *  \iparam VersionMinor    Version minor number

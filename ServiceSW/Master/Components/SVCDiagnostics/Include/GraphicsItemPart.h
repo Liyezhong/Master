@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file GraphicsItemPart.h
+ *
+ *  \brief Graphics item part definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-10-02
+ *   $Author:  $ Abe Yang
+ *
+ *   \b Company:
+ *
+ * 		 Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2014 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #ifndef GRAPHICSITEMPART_H
 #define GRAPHICSITEMPART_H
 
@@ -18,7 +37,7 @@ public:
      *  \brief  Definition/Declaration of function CGraphicsItemPart
      *  \iparam pixmapNormal = the normal pixmap
      *  \iparam p_Parent = the parent graphics item
-     *  \iparam scence = the graphics scence
+     *  \iparam p_Scene = the graphics scence
      */
     /****************************************************************************/
     CGraphicsItemPart(const QPixmap &pixmapNormal,
@@ -30,12 +49,15 @@ public:
      *  \brief  Definition/Declaration of function CGraphicsItemPart
      *  \iparam pixmapNormal = the normal pixmap
      *  \iparam pixmapDisabled = the disbaled pixmap
-     *  \iparam scence = the working pixmap
+     *  \iparam pixmapWorking = the working pixmap
+     *
+     *  \iparam Clickable = clickable flag
      */
     /****************************************************************************/
     CGraphicsItemPart(const QPixmap &pixmapNormal,
                       const QPixmap &pixmapDisabled,
-                      const QPixmap &pixmapWorking);
+                      const QPixmap &pixmapWorking,
+                      bool Clickable = true);
 
     /****************************************************************************/
     /*!
@@ -78,7 +100,7 @@ private:
     QPixmap m_PixmapNormal;     //!< The normal pixmap
     QPixmap m_PixmapDisabled;   //!< The disbaled pixmap
     QPixmap m_PixmapWorking;    //!< The working pixmap
-    bool m_StatusChange;        //!< Flag for part clicked
+    bool m_Clickable;           //!< Flag for part clicked
 Q_SIGNALS:
 
     /****************************************************************************/

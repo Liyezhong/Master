@@ -319,7 +319,7 @@ void CReagentRMSWidget::OnCleaningRMSOFF()
     m_MessageDlg.SetButtonText(1, m_strYes);
     m_MessageDlg.SetButtonText(3, m_strCancel);
     m_MessageDlg.HideCenterButton();
-    m_MessageDlg.SetText(m_strConfirmChangeRMSMode);
+    m_MessageDlg.SetText(m_strConfirmRMSOffMode);
 
     if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
         m_UserSettings.SetModeRMSCleaning(Global::RMS_OFF);
@@ -700,6 +700,8 @@ void CReagentRMSWidget::RetranslateUI()
     m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strConfirmChangeRMSMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                                        "Do you really want to change RMS mode? If fresh reagents are replaced, please reset data for them in the ‘Status’ page!", 0, QApplication::UnicodeUTF8);
+    m_strConfirmRMSOffMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+        "Do you really want to change RMS mode? When the RMS of cleaning reagent is turned off, the cleaning program can be run as usual, however, the quality of cleaning reagent shall be controlled by user.", 0, QApplication::UnicodeUTF8);
 
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
@@ -911,6 +913,7 @@ void CReagentRMSWidget::OnReagentUpdated()
 
 void CReagentRMSWidget::OnReagentAdded()
 {
+    m_ReagentRMSModel.UpdateReagentList();
     if (mp_ModifiyReagentRMSDlg) {
         mp_ModifiyReagentRMSDlg->accept();
     }

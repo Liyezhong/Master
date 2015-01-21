@@ -61,24 +61,24 @@ QPainterPath CGraphicsPixmapItem::shape() const
 void CGraphicsPixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
            QWidget *)
 {
-    QPixmap pixmap = this->pixmap();
-    QRect rect = pixmap.rect();
+    QPixmap _pixmap = this->pixmap();
+    QRect rect = _pixmap.rect();
 
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->drawPixmap(rect, pixmap);
+    painter->drawPixmap(rect, _pixmap);
 }
 
-void CGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void CGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *_event)
 {
     SetState(true);
     emit Clicked(tag);
-    QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(_event);
 }
 
-void CGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void CGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *_event)
 {
     update(boundingRect());
-    QGraphicsItem::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(_event);
 }
 
 void CGraphicsPixmapItem::SetState(bool status)
@@ -89,14 +89,15 @@ void CGraphicsPixmapItem::SetState(bool status)
         setPixmap(pixmapDisable);
 }
 
-void CGraphicsPixmapItem::SetTag(int tag)
+void CGraphicsPixmapItem::SetTag(int _tag)
 {
-    this->tag = tag;
+    this->tag = _tag;
 }
 
-CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
-    MainMenu::CDialogFrame(p_Parent),
-    ui(new Ui::CRotaryValveDlg)
+CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent)
+    : MainMenu::CDialogFrame(p_Parent)
+    , ui(new Ui::CRotaryValveDlg)
+    , tag(0)
 {
     ui->setupUi(GetContentFrame());
     setModal(true);
@@ -115,9 +116,16 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     ui->graphicsView->setScene(mp_Scene);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
 
+    QPen pen;
+    pen.setColor(QColor(82, 103,111));
+    pen.setWidth(3);
+    for (int i = 0; i < 16; i++) {
+        QGraphicsLineItem *line = mp_Scene->addLine(200, 56, 200, 90, pen);
+        line->setTransform(QTransform().translate(200, 200).rotate(22.5 * i).translate(-200, -200));
+    }
+
     // tube item init
-    qreal angle = 0;
-    for (int i = 0; i < 16; i++, angle += 11.25 * 2) {
+    for (int i = 0; i < 16; ++i) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveTube.png");
         (void)connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
 
@@ -126,15 +134,16 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
         rotaryValvePos[i]->setPos(200 - rotaryValvePos[i]->pixmap().width()/2, 4); //
         rotaryValvePos[i]->setTransform(
                     QTransform().translate(rotaryValvePos[i]->pixmap().width()/2, 196)
-                    .rotate(angle)
+                    .rotate(22.5 * i)
                     .translate(-rotaryValvePos[i]->pixmap().width()/2, -196));
         rotaryValvePos[i]->SetTag(i);
     }
 
+    // position calibration
     {
         rotaryValvePos[0]->setPos(166, -1); // 166.000000, y: -1.000000
         rotaryValvePos[1]->setPos(162, -1); // 162.000000, y: -1.000000
-        rotaryValvePos[2]->setPos(166, -4); // 166.000000, y: -3.000000
+        rotaryValvePos[2]->setPos(166, -4); // 166.000000, y: -4.000000
         rotaryValvePos[3]->setPos(169.5, -0.5); //x: 169.500000, y: -0.500000
         rotaryValvePos[4]->setPos(169.5, 5.5); //x: 169.500000, y: 5.500000
         rotaryValvePos[5]->setPos(170, 2.5); //x: 170.000000, y: 2.500000
@@ -145,14 +154,13 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
         rotaryValvePos[10]->setPos(166.5, 6); //x: 166.500000, y: 6.000000
         rotaryValvePos[11]->setPos(166, 6); //x: 166.000000, y: 6.000000
         rotaryValvePos[12]->setPos(165, 3.5); //x: 165.000000, y: 3.500000
-        rotaryValvePos[13]->setPos(162, 5); //x: 162.500000, y: 5.500000
+        rotaryValvePos[13]->setPos(162.5, 5.5); //x: 162.500000, y: 5.500000
         rotaryValvePos[14]->setPos(165.5, 1.5); //x: 165.500000, y: 1.500000
         rotaryValvePos[15]->setPos(163, 4); //x: 163.000000, y: 4.000000
     }
 
     // sealing item init
-    angle = 11.25;
-    for (int i = 16; i < 32; i++, angle += 11.25 * 2) {
+    for (int i = 16; i < 32; ++i) {
         rotaryValvePos[i] = new CGraphicsPixmapItem(":/Images/RotaryValveSealing.png", ":/Images/RotaryValveSealingDisable.png");
         (void)connect(rotaryValvePos[i], SIGNAL(Clicked(int)), this, SLOT(RotaryValveClicked(int)));
 
@@ -160,7 +168,7 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
         rotaryValvePos[i]->setPos(200 - rotaryValvePos[i]->pixmap().width()/2, 200 - rotaryValvePos[i]->pixmap().height() - 98 + 15); //
         rotaryValvePos[i]->setTransform(
                     QTransform().translate(rotaryValvePos[i]->pixmap().width()/2, rotaryValvePos[i]->pixmap().height() + 98 - 15)
-                    .rotate(angle)
+                    .rotate(11.25 + 22.5 * (i - 16))
                     .translate(-rotaryValvePos[i]->pixmap().width()/2, -rotaryValvePos[i]->pixmap().height() - 98 + 15));
         rotaryValvePos[i]->SetTag(i);
     }
@@ -170,33 +178,6 @@ CSVCRotaryValveDlg::CSVCRotaryValveDlg(QWidget* p_Parent):
     mp_Scene->addItem(rotaryValvePointer);
     rotaryValvePointer->setPos(QPoint(200 - rotaryValvePointer->pixmap().width()/2, 200 - rotaryValvePointer->pixmap().height() + 12)); // P1
 
-// just for debug & test
-//    for (int i = 0; i < 32; i++) {
-//        QGraphicsLineItem *line = mp_Scene->addLine(0, 0, mp_Scene->width(), mp_Scene->height(), QPen(Qt::cyan));
-//        line->setTransform(QTransform().translate(200, 200).rotate(11.25 * i).translate(-200, -200));
-//    }
-
-//    buttonPosX_inc = new QPushButton("x+");
-//    buttonPosX_dec = new QPushButton("x-");
-
-//    buttonPosY_inc = new QPushButton("y+");
-//    buttonPosY_dec = new QPushButton("y-");
-
-//    EditPos = new QLineEdit;
-//    editIndex = new QLineEdit;
-
-//    mp_Scene->addWidget(buttonPosX_inc)->setPos(200, 0);
-//    mp_Scene->addWidget(buttonPosX_dec)->setPos(200, 50);
-//    mp_Scene->addWidget(buttonPosY_inc)->setPos(200, 100);
-
-//    mp_Scene->addWidget(buttonPosY_dec)->setPos(200, 150);
-//    mp_Scene->addWidget(EditPos)->setPos(200, 250);
-//    mp_Scene->addWidget(editIndex)->setPos(200, 300);
-
-//    (void)connect(buttonPosX_inc, SIGNAL(clicked()), this, SLOT(setPosIncrease_x()));
-//    (void)connect(buttonPosX_dec, SIGNAL(clicked()), this, SLOT(setPosDecrease_x()));
-//    (void)connect(buttonPosY_inc, SIGNAL(clicked()), this, SLOT(setPosIncrease_y()));
-//    (void)connect(buttonPosY_dec, SIGNAL(clicked()), this, SLOT(setPosDecrease_y()));
 }
 
 CSVCRotaryValveDlg::~CSVCRotaryValveDlg()
@@ -212,9 +193,11 @@ CSVCRotaryValveDlg::~CSVCRotaryValveDlg()
     }
 }
 
-void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
+void CSVCRotaryValveDlg::RotaryValveClicked(int _tag)
 {
     qreal angle;
+
+    tag = _tag;
 
     if (tag < 16)
         angle = 22.5 * tag;
@@ -227,7 +210,6 @@ void CSVCRotaryValveDlg::RotaryValveClicked(int tag)
             rotaryValvePos[i]->SetState(false);
     }
 
-    this->tag = tag;
     rotaryValvePointer->setTransform(
               QTransform().translate(rotaryValvePointer->pixmap().width()/2, rotaryValvePointer->pixmap().height() - 12)
              .rotate(angle)
@@ -267,51 +249,8 @@ void CSVCRotaryValveDlg::GetPos(bool &flag, qint32 &position)
         14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, 15  // sealing position
     };
 
-    if (tag < 16)
-        flag = true;
-    else
-        flag = false;
+    flag = tag < 16;
     position = pos_table[tag];
 }
-
-//void CSVCRotaryValveDlg::setPosIncrease_x()
-//{
-//    int i = editIndex->text().toInt();
-//    if (i < 0 || i > 32)
-//        return;
-//    QPointF p = rotaryValvePos[i]->pos();
-//    rotaryValvePos[i]->setPos(p.x() + 0.5, p.y());
-//    EditPos->setText(QString().sprintf("x: %f, y: %f", p.x() + 0.5, p.y()));
-//}
-
-//void CSVCRotaryValveDlg::setPosDecrease_x()
-//{
-//    int i = editIndex->text().toInt();
-//    if (i < 0 || i > 32)
-//        return;
-//    QPointF p = rotaryValvePos[i]->pos();
-//    rotaryValvePos[i]->setPos(p.x() - 0.5, p.y());
-//    EditPos->setText(QString().sprintf("x: %f, y: %f", p.x() - 0.5, p.y()));
-//}
-
-//void CSVCRotaryValveDlg::setPosIncrease_y()
-//{
-//    int i = editIndex->text().toInt();
-//    if (i < 0 || i > 32)
-//        return;
-//    QPointF p = rotaryValvePos[i]->pos();
-//    rotaryValvePos[i]->setPos(p.x(), p.y() + 0.5);
-//    EditPos->setText(QString().sprintf("x: %f, y: %f", p.x(), p.y() + 0.5));
-//}
-
-//void CSVCRotaryValveDlg::setPosDecrease_y()
-//{
-//    int i = editIndex->text().toInt();
-//    if (i < 0 || i > 32)
-//        return;
-//    QPointF p = rotaryValvePos[i]->pos();
-//    rotaryValvePos[i]->setPos(p.x(), p.y() - 0.5);
-//    EditPos->setText(QString().sprintf("x: %f, y: %f", p.x(), p.y() - 0.5));
-//}
 
 }//end of namespace SVCDiagnostics

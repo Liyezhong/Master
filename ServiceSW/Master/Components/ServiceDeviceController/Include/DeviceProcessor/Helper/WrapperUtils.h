@@ -49,10 +49,23 @@ public:
 
 public slots:
     void Pause(quint32 MilliSeconds);
+    /****************************************************************************/
+    /*!  \brief abort pause
+     */
+    /****************************************************************************/
     void AbortPause();
     void Stop();
     void SendTestSignal(qint32 value);
 #ifdef PRE_ALFA_TEST
+
+    /****************************************************************************/
+    /*!
+     *   \brief Script-API: sends a signal "MonitorT" for test purposes
+     *
+     *  \iparam   MilliSeconds   seconds
+     *
+     */
+    /****************************************************************************/
     void SetMonitorT(quint32 MilliSeconds);
     void PlaySound(quint8 SoundType);
     void LogToFile(const QString &FolderName,  const QString &FileName, bool Clear);

@@ -307,8 +307,6 @@ void CTestSettings::utTestSettingsWidget() {
     srvSetWgt->OnUserRoleChanged();
     srvSetWgt->OnResetOperationDays();
     srvSetWgt->OnResetCarbonFilter();
-    srvSetWgt->OnCheckBoxUseExhaustSystem(false);
-    srvSetWgt->OnCheckBoxUseExhaustSystem(true);
     srvSetWgt->OnSaveSetting();
     //srvSetWgt->OnPrepareShutdown();
     srvSetWgt->OnStartServiceApp();

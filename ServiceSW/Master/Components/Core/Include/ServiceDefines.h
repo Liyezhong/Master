@@ -241,8 +241,9 @@ enum InitialSystemTestType{
     INITIAL_LIQUID_TUBE         ///< Liquid tube
 };
 
-typedef QMap<QString, QString>  ModuleTestStatus;
+typedef QMap<QString, QString>  ModuleTestStatus; //!< store module test status.
 
+#if 0
 /****************************************************************************/
 /**
  * \brief Parameters for service tests.
@@ -444,6 +445,8 @@ const QString MSG_TUBE1_HEATING_SUCCESS("Belt1 Heating Test successful");
 const QString MSG_TUBE2_HEATING_FAILURE("ERROR: Belt2 Heating Test Failed!!!");
 const QString MSG_TUBE2_HEATING_SUCCESS("Belt2 Heating Test successful");
 /****************************************************************************/
+#endif
+const QString MSG_DEVICE_NOT_INITIALIZED("ERROR: Device Not Initialized!!!"); //!< device error string
 } // end namespace Service
 
 #endif // GLOBAL_SERVICEDEFINES_H

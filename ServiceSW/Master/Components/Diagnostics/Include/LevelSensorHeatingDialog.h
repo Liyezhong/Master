@@ -42,7 +42,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam MeltingPoint = The default melting point
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -66,6 +65,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To start heating.
+     *  \iparam XyleneFlag = falg of xylene
+     *  \return true or false
      */
     /****************************************************************************/
     bool StartHeating(bool XyleneFlag);

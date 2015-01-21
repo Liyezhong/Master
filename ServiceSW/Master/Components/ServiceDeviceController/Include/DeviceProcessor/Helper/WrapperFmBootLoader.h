@@ -38,7 +38,6 @@ using namespace DeviceControl;
  *  This wrapper class provides a QtScript interface to boot loader modules.
  *
  *  Examples:
- *   \dontinclude bootloader.js
  *   \skipline [WrapperFmBootLoader]
  *   \until    [WrapperFmBootLoader]
  */

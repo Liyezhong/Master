@@ -21,6 +21,7 @@
 #define RSSTANDBY_WITH_TISSUE_H
 #include <QStateMachine>
 #include <QSharedPointer>
+#include <QCoreApplication>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 namespace Scheduler{
@@ -86,6 +87,13 @@ public:
      */
     /****************************************************************************/
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief start up state machine
+     */
+    /****************************************************************************/
+    void Start();
 
 signals:
     /****************************************************************************/

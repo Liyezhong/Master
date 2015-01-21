@@ -216,7 +216,7 @@ bool CDataProgramList::Read(QString Filename)
  *  \return Program associated with the index
  */
 /****************************************************************************/
-CProgram* CDataProgramList::GetProgram(const unsigned int Index)
+CProgram* CDataProgramList::GetProgram(const unsigned int Index) const
 {
     if (Index < (unsigned int)m_OrderedListOfProgramIDs.count()) {
         QString Key = m_OrderedListOfProgramIDs.value(Index);
@@ -909,7 +909,6 @@ bool CDataProgramList::UpdateReagentIDList()
             return false;
         }
     }
-   (void)m_ReagentIDList.removeDuplicates();
    return true;
 }
 

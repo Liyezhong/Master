@@ -54,6 +54,10 @@ CStartup::CStartup() : QObject(),
     mp_ManaufacturingDiagnosticsHandler(NULL),
     m_SelfTestFinished(false),
     mp_USBKeyValidator(NULL),
+    mp_SystemLogViewer(NULL),
+    mp_ServiceHelpText(NULL),
+    mp_ServiceLogViewer(NULL),
+    mp_SoftwareUpdateLogViewer(NULL),
     mp_LogContentDlg(NULL),
     mp_SystemLogContentDlg(NULL),
     mp_SVCSceenLockWidget(NULL),
@@ -61,7 +65,9 @@ CStartup::CStartup() : QObject(),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL)
+    mp_SealingStatusDlg(NULL),
+    m_CurrentTabIndex(0),
+    m_ShutDownFlag(false)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -150,24 +156,6 @@ CStartup::CStartup() : QObject(),
 
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
-//    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
-//    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
-//    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
-
-    mp_SystemLogViewer = new LogViewer::CLogViewer("PRIMARIS_", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
-    mp_ServiceLogViewer = new LogViewer::CLogViewer("PRIMARIS_Service", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
-
-    CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-    CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
-
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
-    CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
@@ -181,8 +169,16 @@ CStartup::CStartup() : QObject(),
     mp_System           = new Diagnostics::CSystem;
     mp_MainControl      = new Diagnostics::CMainControl;
 
+    CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_Retort, OnEnableTestButton());
+    CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_System, OnEnableTestButton());
+
     //Service Diagnostics
     mp_SVCDashboardWidget = new SVCDiagnostics::CSVCDashboardWidget();
+
+    //Serivce screen Lock
+    mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
+    Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
+    CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
 
     //Diagnostics1 Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
@@ -207,6 +203,9 @@ CStartup::CStartup() : QObject(),
     (void)connect(mp_Setting,
                   SIGNAL(RefreshLatestVersion()),
                   mp_FirmwareUpdate, SLOT(RefreshLatestVersion()));
+
+    CONNECTSIGNALSLOT(mp_MainControlConfig, UpdateSlaveVersion(), mp_FirmwareUpdate, UpdateSlaveVersion());
+    CONNECTSIGNALSLOT(mp_RotaryValveConfig, UpdateSlaveVersion(), mp_FirmwareUpdate, UpdateSlaveVersion());
 
 
     if (!connect(mp_Clock, SIGNAL(timeout()), this, SLOT(UpdateDateTime())))
@@ -383,6 +382,23 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
                                                                                 //0, QApplication::UnicodeUTF8));
 
         // Log Viewer
+        QString FileName = m_DeviceName;
+        FileName.remove(QRegExp("\\s")).append("_");
+        mp_SystemLogViewer = new LogViewer::CLogViewer(FileName, Global::SystemPaths::Instance().GetLogfilesPath());
+        mp_ServiceHelpText = new LogViewer::CLogViewer("ServiceHelpText", Global::SystemPaths::Instance().GetSettingsPath());
+        mp_ServiceLogViewer = new LogViewer::CLogViewer(FileName + "Service", Global::SystemPaths::Instance().GetLogfilesPath());
+        mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
+
+        CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_ServiceHelpText , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+        CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SystemLogViewer, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceHelpText, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
+        CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
+
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_SystemLogViewer);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8)
@@ -546,6 +562,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 {
     qDebug()<<"CStartup::InitializeGui  "<<SoftwareMode;
 
+    RemoveFiles();
     SetCurrentUserMode(UserMode);
     if (SoftwareMode == PlatformService::SERVICE_MODE)
     {
@@ -562,14 +579,14 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
         {
             emit LogOnSystem();
         }
+
         Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
         p_InitSystem->setFixedSize(800, 600);
         (void)p_InitSystem->exec();
         delete p_InitSystem;
 
-        mp_SVCSceenLockWidget = new SVCScreenLock::CSVCScreenLockWidget(mp_MainWindow);
-        Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
-        CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
+        mp_SVCSceenLockWidget->SetLockStatus(false);
+        mp_SVCSceenLockWidget->StartTimer();
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {
@@ -621,6 +638,8 @@ void CStartup::ServiceGuiInit()
     mp_MainWindow->AddMenuGroup(mp_SVCDashboardWidget, Service::CMessageString::MSG_SVCDIAGNOSTICS_SVCDIAGNOSTICS);
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
+
+    mp_FirmwareUpdate->SetEnableUpdate(false);
 
     mp_MainWindow->SetTabWidgetIndex(0);
 }
@@ -753,6 +772,23 @@ int CStartup::FileExistanceCheck()
 
 /****************************************************************************/
 /*!
+ *  \brief Remove some files when start S&M SW
+ */
+/****************************************************************************/
+void CStartup::RemoveFiles()
+{
+    QString FilePath = Global::SystemPaths::Instance().GetSettingsPath();
+
+    if (!QFile::remove(FilePath + QDir::separator() + "ProgramStatus.txt")) {
+        qDebug()<<"CStartup: RemoveFiles ProgramStatus.txt file failed.";
+    }
+//    if (!QFile::remove(FilePath + QDir::separator() + "BootConfig.txt")) {
+//        qDebug()<<"CStartup: RemoveFiles BootConfig.txt file failed.";
+//    }
+}
+
+/****************************************************************************/
+/*!
  *  \brief Slot called to reset window status timer
  *
  */
@@ -781,7 +817,7 @@ void CStartup::UpdateParameters()
 
         qDebug()<<"CStartup::UpdateParameters-------- get device name:"<< m_DeviceName;
 
-        m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
+        //m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
     }
     emit SetDeviceName(m_DeviceName);
 }
@@ -1248,7 +1284,7 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
         MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON.arg(LowCurrent).arg(HighCurrent);
     }
     else {
-        int Current = p_TestCase->GetParameter("SwitchOffCurrentLow").toInt();
+        int Current = p_TestCase->GetParameter("SwitchOnCurrentLow").toInt();
         MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF.arg(Current);
     }
 
@@ -1610,8 +1646,12 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
 
-    if (FileName.startsWith("PRIMARIS_")
-            && !FileName.startsWith("PRIMARIS_Service")) {  // System log
+    QString DeviceName = mp_ServiceConnector->GetDeviceConfigInterface()->GetDeviceConfiguration()
+            ->GetValue("DEVICENAME").remove(QRegExp("\\s"));
+
+
+    if (FileName.startsWith(DeviceName + "_")
+            && !FileName.startsWith(DeviceName +"_Service")) {  // System log
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
             delete mp_SystemLogContentDlg;
@@ -1629,7 +1669,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QStringList HeaderLabels;
         QList<int> Columns;
 
-        if (FileName.startsWith("PRIMARIS_Service")) {  // Service log
+        if (FileName.startsWith(DeviceName + "_Service")) {  // Service log
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
@@ -1749,8 +1789,28 @@ void CStartup::OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStr
 
 void CStartup::OnCurrentTabChanged(int TabIndex)
 {
-    if (mp_MainWindow->GetSaMUserMode() == "Service") {
-        if (TabIndex == 3) {
+    if (mp_MainWindow->GetSaMUserMode() == "Service" && !m_ShutDownFlag) {
+        if (TabIndex == 3) {//SVCDiagnostics
+            MainMenu::CMessageDlg *p_MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+            p_MsgDlg->SetTitle("WARNING!");
+            p_MsgDlg->SetIcon(QMessageBox::Warning);
+            p_MsgDlg->SetText("Using this screen can DAMAGE this instrument and specimen inside the retort! "
+                         "Use CAUTION and be sure of what you do BEFORE you do it! Valves and pump in "
+                         "this interactive diagnostics screen can be activated in ANY DESIRED COMBINATION. "
+                         "Pressure/Vacuum will NOT BE CONTROLLED. Be aware of overpressure, underpressure, "
+                         "overfilling the retort and cross-contamination of reagents! Heatings and Rotary "
+                         "Valve movements are controlled and safe.");
+            p_MsgDlg->HideCenterButton();
+            p_MsgDlg->SetButtonText(1, "Accept Risk");
+            p_MsgDlg->SetButtonText(3, "Cancel");
+            if (p_MsgDlg->exec() == 0) {
+                mp_MainWindow->SetTabWidgetIndex(m_CurrentTabIndex);
+                delete p_MsgDlg;
+                Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_ABORT);
+                return;
+            }
+            delete p_MsgDlg;
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_ACCEPT_RISK);
             mp_SVCDashboardWidget->TimerStart(true);
             mp_SVCDashboardWidget->UpdatePartStatus();
             mp_SVCSceenLockWidget->SetLockStatus(true);
@@ -1760,6 +1820,7 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
             mp_SVCSceenLockWidget->SetLockStatus(false);
         }
     }
+    m_CurrentTabIndex = TabIndex;
 }
 
 } // end namespace Core

@@ -39,7 +39,19 @@ class CLevelSensor : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = parent windows
+     */
+    /****************************************************************************/
     explicit CLevelSensor(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CLevelSensor();
 
 private:
@@ -47,13 +59,28 @@ private:
     QStringList m_Instructions; //!< List of calibration instructions
     qint32 m_Step;              //!< Current step in the calibration process
 
-
-public:
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted to device configure
+     */
+    /****************************************************************************/
     void deviceConfigure();
 
 private slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief slot for next step
+     */
+    /****************************************************************************/
     void NextStep();
+
+    /****************************************************************************/
+    /*!
+     *  \brief slot for test device init
+     */
+    /****************************************************************************/
     void TestForDeviceInit();
 };
 

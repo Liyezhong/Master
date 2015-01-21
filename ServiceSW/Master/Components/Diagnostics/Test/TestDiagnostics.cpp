@@ -53,8 +53,185 @@
 #include <QMainWindow>
 #include "Global/Include/SystemPaths.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
+using ::testing::Return;
+using ::testing::AtLeast;
+using ::testing::_;
+using ::testing::Lt;
+using ::testing::DoAll;
+
+using ::std::plus;
+using ::std::string;
+using ::std::tr1::get;
+using ::std::tr1::make_tuple;
+using ::std::tr1::tuple;
+using ::std::tr1::tuple_element;
+using testing::_;
+using testing::Action;
+using testing::ActionInterface;
+using testing::DeleteArg;
+using testing::Invoke;
+using testing::Return;
+using testing::ReturnArg;
+using testing::ReturnPointee;
+using testing::SaveArg;
+using testing::SaveArgPointee;
+using testing::SetArgReferee;
+using testing::StaticAssertTypeEq;
+using testing::SetArgPointee;
+using testing::Unused;
+using testing::WithArg;
+using testing::WithoutArgs;
+using testing::internal::linked_ptr;
 
 namespace Diagnostics {
+
+class MockServiceDeviceProcess : public ServiceDeviceProcess {
+    Q_OBJECT
+ public:
+    static MockServiceDeviceProcess *InstanceMock()
+    {
+        MockServiceDeviceProcess *mock = new MockServiceDeviceProcess;
+        mp_Instance = mock;
+        return mock;
+    }
+
+    ~MockServiceDeviceProcess()
+    {
+        mp_Instance = NULL;
+    }
+
+  MOCK_METHOD0(Initialize,
+      void());
+  MOCK_METHOD0(IsInitialized,
+      bool());
+  MOCK_METHOD1(MainRelaySetOnOff,
+      int(bool OnFlag));
+  MOCK_METHOD2(AlarmSetOnOff,
+      int(int LocalRemote, bool OnFlag));
+  MOCK_METHOD2(AlarmGetState,
+      int(int LocalRemote, qint32 *RetState));
+  MOCK_METHOD2(MainControlGetCurrent,
+      int(quint8 SlaveType, quint16 *RetCurrent));
+  MOCK_METHOD2(MainControlGetVoltage,
+      int(quint8 SlaveType, quint16 *RetVoltage));
+  MOCK_METHOD2(OvenStartHeating,
+      int(qreal TargetTempTop, qreal TargetTempBottom));
+  MOCK_METHOD0(OvenStopHeating,
+      int());
+  MOCK_METHOD3(OvenGetTemp,
+      int(qreal *RetTempTop, qreal *RetTempBottom1, qreal *RetTempBottom2));
+  MOCK_METHOD2(OvenGetCurrent,
+      int(quint16 *RetCurrentTop, quint16 *RetCurrentBottom));
+  MOCK_METHOD1(OvenGetCoverSensorState,
+      int(qint32 *RetCoverSensorState));
+  MOCK_METHOD1(OvenGetSwitchType,
+      int(int *RetSwithType));
+  MOCK_METHOD1(OvenTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD2(RetortStartHeating,
+      int(qreal TargetTempSide, qreal TargetTempBottom));
+  MOCK_METHOD0(RetortStopHeating,
+      int());
+  MOCK_METHOD3(RetortGetTemp,
+      int(qreal *RetTempSide, qreal *RetTempBottom1, qreal *RetTempBottom2));
+  MOCK_METHOD2(RetortGetCurrent,
+      int(quint16 *RetCurrentSide, quint16 *RetCurrentBottom));
+  MOCK_METHOD1(RetortGetLidLockState,
+      int(qint32 *RetLidLockState));
+  MOCK_METHOD2(RetortSetTemperatureSwitchState,
+      int(qint8 SwitchState, qint8 AutoSwitch));
+  MOCK_METHOD1(RetortGetHeaterSwitchType,
+      int(quint8 *RetSwitchType));
+  MOCK_METHOD1(RetortTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(LiquidTubeStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(LiquidTubeStopHeating,
+      int());
+  MOCK_METHOD1(LiquidTubeGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(LiquidTubeGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(LiquidTubeTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(AirTubeStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(AirTubeStopHeating,
+      int());
+  MOCK_METHOD1(AirTubeGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(AirTubeGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(AirTubeTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(RVStartHeating,
+      int(qreal TargetTemp));
+  MOCK_METHOD0(RVStopHeating,
+      int());
+  MOCK_METHOD2(RVGetTemp,
+      int(qreal *RetTempSensor1, qreal* RetTempSensor2));
+  MOCK_METHOD1(RVGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD2(RVInitialize,
+      int(bool, quint32));
+  MOCK_METHOD2(RVMovePosition,
+      int(bool TubeFlag, int Position));
+  MOCK_METHOD2(RVGetPosition,
+      int(bool* TubeFlag, qint32 *Position));
+  MOCK_METHOD2(RVSetTemperatureSwitchState,
+      int(qint8 SwitchState, qint8 AutoSwitch));
+  MOCK_METHOD1(RVGetHeaterSwitchType,
+      int(quint8 *RetSwitchType));
+  MOCK_METHOD1(RVTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD2(LSStartHeating,
+      int(bool QuickFlag, bool WaterFlag));
+  MOCK_METHOD0(LSStopHeating,
+      int());
+  MOCK_METHOD1(LSGetTemp,
+      int(qreal *RetTemp));
+  MOCK_METHOD1(LSGetCurrent,
+      int(quint16 *RetCurrent));
+  MOCK_METHOD1(LSHeatingLevelSensor,
+      int(bool WaterFlag));
+  MOCK_METHOD1(LSTempControlIsOn,
+      int(bool *RetIsOn));
+  MOCK_METHOD1(PumpBuildPressure,
+      int(float TargetPressure));
+  MOCK_METHOD0(PumpReleasePressure,
+      int());
+  MOCK_METHOD2(PumpSetPressure,
+      int(quint8 Flag, float Pressure));
+  MOCK_METHOD1(PumpGetPressure,
+      int(float *RetPressure));
+  MOCK_METHOD1(PumpSetFan,
+      int(quint8 OnFlag));
+  MOCK_METHOD0(PumpGetFan,
+      bool());
+  MOCK_METHOD0(PumpGetStatus,
+      bool());
+  MOCK_METHOD2(PumpSetValve,
+      int(quint8 ValveIndex, quint8 ValveState));
+  MOCK_METHOD2(PumpGetValve,
+      void(quint8 ValveIndex, quint8 &ValveState));
+  MOCK_METHOD0(PumpStopCompressor,
+      int());
+  MOCK_METHOD1(PumpSucking,
+      int(quint32));
+  MOCK_METHOD1(PumpDraining,
+      int(quint32));
+  MOCK_METHOD1(PumpReadPressureDrift,
+      int(float *RetPressureDrift));
+  MOCK_METHOD1(PumpWritePressureDrift,
+      int(float PressureDrift));
+  MOCK_METHOD3(GetSlaveModuleReportError,
+      int(quint8 ErrorCode, const QString& DevName, quint32 SensorName));
+  MOCK_METHOD1(Pause,
+      void(quint32 MillSeconds));
+};
 
 namespace InitialSystem {
 class LTubePreUT : public CLTubePreTest
@@ -326,7 +503,7 @@ public:
      *  \iparam Ret = test result for set dialog type
      */
     /****************************************************************************/
-    void ShowMessage(QString& MessageTitle, QString& MessageText, ErrorCode_t Ret)
+    void ShowMessage(const QString& MessageTitle, const QString& MessageText, ErrorCode_t Ret)
     {
     }
 
@@ -337,7 +514,7 @@ public:
      *  \iparam MessageText  = the dialog text
      */
     /****************************************************************************/
-    void ShowWaitingDialog(QString& MessageTitle, QString& MessageText)
+    void ShowWaitingDialog(const QString& MessageTitle, const QString& MessageText)
     {
     }
 
@@ -350,9 +527,13 @@ public:
     {
     }
 
-    int ShowConfirmMessage(QString& MessageTitle, QString& MessageText, BUTTON_TYPE type = YES_NO)
+    int ShowConfirmMessage(const QString& MessageTitle, const QString& MessageText, BUTTON_TYPE type = YES_NO)
     {
         return YES;
+    }
+
+    void ShowRVMoveFailedDlg(const QString& Title)
+    {
     }
 };
 
@@ -465,14 +646,22 @@ private slots:
     void cleanupTestCase();
 
     void LTubePreTest();
-    void MainsRelayTest();
-
     void RetortPreTest();
+    void OvenPreTest();
     void RVPreTest();
     void ACVoltageTest();
-    void OvenPreTest();
+    void MainsRelayTest();
+
+#if 0
+
+
+
+
+
     void CoverSensorTest();
+#endif
     void RVMovementTest();
+#if 0
     void HeatingTestEmpty();
 
     void SystemAlarmTest();
@@ -495,7 +684,7 @@ private slots:
     void MainControlASBTest();
 
     void ServiceDeviceProcessTest();
-
+#endif
 
 }; // end class CTestDiagnostics
 
@@ -505,49 +694,194 @@ void CTestDiagnostics::initTestCase() {
     Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfigSVC.xml";
     DataManager::CTestCaseFactory::ServiceInstance().InitData(FileName);
+
 }
 
 /****************************************************************************/
 void CTestDiagnostics::LTubePreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    qreal LTubeTempSensor = 90;
+
+    EXPECT_CALL(*dev, LiquidTubeGetTemp(_))
+            .WillOnce(DoAll(SetArgPointee<0>(LTubeTempSensor), Return(RETURN_OK)));
+
+    LTubeTempSensor = 80;
+    EXPECT_CALL(*dev, LiquidTubeStartHeating(LTubeTempSensor))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_, _, _))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, LiquidTubeStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::LTubePreUT ut;
-    QVERIFY(ut.Run() != 1);
-}
+    QVERIFY(ut.Run() == RETURN_OK);
 
-/****************************************************************************/
-void CTestDiagnostics::MainsRelayTest()
-{
-    InitialSystem::MainsRelayUT ut;
-    QVERIFY(ut.Run() != 1);
-}
-
-/****************************************************************************/
-void CTestDiagnostics::OvenPreTest()
-{
-    InitialSystem::OvenPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::RetortPreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal RetTempSide = 0;
+    qreal RetTempBottom1 = 45;
+    qreal RetTempBottom2 = 35;
+
+    EXPECT_CALL(*dev, RetortGetTemp(_,_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(RetTempSide), SetArgPointee<1>(RetTempBottom1), SetArgPointee<2>(RetTempBottom2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RetortStartHeating(100, 100))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::RetortPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
+}
+
+/****************************************************************************/
+void CTestDiagnostics::OvenPreTest()
+{
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal OvenTempTop = 0;
+    qreal OvenTempSensor1 = 45;
+    qreal OvenTempSensor2 = 35;
+
+    EXPECT_CALL(*dev, OvenGetTemp(_,_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(OvenTempTop), SetArgPointee<1>(OvenTempSensor1), SetArgPointee<2>(OvenTempSensor2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, OvenStartHeating(90, 90))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, OvenStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    InitialSystem::OvenPreUT ut;
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::RVPreTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+    qreal RVTempSensor1 = 100;
+    qreal RVTempSensor2 = 50;
+
+    EXPECT_CALL(*dev, RVGetTemp(_,_))
+            .WillOnce(DoAll(SetArgPointee<0>(RVTempSensor1), SetArgPointee<1>(RVTempSensor2), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RVStartHeating(125))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, GetSlaveModuleReportError(_,_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
     InitialSystem::RVPreUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
 
 /****************************************************************************/
 void CTestDiagnostics::ACVoltageTest()
 {
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVSetTemperatureSwitchState(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortSetTemperatureSwitchState(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStartHeating(_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStartHeating(_,_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, Pause(_))
+            .Times(AtLeast(0));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RetortStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    quint8 RVSwitchType = 1;
+    quint8 RetortSwitchType = 1;
+
+    EXPECT_CALL(*dev, RVGetHeaterSwitchType(_))
+            .WillOnce(DoAll(SetArgPointee<0>(RVSwitchType), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RetortGetHeaterSwitchType(_))
+            .WillOnce(DoAll(SetArgPointee<0>(RetortSwitchType), Return(RETURN_OK)));
+
     InitialSystem::ACVoltageUT ut;
-    QVERIFY(ut.Run() != 1);
+    QVERIFY(ut.Run() == RETURN_OK);
+
+    delete dev;
 }
+
+/****************************************************************************/
+void CTestDiagnostics::MainsRelayTest()
+{
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    EXPECT_CALL(*dev, MainRelaySetOnOff(_))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVStartHeating(_))
+            .WillOnce(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, Pause(_))
+            .Times(AtLeast(0));
+
+    quint16 Current = 1000;
+
+    EXPECT_CALL(*dev, RVGetCurrent(_))
+            //.Times(AtLeast(0))
+            .WillRepeatedly(DoAll(SetArgPointee<0>(Current), Return(RETURN_OK)));
+
+    Current = 100;
+    EXPECT_CALL(*dev, RVGetCurrent(_))
+            .WillOnce(DoAll(SetArgPointee<0>(Current), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RVStopHeating())
+            .WillOnce(Return(RETURN_OK));
+
+    InitialSystem::MainsRelayUT ut;
+    QVERIFY(ut.Run() != 1);
+
+    delete dev;
+}
+
+#if 0
+
 
 /****************************************************************************/
 void CTestDiagnostics::CoverSensorTest()
@@ -556,15 +890,34 @@ void CTestDiagnostics::CoverSensorTest()
     Oven::CCoverSensorTestMock ut(&dlg);
     QVERIFY(ut.Run() == RETURN_OK);
 }
+#endif
 
 /****************************************************************************/
 void CTestDiagnostics::RVMovementTest()
 {
-    CDiagnosticMessageDlgMock dlg;
+    MockServiceDeviceProcess *dev = MockServiceDeviceProcess::InstanceMock();
+
+    CDiagnosticMessageDlgMock dlg;    
+
+    qreal RVSensor1TempCurrent = 90;
+    qreal RVSensor2TempCurrent = 50;
+
+    EXPECT_CALL(*dev, RVGetTemp(_, _))
+            .WillOnce(DoAll(SetArgPointee<0>(RVSensor1TempCurrent), SetArgPointee<1>(RVSensor2TempCurrent), Return(RETURN_OK)));
+
+    EXPECT_CALL(*dev, RVInitialize(_, _))
+            .WillRepeatedly(Return(RETURN_OK));
+
+    EXPECT_CALL(*dev, RVMovePosition(_, _))
+            .WillRepeatedly(Return(RETURN_OK));
+    
     RotaryValve::CMovementTest ut(&dlg);
-    QVERIFY(ut.Run() != RETURN_OK);
+    
+    QVERIFY(ut.Run() == RETURN_OK);
+    delete dev;
 }
 
+#if 0
 /****************************************************************************/
 void CTestDiagnostics::HeatingTestEmpty()
 {
@@ -700,61 +1053,69 @@ void CTestDiagnostics::ServiceDeviceProcessTest()
     bool OutBool;
     float OutFloat;
 
-    QVERIFY(p_Dev->OvenStartHeating(20, 30) != RETURN_OK);
-    QVERIFY(p_Dev->OvenStopHeating() != RETURN_OK);
-    QVERIFY(p_Dev->OvenGetCoverSensorState(&OutInt32) != RETURN_OK);
-    QVERIFY(p_Dev->OvenGetCurrent(&OutUint16, &OutUint16) != RETURN_OK);
-    QVERIFY(p_Dev->OvenGetSwitchType(&OutInt) != RETURN_OK);
-    QVERIFY(p_Dev->OvenGetTemp(&OutReal, &OutReal, &OutReal) != RETURN_OK);
-    QVERIFY(p_Dev->OvenTempControlIsOn(&OutBool) != RETURN_OK);
+    QVERIFY(p_Dev->OvenStartHeating(20, 30) == 0);
+    QVERIFY(p_Dev->OvenStopHeating() == 0);
+    QVERIFY(p_Dev->OvenGetCoverSensorState(&OutInt32) == 0);
+    QVERIFY(p_Dev->OvenGetCurrent(&OutUint16, &OutUint16) == 0);
+    QVERIFY(p_Dev->OvenGetSwitchType(&OutInt) == 0);
+    QVERIFY(p_Dev->OvenGetTemp(&OutReal, &OutReal, &OutReal) == 0);
+    QVERIFY(p_Dev->OvenTempControlIsOn(&OutBool) == 0);
 
-    QVERIFY(p_Dev->RetortStartHeating(20, 30) != RETURN_OK);
-    QVERIFY(p_Dev->RetortStopHeating() != RETURN_OK);
-    QVERIFY(p_Dev->RetortGetCurrent(&OutUint16, &OutUint16) != RETURN_OK);
-    QVERIFY(p_Dev->RetortGetHeaterSwitchType(&OutUint8) != RETURN_OK);
-    QVERIFY(p_Dev->RetortGetLidLockState(&OutInt32) != RETURN_OK);
-    QVERIFY(p_Dev->RetortGetTemp(&OutReal, &OutReal, &OutReal) != RETURN_OK);
-    QVERIFY(p_Dev->RetortSetTemperatureSwitchState(1, 1) != RETURN_OK);
-    QVERIFY(p_Dev->RetortTempControlIsOn(&OutBool) != RETURN_OK);
+    QVERIFY(p_Dev->RetortStartHeating(20, 30) == 0);
+    QVERIFY(p_Dev->RetortStopHeating() == 0);
+    QVERIFY(p_Dev->RetortGetCurrent(&OutUint16, &OutUint16) == 0);
+    QVERIFY(p_Dev->RetortGetHeaterSwitchType(&OutUint8) == 0);
+    QVERIFY(p_Dev->RetortGetLidLockState(&OutInt32) == 0);
+    QVERIFY(p_Dev->RetortGetTemp(&OutReal, &OutReal, &OutReal) == 0);
+    QVERIFY(p_Dev->RetortSetTemperatureSwitchState(1, 1) == 0);
+    QVERIFY(p_Dev->RetortTempControlIsOn(&OutBool) == 0);
 
-    QVERIFY(p_Dev->AirTubeGetCurrent(&OutUint16) != RETURN_OK);
-    QVERIFY(p_Dev->AirTubeGetTemp(&OutReal) != RETURN_OK);
-    QVERIFY(p_Dev->AirTubeStartHeating(30) != RETURN_OK);
-    QVERIFY(p_Dev->AirTubeStopHeating() != RETURN_OK);
-    QVERIFY(p_Dev->AirTubeTempControlIsOn(&OutBool) != RETURN_OK);
+//    QVERIFY(p_Dev->AirTubeGetCurrent(&OutUint16) == 0);
+//    QVERIFY(p_Dev->AirTubeGetTemp(&OutReal) == 0);
+//    QVERIFY(p_Dev->AirTubeStartHeating(30) == 0);
+//    //QVERIFY(p_Dev->AirTubeStopHeating() == 0);
+//    QVERIFY(p_Dev->AirTubeTempControlIsOn(&OutBool) == 0);
 
-    QVERIFY(p_Dev->AlarmGetState(1, &OutInt32) != RETURN_OK);
-    QVERIFY(p_Dev->AlarmSetOnOff(1, false) != RETURN_OK);
+//    //QVERIFY(p_Dev->AlarmGetState(1, &OutInt32) == 0);
+//    //QVERIFY(p_Dev->AlarmSetOnOff(1, false) == 0);
 
-    QVERIFY(p_Dev->LiquidTubeGetCurrent(&OutUint16) != RETURN_OK);
-    QVERIFY(p_Dev->LiquidTubeGetTemp(&OutReal) != RETURN_OK);
-    QVERIFY(p_Dev->LiquidTubeStartHeating(30) != RETURN_OK);
-    QVERIFY(p_Dev->LiquidTubeStopHeating() != RETURN_OK);
-    QVERIFY(p_Dev->LiquidTubeTempControlIsOn(&OutBool) != RETURN_OK);
+//    QVERIFY(p_Dev->LiquidTubeGetCurrent(&OutUint16) == 0);
+//    QVERIFY(p_Dev->LiquidTubeGetTemp(&OutReal) == 0);
+//    QVERIFY(p_Dev->LiquidTubeStartHeating(30) == 0);
+////    QVERIFY(p_Dev->LiquidTubeStopHeating() == 0);
+//    QVERIFY(p_Dev->LiquidTubeTempControlIsOn(&OutBool) == 0);
 
-    QVERIFY(p_Dev->RVGetCurrent(&OutUint16) != RETURN_OK);
-    QVERIFY(p_Dev->RVGetHeaterSwitchType(&OutUint8) != RETURN_OK);
-    QVERIFY(p_Dev->RVGetPosition(&OutBool, &OutInt32) != RETURN_OK);
-    QVERIFY(p_Dev->RVGetTemp(&OutReal, &OutReal) != RETURN_OK);
-    QVERIFY(p_Dev->RVInitialize() != RETURN_OK);
-    QVERIFY(p_Dev->RVMovePosition(false, 6) != RETURN_OK);
-    QVERIFY(p_Dev->RVSetTemperatureSwitchState(1, 0) != RETURN_OK);
-    QVERIFY(p_Dev->RVStartHeating(80) != RETURN_OK);
-    QVERIFY(p_Dev->RVStopHeating() != RETURN_OK);
-    QVERIFY(p_Dev->RVTempControlIsOn(&OutBool) != RETURN_OK);
+//    QVERIFY(p_Dev->RVGetCurrent(&OutUint16) == 0);
+//    QVERIFY(p_Dev->RVGetHeaterSwitchType(&OutUint8) == 0);
+//    QVERIFY(p_Dev->RVGetPosition(&OutBool, &OutInt32) == 0);
+//    QVERIFY(p_Dev->RVGetTemp(&OutReal, &OutReal) == 0);
+//    QVERIFY(p_Dev->RVInitialize() == 0);
+//    QVERIFY(p_Dev->RVMovePosition(false, 6) == 0);
+//    QVERIFY(p_Dev->RVSetTemperatureSwitchState(1, 0) == 0);
+//    QVERIFY(p_Dev->RVStartHeating(80) == 0);
+//    QVERIFY(p_Dev->RVStopHeating() == 0);
+//    QVERIFY(p_Dev->RVTempControlIsOn(&OutBool) == 0);
 
-    QVERIFY(p_Dev->PumpBuildPressure(30) != RETURN_OK);
-    QVERIFY(p_Dev->PumpDraining() != RETURN_OK);
-    QVERIFY(p_Dev->PumpGetPressure(&OutFloat) != RETURN_OK);
-    //QVERIFY(p_Dev->PumpReadPressureDrift(&OutFloat) != RETURN_OK);
-    QVERIFY(p_Dev->PumpReleasePressure() != RETURN_OK);
-    QVERIFY(p_Dev->PumpSetFan(1) != RETURN_OK);
-    QVERIFY(p_Dev->PumpSetPressure(0, 30) != RETURN_OK);
-    QVERIFY(p_Dev->PumpSetValve(0, 0) != RETURN_OK);
-    QVERIFY(p_Dev->PumpStopCompressor() != RETURN_OK);
-    QVERIFY(p_Dev->PumpSucking() != RETURN_OK);
-    //QVERIFY(p_Dev->PumpWritePressureDrift(3.6) != RETURN_OK);
+//    QVERIFY(p_Dev->PumpBuildPressure(30) == 0);
+//    QVERIFY(p_Dev->PumpDraining() == 0);
+//    QVERIFY(p_Dev->PumpGetPressure(&OutFloat) == 0);
+//    //QVERIFY(p_Dev->PumpReadPressureDrift(&OutFloat) != RETURN_OK);
+//    QVERIFY(p_Dev->PumpReleasePressure() == 0);
+//    QVERIFY(p_Dev->PumpSetFan(1) == 0);
+//    QVERIFY(p_Dev->PumpSetPressure(0, 30) == 0);
+//    QVERIFY(p_Dev->PumpSetValve(0, 0) == 0);
+//    QVERIFY(p_Dev->PumpStopCompressor() == 0);
+//    QVERIFY(p_Dev->PumpSucking() == 0);
+//    //QVERIFY(p_Dev->PumpWritePressureDrift(3.6) != RETURN_OK);
+
+    QVERIFY(p_Dev->PumpGetFan() == false);
+    QVERIFY(p_Dev->PumpGetStatus() == false);
+//    p_Dev->PumpGetValve(0, OutUint8);
+//    QVERIFY(OutUint8 == false);
+//    p_Dev->PumpGetValve(1, OutUint8);
+//    QVERIFY(OutUint8 == false);
 }
+#endif
 
 /****************************************************************************/
 void CTestDiagnostics::init() {
@@ -766,10 +1127,19 @@ void CTestDiagnostics::cleanup() {
 
 /****************************************************************************/
 void CTestDiagnostics::cleanupTestCase() {
+
 }
 
 } // end namespace Diagnostics
 
-QTEST_MAIN(Diagnostics::CTestDiagnostics)
+//QTEST_MAIN(Diagnostics::CTestDiagnostics)
+int main(int argc, char*argv[])
+{
+    ::testing::GTEST_FLAG(throw_on_failure) = true;
+    ::testing::InitGoogleMock(&argc, argv);
+    QCoreApplication app(argc, argv);
+    Diagnostics::CTestDiagnostics tc;
+    return QTest::qExec(&tc, argc, argv);
+}
 #include "TestDiagnostics.moc"
 

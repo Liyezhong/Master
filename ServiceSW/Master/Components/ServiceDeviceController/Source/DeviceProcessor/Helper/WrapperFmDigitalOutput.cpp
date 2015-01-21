@@ -70,7 +70,6 @@ WrapperFmDigitalOutput::~WrapperFmDigitalOutput()
  *  function module
  *
  *  Examples:
- *  \dontinclude DigitalOutput.js
  *  \skipline    [DigitalOut.SetHigh]
  *  \until       [DigitalOut.SetHigh]
  *
@@ -92,7 +91,6 @@ bool WrapperFmDigitalOutput::SetHigh()
  *  function module
  *
  *  Examples:
- *  \dontinclude DigitalOutput.js
  *  \skipline    [DigitalOut.SetHigh]
  *  \until       [DigitalOut.SetHigh]
  *
@@ -114,7 +112,6 @@ bool WrapperFmDigitalOutput::SetLow()
  *  function module
  *
  *  Examples:
- *  \dontinclude DigitalOutput.js
  *  \skipline    [DigitalOut.SetValue]
  *  \until       [DigitalOut.SetValue]
  *
@@ -175,7 +172,6 @@ void WrapperFmDigitalOutput::OnSetOutputValue(quint32 /*InstanceID*/, ReturnCode
  *  This method performs, reading output of a Digital Output function module
  *
  *  Examples:
- *  \dontinclude DigitalInput.js
  *  \skipline    [DigitalOut.GetValue]
  *  \until       [DigitalOut.GetValue]
  *
@@ -232,7 +228,6 @@ void WrapperFmDigitalOutput::OnGetOutputValue(quint32 /*InstanceID*/, ReturnCode
  *  and the number of times it was switched on or off.
  *
  *  Examples:
- *  \dontinclude DigitalOutput.js
  *  \skipline    [DigitalOut.GetLifetime]
  *  \until       [DigitalOut.GetLifetime]
  *
@@ -289,7 +284,6 @@ void WrapperFmDigitalOutput::OnGetLifetimeData(quint32 /*InstanceID*/, ReturnCod
  *      a Slave.
  *
  *  Examples:
- *  \dontinclude DigitalOutput.js
  *  \skipline [DigitalOut.ReqDataReset]
  *  \until    [DigitalOut.ReqDataReset]
  *

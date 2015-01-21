@@ -46,7 +46,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam p_DataConnector = service Gui connector
+     * \iparam p_Parent = parent widget
      */
     /****************************************************************************/
     explicit CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
@@ -62,7 +63,8 @@ public:
     /*!
      *  \brief  To add data item to the table
      *  \iparam Slave = ASB name
-     *  \iparam SoftwareVersionInfo = Software version Info
+     *  \iparam CurrentVersion = current version number
+     *  \iparam LatestVersion = latest version number
      */
     /****************************************************************************/
     void AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion);
@@ -81,15 +83,18 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal emitted for module test
+     *  \iparam Name = name of module
+     *  \iparam TestCaseList = list of test case id
      */
     /****************************************************************************/
-    void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void BeginModuleTest(Service::ModuleNames_t Names, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
     /****************************************************************************/
     /**
-       * \brief Signal emitted to perform manufacturing tests
-       * \iparam Test = Test name
-       */
+     * \brief Signal emitted to perform manufacturing tests
+     * \iparam Test = Test name
+     * \iparam AbortId = Test case abort id
+     */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
@@ -134,6 +139,21 @@ public slots:
      */
     /****************************************************************************/
     void UpdateGUI();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating slave_hw_version.xml sw_version.xml
+     */
+    /****************************************************************************/
+    void UpdateSlaveVersion();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  To set firmware update enable
+     *  \param Enable = flag of enable
+     */
+    /****************************************************************************/
+    void SetEnableUpdate(bool Enable);
 
 private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface

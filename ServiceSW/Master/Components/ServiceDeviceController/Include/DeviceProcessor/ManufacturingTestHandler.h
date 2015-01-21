@@ -11,7 +11,7 @@
  *
  *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
+ *  (C) Copyright 2014 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -44,32 +44,22 @@ class ServiceDeviceController;
 class IDeviceProcessing;
 
 typedef enum {
-    TEST_X_REF_RUN,
-    TEST_YZ_REF_RUN,
-    TEST_AGITATOR_REF_RUN,
-    TEST_TRANSTN_REF_RUN,
-    TEST_OVENLID_REF_RUN,
-    TEST_DRAWER_REF_RUN,
-    TEST_OTHER_RUNS
-}TestState_t;
-
-typedef enum {
-    RV_INITIALIZING = 0,
-    RV_MOVE_TO_TUBE_POSITION,
-    RV_MOVE_TO_SEALING_POSITION,
-    LS_HEATING,
-    RETORT_FILLING,
-    RETORT_DRAINING,
-    PUMP_CREATE_PRESSURE,
-    PUMP_KEEP_PRESSURE,
-    PUMP_RELEASE_PRESSURE,
-    PUMP_CURRENT_PRESSURE,
-    SYSTEM_FLUSH,
-    WAIT_CONFIRM,
-    WAIT_CONFIRM2,
-    HIDE_MESSAGE,
-    INFORM_DONE
-} TestCurStatus_t;
+    RV_INITIALIZING = 0, //!< rotary valve initialize
+    RV_MOVE_TO_TUBE_POSITION, //!< rotary valve position move to tube
+    RV_MOVE_TO_SEALING_POSITION, //!<  rotary valve position move to sealing
+    LS_HEATING, //!< level sensor heating
+    RETORT_FILLING, //!< retort filling
+    RETORT_DRAINING, //!< retort draining
+    PUMP_CREATE_PRESSURE, //!< pump create pressure
+    PUMP_KEEP_PRESSURE, //!< pump keep pressure
+    PUMP_RELEASE_PRESSURE, //!< pump release pressure
+    PUMP_CURRENT_PRESSURE, //!< pump current pressure
+    SYSTEM_FLUSH, //!< flush system
+    WAIT_CONFIRM, //!< waiting confirm
+    WAIT_CONFIRM2, //!< waiting confirm
+    HIDE_MESSAGE,  //!< hide message
+    INFORM_DONE //!< inform done
+} TestCurStatus_t; //!< test state enumeration
 
 /****************************************************************************/
 /**
@@ -89,8 +79,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]   ServiceDeviceController     Reference of ServiceDeviceController.
-     * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
+     * \param[in]   iDevProc           Reference of IDeviceProcessing.
      */
     /****************************************************************************/
     ManufacturingTestHandler(IDeviceProcessing &iDevProc);
@@ -121,8 +110,8 @@ public slots:
      * \brief Handle Command of type CmdAbortTest received.
      *
      * \param[in]       Ref                 Reference of command.
-     * \param[in]       id                 Test case id.
-     * \param[in]       AbortTestCaseId                It is only for abort
+     * \param[in]       id                  Test case id.
+     * \param[in]       AbortTestCaseIds    It is only for abort
      */
     /****************************************************************************/
     void OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseIds=0);
@@ -132,6 +121,7 @@ public slots:
      * \brief Module Manufacturing Test for Himalaya Manufacturing Diagnostic
      *
      * \iparam       TestId            Module Test Case Id
+     * \param[in]       AbortTestCaseId    It is only for abort
      */
     /****************************************************************************/
     void PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId, Service::ModuleTestCaseID AbortTestCaseId = Service::TEST_CASE_ID_UNUSED);
@@ -175,6 +165,15 @@ signals:
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
 
+    /****************************************************************************/
+    /**
+     * \brief Returns service request message to Main Thread Controller.
+     *
+     * \iparam   ReqName = request name
+     * \iparam   ErrorCode = error code
+     * \iparam   Results = store result
+     */
+    /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 private:
@@ -392,10 +391,11 @@ private:
 
     /****************************************************************************/
     /**
-     * \brief Auto set the heater switch type for ASB3 according to ASB5
+     *  \brief Auto set the heater switch type for ASB3 according to ASB5
+     *  \iparam Id = test case Id
      */
     /****************************************************************************/
-    qint32 AutoSetASB3HeaterSwitchType();
+    qint32 AutoSetASB3HeaterSwitchType(Service::ModuleTestCaseID Id);
 
     /****************************************************************************/
     /**

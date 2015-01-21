@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_MessageDlg = The pointer of message dlg.
      *  \iparam p_Parent    = Parent widget
      */
     /****************************************************************************/
@@ -83,18 +83,20 @@ private:
     /****************************************************************************/
     /*!
      *  \brief To Initialize RV and show status On GUI.
+     *  \return true
      */
     /****************************************************************************/
-    void TestRVInitialize();
+    bool TestRVInitialize();
 
     /****************************************************************************/
     /*!
      *  \brief To move RV position and show status on GUI.
      *  \iparam TubeFlag = flag for tube or sealing
      *  \iparam Position = The number RV position.
+     *  \return true/false
      */
     /****************************************************************************/
-    void TestRVMovePosition(bool TubeFlag, int Position);
+    bool TestRVMovePosition(bool TubeFlag, int Position);
 
     /****************************************************************************/
     /*!

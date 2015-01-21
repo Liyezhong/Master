@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file HimalayaServiceMasterThread/Include/HimalayaServiceMasterThreadController.h
+/*! \file ServiceMasterThreadController.h
  *
- *  \brief Definition file for class HimalayaMasterThreadController.
+ *  \brief Definition file for class ServiceMasterThreadController.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-02-06
@@ -468,6 +468,14 @@ signals:
       /****************************************************************************/
       void SetInformationToNetworkSettings(QString Text, QString Color);
 
+      /****************************************************************************/
+      /**
+       * \brief return service request result
+       * \iparam ReqName  = request name
+       * \iparam ErrorCode = error code
+       * \iparam Results = store result
+       */
+      /****************************************************************************/
       void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 private slots:
@@ -606,6 +614,8 @@ protected:
     /****************************************************************************/
     /**
      * \brief Stop the specified controllers and threads.
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void StopSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
@@ -613,13 +623,15 @@ protected:
     /****************************************************************************/
     /**
      * \brief Remove controllers and threads from the list.
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void RemoveSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
 
     /****************************************************************************/
     /**
-     * \brief This method is called when the base received the \ref Go signal.
+     * \brief This method is called when the base received the Go signal.
      *
      * This means that everything is fine and normal operation started.
      * We are running in our own thread.\n
@@ -632,7 +644,7 @@ protected:
     virtual void OnGoReceived();
     /****************************************************************************/
     /**
-     * \brief This method is called when the base class received the \ref Stop signal.
+     * \brief This method is called when the base class received the Stop signal.
      *
      * This means that normal operation will stop after processing this signal.
      * We are still running in our own thread.\n
@@ -667,6 +679,8 @@ protected:
     /****************************************************************************/
     /**
      * \brief Starts the export controller thread
+     * \iparam ControllerNumber = number of controller
+     * \iparam BasicThreadController = flag of basic controller
      *
      ****************************************************************************/
     void StartSpecificThreadController(const int ControllerNumber, const bool BasicThreadController = false);
@@ -674,6 +688,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Destroy all registered controllers and threads.
+     * \iparam BasicThreadController = flag of basic controller
      */
     /****************************************************************************/
     void DestroyControllersAndThreads(const bool BasicThreadController = false);
@@ -692,11 +707,13 @@ protected:
      * \brief Add controller and thread to list of handled controllers.
      *
      * This list is used to perform common stuff to all controllers and threads:
-     * connecting their \ref Go and \ref Stop slots, connecting them to the
+     * connecting their Go and Stop slots, connecting them to the
      * data logging mechanism and so on.
      *
      * \param[in]   pController         Pointer to controller.
      * \param[in]   pCommandChannel     Pointer to command channel.
+     * \param[in]   ControllerNumber         controller number
+     * \param[in]   BasicThreadController    basic thread controller flag
      */
     /****************************************************************************/
     void AddAndConnectController(ThreadController *pController, CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController = false);
@@ -798,7 +815,7 @@ protected:
      * \brief Thread command processing method.
      *
      * Is called when an command has to be processed.
-     * \warning This method should be called only from within \ref CommandChannel::CommandChannelRx
+     * \warning This method should be called only from within CommandChannel::CommandChannelRx
      * \warning Do not let exceptions escape this method!
      *
      * \param[in]       Ref                 The command reference.
@@ -812,7 +829,7 @@ protected:
      * \brief An acknowledge for an send command was received.
      *
      * Is called when an command acknowledge has to be processed.
-     * \warning This method should be called only from within \ref CommandChannel::CommandChannelTxAck
+     * \warning This method should be called only from within CommandChannel::CommandChannelTxAck
      * \warning Do not let exceptions escape this method!
      *
      * \param[in]       Ref         The command reference.
@@ -874,7 +891,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Initialize all controllers in the order they were created.
-     *
+     * \iparam BasicThreadController
      * Calls \ref CreateAndInitializeObjects for each.
      */
     /****************************************************************************/
@@ -882,6 +899,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Attach controllers to corresponding threads and start threads.
+     * \iparam BasicController = flag of basic controller
      */
     /****************************************************************************/
     void AttachControllersAndStartThreads(bool BasicController = false);
@@ -891,10 +909,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]   LoggingSourceController     Source for thread controller.
-     * \param[in]   LoggingSourceDataLogging    Sources for data logging component.
-     * \param[in]   LoggingSourceEventHandler   Source for event handler component.
-     * \param[in]   ShutdownSharedMemName       Name for shared memory used for shutdown. For debugging purposes only.
+     * \param[in]   startUp     start up class instance.
      */
     /****************************************************************************/
     ServiceMasterThreadController(Core::CStartup* startUp);
@@ -925,6 +940,13 @@ public:
     inline void SetEventLoggerBaseFileName(const QString &EventLoggerBaseFileName) {
         m_EventLoggerBaseFileName = EventLoggerBaseFileName;
     }
+    /****************************************************************************/
+    /**
+     * \brief this function is used to Set serial number.
+     *
+     * \param[in]   SerialNumber     serial number
+     */
+    /****************************************************************************/
     inline void SetSerialNumber(const QString &SerialNumber) {
         m_SerialNumber = SerialNumber;
     }
@@ -1019,7 +1041,7 @@ public:
     /**
      * \brief Send a positive acknowledge over its command channel.
      *
-     * Create a positive acknwoledge of type \ref Global::AckOKNOK and send it.
+     * Create a positive acknwoledge of type Global::AckOKNOK and send it.
      *
      * \param[in]   Ref         Acknowledge reference.
      * \param[in]   CmdChannel  The command channel for the command
@@ -1030,7 +1052,7 @@ public:
     /**
      * \brief Send a negative acknowledge over its command channel.
      *
-     * Create a negative acknwoledge of type \ref Global::AckOKNOK and send it.
+     * Create a negative acknwoledge of type Global::AckOKNOK and send it.
      *
      * \param[in]   Ref         Acknowledge reference.
      * \param[in]   CmdChannel  The command channel for the command
@@ -1051,6 +1073,12 @@ public:
     /****************************************************************************/
     Global::tRefType SendCommand(const Global::CommandShPtr_t &Cmd, CommandChannel &CmdChannel);
 
+    /****************************************************************************/
+    /**
+     * \brief get alarm handler
+     * \return   alarm handler pointer
+     */
+    /****************************************************************************/
     Global::AlarmHandler* GetAlarmHandler() {return mp_alarmHandler; }
 
     /****************************************************************************/
@@ -1060,18 +1088,13 @@ public:
      */
     /****************************************************************************/
     virtual const DataManager::CServiceDataManager *GetServiceDataManager() { return mp_ServiceDataManager; }
-    /****************************************************************************/
-    /**
-     * \brief Return the command channel object requested
-     * \iparam CommandChannelSelector = Command channel to return
-     * \return CommandChannel object
-     */
-    /****************************************************************************/
-    //virtual Threads::CommandChannel & GetCommandChannel(CommandChannelSelector_t CommandChannelSelector) =0;
 
     /****************************************************************************/
     /**
-     * \brief Test Code to display confirmation pop on GUI with desired message
+     * \brief process message command
+     * \iparam Ref = Command reference
+     * \iparam Cmd = Command channel to return
+     * \iparam AckCommandChannel = Command channel to return
      */
     /****************************************************************************/
     void OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel);

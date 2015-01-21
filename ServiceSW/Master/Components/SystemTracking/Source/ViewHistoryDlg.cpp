@@ -39,6 +39,7 @@ CViewHistoryDlg::CViewHistoryDlg(QWidget *p_Parent)
     mp_Ui->setupUi(GetContentFrame());
     mp_Model->setColumnCount(1);
     mp_Model->setHorizontalHeaderItem(0,new QStandardItem(tr("Module List")));
+    mp_Model->setHorizontalHeaderItem(1,new QStandardItem(tr("Value")));
 
     mp_TreeView = new QTreeView(this);
     mp_TreeView->setModel(mp_Model);
@@ -64,6 +65,7 @@ void CViewHistoryDlg::UpdateGUI(void)
 
     //mp_Model->setColumnCount(1);
     mp_Model->setHorizontalHeaderItem(0,new QStandardItem(tr("Module List")));
+    mp_Model->setHorizontalHeaderItem(1,new QStandardItem(tr("Value")));
 
     if (mp_ModuleList == NULL) {
         qDebug()<<"invalid module list";

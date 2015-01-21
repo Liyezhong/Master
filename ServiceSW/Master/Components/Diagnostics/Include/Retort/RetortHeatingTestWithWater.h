@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HeatingTestWithLiquid.h
+/*! \file RetortHeatingTestWithWater.h
  *
  *  \brief Declaration of Retort heating test with water.
  *
@@ -31,21 +31,32 @@ namespace Retort {
 
 #ifndef _RETORTHEATINGTESTSTATUS_
 #define _RETORTHEATINGTESTSTATUS_
+
+/****************************************************************************/
+/**
+ * \brief Struct for retort heating status data.
+ */
+/****************************************************************************/
 struct HeatingStatus {
-   int UsedTime;
-   int EDTime;
+   int UsedTime;        //!< number of used time
+   int EDTime;          //!< number of end time
 
-   qreal RetortTempSide;
-   qreal RetortTempSensor1;
-   qreal RetortTempSensor2;
+   qreal RetortTempSide;    //!< value of retort side temperature
+   qreal RetortTempSensor1; //!< value of retort sensor 1 temperature
+   qreal RetortTempSensor2; //!< value of retort sensor 2 temperature
 
-   QString RetortTempTarget;
+   QString RetortTempTarget;    //!< string of retort target temperature
 
-   qreal TempOffset;
-   qreal TempOffsetRange;
+   qreal TempOffset;        //!< value of temperature offset
+   qreal TempOffsetRange;   //!< value of temperature offset range
 };
 #endif
 
+/****************************************************************************/
+/*!
+*   \brief This class implements the functionality to retort heating test water test
+*/
+/****************************************************************************/
 class CHeatingTestWithWater : public Diagnostics::CTestBase
 {
     Q_OBJECT
@@ -68,6 +79,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);

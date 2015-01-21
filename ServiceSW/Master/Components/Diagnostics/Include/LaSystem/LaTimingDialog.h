@@ -28,6 +28,11 @@ namespace Ui {
 class LaTimingDialog;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the L&A system timing dialog
+ */
+/****************************************************************************/
 class LaTimingDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
@@ -66,7 +71,7 @@ public:
     void UpdateLabel(const Service::ModuleTestStatus &Status);
 
 private:
-    Ui::LaTimingDialog *ui;
+    Ui::LaTimingDialog *ui;     //!< user interface.
 };
 
 #endif // LATIMINGDIALOG_H

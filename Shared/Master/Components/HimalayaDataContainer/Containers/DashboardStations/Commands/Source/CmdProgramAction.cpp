@@ -25,11 +25,12 @@ QString CmdProgramAction::NAME = "MsgClasses::CmdProgramAction";
 
 
 CmdProgramAction::CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
-                                   int delayTime) :
+                                   int delayTime, int programRunDuration) :
     Command(timeout),
     m_ProgramID(programID),
     m_ActionType(actionType),
-    m_DelayTime(delayTime)
+    m_DelayTime(delayTime),
+    m_ProgramRunDuration(programRunDuration)
 {
 }
 
@@ -37,7 +38,8 @@ CmdProgramAction::CmdProgramAction():
     Command(0),
     m_ProgramID(""),
     m_ActionType(DataManager::PROGRAM_UNDEFINED),
-    m_DelayTime(0)
+    m_DelayTime(0),
+    m_ProgramRunDuration(0)
 {
 }
 

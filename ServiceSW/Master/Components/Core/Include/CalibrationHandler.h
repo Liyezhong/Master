@@ -39,11 +39,35 @@ class CCalibrationHanlder : public QObject {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_ServiceGUIConnector = serivce gui connector
+     *  \iparam p_MainWindow = parent windows
+     */
+    /****************************************************************************/
     CCalibrationHanlder(Core::CServiceGUIConnector *p_ServiceGUIConnector, MainMenu::CMainWindow *p_MainWindow);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CCalibrationHanlder();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To load calibration gui componenets.
+     */
+    /****************************************************************************/
     void LoadCalibrationGUIComponenets();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To refresh calibration message to main
+     *  \iparam Status = module test status
+     */
+    /****************************************************************************/
     void RefreshCalibrationMessagetoMain(const Service::ModuleTestStatus &Status);
 
 private:
@@ -56,12 +80,37 @@ private:
     Calibration::CPressureSensor            *mp_PressureSensor;             //!< Calibration for the pressure sensor.
     Calibration::CTouchscreen               *mp_Touchscreen;                //!< Starter for the touchscreen calibration
 
-
+    /****************************************************************************/
+    /*!
+     *  \brief To preform calibration
+     *  \iparam Title = title string
+     *  \iparam GBox = GBox string
+     *  \iparam Instr = index string
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool PerformCalibration(QString& Title, QString& GBox, QString& Instr);
 
+    /****************************************************************************/
+    /*!
+     *  \brief To get calibration response
+     *  \return true or false
+     */
+    /****************************************************************************/
     bool GetCalibrationResponse();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Service calibation
+     */
+    /****************************************************************************/
     void ServiceCalibation();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Manufacturing calibation
+     */
+    /****************************************************************************/
     void ManufacturingCalibation();
 
 signals:
@@ -82,6 +131,7 @@ signals:
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortTestID = abort test id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);
@@ -89,6 +139,7 @@ signals:
     /*******************************************************************************/
     /*!
      *  \brief Signal emitted to shut down system
+     *  \iparam NeedUpdate = flag of need update
      */
     /*******************************************************************************/
     void ShutdownSystem(bool NeedUpdate=true);
@@ -102,15 +153,41 @@ public slots:
     /****************************************************************************/
     void OnPressureSensorCalibration();
 
-    /* Return Message Slots */
+    /****************************************************************************/
+    /*!
+     *  \brief To Show message
+     *  \iparam Message = message text
+     */
+    /****************************************************************************/
     void ShowMessage(const QString &Message);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Show error message dialog
+     *  \iparam Message = message text
+     */
+    /****************************************************************************/
     void ShowErrorMessage(const QString &Message);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show calibration init message dialog
+     *  \iparam Message = message text
+     *  \iparam OkStatus = flag of ok
+     */
+    /****************************************************************************/
     void ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Enable calibration group
+     *  \iparam Status = flag of status
+     */
+    /****************************************************************************/
     void EnableCalibrationGroup(bool Status);
 
 private:
-    int m_Result;
+    int m_Result;   //!< store result.
 
 };
 

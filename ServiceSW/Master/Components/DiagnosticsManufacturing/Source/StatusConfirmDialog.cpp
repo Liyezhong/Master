@@ -104,11 +104,11 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
  *  \iparam Status = Label test status
  */
 /****************************************************************************/
-void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &status)
+void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &Status)
 {
     mp_Ui->labelStatus->setText(QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
                                                         "Retort lid lock status:", 0, QApplication::UnicodeUTF8));
-    QString CoverSensorStatus = status.value("LidLockerStatus");
+    QString CoverSensorStatus = Status.value("LidLockerStatus");
     if (CoverSensorStatus != "") {
         mp_Ui->labelStatusValue->setText(CoverSensorStatus);
     }

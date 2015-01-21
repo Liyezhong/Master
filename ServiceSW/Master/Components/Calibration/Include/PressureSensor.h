@@ -40,17 +40,42 @@ class CPressureSensor : public QWidget
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_Parent = parent windows
+     */
+    /****************************************************************************/
     explicit CPressureSensor(QWidget *parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CPressureSensor();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event handler for change events
+     *
+     *  \iparam p_Event = Change event
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private Q_SLOTS:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for start calibration
+     */
+    /****************************************************************************/
     void StartCalibration(void);
     
 private:
-    Ui::CPressureSensor *mp_Ui;
+    Ui::CPressureSensor *mp_Ui;     //!< user interface
 
 signals:
     /****************************************************************************/
@@ -61,8 +86,21 @@ signals:
     void CalibrationPressureSensor();
 
 private slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Translate string
+     */
+    /****************************************************************************/
     void RetranslateUI();
 public:
+
+    /****************************************************************************/
+    /*!
+     *  \brief To set button status
+     *  \iparam enable = flag for enable button
+     */
+    /****************************************************************************/
     void SetButtonStatus(bool enable);
 
 };

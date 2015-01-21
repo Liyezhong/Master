@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file RotaryValve.cpp
+/*! \file SystemTracking/Source/RotaryValve.cpp
  *
  *  \brief Implementation of Rotary Valve configuration class.
  *
@@ -136,7 +136,7 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
 
     (void)mp_ModuleList->UpdateModule(&Module);
 
-    emit ModuleListChanged();
+    //emit ModuleListChanged();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -294,6 +294,9 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
         {
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
+            if (m_SubModuleNames.contains("ASB3")) {
+                emit UpdateSlaveVersion();
+            }
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

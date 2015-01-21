@@ -21,6 +21,7 @@
 #define RS_TISSUE_PROTECT_H
 #include <QStateMachine>
 #include <QSharedPointer>
+#include <QCoreApplication>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 
@@ -56,6 +57,7 @@ class  CRsTissueProtect : public QObject
     typedef enum
     {
         UNKNOWN,
+        FIRST_STEP,
         Fixation,
         Fixation_Overflow,
         Concentration_Dehydration,
@@ -105,6 +107,15 @@ public:
      */
     /****************************************************************************/
     void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief start up state machine
+     */
+    /****************************************************************************/
+    void Start();
+
 
 signals:
 

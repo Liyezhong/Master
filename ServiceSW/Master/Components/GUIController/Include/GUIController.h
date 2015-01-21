@@ -58,6 +58,11 @@ public:
       */
     /****************************************************************************/
     void SendCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd);
+    /****************************************************************************/
+    /**
+      * \brief get new command reference.
+      */
+    /****************************************************************************/
     Global::tRefType GetNewCommandRef();
 
 protected:

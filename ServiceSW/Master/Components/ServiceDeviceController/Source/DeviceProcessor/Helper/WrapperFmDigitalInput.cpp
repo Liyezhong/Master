@@ -54,7 +54,6 @@ WrapperFmDigitalInput::WrapperFmDigitalInput(QString Name, CDigitalInput *pDigit
  *  This method performs reading input value of a Digital Input function module.
  *
  *  Examples:
- *  \dontinclude DigitalInput.js
  *  \skipline [DigitalIn.GetValue]
  *  \until    [DigitalIn.GetValue]
  *
@@ -85,7 +84,6 @@ qint32 WrapperFmDigitalInput::GetValue()
  *  This method performs reset and return of edge count value.
  *
  *  Examples:
- *  \dontinclude DigitalInput.js
  *  \skipline [DigitalIn.ReadEdgeCount]
  *  \until    [DigitalIn.ReadEdgeCount]
  *

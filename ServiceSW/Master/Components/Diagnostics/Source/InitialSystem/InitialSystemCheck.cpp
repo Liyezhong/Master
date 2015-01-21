@@ -171,8 +171,9 @@ void CInitialSystemCheck::RetortPreHeating()
     delete RetortPreTest;
 }
 
-void CInitialSystemCheck::SelectRetortCondition()
+void CInitialSystemCheck::SelectRetortCondition(quint64 Id)
 {
+    Q_UNUSED(Id);
     m_IsEmptyInRetort = true;
 }
 
@@ -221,8 +222,7 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
     dlg->SetButtonText(2, tr("Other Reagent"));
     dlg->SetButtonText(3, tr("Paraffin"));
 
-    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), this, SelectRetortCondition());
-
+    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(quint64), this, SelectRetortCondition(quint64));
     dlg->setModal(true);
     int Ret = dlg->exec();
     if (Ret == 0) {

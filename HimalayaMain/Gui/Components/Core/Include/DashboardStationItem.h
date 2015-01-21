@@ -78,7 +78,7 @@ private:
     const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
     const int m_BottleCoverHeight;                       //!< Bottle Cover Height
 
-    int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
+    qreal m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 
     QTimer* mp_SuckDrainTimer;       ///<  Definition/Declaration of variable mp_SuckDrainTimer
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
@@ -90,7 +90,6 @@ private:
     bool m_EnableBlink;       ///<  Definition/Declaration of variable m_EnableBlink
     bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
-    QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
     QPixmap m_PixmapRetortUnlocked, m_PixmapRetortLocked01, m_PixmapRetortLocked02;
     QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
     QPixmap m_PixmapLabel, m_PixmapReagentName;
@@ -159,13 +158,6 @@ public:
     void PrepareReagentName();
     /****************************************************************************/
     /*!
-     *  \brief Prepare cleaning Reagent strip to draw.
-     *
-     */
-    /****************************************************************************/
-    void PrepareCleaningReagentStrip();
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of function DrawStationItemLabel
      *
      *  \param painter = QPainter type parameter
@@ -189,6 +181,7 @@ public:
      *  \brief  Definition/Declaration of function SetContainerStatus
      *
      *  \param containerStatus = DataManager::ContainerStatusType_t type parameter
+     *  \param reagentGroupID = reagent group ID
      *
      *  \return from SetContainerStatus
      */

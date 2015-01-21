@@ -32,7 +32,8 @@ namespace Retort {
 CDrainReagentTest::CDrainReagentTest(CDiagnosticMessageDlg* p_MessageDlg, QWidget *p_Parent)
     : CTestBase(p_Parent),
       mp_MessageDlg(p_MessageDlg),
-      m_MessageTitle("Retort Drain Reagent")
+      m_MessageTitle("Retort Drain Reagent"),
+      m_ParaffinMeltingPoint(0)
 {
 }
 
@@ -50,7 +51,7 @@ int CDrainReagentTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    QString Text = "Select the content/condition within the retor.";
+    QString Text = "Select the content/condition within the retort.";
     QString Button1 = "Other Reagent";
     QString Button2 = "Paraffin";
     CSelectBottleNReagentDialog* p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
@@ -75,6 +76,9 @@ int CDrainReagentTest::Run(void)
     delete p_SelectDlg;
     qDebug()<<"Select ParaffinOption option :"<<ParaffinOption;
     if (ParaffinOption == 1) {
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
+        m_ParaffinMeltingPoint = p_TestCase->GetParameter("PMeltingPoint").toInt();
+
         if (ShowConfirmDlg(1) == 0) {
             return RETURN_ERR_FAIL;
         }
@@ -112,22 +116,19 @@ int CDrainReagentTest::Run(void)
     }
 
     ServiceDeviceProcess* p_Dev = ServiceDeviceProcess::Instance();
-    Text = "Rotary valve is initializing...";
-    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
-    int Ret = p_Dev->RVInitialize(CurrentTubeFlag, CurrentPosition);
-    mp_MessageDlg->HideWaitingDialog();
 
-    if (Ret != RETURN_OK) {
-        qDebug()<<"Retort drain reagent initializing rotary valve failed.";
-    }
-
+    int Ret;
     for (int i = 0; i < 2; ++i) {
+        (void)p_Dev->RVInitialize(CurrentTubeFlag, CurrentPosition);
+        Text = QString("Rotary Valve is rotating to tube position %1").arg(TargetPosition);
+        mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
         Ret = p_Dev->RVMovePosition(true, TargetPosition);
+        mp_MessageDlg->HideWaitingDialog();
         if (Ret == RETURN_OK) {
             break;
         }
 
-        if (Ret == 1100) {//Time out
+        if (Ret == -3) {//Time out
             ShowFinishDlg(6);
             return RETURN_ERR_FAIL;
         }
@@ -136,13 +137,13 @@ int CDrainReagentTest::Run(void)
             if (i == 1) {
                 ShowFinishDlg(7);
                 p_Dev->PumpStopCompressor();
+                p_Dev->PumpSetValve(0, 0);
                 p_Dev->PumpSetValve(1, 0);
-                p_Dev->PumpSetValve(2, 0);
                 ShowFinishDlg(8);
                 return RETURN_ERR_FAIL;
             }
 
-            if (!SelectPosition(3, TargetTubeFlag, TargetPosition)) {
+            if (!SelectPosition(3, CurrentTubeFlag, CurrentPosition)) {
                 return RETURN_ERR_FAIL;
             }
         }
@@ -332,13 +333,18 @@ bool CDrainReagentTest::BuildVacuum()
 
     float CurrentPressure(0);
     while (WaitTime) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
         (void)p_Dev->PumpGetPressure(&CurrentPressure);
         if (CurrentPressure < TargetPressure) {
             mp_MessageDlg->HideWaitingDialog();
             return true;
         }
-        p_Dev->Pause(1000);
+
+        WaitTime--;
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        p_Dev->Pause(MSec);
     }
+
     mp_MessageDlg->HideWaitingDialog();
     return false;
 }
@@ -352,7 +358,8 @@ bool CDrainReagentTest::CheckRVTemp(bool IsParaffin)
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
     if (IsParaffin) {
         RVTargetTemp1 = p_TestCase->GetParameter("RVPTargetTemp1").toInt();
-        RVTargetTemp2 = p_TestCase->GetParameter("RVPTargetTemp2").toInt();
+        RVTargetTemp2 = m_ParaffinMeltingPoint;
+        //RVTargetTemp2 = p_TestCase->GetParameter("RVPTargetTemp2").toInt();
     }
     else {
         RVTargetTemp1 = p_TestCase->GetParameter("RVTargetTemp1").toInt();
@@ -370,10 +377,7 @@ bool CDrainReagentTest::CheckRVTemp(bool IsParaffin)
 
 bool CDrainReagentTest::CheckLTubeTemp()
 {
-    qreal TargetTemp(0);
     qreal LTubeCurrentTemp(0);
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
-    TargetTemp = p_TestCase->GetParameter("PMeltingPoint").toInt();
 
     int Ret = ServiceDeviceProcess::Instance()->LiquidTubeGetTemp(&LTubeCurrentTemp);
     if (Ret != RETURN_OK) {
@@ -381,7 +385,7 @@ bool CDrainReagentTest::CheckLTubeTemp()
         return false;
     }
 
-    return LTubeCurrentTemp >= TargetTemp;
+    return LTubeCurrentTemp >= m_ParaffinMeltingPoint;
 }
 
 bool CDrainReagentTest::CheckOvenTemp()
@@ -390,14 +394,11 @@ bool CDrainReagentTest::CheckOvenTemp()
     qreal OvenTempB1(0);
     qreal OvenTempB2(0);
 
-    qreal MeltingPointTemp(0);
     qreal TargetTemp(0);
     qreal DiffTemp(0);
-    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal");
-    DataManager::CTestCase* p_TestCase2 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
-    DiffTemp = p_TestCase2->GetParameter("OvenDiffTemp").toInt();
-    MeltingPointTemp = p_TestCase->GetParameter("PMeltingPoint").toInt();
-    TargetTemp = MeltingPointTemp - DiffTemp;
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortDrainReagent");
+    DiffTemp = p_TestCase->GetParameter("OvenDiffTemp").toInt();
+    TargetTemp = m_ParaffinMeltingPoint - DiffTemp;
 
     int Ret = ServiceDeviceProcess::Instance()->OvenGetTemp(&OvenTempT, &OvenTempB1, &OvenTempB2);
 

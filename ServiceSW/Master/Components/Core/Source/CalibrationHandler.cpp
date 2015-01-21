@@ -130,7 +130,8 @@ void CCalibrationHanlder::ServiceCalibation()
             Ret = true;
             break;
         }
-        else if (qAbs(Pressure) < 1.5){
+        //else if (qAbs(Pressure) < 1.5){
+        else if (qAbs(Pressure) < 2.0){
             (void)p_Dev->PumpReadPressureDrift(&Drift);
             (void)p_Dev->PumpWritePressureDrift(Pressure + Drift);
         }
@@ -160,7 +161,8 @@ void CCalibrationHanlder::ServiceCalibation()
 
     (void)p_Dev->PumpGetPressure(&Pressure);
 
-    if (qAbs(Pressure) > 1.5) {
+    //if (qAbs(Pressure) > 1.5) {
+    if (qAbs(Pressure) > 2.0) {
         Text = QString("Pressure Sensor is defective. Please exchange it and repeat this calibration.");
     }
     else {

@@ -41,7 +41,6 @@ class CResetData;
  *  function module StepperMotor.
  *
  *  Examples:
- *   \dontinclude steppermotor.js
  *   \skipline [WrapperFMStepperMotor]
  *   \until    [WrapperFMStepperMotor]
  */

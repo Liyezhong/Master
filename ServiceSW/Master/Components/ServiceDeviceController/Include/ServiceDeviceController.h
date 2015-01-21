@@ -137,6 +137,14 @@ public:
     /****************************************************************************/
     void OnCmdModuleManufacturingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdModuleManufacturingTest &Cmd);
 
+    /****************************************************************************/
+    /**
+     * \brief Command of type CmdServiceRequest received.
+     *
+     * \iparam       Ref                 Reference of command.
+     * \iparam       Cmd                 Command.
+     */
+    /****************************************************************************/
     void OnCmdServiceRequest(Global::tRefType Ref, const DeviceCommandProcessor::CmdServiceTest &Cmd);
 
 public slots:
@@ -184,7 +192,15 @@ public slots:
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
 
-
+    /****************************************************************************/
+    /**
+     * \brief Returns RFIDConsumables message to Main Thread Controller.
+     *
+     * \iparam   ReqName = request name
+     * \iparam   ErrorCode = error code
+     * \iparam   Results = store result
+     */
+    /****************************************************************************/
     void OnReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 #if 0
@@ -202,18 +218,29 @@ public slots:
 
 signals:
 
+    /****************************************************************************/
+    /**
+     * \brief when the data container initialized will be called
+     */
+    /****************************************************************************/
     void DataContainersInitialized();
 
     /****************************************************************************/
     /**
-     * \brief SDC_AbortTest signal to abort test
+     *  \brief SDC_AbortTest signal to abort test
+     *  \iparam Ref = ref type
+     *  \iparam id = id number
      */
     /****************************************************************************/
     void SDC_AbortTest(Global::tRefType Ref, quint32 id);
 
     /****************************************************************************/
     /**
-     * \brief SDC_HeatingTest signal to test heating
+     *  \brief SDC_HeatingTest signal to test heating
+     *  \iparam Ref = ref type
+     *  \iparam id = key of id
+     *  \iparam HeatingIndex = index of heating
+     *  \iparam CmdType = type of cmd
      */
     /****************************************************************************/
     void SDC_HeatingTest(Global::tRefType Ref, quint32 id,
@@ -221,7 +248,11 @@ signals:
 
     /****************************************************************************/
     /**
-     * \brief SDC_RotaryValveTest signal to test rotary valve movement
+     *  \brief SDC_RotaryValveTest signal to test rotary valve movement
+     *  \iparam Ref = ref type
+     *  \iparam id = id number
+     *  \iparam Position = target position
+     *  \iparam CmdType = type of cmd
      */
     /****************************************************************************/
     void SDC_RotaryValveTest(Global::tRefType Ref, quint32 id,
@@ -229,7 +260,10 @@ signals:
 
     /****************************************************************************/
     /**
-     * \brief SDC_LSensorDetectingTest signal to test level sensor detecting
+     *  \brief SDC_LSensorDetectingTest signal to test level sensor detecting
+     *  \iparam Ref = ref of type
+     *  \iparam id = id number
+     *  \iparam Position = target position
      */
     /****************************************************************************/
     void SDC_LSensorDetectingTest(Global::tRefType Ref, quint32 id,
@@ -246,21 +280,29 @@ signals:
     /****************************************************************************/
     /**
      * \brief ModuleManufacturingTest Signal
-     * \iparam       CmdType         Module Test Name
+     * \iparam       TestName         Module Test Name
+     * \iparam       AbortTestCaseId
      */
     /****************************************************************************/
     void ModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
+    /****************************************************************************/
+    /**
+     * \brief ModuleManufacturingTest Signal
+     * \iparam       ReqName = Request name
+     * \iparam       Params =  value of the request name
+     */
+    /****************************************************************************/
     void ServiceRequest(QString ReqName, QStringList Params);
 
 protected:
     /**
-     * \brief This method is called when the base received the \ref Go signal.
+     * \brief This method is called when the base received the  Go signal.
      *
      * This means that everything is fine and normal operation started.
      * We are running in our own thread.\n
      * We create all controllers used (the according method in derived classes
-     * \ref CreateControllersAndThreads is also called), then initialize the controllers
+     *  CreateControllersAndThreads is also called), then initialize the controllers
      * and finally attach them to the corresponding threads and start them.\n
      * If something goes wrong, the master thread (and application) will be stopped.
      */
@@ -268,7 +310,7 @@ protected:
     void OnGoReceived();
     /****************************************************************************/
     /**
-     * \brief This method is called when the base class received the \ref Stop signal.
+     * \brief This method is called when the base class received the Stop signal.
      *
      * This means that normal operation will stop after processing this signal.
      * We are still running in our own thread.\n

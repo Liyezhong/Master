@@ -46,7 +46,7 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam p_DataConnector = Service GUI connector object
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     CInitialSystemCheck(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent=NULL);
@@ -61,6 +61,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for test check start run
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -76,16 +77,18 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief Slot for Select Retort Condition
+     *  \iparam Id = message box id
+     *
      */
     /****************************************************************************/
-    void SelectRetortCondition();
+    void SelectRetortCondition(quint64 Id);
 
 signals:
     /****************************************************************************/
     /*!
      *  \brief Signal emitted for refresh status
      *  \iparam Type = The pre test module type
-     *  \Ret  = The pre test result
+     *  \iparam Ret  = The pre test result
      */
     /****************************************************************************/
     void RefreshStatusToGUI(Service::InitialSystemTestType Type, int Ret);

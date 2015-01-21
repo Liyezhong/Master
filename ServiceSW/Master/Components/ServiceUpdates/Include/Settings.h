@@ -45,7 +45,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam p_ServiceDataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMenu::CMainWindow *p_Parent = 0);

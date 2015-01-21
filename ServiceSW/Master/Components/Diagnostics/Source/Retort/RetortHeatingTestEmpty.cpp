@@ -77,7 +77,7 @@ int CHeatingTestEmpty::Run(void)
               "rotate lock to closed position.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestEmpty");
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
@@ -103,7 +103,7 @@ int CHeatingTestEmpty::Run(void)
 
     DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
     qreal retortTargetTemp1 = p_TestCase1->GetParameter("RetortTargetTemp").toFloat();
-    (void)dev->RetortStartHeating(retortTargetTemp1 + 7, retortTargetTemp1 + 2);
+    (void)dev->RetortStartHeating(retortTargetTemp1, retortTargetTemp1);
     text = tr("Start heating retort...");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
@@ -140,38 +140,41 @@ int CHeatingTestEmpty::Run(void)
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
+
         if (retortTempSide > (retortSideTargetTemp + tempOffset)
-                || retortTempBottom1 > retortBottomTargetTemp + tempOffset
-                || retortTempBottom2 > retortBottomTargetTemp + tempOffset) {
-            ret = RETURN_ERR_FAIL;
-            break;
-        }
-        if (retortTempSide >= retortSideTargetTemp
-                && retortTempBottom1 >= retortBottomTargetTemp
-                && retortTempBottom2 >= retortBottomTargetTemp) {
-            if (!--count)
-                break;
-        } else {
+            || retortTempBottom1 > (retortBottomTargetTemp + tempOffset)
+            || retortTempBottom2 > (retortBottomTargetTemp + tempOffset)) {
             if (i >= t1) {
                 ret = RETURN_ERR_FAIL;
                 break;
             }
             count = t2;
+        } else if (retortTempSide < retortSideTargetTemp
+            || retortTempBottom1 < retortBottomTargetTemp
+            || retortTempBottom2 < retortBottomTargetTemp) {
+            if (i >= t1) {
+                ret = RETURN_ERR_FAIL;
+                break;
+            }
+            count = t2;
+        } else {
+            if (!--count)
+                break;
         }
 
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
         heatingStatus.UsedTime++;
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
-        this->RefreshWaitingDialog(&heatingStatus);
+        this->RefreshWaitingDialog(&heatingStatus);        
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     (void)dev->RetortStopHeating();
 
     if (!timingDialog->isVisible())
-        return RETURN_OK;
+        return RETURN_ABORT;
     timingDialog->accept();
     if (ret != RETURN_OK || count > 0) {
         // fail

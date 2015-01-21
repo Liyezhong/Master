@@ -27,11 +27,6 @@ namespace DataManager
     class CDataProgramList;
 }
 
-namespace Dashboard
-{
-    class CDashboardDateTimeWidget;
-}
-
 namespace Dashboard {
     namespace Ui {
     class CFavoriteProgramsPanelWidget;
@@ -79,6 +74,13 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of AddItemsToFavoritePanel
+         *
+         */
+        /****************************************************************************/
+        void AddItemsToFavoritePanel();
     private slots:
         void OnResetFocus(bool reset);
         /****************************************************************************/
@@ -93,12 +95,6 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void OnProcessStateChanged();
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of ProgramSelected
-         */
-        /****************************************************************************/
-        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation);
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of UndoProgramSelection
@@ -126,20 +122,8 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void OnSelectEndDateTime(const QDateTime & endDateTime);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of signal OnSelectEndDateTime
-         */
-        /****************************************************************************/
-        void RequestAsapDateTime();
-        /****************************************************************************/
-        /*!
-         *  \brief  emit signal OnSelectEndDateTime
-         *  \param asapDateTime = as soon as possible datetime
-         *  \param bIsFirstStepFixation = whether the first step is fixation reagent or not
-         */
-        /****************************************************************************/
-        void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+
+
         /****************************************************************************/
         /*!
          *  \brief  Declaration of signal for update the favorite Program
@@ -171,12 +155,12 @@ namespace Dashboard {
         QDateTime m_lastSetAsapDatetime;
         DataManager::CDataProgramList* mp_ProgramList;       ///<  Definition/Declaration of variable mp_ProgramList
         bool m_ProcessRunning;       ///<  Definition/Declaration of variable m_ProcessRunning
-        Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
         int m_LastSelectedButtonId;       ///<  Definition/Declaration of variable m_LastSelectedButtonId
         QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
         QStringList m_FavProgramIDs;       ///<  Definition/Declaration of variable m_FavProgramIDs
         QString m_NewSelectedProgramId;       ///<  Definition/Declaration of variable m_NewSelectedProgramId
         QDateTime m_EndDateTime;       ///<  Definition/Declaration of variable m_EndDateTime
+        bool m_OnlyAddCleaningProgram;
 
     };
 }

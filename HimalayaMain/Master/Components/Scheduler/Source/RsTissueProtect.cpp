@@ -78,7 +78,6 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
-    mp_StateMachine->start();
     m_IsLevelSensorRelated = false;
     m_DrainCurReagentSeq = 0;
     m_MoveToTubeSeq = 0;
@@ -86,7 +85,32 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
     m_IsFillingSuccessful = true;
+}
+
+
+void CRsTissueProtect::Start()
+{
+    if (mp_StateMachine->isRunning())
+    {
+        mp_StateMachine->stop();
+        // holde on 200 ms
+        QTime delayTime = QTime::currentTime().addMSecs(200);
+        while (QTime::currentTime() < delayTime)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
     }
+
+    mp_StateMachine->start();
+
+    m_IsLevelSensorRelated = false;
+    m_DrainCurReagentSeq = 0;
+    m_MoveToTubeSeq = 0;
+    m_FillSeq = 0;
+    m_LevelSensorSeq = 0;
+    m_MoveToSealSeq = 0;
+    m_IsFillingSuccessful = true;
+}
 
 CRsTissueProtect::~CRsTissueProtect()
 {
@@ -369,7 +393,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     }
                     CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
                     cmd->SetDelayTime(5000);
-                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALDraining(500, mp_SchedulerController));
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
                     emit Wait8Seconds();
                 }
@@ -467,6 +491,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
+    if(200 == Scenario)
+    {
+        return FIRST_STEP;
+    }
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
 
     //Firstly, check if the event id is related with Level Sensor or not
@@ -518,7 +546,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 #endif
 
     ReagentType_t ret = UNKNOWN;
-    if (false == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
+    if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
     {
         ret = Fixation;
     }
@@ -535,7 +563,7 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
         ret = Paraffin;
     }
 
-    if (true == m_IsLevelSensorRelated && Scenario >= 200 && Scenario <= 217)
+    if (true == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
     {
         ret = Fixation_Overflow;
     }
@@ -561,9 +589,14 @@ QString CRsTissueProtect::GetStationID()
     ReagentType_t reagentType = this->GetReagentType();
 
     QList<QString> stationList;
+    QString ReagentGroupID="";
     bool ret = false;
     switch (reagentType)
     {
+    case FIRST_STEP:
+        ret = mp_SchedulerController->GetSafeReagentForSpecial(0, ReagentGroupID, stationList);
+        m_ReagentGroup = ReagentGroupID;
+        break;
     case Fixation:
     case Fixation_Overflow:
         ret = mp_SchedulerController->GetSafeReagentStationList("RG1", stationList);

@@ -49,7 +49,7 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam p_DataConnector = Service GUI connector object
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     explicit CInitialSystem(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);

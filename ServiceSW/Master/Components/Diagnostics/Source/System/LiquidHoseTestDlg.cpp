@@ -25,6 +25,7 @@
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include "Diagnostics/Include/DiagnosticMessageDlg.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include <QDebug>
 
 namespace Diagnostics {
@@ -62,7 +63,7 @@ CLiquidHoseTestDlg::~CLiquidHoseTestDlg()
     catch (...) {}
 }
 
-bool CLiquidHoseTestDlg::RunTest()
+int CLiquidHoseTestDlg::RunTest()
 {
     int BottleNumber;
     bool CreatePressureRet = true;
@@ -83,7 +84,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     if (RVTempSensor1 < TargetTemp1 || RVTempSensor2 < TargetTemp2) {
         ShowFinishDlg(1);
-        return false;
+        return RETURN_ERR_FAIL;
     }
 
     QString Text = "Rotary valve is initializing...";
@@ -92,12 +93,15 @@ bool CLiquidHoseTestDlg::RunTest()
     mp_MessageDlg->HideWaitingDialog();
     if (Ret != RETURN_OK) {
         ShowFinishDlg(2);
-        return false;
+        return RETURN_ERR_FAIL;
     }
 
     this->show();
     mp_Ui->labelStatus->setText("Rotary Valve is moving to sealing position 1");
-    (void)p_DevProc->RVMovePosition(false, 1);
+    if (p_DevProc->RVMovePosition(false, 1) != RETURN_OK) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return RETURN_ERR_FAIL;
+    }
     (void)p_DevProc->PumpSetFan(1);
     for (int i = 0; i < m_BottleNumberList.count(); ++i) {
         if (!CreatePressure(TargetPressure, TimeOut)) {
@@ -112,7 +116,10 @@ bool CLiquidHoseTestDlg::RunTest()
         BottleNumber = m_BottleNumberList.at(i);
 
         mp_Ui->labelStatus->setText(QString("Rotary Valve is moving to tube position %1").arg(BottleNumber));
-        (void)p_DevProc->RVMovePosition(true, BottleNumber);
+        if (p_DevProc->RVMovePosition(true, BottleNumber) != RETURN_OK) {
+            mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+            return RETURN_ERR_FAIL;
+        }
 
         mp_Ui->labelStatus->setText(QString("Keep pressure for %1 seconds").arg(DurationTime));
         for (int j = 0; j < DurationTime; ++j) {
@@ -138,7 +145,10 @@ bool CLiquidHoseTestDlg::RunTest()
             break;
         }
         mp_Ui->labelStatus->setText(QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber));
-        (void)p_DevProc->RVMovePosition(false, BottleNumber);
+        if (p_DevProc->RVMovePosition(false, BottleNumber) != RETURN_OK) {
+            mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+            return RETURN_ERR_FAIL;
+        }
     }
 
     Text = "Releasing pressure...";
@@ -149,8 +159,8 @@ bool CLiquidHoseTestDlg::RunTest()
         mp_Ui->labelStatus->setText(Text);
     }
     (void)p_DevProc->PumpSetFan(0);
+    (void)p_DevProc->PumpSetValve(0, 0);
     (void)p_DevProc->PumpSetValve(1, 0);
-    (void)p_DevProc->PumpSetValve(2, 0);
     p_DevProc->Pause(20*1000);
 
     mp_Ui->abortBtn->setEnabled(false);
@@ -159,7 +169,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     if (m_Abort) {
         mp_MessageDlg->HideWaitingDialog();
-        return false;
+        return RETURN_ABORT;
     }
 
     mp_Ui->labelStatus->setText("Liquid Hose Test finished.");
@@ -170,7 +180,7 @@ bool CLiquidHoseTestDlg::RunTest()
 
     (void)this->exec();
 
-    return CreatePressureRet;
+    return CreatePressureRet ? RETURN_OK : RETURN_ERR_FAIL;
 }
 
 void CLiquidHoseTestDlg::AddBottleNumber(int BottleNumber)
@@ -193,14 +203,17 @@ bool CLiquidHoseTestDlg::CreatePressure(float TargetPressure, int TimeOut)
     if (PreRet == RETURN_OK) {
         float CurrentPressure(0);
         while (TimeOut) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
             (void)p_DevProc->PumpGetPressure(&CurrentPressure);
             qDebug()<<"Liquid hose test current pressure:"<<CurrentPressure;
             if (m_Abort || CurrentPressure >= TargetPressure) {
                 Ret = true;
                 break;
             }
-            p_DevProc->Pause(1000);
+
             TimeOut--;
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            p_DevProc->Pause(MSec);
         }
     }
 
@@ -217,10 +230,13 @@ float CLiquidHoseTestDlg::GetRecordPressure(int RecordTime)
         if (m_Abort) {
             break;
         }
+        QTime EndTime = QTime().currentTime().addSecs(1);
         (void)ServiceDeviceProcess::Instance()->PumpGetPressure(&Pressure);
-        ServiceDeviceProcess::Instance()->Pause(1000);
+
         PressureSum += Pressure;
         WaitSec--;
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        ServiceDeviceProcess::Instance()->Pause(MSec);
     }
 
     return PressureSum/RecordTime;
@@ -240,9 +256,13 @@ bool CLiquidHoseTestDlg::eventFilter(QObject *p_Object, QEvent *p_Event)
 void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure)
 {
     LabelGroup* Labels = m_LabelGroups.at(Index);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SSystemLiquidHose");
+    qreal PressureLeak(0);
+    qreal PressureRestriction(0);
 
     QString BottleStr;
     QString ResultStr;
+    QString PressureStr;
     if (BottleNumber == 14) {
         BottleStr = "P1";
     }
@@ -256,18 +276,31 @@ void CLiquidHoseTestDlg::UpdateLabel(int Index, int BottleNumber, float Pressure
         BottleStr = QString::number(BottleNumber);
     }
 
-    if (Pressure < 0.5) {
+    if (BottleStr.at(0) == 'P') {
+        PressureLeak = p_TestCase->GetParameter("PressureLeakP").toFloat();
+        PressureRestriction = p_TestCase->GetParameter("PressureRestrictionP").toFloat();
+    }
+    else {
+        PressureLeak = p_TestCase->GetParameter("PressureLeak").toFloat();
+        PressureRestriction = p_TestCase->GetParameter("PressureRestriction").toFloat();
+    }
+
+    if (Pressure < PressureLeak) {
         ResultStr = "Leak";
     }
-    else if (Pressure > 10) {
+    else if (Pressure > PressureRestriction) {
         ResultStr = "Restriction";
     }
     else {
         ResultStr = "Ok";
     }
+    PressureStr = QString::number(Pressure);
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_POSITION,
+                                               Global::tTranslatableStringList()<<BottleStr<<PressureStr<<ResultStr);
 
     Labels->bottleLabel->setText(BottleStr);
-    Labels->pressureLabel->setText(QString::number(Pressure));
+    Labels->pressureLabel->setText(PressureStr);
     Labels->resultLabel->setText(ResultStr);
 }
 

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file LaSystem.h
+/*! \file Diagnostics/Include/LaSystem.h
  *
  *  \brief Declaration of Liquid and air system test.
  *

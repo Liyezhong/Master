@@ -91,7 +91,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
-    CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
+    CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNewStep());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
     CONNECTSIGNALSLOT(mp_Ui->btnDelete, clicked(), this, OnDelete());
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
@@ -232,6 +232,10 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     }
 
     if (m_ButtonType == EDIT_BTN_CLICKED) {
+        if (m_Program.GetNumberOfSteps() >= MAX_PROGRAM_STEPS){
+             mp_Ui->btnNew->setEnabled(false);
+        }
+
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         // Pass a value same as the one passed to SetVisibleRows()
 
@@ -289,6 +293,7 @@ void CModifyProgramDlg::NewProgram()
         delete mp_NewProgram;
 
     mp_NewProgram = new DataManager::CProgram();
+    m_Icon.clear();
     //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.SetProgram(NULL,NULL, NULL, NULL, 5);
@@ -412,7 +417,7 @@ void CModifyProgramDlg::OnEdit()
  *  \brief Inserts a new program step and shows the edit dialog
  */
 /****************************************************************************/
-void CModifyProgramDlg::OnNew()
+void CModifyProgramDlg::OnNewStep()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->NewProgramStep();
@@ -520,13 +525,6 @@ void CModifyProgramDlg::OnSave()
         return;
     }
 
-    if (m_bIconSelected == false || m_Icon.isEmpty()) {
-        mp_MessageDlg->SetText(m_strSeclectIcon);
-        (void) mp_MessageDlg->exec();
-        mp_Ui->btnSave->setEnabled(true);
-        return;
-    }
-
     if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
         m_Program.SetName(m_strLastProgName);
     }
@@ -537,23 +535,42 @@ void CModifyProgramDlg::OnSave()
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
-    else if (m_ButtonType == COPY_BTN_CLICKED) {
-        m_Program.SetFavorite(false);
-        m_Program.SetNameID("");
-        m_Program.SetBottleCheck(true);
-        emit AddProgram(m_Program);
-    }
-    else {
+    else
+    {
+        DataManager::CProgram* pProgram = NULL;
+        if (m_ButtonType == COPY_BTN_CLICKED) {
+            pProgram = &m_Program;
+        }
+        else //new program
+        {
+            mp_NewProgram->SetIcon(m_Icon);
+            pProgram = mp_NewProgram;
+        }
 
+        //Check it has an icon?
+        if (pProgram->GetIcon().isEmpty()) {
+            mp_MessageDlg->SetText(m_strSeclectIcon);
+            (void) mp_MessageDlg->exec();
+            mp_Ui->btnSave->setEnabled(true);
+            return;
+        }
 
-        if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
-            mp_NewProgram->SetName(m_strLastProgName);
+        if (m_ButtonType == COPY_BTN_CLICKED) {
+            m_Program.SetFavorite(false);
+            m_Program.SetNameID("");
+            m_Program.SetBottleCheck(true);
+            emit AddProgram(m_Program);
         }
         else {
-            mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+            if (m_strLastProgName.contains('&') && mp_Ui->btnPrgName->text().contains('&')) {
+                mp_NewProgram->SetName(m_strLastProgName);
+            }
+            else {
+                mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+            }
+
+            emit AddProgram(*mp_NewProgram);
         }
-        mp_NewProgram->SetIcon(m_Icon);
-        emit AddProgram(*mp_NewProgram);
     }
 }
 
@@ -813,7 +830,10 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
                     mp_Ui->btnCancel->setText(m_strClose);
                 }
                 else {
-                    mp_Ui->btnNew->setEnabled(true);
+                    int NumOfSteps = m_Program.GetNumberOfSteps();
+                    if (NumOfSteps < MAX_PROGRAM_STEPS) {
+                        mp_Ui->btnNew->setEnabled(true);
+                    }
                     mp_Ui->btnCancel->setEnabled(true);
                     mp_Ui->btnSave->setEnabled(true);
                     mp_Ui->btnDelete->setEnabled(false);

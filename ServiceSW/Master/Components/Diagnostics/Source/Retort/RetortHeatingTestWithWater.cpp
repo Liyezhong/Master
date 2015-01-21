@@ -69,6 +69,7 @@ int CHeatingTestWithWater::Run(void)
     qDebug() << "Retort Heating test empty starts!";    
 
     QString title((tr("Retort Heating Test (with Water)")));
+    QString titleRVMoveFail(tr("Test failed"));
     QString text;
     int ret, i;
     struct HeatingStatus heatingStatus;
@@ -81,7 +82,7 @@ int CHeatingTestWithWater::Run(void)
               "calibrated external thermometer.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     text = tr(" Please put reagent bottle with water to reagent "
               "bottle position 13. And confirm the retort is empty and "
@@ -90,7 +91,7 @@ int CHeatingTestWithWater::Run(void)
               "to closed position.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_OK;
+        return RETURN_ABORT;
 
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("RetortHeatingTestWithWater");
     ServiceDeviceProcess* dev = ServiceDeviceProcess::Instance();
@@ -116,7 +117,7 @@ int CHeatingTestWithWater::Run(void)
 
     DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
     qreal retortTargetTemp1 = p_TestCase1->GetParameter("RetortTargetTemp").toFloat();
-    (void)dev->RetortStartHeating(retortTargetTemp1 + 7, retortTargetTemp1 + 2);
+    (void)dev->RetortStartHeating(retortTargetTemp1, retortTargetTemp1);
     text = tr("Start heating retort...");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->GetSlaveModuleReportError(DeviceControl::TEMP_CURRENT_OUT_OF_RANGE, "Retort", 0);
@@ -138,7 +139,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVInitialize();
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Rotating Rotary Valve to tube position 13");
@@ -146,7 +147,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     dlg->HideWaitingDialog();
@@ -175,7 +176,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(false, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Release pressure...");
@@ -220,13 +221,14 @@ int CHeatingTestWithWater::Run(void)
         if ((ret = dev->RetortGetTemp(&retortTempSide,
                          &retortTempBottom1, &retortTempBottom2)) != RETURN_OK)
             break;
-        int MSec = QTime().currentTime().msecsTo(EndTime);
-        dev->Pause(MSec);
+
         heatingStatus.UsedTime++;
         heatingStatus.RetortTempSide = retortTempSide;
         heatingStatus.RetortTempSensor1 = retortTempBottom1;
         heatingStatus.RetortTempSensor2 = retortTempBottom2;
         this->RefreshWaitingDialog(&heatingStatus);
+
+        dev->Pause(QTime().currentTime().msecsTo(EndTime));
     }
 
     if (!timingDialog->isVisible()) {
@@ -236,14 +238,14 @@ int CHeatingTestWithWater::Run(void)
         ret = dev->RVMovePosition(true, 13);
         if (ret != RETURN_OK) {
             dlg->HideWaitingDialog();
-            dlg->ShowRVMoveFailedDlg(title);
+            dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
             return RETURN_ERR_FAIL;
         }
         text = tr("Start draining");
         dlg->ShowWaitingDialog(title, text);
         (void)dev->PumpDraining();
         dlg->HideWaitingDialog();
-        return RETURN_OK;
+        return RETURN_ABORT;
     }
     timingDialog->accept();
 
@@ -267,7 +269,7 @@ int CHeatingTestWithWater::Run(void)
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Start draining");
@@ -295,7 +297,7 @@ __fail__:
     ret = dev->RVMovePosition(true, 13);
     if (ret != RETURN_OK) {
         dlg->HideWaitingDialog();
-        dlg->ShowRVMoveFailedDlg(title);
+        dlg->ShowRVMoveFailedDlg(titleRVMoveFail);
         return RETURN_ERR_FAIL;
     }
     text = tr("Start draining");

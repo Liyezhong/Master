@@ -27,25 +27,58 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for wizard buttons dialog
+ */
+/****************************************************************************/
 class CDlgWizard3Buttons : public CDlgWizardText
 {
     Q_OBJECT
 
 public:
-    explicit CDlgWizard3Buttons(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgWizard3Buttons(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgWizard3Buttons(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Set button text
+     *  \iparam Text = button text
+     */
+    /****************************************************************************/
     void SetButtonText(const QString &Text);
 
 Q_SIGNALS:
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emit for button selected
+     */
+    /****************************************************************************/
     void ThirdSelected(void);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for button selected
+     */
+    /****************************************************************************/
     void ThirdSelect(void);
 
 private:
-    QPushButton *mp_PushThird;
+    QPushButton *mp_PushThird;  //!< push button object
 };
 
 } // namespace MainMenu

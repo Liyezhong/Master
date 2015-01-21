@@ -41,7 +41,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     COvenPreTest(QWidget *p_Parent=NULL);
@@ -56,6 +56,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for test start run
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -63,6 +64,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief The function for start pre heating
+     *  \iparam MeltPoint = melt point of oxygen
      */
     /****************************************************************************/
     void StartPreHeating(qreal MeltPoint);
@@ -78,7 +80,7 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief To show the fail message dialog
-     *  \iparam Error = the error type
+     *  \iparam ErrorCode = the error type
      */
     /****************************************************************************/
     virtual void ShowFailMessage(int ErrorCode);

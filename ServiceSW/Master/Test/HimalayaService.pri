@@ -2,6 +2,21 @@
 # common stuff for all components
 ######################
 
+# path
+HIMALAYA                = $$system(cd ../../../../Himalaya;pwd)
+SHARED                  = $${HIMALAYA}/Shared
+PLATFORM                = $$system(cd ../../../../Platform;pwd)
+PLATFORM_SERVICE_SW     = $${PLATFORM}/ServiceSW
+HIMALAYA_SERVICE_SW     = $${HIMALAYA}/ServiceSW
+
+GOOGLE_MOCK_INCLUDE     = $${PLATFORM}/ExternalPackages/gmock/include
+GOOGLE_MOCK_LIB         = $${PLATFORM}/ExternalPackages/gmock/lib
+
+INCLUDEPATH += $${GOOGLE_MOCK_INCLUDE}
+
+LIBS += -L$${GOOGLE_MOCK_LIB}/gmock -lgmock
+LIBS += -L$${GOOGLE_MOCK_LIB}/gtest -lgtest
+
 CONFIG += qtestlib \
           warn_on \
           qt \
@@ -165,5 +180,4 @@ defineTest(UsePlatformScroller){
     export(LIBS)
     export(PRE_TARGETDEPS)
 }
-
 ################# end group

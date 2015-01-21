@@ -24,8 +24,8 @@
 
 namespace Diagnostics {
 
-#define RV_MOVE_OK      1
-#define RESPONSE_TIMEOUT        0
+#define RV_MOVE_OK      1           //!< define rotary valve move ok value
+#define RESPONSE_TIMEOUT        0   //!< define response time out value
 
 ServiceDeviceProcess* ServiceDeviceProcess::mp_Instance = NULL;
 
@@ -48,6 +48,7 @@ void ServiceDeviceProcess::Destroy()
 
 /****************************************************************************/
 ServiceDeviceProcess::ServiceDeviceProcess()
+    : m_FanStatus(false)
 {
     m_IsInitialized = false;
 }
@@ -1180,7 +1181,17 @@ int ServiceDeviceProcess::PumpSetFan(quint8 OnFlag)
 
     int Ret = GetResponse(ReqName);
 
+    // store fan status
+    if (Ret) {
+        m_FanStatus = OnFlag;
+    }
+
     return Ret;
+}
+
+bool ServiceDeviceProcess::PumpGetFan()
+{
+    return m_FanStatus;
 }
 
 int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
@@ -1195,7 +1206,16 @@ int ServiceDeviceProcess::PumpSetValve(quint8 ValveIndex, quint8 ValveState)
 
     int Ret = GetResponse(ReqName);
 
+    if (Ret) {
+        m_ValveStatus.insert(ValveIndex, ValveState);
+    }
+
     return Ret;
+}
+
+void ServiceDeviceProcess::PumpGetValve(quint8 ValveIndex, quint8 &ValveState)
+{
+    ValveState = m_ValveStatus.value(ValveIndex);
 }
 
 int ServiceDeviceProcess::PumpStopCompressor()
@@ -1209,6 +1229,31 @@ int ServiceDeviceProcess::PumpStopCompressor()
     int Ret = GetResponse(ReqName);
 
     return Ret;
+}
+
+bool ServiceDeviceProcess::PumpGetStatus()
+{
+    QString ReqName = "PumpGetStatus";
+    bool ret = false;
+    QStringList Params;
+    Params.clear();
+
+    emit SendServRequest(ReqName, Params);
+
+    int Ret = GetResponse(ReqName);
+    if (Ret == RESPONSE_TIMEOUT) {
+        return ret;
+    }
+
+    QStringList Results = m_ResultsMap.value(ReqName);
+
+    if (Results.size() > 0) {
+        ret = Results.at(0).toInt();
+    }
+
+    (void)m_ResultsMap.remove(ReqName);
+
+    return ret;
 }
 
 int ServiceDeviceProcess::PumpSucking(quint32 DelayTime)

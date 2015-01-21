@@ -32,36 +32,88 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for wizard input button position dialog
+ */
+/****************************************************************************/
 class CDlgWizardInputBottlePosition : public CDlgWizardBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgWizardInputBottlePosition(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgWizardInputBottlePosition(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgWizardInputBottlePosition(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Set label text
+     *  \iparam Text = label text
+     */
+    /****************************************************************************/
     void SetText(const QString &Text);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Set button label text
+     *  \iparam Label = label text
+     */
+    /****************************************************************************/
     void SetButtonLabel(const QString &Label);
 
 Q_SIGNALS:
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emit for accept position
+     */
+    /****************************************************************************/
     void AcceptPosition(qint32);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for open keyboard
+     */
+    /****************************************************************************/
     void OpenKeyBoard(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for input position
+     *  \iparam position = string position
+     */
+    /****************************************************************************/
     void InputPosition(QString position);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for emit position
+     */
+    /****************************************************************************/
     void EmitPosition(void);
 
 private:
-    QLabel      *mp_Text;
-    QGroupBox   *mp_GroupInput;
-    QHBoxLayout *mp_LayoutInput;
-    QLabel      *mp_ButtonLabel;
-	QPushButton *mp_ButtonInput;
-    qint32       m_Position;
+    QLabel      *mp_Text;           //!< label text
+    QGroupBox   *mp_GroupInput;     //!< input group box
+    QHBoxLayout *mp_LayoutInput;    //!< input layout
+    QLabel      *mp_ButtonLabel;    //!< button label
+    QPushButton *mp_ButtonInput;    //!< input button object
+    qint32       m_Position;        //!< store selected position
 
-    KeyBoard::CKeyBoard *mp_KeyBoard;
+    KeyBoard::CKeyBoard *mp_KeyBoard;   //!< keyboard object
 };
 
 } // namespace MainMenu

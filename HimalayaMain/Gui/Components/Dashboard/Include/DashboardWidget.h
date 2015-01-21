@@ -41,6 +41,9 @@ namespace Ui {
     class CDashboardWidget;
 }
 
+class CDashboardDateTimeWidget;
+
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class Dashboard::CDashboardWidget
@@ -51,12 +54,15 @@ class CDashboardWidget : public QWidget
     Q_OBJECT
     
 public:
+    ///Program stage status, some stage(filling/draining) the "Pause" button can not be pressed.
+    ///so it should be disabled.
     typedef enum {
         Undefined,
         Enabled,
         Disabled
     } ProgramStageStatus_t;
 
+    ///Program status, defined for "Start", "Abort" button status control
     typedef enum {
         Undefined_ProgramStatus,
         ProgramRunning,
@@ -156,6 +162,7 @@ private:
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
+    QString m_strDiffTemp;       ///<  Declaration of variable m_strDiffTemp
     static QString m_SelectedProgramId;
     QList<QString> m_StationList;
     int m_TimeProposedForProgram;           //!< Time costed only for the whole program, exclude the time for the delayed time
@@ -167,6 +174,7 @@ private:
     QDateTime m_ParaffinStartHeatingTime;
     QString m_strResetEndTime;
     QString m_strCannotStartParaffinMelt;
+    QString m_strWaitTimeforParaffinMelt;
     QString m_strPromptProgramDelay;
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
@@ -199,6 +207,8 @@ private:
     ProgramStageStatus_t m_ProgramStageStatus;
     ProgramStatus_t m_ProgramStatus;
     bool m_IsProgramAbortedOrCompleted;
+    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
+
 public slots:
     /****************************************************************************/
     /*!
@@ -291,6 +301,12 @@ private slots:
     void OnProgramBeginAbort();
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of OnCleanPrgmCompleteAsSafeReagent
+     */
+    /****************************************************************************/
+    void OnCleanPrgmCompleteAsSafeReagent();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/
@@ -313,6 +329,12 @@ private slots:
      */
     /****************************************************************************/
     void OnPauseButtonEnable(bool bEnable);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnStartButtonEnable
+     */
+    /****************************************************************************/
+    void OnStartButtonEnable(bool bEnable);
     /****************************************************************************/
     /*!
     *  \brief  Definition/Declaration of OnPauseTimeout15Mintues
@@ -358,11 +380,11 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function TakeOutSpecimenAndWaitRunCleaning
-     *
+     *  \param  lastReagentGroupId = last ReagentGroupId
      *  \return from TakeOutSpecimenAndWaitRunCleaning
      */
     /****************************************************************************/
-    void TakeOutSpecimenAndWaitRunCleaning();
+    void TakeOutSpecimenAndWaitRunCleaning(const QString& lastReagentGroupId);
 
  signals:
     /****************************************************************************/
@@ -379,6 +401,13 @@ private slots:
      */
     /****************************************************************************/
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateItemsToFavoritePanel
+     *
+     */
+    /****************************************************************************/
+    void UpdateItemsToFavoritePanel();
     /****************************************************************************/
     /*!
      *  \brief  when selete a program, emit signal ProgramSelected

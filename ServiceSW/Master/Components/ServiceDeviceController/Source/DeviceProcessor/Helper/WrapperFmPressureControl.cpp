@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Tools/protoTest/Source/WrapperFmPressureControl.cpp
+/*! \file WrapperFmPressureControl.cpp
  *
  *  \brief wrapper file for pressure control function module.
  *
@@ -41,7 +41,7 @@ const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and out
  */
 /****************************************************************************/
 WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureControl *pPressureControl, QObject *pParent):
-    WrapperBase(Name, pParent), m_pPressureControl(pPressureControl)
+    WrapperBase(Name, pParent), m_pPressureControl(pPressureControl), pumpStatus(false)
 {
     Reset();
     (void)connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, float)),
@@ -252,7 +252,21 @@ bool WrapperFmPressureControl::SetPressure(quint8 flag, float NominalPressure)
         return false;
     }
     qint32 ret = m_LoopSetPressure.exec();
+    if (ret == 1)
+        pumpStatus = (bool)flag;
+
     return (ret == 1);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Helper function, to get the pressure of Oven
+ *
+ */
+/****************************************************************************/
+bool WrapperFmPressureControl::GetPumpStatus()
+{
+    return pumpStatus;
 }
 
 bool WrapperFmPressureControl::SetFan(quint8 State)
@@ -1220,7 +1234,6 @@ void WrapperFmPressureControl::StopCompressor(void)
     Log(tr("Shut down compressor"));
     SetPressure(0, UNDEFINED - m_PressureDrift);
 }
-
 
 /****************************************************************************/
 /*!

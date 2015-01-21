@@ -209,8 +209,12 @@ private:
         PSSMABORT_FORCE_DRAIN,
         PSSMABORT_MOVE_NEXTTUBE
     } PSSM_ABORTING_t;
-    PSSM_ABORTING_t m_PssmAbortingSeq;                                                  ///< Sequence of PSSM_ABORTING
-    bool    m_EnableLowerPressure;                                                      ///< Enable lower pressure
+    PSSM_ABORTING_t m_PssmAbortingSeq;                                          ///< Sequence of PSSM_ABORTING
+    bool    m_EnableLowerPressure;                                              ///< Enable lower pressure
+    quint8  m_PssmMVTubeSeq;                                                    ///< Sequence of PSSM_MoveTube
+    qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
+    quint8  m_ErrorRcRestartSeq;                                                ///< Sequence of Error_RC_Restart
+    qint64  m_TimeReEnterFilling;                                               ///< Start time to re-enter filling
 
 private:
     /****************************************************************************/
@@ -262,13 +266,6 @@ public:
      */
     /****************************************************************************/
     void SendRunSignal();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function SendCleaningSignal
-     */
-    /****************************************************************************/
-    void SendCleaningSignal();
 
    /****************************************************************************/
    /*!
@@ -961,10 +958,9 @@ public:
     /*!
      *  \brief  Handle Rc_Restart when the error occurs at Draining stage
      *  \param cmdName - command name
-     *  \param retCode - return code
      */
     /****************************************************************************/
-    void HandleRcRestartAtDrain(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+    void HandleRcRestart(const QString& cmdName);
 
     /****************************************************************************/
     /*!
@@ -983,6 +979,9 @@ public:
      */
     /****************************************************************************/
     void HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+
+
     /****************************************************************************/
     /*!
      *  \brief  Handle PSSM Aborting work flow
@@ -992,6 +991,16 @@ public:
      */
     /****************************************************************************/
     void HandlePSSMAbortingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle PSSM Move to Tube work flow
+     *  \param  cmdName - command name
+     *  \param  retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1036,15 +1045,6 @@ private slots:
      */
     /****************************************************************************/
     void OnRVMoveToSeal();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to enter RV_Move_To_Tube state.
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRVMoveToTube();
 
     /****************************************************************************/
     /*!
@@ -1120,6 +1120,16 @@ private slots:
     void OnEnterErrorState();
     /****************************************************************************/
     /*!
+     *  \brief  Slot to enter power failure state
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnPowerFailureState();
+    /****************************************************************************/
+    /*!
      *  \brief  Slot to enter busy state
      *
      *  \param  void
@@ -1148,6 +1158,28 @@ private slots:
      */
     /****************************************************************************/
     void OnEnterHeatingLevelSensor();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to initialize Pssm_MoveToTube
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void InitRVMoveToTubeState();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to enter RC_Restart
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnEnteErrorRcRestartState();
 signals:
     /****************************************************************************/
     /*!
@@ -1167,13 +1199,6 @@ signals:
      */
     /****************************************************************************/
     void RunSignal();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal CleaningSignal
-     */
-    /****************************************************************************/
-    void CleaningSignal();
 
    /****************************************************************************/
    /*!
@@ -1312,12 +1337,27 @@ signals:
     /****************************************************************************/
     void SigEnterRcRestart();
 
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to back to Busy state
+     */
+    /****************************************************************************/
+    void SigBackToBusy();
+
     /****************************************************************************/
     /*!
      *  \brief signal to enter SigSelfRcRestart
      */
     /****************************************************************************/
     void SigSelfRcRestart();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter SigIdleRcRestart
+     */
+    /****************************************************************************/
+    void SigIdleRcRestart();
 
     /****************************************************************************/
     /*!
@@ -1929,13 +1969,6 @@ signals:
      */
     /****************************************************************************/
     void sigStateChange();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for entering idle state
-     */
-    /****************************************************************************/
-    void sigEnterIdleState();
 
     /****************************************************************************/
     /*!

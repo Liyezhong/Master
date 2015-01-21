@@ -29,24 +29,53 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for confirmation status dialog
+ */
+/****************************************************************************/
 class CDlgConfirmationStatus : public CDlgConfirmationBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgConfirmationStatus(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgConfirmationStatus(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgConfirmationStatus(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Set text for dialog
+     *  \iparam Text = text string
+     */
+    /****************************************************************************/
     void SetText(const QString &Text);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Set status for dialog
+     *  \iparam Status = status string
+     */
+    /****************************************************************************/
     void SetStatus(const QString &Status);
 
 private:
-    QLabel      *mp_Text;
-    QGroupBox   *mp_GroupStatus;
-    QHBoxLayout *mp_LayoutStatus;
-    QLabel      *mp_Status;
+    QLabel      *mp_Text;           //!< store text label
+    QGroupBox   *mp_GroupStatus;    //!< status group box
+    QHBoxLayout *mp_LayoutStatus;   //!< status layout
+    QLabel      *mp_Status;         //!< status label
 };
 
 } // namespace MainMenu

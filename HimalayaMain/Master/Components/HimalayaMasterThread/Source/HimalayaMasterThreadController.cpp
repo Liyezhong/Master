@@ -77,6 +77,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "Scheduler/Commands/Include/CmdSystemState.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
@@ -323,10 +324,11 @@ void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
 void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Global::CmdDateAndTime &Cmd,
                                                  Threads::CommandChannel &AckCommandChannel) {
 
+    QString DateTime;
     if(!MasterThreadController::SetAdjustedDateTimeOffset(Cmd.GetDateTime())) {
 
         // remove the offset seconds from the Adjusted time
-        QString DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs
+        DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs
                 (-Global::AdjustedTime::Instance().GetOffsetSeconds()).toString();
         // raise the event
         Global::EventObject::Instance().RaiseEvent(EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS,
@@ -342,6 +344,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
     else {
         // send ACK
         SendAcknowledgeOK(Ref, AckCommandChannel);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DATE_TIME_SET_DATE_TIME,Global::tTranslatableStringList()<< DateTime);
     }
 
 }
@@ -359,6 +362,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramSelectedReply>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdCurrentProgramStepInfor>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramAcknowledge>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdEnterCleaningProgram>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramAborted>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
@@ -433,7 +437,7 @@ void HimalayaMasterThreadController::InitializeGUI() {
 
 /****************************************************************************/
 void HimalayaMasterThreadController::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack) {
-    if (m_ExpectedShutDownRef == Ref && Ack.GetStatus()) {
+    if ((Global::RefManager<Global::tRefType>::INVALID != m_ExpectedShutDownRef) && (m_ExpectedShutDownRef == Ref) && Ack.GetStatus()) {
         Shutdown();
     }
 }
@@ -629,28 +633,19 @@ void HimalayaMasterThreadController::OnInitStateCompleted()
 }
 
 void HimalayaMasterThreadController::SendStateChange(QString state) {
+    NetCommands::ProcessStateType stateType = NetCommands::InitState;
     if (state == "BusyState")
     {
-        // inform gui
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
-    }
-
-    if (state == "IdleState")
+        stateType = NetCommands::BusyState;
+    } else if (state == "IdleState")
     {
-        // inform gui
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
-    }
-
-    if (state == "ErrorState")
+       stateType = NetCommands::IdleState;
+    } else if (state == "ErrorState")
     {
-
+        stateType = NetCommands::ErrorState;
     }
-
-    if (state == "NormalState")
-    {
-
-    }
-
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(5000,
+                                                     stateType)), m_CommandChannelGui);
 }
 
 /****************************************************************************/
@@ -873,8 +868,17 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     }
     else {        
         // send ack is NOK
-        if (EventCode != 0) {
-            Global::EventObject::Instance().RaiseEvent(EventCode, false);
+        if(IsImport && EventCode != 0){
+            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+        }
+        else if(IsImport && EventCode == 0){
+            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
+        }
+        else if(!IsImport && EventCode != 0){
+            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+        }
+        else{
+            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
         }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
@@ -886,6 +890,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     m_RemoteCareExportRequestInitiated = false;
 
     // clear the thread
+    m_ExportProcessIsFinished = true;
     StopSpecificThreadController(Threads::THREAD_ID_IMPORTEXPORT);
     // enable the timer slot to destroy the objects after one second
     RemoveAndDestroyObjects();

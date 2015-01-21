@@ -81,6 +81,7 @@
 namespace MsgClasses
 {
     class CmdProgramAcknowledge;
+    class CmdEnterCleaningProgram;
     class CmdProgramAborted;
     class CmdLockStatus;
 }
@@ -290,10 +291,11 @@ public slots:
      *  \param  ProgramID = the selected Program ID
      *  \param  ActionType = operation type, eg.start/pause/abort
      *  \param  delayTime = the time to delay
+     *  \param  runDuration = the time from now to End datetime
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
-                           int delayTime = 0);
+                           int delayTime = 0, int runDuration = 0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendKeepCassetteCount
@@ -420,7 +422,7 @@ signals:
      *  \brief  Definition/Declaration of signal ProgramsInitialized
      */
     /****************************************************************************/
-    void ProgramsInitialized(bool);
+    void ProgramsInitialized();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramDeleted
@@ -647,6 +649,12 @@ signals:
     void ProgramCompleted();
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of signal ProgramCompleted
+     */
+    /****************************************************************************/
+    void CleanPrgmCompleteAsSafeReagent();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal ProgramRunBegin
      */
     /****************************************************************************/
@@ -660,9 +668,10 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TakeoutSpecimenWaitRunCleaning
+     *  \param lastReagentGroupID = lastReagentGroupID
      */
     /****************************************************************************/
-    void TakeoutSpecimenWaitRunCleaning();
+    void TakeoutSpecimenWaitRunCleaning(const QString& lastReagentGroupID);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RetortLockStatusChanged
@@ -738,6 +747,13 @@ signals:
      */
     /****************************************************************************/
     void EnablePauseButton(bool bEnable);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal EnableStartButton
+     * \iparam  bEnable enabled/disabled
+     */
+    /****************************************************************************/
+    void EnableStartButton(bool bEnable);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal PauseTimeout15Mintues
@@ -853,6 +869,17 @@ private:
      */
     /****************************************************************************/
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterCleaningProgramHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdEnterCleaningProgram type parameter
+     *
+     *  \return from EnterCleaningProgramHandler
+     */
+    /****************************************************************************/
+    void EnterCleaningProgramHandler(Global::tRefType Ref, const MsgClasses::CmdEnterCleaningProgram& Command);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ProgramAbortedHandler

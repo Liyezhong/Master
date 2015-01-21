@@ -72,7 +72,6 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     CONNECTSIGNALSLOTGUI(mp_RetortManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_CleaningManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
-
     /* Manufacturing SW Reset status */
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_OvenManuf, ResetTestStatus());
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_MainControlManuf, ResetTestStatus());
@@ -136,6 +135,7 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
 /*!
  *  \brief Slot called for Module tests for manufacturing SW
  *  \iparam ModuleName = Name of the module
+ *  \iparam TestCaseList = list of test case
  */
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QList<Service::ModuleTestCaseID> &TestCaseList)
@@ -146,25 +146,39 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         PerformManufDisplayTests(TestCaseList);
         break;
     case Service::OVEN:
+        LockTest(true);
         PerformManufOvenTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::MAIN_CONTROL:
+        LockTest(true);
         PerformManufMainControlTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::LA_SYSTEM:
+        LockTest(true);
         PerformManufLATests(TestCaseList);
+        LockTest(false);
         break;
     case Service::ROTARY_VALVE:
+        LockTest(true);
         PerformManufRVTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::RETORT:
+        LockTest(true);
         PerformManufRetortTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::SYSTEM:
+        LockTest(true);
         PerformManufSystemTests(TestCaseList);
+        LockTest(false);
         break;
     case Service::CLEANING_SYSTEM:
+        LockTest(true);
         PerformManufCleaningSystem(TestCaseList);
+        LockTest(false);
         break;
     case Service::FIRMWARE:
         PerformFirmwareUpdate(TestCaseList);
@@ -606,7 +620,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
                 .arg(VoltageRet).arg(Voltage).arg(CurrentRet).arg(Current);
 
         qDebug()<<"Show MessageBox " << ASBIndex;
-        mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        mp_ServiceConnector->ShowMessageDialog(Result ? Global::GUIMSGTYPE_INFO : Global::GUIMSGTYPE_ERROR, Text, true);
         qDebug()<<"End Show MessageBox "<<ASBIndex;
         mp_MainControlManuf->SetTestResult(Id, Result);
     }
@@ -1009,7 +1023,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Result = GetTestResponse();
 
             TestCaseDescription = Service::CMessageString::MSG_DIAGNOSTICS_VOLTAGE_TEST.arg(p_TestCase->GetParameter("ConnectedVoltage"));
-            StrResult = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE.arg(p_TestCase->GetResult().value("CurrentVoltage"));
+            StrResult = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE.arg(
+                        p_TestCase->GetResult().value("CurrentVoltage3"), p_TestCase->GetResult().value("CurrentVoltage5"));
 
             break;
         case Service::SYSTEM_EXHAUST_FAN:
@@ -1234,11 +1249,31 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             FailureId = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS;
 
+            p_TestCase->SetParameter("TestStep", "1");
             ShowMessage(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN);
+
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+
+            if (!Result) {
+                break;
+            }
+
+            p_TestCase->SetParameter("TestStep", "2");
+
+            NextFlag = ShowGuide(Id, 1) && ShowGuide(Id, 2);
+            if (!NextFlag) {
+                break;
+            }
+
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
             HideMessage();
         default:
+            break;
+        }
+
+        if (!NextFlag) {
             break;
         }
 
@@ -1264,7 +1299,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
-            (void)ShowGuide(Id, 1, false);
+            (void)ShowGuide(Id, 3, false);
         }
         mp_CleaningManuf->SetTestResult(Id, Result);
     }
@@ -1402,6 +1437,17 @@ void CManufacturingDiagnosticsHandler::ShowErrorMessage(const QString &Message)
 {
     mp_ServiceConnector->HideBusyDialog();
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
+}
+
+void CManufacturingDiagnosticsHandler::LockTest(bool LockFlag)
+{
+    bool enabled = !LockFlag;
+    mp_MainWindow->SetTabEnabled(0, enabled);
+    mp_MainWindow->SetTabEnabled(1, enabled);
+    mp_MainWindow->SetTabEnabled(3, enabled);
+    mp_MainWindow->SetTabEnabled(4, enabled);
+
+    mp_DiagnosticsManufGroup->setEnabled(enabled);
 }
 
 } // end of namespace Core

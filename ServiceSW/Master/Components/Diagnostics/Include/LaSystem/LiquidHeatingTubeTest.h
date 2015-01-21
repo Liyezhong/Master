@@ -30,13 +30,23 @@ namespace Diagnostics {
 
 namespace LaSystem {
 
+/****************************************************************************/
+/**
+ * \brief Struct for liquid heating status data.
+ */
+/****************************************************************************/
 struct liquidHeatingStatus {
-   int UsedTime;
-   int EDTime;
-   QString TargetTemp;
-   qreal CurrentTemp;
+   int UsedTime;        //!< number of used time
+   int EDTime;          //!< number of end time
+   QString TargetTemp;  //!< string of target temperature
+   qreal CurrentTemp;   //!< current temperature value
 };
 
+/****************************************************************************/
+/*!
+ *  \brief This is the class of the L&A system Liquid heating tube test
+ */
+/****************************************************************************/
 class CLiquidHeatingTubeTest : public Diagnostics::CTestBase
 {
     Q_OBJECT
@@ -59,6 +69,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);

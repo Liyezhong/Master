@@ -28,17 +28,24 @@
 #include "Core/Include/ServiceGUIConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "IENetworkClient/Include/IENetworkClient.h"
 
 namespace DiagnosticsManufacturing {
 
+/****************************************************************************/
+/**
+ * \brief This class to report test report
+ */
+/****************************************************************************/
 class CTestCaseReporter: public QObject
 {
     Q_OBJECT
 public:
     /****************************************************************************/
     /**
-     * \brief Default constructor.
+     *  \brief Default constructor.
+     *  \iparam ModuleName = name of module
+     *  \iparam p_DataConnector = pointer of data connector
+     *  \iparam p_Parent = parent widget
      */
     /****************************************************************************/
     CTestCaseReporter(const QString ModuleName, Core::CServiceGUIConnector *p_DataConnector = NULL,
@@ -77,19 +84,25 @@ public:
         m_SerialNumber = SerialNumber;
     }
 
+    /****************************************************************************/
+    /**
+     * \brief Add test case Id number.
+     * \param Id = test calse Id.
+     */
+    /****************************************************************************/
     void AddTestCaseId(Service::ModuleTestCaseID Id) {
         m_TestCaseList.insert(Id);
     }
 
+    /****************************************************************************/
+    /**
+     * \brief To check system serial number.
+     * \return false if serial number is empty
+     */
+    /****************************************************************************/
     bool CheckSystemSN();
 
 private:
-    /****************************************************************************/
-    /**
-     * \brief Init IE network client.
-     */
-    /****************************************************************************/
-    void InitIEClient();
 
     /****************************************************************************/
     /**
@@ -100,7 +113,6 @@ private:
 
     QString m_ModuleName;                            //!< Stores module name
     Core::CServiceGUIConnector *mp_DataConnector;    //!< Data Connector object
-    NetworkClient::IENetworkClient *mp_IEClient;     //!< IE client for send test report
     QSet<Service::ModuleTestCaseID> m_TestCaseList;  //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.
     QString m_ReportDir;                             //!< The server report folder

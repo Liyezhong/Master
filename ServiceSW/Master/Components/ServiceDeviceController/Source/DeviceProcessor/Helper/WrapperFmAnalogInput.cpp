@@ -53,11 +53,10 @@ WrapperFmAnalogInput::WrapperFmAnalogInput(QString Name, CAnalogInput *pAnalogIn
  *  This method enables and disables the analog input module.
  *
  *  Examples:
- *  \dontinclude analoginput.js
  *  \skipline [AnalogIn.SetState]
  *  \until    [AnalogIn.SetState]
  *
- *  \iparam State = Enable/disable flag
+ *  \iparam Enable = Enable/disable flag
  *
  *  \return true, if the setting value is success else false
  */
@@ -104,7 +103,6 @@ void WrapperFmAnalogInput::OnSetState(quint32 /*InstanceID*/, ReturnCode_t Retur
  *  This method performs reading input value of a Analog Input function module.
  *
  *  Examples:
- *  \dontinclude analoginput.js
  *  \skipline [AnalogIn.GetValue]
  *  \until    [AnalogIn.GetValue]
  *

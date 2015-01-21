@@ -102,6 +102,12 @@ signals:
      */
     /****************************************************************************/
     void UserLevelChanged(QDataStream &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
+    void UnselectProgram();
 };
 
 } // end namespace Settings

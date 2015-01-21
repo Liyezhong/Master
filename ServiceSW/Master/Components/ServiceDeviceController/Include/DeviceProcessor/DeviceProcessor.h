@@ -57,8 +57,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]   ServiceDeviceController     Reference of ServiceDeviceController.
-     * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
+     * \param[in]   iDevProc     IDeviceProcessing instance
      */
     /****************************************************************************/
     DeviceProcessor(IDeviceProcessing &iDevProc);
@@ -102,7 +101,7 @@ public slots:
      * \brief Handle Command of type CmdAbortTest received.
      *
      * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
+     * \param[in]       id                  Id.
      */
     /****************************************************************************/
     void OnAbortTest(Global::tRefType Ref, quint32 id);
@@ -112,10 +111,19 @@ public slots:
      * \brief Module Manufacturing Test for Himalaya Manufacturing Diagnostic
      *
      * \iparam       TestName            Module Test Name
+     * \iparam       AbortTestCaseId     id of the abort test case
      */
     /****************************************************************************/
     void OnModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
+    /****************************************************************************/
+    /**
+     * \brief service request function for Himalaya Manufacturing Diagnostic
+     *
+     * \iparam       ReqName           Request Name
+     * \iparam       Params            parameter list
+     */
+    /****************************************************************************/
     void OnServiceRequest(QString ReqName, QStringList Params);
 
 signals:
@@ -165,6 +173,15 @@ signals:
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
 
+    /****************************************************************************/
+    /**
+     * \brief Returns RFIDConsumables message to Main Thread Controller.
+     *
+     * \iparam   ReqName = Request name
+     * \iparam   ErrorCode = error code
+     * \iparam   Results = store results
+     */
+    /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
 private:

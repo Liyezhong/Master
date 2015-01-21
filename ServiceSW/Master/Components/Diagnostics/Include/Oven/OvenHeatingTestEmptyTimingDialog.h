@@ -28,6 +28,12 @@ namespace Ui {
 class OvenHeatingTestEmptyTimingDialog;
 }
 
+/****************************************************************************/
+/**
+ * \brief This class is class of oven heating test with empty timing dialog.
+ *
+ */
+/****************************************************************************/
 class OvenHeatingTestEmptyTimingDialog : public MainMenu::CDialogFrame
 {
     Q_OBJECT
@@ -66,7 +72,7 @@ public:
     void UpdateLabel(const Service::ModuleTestStatus &Status);
     
 private:
-    Ui::OvenHeatingTestEmptyTimingDialog *ui;
+    Ui::OvenHeatingTestEmptyTimingDialog *ui;   //!< user interface
 };
 
 #endif // OVENHEATINGTESTEMPTYTIMINGDIALOG_H

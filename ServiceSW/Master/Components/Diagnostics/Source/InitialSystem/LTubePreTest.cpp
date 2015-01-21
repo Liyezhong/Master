@@ -108,16 +108,16 @@ void CLTubePreTest::ShowFailMessage(int ErrorCode)
     QString Text;
 
     if (ErrorCode == 1) {
-        Text = "Pre-test Liquid Heating Tube failed .<br>" \
+        Text = "Pre-test Liquid Heating Tube failed.<br>" \
                 "Detection of liquid heating tube temperature failed. Sequentially check " \
                 "resistance of liquid heating tube temperature sensor and function of ASB15. " \
                 "Exchange ASB15 or liquid heating tube accordingly and repeat this test.";
     }
     else if (ErrorCode == 2) {
-        Text = "Pre-test Liquid Heating Tube failed .<br>" \
+        Text = "Pre-test Liquid Heating Tube failed.<br>" \
                 "Current of liquid heating tube is out of specifications. Sequentially check " \
                 "function of ASB15 and heating element of liquid heating tube." \
-                "Exchange ASB15 or liquid heating tube accordingly and repeat this test .";
+                "Exchange ASB15 or liquid heating tube accordingly and repeat this test.";
     }
 
     ShowMessage(Title, Text, RETURN_ERR_FAIL);

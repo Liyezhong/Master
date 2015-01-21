@@ -583,6 +583,10 @@
 		<Event Code="" ErrorID="16843293" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_RMS_STATE_CHANGED" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843293" ButtonType="" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="16843314" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_CLEANING_RMS_STATE_CHANGED" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="16843314" ButtonType="" StatusBar=""/>
+		</Event>
+
 		<Event Code="" ErrorID="16843286" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_TEMPERATURE_FORMAT_CHANGED" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843286" ButtonType="" StatusBar=""/>
 		</Event>

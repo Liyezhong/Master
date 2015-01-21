@@ -101,7 +101,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
-    mp_SuckDrainTimer->setInterval(500);
+    mp_SuckDrainTimer->setInterval(1000);
     CONNECTSIGNALSLOT(mp_SuckDrainTimer, timeout(), this, SuckDrainAnimation());
 }
 
@@ -338,8 +338,6 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
             if (p_ReagentGroup->IsCleaningReagentGroup()) {
                 m_CurRMSMode = m_UserSettings.GetModeRMSCleaning();
-                if (RefreshFlag)
-                    PrepareCleaningReagentStrip();
             }
             else {
                 m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
@@ -385,29 +383,6 @@ void CDashboardStationItem::DrawStationItemImage()
 
     DrawStationItemLabel(Painter);
     update();
-}
-
-void CDashboardStationItem::PrepareCleaningReagentStrip()
-{
-    //For Cleaning Reagent, generate the raw image used for BDiagpattern
-#if 0
-    QPixmap pix(200, 200);
-    pix.fill(Qt::transparent);
-
-    QPainter painter(&pix);
-    painter.setBrush(Qt::white);
-    painter.setPen(Qt::white);
-
-    for (int i=0; i<200; i+=8)
-    {
-        painter.drawRect(i, 0, 4, 200);
-    }
-    QMatrix m;
-    (void)m.rotate(45.0);
-    QPixmap img = pix.transformed(m);
-    img = img.copy(100, 100, 100, 98);
-    m_RawImage4Cleaning = img;
-#endif
 }
 
 void CDashboardStationItem::PrepareReagentName()
@@ -521,13 +496,12 @@ void CDashboardStationItem::EnableBlink(bool bEnable)
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 {
     int fillBottleWidth;
-    int fillBottleHeight;
+    qreal fillBottleHeight;
     int fillParaffinbathWidth;
-    int fillParaffinbathHeight;
+    qreal fillParaffinbathHeight;
     int fillRetortWidth;
-    int fillRetortHeight;
+    qreal fillRetortHeight;
     QString reagentColorValue;
-    bool isCleaningReagent = false;
 
     if(mp_DashboardStation)
     {
@@ -544,12 +518,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         (void)reagentColorValue.prepend("#");
 
         m_ReagentDisplayColorValue = reagentColorValue;
-
-        //Check whether the bottle contains cleaning reagnet for later use
-        if (p_ReagentGroup->IsCleaningReagentGroup())
-        {
-            isCleaningReagent = true;
-        }
     }
     else
     {
@@ -590,31 +558,20 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         {
             m_CurrentBoundingRectReagentHeight = fillBottleHeight;
         }
-        int top = m_BottleBoundingRectHeight - fillBottleHeight;
+        qreal top = m_BottleBoundingRectHeight - fillBottleHeight;
         QPainterPath path;
         path.setFillRule( Qt::WindingFill );
-        path.addRoundedRect(QRect(4, top, fillBottleWidth,
+        path.addRoundedRect(QRectF(4, top, fillBottleWidth,
                                   fillBottleHeight -2), 8, 4);
 
         int cornerHeight = 8;
         if (fillBottleHeight > cornerHeight && fillBottleHeight < m_BottleBoundingRectHeight - 25 - cornerHeight + 4)
         {
-            path.addRect(QRect(4, top, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillBottleWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRectF(4, top, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRectF(fillBottleWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
         }
 
         Painter.drawPath(path);
-        if (isCleaningReagent)
-        {
-            int startx = 4;
-            int starty = 38;
-            Painter.setClipPath(path);
-
-            //draw the final result
-            Painter.setBrush(Qt::white);
-            Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
-            Painter.setClipPath(path, Qt::NoClip);
-        }
     }
     else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {
@@ -630,16 +587,16 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             m_CurrentBoundingRectReagentHeight = fillParaffinbathHeight;
         }
 
-        int top = m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight;
+        qreal top = m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight;
         QPainterPath path;
         path.setFillRule( Qt::WindingFill);
-        path.addRoundedRect(QRect(4,  top, fillParaffinbathWidth,
+        path.addRoundedRect(QRectF(4,  top, fillParaffinbathWidth,
                                   fillParaffinbathHeight -3), 6, 4);
         int cornerHeight = 8;
         if (fillParaffinbathHeight > cornerHeight)
         {
-            path.addRect(QRect(4, top, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillParaffinbathWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRectF(4, top, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRectF(fillParaffinbathWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
 
@@ -659,17 +616,15 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         }
 
         if (fillRetortHeight > 0) {
-            //path.addRoundedRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, fillRetortWidth - 6, fillRetortHeight - 3), 8, 8);
-            int h = m_RetortBoundingRectHeight - fillRetortHeight - 1;
-            path.addRoundedRect(QRect(4, (h > 0) ? h : 0 , fillRetortWidth - 6, fillRetortHeight -1), 8, 8);
+            qreal h = m_RetortBoundingRectHeight - fillRetortHeight - 1;
+            path.addRoundedRect(QRectF(4, (h > 0) ? h : 0 , fillRetortWidth - 6, fillRetortHeight -1), 8, 8);
         }
 
-        //int cornerHeight = 4;
         int cornerHeight = 10;
         if (fillRetortHeight > cornerHeight)
         {
-            path.addRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRectF(4, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRectF(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
@@ -778,30 +733,24 @@ void CDashboardStationItem::SuckDrainAnimation()
     {
         if (m_StationItemID == "Retort")
         {
-            if (m_CurrentBoundingRectReagentHeight < m_RetortBoundingRectHeight - m_RetortCoverHeight)
+            if (m_CurrentBoundingRectReagentHeight <= m_RetortBoundingRectHeight - m_RetortCoverHeight)
             {
-                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight + 1;
+                qreal increasedRate = (m_RetortBoundingRectHeight - m_RetortCoverHeight) / 45.0; //45 seconds for filling
+                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight + increasedRate;
             }
-            else
-                m_CurrentBoundingRectReagentHeight = 0;//reset
-
         }
         else //other container
         {
             if (m_CurrentBoundingRectReagentHeight > 0)
             {
-                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight - 1;
-            }
-            else //reset
-            {
-                if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
-                {
-                    m_CurrentBoundingRectReagentHeight = m_BottleBoundingRectHeight - m_BottleCoverHeight;
-                }
-                else if (STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
-                {
-                    m_CurrentBoundingRectReagentHeight = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;
-                }
+                int Containerlength = 0;
+                if (STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+                    Containerlength = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;
+                else
+                    Containerlength = m_BottleBoundingRectHeight - m_BottleCoverHeight;
+
+                qreal increasedRate = Containerlength / 45.0;
+                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight - increasedRate;
             }
         }
     }
@@ -811,11 +760,8 @@ void CDashboardStationItem::SuckDrainAnimation()
         {
             if (m_CurrentBoundingRectReagentHeight > 0)
             {
-                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight - 1;
-            }
-            else // reset
-            {
-                m_CurrentBoundingRectReagentHeight = m_RetortBoundingRectHeight - m_RetortCoverHeight;
+                qreal increasedRate = (m_RetortBoundingRectHeight - m_RetortCoverHeight) / 43.0; //43 seconds for draining
+                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight - increasedRate;
             }
         }
         else
@@ -832,10 +778,15 @@ void CDashboardStationItem::SuckDrainAnimation()
 
             if (m_CurrentBoundingRectReagentHeight < currentLiquidLevel)
             {
-                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight + 1;
+                int Containerlength = 0;
+                if (STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+                    Containerlength = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;
+                else
+                    Containerlength = m_BottleBoundingRectHeight - m_BottleCoverHeight;
+
+                qreal increasedRate = Containerlength / 43.0;
+                m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight + increasedRate;
             }
-            else //reset
-                m_CurrentBoundingRectReagentHeight = 0;
         }
     }
 

@@ -61,7 +61,7 @@ int CMovementTest::Run()
 
     ret = mp_dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
-        return RETURN_ERR_FAIL;
+        return RETURN_ABORT;
 
     qreal RVSensor1TempCurrent;
     qreal RVSensor2TempCurrent;

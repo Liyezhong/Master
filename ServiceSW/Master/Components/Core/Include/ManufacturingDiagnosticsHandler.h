@@ -45,14 +45,51 @@ class CManufacturingDiagnosticsHandler : public QObject {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_ServiceGUIConnector = serivce gui connector
+     *  \iparam p_MainWindow = parent windows
+     */
+    /****************************************************************************/
     CManufacturingDiagnosticsHandler(Core::CServiceGUIConnector *p_ServiceGUIConnector,
                                      MainMenu::CMainWindow *p_MainWindow);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CManufacturingDiagnosticsHandler();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To load manufacturing diagnostics components.
+     */
+    /****************************************************************************/
     void LoadManufDiagnosticsComponents();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To show message dialog
+     *  \iparam Message = message text
+     */
+    /****************************************************************************/
     void ShowMessage(const QString &Message);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To hide message dialog
+     */
+    /****************************************************************************/
     void HideMessage();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To show current pressure
+     *  \iparam Message = message text
+     */
+    /****************************************************************************/
     void ShowCurrentPressure(const QString &Message);
 
 private:
@@ -101,21 +138,42 @@ private:
 
     bool GetTestResponse();
 
+    void LockTest(bool LockFlag);
+
 signals:
     /****************************************************************************/
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortId = Abort Id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 public slots:
-    void BeginManufacturingSWTests(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for begin manufacturing test
+     *  \iparam ModuleName = The name of module
+     *  \iparam TestCaseList = The list of test case
+     */
+    /****************************************************************************/
+    void BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for return manufacturing message
+     *  \iparam Result = flag of result
+     */
+    /****************************************************************************/
     void OnReturnManufacturingMsg(bool Result);
 
-    /* Return Message Slots */
-
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for show error message dialog
+     *  \iparam Message = message text
+     */
+    /****************************************************************************/
     void ShowErrorMessage(const QString &Message);
 
 };

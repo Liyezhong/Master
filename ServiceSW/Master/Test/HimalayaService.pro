@@ -19,6 +19,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
           ../../../../Platform/Master/Components/NetworkComponents/Build/NetworkComponents.pro \
           ../../../../Platform/Master/Components/StateMachines/Build/StateMachines.pro \
+          ../../../../Platform/Master/Components/DeviceCommandProcessor/Build/DeviceCommandProcessor.pro \
           ../../../../Platform/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro \
           ../../../../Platform/Gui/Components/Application/Build/Application.pro \
           ../../../../Platform/Gui/Components/KeyBoard/Build/KeyBoard.pro \

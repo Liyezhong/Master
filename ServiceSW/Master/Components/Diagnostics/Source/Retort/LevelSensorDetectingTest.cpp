@@ -66,9 +66,15 @@ int CLevelSensorDetectingTest::Run(void)
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
 
-    TestRVInitialize();
+    if (!TestRVInitialize()) {
+         mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+         return RETURN_ERR_FAIL;
+    }
 
-    TestRVMovePosition(true, BottleNumber);
+    if (!TestRVMovePosition(true, BottleNumber)) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return RETURN_ERR_FAIL;
+    }
 
     if (!LevelSensorHeating(true)) {
         return RETURN_ERR_FAIL;
@@ -83,7 +89,10 @@ int CLevelSensorDetectingTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    TestRVMovePosition(true, 13);
+    if (!TestRVMovePosition(true, 13)) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return RETURN_ERR_FAIL;
+    }
 
     if (!LevelSensorHeating(false)) {
         return RETURN_ERR_FAIL;
@@ -98,22 +107,27 @@ int CLevelSensorDetectingTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    TestRVInitialize();
+    if (!TestRVInitialize()) {
+         mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+         return RETURN_ERR_FAIL;
+    }
 
     ShowFinishDlg(4);
 
     return RETURN_OK;
 }
 
-void CLevelSensorDetectingTest::TestRVInitialize()
+bool CLevelSensorDetectingTest::TestRVInitialize()
 {
     QString Text = "Rotary Valve is initializing";
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
-    (void)ServiceDeviceProcess::Instance()->RVInitialize();
+    int ret = ServiceDeviceProcess::Instance()->RVInitialize();
     mp_MessageDlg->HideWaitingDialog();
+
+    return ret == (int)RETURN_OK;
 }
 
-void CLevelSensorDetectingTest::TestRVMovePosition(bool TubeFlag, int Position)
+bool CLevelSensorDetectingTest::TestRVMovePosition(bool TubeFlag, int Position)
 {
     QString Text;
     if (TubeFlag) {
@@ -127,15 +141,20 @@ void CLevelSensorDetectingTest::TestRVMovePosition(bool TubeFlag, int Position)
         Text = QString("Rotary Valve is moving to sealing position %1").arg(Position);
     }
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
-    (void)ServiceDeviceProcess::Instance()->RVMovePosition(TubeFlag, Position);
+    int ret = ServiceDeviceProcess::Instance()->RVMovePosition(TubeFlag, Position);
     mp_MessageDlg->HideWaitingDialog();
+
+    return ret == (int)RETURN_OK;
 }
 
 bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
 {
     (void)ServiceDeviceProcess::Instance()->LSStopHeating();
 
-    TestRVMovePosition(false, Positon);
+    if (!TestRVMovePosition(false, Positon)) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return false;
+    }
 
      QString Text = "Releasing pressure...";
      mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
@@ -147,7 +166,10 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
     Text = "Close the lid and rotate the handle to the closed position.";
     mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_OK);
 
-    TestRVMovePosition(true, Positon);
+    if (!TestRVMovePosition(true, Positon)) {
+        mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
+        return false;
+    }
 
     Text = QString("Start draining to the bottle %1").arg(Positon);
     if (Positon == 13) {

@@ -106,6 +106,7 @@ const quint32 EVENT_SCHEDULER_START_OVENBOT_TEMP = SCHEDULER_BASE_ID + 0x139; //
 const quint32 EVENT_SCHEDULER_START_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0x13A; ///< Start heating oven bottom successfully.
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP = SCHEDULER_BASE_ID + 0x13B; ///< Stop heating oven bottom.
 const quint32 EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS = SCHEDULER_BASE_ID + 0x14C; ///< Stop heating oven bottom successfully.
+const quint32 EVENT_SCHEDULER_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x14D; ///< Self test success.
 
 // Pre test
 const quint32 EVENT_SCHEDULER_START_PRETEST = SCHEDULER_BASE_ID + 0x0200; ///< Start the pretest.
@@ -136,16 +137,15 @@ const quint32 EVENT_SCHEDULER_HEATING_RETORT = SCHEDULER_BASE_ID + 0x254; ///< S
 const quint32 EVENT_SCHEDULER_HEATING_OVEN = SCHEDULER_BASE_ID + 0x255; ///< Start wax bath(%1) heating in scenario:%2,the target temperature:%3.
 const quint32 EVENT_SCHEDULER_HEATING_RV = SCHEDULER_BASE_ID + 0x256; ///< Start rotary valve heating in scenario:%1,the target temperature:%2.
 const quint32 EVENT_SCHEDULER_HEATING_LA = SCHEDULER_BASE_ID + 0x257; ///< Start LA system(%1) heating in scenario:%2,the target temperature:%3.
+const quint32 EVENT_SCHEDULER_HEATING_LATBUE2_OFF = SCHEDULER_BASE_ID + 0x258; ///< LA Tube2 heating status is off.
 
 // running program
 // 1. Power failudre
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP = SCHEDULER_BASE_ID + 0x0301; ///< Reheating for 200 and 260 step.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP = SCHEDULER_BASE_ID + 0x0302; ///< Reheating for reagent step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP = SCHEDULER_BASE_ID + 0x0301; ///< Reheating for 200, 211 and 260 step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP = SCHEDULER_BASE_ID + 0x0302; ///< Reheating for reagents step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP = SCHEDULER_BASE_ID + 0x0303; ///< Reheating for paraffin step.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_281 = SCHEDULER_BASE_ID + 0x0304; ///< Power failure back to sensor 281.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_291 = SCHEDULER_BASE_ID + 0x0305; ///< Power failure back to sensor 291.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP = SCHEDULER_BASE_ID + 0x0306; ///< Power failure back to RC_restart.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING = SCHEDULER_BASE_ID + 0x0304; ///< Reheating for 203, 281~297 step.
 
 // 2. IDLE state
 const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Scheduler enters the idle state.
@@ -172,6 +172,8 @@ const quint32 EVENT_SCHEDULER_PROGRAM_STEP_START = SCHEDULER_BASE_ID + 0x0330; /
 const quint32 EVENT_SCHEDULER_PROGRAM_FINISHED = SCHEDULER_BASE_ID + 0x0331; ///< Finished Program %1.
 const quint32 EVENT_SCHEDULER_START_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0332; ///< Start the dry processing.
 const quint32 EVENT_SCHEDULER_FINISHED_DRY_PROCESSING = SCHEDULER_BASE_ID + 0x0333; ///< Finished the dry processing.
+const quint32 EVENT_SCHEDULER_FOR_WARNING_FLAG = SCHEDULER_BASE_ID + 0x0334; ///< Time between step %1 and step %2 exceed 4 minutes.
+const quint32 EVENT_SCHEDULER_UNKNOW_ERROR = SCHEDULER_BASE_ID + 0x0335; ///< Filter the unknown error, event id %1, scenario %2.
 
 
 /// strings

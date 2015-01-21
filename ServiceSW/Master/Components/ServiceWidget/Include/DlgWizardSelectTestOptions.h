@@ -27,24 +27,62 @@ namespace MainMenu {
 
 class CDlgSelectTestOptions;
 
+/****************************************************************************/
+/**
+ * \brief This class for wizard selected test option dialog
+ */
+/****************************************************************************/
 class CDlgWizardSelectTestOptions : public CDlgWizardBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgWizardSelectTestOptions(QWidget *parent = 0, QWidget *pMainWindow = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     *  \iparam p_MainWindow = main window widget
+     */
+    /****************************************************************************/
+    explicit CDlgWizardSelectTestOptions(QWidget *p_Parent = 0, QWidget *p_MainWindow = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgWizardSelectTestOptions(void);
 signals:
 
 private slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for radio button selected.
+     *  \iparam radioBtnIndex = index of radio button
+     */
+    /****************************************************************************/
     void OnRadioBtnSelected(int radioBtnIndex);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for clicked next button
+     */
+    /****************************************************************************/
     void OnClickedNextButton();
 signals:
-     void ClickedNextButton(int radioBtnIndex);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emit for clicked next button
+     *  \iparam radioBtnIndex
+     */
+    /****************************************************************************/
+    void ClickedNextButton(int radioBtnIndex);
 
 private:
-    CDlgSelectTestOptions* m_pDlgSelectTestOptions;
-    int m_radioBtnIndex;
+    CDlgSelectTestOptions* m_pDlgSelectTestOptions; //!< Select test options dialog
+    int m_radioBtnIndex;    //!< store radio button index
 
 };
 

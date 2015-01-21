@@ -39,8 +39,7 @@
         <file>Images/ConnectPart.png</file>
         <file>Images/Label2.png</file>
         <file>Images/Label1.png</file>
-        <file>Images/Button2.png</file>
-        <file>Images/Button1.png</file>
+        <file>Images/Button.png</file>
         <file>Images/Line1.png</file>
         <file>Images/Line2.png</file>
         <file>Images/Line3.png</file>
@@ -49,5 +48,8 @@
         <file>Images/RotaryValveTube.png</file>
         <file>Images/RotaryValveSealing.png</file>
         <file>Images/RotaryValveSealingDisable.png</file>
+        <file>Images/ValveState.png</file>
+        <file>Images/ValveStateDisabled.png</file>
+        <file>Images/ScreenLock.png</file>
     </qresource>
 </RCC>

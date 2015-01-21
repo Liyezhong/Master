@@ -2,22 +2,22 @@
 <!DOCTYPE TestCaseConfig>
 <TestCaseConfig Version="1">
 	<InitialSystem>
-		<SMainsRelay RVTargetTemp="120" OvenTopTargetTemp="90" SwitchOnCurrentLow="164" SwitchOnCurrentHigh="1358" SwitchOffCurrent="150"/>
-		<SACVoltage RVTargetTemp="80" RetortBottomTargetTemp="80" />
-		<SRVPreTest RVTargetTemp="120" RVDiffTemp="100" PreHeatingTargetTemp="115"/>
+		<SMainsRelay RVTargetTemp="125" OvenTopTargetTemp="90" ASB3CurrentLow="164" ASB3CurrentHigh="1358" ASB5CurrentLow="183" ASB5CurrentHigh="1484"  SwitchOffCurrent="150"/>
+		<SACVoltage RVTargetTemp="125" RetortBottomTargetTemp="102" />
+		<SRVPreTest RVTargetTemp="125" RVDiffTemp="100" PreHeatingTargetTemp="115"/>
 		<SOvenPreTest OvenTopTargetTemp="90" OvenBottomTargetTemp="90" OvenDiffTemp="20" PreHeatingMoreTargetTemp1="3" PreHeatingMoreTargetTemp2="4"/>
-		<SRetortPreTest RetortTargetTemp="70" RetortDiffTemp="20" PreHeatingMoreTargetTemp="15"/>
+		<SRetortPreTest RetortTargetTemp="100" RetortDiffTemp="20" PreHeatingMoreTargetTemp="15"/>
 		<SLTubePreTest LTubeTargetTemp="80" LTubeRangeTemp="100" PreHeatingTargetTemp="80"/>
 	</InitialSystem>
 	<Oven>
-		<HeatingTestEmpty  OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="1800" t2="60"/>
+        <HeatingTestEmpty OvenTopTargetTemp="70" OvenBottomTargetTemp="70" OvenDiffTemp="20" TempOffset="10" TempOffsetRangeMin="-5" TempOffsetRangeMax="10" t="600" t1="900" t2="60"/>
 	</Oven>
 	<RotaryValve>
 		<MovementTest RVSensor1TempMin="80" RVSensor2TempMin="40"/>
 	</RotaryValve>
 	<MainControl>
-		<SMCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
-		<SMCASB5 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
+		<SMCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="300"/>
+		<SMCASB5 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="500"/>
 		<SMCASB15 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="800"/>
 	</MainControl>
 	<LaSystem>
@@ -26,13 +26,14 @@
 	</LaSystem>
 	<System>
 		<SSystemSpeaker LowVolume="80" HighVolume="100" />
-		<SSystemFillingNDraining RVTargetTemp1="80" RVTargetTemp2="40"  XyleneTargetTemp="115" OtherTargetTemp="95" HeatingTimeOut="60" />
+		<SSystemFillingNDraining RVTargetTemp1="80" RVTargetTemp2="40"/>
 		<SSystemAlarm DetectTimeOut="45" />
-		<SSystemSealing RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure1="42" TargetPressure2="-42" PressureDiff="5" KeepDuration="60" />
-		<SSystemLiquidHose RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure="30" TimeOut="60" KeepDuration="10" RecordTime="5" />
+		<SSystemSealing RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure="40" TargetVacuum="-40" Offset="3" WaitTime="60" PressureDiff="5" KeepDuration="60" />
+		<SSystemLiquidHose RVTargetTemp1="80" RVTargetTemp2="40" TargetPressure="30" TimeOut="120" KeepDuration="10" RecordTime="5" PressureLeak="0.5" PressureRestriction="10" PressureLeakP="0.2" PressureRestrictionP="4.3"/>
 	</System>
 	<Retort>
 		<SRetortDrainReagent RVTargetTemp1="80" RVTargetTemp2="40" RVPTargetTemp1="100" RVPTargetTemp2="70" TargetPressure="-0.5" TimeOut="10" OvenDiffTemp="3" />
+		<SRetortLevelSensorDetection XyleneTargetTemp="115" OtherTargetTemp="95" TimeOut="120" />
 		<RetortHeatingTestEmpty RetortSideTargetTemp="70" RetortBottomTargetTemp="70" RetortDiffTemp="20" TempOffset="15" t="3" t1="900" t2="60"/>
 		<RetortHeatingTestWithWater RetortSideTargetTemp="95" RetortBottomTargetTemp="95" RetortSideTargetTemp1="50" RetortBottomTargetTemp1="50" RetortDiffTemp="20" TempOffset="6" TempOffset1="9" t="3" t1="3600"/>
 	</Retort>

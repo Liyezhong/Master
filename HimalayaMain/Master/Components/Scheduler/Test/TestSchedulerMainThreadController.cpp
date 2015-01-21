@@ -197,7 +197,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->WhichStepHasNoSafeReagent("");
 
-    m_pSchedulerMainController->GetLeftProgramStepsNeededTime("", 1);
+    //m_pSchedulerMainController->GetLeftProgramStepsNeededTime("", 1);
 
     m_pSchedulerMainController->GetCurrentProgramStepNeededTime("");
 

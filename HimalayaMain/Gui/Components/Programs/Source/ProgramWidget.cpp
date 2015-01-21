@@ -67,7 +67,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     //DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
 
     mp_Ui->setupUi(GetContentFrame());
-    m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList,5);    
+    m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList, 5);
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ProgramModel);
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
@@ -486,6 +486,7 @@ void CProgramWidget::ProgramUpdated()
 
 void CProgramWidget::ProgramAdded()
 {
+    ResetButtons();
     mp_ModifyProgramDlg->accept();
     mp_ModifyProgramDlg->EnablebtnSave();
 }

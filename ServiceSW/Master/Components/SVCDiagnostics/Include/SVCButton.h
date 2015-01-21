@@ -37,43 +37,44 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SVCButton
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      */
     /****************************************************************************/
-    explicit SVCButton(bool isBig = true, QWidget *parent=0);
+    explicit SVCButton(bool isBig = true, QWidget *_parent=0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCButton
-     *  \iparam text = button text
+     *  \iparam _text = button text
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      */
     /****************************************************************************/
-    explicit SVCButton(const QString &text, bool isBig = true, QWidget *parent=0);
+    explicit SVCButton(const QString &_text, bool isBig = true, QWidget *_parent=0);
 
 public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change button position;
+     *  \iparam _x = position of x
+     *  \iparam _y = position of y
      */
     /****************************************************************************/
-    void setPos(int x, int y);
+    void setPos(int _x, int _y);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change button position;
+     *  \iparam _pos = pointer of position
      */
     /****************************************************************************/
-    void setPos(QPoint pos);
+    void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setSize, change button size;
+     *  \iparam _width = width of value
+     *  \iparam _height = heigth of value
      */
     /****************************************************************************/
-    void setSize(int width, int height);
-
-private:
-    int width; //!< label width
-    int height; //!< label height
+    void setSize(int _width, int _height);
 };
 
 #endif // SVC_BUTTON_H

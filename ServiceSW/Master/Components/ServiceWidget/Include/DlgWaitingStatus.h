@@ -29,21 +29,45 @@
 
 namespace MainMenu {
 
+/****************************************************************************/
+/**
+ * \brief This class for waiting status dialog
+ */
+/****************************************************************************/
 class CDlgWaitingStatus : public CDlgWaitingBase
 {
     Q_OBJECT
 
 public:
-    explicit CDlgWaitingStatus(QWidget *parent = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *  \iparam p_Parent = the parent widget
+     */
+    /****************************************************************************/
+    explicit CDlgWaitingStatus(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Deconstructor
+     */
+    /****************************************************************************/
     ~CDlgWaitingStatus(void);
 
 public Q_SLOTS:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for set status
+     *  \iparam Status = status string.
+     */
+    /****************************************************************************/
     void SetStatus(const QString &Status);
 
 private:
-    QGroupBox   *mp_GroupStatus;
-    QHBoxLayout *mp_LayoutStatus;
-    QLabel      *mp_Status;
+    QGroupBox   *mp_GroupStatus;    //!< status group box
+    QHBoxLayout *mp_LayoutStatus;   //!< status layout
+    QLabel      *mp_Status;         //!< Status label
 };
 
 } // namespace MainMenu

@@ -53,14 +53,15 @@ protected:
 public:
     static QString  NAME;                                   ///< Command name.
 
-    QString m_ReqName;
-    QStringList m_Params;
+    QString m_ReqName;  ///< Request name.
+    QStringList m_Params;  ///< parameter list.
 
     /****************************************************************************/
     /**
      * \brief Constructor.
      *
-     * \iparam CmdType = Command type
+     * \iparam ReqName = Request name
+     * \iparam Params = parameter list.
      */
     /****************************************************************************/
     CmdServiceTest(QString ReqName, QStringList Params);

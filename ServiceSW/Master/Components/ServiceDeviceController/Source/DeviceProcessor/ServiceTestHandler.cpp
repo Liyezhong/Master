@@ -40,7 +40,7 @@
 
 namespace DeviceControl {
 
-#define RV_MOVE_OK      1
+#define RV_MOVE_OK      1  //!< rotary valve move result
 
 ServiceTestHandler* ServiceTestHandler::mp_Instance = NULL;
 
@@ -407,7 +407,7 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
         Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
     }
     if (TargetTempTop > 0) {
-        Ret |= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
+        Ret &= mp_TempOvenTop->StartTemperatureControl(TargetTempTop);
     }
 
     if (Ret) {
@@ -562,7 +562,7 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
     mp_TempRetortSide->StopTemperatureControl();
 
     Ret = mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom);
-    Ret |= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
+    Ret &= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
 
     if (Ret) {
         m_RetortTempControlIsOn = true;
@@ -734,7 +734,7 @@ void ServiceTestHandler::LiquidTubeStartHeating(QString& ReqName, QStringList& P
 
     qreal TargetTemp = Params.at(0).toFloat();
 
-    mp_TempTubeLiquid->StopTemperatureControl();
+    (void)mp_TempTubeLiquid->StopTemperatureControl();
     Ret = mp_TempTubeLiquid->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
@@ -836,7 +836,7 @@ void ServiceTestHandler::AirTubeStartHeating(QString& ReqName, QStringList& Para
 
     qreal TargetTemp = Params.at(0).toFloat();
 
-    mp_TempTubeAir->StopTemperatureControl();
+    (void)mp_TempTubeAir->StopTemperatureControl();
     Ret = mp_TempTubeAir->StartTemperatureControl(TargetTemp);
 
     if (Ret) {
@@ -1206,7 +1206,7 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
     bool Ret(false);
 
     Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGain, ResetTime, DerivativeTime);
-    Ret |= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
+    Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
 
     if (Ret == false) {
         mp_TempLSensor->StopTemperatureControl();
@@ -1444,7 +1444,7 @@ void ServiceTestHandler::PumpSetPressure(QString& ReqName, QStringList& Params)
         return ;
     }
     quint8 Flag = Params.at(0).toInt();
-    float Pressure = Params.at(0).toFloat();
+    float Pressure = Params.at(1).toFloat();
 
     bool Ret = mp_PressPump->SetPressure(Flag, Pressure);
 
@@ -1532,6 +1532,24 @@ void ServiceTestHandler::PumpStopCompressor(QString& ReqName, QStringList& Param
     }
 
     mp_PressPump->StopCompressor();
+
+    emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
+}
+
+void ServiceTestHandler::PumpGetStatus(QString& ReqName, QStringList& Params)
+{
+    Q_UNUSED(Params);
+
+    QStringList Results;
+    Results.clear();
+
+    if (mp_PressPump == NULL) {
+        emit ReturnServiceRequestResult(ReqName, RETURN_ERR_NULL_POINTER, Results);
+        return ;
+    }
+
+    bool status = mp_PressPump->GetPumpStatus();
+    Results.append(QString("%1").arg((int)status));
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -1833,6 +1851,10 @@ void ServiceTestHandler::HandleRequest(QString ReqName, QStringList Params)
     else if (ReqName == "GetSlaveModuleReportError") {
         GetSlaveModuleReportError(ReqName, Params);
     }
+    else if (ReqName == "PumpGetStatus") {
+        PumpGetStatus(ReqName, Params);
+    }
+
 }
 
 } // end namespace DeviceControl

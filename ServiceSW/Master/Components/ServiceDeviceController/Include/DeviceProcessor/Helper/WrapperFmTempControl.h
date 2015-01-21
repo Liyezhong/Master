@@ -30,7 +30,7 @@
 
 using namespace DeviceControl;
 
-#define MAX_TEMP_SENSOR_NUM  50
+#define MAX_TEMP_SENSOR_NUM  50   //!< sensor number
 
 
 /****************************************************************************/
@@ -40,7 +40,6 @@ using namespace DeviceControl;
  *
  *
  *  Examples:
- *   \dontinclude tempcontrol.js
  *   \skipline [WrapperFmTempControl]
  *   \until    [WrapperFmTempControl]
  */
@@ -51,13 +50,13 @@ class WrapperFmTempControl : public WrapperBase
 
  public:
     typedef struct {
-        quint8 Sensors;
-        quint8 Fans;
-        quint8 Heaters;
-        quint8 Pids;
-        quint16 Current;
-        quint8 HeaterSwitchType;
-    } HardwareStatus_t;
+        quint8 Sensors; //!< sensor number
+        quint8 Fans;    //!< fan number
+        quint8 Heaters; //!< heater number
+        quint8 Pids;    //!< pid number
+        quint16 Current; //!< current
+        quint8 HeaterSwitchType; //!< type of the heater switch
+    } HardwareStatus_t; //!< hardware status struct
 
     WrapperFmTempControl(QString Name, CTemperatureControl *pTempControl, QObject *pParent);
 
@@ -76,6 +75,12 @@ class WrapperFmTempControl : public WrapperBase
     quint16 GetFanSpeed(quint8 Index);
     HardwareStatus_t *GetHardwareStatus();
     quint16 GetCurrent();
+
+    /****************************************************************************/
+    /*! \brief get heater switch type
+     *  \return type
+     */
+    /****************************************************************************/
     quint8 GetHeaterSwitchType();
     void Reset();
 #ifdef PRE_ALFA_TEST

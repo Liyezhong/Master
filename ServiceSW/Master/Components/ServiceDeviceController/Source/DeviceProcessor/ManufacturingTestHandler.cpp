@@ -38,8 +38,9 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+#include <QDebug>
 
-#define RV_MOVE_OK              1
+#define RV_MOVE_OK              1 //!< rotary valve move result
 namespace DeviceControl {
 
 /****************************************************************************/
@@ -454,7 +455,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
     qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble();
     qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toDouble();
-    qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
+    //qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal MinTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
     //qreal MaxTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
 
@@ -873,17 +874,23 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
     QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+
     qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
+
+
     Service::ModuleTestStatus testStat;
     (void)testStat.insert("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
-    (void)testStat.insert("Duration", durTime.addSecs(5).toString());
+    (void)testStat.insert("Duration", durTime.toString());
 
     int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
     int waitSeconds = 0;
     qreal curTemp = 0;
     int totalSeconds = 0;
+    int remainder = duration % 10;
+
+    duration -= remainder;
 
     p_TestCase->ResetResult();
     int num = 10;
@@ -924,7 +931,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             mp_Utils->Pause(200);
         }
         else {            
-            waitSeconds = 5;
+            waitSeconds = remainder;
         }
 
         while (!m_UserAbort && waitSeconds) {
@@ -974,7 +981,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
 
     p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
-    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
     return 0;
 
@@ -982,7 +989,7 @@ ERROR_EXIT:
     (void)mp_TempLSensor->StopTemperatureControl();
     p_TestCase->AddResult("TargetTemp",  QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
-    p_TestCase->AddResult("Duration", durTime.addSecs(5).toString());
+    p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalSeconds).toString("hh:mm:ss"));
     return -1;
 }
@@ -1387,26 +1394,42 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
 
 qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
 {
-    qint32 CurrentVoltage = 110;
+    qint32 CurrentVoltage3 = 110;
+    qint32 CurrentVoltage5 = 110;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
+    qint32 ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage").toInt();
 
-    quint8 SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
-    if (SwitchType == TEMPCTRL_VOLTAGE_220V) {
-        CurrentVoltage = 220;
+    quint8 ASB5SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+    quint8 ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
+
+
+
+    if (ASB3SwitchType == TEMPCTRL_VOLTAGE_220V) {
+        CurrentVoltage3 = 220;
     }
-    else if (SwitchType == TEMPCTRL_VOLTAGE_110V) {
-        CurrentVoltage = 110;
+    else if (ASB3SwitchType == TEMPCTRL_VOLTAGE_110V) {
+        CurrentVoltage3 = 110;
     }
     else {
-        CurrentVoltage = 0;
+        CurrentVoltage3 = 0;
     }
 
-    p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
+    if (ASB5SwitchType == TEMPCTRL_VOLTAGE_220V) {
+        CurrentVoltage5 = 220;
+    }
+    else if (ASB5SwitchType == TEMPCTRL_VOLTAGE_110V) {
+        CurrentVoltage5 = 110;
+    }
+    else {
+        CurrentVoltage5 = 0;
+    }
 
-    if (CurrentVoltage == ConnectedVoltage.toInt()) {
+    p_TestCase->AddResult("CurrentVoltage3", QString::number(CurrentVoltage3));
+    p_TestCase->AddResult("CurrentVoltage5", QString::number(CurrentVoltage5));
+
+    if (CurrentVoltage3 == ConnectedVoltage && CurrentVoltage5 == ConnectedVoltage) {
         p_TestCase->SetStatus(true);
         return 0;
     }
@@ -1739,44 +1762,98 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::CLEANING_SYSTEM_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    int TestStep = p_TestCase->GetParameter("TestStep").toInt();
+    QTime time1 = QTime::fromString(p_TestCase->GetParameter(QString("Time1")), "hh:mm:ss");
+    QTime time2 = QTime::fromString(p_TestCase->GetParameter(QString("Time2")), "hh:mm:ss");
+    QTime time3 = QTime::fromString(p_TestCase->GetParameter(QString("Time3")), "hh:mm:ss");
+    QTime blowTime = QTime::fromString(p_TestCase->GetParameter("BlowTime"), "hh:mm:ss");
+    int waitSec1 = time1.hour()*60*60 + time1.minute()*60 + time1.second();
+    int waitSec2 = time2.hour()*60*60 + time2.minute()*60 + time2.second();
+    int waitSec3 = time3.hour()*60*60 + time3.minute()*60 + time3.second();
+    int blowSec = blowTime.hour()*60*60 + blowTime.minute()*60 + blowTime.second();
+    int targetPressure1 = p_TestCase->GetParameter(QString("TargetPressure1")).toInt();
+    int targetPressure2 = p_TestCase->GetParameter(QString("TargetPressure2")).toInt();
+    int departure = p_TestCase->GetParameter("Departure").toInt();
+
     p_TestCase->ResetResult();
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-    if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
+    if (mp_MotorRV->MoveToInitialPosition() != RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
         return -1;
     }
 
-    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
-    if (mp_MotorRV->MoveToSealPosition(1)!=RV_MOVE_OK) {
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
-        return -1;
+    if (TestStep == 1) {
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 1);
+        if (mp_MotorRV->MoveToTubePosition(1) != RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg("1"));
+            return -1;
+        }
+    }
+    else {
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
+        if (mp_MotorRV->MoveToSealPosition(1) != RV_MOVE_OK) {
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
+            return -1;
+        }
     }
 
+    if (TestStep == 1) {
+        int i = 1;
+        do {
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure1);
+            (void)mp_PressPump->SetFan(1);
+            (void)mp_PressPump->SetTargetPressure(9, targetPressure1);
+            mp_Utils->Pause(waitSec1*1000);
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
-    QTime time = QTime::fromString(p_TestCase->GetParameter("Time"), "hh:mm:ss");
-    QTime blowTime = QTime::fromString(p_TestCase->GetParameter("BlowTime"), "hh:mm:ss");
-    int waitSec = time.hour()*60*60 + time.minute()*60 + time.second();
-    int blowSec = blowTime.hour()*60*60 + blowTime.minute()*60 + blowTime.second();
-    int targetPressure = p_TestCase->GetParameter("TargetPressure").toInt();
-    int departure = p_TestCase->GetParameter("Departure").toInt();
-    (void)mp_PressPump->ReleasePressure();
-    (void)mp_PressPump->SetFan(1);
-    EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
+            (void)mp_PressPump->StopCompressor();
 
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
+            if (mp_MotorRV->MoveToSealPosition(i) != RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
 
-    if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
-        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
-        RetValue = -1;
-        goto CLEANING_EXIT;
-    }
-
-    for(int k=0; k<3; k++) {
-        for (int i = 1; i <= 16; ++i) {
+            mp_PressPump->ReleasePressure();
+            i++;
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
-            if (mp_MotorRV->MoveToTubePosition(i)!=RV_MOVE_OK) {
+            if (mp_MotorRV->MoveToTubePosition(i) != RV_MOVE_OK) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
+
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);
+            (void)mp_PressPump->SetFan(1);
+            (void)mp_PressPump->SetTargetPressure(1, targetPressure2);
+            mp_Utils->Pause(waitSec2*1000);
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+            mp_PressPump->ReleasePressure();
+        } while (i < 16);
+
+        return RetValue;
+    }
+    else {
+        (void)mp_PressPump->SetFan(1);
+        for (int i = 1; i <= 16; ++i) {
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);           
+            if (!CreatePressure(waitSec3, targetPressure2, departure, TestCaseName)) {
+                EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
+                RetValue = -1;
+                goto CLEANING_EXIT;
+            }
+
+            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
+            if (mp_MotorRV->MoveToTubePosition(i) != RV_MOVE_OK) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
                 RetValue = -1;
@@ -1785,29 +1862,18 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
             mp_Utils->Pause(blowSec*1000);
 
-            if (i == 16 && k==2) {
-                break;
-            }
-            mp_PressPump->ReleasePressure();
+            //mp_PressPump->ReleasePressure();
 
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
-            if (mp_MotorRV->MoveToSealPosition(i)!=RV_MOVE_OK) {
+            if (mp_MotorRV->MoveToSealPosition(i) != RV_MOVE_OK) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
-                RetValue = -1;
-                goto CLEANING_EXIT;
-            }
-
-            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
-            if (!CreatePressure(waitSec, targetPressure, departure, TestCaseName)) {
-                p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
                 RetValue = -1;
                 goto CLEANING_EXIT;
             }
         }
     }
 CLEANING_EXIT:
-    (void)mp_PressPump->SetFan(0);
     (void)mp_PressPump->ReleasePressure();
 
     return RetValue;
@@ -1850,13 +1916,13 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
             }
 
         }
-        else if (targetPressure == 45) {
+        else if (targetPressure == 40) {
             if (pressure > (targetPressure-departure)) {
                 result = true;
                 break;
             }
         }
-        else if (targetPressure == -45) {
+        else if (targetPressure == -40) {
             if (pressure < (targetPressure-departure)) {
                 result = true;
                 break;
@@ -2141,7 +2207,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
+    qint32 UsedTimeSec(0);
     quint32 KeepSeconds(0);
+    QTime StartTime;
+    qint32 StartTimeSec(0);
 
     Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_HEATING_STATION;
 
@@ -2213,10 +2282,20 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRV->StartTemperatureControl(TargetTempSensor1);
-
-    while (!m_UserAbort && WaitSec)
+    StartTime = QTime::currentTime();
+    StartTimeSec = StartTime.hour()*60*60+StartTime.minute()*60+StartTime.second();
+    while (!m_UserAbort && UsedTimeSec <= WaitSec+1)
     {
-        QTime EndTime = QTime().currentTime().addSecs(1);
+        qDebug()<<"\n UsedTime: "<<UsedTimeSec;
+        //QTime EndTime = QTime().currentTime().addSecs(1);
+        QTime CurTime = QTime::currentTime();
+        qint32 CurTimeSec = CurTime.hour()*60*60+CurTime.minute()*60+CurTime.second();
+        UsedTimeSec = CurTimeSec - StartTimeSec + 1;
+        qDebug()<<"\n StartTime: "<<StartTimeSec;
+        qDebug()<<"\n CurTime: "<<CurTimeSec;
+        if (UsedTimeSec < 0){
+            UsedTimeSec = 24*60*60+60-StartTimeSec +CurTimeSec;
+        }
 
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
@@ -2249,7 +2328,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 #else
         if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
             // if more than target temp in 1 minute, then the test pass
-            if (KeepSeconds > 60) {
+            if (KeepSeconds > 120) {
                 RVStatus = 1;
                 break;
             }
@@ -2259,19 +2338,22 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
         else {
             KeepSeconds=0;
-            if (WaitSec <= 60) {
+            //if (WaitSec <= 60) {
+            if (UsedTimeSec > WaitSec - 60){
                 break;
             }
         }
 #endif
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
-        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+        //UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+        UsedTime = QTime().addSecs(UsedTimeSec).toString("hh:mm:ss");
 
         (void)Status.insert("UsedTime", UsedTime);
         (void)Status.insert("CurrentTempSensor1", Sensor1Value);
         (void)Status.insert("CurrentTempSensor2", Sensor2Value);
-        if (WaitSec == SumSec) {
+        //if (WaitSec == SumSec) {
+        if(UsedTimeSec <= 1){
             QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);
             (void)Status.insert("TargetTemp", TargetTempStr);
 
@@ -2283,15 +2365,97 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        WaitSec--;
+        //WaitSec--;
+        mp_Utils->Pause(500);
 
-        int offset = 0;
-        if (WaitSec%10 == 0) {
-            offset = 8;
-        }
-        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
-        mp_Utils->Pause(MSec);
+//        int offset = 0;
+//        if (WaitSec%10 == 0) {
+//            //offset = 8;
+//            offset = 4; //added by jack
+//        }
+//        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+//        mp_Utils->Pause(MSec);
     }
+
+//    while (!m_UserAbort && WaitSec)
+//    {
+//        QTime EndTime = QTime().currentTime().addSecs(1);
+
+//        CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
+//        CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
+
+//        qDebug()<<"1111111111   "<<CurrentTempSensor1<<"      "<<CurrentTempSensor2;
+
+
+//#if 0
+//        if ( (SumSec-WaitSec) >= WaitSecSensor1 ) {
+
+//            // if less than target temp in duration time (1h), than exit from this process and report fail.
+//            if (CurrentTempSensor1 < (TargetTempSensor1+DepartureLow)) {
+//                break;
+//            }
+
+//            if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+//                // if more than target temp in 1 minute, then the test pass
+//                if (KeepSeconds > 60) {
+//                    RVStatus = 1;
+//                    break;
+//                }
+//                else {
+//                    KeepSeconds++;
+//                }
+//            }
+//            else {
+//                KeepSeconds=0;
+//            }
+//        }
+//#else
+//        if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+//            // if more than target temp in 1 minute, then the test pass
+//            if (KeepSeconds > 60) {
+//                RVStatus = 1;
+//                break;
+//            }
+//            else {
+//                KeepSeconds++;
+//            }
+//        }
+//        else {
+//            KeepSeconds=0;
+//            if (WaitSec <= 60) {
+//                break;
+//            }
+//        }
+//#endif
+//        Sensor1Value = QString("%1").arg(CurrentTempSensor1);
+//        Sensor2Value = QString("%1").arg(CurrentTempSensor2);
+//        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
+//        (void)Status.insert("UsedTime", UsedTime);
+//        (void)Status.insert("CurrentTempSensor1", Sensor1Value);
+//        (void)Status.insert("CurrentTempSensor2", Sensor2Value);
+//        if (WaitSec == SumSec) {
+//            QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);
+//            (void)Status.insert("TargetTemp", TargetTempStr);
+
+
+//            QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+//            (void)Status.insert("Duration", Duration);
+//            p_TestCase->AddResult("Duration", Duration);
+//            p_TestCase->AddResult("TargetTemp", TargetTempStr);
+//        }
+
+//        emit RefreshTestStatustoMain(TestCaseName, Status);
+//        WaitSec--;
+
+//        int offset = 0;
+//        if (WaitSec%10 == 0) {
+//            //offset = 8;
+//            offset = 4; //added by jack
+//        }
+//        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+//        mp_Utils->Pause(MSec);
+//    }
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_DigitalOutputMainRelay->SetLow();
@@ -2523,7 +2687,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
 
          if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-             if ( KeepSeconds > 60 ) {
+             if ( KeepSeconds > 3 ) {
                  RVStatus = 1;
                  break;
              }
@@ -2533,7 +2697,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
          else {
              KeepSeconds = 0;
-             if (WaitSec <= 60) {
+             if (WaitSec <= 3) {
                  break;
              }
          }
@@ -2783,6 +2947,8 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     int FirstTime = p_TestCase->GetParameter("FirstTime").toInt();
+    float PressureHigh = p_TestCase->GetParameter("PressureHigh").toFloat();
+    float PressureLow  = p_TestCase->GetParameter("PressureLow").toFloat();
 
     if (FirstTime == 1) {
         p_TestCase->SetParameter("FirstTime", "0");
@@ -2798,10 +2964,10 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     float Drift(0);
 
 
-    if (qAbs(Pressure) > 1.5) {
+    if (qAbs(Pressure) > PressureHigh) {
         (void)Status.insert("Result", "2"); // open retort lid and retry
     }
-    else if (qAbs(Pressure) < 0.2) {
+    else if (qAbs(Pressure) < PressureLow) {
         (void)Status.insert("Result", "0"); // success
     }
     else {
@@ -2891,7 +3057,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
 }
 
-qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
+qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTestCaseID Id)
 {
     qint32 RetVal(0);
 
@@ -2905,14 +3071,21 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     (void)mp_DigitalOutputMainRelay->SetHigh();
 
-    (void)mp_TempRV->StartTemperatureControl(70);
-    (void)mp_TempRetortBottom->StartTemperatureControl(70);
-    (void)mp_TempRetortSide->StartTemperatureControl(70);
-    (void)mp_TempOvenBottom->StartTemperatureControl(70);
-    (void)mp_TempOvenTop->StartTemperatureControl(70);
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qreal RVTargetTemp = p_TestCase->GetParameter("RVTargetTemp").toInt();
+    qreal RetortTargetTemp = p_TestCase->GetParameter("RetortTargetTemp").toInt();
+
+    // Miles change the target temperature to 120 for RV and 110 for Retort on Dec, 02, 2014
+    (void)mp_TempRV->StartTemperatureControl(RVTargetTemp);
+    (void)mp_TempRetortBottom->StartTemperatureControl(RetortTargetTemp);
+//    (void)mp_TempRetortSide->StartTemperatureControl(70);
+//    (void)mp_TempOvenBottom->StartTemperatureControl(70);
+//    (void)mp_TempOvenTop->StartTemperatureControl(70);
 
     int i=0;
-    while(i<6)
+    while(i<10)
     {
         i++;
         mp_Utils->Pause(500);
@@ -2920,9 +3093,9 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRetortBottom->StopTemperatureControl();
-    (void)mp_TempRetortSide->StopTemperatureControl();
-    (void)mp_TempOvenBottom->StopTemperatureControl();
-    (void)mp_TempOvenTop->StopTemperatureControl();
+//    (void)mp_TempRetortSide->StopTemperatureControl();
+//    (void)mp_TempOvenBottom->StopTemperatureControl();
+//    (void)mp_TempOvenTop->StopTemperatureControl();
 
     (void)mp_DigitalOutputMainRelay->SetLow();
 #if 0 // Disabled by Sunny on Oct, 31, 2014.
@@ -2964,7 +3137,7 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
         (void)mp_DOLocalAlarm->SetHigh();
     }
 
-    qint32 RetVal = AutoSetASB3HeaterSwitchType();
+    qint32 RetVal = AutoSetASB3HeaterSwitchType(Id);
 
     (void)Status.insert("CurState", "End");
     emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -3447,7 +3620,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         SetSlaveStandby();
         break;
     case Service::SYSTEM_110V_220V_AUTO_SWITCH:
-        (void)AutoSetASB3HeaterSwitchType();
+        (void)AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
         break;
     case Service::SYSTEM_SELF_TEST:
         (void)SystemSelfTest();

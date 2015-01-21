@@ -29,8 +29,6 @@ namespace MainMenu {
 /****************************************************************************/
 /*!
  *  \brief Constructor
- *
- *  \iparam Title  = Title of the menu
  *  \iparam Parent = Parent widget
  */
 /****************************************************************************/

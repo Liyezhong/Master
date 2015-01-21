@@ -37,21 +37,21 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SVCLabel
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      *  \iparam f = window flag
      */
     /****************************************************************************/
-    explicit SVCLabel(bool isBig = true, QWidget *parent=0, Qt::WindowFlags f=0);
+    explicit SVCLabel(bool isBig = true, QWidget *_parent=0, Qt::WindowFlags f=0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SVCLabel
-     *  \iparam text = text for label display
+     *  \iparam _text = text for label display
      *  \iparam isBig = whether select big pixmap
-     *  \iparam parent = the parent graphics item
+     *  \iparam _parent = the parent graphics item
      *  \iparam f = window flag
      */
     /****************************************************************************/
-    explicit SVCLabel(const QString &text, bool isBig = true, QWidget *parent=0, Qt::WindowFlags f=0);
+    explicit SVCLabel(const QString &_text, bool isBig = true, QWidget *_parent=0, Qt::WindowFlags f=0);
 
 public:
     /****************************************************************************/
@@ -59,23 +59,22 @@ public:
      *  \brief  Definition/Declaration of function setPos, change label position;
      */
     /****************************************************************************/
-    void setPos(int x, int y);
+    void setPos(int _x, int _y);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change label position;
+     *  \iparam _pos = point of pos
      */
     /****************************************************************************/
-    void setPos(QPoint pos);
+    void setPos(QPoint _pos);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function setSize;, change label size;
+     *  \brief  Definition/Declaration of function setSize;change label size;
+     *  \iparam _width = size width
+     *  \iparam _height = size height
      */
     /****************************************************************************/
-    void setSize(int width, int height);
-
-private:
-    int width; //!< label width
-    int height; //!< label height
+    void setSize(int _width, int _height);
 };
 
 #endif // SVC_LABEL_H

@@ -169,21 +169,8 @@ signals:
      */
     /****************************************************************************/
     void ResetFocus(bool reset);
-    /****************************************************************************/
-    /*!
-     *  \brief  singnal of RequestAsapDateTime
-     *
-     */
-    /****************************************************************************/
-    void RequestAsapDateTime();
-    /****************************************************************************/
-    /*!
-     *  \brief refresh the program selection
-     *  \param asapDateTime = the as soon as possible end datetime
-     *  \param bIsFirstStepFixation = whether the first step is fixation or not
-     */
-    /****************************************************************************/
-    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
+
+
     /****************************************************************************/
     /*!
      *  \brief Declaration of signal AddItemsToFavoritePanel
@@ -191,6 +178,13 @@ signals:
      */
     /****************************************************************************/
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
+    /****************************************************************************/
+    /*!
+     *  \brief Declaration of signal AddItemsToFavoritePanel
+     *
+     */
+    /****************************************************************************/
+    void AddItemsToFavoritePanel();
     /****************************************************************************/
     /*!
      *  \brief  send signal PrepareSelectedProgramChecking to master, for checking program
@@ -336,6 +330,12 @@ private slots:
      */
     /****************************************************************************/
     void OnPreTestDone();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateProgramTimerStatus
+     */
+    /****************************************************************************/
+    void UpdateProgramTimerStatus(bool enable);
 private:
     /****************************************************************************/
     /*!
@@ -387,6 +387,8 @@ private:
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
     QTimer* m_Timer;       ///<  Definition/Declaration of program resume remider m_Timer
+    bool m_startButtonDisabledAsSysError;
+    bool m_pauseButtonDisabledAsSysError;
 };
 
 }// end namespace Dashboard

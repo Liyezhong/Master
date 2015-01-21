@@ -49,16 +49,13 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     mp_CheckSensorTemp = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_GetRvPosition = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_DrainCurrentReagent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_MoveCleaningTubePos = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Init.data());
     mp_Init->addTransition(this, SIGNAL(SigTemperatureControlOn()), mp_StartSensorTemp.data());
     mp_StartSensorTemp->addTransition(this, SIGNAL(SigTemperatureSensorsChecking()), mp_CheckSensorTemp.data());
     mp_CheckSensorTemp->addTransition(this, SIGNAL(SigGetRVPosition()), mp_GetRvPosition.data());
     mp_GetRvPosition->addTransition(this, SIGNAL(SigDrainCurrentReagent()), mp_DrainCurrentReagent.data());
-    mp_GetRvPosition->addTransition(this, SIGNAL(SigMoveCleaningTubePos()), mp_MoveCleaningTubePos.data());
-    mp_DrainCurrentReagent->addTransition(this, SIGNAL(SigMoveCleaningTubePos()), mp_MoveCleaningTubePos.data());
-    mp_MoveCleaningTubePos->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
+    mp_DrainCurrentReagent->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
 
     // For error cases
     mp_StartSensorTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
@@ -102,10 +99,6 @@ CRcReHeating::StateList_t CRcReHeating::GetCurrentState(QSet<QAbstractState*> st
     {
         currentState = BEGIN_DRAIN;
     }
-    else if (statesList.contains(mp_MoveCleaningTubePos.data()))
-    {
-        currentState = MOVE_CLEANING_TUBE_POS;
-    }
     return currentState;
 }
 
@@ -146,9 +139,6 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
         case BEGIN_DRAIN:
             ProcessDraining(cmdName, retCode);
             break;
-        case MOVE_CLEANING_TUBE_POS:
-            MoveCleaningTubePos(cmdName, retCode);
-            break;
         default:
             break;
     }
@@ -156,7 +146,7 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario || 260 == m_LastScenario)
+    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
         if(!m_IsNeedRunCleaning)
@@ -164,7 +154,7 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(211 <= m_LastScenario && m_LastScenario <= 257)
+    else if(212 <= m_LastScenario && m_LastScenario <= 257)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
         if(!m_IsNeedRunCleaning)
@@ -180,17 +170,9 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(281 <= m_LastScenario && m_LastScenario <= 287)
+    else if(203 == m_LastScenario && 281 <= m_LastScenario && m_LastScenario <= 297)
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_281);
-    }
-    else if(291 <= m_LastScenario && m_LastScenario <= 297)
-    {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_291);
-    }
-    else if(203 == m_LastScenario)
-    {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_DRY_STEP);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
 }
 
@@ -286,7 +268,7 @@ void CRcReHeating::CheckTheTemperature()
         // for parrafin program
         if(QFile::exists("TEST_GINA"))
         {
-            if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
+            if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
             {
                 emit SigGetRVPosition();
             }
@@ -308,7 +290,7 @@ void CRcReHeating::CheckTheTemperature()
             }
             if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > m_OvenRemainingTime)
             {
-                if(mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorsTemp(mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor()))
+                if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
                 {
                     emit SigGetRVPosition();
                 }
@@ -330,7 +312,7 @@ void CRcReHeating::CheckTheTemperature()
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     qreal CurrentPressure = 0.0;
-    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario || 203 == m_LastScenario)
+    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
     {
         if (0 == m_StartReq)
         {
@@ -341,16 +323,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
         {
             if(m_IsNeedRunCleaning)
             {
-                if(260 == m_LastScenario)
-                {
-                    emit SigMoveCleaningTubePos();
-                    m_StartReq = 0;
-                    return;
-                }
-                else
-                {
-                    mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
-                }
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
             emit TasksDone(true);
             m_StartReq = 0;
@@ -407,7 +380,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
                 CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
-                cmd->SetTargetPressure(-1.0);
+                cmd->SetTargetPressure(-0.5);
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_StartReq++;
             }
@@ -484,7 +457,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
             {
                 m_StartReq = 0;
-                m_RsReagentCheckStep = REALSE_PRESSRE;
+                m_RsReagentCheckStep = REALSE_PRESSURE;
             }
             else
             {
@@ -498,7 +471,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 }
             }
             break;
-        case REALSE_PRESSRE:
+        case REALSE_PRESSURE:
             if(0 == m_StartReq)
             {
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
@@ -558,50 +531,15 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         {
             if(m_IsNeedRunCleaning)
             {
-                emit SigMoveCleaningTubePos();
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            else
-            {
-                emit TasksDone(true);
-            }
+            emit TasksDone(true);
         }
         else
         {
             emit TasksDone(false);
         }
         m_StartReq = 0;
-    }
-}
-
-void CRcReHeating::MoveCleaningTubePos(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
-{
-    if(0 == m_StartReq)
-    {
-        if( !mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS) )
-        {
-            emit TasksDone(false);
-        }
-        else
-        {
-            m_StartReq++;
-        }
-    }
-    else if(mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS))
-    {
-        mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
-        emit TasksDone(true);
-        m_StartReq = 0;
-    }
-    else
-    {
-        if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-        {
-            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-            {
-                m_RsReagentCheckStep = FORCE_DRAIN;
-                emit TasksDone(false);
-            }
-        }
     }
 }
 

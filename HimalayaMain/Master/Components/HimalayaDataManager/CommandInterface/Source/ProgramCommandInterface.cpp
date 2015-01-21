@@ -100,16 +100,13 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         return;
     }
     else {
-        if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        }
         (void) ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
          if(mp_MasterThreadController){
              SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                      new MsgClasses::CmdNewProgram(10000, ProgramDataStream)));
          }
-        qDebug()<<"\n\n\n Adding New Program Success";
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_ADD_NEW_PROGRAM,Global::tTranslatableStringList()<<Program.GetName());
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
@@ -125,7 +122,7 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
 void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
     bool Result = true;
-
+    QString ProgramName = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetProgram(Cmd.GetItemId())->GetName();
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->DeleteProgram(Cmd.GetItemId());
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
@@ -150,7 +147,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
         if(mp_MasterThreadController){
             SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                     new MsgClasses::CmdProgramDeleteItem(10000, Cmd.GetItemId())));
-            qDebug()<<"\n\n Delete Program Success";
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_REMMOVE_PROGRAM,Global::tTranslatableStringList()<<ProgramName);
         }
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
@@ -172,9 +169,6 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     CProgram Program;
     //Program with modified color.This program uses the color previously assigned to above program
 //    CProgram ProgramWithNewColor;
-
-    // we work on Temporary copy of program list , when Color was modified.
-    DataManager::CDataProgramList TempProgramList;
 
     QByteArray ProgramData(const_cast<QByteArray &>(Cmd.GetProgramData()));
     QDataStream ProgramDataStream(&ProgramData, QIODevice::ReadWrite);
@@ -212,17 +206,12 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     }
     else
     {
-//        *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList) = TempProgramList;
-        //Send Ack
-        if(mp_MasterThreadController){
-            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        }
         (void)ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
         if(mp_MasterThreadController){
             SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                     new MsgClasses::CmdProgramUpdate(10000, ProgramDataStream)));
-            qDebug()<<"\n\n Update Program Success";
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_UPDATE_PROGRAM,Global::tTranslatableStringList()<<Program.GetName());
         }
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();

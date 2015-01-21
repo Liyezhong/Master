@@ -234,9 +234,7 @@ void ImportExportThreadController::CleanupAndDestroyObjects() {
 }
 
 /****************************************************************************/
-void ImportExportThreadController::OnGoReceived() {
-
-    QString TypeOfImport;    
+void ImportExportThreadController::OnGoReceived() {  
 
     if (!m_ThreadInitialized) {
         m_ThreadInitialized = true;
@@ -263,11 +261,6 @@ void ImportExportThreadController::OnGoReceived() {
             }            
 
             if (ErrorInThreadExecution) {
-                // if the event is not raised then display an error due to any reason
-                if (!m_EventRaised) {
-                    Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
-                    m_EventCode = Global::EVENT_EXPORT_FAILED;
-                }
                 // emit the thread finished flag - with error code
                 emit ThreadFinished(false, QStringList(), m_EventCode);
             }
@@ -283,9 +276,9 @@ void ImportExportThreadController::OnGoReceived() {
                 switch(DirFileNames.count()) {
                     case 0:
                         m_EventRaised = true;
-                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
+                        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
                         m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
-                        emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+                        emit ThreadFinished(true, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                     case 1:
                         // get the return code
@@ -299,12 +292,12 @@ void ImportExportThreadController::OnGoReceived() {
 
             }
             else{
-                emit ThreadFinished(false, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+                emit ThreadFinished(true, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
             }
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_THREADRUNNING, true);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_THREADRUNNING, true);
         m_EventCode = EVENT_IMPORTEXPORT_THREADRUNNING;
         emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
     }    
@@ -428,7 +421,9 @@ bool ImportExportThreadController::DoPretasks() {
             // create RMS file
 
             if (!CreateRMSFile(ExportDirPath + QDir::separator() + FILENAME_RMSSTATUS)) {
-                Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
+                //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
+                m_EventCode = Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS;
+                m_EventRaised = true;
                 return false;
             }            
 
@@ -437,7 +432,7 @@ bool ImportExportThreadController::DoPretasks() {
             }
         }
         else {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_DIRECTORY_CREATION_FAILED, true);
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_DIRECTORY_CREATION_FAILED, true);
             m_EventCode = Global::EVENT_EXPORT_DIRECTORY_CREATION_FAILED;
             m_EventRaised = true;
             return false;
@@ -468,14 +463,14 @@ bool ImportExportThreadController::WriteTempExportConfigurationAndFiles() {
         // copy all the files in a temporary directory
         if (!CopyConfigurationFiles(mp_ExportConfiguration->GetServiceConfiguration().GetServiceConfigurationList(),
                                     m_TempExportConfiguration.GetSourceDir())) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED, true);
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED, true);
             m_EventCode = Global::EVENT_EXPORT_FILES_NOT_COPIED;
             m_EventRaised = true;
             return false;
         }
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
             m_EventCode = Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION;
             m_EventRaised = true;
             return false;
@@ -504,7 +499,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
                 m_TempExportConfiguration.GetUserConfiguration().GetUserReportList().SetGroupFileName(m_DayRunLogDirectoryName);
                 if (!CopyConfigurationFiles(mp_ExportConfiguration->GetUserConfiguration().GetUserReportList(),
                                             m_TempExportConfiguration.GetSourceDir())) {
-                    Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED, true);
+                    //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED, true);
                     m_EventCode = Global::EVENT_EXPORT_FILES_NOT_COPIED;
                     m_EventRaised = true;
                     ErrorInExecution = true;
@@ -517,7 +512,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
 
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
             m_EventCode = Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION;
             m_EventRaised = true;
             ErrorInExecution = true;
@@ -535,11 +530,6 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
     }
 
     if (ErrorInExecution) {
-        // if the event is not raised then display an error due to any reason
-        if (!m_EventRaised) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED, true);
-            m_EventCode = Global::EVENT_EXPORT_FAILED;
-        }
         // emit the thread finished flag - with error code
         emit ThreadFinished(false, QStringList(), m_EventCode);
     }
@@ -841,7 +831,9 @@ bool ImportExportThreadController::CheckTheExistenceAndCopyFile(QString TargetFi
 
     if (!QFile::copy(SourceFileName, TargetFileName)) {
         qDebug() << "Unable to copy the files";
-        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD, false);
+//        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD, false);
+        m_EventCode = EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD;
+        m_EventRaised = true;
         return false;
     }
     return true;
@@ -890,67 +882,66 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
 
     QStringList ImportTypeList;
     QString TypeOfImport;
-    bool IsImport = true;
+    bool ErrorFlag = false;
 
     ImportTypeList.clear();
 
     // multiple files can be imported. At max three files can be imported.
     for (qint32 Counter = 0; Counter < FileList.count(); Counter++) {
         if (!ImportArchiveFiles(TypeOfImport, FileList.value(Counter))) {
-            IsImport = false;
+            ErrorFlag = true;
             break;
         }
         ImportTypeList.append(TypeOfImport);
     }
 
-    if (IsImport && ImportTypeList.count() > 0) {
-        // if everything goes well then update the files and take a backup of the files
-        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
-            // check for the files updation error
-            if (!CheckForFilesUpdateError()) {
-                IsImport = false;
-            }
-        }
-        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
-            // before updating take a back-up of the configuration files
-            QStringList fileList;
-            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
-            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
-            // Update the rollback folder after the import is done
-            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
-                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
-                                       Global::SystemPaths::Instance().GetTranslationsPath()
-                                       + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
-                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
-                m_EventRaised = true;
-                IsImport = false;
-            }
-        }
-    }
+//    if (!ErrorFlag && ImportTypeList.count() > 0) {
+//        // if everything goes well then update the files and take a backup of the files
+//        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
+//            // check for the files updation error
+//            if (!CheckForFilesUpdateError()) {
+//                ErrorFlag = true;
+//            }
+//        }
+//        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
+//            // before updating take a back-up of the configuration files
+//            QStringList fileList;
+//            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
+//            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
+//            // Update the rollback folder after the import is done
+//            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
+//                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
+//                                       Global::SystemPaths::Instance().GetTranslationsPath()
+//                                       + QDir::separator())) {
+//                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+//                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+//                m_EventRaised = true;
+//            }
+//        }
+//    }
 
-    if (!IsImport  && ImportTypeList.count() > 0) {
+    if (ErrorFlag  && ImportTypeList.count() > 0) {
         if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             (void)UpdateSettingsWithRollbackFolder();
+            ImportTypeList.clear();
         }
-        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_TranslationsFolderUpdatedFiles) {
-            QStringList fileList;
-            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
-            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
-            m_CurrentLanguageUpdated = false;
-            m_NewLanguageAdded = false;
+//        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_TranslationsFolderUpdatedFiles) {
+//            QStringList fileList;
+//            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
+//            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
+//            m_CurrentLanguageUpdated = false;
+//            m_NewLanguageAdded = false;
 
-            // copy all the files from rollback folder
-            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
-                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
-                                       Global::SystemPaths::Instance().GetTranslationsPath()
-                                       + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
-                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
-                m_EventRaised = true;
-                IsImport = false;
-            }
-        }
+//            // copy all the files from rollback folder
+//            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
+//                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
+//                                       Global::SystemPaths::Instance().GetTranslationsPath()
+//                                       + QDir::separator())) {
+//                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+//                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+//                m_EventRaised = true;
+//            }
+//        }
     }
 
     // update the rollback checksum value
@@ -964,8 +955,9 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
                         + QString("/EBox-Utils.sh") , QStringList() <<
                         QString("update_settings_to_rollback"));
     (void)Md5sumProcess.waitForFinished();
+    (void)QProcess::startDetached("sync &"); //WARNING: ubifs' f**k perf, sigh...
     // emit the thread finished flag
-    emit ThreadFinished(IsImport, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+    emit ThreadFinished(true, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
 
 }
 
@@ -974,7 +966,7 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
     // remove the const cast
     QString& TypeOfImport = const_cast<QString&>(ImportType);
     // this is used for Import command
-    bool IsImported = true;
+    bool Flag = true;
     // we use different keys for Leica and Viewer (Viewer with value 1)
     QByteArray KeyBytes(EncryptionDecryption::Constants::KEYFILESIZE, 0);
     KeyBytes[2 * EncryptionDecryption::Constants::HASH_SIZE - 1] = 1;
@@ -993,9 +985,9 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
             // every type of Import will have SW_version.xml by default
             FileList << FILENAME_SWVERSION;
 
-            IsImported = AddFilesForImportType(TypeOfImport, FileList);
+            Flag = AddFilesForImportType(TypeOfImport, FileList);
 
-            if (IsImported) {
+            if (Flag) {
                 try {
                     // read the archive file - add try catch
                     ReadArchive(qPrintable(Dir.absoluteFilePath(FileName)), &RFile,
@@ -1003,35 +995,38 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
                                 + QDir::separator() + DIRECTORY_IMPORT + QDir::separator());
                 }
                 catch (...) {
+                    //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_TAMPERED_ARCHIVE_FILE,true);
                     m_EventCode = EVENT_IMPORT_TAMPERED_ARCHIVE_FILE;
-                    IsImported = false;
+                    m_EventRaised = true;
+                    Flag = false;
                 }
             }
         }
         else {
             // device name is not matching
+            //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING,true);
             m_EventCode = EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING;
-            IsImported = false;
+            m_EventRaised = true;
+            Flag = false;
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER, true);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER, true);
         m_EventCode = EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER;
         m_EventRaised = true;
-        IsImported = false;
+        Flag = false;
     }
-    qDebug() << QDir::currentPath();
 
-    if (IsImported) {
+    if (Flag) {
         // check the type of Import, for the language file we cannot predict how many files can be present
         // so we hard code the value at least two should be present one is SW_Version.xml and other one can
         // be either QM or event string XML file
         if (!WriteFilesAndImportData(TypeOfImport, FileList, RFile)) {
-            IsImported = false;
+            Flag = false;
         }
     }
 
-    return IsImported;
+    return Flag;
 }
 
 /****************************************************************************/
@@ -1082,8 +1077,9 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
     // check file count
     if (RequiredFilesImported) {
         // create the temporary directory
-        if (QProcess::execute(COMMAND_MKDIR + Global::SystemPaths::Instance().GetTempPath()
-                              + QDir::separator() + DIRECTORY_IMPORT) >= 0) {
+        if (QDir(Global::SystemPaths::Instance().GetTempPath()+ QDir::separator() + DIRECTORY_IMPORT).exists() ||
+                QProcess::execute(COMMAND_MKDIR + Global::SystemPaths::Instance().GetTempPath()
+                              + QDir::separator() + DIRECTORY_IMPORT) == 0) {
             // write all the files
             foreach(QString KeyName, RFile.getFiles().uniqueKeys()) {
                 foreach (QByteArray FileData, RFile.getFiles().values(KeyName)) {
@@ -1096,7 +1092,9 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                             FileWrite.close();
                         }
                         catch (...) {
-                            // got a exception
+                            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+                            m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
+                            m_EventRaised = true;
                             return false;
                         }
                     }
@@ -1121,9 +1119,15 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                 }
             }
         }
+        else
+        {
+            //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_ERROR_TO_WRITE,true);
+            m_EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
+            m_EventRaised = true;
+        }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE, true);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE, true);
         m_EventCode = EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE;
         m_EventRaised = true;
     }
@@ -1249,7 +1253,7 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
     if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator(),
                                Global::SystemPaths::Instance().GetRollbackPath() + QDir::separator()
                                + DIRECTORY_SETTINGS + QDir::separator())) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
+       // Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
         m_EventCode = EVENT_IMPORT_ROLLBACK_FAILED;
         m_EventRaised = true;
         return false;
@@ -1322,7 +1326,7 @@ bool ImportExportThreadController::CompareSoftwareVersions() {
                         (ImportSWVersionList.GetSWDetails(SettingsSWDetails.GetSWName()));
                 if (ImportSWDetails != NULL) {
                     if (ImportSWDetails->GetSWVersionNumber() != SettingsSWDetails.GetSWVersionNumber()) {
-                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
+                        //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
                         m_EventCode = EVENT_IMPORT_SWVERSION_NOT_MATCHING;
                         m_EventRaised = true;
                         qDebug() << "SW version is not matching with the Imported file version number :: "
@@ -1331,7 +1335,7 @@ bool ImportExportThreadController::CompareSoftwareVersions() {
                     }
                 }
                 else {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
+                    //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
                     m_EventCode = EVENT_IMPORT_SWVERSION_NOT_MATCHING;
                     m_EventRaised = true;
                     qDebug() << "SW name does not exist in the SW version list" << SettingsSWDetails.GetSWName();
@@ -1496,12 +1500,12 @@ bool ImportExportThreadController::MountDevice(bool IsImport, QString FileExtens
             m_EventRaised = true;
             if (m_CommandName.contains(COMMAND_NAME_IMPORT)) {
                 // log the event code
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_IMPORT_NO_USB);
+                //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_IMPORT_NO_USB);
                 m_EventCode = EVENT_IMPORTEXPORT_IMPORT_NO_USB;
             }
             else {
                 // log the event code
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_EXPORT_NO_USB);
+                //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_EXPORT_NO_USB);
                 m_EventCode = EVENT_IMPORTEXPORT_EXPORT_NO_USB;
             }
             break;
@@ -1509,7 +1513,7 @@ bool ImportExportThreadController::MountDevice(bool IsImport, QString FileExtens
         case 3:
             if (IsImport) {
                 m_EventRaised = true;
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
+                //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
                 m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
             }
             break;
@@ -1621,7 +1625,7 @@ bool ImportExportThreadController::ImportLanguageFiles() {
                                    + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
                                    Global::SystemPaths::Instance().GetTranslationsPath()
                                    + QDir::separator())) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+            //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
             m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
             m_EventRaised = true;
             return false;
@@ -1649,7 +1653,7 @@ bool ImportExportThreadController::ImportLanguageFiles() {
             if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetTranslationsPath()
                                        + QDir::separator(), Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
+                //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
                 m_EventCode = EVENT_IMPORT_ROLLBACK_FAILED;
                 m_EventRaised = true;
                 return false;
@@ -1734,7 +1738,7 @@ void ImportExportThreadController::CopyQMFiles(const QDir &Directory, const bool
                 m_NewLanguageAdded = true;
             }
             else {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NEW_EVENTSTRING_FILE_MISSING);
+                //Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NEW_EVENTSTRING_FILE_MISSING);
             }
         }
     }

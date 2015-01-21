@@ -42,7 +42,7 @@ public:
     /*!
      *  \brief Constructor
      *  \iparam AlarmFlag = The flag of Local and Remote
-     *  \iparam p_Message = The pointer of message dlg.
+     *  \iparam p_MessageDlg = The pointer of message dlg.
      *  \iparam p_Parent    = Parent widget
      */
     /****************************************************************************/

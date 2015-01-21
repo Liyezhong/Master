@@ -27,6 +27,12 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
 #include <QShowEvent>
+#include "Settings/Include/PrecheckProgramModel.h"
+#include "MainMenu/Include/BaseTable.h"
+
+namespace Core {
+    class CDataConnector;
+}
 
 namespace Settings {
 
@@ -55,11 +61,18 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     QString m_strChangeMeltPointConfirm12Hrs;
+    QString m_strConfirmChangeMeltingPoint;
+    CPrecheckProgramModel m_PrecheckProgramModel;
+    MainMenu::CBaseTable *mp_TableWidget;           //!< Language table
+    Core::CDataConnector *mp_DataConnector;
+
+
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
     ~CSystemSetupSettingsWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
+    void SetDataConnector(Core::CDataConnector *p_DataConnector);
 
 private:
     void InitTemperatureWidget();
@@ -106,6 +119,18 @@ signals:
      */
     /****************************************************************************/
     void ParaffinMeltPointchanged(int lastMeltPoint, int currentMeltPoint);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateProgram
+     */
+    /****************************************************************************/
+    void UpdateProgram(DataManager::CProgram &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
+    void UnselectProgram();
 };
 
 

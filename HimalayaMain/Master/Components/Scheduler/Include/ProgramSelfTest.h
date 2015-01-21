@@ -105,34 +105,6 @@ public:
 signals:
     /****************************************************************************/
     /*!
-     *  \brief Signal for test the voltage of AC
-     */
-    /****************************************************************************/
-    void SigACVoltageSwitch();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the heating sensor of DC
-     */
-    /****************************************************************************/
-    void SigDCHeating();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the pressure sensor and pump and valve
-     */
-    /****************************************************************************/
-    void SigPressureSensorPumpValve();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for test the ac heating
-     */
-    /****************************************************************************/
-    void SigACHeating();
-
-    /****************************************************************************/
-    /*!
      *  \brief Signal for tasks done
      *  \param flag - bool
      */
@@ -150,7 +122,7 @@ private:
         SELFTEST_INIT,
         SELFTEST_AC_VOLTAGE,
         SELFTEST_DC_HEATING,
-        SELFTEST_PRESSURE,
+        SELFTEST_PRESSURE_MODE,
         SELFTEST_AC_HEATING
     }StateList_t;
 
@@ -160,12 +132,13 @@ private:
      */
     /****************************************************************************/
     typedef enum{
-        SET_VOLTAGE_ASB3_AWITCH,
-        SET_VOLTAGE_ASB5_AWITCH,
+        SET_VOLTAGE_ASB3_SWITCH,
+        SET_VOLTAGE_ASB5_SWITCH,
         START_HEATING_ACMODE,
         STOP_HEATING_ACMODE,
         CHECK_VOLTAGE_RANGE,
-        CHECK_VOLTAGE_RANGE_AGAIN
+        CHECK_VOLTAGE_RANGE_AGAIN,
+        VOLTAGE_TEST_DONE
     }StepACVoltage_t;
 
     /****************************************************************************/
@@ -180,6 +153,7 @@ private:
         STOPHEATING_LATBUBE2,
         STARTHEATING_LEVELSENSOR,
         STOPHEATING_LEVELSENSOR,
+        DCHEATING_DONE
     }StepDCHeating_t;
 
     /****************************************************************************/
@@ -195,7 +169,8 @@ private:
         START_VALVE2,
         STOP_VALVE2,
         START_EXHAUSTFAN,
-        STOP_EXHAUSTFAN
+        STOP_EXHAUSTFAN,
+        PRESSURE_TEST_DONE
     }StepPressurePumpValve_t;
 
     /****************************************************************************/
@@ -214,16 +189,8 @@ private:
         STOPHEATING_OVENBOTTOM,
         STARTHEATING_RV,
         STOPHEATING_RV,
+        ACHEATING_DONE
     }StepACHeating_t;
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Get current state
-     *  \param  void
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
@@ -250,7 +217,7 @@ private:
      *  \return void
      */
     /****************************************************************************/
-    void HandlePressure(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandlePressureMode(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -261,12 +228,7 @@ private:
 
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
-    QSharedPointer<QStateMachine>   mp_StateMachine;                    //!< State machine for Self-Test
-    QSharedPointer<QState>          mp_Initial;                         //!< State of Initialize
-    QSharedPointer<QState>          mp_StateACVoltage;                  //!< State of AC voltage test
-    QSharedPointer<QState>          mp_StateDCHeating;                  //!< State of DC heating sensor
-    QSharedPointer<QState>          mp_StatePressure;                   //!< State of Pressure
-    QSharedPointer<QState>          mp_StateACHeating;                  //!< State of AC Heating
+    StateList_t                     m_CurrentState;                     //!< the current state
     StepACVoltage_t                 m_StateACVoltageStep;               //!< the step of AC voltage state
     StepDCHeating_t                 m_StateDCHeatingStep;               //!< the step of DC heating sensor
     StepPressurePumpValve_t         m_StatePressureStep;                //!< the step of pressure

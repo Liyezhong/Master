@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HeatingTestEmpty.h
+/*! \file OvenHeatingTestEmpty.h
  *
  *  \brief Declaration of Heating test empty.
  *
@@ -29,21 +29,33 @@
 namespace Diagnostics {
 
 namespace Oven {
-struct heatingTestStatus {
-   int UsedTime;
-   int EDTime;
-   qreal OvenTempTop;
-   qreal OvenTempSensor1;
-   qreal OvenTempSensor2;
 
-   qreal OvenTempTopTarget;
-   qreal OvenTempSensor1Target;
-   qreal OvenTempSensor2Target;
-   qreal TempOffset;
-   qreal TempOffsetRangeMin;
-   qreal TempOffsetRangeMax;
+/****************************************************************************/
+/**
+ * \brief Struct for Oven heating heating status data.
+ */
+/****************************************************************************/
+struct heatingTestStatus {
+   int UsedTime;        //!< number of used time
+   int EDTime;          //!< number end time
+   qreal OvenTempTop;   //!< Value of oven top temperature
+   qreal OvenTempSensor1;   //!< Value of Oven sensor1 temperature
+   qreal OvenTempSensor2;   //!< Value of Oven sensor2 temperature
+
+   qreal OvenTempTopTarget; //!< value of oven top target temperature
+   qreal OvenTempSensor1Target; //!< value of oven sensor 1 target temperature
+   qreal OvenTempSensor2Target; //!< value of oven sensor 2 target temperature
+   qreal TempOffset;            //!< value of temperature offset
+   qreal TempOffsetRangeMin;    //!< value of temperature offset range min
+   qreal TempOffsetRangeMax;    //!< value of temperature offset range max
 };
 
+/****************************************************************************/
+/**
+ * \brief This class is class of oven heating test with empty.
+ *
+ */
+/****************************************************************************/
 class CHeatingTestEmpty : public Diagnostics::CTestBase
 {
     Q_OBJECT
@@ -66,6 +78,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief To run test case.
+     *  \return error code
      */
     /****************************************************************************/
     int Run(void);
@@ -82,6 +95,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief To show waiting dialog for test case.
+     *  \iparam buf = heating test status
+     *  \iparam isShow = flag of show
      */
     /****************************************************************************/
     virtual void RefreshWaitingDialog(struct heatingTestStatus *buf, bool isShow = false);

@@ -216,7 +216,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
             m_Model.item(i, 1)->setText(m_Model.item(i, 2)->text());
         }
 
-        emit UpdateModule(*mp_Module);
+        //emit UpdateModule(*mp_Module);
     }
 
     if (num == 3) {
@@ -234,6 +234,10 @@ void CFirmwareUpdate::UpdateFirmware(void)
         dlg->HideButtons();
         (void)dlg->exec();
         delete dlg;
+    }
+    else {
+        emit UpdateModule(*mp_Module);
+        UpdateSlaveVersion();
     }
 
     mp_Ui->updateBtn->setEnabled(true);
@@ -265,6 +269,47 @@ void CFirmwareUpdate::SetUpdateResult(int Index, bool Result)
 
     (void) m_Model.setData(m_Model.index(Index, 3), SetPixMap, (int) Qt::DecorationRole);
 
+}
+
+void CFirmwareUpdate::UpdateSlaveVersion()
+{
+    if (mp_Module) {
+        DataManager::CSWVersionList SWVersionList;
+        SWVersionList.SetDataVerificationMode(false);
+        if (!SWVersionList.Read(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "SW_Version.xml")) {
+            qDebug()<<"CFirmwareUpdate: update slave version read SW_Version.xml failed.";
+            return;
+        }
+        QFile HWVersionList(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "Slave_HW_Version.txt");
+        HWVersionList.open(QIODevice::WriteOnly);
+        QTextStream SlaveHW(&HWVersionList);
+        DataManager::CSWDetails* SlaveDetails = NULL;
+        ServiceDataManager::CSubModule* SlaveModule = NULL;
+        int SlaveTypes[] = {3, 5, 15};
+        for (int i = 0; i < 3; ++i) {
+            QString SWName = QString("ASB%1").arg(SlaveTypes[i]);
+            SlaveModule = mp_Module->GetSubModuleInfo(SWName);
+            SlaveDetails = SWVersionList.GetSWDetails(SWName.append(".bin"));
+
+            if (SlaveDetails && SlaveModule) {               
+                SlaveDetails->SetSWName(SWName);
+                SlaveDetails->SetSWVersion(SlaveModule->GetParameterInfo("SoftwareVersion")->ParameterValue);
+                SlaveDetails->SetSWDate(SlaveModule->GetParameterInfo("SoftwareReleaseDate")->ParameterValue);
+                SlaveHW<<SWName<<","
+                       <<SlaveModule->GetParameterInfo("HardwareMinorVersion")->ParameterValue<<"."
+                       <<SlaveModule->GetParameterInfo("HardwareMajorVersion")->ParameterValue<<","
+                       <<SlaveModule->GetParameterInfo("HardwareProductionDate")->ParameterValue<<"\n";
+            }
+        }
+        (void)SWVersionList.Write();
+        (void)HWVersionList.flush();
+        HWVersionList.close();
+    }
+}
+
+void CFirmwareUpdate::SetEnableUpdate(bool Enable)
+{
+    mp_Ui->updateBtn->setEnabled(Enable);
 }
 
 void CFirmwareUpdate::RetranslateUI()

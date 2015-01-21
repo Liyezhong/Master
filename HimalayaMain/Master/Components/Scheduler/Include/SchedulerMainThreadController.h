@@ -78,7 +78,16 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
-#define TIME_FOR_CLEANING_DRY_STEP   720    ///< seconds spending in dry step
+const qint64 TIME_FOR_FIX_TIME = 195;    ///< seconds for fix time
+
+#define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
+#define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
+#define TIME_FOR_FILLING                      60     ///< seconds for filling
+#define TIME_FOR_MOVE_SEAL                    3      ///< seconds for move seal
+#define TIME_FOR_PRESSURE_CHECK               15     ///< seconds for pressure check before move tube
+#define TIME_FOR_MOVE_TUBE                    5      ///< seconds for move tube
+#define TIME_FOR_DRAIN                        60     ///< seconds for draing
+#define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
 
 /****************************************************************************/
 /*!
@@ -156,12 +165,36 @@ typedef enum
     LEVELSENSOR,
     LATUBE1,
     LATUBE2,
+    LATUBE1ABNORMAL,
+    LATUBE2ABNORMAL,
     RETORT,
+    RETORT_NOSIGNAL,
     OVEN,
     RV,
     ASB5,
     FAN
 } HeaterType_t;
+
+/****************************************************************************/
+/*!
+ *  \brief struct for ProgramEndTime
+ */
+/****************************************************************************/
+typedef struct
+{
+    bool    WarningFlagForTime;                         ///< the warning flag for time
+    int     FirstParaffinIndex;                         ///< the first paraffin index
+    quint32 PreTestTime;                                ///< the time of pretest (second unit)
+    quint32 ParaffinStepsCostTime;                      ///< the paraffin steps cost time (second unit)
+    quint32 Scenario260CostTime;                        ///< the scenario cost time (second unit)
+    qint64  GapTime;                                    ///< the gap of step time (millisecond unit)
+    qint64  StartTime;                                  ///< the start time of move tube (millisecond unit)
+    qint64  EndTime;                                    ///< the end time of move seal (millisecond unit)
+    qint64  UserSetEndTime;                             ///< user input the end time (millisecond unit)
+    qint64  BufferTime;                                 ///< the buffer time (millisecond unit)
+    qint64  TotalParaffinProcessingTime;               ///< the total paraffin processing time (second unit)
+    qint64  LastParaffinProcessingTime;                ///< the last paraffin processing time (second unit)
+}ProgramEndTime_t;
 
 /****************************************************************************/
 /*!
@@ -185,6 +218,38 @@ typedef struct
     qreal Voltagerated24VDC;            //!< the voltage 24 VDC
     qreal VoltageTolerance24VDC;        //!< the voltage 24 VDC
 } SlaveAttr_t;
+
+/****************************************************************************/
+/*!
+ *  \brief enum for Cleaning Dry step
+ */
+/****************************************************************************/
+typedef enum
+{
+    CDS_READY,
+    CDS_MOVE_TO_SEALING_13,
+    CDS_WAIT_HIT_POSITION,
+    CDS_WAIT_HIT_TEMPERATURE,
+    CDS_VACUUM,
+    CDS_WAIT_HIT_PPRESSURE,
+    CDS_WAITING_DRY,
+    CDS_STOP_HEATING_VACUUM,
+    CDS_SUCCESS,
+    CDS_ERROR
+}DryStepsStateMachine;
+
+/****************************************************************************/
+/*!
+ *  \brief struct for Cleaning Dry
+ */
+/****************************************************************************/
+typedef struct
+{
+    DryStepsStateMachine CurrentState;
+    quint64 StepStartTime;
+    bool warningReport;
+} CleaningDry_t;
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -234,6 +299,7 @@ typedef struct
         QStringList m_UsedStationIDs;        ///< in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+        QList<ProgramStationInfo_t> m_StationAndReagentList;    ///<    Definition/Declaration of variable m_StationList
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
@@ -259,7 +325,7 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
-        bool    m_IsSafeReagentState;                         ///< Scheduler is in RS_Tissue_Protect state
+        bool    m_IsSafeReagent;                              ///< Scheduler is in RS_Tissue_Protect state
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
@@ -267,8 +333,15 @@ typedef struct
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         qint8   m_AbortingSeq;                                ///< the sequence of aborting
-        QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;		///< Event-Scenario-Error parser
-        bool m_RestartDryStep;                                 ///< flag for do the dry step from beginning
+        QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
+        bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
+        ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
+        QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
+        bool    m_InternalErrorRecv;                          ///< Internal error was received
+        bool    m_IsDrainDelay;                               ///< wether drain delay
+        qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
+        CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
+        bool    m_CheckOvenCover;                               ///< check the oven cover
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -307,16 +380,7 @@ typedef struct
          */
         /****************************************************************************/
         ControlCommandType_t PeekNonDeviceCommand();
-#if 0
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function DequeueNonDeviceCommand
-         *
-         *  \return from DequeueNonDeviceCommand
-         */
-        /****************************************************************************/
-        void DequeueNonDeviceCommand();
-#endif
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetReagentName
@@ -358,14 +422,7 @@ typedef struct
          */
         /****************************************************************************/
         bool IsCleaningReagent(const QString& ReagentID);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of function UpdateStationReagentStatus
-         *
-         *  \return from UpdateStationReagentStatus
-         */
-        /****************************************************************************/
-        void UpdateStationReagentStatus();
+
 
         /****************************************************************************/
         /*!
@@ -378,12 +435,11 @@ typedef struct
           *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
           *
           *  \param ProgramID = const QString type parameter
-          *  \param SpecifiedStepIndex =  int type parameter
           *
           *  \return from GetLeftProgramStepsNeededTime
           */
          /****************************************************************************/
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
+         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
@@ -586,7 +642,6 @@ signals:
           */
          /****************************************************************************/
          void NotifyResume();
-
 private slots:
          /****************************************************************************/
          /*!
@@ -701,7 +756,7 @@ private slots:
           *  \brief  Slot for restart program from HW error;
           */
          /****************************************************************************/
-         void OnEnterRcRestart();
+         void OnBackToBusy();
          /****************************************************************************/
          /*!
           *  \brief  Slot for begin to Heating RV befor filling
@@ -735,6 +790,14 @@ private slots:
           */
          /****************************************************************************/
          void OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+          *
+          *  \return from UpdateStationReagentStatus
+          */
+         /****************************************************************************/
+         void UpdateStationReagentStatus();
 protected:
 
         /****************************************************************************/
@@ -772,12 +835,6 @@ protected:
           */
          /****************************************************************************/
          void OnAcknowledge(Global::tRefType Ref, const Global::AckOKNOK &Ack);
-        /****************************************************************************/
-        /**
-         *  \brief Called when a local/remote alarm raises.
-         */
-        /****************************************************************************/
-//        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
          /****************************************************************************/
          /**
@@ -893,42 +950,13 @@ protected:
          *  \iparam    Scenario
          *  \iparam    ActionResult
          *  \iparam    Active
+         *  \return    bool for RaiseError
          */
          /****************************************************************************/
         /*lint -e641 */
-        virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
-                                  const bool ActionResult, const bool Active = true)
-        {
-            if(EventKey == 0)
-            {                // If EventID is less than 0x1000, the error is SW internal error. In this case, we always use below one
-                if (EventID < 0x1000)
-                {
-                    LogDebug(QString("SW Internal error ID is: %1").arg(EventID));
-                    EventID = DCL_ERR_DEV_INTER_SW_ERROR;
-                }
+        bool RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
+                                  const bool ActionResult, const bool Active = true);
 
-                quint32 ErrorID = m_pESEXMLInfo->GetErrorCode(EventID,Scenario);
-                if(ErrorID == 0)// not find
-                {
-                    ErrorID = EventID;
-                }
-                // We only update current event ID when current status is NOT error.
-                SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-                if (SM_ERROR != (currentState & 0xFF))
-                {
-                    m_CurErrEventID = EventID;
-                }
-
-                Global::tTranslatableStringList EventStringParList;
-                Global::tTranslatableStringList EventRDStringParList;
-                GetStringIDList(ErrorID, EventStringParList, EventRDStringParList);
-                Global::EventObject::Instance().RaiseEvent(EventKey, ErrorID, ActionResult,Active, EventStringParList, EventRDStringParList);
-            }
-            else
-            {
-                Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
-            }
-        }
         /****************************************************************************/
         /**
          * @brief raise event to event handler
@@ -1049,11 +1077,37 @@ protected:
 
         /****************************************************************************/
         /**
+         *  \brief reset the time parameter
+         */
+        /****************************************************************************/
+        void ResetTheTimeParameter();
+
+        /****************************************************************************/
+        /**
+         *  \brief Calculate the gap time(in seconds)
+         *  \param IsStartTime - bool flag
+         *  \param IsEndTime - bool flag
+         */
+        /****************************************************************************/
+        void CalculateTheGapTimeAndBufferTime(bool IsStartTime, bool IsEndTime);
+
+        /****************************************************************************/
+        /**
          *  \brief Get the time(in seconds) that PreTest
          *  \return from GetPreTestTime of qint64
          */
         /****************************************************************************/
-        qint64 GetPreTestTime();
+        quint32 GetPreTestTime();
+
+        /****************************************************************************/
+        /**
+         *  \brief Get the RV moving steps
+         *  \param firstPos - qint32
+         *  \param endPos - qint32
+         *  \return from GetMoveSteps of quint32
+         */
+        /****************************************************************************/
+        quint32 GetMoveSteps(qint32 firstPos, qint32 endPos);
 
         /****************************************************************************/
         /**
@@ -1066,6 +1120,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Set the pressure offset for powerfailure
+         *  \param pressureOffset - qreal type
          */
         /****************************************************************************/
         void SetLastPressureOffset(qreal pressureOffset);
@@ -1144,14 +1199,19 @@ protected:
         /****************************************************************************/
         /**
          *  \brief  Send out Error message
-         *  \param  EventId
+         *  \param  EventId - ReturnCodde_t
+         *  \param  IsErrorMsg - bool type
          */
         /****************************************************************************/
-        void SendOutErrMsg(ReturnCode_t EventId)
-        {
-            RaiseError(0,EventId, m_CurrentScenario, true);
-            m_SchedulerMachine->SendErrorSignal();
-        }
+        void SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg = true);
+
+        /****************************************************************************/
+        /**
+         *  \brief  whether need bottle check
+         *  \return bool, true - continue; false - done;
+         */
+        /****************************************************************************/
+        bool IsNeedBottleCheck(){return m_IsNeedBottleCheck;}
 
         /****************************************************************************/
         /**
@@ -1299,14 +1359,6 @@ protected:
         {
             m_CurProgramStepInfo.stationID = StationID;
             m_CurProgramStepInfo.reagentGroup = ReagentGroup;
-            if("RG6" == ReagentGroup)
-            {
-                m_CurProgramStepInfo.nextStationID = "S12";
-            }
-            else
-            {
-                m_CurProgramStepInfo.nextStationID = "S13";
-            }
         }
         /****************************************************************************/
         /*!
@@ -1332,6 +1384,17 @@ protected:
          */
         /****************************************************************************/
         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetSafeReagentForSpecial just for scenario 200
+         *  \param  index - int type
+         *  \param  reagentGroupID - QString type
+         *  \param  stationList - QList<QString>
+         *  \return from bool
+         */
+        /****************************************************************************/
+        bool GetSafeReagentForSpecial(int index, QString& reagentGroupID, QList<QString>& stationList);
 
         /****************************************************************************/
         /*!

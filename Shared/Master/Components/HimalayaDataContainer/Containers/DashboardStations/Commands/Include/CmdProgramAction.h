@@ -53,11 +53,12 @@ public:
      *  \param programID =  const QString type parameter
      *  \param actionType =  DataManager::ProgramActionType_t type parameter
      *  \param delayTime =  delay time
-     *
+     *  \param runDuration = the time duration from "start" to end datetime
      *  \return from CmdProgramAction
      */
     /****************************************************************************/
-    CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType, int delayTime);
+    CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
+                     int delayTime, int runDuration);
 	/**
 	* \brief destructor
 	*/
@@ -91,6 +92,14 @@ public:
      */
     /****************************************************************************/
     inline int DelayTime()const {return m_DelayTime;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition of function ProgramRunDuration
+     *
+     *  \return from ProgramRunDuration
+     */
+    /****************************************************************************/
+    inline int ProgramRunDuration()const {return m_ProgramRunDuration;}
 private:
 	/**
 	* \brief constructor
@@ -105,6 +114,7 @@ private:
     QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
     DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
     int m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
+    int m_ProgramRunDuration;   ///<  Definition/Declaration of variable m_DelayTime
 }; // end class CmdProgramAction
 
 /****************************************************************************/
@@ -124,6 +134,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAction &C
     Stream << Cmd.m_ProgramID;
     Stream << (int)Cmd.m_ActionType;
     Stream << Cmd.m_DelayTime;
+    Stream << Cmd.m_ProgramRunDuration;
     return Stream;
 }
 
@@ -146,6 +157,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAction &Cmd)
     Stream >> temp;
     Cmd.m_ActionType = (DataManager::ProgramActionType_t)temp;
     Stream >> Cmd.m_DelayTime;
+    Stream >> Cmd.m_ProgramRunDuration;
     return Stream;
 }
 } // end namespace MsgClasses

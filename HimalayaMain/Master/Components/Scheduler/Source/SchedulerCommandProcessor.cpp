@@ -151,6 +151,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.OvenHeatingStatus    = mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_BOTTOM) && mp_IDeviceProcessing->OvenGetHeatingStatus(OVEN_TOP) ;
     strctHWMonitor.LocalAlarmStatus     = mp_IDeviceProcessing->PerGetRecentAlarmStatus(0);
     strctHWMonitor.RemoteAlarmStatus    = mp_IDeviceProcessing->PerGetRecentAlarmStatus(1);
+    strctHWMonitor.LATube1HeatingStatus = mp_IDeviceProcessing->ALGetHeatingStatus(AL_TUBE1);
+    strctHWMonitor.LATube2HeatingStatus = mp_IDeviceProcessing->ALGetHeatingStatus(AL_TUBE2);
     return strctHWMonitor;
 }
 
@@ -163,7 +165,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 
 #ifndef GOOGLE_MOCK
     //Initialize IDeviceProcessing
-    mp_IDeviceProcessing = new DP();
+    mp_IDeviceProcessing = new DP(200);
 #endif
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);

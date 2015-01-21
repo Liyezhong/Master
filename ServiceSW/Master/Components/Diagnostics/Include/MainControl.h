@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file MainControl.h
+/*! \file Diagnostics/Include/MainControl.h
  *
  *  \brief Declaration of Main Control test.
  *
@@ -43,7 +43,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
-     *  \iparam parent = Parent widget
+     *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
     explicit CMainControl(QWidget *p_Parent = 0);

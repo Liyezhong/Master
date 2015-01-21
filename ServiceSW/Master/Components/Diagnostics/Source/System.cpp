@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file System.cpp
+/*! \file Diagnostics/Source/System.cpp
  *
  *  \brief Implementation of System test.
  *
@@ -44,6 +44,10 @@ CSystem::CSystem(QWidget *p_Parent) :
     mp_Ui->setupUi(this);
 
     mp_MessageDlg = new CDiagnosticMessageDlg(this);
+
+    mp_Ui->testSealing->setEnabled(false);
+    mp_Ui->testLiquidHose->setEnabled(false);
+    mp_Ui->testFillingDraining->setEnabled(false);
 
     (void)connect(mp_Ui->testSealing,
                   SIGNAL(clicked()),
@@ -98,14 +102,25 @@ CSystem::~CSystem()
     }
 }
 
+void CSystem::OnEnableTestButton()
+{
+    mp_Ui->testSealing->setEnabled(true);
+    mp_Ui->testLiquidHose->setEnabled(true);
+    mp_Ui->testFillingDraining->setEnabled(true);
+}
+
 void CSystem::StartSealingTest(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
     qDebug() << "System: start sealing test";
 
     System::CSystemSealingTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
+    int Ret = Test.Run();
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"System sealing");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE);
@@ -118,8 +133,13 @@ void CSystem::StartFillingNDrainingTest(void)
     qDebug() << "System: start filling and draining test";
 
     System::CFillingNDrainingTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
+    int Ret = Test.Run();
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
+                                                   Global::tTranslatableStringList()<<"System Filling&Draining");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
@@ -132,8 +152,13 @@ void CSystem::StartLiquidHoseTest(void)
     qDebug() << "System: start liquid hose test";
 
     System::CLiquidHoseTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
+    int Ret = Test.Run();
+    if (Ret == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_SUCCESS);
+    }
+    else if (Ret == RETURN_ABORT) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
+                                                   Global::tTranslatableStringList()<<"System liquid hose");
     }
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_FAILURE);
