@@ -190,7 +190,6 @@ private:
     QString m_strProgramIsAborted;
     bool m_IsWaitingCleaningProgram;
     int m_CurProgramStepIndex;
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_ProcessRunning;                      //!< Process running state
     bool m_IsDrainingWhenPrgrmCompleted;
     bool m_bRetortLocked;
@@ -208,6 +207,7 @@ private:
     ProgramStatus_t m_ProgramStatus;
     bool m_IsProgramAbortedOrCompleted;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
+    bool m_IsInAppendCasseteStatus;
 
 public slots:
     /****************************************************************************/

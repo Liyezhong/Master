@@ -90,6 +90,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramAdded(), &m_ProgramModel, OnUpdateProgramList());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramDeleted(), &m_ProgramModel, OnUpdateProgramList());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsInitialized(), &m_ProgramModel, OnUpdateProgramList());
 
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, AddProgram(DataManager::CProgram &),
                         this, AddProgram(DataManager::CProgram &));

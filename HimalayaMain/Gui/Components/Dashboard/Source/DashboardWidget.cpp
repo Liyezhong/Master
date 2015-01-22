@@ -54,7 +54,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_HaveSucked(false),
     m_ProgramStageStatus(Undefined),
     m_ProgramStatus(Undefined_ProgramStatus),
-    m_IsProgramAbortedOrCompleted(false)
+    m_IsProgramAbortedOrCompleted(false),
+    m_IsInAppendCasseteStatus(false)
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -181,7 +182,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
     CONNECTSIGNALSIGNAL(this, OnInteractStart(), ui->containerPanelWidget, OnInteractStart());
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
     CONNECTSIGNALSIGNAL(this, UpdateProgram(DataManager::CProgram&), ui->programPanelWidget, UpdateProgram(DataManager::CProgram&));
 }
@@ -206,7 +206,7 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
      return;
 
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
-    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
     {
         if ((cmd.CurProgramStepIndex() < 3) && (m_ProgramStageStatus == Enabled))
         {
@@ -238,6 +238,10 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
 {
+    if (m_IsInAppendCasseteStatus)
+        return;
+
+    m_IsInAppendCasseteStatus = true;
     m_bRetortLocked = cmd.IsLocked();
 
     if (cmd.IsLocked())
@@ -262,6 +266,7 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
             }
         }
     }
+    m_IsInAppendCasseteStatus = false;
 }
 
 void CDashboardWidget::OnProgramStartReadyUpdated()
@@ -599,7 +604,7 @@ void CDashboardWidget::OnProgramRunBegin()
             ui->programPanelWidget->EnablePauseButton(true);//enable pause button
         }
 
-        if (m_CurProgramStepIndex > 0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
+        if (m_CurProgramStepIndex > 0 && MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
             ui->programPanelWidget->EnableStartButton(false);
         else
             ui->programPanelWidget->EnableStartButton(true);//enable stop button
@@ -621,7 +626,7 @@ void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
     if (bEnable)
     {
         m_ProgramStageStatus = Enabled;
-        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+        if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
         {
             if (m_CurProgramStepIndex < 3)
             {
@@ -636,7 +641,7 @@ void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
     else
     {
         m_ProgramStageStatus = Disabled;
-        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+        if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
         {
             if (m_CurProgramStepIndex < 3)
             {
@@ -1212,8 +1217,7 @@ void CDashboardWidget::OnUserRoleChanged()
         return;
     }
 
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
     {
         if (m_ProgramStatus == ProgramRunning)
         {

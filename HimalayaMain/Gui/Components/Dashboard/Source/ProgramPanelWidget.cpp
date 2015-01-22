@@ -177,7 +177,7 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
     Q_UNUSED(bIsFirstStepFixation);
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    if (bProgramStartReady)
+    if (bProgramStartReady && !m_startButtonDisabledAsSysError)
         OnProgramStartReadyUpdated();
     m_StationList.clear();
     m_StationList = selectedStationList;
