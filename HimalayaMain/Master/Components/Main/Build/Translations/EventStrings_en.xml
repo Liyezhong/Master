@@ -670,7 +670,7 @@
    		<string id="67175169" text1="Reheating for 200, 211 and 260 step." text2="" />
    		<string id="67175170" text1="Reheating for reagents step." text2="" />
    		<string id="67175171" text1="Reheating for paraffin step." text2="" />
-   		<string id="67175172" text1="Reheating for 203, 281~297 step." text2="" />
+   		<string id="67175172" text1="Reheating for 203, 281-297 step." text2="" />
    		<string id="67175184" text1="Scheduler enters the idle state." text2="" />
    		<string id="67175185" text1="Scheduler enters the error state." text2="" />
    		<string id="67175186" text1="Not found unfinished program,  please confirm." text2="" />

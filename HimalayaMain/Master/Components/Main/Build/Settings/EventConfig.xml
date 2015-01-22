@@ -21,7 +21,7 @@
 			<Step ID="0" Type="MSG" StringID="67176218" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_Shutdown"/>
 		</Event>
-		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="Main">
+		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="Main">
 			<Step ID="0" Type="MSG" StringID="67176219" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="513010300" ErrorType="ERROR" AlarmType="AL_REMOTE"  LogLevel="High" UserLog="TRUE" ServiceString="67175936" EventSource="SCHEDULER">

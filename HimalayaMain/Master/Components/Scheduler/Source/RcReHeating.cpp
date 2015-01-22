@@ -108,7 +108,7 @@ void CRcReHeating::HandleInint()
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(203 == m_LastScenario && 281 <= m_LastScenario && m_LastScenario <= 297)
+    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
