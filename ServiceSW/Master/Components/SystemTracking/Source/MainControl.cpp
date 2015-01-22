@@ -326,21 +326,23 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    ServiceDataManager::CSubModule SubModule = *pSubModule;
-
-    CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule, SubModuleName.contains("ASB"));
+    CDlgModifySubModule *dlg = new CDlgModifySubModule(*pSubModule, SubModuleName.contains("ASB"));
 
     dlg->UpdateGUI();
 
     (void)connect(dlg,
                   SIGNAL(AutoDetect(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(AutoDetect(ServiceDataManager::CSubModule&)) );
+                  SLOT(AutoDetect(ServiceDataManager::CSubModule&)));
 
     (void)connect(dlg,
                   SIGNAL(UpdateSubModule(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)) );
+                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
+
+    (void)connect(this, SIGNAL(UpdateSerialNumber()),
+                  dlg,
+                  SLOT(UpdateSNOnGui()));
 
     (void)dlg->exec();
 

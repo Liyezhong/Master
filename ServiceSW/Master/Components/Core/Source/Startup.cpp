@@ -107,6 +107,8 @@ CStartup::CStartup() : QObject(),
             new SystemTracking::CRotaryValve(*mp_ServiceConnector, mp_MainWindow);
     mp_LaSystemConfig = new SystemTracking::CLaSystem(*mp_ServiceConnector, mp_MainWindow);
 
+    CONNECTSIGNALSIGNAL(this, AutoDetect(), mp_MainControlConfig, UpdateSerialNumber());
+
     CONNECTSIGNALSIGNAL(mp_MainControlConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
     CONNECTSIGNALSIGNAL(mp_RetortConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
     CONNECTSIGNALSIGNAL(mp_OvenConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
@@ -1482,6 +1484,7 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
             mp_ServiceConnector->SendModuleUpdate(*EboxModule);
             mp_FirmwareUpdate->UpdateGUI();
         }
+        emit AutoDetect();
     }
 }
 

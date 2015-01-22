@@ -523,7 +523,6 @@ signals:
     /****************************************************************************/
     void AbortTest();
 
-
     /****************************************************************************/
     /**
      * \brief Signal emitted for PressureSensor calibration
@@ -632,6 +631,13 @@ signals:
      */
     /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Result);
+
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal is emitted to auto detect slave info.
+     */
+    /*******************************************************************************/
+    void AutoDetect();
 };
 
 } // end namespace Core

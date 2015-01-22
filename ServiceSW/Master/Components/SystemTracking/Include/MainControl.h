@@ -98,6 +98,14 @@ Q_SIGNALS:
      */
     /****************************************************************************/
     void UpdateSlaveVersion(void);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  signal for update serial number when auto detect
+     */
+    /****************************************************************************/
+    void UpdateSerialNumber(void);
+
 public Q_SLOTS:
     /****************************************************************************/
     /*!
@@ -169,7 +177,7 @@ public Q_SLOTS:
      *  \brief  slot for confirm module configuration.
      */
     /****************************************************************************/
-    void ConfirmModuleConfiguration();
+    void ConfirmModuleConfiguration();   
 
 private Q_SLOTS:
     /****************************************************************************/
@@ -244,7 +252,7 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;                 //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;   //!< Current list of modules
     Core::CServiceGUIConnector *mp_DateConnector;         //!< Global data connector
-    QStringList  m_SubModuleNames;                        //!< Store Updated sub moudule names
+    QStringList m_SubModuleNames;                         //!< Store Updated sub moudule names
 };
 
 
