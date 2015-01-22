@@ -104,9 +104,6 @@ void TestRcReheating::UTAllCase()
         QString tmp = mp_ReHeating->GetReagentID();
         QCOMPARE(tmp, QString("RG1"));
 
-        QSet<QAbstractState*> statesList;
-        mp_ReHeating->GetCurrentState(statesList);
-
         mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
 
         mp_ReHeating->HandleInint();

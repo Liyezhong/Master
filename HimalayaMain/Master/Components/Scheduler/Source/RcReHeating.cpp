@@ -33,6 +33,7 @@ namespace Scheduler{
 
 CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
+    ,m_CurrentStep(INIT_STATE)
     ,m_LastScenario(0)
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
@@ -41,88 +42,26 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
     ,m_DrainIsOk(false)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-
-    mp_Init = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_StartSensorTemp = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_CheckSensorTemp = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_GetRvPosition = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_DrainCurrentReagent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_Init.data());
-    mp_Init->addTransition(this, SIGNAL(SigTemperatureControlOn()), mp_StartSensorTemp.data());
-    mp_StartSensorTemp->addTransition(this, SIGNAL(SigTemperatureSensorsChecking()), mp_CheckSensorTemp.data());
-    mp_CheckSensorTemp->addTransition(this, SIGNAL(SigGetRVPosition()), mp_GetRvPosition.data());
-    mp_GetRvPosition->addTransition(this, SIGNAL(SigDrainCurrentReagent()), mp_DrainCurrentReagent.data());
-    mp_DrainCurrentReagent->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-
-    // For error cases
-    mp_StartSensorTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_CheckSensorTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_GetRvPosition->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_DrainCurrentReagent->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-
     CONNECTSIGNALSLOT(this, SignalDrain(), mp_SchedulerThreadController, OnBeginDrain());
     CONNECTSIGNALSLOT(this, SignalStopDrain(), mp_SchedulerThreadController, OnStopDrain());
-
-    // Start up state machine
-    mp_StateMachine->start();
 }
 
 CRcReHeating::~CRcReHeating()
 {
-    mp_StateMachine->stop();
-}
-
-CRcReHeating::StateList_t CRcReHeating::GetCurrentState(QSet<QAbstractState*> statesList)
-{
-    StateList_t currentState = UNDEF;
-
-    if (statesList.contains(mp_Init.data()))
-    {
-        currentState = INIT_STATE;
-    }
-    else if (statesList.contains(mp_StartSensorTemp.data()))
-    {
-        currentState = START_TEMPERATURE;
-    }
-    else if (statesList.contains(mp_CheckSensorTemp.data()))
-    {
-        currentState = CHECK_TEMPERATURE;
-    }
-    else if (statesList.contains(mp_GetRvPosition.data()))
-    {
-        currentState = GET_RV_POSOTION;
-    }
-    else if (statesList.contains(mp_DrainCurrentReagent.data()))
-    {
-        currentState = BEGIN_DRAIN;
-    }
-    return currentState;
 }
 
 void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 {
-    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
-    switch(currentState)
+    switch(m_CurrentStep)
     {
         case INIT_STATE:
-            if(0 == m_StartReq)
-            {
-                m_StartReq++;
-                HandleInint();
-            }
-            else
-            {
-                emit SigTemperatureControlOn();
-                m_StartReq = 0;
-            }
+            HandleInint();
             break;
         case START_TEMPERATURE:
             if(true == StartHeatingSensor())
             {
                 m_StartHeatingTime = QDateTime::currentMSecsSinceEpoch();
-                emit SigTemperatureSensorsChecking();
+                m_CurrentStep = CHECK_TEMPERATURE;
             }
             else
             {
@@ -173,6 +112,7 @@ void CRcReHeating::HandleInint()
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
+    m_CurrentStep = START_TEMPERATURE;
 }
 
 bool CRcReHeating::StartHeatingSensor()
@@ -252,7 +192,7 @@ void CRcReHeating::CheckTheTemperature()
         }
         if(tmperature > RV_SENSOR2_TEMP)
         {
-            emit SigGetRVPosition();
+            m_CurrentStep = GET_RV_POSOTION;
         }
         else
         {
@@ -270,7 +210,7 @@ void CRcReHeating::CheckTheTemperature()
         {
             if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
             {
-                emit SigGetRVPosition();
+                m_CurrentStep = GET_RV_POSOTION;
             }
             else
             {
@@ -380,7 +320,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             else if(2 == m_StartReq)
             {
                 CurrentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
-                if( -5 < CurrentPressure && CurrentPressure <= -1)
+                if( -5 < CurrentPressure && CurrentPressure <= -0.5)
                 {
                     mp_SchedulerThreadController->LogDebug(QString("Build vaccum success, the pressure:%1").arg(CurrentPressure));
                     m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
@@ -460,7 +400,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    emit SigDrainCurrentReagent();
+                    m_CurrentStep = BEGIN_DRAIN;
                 }
                 else
                 {
@@ -518,6 +458,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         {
             emit TasksDone(false);
         }
+        emit TasksDone(true);
         m_StartReq = 0;
     }
 }
