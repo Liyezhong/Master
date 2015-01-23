@@ -325,7 +325,7 @@ void SchedulerMainThreadController::OnTickTimer()
     {
         m_TickTimer.stop();
         m_ProgramStatusInfor.SetErrorFlag(0);
-        m_ProgramStatusInfor.SetProgramFinished();
+        m_ProgramStatusInfor.SetProgramID("");
         m_SchedulerCommandProcessor->ShutDownDevice();
         //DequeueNonDeviceCommand();
         return;
