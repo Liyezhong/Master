@@ -373,12 +373,8 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_RETORTBOT_PRETEST, QStringList()<<QString("[%1]").arg(m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TemperatureOffset+userInputTemp));
     }
 
-    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-    SchedulerCommandShPtr_t pResHeatingCmd;
-    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    (void)pResHeatingCmd->GetResult(retCode);
-    return retCode;
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
+    return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
 ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature)
@@ -512,13 +508,9 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(1000);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(80);
     }
-    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-    SchedulerCommandShPtr_t pResHeatingCmd;
-    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    (void)pResHeatingCmd->GetResult(retCode);
-    return retCode;
+    return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
 ReturnCode_t HeatingStrategy::StartTemperatureControlForPowerFailure(const QString& HeaterName)
@@ -755,13 +747,9 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         m_LAWaxTrap.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_LAWaxTrap.OTCheckPassed = false;
     }
-    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-    SchedulerCommandShPtr_t pResHeatingCmd;
-    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    (void)pResHeatingCmd->GetResult(retCode);
-    return retCode;
+    return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
 ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
@@ -816,13 +804,9 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
         pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
         dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_TUBE2);
     }
-    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-    SchedulerCommandShPtr_t pResHeatingCmd;
-    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    (void)pResHeatingCmd->GetResult(retCode);
-    return retCode;
+    return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
 /*lint -e1023 */
@@ -888,8 +872,6 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
 
 DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
 {
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-
     //For LevelSensor
     QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
     for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
@@ -937,23 +919,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
         pHeatingCmd->SetResetTime(iter->ResetTime);
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-        SchedulerCommandShPtr_t pResHeatingCmd;
-        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        (void)pResHeatingCmd->GetResult(retCode);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        else
-        {
-            mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset));
-            m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            m_RTLevelSensor.curModuleId = iter->Id;
-            m_RTLevelSensor.OTCheckPassed = false;
-            iter->OTTargetTemperature = iter->TemperatureOffset -1;
-        }
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset));
+        m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTLevelSensor.curModuleId = iter->Id;
+        m_RTLevelSensor.OTCheckPassed = false;
+        iter->OTTargetTemperature = iter->TemperatureOffset -1;
     }
 
     return DCL_ERR_FCT_CALL_SUCCESS;
@@ -961,8 +933,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
 DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType)
 {
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for (; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
@@ -1010,24 +980,16 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
         pHeatingCmd->SetResetTime(iter->ResetTime);
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-        SchedulerCommandShPtr_t pResHeatingCmd;
-        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        (void)pResHeatingCmd->GetResult(retCode);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        else
-        {
-            mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_RETORT, QStringList()<<QString("[%1]").arg(RTType)<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset+userInputTemp));
-            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            heatingSensor.curModuleId = iter->Id;
-            heatingSensor.OTCheckPassed = false;
-            qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-            iter->OTTargetTemperature =  meltingPoint -1;
-            return DCL_ERR_FCT_CALL_SUCCESS;
-        }
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
+
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_RETORT, QStringList()<<QString("[%1]").arg(RTType)<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset+userInputTemp));
+        heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        heatingSensor.curModuleId = iter->Id;
+        heatingSensor.OTCheckPassed = false;
+        qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        iter->OTTargetTemperature =  meltingPoint -1;
+        return DCL_ERR_FCT_CALL_SUCCESS;
+
     }
 
     // The current scenario is NOT related to Level Sensor's ones.
@@ -1128,30 +1090,22 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
         pHeatingCmd->SetResetTime(iter->ResetTime);
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-        SchedulerCommandShPtr_t pResHeatingCmd;
-        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        (void)pResHeatingCmd->GetResult(retCode);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        else
-        {
-            mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_OVEN, QStringList()<<QString("[%1]").arg(OvenType)<<QString("[%1]").arg(m_CurScenario)
-                                               <<QString("[%1]").arg(iter->TemperatureOffset+userInputMeltingPoint));
-            heatingSensor.curModuleId = iter->Id;
-            heatingSensor.IsStartedHeating = true;
-            iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
-            if(0 == heatingSensor.heatingStartTime)
-            {
-                heatingSensor.OvenBottom2OTCheckPassed = false;
-                heatingSensor.OTCheckPassed = false;
-                heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch() - timeElapse;
-            }
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-            return DCL_ERR_FCT_CALL_SUCCESS;
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_OVEN, QStringList()<<QString("[%1]").arg(OvenType)<<QString("[%1]").arg(m_CurScenario)
+                                           <<QString("[%1]").arg(iter->TemperatureOffset+userInputMeltingPoint));
+        heatingSensor.curModuleId = iter->Id;
+        heatingSensor.IsStartedHeating = true;
+        iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
+        if(0 == heatingSensor.heatingStartTime)
+        {
+            heatingSensor.OvenBottom2OTCheckPassed = false;
+            heatingSensor.OTCheckPassed = false;
+            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch() - timeElapse;
         }
+
+        return DCL_ERR_FCT_CALL_SUCCESS;
+
     }
 
     return DCL_ERR_FCT_CALL_SUCCESS;
@@ -1159,8 +1113,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
 DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor& heatingSensor)
 {
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-
     //Firstly, get the Parrifin melting point (user input)
     qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     if(userInputMeltingPoint < 0)
@@ -1200,22 +1152,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
         pHeatingCmd->SetResetTime(iter->ResetTime);
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-        SchedulerCommandShPtr_t pResHeatingCmd;
-        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        (void)pResHeatingCmd->GetResult(retCode);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        else
-        {
-            mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_RV, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(tempOffset));
-            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            heatingSensor.curModuleId = iter->Id;
-            heatingSensor.OTCheckPassed = false;
-            return DCL_ERR_FCT_CALL_SUCCESS;
-        }
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
+
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_RV, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(tempOffset));
+        heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        heatingSensor.curModuleId = iter->Id;
+        heatingSensor.OTCheckPassed = false;
+        return DCL_ERR_FCT_CALL_SUCCESS;
     }
 
     // The current scenario is NOT related to Level Sensor's ones.
@@ -1224,8 +1167,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
 
 DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSensor& heatingSensor,ALTempCtrlType_t LAType)
 {
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
 
     // Found out the heating sensor's function module
@@ -1239,42 +1180,34 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
         pHeatingCmd->SetResetTime(iter->ResetTime);
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-        SchedulerCommandShPtr_t pResHeatingCmd;
-        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-        (void)pResHeatingCmd->GetResult(retCode);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
-        else
-        {
-            mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LA, QStringList()<<QString("[%1]").arg(LAType)<<QString("[%1]").arg(m_CurScenario)
-                                               <<QString("[%1]").arg(iter->TemperatureOffset));
-            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            heatingSensor.curModuleId = iter->Id;
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
-            // For LA RV Tube and LA Wax Trap, we only check HeatingOverTime for the scenario which belong to OTScenarioList
-            if (AL_TUBE1 == LAType || AL_TUBE2 == LAType)
-            {
-                if (-1 != static_cast<LASensor&>(heatingSensor).OTCheckScenarioList[iter->Id].indexOf(m_CurScenario))
-                {
-                    heatingSensor.OTCheckPassed = false;
-                }
-                else
-                {
-                    heatingSensor.OTCheckPassed = true;
-                }
-            }
-            else //for Retort Level Sensor
+        mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LA, QStringList()<<QString("[%1]").arg(LAType)<<QString("[%1]").arg(m_CurScenario)
+                                           <<QString("[%1]").arg(iter->TemperatureOffset));
+        heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        heatingSensor.curModuleId = iter->Id;
+
+        // For LA RV Tube and LA Wax Trap, we only check HeatingOverTime for the scenario which belong to OTScenarioList
+        if (AL_TUBE1 == LAType || AL_TUBE2 == LAType)
+        {
+            if (-1 != static_cast<LASensor&>(heatingSensor).OTCheckScenarioList[iter->Id].indexOf(m_CurScenario))
             {
                 heatingSensor.OTCheckPassed = false;
             }
-
-            iter->OTTargetTemperature = iter->TemperatureOffset -2;
-
-            return DCL_ERR_FCT_CALL_SUCCESS;
+            else
+            {
+                heatingSensor.OTCheckPassed = true;
+            }
         }
+        else //for Retort Level Sensor
+        {
+            heatingSensor.OTCheckPassed = false;
+        }
+
+        iter->OTTargetTemperature = iter->TemperatureOffset -2;
+
+        return DCL_ERR_FCT_CALL_SUCCESS;
+
     }
 
     // The current scenario is NOT related to Level Sensor's ones.
@@ -1899,12 +1832,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
 
     CmdALSetTempCtrlOFF* pHeatingCmd = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
     pHeatingCmd->Settype(AL_LEVELSENSOR);
-    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-
-    SchedulerCommandShPtr_t pResHeatingCmd;
-    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
-    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    (void)pResHeatingCmd->GetResult(retCode);
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 }
 
 bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)

@@ -245,6 +245,14 @@ signals:
     /****************************************************************************/
     void NewCmdAdded();
 
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal NewCmdAddedNoResponse
+     */
+    /****************************************************************************/
+    void NewCmdAddedNoResponse();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal SigShutDownDevice
@@ -332,9 +340,10 @@ public slots:
     /**
      * @brief controller call this function to add a new command to process.
      *  \param cmd
+     *  \param response
      */
     /****************************************************************************/
-    virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
+    virtual void pushCmd(CmdSchedulerCommandBase *cmd, bool response=true) { this->pushCmd4Slot(cmd, response); }
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot DevProcInitialisationAckn
@@ -395,6 +404,16 @@ public slots:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of slot OnNewCmdAddedNoResponse
+     */
+    /****************************************************************************/
+    virtual void OnNewCmdAddedNoResponse()
+    {
+        this->OnNewCmdAddedNoResponse4Slot();
+    }
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of slot OnShutDownDevice
      */
     /****************************************************************************/
@@ -446,11 +465,12 @@ private:
      *  \brief  Definition/Declaration of function pushCmd4Slot
      *
      *  \param cmd = CmdSchedulerCommandBase type parameter
+     *  \param response = reponse flag
      *
      *  \return from pushCmd4Slot
      */
     /****************************************************************************/
-    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd) = 0;
+    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd, bool response) = 0;
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
@@ -507,6 +527,7 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot() = 0;
+    virtual void OnNewCmdAddedNoResponse4Slot() = 0;
     virtual void OnShutDownDevice4Slot()= 0 ;
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
     virtual void OnResetActiveCarbonFilterLifetime4Slot() = 0;
@@ -639,11 +660,12 @@ private:
      *  \brief  Definition/Declaration of function pushCmd4Slot
      *
      *  \param cmd = CmdSchedulerCommandBase type parameter
+     *  \param response = command response flag
      *
      *  \return from pushCmd4Slot
      */
     /****************************************************************************/
-    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd);
+    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd, bool response);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
@@ -700,6 +722,7 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot();
+    virtual void OnNewCmdAddedNoResponse4Slot();
     virtual void OnShutDownDevice4Slot();
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
     virtual void OnResetActiveCarbonFilterLifetime4Slot();

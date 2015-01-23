@@ -3255,35 +3255,22 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
 
 void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName)
 {
-    QQueue<Scheduler::SchedulerCommandShPtr_t>::iterator iter = m_DeviceControlCmdQueue.begin();
-    m_MutexDeviceControlCmdQueue.lock();
     while (true)
     {
-        if (m_DeviceControlCmdQueue.isEmpty())
-        {
-            (void)m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
-        }
-        for (iter=m_DeviceControlCmdQueue.begin(); iter!=m_DeviceControlCmdQueue.end(); ++iter)
+        m_MutexDeviceControlCmdQueue.lock();
+        for (QQueue<Scheduler::SchedulerCommandShPtr_t>::iterator iter=m_DeviceControlCmdQueue.begin(); iter!=m_DeviceControlCmdQueue.end(); ++iter)
         {
             if ((*iter)->GetName() == CmdName)
             {
-                break;
+                PtrCmd = *iter;
+                (void)m_DeviceControlCmdQueue.removeOne(*iter);
+                m_MutexDeviceControlCmdQueue.unlock();
+                return;
             }
         }
-        if (iter == m_DeviceControlCmdQueue.end())
-        {
-            (void)m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
-        }
-        else
-        {
-            break;
-        }
+        m_MutexDeviceControlCmdQueue.unlock();
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
-
-    // Get the command
-    PtrCmd = *iter;
-    (void)m_DeviceControlCmdQueue.removeOne(*iter);
-    m_MutexDeviceControlCmdQueue.unlock();
 }
 
 

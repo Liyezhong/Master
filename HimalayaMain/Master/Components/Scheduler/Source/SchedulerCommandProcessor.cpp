@@ -184,6 +184,7 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
+    CONNECTSIGNALSLOT(this, NewCmdAddedNoResponse(), this, OnNewCmdAddedNoResponse());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
     CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
     CONNECTSIGNALSLOT(this, SigResetActiveCarbonFilterLifetime(), this, OnResetActiveCarbonFilterLifetime());
@@ -202,12 +203,30 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd)
+void SchedulerCommandProcessor<DP>::OnNewCmdAddedNoResponse4Slot()
+{
+    Scheduler::SchedulerCommandShPtr_t scmd;
+    if(newCmdComing(scmd))
+    {
+        this->ExecuteCmd(scmd);
+    }
+}
+
+
+template <class DP>
+void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd, bool response)
 {
     m_CmdMutex.lock();
     m_Cmds.push_front(Scheduler::SchedulerCommandShPtr_t(cmd));
     m_CmdMutex.unlock();
-    emit NewCmdAdded();
+    if (response)
+    {
+        emit NewCmdAdded();
+    }
+    else
+    {
+        emit NewCmdAddedNoResponse();
+    }
 }
 
 template <class DP>
