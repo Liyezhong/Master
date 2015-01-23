@@ -396,8 +396,8 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     else
     {
         mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING_SR);
-        this->EnterRcRestart();
-
+        //this->EnterRcRestart();
+        emit SigBackToBusy();
     }
 }
 

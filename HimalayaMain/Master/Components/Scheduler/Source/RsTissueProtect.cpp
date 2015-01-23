@@ -36,139 +36,47 @@ namespace Scheduler{
 /*lint -e534 */
 
 CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController)
-    :mp_SchedulerController(SchedController),m_StationID("")
+    :mp_SchedulerController(SchedController)
+    ,m_StationID("")
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-
-    mp_Init = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_StopCmdExec = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_DrainCurReagent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_LevelSensorHeating = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_Wait8S = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_Init.data());
-
-    mp_Init->addTransition(this, SIGNAL(DrainCurReagent()), mp_DrainCurReagent.data());
-    mp_Init->addTransition(this, SIGNAL(StopCmdExec()), mp_StopCmdExec.data());
-    mp_Init->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
-    mp_StopCmdExec->addTransition(this, SIGNAL(DrainCurReagent()), mp_DrainCurReagent.data());
-    mp_DrainCurReagent->addTransition(this, SIGNAL(MoveToTube()), mp_MoveToTube.data());
-    mp_MoveToTube->addTransition(this, SIGNAL(LevelSensorHeating()), mp_LevelSensorHeating.data());
-    mp_MoveToTube->addTransition(this,SIGNAL(Filling()), mp_Filling.data());
-    mp_LevelSensorHeating->addTransition(this, SIGNAL(Filling()), mp_Filling.data());
-    mp_Filling->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
-    mp_Filling->addTransition(this, SIGNAL(Wait8Seconds()), mp_Wait8S.data());
-    mp_Wait8S->addTransition(this, SIGNAL(MoveToSealing()), mp_MoveToSealing.data());
-    mp_MoveToSealing->addTransition(this,SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-
-	//For error cases
-    mp_StopCmdExec->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_DrainCurReagent->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_MoveToTube->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_LevelSensorHeating->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-    mp_MoveToSealing->addTransition(this, SIGNAL(TasksDone(bool)), mp_Init.data());
-
-    CONNECTSIGNALSLOT(mp_MoveToTube.data(), entered(), this, OnMoveToTube());
-    CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSeal());
-    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
-
     m_IsLevelSensorRelated = false;
     m_DrainCurReagentSeq = 0;
     m_MoveToTubeSeq = 0;
     m_FillSeq = 0;
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
+    m_ReleasePressure = 0;
     m_IsFillingSuccessful = true;
-}
-
-
-void CRsTissueProtect::Start()
-{
-    if (mp_StateMachine->isRunning())
-    {
-        mp_StateMachine->stop();
-        // holde on 200 ms
-        QTime delayTime = QTime::currentTime().addMSecs(200);
-        while (QTime::currentTime() < delayTime)
-        {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-    }
-
-    mp_StateMachine->start();
-
-    m_IsLevelSensorRelated = false;
-    m_DrainCurReagentSeq = 0;
-    m_MoveToTubeSeq = 0;
-    m_FillSeq = 0;
-    m_LevelSensorSeq = 0;
-    m_MoveToSealSeq = 0;
-    m_IsFillingSuccessful = true;
+    m_CurrentStep = UNDEF;
 }
 
 CRsTissueProtect::~CRsTissueProtect()
 {
-    /*lint -e1551 */
-    mp_StateMachine->stop();
 }
 
-
-CRsTissueProtect::StateList_t CRsTissueProtect::GetCurrentState(QSet<QAbstractState*> statesList)
+void CRsTissueProtect::Start()
 {
-    StateList_t currentState = UNDEF;
-
-    if (statesList.contains(mp_Init.data()))
-    {
-        currentState = INIT;
-    }
-    else if (statesList.contains(mp_StopCmdExec.data()))
-    {
-        currentState = STOP_CMDEXEC;
-    }
-    else if (statesList.contains(mp_DrainCurReagent.data()))
-    {
-        currentState = DRAIN_CUR_REAGENT;
-    }
-    else if (statesList.contains(mp_MoveToTube.data()))
-    {
-           currentState = MOVE_TO_TUBE;
-    }
-    else if (statesList.contains(mp_LevelSensorHeating.data()))
-    {
-        currentState = LEVELSENSOR_HEATING;
-    }
-    else if (statesList.contains(mp_Filling.data()))
-    {
-        currentState = FILLING;
-    }
-    else if (statesList.contains(mp_Wait8S.data()))
-    {
-        currentState = WAIT_8S;
-    }
-    else if (statesList.contains(mp_MoveToSealing.data()))
-    {
-        currentState = MOVE_TO_SEALING;
-    }
-    else if (statesList.contains(mp_ReleasePressure.data()))
-    {
-        currentState = RELEASE_PRESSURE;
-    }
-
-    return currentState;
+    m_IsLevelSensorRelated = false;
+    m_DrainCurReagentSeq = 0;
+    m_MoveToTubeSeq = 0;
+    m_FillSeq = 0;
+    m_LevelSensorSeq = 0;
+    m_MoveToSealSeq = 0;
+    m_ReleasePressure = 0;
+    m_IsFillingSuccessful = true;
+    m_CurrentStep = INIT;
 }
 
+void CRsTissueProtect::SendTasksDoneSig(bool flag)
+{
+    emit TasksDone(flag);
+    m_CurrentStep = UNDEF;
+}
 
 void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     /*lint -e525 */
-	switch (currentState)
+    switch (m_CurrentStep)
     {
     case INIT:
         //Reset all the variable to initial value
@@ -184,7 +92,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         m_StationID = this->GetStationID();
         if ("" == m_StationID)
         {
-            TasksDone(false);
+            SendTasksDoneSig(false);
             break;
         }
         else
@@ -192,7 +100,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             // Stop level sensor heating at first
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
             {
-                //TasksDone(false);
+                //SendTasksDoneSig(false);
                 // Based on comments from team members, we ignore the error
             }
 
@@ -204,22 +112,22 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
                 ALStopCmd->SetCmdType(0);
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
-                emit StopCmdExec();
+                m_CurrentStep = STOP_CMDEXEC;
             }
             else if (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="6") // For Draining
             {
                 CmdALStopCmdExec* ALStopCmd = new CmdALStopCmdExec(500, mp_SchedulerController);
                 ALStopCmd->SetCmdType(1);
                 mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(ALStopCmd);
-                emit StopCmdExec();
+                m_CurrentStep = STOP_CMDEXEC;
             }
             else if (QString::number(Scenario).right(1).toInt(&ok)>=2 && QString::number(Scenario).right(1).toInt(&ok) <= 6)
             {
-                emit DrainCurReagent();
+                m_CurrentStep = DRAIN_CUR_REAGENT;
             }
             else
             {
-                emit MoveToTube();
+                m_CurrentStep = MOVE_TO_TUBE;
             }
 
         }
@@ -228,7 +136,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Stop_CommandExcution state");
         if ("Scheduler::ALStopCmdExec" == cmdName)
         {
-            emit DrainCurReagent();
+            m_CurrentStep = DRAIN_CUR_REAGENT;
         }
         break;
     case DRAIN_CUR_REAGENT:
@@ -252,11 +160,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 m_DrainCurReagentSeq = 0;
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    emit MoveToTube();
+                    m_CurrentStep = MOVE_TO_TUBE;
                 }
                 else
                 {
-                    TasksDone(false);
+                    SendTasksDoneSig(false);
                 }
             }
             else
@@ -269,6 +177,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
         {
+            OnMoveToTube();
+            m_MoveToTubeSeq++;
+        }
+        else if (1 == m_MoveToTubeSeq)
+        {
             if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -277,7 +190,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
                 else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
                 {
-                    m_MoveToTubeSeq = 2;
+                    m_MoveToTubeSeq = 3;
                     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerController));
                 }
                 else
@@ -286,11 +199,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     m_FillSeq = 0;
                     m_LevelSensorSeq = 0;
                     m_MoveToSealSeq = 0;
-                    TasksDone(false);
+                    SendTasksDoneSig(false);
                 }
             }
         }
-        else if (1 == m_MoveToTubeSeq)
+        else if (2 == m_MoveToTubeSeq)
         {
             if( mp_SchedulerController->IsRVRightPosition(TUBE_POS) )
             {
@@ -298,11 +211,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Tube state, move to tube success");
                 if (false == m_IsLevelSensorRelated)
                 {
-                    emit LevelSensorHeating();
+                    m_CurrentStep = LEVELSENSOR_HEATING;
                 }
                 else
                 {
-                    emit Filling();
+                    m_CurrentStep = FILLING;
                 }
             }
             else
@@ -310,7 +223,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 // Do nothing, just wait
             }
         }
-        else if (2 == m_MoveToTubeSeq)
+        else if (3 == m_MoveToTubeSeq)
         {
             if( mp_SchedulerController->IsRVRightPosition(INITIALIZE_POS) )
             {
@@ -330,7 +243,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
-                TasksDone(false);
+                SendTasksDoneSig(false);
             }
             else
             {
@@ -351,12 +264,12 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 m_FillSeq = 0;
                 m_LevelSensorSeq = 0;
                 m_MoveToSealSeq = 0;
-                TasksDone(false);
+                SendTasksDoneSig(false);
             }
             else if (2 == retValue)
             {
                 m_LevelSensorSeq = 0;
-                emit Filling();
+                m_CurrentStep = FILLING;
             }
         }
         break;
@@ -395,7 +308,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                     cmd->SetDelayTime(5000);
                     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
                     m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
-                    emit Wait8Seconds();
+                    m_CurrentStep = WAIT_8S;
                 }
                 else
                 {
@@ -408,7 +321,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                         mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
                         m_IsFillingSuccessful = false;
                     }
-                    emit MoveToSealing();
+                    m_CurrentStep = MOVE_TO_SEALING;
                 }
             }
         }
@@ -418,7 +331,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if ((QDateTime::currentMSecsSinceEpoch() - m_StartWaitTime) >= 8*1000)
         {
             m_StartWaitTime = 0;
-            emit MoveToSealing();
+            //emit MoveToSealing();
+            m_CurrentStep = MOVE_TO_SEALING;
         }
         else
         {
@@ -429,6 +343,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
         {
+            OnMoveToSeal();
+            m_MoveToSealSeq++;
+        }
+        else if (1 == m_MoveToSealSeq)
+        {
             if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -438,7 +357,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 else // In this case, we just release pressure
                 {
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal failed");
-                    emit ReleasePressure();
+                    m_CurrentStep = RELEASE_PRESSURE;
                 }
             }
         }
@@ -447,13 +366,18 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             if( mp_SchedulerController->IsRVRightPosition(SEAL_POS) )
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal passed");
-                emit ReleasePressure();
+                m_CurrentStep = RELEASE_PRESSURE;
             }
         }
         break;
     case RELEASE_PRESSURE:
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in state RELEASE_PRESSURE");
-        if ("Scheduler::ALReleasePressure" == cmdName)
+        if (0 == m_ReleasePressure)
+        {
+            OnReleasePressure();
+            m_ReleasePressure++;
+        }
+        else if (1 == m_ReleasePressure && "Scheduler::ALReleasePressure" == cmdName)
         {
             m_MoveToTubeSeq = 0;
             m_FillSeq = 0;
@@ -461,7 +385,6 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             m_MoveToSealSeq = 0;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release passed");
             }
             else
@@ -470,12 +393,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
             if (m_IsFillingSuccessful)
             {
-                emit TasksDone(true);
+                m_ReleasePressure = 0;
+                SendTasksDoneSig(true);
             }
             else
             {
+                m_ReleasePressure = 0;
                 m_IsFillingSuccessful = true; //Reset the value
-                emit TasksDone(false);
+                SendTasksDoneSig(false);
             }
         }
         else

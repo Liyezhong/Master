@@ -88,17 +88,6 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Get current state
-     *
-     *  \param statesList = QSet<QAbstractState*>
-     *
-     *	\return Internal state list
-     */
-    /****************************************************************************/
-    CRsTissueProtect::StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
-
-    /****************************************************************************/
-    /*!
      *  \brief Handle the whole work flow for RS_Tissue_Protect
      *
      *  \param cmdName - command name
@@ -116,72 +105,7 @@ public:
     /****************************************************************************/
     void Start();
 
-
 signals:
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for stopping command execution
-     *
-     */
-    /****************************************************************************/
-    void StopCmdExec();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for draining current reagent
-     *
-     */
-    /****************************************************************************/
-    void DrainCurReagent();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for moving to tube position
-     *
-     */
-    /****************************************************************************/
-    void MoveToTube();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for heating level sensor
-     *
-     */
-    /****************************************************************************/
-    void LevelSensorHeating();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for filling
-     *
-     */
-    /****************************************************************************/
-    void Filling();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for wait for 8 seconds;
-     *
-     */
-    /****************************************************************************/
-    void Wait8Seconds();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for moving to sealing position
-     *
-     */
-    /****************************************************************************/
-    void MoveToSealing();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for releasing pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressure();
 
     /****************************************************************************/
     /*!
@@ -192,7 +116,7 @@ signals:
     /****************************************************************************/
     void TasksDone(bool flag);
 
-private slots:
+private:
     /****************************************************************************/
     /*!
      *  \brief  slot for moving to safe reagent tube position
@@ -221,19 +145,17 @@ private slots:
     /****************************************************************************/
     void OnReleasePressure();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Tasks done
+     *  \param  flag = bool ture- tasks done successfully, false - tasks failed
+     *
+     */
+    /****************************************************************************/
+    void SendTasksDoneSig(bool flag);
+
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
-    QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Tissue_Protect
-    QSharedPointer<QState> mp_Init;                         //!< Initial state
-    QSharedPointer<QState> mp_StopCmdExec;         			//!< Stop command execution state
-    QSharedPointer<QState> mp_DrainCurReagent;              //!< Drain current reagent state
-    QSharedPointer<QState> mp_MoveToTube;         			//!< Move to Tube position state
-    QSharedPointer<QState> mp_LevelSensorHeating;         	//!< Level Sensor Heating state
-    QSharedPointer<QState> mp_Filling;           			//!< Filling state
-    QSharedPointer<QState> mp_Wait8S;           			//!< Wait for 8 seconds state
-    QSharedPointer<QState> mp_MoveToSealing;       			//!< Move to Sealing positon state
-    QSharedPointer<QState> mp_ReleasePressure;       		//!< Release pressure state
-
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
     QString m_ReagentGroup;                                 //!< Reagent group
@@ -242,8 +164,11 @@ private:
     quint8 m_FillSeq;                                       //!< Sequence of Filling
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
+    quint8 m_ReleasePressure;                               //!< Sequnece of release pressure
     qint64 m_StartWaitTime;                                 //!< start up time for wait
     bool   m_IsFillingSuccessful;                           //!< flag to indicate if Filling is successful or not
+    StateList_t m_CurrentStep;                              //!< current step
+
 private:
     CRsTissueProtect(const CRsTissueProtect& rhs);
     CRsTissueProtect& operator=(const CRsTissueProtect& rhs);
