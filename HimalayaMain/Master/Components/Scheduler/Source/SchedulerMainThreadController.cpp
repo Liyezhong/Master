@@ -270,7 +270,7 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
-#if 0
+#if 1
     if (false == m_InternalErrorRecv)
     {
         m_InternalErrorRecv = true;
@@ -309,7 +309,7 @@ void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
 
-#if 0
+#if 1
     if (CTRL_CMD_RS_SHUTDOWN == newControllerCmd)
     {
         //send shutdown command to MasterThreadController
