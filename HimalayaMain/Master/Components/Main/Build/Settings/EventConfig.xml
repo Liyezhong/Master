@@ -870,15 +870,15 @@
 			<Step ID="0" Type="MSG" StringID="50331765" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331766" ErrorType="Warning" AlarmType="AL_DEVICE" Name="EVENT_DEVICE_ALARM_PAUSE_5MINTUES" EventSource="SCHEDULER" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331766" ButtonType="OK" NextStepOnClickOK="1" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331766" ButtonType="OK" NextStepOnClickOK="1" TimeOut="5m" StatusBar=""/>
 			<Step ID="1" Type="ACT" Action="User_Response_Pause_Alarm"/>
 		</Event>
 		<Event Code="" ErrorID="50331767" ErrorType="Warning" AlarmType="AL_LOCAL" Name="EVENT_LOCAL_ALARM_PAUSE_10MINTUES" EventSource="SCHEDULER" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331767" ButtonType="OK" NextStepOnClickOK="1" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331767" ButtonType="OK" NextStepOnClickOK="1" TimeOut="5m" StatusBar=""/>
 			<Step ID="1" Type="ACT" Action="User_Response_Pause_Alarm"/>
 		</Event>
 		<Event Code="" ErrorID="50331768" ErrorType="Error" AlarmType="AL_REMOTE" Name="EVENT_REMOTE_ALARM_PAUSE_15MINTUES" EventSource="SCHEDULER" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331768" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331768" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="50331769" ErrorType="info" AlarmType="" Name="EVENT_WAIT_FILLING_FINISH" EventSource="SCHEDULER" LogLevel="" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331769" ButtonType="OK" StatusBar=""/>
