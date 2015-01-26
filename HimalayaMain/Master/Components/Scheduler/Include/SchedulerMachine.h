@@ -838,9 +838,10 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
+     *  \param ctrlCmd - controlCommandType_t
      */
     /****************************************************************************/
-    void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleRsTissueProtectWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, ControlCommandType_t ctrlCmd);
 
     /****************************************************************************/
     /*!

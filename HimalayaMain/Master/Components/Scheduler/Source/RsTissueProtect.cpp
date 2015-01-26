@@ -46,6 +46,8 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
     m_ReleasePressure = 0;
+    m_DrainSafeReagent = 0;
+    m_ProcessingSafeReagent = 0;
     m_IsFillingSuccessful = true;
     m_CurrentStep = UNDEF;
 }
@@ -63,6 +65,8 @@ void CRsTissueProtect::Start()
     m_LevelSensorSeq = 0;
     m_MoveToSealSeq = 0;
     m_ReleasePressure = 0;
+    m_DrainSafeReagent = 0;
+    m_ProcessingSafeReagent = 0;
     m_IsFillingSuccessful = true;
     m_CurrentStep = INIT;
 }
@@ -73,7 +77,7 @@ void CRsTissueProtect::SendTasksDoneSig(bool flag)
     m_CurrentStep = UNDEF;
 }
 
-void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode, ControlCommandType_t ctrlCmd)
 {
     /*lint -e525 */
     switch (m_CurrentStep)
@@ -394,7 +398,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             if (m_IsFillingSuccessful)
             {
                 m_ReleasePressure = 0;
-                SendTasksDoneSig(true);
+                m_CurrentStep = PROCESSING_SAFE_REAGENT;
             }
             else
             {
@@ -406,6 +410,83 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         else
         {
             // Do nothing, just wait for the command response
+        }
+        break;
+    case PROCESSING_SAFE_REAGENT:
+        if (0 == m_ProcessingSafeReagent)
+        {
+            quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
+            if(272 <= Scenario && Scenario <= 277)
+            {
+                //do nothing
+            }
+            else
+            {
+                mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
+                mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
+            }
+            m_ProcessingSafeReagent++;
+        }
+        else if(1 == m_ProcessingSafeReagent)
+        {
+            mp_SchedulerController->SendTissueProtectMsg();
+            m_ProcessingSafeReagent++;
+        }
+        if(2 == m_ProcessingSafeReagent && CTRL_CMD_DRAIN_SR == ctrlCmd)
+        {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, processing safe reagent pass.");
+            m_CurrentStep = DRAIN_SAFE_REAGENT;
+            m_ProcessingSafeReagent = 0;
+        }
+        break;
+    case DRAIN_SAFE_REAGENT:
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent, drain safe reagent.");
+        if (0 == m_DrainSafeReagent)
+        {
+            OnMoveToTube();
+            m_DrainSafeReagent++;
+        }
+        else if(1 == m_DrainSafeReagent)
+        {
+            if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                }
+                else
+                {
+                    SendTasksDoneSig(false);
+                }
+            }
+            else
+            {
+                if(mp_SchedulerController->IsRVRightPosition(TUBE_POS))
+                {
+                    m_DrainSafeReagent++;
+                }
+            }
+        }
+        else if(2 == m_DrainSafeReagent)
+        {
+            mp_SchedulerController->Drain();
+            m_DrainSafeReagent++;
+        }
+        else if(3 == m_DrainSafeReagent)
+        {
+            if( "Scheduler::ALDraining"== cmdName)
+            {
+                mp_SchedulerController->OnStopDrain();
+                m_DrainSafeReagent = 0;
+               if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+               {
+                   mp_SchedulerController->LogDebug("RS_Safe_Reagent, drain safe reagent passed.");
+                   SendTasksDoneSig(true);
+               }
+               else
+               {
+                   SendTasksDoneSig(false);
+               }
+            }
         }
         break;
     default:
