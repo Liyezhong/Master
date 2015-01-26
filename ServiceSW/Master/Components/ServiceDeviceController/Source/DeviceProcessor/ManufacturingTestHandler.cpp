@@ -41,6 +41,28 @@
 #include <QDebug>
 
 #define RV_MOVE_OK              1 //!< rotary valve move result
+
+
+#define  OPTION_NODE_INDEX_DIP    0x0001   //!< DIP switch present
+#define  OPTION_STATUS_LED        0x0002   //!< Status LED present
+
+#define  OPTION_PROCESS_DATA      0x0010   //!< Enable process data
+#define  OPTION_TRIGGER_EVENTS    0x0020   //!< Enable event handling
+#define  OPTION_LIFECYCLE_DATA    0x0040   //!< Enable life cycle counters
+#define  OPTION_IDENTIFICATION    0x0080   //!< Enable identification phase
+
+#define  OPTION_TASK_STATISTICS   0x0100   //!< Enable task statistics
+#define  OPTION_CURRENT_MONITOR   0x0200   //!< Enable current monitoring
+#define  OPTION_VOLTAGE_MONITOR   0x0400   //!< Enable voltage monitoring
+#define  OPTION_SAFE_MONITOR      0x0800   //!< Enable safe voltage monitoring
+#define  OPTION_INFO_MESSAGES     0x1000   //!< Enable info messages
+#define  OPTION_WAIT_POWER_UP     0x2000   //!< Enable wait-for-power-good
+
+#define BASEMODULE_MODULE_ID  "0"
+#define DEFAULT_NODE_INDEX    "0"       //!< Node index (if no DIP switch)
+
+#define INFOBLOCK_SIGNATURE  0x88888888  //!< Signature for valid info blocks
+
 namespace DeviceControl {
 
 /****************************************************************************/
@@ -80,7 +102,10 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_SpeakProc  = NULL;
 
     m_Continue = false;
+
 }
+
+
 
 /****************************************************************************/
 void ManufacturingTestHandler::CreateWrappers()
@@ -1458,7 +1483,7 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
          // switch on
         (void)mp_DigitalOutputMainRelay->SetHigh();
         (void)mp_TempRV->StartTemperatureControl(80);
-        mp_Utils->Pause(1000);
+        mp_Utils->Pause(2000);
 
         ASB3Current = mp_TempRV->GetCurrent();
 
@@ -2818,7 +2843,9 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         goto ERROR_EXIT;
     }
 
-    RetValue = p_WrapperBootLoader->UpdateFirmware(BinPath);
+    RetValue = WriteBoardOption(p_WrapperBootLoader, SlaveType);
+
+    RetValue &= p_WrapperBootLoader->UpdateFirmware(BinPath);
 
     if (RetValue == true) {
         mp_Utils->Pause(2000);
@@ -2830,6 +2857,10 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         }
         else {
             mp_Utils->Pause(5000);
+        }
+
+        if (SlaveType == Slave_15) {
+            AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
         }
 
         Service::ModuleTestStatus Status;
@@ -2851,6 +2882,10 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         else {
             mp_Utils->Pause(5000);
         }
+
+        if (SlaveType == Slave_15) {
+            AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
+        }
     }
 ERROR_EXIT:
     if (p_WrapperBootLoader) {
@@ -2863,6 +2898,115 @@ ERROR_EXIT:
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
     return -1;
+}
+
+bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloader, HimSlaveType_t SlaveType)
+{
+    quint16 BASEMODULE_OPTIONS =
+            OPTION_IDENTIFICATION  |        // Enable identification phase
+            OPTION_NODE_INDEX_DIP  |        // Enable node index DIP switch
+            OPTION_STATUS_LED      |        // Enable onboard status/error LEDs
+            OPTION_LIFECYCLE_DATA  |        // Enable life cycle data collection
+            OPTION_PROCESS_DATA    |        // Enable process data support
+            OPTION_TRIGGER_EVENTS  |        // Enable trigger event support
+            OPTION_TASK_STATISTICS |        // Enable statistics collection
+            OPTION_VOLTAGE_MONITOR |        // Enable supply voltage monitor
+            OPTION_CURRENT_MONITOR |        // Enable supply current monitor
+            OPTION_INFO_MESSAGES;           // Enable info messages on startup
+
+    QStringList BoardOption;
+    QString str;
+
+    BoardOption.clear();
+
+    BoardOption.append(BASEMODULE_MODULE_ID);  // 0
+    BoardOption.append("6");                   // 1
+    str.setNum(BASEMODULE_OPTIONS, 10);
+    BoardOption.append(str);                    // 2
+    BoardOption.append(DEFAULT_NODE_INDEX);     // 3
+
+
+    if (SlaveType == Slave_3) {
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase("BoardOptionASB3");
+
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitWarning")); //4
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitFailure")); //5
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
+
+        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        BoardOption.append(str);                        //8
+        BoardOption.append("1");                        //9
+
+        str.setNum(0x31012, 10);
+        BoardOption.append(str);                        //10
+    }
+    else if (SlaveType == Slave_5) {
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase("BoardOptionASB5");
+
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitWarning")); //4
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitFailure")); //5
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
+
+        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        BoardOption.append(str);                        //8
+        BoardOption.append("4");                        //9
+
+        str.setNum(0x11011, 10);
+        BoardOption.append(str);                        //10
+
+        str.setNum(0xF11012, 10);
+        BoardOption.append(str);                        //11
+
+        str.setNum(0x11012, 10);
+        BoardOption.append(str);                        //12
+
+        str.setNum(0x11011, 10);
+        BoardOption.append(str);                        //13
+    }
+    else if (SlaveType == Slave_15) {
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase("BoardOptionASB15");
+
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitWarning")); //4
+        BoardOption.append(p_TestCase->GetParameter("VoltageLimitFailure")); //5
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
+        BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
+
+        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        BoardOption.append(str);                        //8
+        BoardOption.append("3");                        //9
+
+        str.setNum(0x11041011, 10);
+        BoardOption.append(str);                        //10
+
+        str.setNum(0x01041011, 10);
+        BoardOption.append(str);                        //11
+
+        str.setNum(0x01041011, 10);
+        BoardOption.append(str);                        //12
+
+        str.setNum(MODULE_ID_DIGITAL_OUT, 10);
+        BoardOption.append(str);                        //13
+
+        BoardOption.append("6");                        //14
+        BoardOption.append("1");                        //15
+        BoardOption.append("1");                        //16
+        BoardOption.append("1");                        //17
+        BoardOption.append("1");                        //18
+        BoardOption.append("1");                        //19
+        BoardOption.append("1");                        //20
+
+        str.setNum(MODULE_ID_PRESSURE, 10);
+        BoardOption.append(str);                        //21
+
+        BoardOption.append("1");                        //22
+
+        str.setNum(0x2111, 10);
+        BoardOption.append(str);                        //23
+    }
+
+    return p_Bootloader->UpdateInfo(BoardOption, 2);
 }
 
 void ManufacturingTestHandler::GetSlaveInformation()
