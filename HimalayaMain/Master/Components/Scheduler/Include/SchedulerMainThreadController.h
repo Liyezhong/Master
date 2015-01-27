@@ -332,7 +332,6 @@ typedef struct
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
-        qint8   m_AbortingSeq;                                ///< the sequence of aborting
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
         bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
@@ -629,12 +628,6 @@ signals:
           */
          /****************************************************************************/
          void signalProgramPause();
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of signal signalProgramAbort
-          */
-         /****************************************************************************/
-         void signalProgramAbort();
 
          /****************************************************************************/
          /*!
@@ -1409,6 +1402,14 @@ protected:
          */
         /****************************************************************************/
         void CloseTheAlarm();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function CompleteRsAbort
+         */
+        /****************************************************************************/
+        void CompleteRsAbort();
+
 
     public slots:
 

@@ -82,14 +82,21 @@ public:
     /****************************************************************************/
     void ResetVarList();
 
-public slots:
     /****************************************************************************/
     /*!
-     *  \brief  slot for receiving ABORT control command
+     *  \brief  Receiving ABORT control command
      *
      */
     /****************************************************************************/
-    void OnRecvAbort() { m_IsAbortRecv = true; }
+    void RecvAbort() { m_IsAbortRecv = true; }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Tasks was aborts or not
+     *
+     */
+    /****************************************************************************/
+    bool TasksAborted() { return m_TasksAborted; }
 
 signals:
 
@@ -183,14 +190,6 @@ signals:
     /****************************************************************************/
     void CleaningMoveToTube();
 
-    /****************************************************************************/
-    /*!
-     *  \brief signal to indicate that tasks were aborted
-     *
-     */
-    /****************************************************************************/
-    void TasksAborted();
-
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
@@ -237,6 +236,7 @@ private:
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
     quint8  m_IsLoged;                                              //!< Whether loged
     bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received
+    bool    m_TasksAborted;                                         //!< Flag to indicate if tasks have been aborted
 private:
     /****************************************************************************/
     /*!

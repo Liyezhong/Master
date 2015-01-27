@@ -85,8 +85,6 @@ private:
     QSharedPointer<QState> mp_PssmError;                                                ///<  Busy State's sub state: Step error state
     QSharedPointer<QState> mp_PssmPause;                                                ///<  Busy State's sub state: Pause state
     QSharedPointer<QState> mp_PssmPauseDrain;                                           ///<  Busy State's sub state: Pause drain state
-    QSharedPointer<QState> mp_PssmAborting;                                             ///<  Busy State's sub state: Aborting state
-    QSharedPointer<QState> mp_PssmAborted;                                              ///<  Busy State's sub state: Aborted state
     QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: step finish state
     QSharedPointer<QState> mp_PssmCleaningDryStep;                                      ///<  Busy State's sub state: cleaning dry step
     QSharedPointer<QFinalState> mp_PssmProgramFinish;                                   ///<  Busy State's sub state: Program Finished state
@@ -116,6 +114,7 @@ private:
     QSharedPointer<QState> mp_ErrorRcReHeatingState;                                    ///<  Error State's sub state: for RC_ReHeating
     QSharedPointer<QState> mp_ErrorRsReagentCheckState;                                 ///<  Error State's sub state: for RS_ReagentCheck
     QSharedPointer<QState> mp_ErrorRsRvMoveToSealPositionState;                         ///<  Error State's sub state: for Rs_Rv_MoveToPosition3.5
+    QSharedPointer<QState> mp_ErrorRsAbortState;                                        ///<  Error State's sub state: for Rs_Abort
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for self-test
@@ -199,17 +198,9 @@ private:
         MOVE_SEALPOSITION,
         REALSE_PRESSRE
     }RS_MOVESEAL_t;
-    RS_MOVESEAL_t   m_RsMoveToPSeal;                                           ///< the RsMoveToPSealp3.5 state step
+    RS_MOVESEAL_t   m_RsMoveToPSeal;                                            ///< the RsMoveToPSealp3.5 state step
 
-    typedef enum
-    {
-        PSSMABORT_RELEASE_PRESSURE,
-        PSSMABORT_STOP_FILLING,
-        PSSMABORT_STOP_DRAINING,
-        PSSMABORT_FORCE_DRAIN,
-        PSSMABORT_MOVE_NEXTTUBE
-    } PSSM_ABORTING_t;
-    PSSM_ABORTING_t m_PssmAbortingSeq;                                          ///< Sequence of PSSM_ABORTING
+    quint8  m_PssmAbortingSeq;                                                  ///< Sequence of Rs_Abort
     bool    m_EnableLowerPressure;                                              ///< Enable lower pressure
     quint8  m_PssmMVTubeSeq;                                                    ///< Sequence of PSSM_MoveTube
     qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
@@ -357,13 +348,6 @@ public:
      */
     /****************************************************************************/
     void SendResumeDryStep();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function SendResumeAborting
-     */
-    /****************************************************************************/
-    void SendResumeAborting();
 
     /****************************************************************************/
     /*!
@@ -557,12 +541,6 @@ public:
      */
     /****************************************************************************/
     void NotifyResumeDrain();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyAbort
-     */
-    /****************************************************************************/
-    void NotifyAbort();
 
     /****************************************************************************/
     /*!
@@ -763,6 +741,13 @@ public:
      */
     /****************************************************************************/
     void EnterRsRVMoveToSealPosition();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterRsAbort
+     */
+    /****************************************************************************/
+    void EnterRsAbort();
 
     /****************************************************************************/
     /*!
@@ -990,7 +975,7 @@ public:
      *  \return void
      */
     /****************************************************************************/
-    void HandlePSSMAbortingWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+    void HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1076,18 +1061,7 @@ private slots:
      *  \return void
      */
     /****************************************************************************/
-    void OnPSSMAborting();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Slot to enter aborted
-     *
-     *  \param  void
-     *
-     *  \return void
-     */
-    /****************************************************************************/
-    void OnPSSMAborted();
+    void OnEnterRsAbortState();
 
     /****************************************************************************/
     /*!
@@ -1275,13 +1249,6 @@ signals:
     */
    /****************************************************************************/
    void ResumeDryStep();
-
-   /****************************************************************************/
-   /*!
-    *  \brief  Definition/Declaration of signal ResumePssmAborting
-    */
-   /****************************************************************************/
-   void ResumePssmAborting();
 
     /****************************************************************************/
     /*!
@@ -1783,18 +1750,7 @@ signals:
      */
     /****************************************************************************/
     void sigOnStopForceDrain();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal sigOnAborting
-     */
-    /****************************************************************************/
-    void sigOnAborting();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal sigOnAborted
-     */
-    /****************************************************************************/
-    void sigOnAborted();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigOnPause

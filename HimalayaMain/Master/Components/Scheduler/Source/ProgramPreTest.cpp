@@ -180,7 +180,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 || TEMPSENSORS_CHECKING == currentState || WAIT3S_RT_CURRENT == currentState
                 || RT_TEMCTRL_OFF == currentState || PRESSURE_CALIBRATION == currentState)
         {
-            emit TasksAborted();
+            m_TasksAborted = true;
             return;
         }
     }
@@ -370,7 +370,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 if (m_IsAbortRecv)
                 {
                     m_RVPositioinChkSeq = 0;
-                    emit TasksAborted();
+                    m_TasksAborted = true;
                     break;
                 }
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -404,7 +404,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 if (m_IsAbortRecv)
                 {
                     m_PressureSealingChkSeq = 0;
-                    emit TasksAborted();
+                    m_TasksAborted = true;
                     break;
                 }
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -437,7 +437,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 if (m_IsAbortRecv)
                 {
-                    emit TasksAborted();
+                    m_TasksAborted = true;
                     break;
                 }
                 if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
@@ -460,7 +460,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                     m_BottleChkFlag = true;
                     if (m_IsAbortRecv)
                     {
-                        emit TasksAborted();
+                        m_TasksAborted = true;
                         break;
                     }
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -488,7 +488,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 			m_MoveToTubeSeq = 0;
             if (m_IsAbortRecv)
             {
-                emit TasksAborted();
+                m_TasksAborted = true;
                 break;
             }
             emit TasksDone();
@@ -501,7 +501,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 {
                     if (m_IsAbortRecv)
                     {
-                        emit TasksAborted();
+                        m_TasksAborted = true;
                         break;
                     }
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
@@ -530,6 +530,7 @@ void CProgramPreTest::ResetVarList()
     m_IsLoged = 0;
     m_BottleSeq = 0;
     m_IsAbortRecv = false;
+    m_TasksAborted = false;
 }
 
 }

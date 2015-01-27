@@ -289,11 +289,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP;
         }
+#if 0
         //For LA WaxTrap
         if (false == this->CheckSensorHeatingOverTime(m_LAWaxTrap, strctHWMonitor.TempALTube2))
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP;
         }
+#endif
     }
 
     if (m_CurScenario >= 271 && m_CurScenario <=277)

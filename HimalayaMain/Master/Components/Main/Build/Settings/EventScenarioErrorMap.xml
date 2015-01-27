@@ -139,6 +139,7 @@
   </group>
  <group name="System">
        <event id="500060100"    name="EVENT_PowerFailure"/>
+       <event id="500060200"    name="EVENT_PowerFailure_Cleaning_MsgBox"/>
        <event id="500040231"    name="EVENT_LA_Process_Interval_TimeOut_4min"/>
        <event id="500040251"    name="EVENT_LA_Endtime_TimeOut"/>
   </group>
@@ -146,6 +147,7 @@
        <event id="500070001"    name="EVENT_INTER_TISSUE_PROTECT_REPORT"/>
        <event id="500070200"    name="EVENT_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED"/>
        <event id="500070300"    name="EVENT_INTER_SW_ERROR"/>
+       <event id="500070400"    name="EVENT_INTER_ABORT"/>
   </group>
 </eventlist>
 
@@ -165,6 +167,11 @@
             <scenario type="all"/>
         </error>
     </event>
+    <event eventid="500070400">
+        <error errorid="520070400">
+            <scenario type="all"/>
+        </error>
+    </event>
     <event eventid="500060100">
         <error errorid="520060002">
             <scenario type="single" id="203"/>
@@ -173,6 +180,12 @@
         <error errorid="520060003">
             <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="277"/>
+        </error>
+    </event>
+    <event eventid="500060200">
+        <error errorid="520060201">
+            <scenario type="single" id="203"/>
+            <scenario type="range" startid="281" endid="297"/>
         </error>
     </event>
     <event eventid="500060020">

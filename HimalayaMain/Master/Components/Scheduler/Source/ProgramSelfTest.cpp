@@ -258,7 +258,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 else
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_UNKNOW_ASB5_SWITCHTYPE);
-                    if(mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_ASB5_VOLTAGE_UNKONWN, 2, true))
+                    if(mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_ASB5_VOLTAGE_VALUE_UNKNOW, 2, true))
                         SendSignalSelfTestDone(false);
                     m_StateACVoltageStepCount = 0;
                 }

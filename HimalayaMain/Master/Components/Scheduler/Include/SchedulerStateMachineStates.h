@@ -24,10 +24,8 @@ namespace Scheduler{
 #define L2_PRO_STEP_PROGRAM_FINISH            (0xC)
 #define L2_PRO_PROGRAM_FINISH                 (0xD)
 #define L2_PRO_PAUSE                          (0xE)
-#define L2_PRO_ABORTING                       (0xF)
-#define L2_PRO_ABORTED                        (0x10)
-#define L2_PRO_CLEANING_DRY_STEP              (0x11)
-#define L2_PRO_POWERFAILURE_FINISH            (0x12)
+#define L2_PRO_CLEANING_DRY_STEP              (0xF)
+#define L2_PRO_POWERFAILURE_FINISH            (0x10)
 
 #define L2_ERR_WAIT                                 (0x1)
 #define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
@@ -53,6 +51,7 @@ namespace Scheduler{
 #define L2_ERR_RC_REHEATING                         (0x16)
 #define L2_ERR_RS_REAGENTCHECK                      (0x17)
 #define L2_ERR_RS_RV_MOVETOPOSITIONSEAL             (0x18)
+#define L2_ERR_RS_ABORT                             (0x19)
 
 typedef enum
 {
@@ -82,8 +81,6 @@ typedef enum
     PSSM_STEP_PROGRAM_FINISH = ((L2_PRO_STEP_PROGRAM_FINISH << 8) | L1_BUSY),
     PSSM_PROGRAM_FINISH = ((L2_PRO_PROGRAM_FINISH << 8) | L1_BUSY),
     PSSM_PAUSE = ((L2_PRO_PAUSE << 8) | L1_BUSY),
-    PSSM_ABORTING = ((L2_PRO_ABORTING << 8) | L1_BUSY),
-    PSSM_ABORTED = ((L2_PRO_ABORTED << 8) | L1_BUSY),
     PSSM_CLEANING_DRY_STEP = ((L2_PRO_CLEANING_DRY_STEP << 8) | L1_BUSY),
     PSSM_POWERFAILURE_FINISH = ((L2_PRO_POWERFAILURE_FINISH << 8) | L1_BUSY),
      // Layer two states (for SM_ERROR)
@@ -110,7 +107,8 @@ typedef enum
     SM_ERR_RC_CHECK_RTLOCK = ((L2_ERR_RC_CHECK_RTLOCK << 8) | L1_ERROR),
     SM_ERR_RC_REHEATING = ((L2_ERR_RC_REHEATING << 8) | L1_ERROR),
     SM_ERR_RS_REAGENTCHECK = ((L2_ERR_RS_REAGENTCHECK << 8) | L1_ERROR),
-    SM_ERR_RS_RV_MOVETOPOSITIONSEAL = ((L2_ERR_RS_RV_MOVETOPOSITIONSEAL << 8) | L1_ERROR)
+    SM_ERR_RS_RV_MOVETOPOSITIONSEAL = ((L2_ERR_RS_RV_MOVETOPOSITIONSEAL << 8) | L1_ERROR),
+    SM_ERR_RS_ABORT = ((L2_ERR_RS_ABORT << 8) | L1_ERROR)
 } SchedulerStateMachine_t;
 
 /****************************************************************************/
@@ -163,6 +161,7 @@ typedef enum
     CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN,
     CTRL_CMD_CHECK_OVEN_COVER,
     CTRL_CMD_RS_SHUTDOWN,
+    CTRL_CMD_RS_ABORT,
     CTRL_CMD_ALARM_RMT_ON,
     CTRL_CMD_ALARM_RMT_OFF,
     CTRL_CMD_ALARM_LOC_ON,

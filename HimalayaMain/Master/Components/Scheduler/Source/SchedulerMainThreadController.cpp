@@ -140,7 +140,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
     m_PssmStepFinSeq = 0;
-    m_AbortingSeq = 0;
     m_IsDrainDelay = false;
     m_DrainDelayBeginTime = 0;
     m_CheckOvenCover = true;
@@ -358,12 +357,25 @@ void SchedulerMainThreadController::OnTickTimer()
         mp_HeatingStrategy->ResetTheOvenHeating();
     }
 
-    SchedulerCommandShPtr_t cmd;
-    (void)PopDeviceControlCmdQueue(cmd);
 
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
 
+    // We only handle Abort in Idle and Busy
+    if(CTRL_CMD_ABORT == newControllerCmd && ((currentState & 0xFF) == SM_IDLE || (currentState & 0xFF) == SM_BUSY))
+    {
+        //tell main controller scheduler is starting to abort
+        MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
+        Q_ASSERT(commandPtrAbortBegin);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
+
+        SendOutErrMsg(DCL_ERR_DEV_INTER_ABORT);
+        return;
+    }
+
+    SchedulerCommandShPtr_t cmd;
+    (void)PopDeviceControlCmdQueue(cmd);
     switch(currentState & 0xFF)
     {
     case SM_INIT:
@@ -668,238 +680,212 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         cmdName = cmd->GetName();
     }
 
-    if(CTRL_CMD_ABORT == ctrlCmd)
-    {
-        m_SchedulerMachine->NotifyAbort();
-        //tell main controller scheduler is starting to abort
-        MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
-        Q_ASSERT(commandPtrAbortBegin);
-        Global::tRefType fRef = GetNewCommandRef();
-        SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
-    }
-    else
-    {
-        SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
 
-        if(PSSM_INIT == stepState)
-		{
-            if(CTRL_CMD_PAUSE == ctrlCmd)
+    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
+
+    if(PSSM_INIT == stepState)
+    {
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            AllStop();
+            m_SchedulerMachine->NotifyPause(PSSM_INIT);
+        }
+        else
+        {
+            /*lint -e525 */
+            switch (m_CurrentStepState)
             {
-                AllStop();
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-            }
-            else
-            {
-                /*lint -e525 */
-                switch (m_CurrentStepState)
+            case PSSM_INIT:
+                m_SchedulerMachine->SendRunPreTest();
+                break;
+            case PSSM_PRETEST:
+                m_SchedulerMachine->SendRunPreTest();
+                break;
+            case PSSM_FILLING_RVROD_HEATING:
+                m_SchedulerMachine->SendResumeFillingRVRodHeating();
+                break;
+            case PSSM_FILLING_LEVELSENSOR_HEATING:
+            case PSSM_FILLING:
+                m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
+                break;
+            case PSSM_RV_MOVE_TO_SEAL:
+                m_SchedulerMachine->SendResumeRVMoveToSeal();
+                break;
+           case PSSM_PROCESSING:
+                m_SchedulerMachine->SendResumeProcessing();
+                break;
+            case PSSM_PROCESSING_SR:
+                 m_SchedulerMachine->SendResumeProcessingSR();
+                 break;
+           case PSSM_RV_MOVE_TO_TUBE:
+                m_SchedulerMachine->SendResumeRVMoveTube();
+                break;
+            case PSSM_DRAINING:
+            case PSSM_RV_POS_CHANGE:
+                m_SchedulerMachine->SendResumeRVPosChange();
+                break;
+            case PSSM_CLEANING_DRY_STEP:
+                m_SchedulerMachine->SendResumeDryStep();
+                break;
+            case PSSM_POWERFAILURE_FINISH:
+                if(m_IsCleaningProgram && 200 == m_ProgramStatusInfor.GetScenario())
                 {
-                case PSSM_INIT:
-                    m_SchedulerMachine->SendRunPreTest();
-                    break;
-                case PSSM_PRETEST:
-                    m_SchedulerMachine->SendRunPreTest();
-                    break;  
-                case PSSM_FILLING_RVROD_HEATING:
-                    m_SchedulerMachine->SendResumeFillingRVRodHeating();
-                    break;
-                case PSSM_FILLING_LEVELSENSOR_HEATING:
-                case PSSM_FILLING:
-                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
-                    break;
-                case PSSM_RV_MOVE_TO_SEAL:
-                    m_SchedulerMachine->SendResumeRVMoveToSeal();
-                    break;
-               case PSSM_PROCESSING:
-                    m_SchedulerMachine->SendResumeProcessing();
-                    break;
-                case PSSM_PROCESSING_SR:
-                     m_SchedulerMachine->SendResumeProcessingSR();
-                     break;
-               case PSSM_RV_MOVE_TO_TUBE:
-                    m_SchedulerMachine->SendResumeRVMoveTube();
-                    break;
-                case PSSM_DRAINING:
-                case PSSM_RV_POS_CHANGE:
-                    m_SchedulerMachine->SendResumeRVPosChange();
-                    break;
-                case PSSM_CLEANING_DRY_STEP:
-                    m_SchedulerMachine->SendResumeDryStep();
-                    break;
-                case PSSM_POWERFAILURE_FINISH:
-                    if(m_IsCleaningProgram && 200 == m_ProgramStatusInfor.GetScenario())
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+                    Q_ASSERT(commandPtrFinish);
+                    Global::tRefType Ref = GetNewCommandRef();
+                    SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                }
+                else
+                {
+                    if( !m_ProgramStatusInfor.IsRetortContaminted() )
                     {
-                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
                         Q_ASSERT(commandPtrFinish);
                         Global::tRefType Ref = GetNewCommandRef();
                         SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
                     }
-                    else
-                    {
-                        if( !m_ProgramStatusInfor.IsRetortContaminted() )
-                        {
-                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-                            Q_ASSERT(commandPtrFinish);
-                            Global::tRefType Ref = GetNewCommandRef();
-                            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-                        }
-                    }
-                    m_SchedulerMachine->SendRunComplete();
-                    break;
-                case PSSM_ABORTING:
-                    m_SchedulerMachine->SendResumeAborting();
-                    break;
-                default:
-                    break;
                 }
+                m_SchedulerMachine->SendRunComplete();
+                break;
+            default:
+                break;
+            }
 
-            }
         }
-        else if (PSSM_PRETEST == stepState)
+    }
+    else if (PSSM_PRETEST == stepState)
+    {
+       m_CurrentStepState = PSSM_PRETEST;
+       m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
+    }
+    else if (PSSM_FILLING_RVROD_HEATING == stepState)
+    {
+        m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
+        if(m_CurProgramStepInfo.reagentGroup == "RG6")
         {
-           m_CurrentStepState = PSSM_PRETEST;
-           m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
-        }
-        else if (PSSM_FILLING_RVROD_HEATING == stepState)
-        {
-            m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
-            if(m_CurProgramStepInfo.reagentGroup == "RG6")
+            if(mp_HeatingStrategy->Check260SensorsTemp())
             {
-                if(mp_HeatingStrategy->Check260SensorsTemp())
-                {
-                    LogDebug("Program Step Heating Rotary Valve heating rod OK");
-                    m_SchedulerMachine->NotifyRVRodHeatingReady();
-                }
-            }
-            else
-            {
+                LogDebug("Program Step Heating Rotary Valve heating rod OK");
                 m_SchedulerMachine->NotifyRVRodHeatingReady();
             }
         }
-        else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
+        else
         {
-            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
-            if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
+            m_SchedulerMachine->NotifyRVRodHeatingReady();
+        }
+    }
+    else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
+    {
+        m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+        if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
+        {
+            LogDebug("Program Step Heating Level sensor stage OK");
+            m_SchedulerMachine->NotifyLevelSensorHeatingReady();
+        }
+        else
+        {
+            // Do nothing, just wait for status of level sensor
+        }
+    }
+    else if(PSSM_FILLING == stepState)
+    {
+        m_CurrentStepState = PSSM_FILLING;
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            EnablePauseButton();
+            Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
+        }
+
+        if( "Scheduler::ALFilling" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                LogDebug("Program Step Heating Level sensor stage OK");
-                m_SchedulerMachine->NotifyLevelSensorHeatingReady();
+                LogDebug(QString("Program Step Filling OK"));
+                m_SchedulerMachine->NotifyFillFinished();
             }
             else
             {
-                // Do nothing, just wait for status of level sensor
+                LogDebug(QString("Program Step Filling failed"));
+                SendOutErrMsg(retCode);
             }
         }
-        else if(PSSM_FILLING == stepState)
-        {
-            m_CurrentStepState = PSSM_FILLING;
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                EnablePauseButton();
-                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
-            }
+    }
+    else if(PSSM_RV_MOVE_TO_SEAL == stepState)
+    {
+        m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
 
-            if( "Scheduler::ALFilling" == cmdName)
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            EnablePauseButton();
+            Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
+        }
+
+        if(IsRVRightPosition(SEAL_POS))
+        {
+            if(m_CurProgramStepIndex > 0)
             {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                //endTime
+                CalculateTheGapTimeAndBufferTime(false, true);
+            }
+            else
+            {
+                LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+            }
+            m_SchedulerMachine->NotifyRVMoveToSealReady();
+        }
+        else
+        {
+            if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    LogDebug(QString("Program Step Filling OK"));
-                    m_SchedulerMachine->NotifyFillFinished();
-                }
-                else
-                {
-                    LogDebug(QString("Program Step Filling failed"));
                     SendOutErrMsg(retCode);
                 }
             }
         }
-        else if(PSSM_RV_MOVE_TO_SEAL == stepState)
+    }
+    else if(PSSM_PROCESSING == stepState)
+    {
+        m_CurrentStepState = PSSM_PROCESSING;
+        if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
-
-            if(CTRL_CMD_PAUSE == ctrlCmd)
+            LogDebug(QString("Program Step Beginning Pause"));
+            if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
             {
-                EnablePauseButton();
-                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_FILLING_FINISH);
+                AllStop();
+                m_lastPVTime = 0;
             }
-
-            if(IsRVRightPosition(SEAL_POS))
+            m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
+        }
+        else
+        {
+            qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
+            qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+            if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
             {
-                if(m_CurProgramStepIndex > 0)
+                if(!m_IsReleasePressureOfSoakFinish)
                 {
-                    //endTime
-                    CalculateTheGapTimeAndBufferTime(false, true);
+                    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+                    m_IsReleasePressureOfSoakFinish = true;
+                    m_ReleasePressureSucessOfSoakFinish = false;
                 }
-                else
+                else if("Scheduler::ALReleasePressure" == cmdName)
                 {
-                    LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
-                }
-                m_SchedulerMachine->NotifyRVMoveToSealReady();
-            }
-            else
-            {
-                if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
-                {
-                    if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_ReleasePressureSucessOfSoakFinish = true;
+                    }
+                    else
                     {
                         SendOutErrMsg(retCode);
                     }
                 }
-            }
-        }
-        else if(PSSM_PROCESSING == stepState)
-        {
-            m_CurrentStepState = PSSM_PROCESSING;
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                LogDebug(QString("Program Step Beginning Pause"));
-                if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
+                //if it is Cleaning program, need not notify user
+                if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
                 {
-                    AllStop();
-                    m_lastPVTime = 0;
-                }
-                m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
-            }
-            else
-            {
-                qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
-                qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-                if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
-                {
-                    if(!m_IsReleasePressureOfSoakFinish)
+                    if("RG6" == m_CurProgramStepInfo.reagentGroup)
                     {
-                        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-                        m_IsReleasePressureOfSoakFinish = true;
-                        m_ReleasePressureSucessOfSoakFinish = false;
-                    }
-                    else if("Scheduler::ALReleasePressure" == cmdName)
-                    {
-                        if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            m_ReleasePressureSucessOfSoakFinish = true;
-                        }
-                        else
-                        {
-                            SendOutErrMsg(retCode);
-                        }
-                    }
-                    //if it is Cleaning program, need not notify user
-                    if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
-                    {
-                        if("RG6" == m_CurProgramStepInfo.reagentGroup)
-                        {
-                            if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
-                            {
-                                //this is last step, need to notice user
-                                if(!m_completionNotifierSent)
-                                {
-                                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                                    Q_ASSERT(commandPtrFinish);
-                                    Global::tRefType fRef = GetNewCommandRef();
-                                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                                    m_completionNotifierSent = true;
-                                }
-                            }
-                        }
-                        else
+                        if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
                         {
                             //this is last step, need to notice user
                             if(!m_completionNotifierSent)
@@ -911,366 +897,349 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 m_completionNotifierSent = true;
                             }
                         }
-                        if(CTRL_CMD_DRAIN == ctrlCmd)
-                        {
-                            LogDebug(QString("last Program Processing(Soak) Process finished"));
-                            m_SchedulerMachine->NotifyProcessingFinished();
-                            m_TimeStamps.CurStepSoakStartTime = 0;
-                            m_completionNotifierSent = false;
-                            m_IsReleasePressureOfSoakFinish = false;
-                            m_ReleasePressureSucessOfSoakFinish = false;
-                        }
                     }
                     else
                     {
-                        if(m_ReleasePressureSucessOfSoakFinish)
+                        //this is last step, need to notice user
+                        if(!m_completionNotifierSent)
                         {
-                            LogDebug(QString("Program Processing(Soak) Process finished"));
-                            m_SchedulerMachine->NotifyProcessingFinished();
-                            m_TimeStamps.CurStepSoakStartTime = 0;
-                            m_IsReleasePressureOfSoakFinish = false;
-                            m_ReleasePressureSucessOfSoakFinish = false;
+                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                            Q_ASSERT(commandPtrFinish);
+                            Global::tRefType fRef = GetNewCommandRef();
+                            SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                            m_completionNotifierSent = true;
                         }
                     }
-                }
-                else // Begin to Soak
-                {
-                    if (now > m_TimeStamps.ProposeSoakStartTime)
+                    if(CTRL_CMD_DRAIN == ctrlCmd)
                     {
-                        if(m_IsInSoakDelay)
-                        {
-                            if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
-                            {
-                                if(m_CurProgramStepInfo.isPressure)
-                                {
-                                    m_ProcessingPV = 0;
-                                    Pressure();
-                                }else if(m_CurProgramStepInfo.isVacuum)
-                                {
-                                    m_ProcessingPV = 1;
-                                    Vaccum();
-                                }
-                                m_lastPVTime = now;
-                            }
-                            m_IsInSoakDelay = false;
-                        }
-                        else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
-                        {
-                            // P/V take turns in 1 minute
-                            if((now - m_lastPVTime)>60000)
-                            {
-                                if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
-                                {
-                                    m_ProcessingPV = 0;
-                                    Pressure();
-                                }
-                                else
-                                {
-                                    m_ProcessingPV = 1;
-                                    Vaccum();
-                                }
-                                m_lastPVTime = now;
-                            }
-                        }
-
-                        // Check if Pressure or Vacuum operation reaches abs(25) in 30 seconds
-                        if ((now - m_lastPVTime) > 30*1000 && m_lastPVTime != 0)
-                        {
-                            if (qAbs(m_PressureAL) < 25.0)
-                            {
-                                if (0 == m_ProcessingPV) // for Pressure
-                                {
-                                    m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
-                                }
-                                else if (1 == m_ProcessingPV)
-                                {
-                                    m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                    SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        else if (PSSM_PROCESSING_SR == stepState)
-        {
-            m_CurrentStepState = PSSM_PROCESSING_SR;
-            if(CTRL_CMD_DRAIN_SR == ctrlCmd)
-            {
-                CloseTheAlarm();
-                m_ProgramStatusInfor.SetErrorFlag(0);
-                m_completionSRSent = false;
-                m_IsSafeReagent = true;
-                m_SchedulerMachine->NotifyProcessingFinished();
-            }
-        }
-        else if(PSSM_RV_MOVE_TO_TUBE == stepState)
-        {
-            m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
-
-            if (CTRL_CMD_PAUSE == ctrlCmd)
-            {
-               EnablePauseButton();
-               Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
-            }
-            m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
-        }
-        else if(PSSM_DRAINING == stepState)
-        {
-            m_CurrentStepState = PSSM_DRAINING;
-
-             if (CTRL_CMD_PAUSE == ctrlCmd)
-             {
-                EnablePauseButton();
-                Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
-             }
-
-             //In case that Scheduler was recovered from Error
-             if( "Scheduler::ALDraining"== cmdName)
-             {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    if(m_EndTimeAndStepTime.GapTime > 0)
-                    {
-                        m_IsDrainDelay = true;
-                        m_DrainDelayBeginTime = QDateTime::currentMSecsSinceEpoch();
-                    }
-                    else
-                    {
-                        LogDebug(QString("Program Step Draining succeed!"));
-                        if(m_IsSafeReagent)
-                        {
-                            m_SchedulerMachine->NotifyProgramFinished();
-                        }
-                        else
-                        {
-                            m_SchedulerMachine->NotifyDrainFinished();
-                        }
+                        LogDebug(QString("last Program Processing(Soak) Process finished"));
+                        m_SchedulerMachine->NotifyProcessingFinished();
+                        m_TimeStamps.CurStepSoakStartTime = 0;
+                        m_completionNotifierSent = false;
+                        m_IsReleasePressureOfSoakFinish = false;
+                        m_ReleasePressureSucessOfSoakFinish = false;
                     }
                 }
                 else
                 {
-                    LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    SendOutErrMsg(retCode);
-                }
-             }
-             if(m_IsDrainDelay)
-             {
-                 if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
-                 {
-                     LogDebug(QString("Program Step Draining succeed!"));
-                     if(m_IsSafeReagent)
-                     {
-                         m_SchedulerMachine->NotifyProgramFinished();
-                     }
-                     else
-                     {
-                         m_SchedulerMachine->NotifyDrainFinished();
-                     }
-                     m_IsDrainDelay = false;
-                 }
-             }
-        }
-        else if(PSSM_RV_POS_CHANGE == stepState)
-        {
-            m_CurrentStepState = PSSM_RV_POS_CHANGE;
-            if(IsRVRightPosition(NEXT_TUBE_POS))
-            {
-                m_SchedulerMachine->NotifyStepFinished();
-            }
-            else
-            {
-                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-                {
-                    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                    if(m_ReleasePressureSucessOfSoakFinish)
                     {
-                        SendOutErrMsg(retCode);
+                        LogDebug(QString("Program Processing(Soak) Process finished"));
+                        m_SchedulerMachine->NotifyProcessingFinished();
+                        m_TimeStamps.CurStepSoakStartTime = 0;
+                        m_IsReleasePressureOfSoakFinish = false;
+                        m_ReleasePressureSucessOfSoakFinish = false;
                     }
                 }
             }
-        }
-        else if(PSSM_STEP_PROGRAM_FINISH == stepState)
-        {
-            if (0 == m_PssmStepFinSeq)
+            else // Begin to Soak
             {
-                m_UnknownErrorLogVector.clear();
-                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
-                m_PssmStepFinSeq++;
-            }
-            else if (1 == m_PssmStepFinSeq)
-            {
-                // Update station reagent status
-                this->UpdateStationReagentStatus();
-                (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-                if(m_CurProgramStepIndex != -1)
+                if (now > m_TimeStamps.ProposeSoakStartTime)
                 {
-                    m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
-                    //start next step
-                    QString PVMode = "/";
-                    if(m_CurProgramStepInfo.isPressure)
+                    if(m_IsInSoakDelay)
                     {
-                        PVMode = "P/";
+                        if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
+                        {
+                            if(m_CurProgramStepInfo.isPressure)
+                            {
+                                m_ProcessingPV = 0;
+                                Pressure();
+                            }else if(m_CurProgramStepInfo.isVacuum)
+                            {
+                                m_ProcessingPV = 1;
+                                Vaccum();
+                            }
+                            m_lastPVTime = now;
+                        }
+                        m_IsInSoakDelay = false;
                     }
-                    if(m_CurProgramStepInfo.isVacuum)
+                    else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
                     {
-                        PVMode += "V";
+                        // P/V take turns in 1 minute
+                        if((now - m_lastPVTime)>60000)
+                        {
+                            if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
+                            {
+                                m_ProcessingPV = 0;
+                                Pressure();
+                            }
+                            else
+                            {
+                                m_ProcessingPV = 1;
+                                Vaccum();
+                            }
+                            m_lastPVTime = now;
+                        }
                     }
-                    RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
-                               << m_CurProgramStepInfo.stationID
-                               <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                               <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
-                               <<PVMode);
-                    m_SchedulerMachine->NotifyStepProgramFinished();
+
+                    // Check if Pressure or Vacuum operation reaches abs(25) in 30 seconds
+                    if ((now - m_lastPVTime) > 30*1000 && m_lastPVTime != 0)
+                    {
+                        if (qAbs(m_PressureAL) < 25.0)
+                        {
+                            if (0 == m_ProcessingPV) // for Pressure
+                            {
+                                m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
+                            }
+                            else if (1 == m_ProcessingPV)
+                            {
+                                m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    else if (PSSM_PROCESSING_SR == stepState)
+    {
+        m_CurrentStepState = PSSM_PROCESSING_SR;
+        if(CTRL_CMD_DRAIN_SR == ctrlCmd)
+        {
+            CloseTheAlarm();
+            m_ProgramStatusInfor.SetErrorFlag(0);
+            m_completionSRSent = false;
+            m_IsSafeReagent = true;
+            m_SchedulerMachine->NotifyProcessingFinished();
+        }
+    }
+    else if(PSSM_RV_MOVE_TO_TUBE == stepState)
+    {
+        m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
+
+        if (CTRL_CMD_PAUSE == ctrlCmd)
+        {
+           EnablePauseButton();
+           Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
+        }
+        m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
+    }
+    else if(PSSM_DRAINING == stepState)
+    {
+        m_CurrentStepState = PSSM_DRAINING;
+
+         if (CTRL_CMD_PAUSE == ctrlCmd)
+         {
+            EnablePauseButton();
+            Global::EventObject::Instance().RaiseEvent(EVENT_WAIT_DRAINING_FINISH);
+         }
+
+         //In case that Scheduler was recovered from Error
+         if( "Scheduler::ALDraining"== cmdName)
+         {
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                if(m_EndTimeAndStepTime.GapTime > 0)
+                {
+                    m_IsDrainDelay = true;
+                    m_DrainDelayBeginTime = QDateTime::currentMSecsSinceEpoch();
                 }
                 else
                 {
-                    if(m_IsCleaningProgram)
-                    { // need run cleaning dry step
-                        m_SchedulerMachine->NotifyEnterCleaningDryStep();
-                    }
-                    else
+                    LogDebug(QString("Program Step Draining succeed!"));
+                    if(m_IsSafeReagent)
                     {
                         m_SchedulerMachine->NotifyProgramFinished();
                     }
-
+                    else
+                    {
+                        m_SchedulerMachine->NotifyDrainFinished();
+                    }
                 }
-                m_PssmStepFinSeq = 0;
-            }
-        }
-        else if(PSSM_CLEANING_DRY_STEP == stepState)
-        {
-            m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
-            DoCleaningDryStep(ctrlCmd, cmd);
-        }
-        else if(PSSM_PROGRAM_FINISH == stepState)
-        {
-            //program finished
-            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
-            m_SchedulerMachine->SendRunComplete();
-
-            if(m_IsCleaningProgram && !m_IsSafeReagent)
-            {
-                m_IsCleaningProgram = false;
-                m_ProgramStatusInfor.SetProgramFinished();
-            }
-            //send command to main controller to tell the left time
-            QTime leftTime(0,0,0);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-            //send command to main controller to tell program finished
-            if(m_IsCleaningProgram && m_IsSafeReagent)
-            {
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
-                Q_ASSERT(commandPtrFinish);
-                Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
             }
             else
             {
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-                Q_ASSERT(commandPtrFinish);
-                Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                LogDebug(QString("Program Step Draining Build Pressure timeout"));
+                SendOutErrMsg(retCode);
             }
-
-            if(m_IsSafeReagent)
-            {
-                m_IsSafeReagent = false;
-            }
-        }
-        else if(PSSM_PAUSE == stepState)
+         }
+         if(m_IsDrainDelay)
+         {
+             if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
+             {
+                 LogDebug(QString("Program Step Draining succeed!"));
+                 if(m_IsSafeReagent)
+                 {
+                     m_SchedulerMachine->NotifyProgramFinished();
+                 }
+                 else
+                 {
+                     m_SchedulerMachine->NotifyDrainFinished();
+                 }
+                 m_IsDrainDelay = false;
+             }
+         }
+    }
+    else if(PSSM_RV_POS_CHANGE == stepState)
+    {
+        m_CurrentStepState = PSSM_RV_POS_CHANGE;
+        if(IsRVRightPosition(NEXT_TUBE_POS))
         {
-            m_CurrentStepState = PSSM_PAUSE;
-            if(CTRL_CMD_START == ctrlCmd)
-            {
-                // resume the program
-                emit NotifyResume();
-
-                // tell the main controller the program is resuming
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
-                Q_ASSERT(commandPtrFinish);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                m_TimeStamps.PauseStartTime = 0;
-            }
-            else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)
-            {
-                m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
-                m_Is5MinPause = false;
-                m_Is10MinPause = false;
-                m_Is15MinPause = false;
-            }
-            else
-            {
-                qint64 now = QDateTime::currentMSecsSinceEpoch();
-                if(!m_Is5MinPause && (now - m_TimeStamps.PauseStartTime) >= 5 * 60* 1000 &&
-                        (now - m_TimeStamps.PauseStartTime) < 10 * 60* 1000)
-                {
-                    m_Is5MinPause = true;
-                    Global::EventObject::Instance().RaiseEvent(EVENT_DEVICE_ALARM_PAUSE_5MINTUES);
-                }
-                else if(!m_Is10MinPause && (now - m_TimeStamps.PauseStartTime) >= 10 * 60* 1000 &&
-                         (now - m_TimeStamps.PauseStartTime) < 15 * 60* 1000)
-                {
-                    m_Is10MinPause = true;
-                    Global::EventObject::Instance().RaiseEvent(EVENT_LOCAL_ALARM_PAUSE_10MINTUES);
-                }
-                else if(!m_Is15MinPause && (now - m_TimeStamps.PauseStartTime) >= 15 * 60* 1000)
-                {
-                    m_Is15MinPause = true;
-
-                    ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES;
-                    MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type));
-                    Q_ASSERT(commandPtrPauseEnable);
-                    Global::tRefType fRef = GetNewCommandRef();
-                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
-
-                    Global::EventObject::Instance().RaiseEvent(EVENT_REMOTE_ALARM_PAUSE_15MINTUES);
-                }
-
-            }
-
+            m_SchedulerMachine->NotifyStepFinished();
         }
-        else if(PSSM_ABORTING == stepState)
+        else
         {
-            if(0 == m_AbortingSeq)
+            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
             {
-                m_CurrentStepState = PSSM_ABORTING;
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    SendOutErrMsg(retCode);
+                }
             }
-            m_SchedulerMachine->HandlePSSMAbortingWorkFlow(cmdName, retCode);
-        }
-        else if(PSSM_ABORTED == stepState)
-        {
-            m_AbortingSeq = 0;
-            m_CurrentStepState = PSSM_ABORTED;
-            //program finished
-            AllStop();
-
-            m_SchedulerMachine->SendRunComplete();
-            // tell the main controller the program has been aborted
-            MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
-            Q_ASSERT(commandPtrAbortFinish);
-            Global::tRefType fRef = GetNewCommandRef();
-            SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
-
-            //update station/reagent using times
-            if(m_ProgramStatusInfor.IsRetortContaminted())
-            {
-                UpdateStationReagentStatus();
-            }
-
-            m_CurProgramStepIndex = -1;
-            LogDebug("Program aborted!");
         }
     }
+    else if(PSSM_STEP_PROGRAM_FINISH == stepState)
+    {
+        m_CurrentStepState = PSSM_STEP_PROGRAM_FINISH;
+        if (0 == m_PssmStepFinSeq)
+        {
+            m_UnknownErrorLogVector.clear();
+            RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_FINISHED,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex));
+            m_PssmStepFinSeq++;
+        }
+        else if (1 == m_PssmStepFinSeq)
+        {
+            // Update station reagent status
+            this->UpdateStationReagentStatus();
+            (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+            if(m_CurProgramStepIndex != -1)
+            {
+                m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+                //start next step
+                QString PVMode = "/";
+                if(m_CurProgramStepInfo.isPressure)
+                {
+                    PVMode = "P/";
+                }
+                if(m_CurProgramStepInfo.isVacuum)
+                {
+                    PVMode += "V";
+                }
+                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                           << m_CurProgramStepInfo.stationID
+                           <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                           <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                           <<PVMode);
+                m_SchedulerMachine->NotifyStepProgramFinished();
+            }
+            else
+            {
+                if(m_IsCleaningProgram)
+                { // need run cleaning dry step
+                    m_SchedulerMachine->NotifyEnterCleaningDryStep();
+                }
+                else
+                {
+                    m_SchedulerMachine->NotifyProgramFinished();
+                }
 
+            }
+            m_PssmStepFinSeq = 0;
+        }
+    }
+    else if(PSSM_CLEANING_DRY_STEP == stepState)
+    {
+        m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
+        DoCleaningDryStep(ctrlCmd, cmd);
+    }
+    else if(PSSM_PROGRAM_FINISH == stepState)
+    {
+        m_CurrentStepState = PSSM_PROGRAM_FINISH;
+
+        //program finished
+        QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+        RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
+        m_SchedulerMachine->SendRunComplete();
+
+        if(m_IsCleaningProgram && !m_IsSafeReagent)
+        {
+            m_IsCleaningProgram = false;
+            m_ProgramStatusInfor.SetProgramFinished();
+        }
+        //send command to main controller to tell the left time
+        QTime leftTime(0,0,0);
+        MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+        //send command to main controller to tell program finished
+        if(m_IsCleaningProgram && m_IsSafeReagent)
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        }
+        else
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        }
+
+        if(m_IsSafeReagent)
+        {
+            m_IsSafeReagent = false;
+        }
+    }
+    else if(PSSM_PAUSE == stepState)
+    {
+        m_CurrentStepState = PSSM_PAUSE;
+        if(CTRL_CMD_START == ctrlCmd)
+        {
+            // resume the program
+            emit NotifyResume();
+
+            // tell the main controller the program is resuming
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            Q_ASSERT(commandPtrFinish);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+            m_TimeStamps.PauseStartTime = 0;
+        }
+        else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)
+        {
+            m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_Is5MinPause = false;
+            m_Is10MinPause = false;
+            m_Is15MinPause = false;
+        }
+        else
+        {
+            qint64 now = QDateTime::currentMSecsSinceEpoch();
+            if(!m_Is5MinPause && (now - m_TimeStamps.PauseStartTime) >= 5 * 60* 1000 &&
+                    (now - m_TimeStamps.PauseStartTime) < 10 * 60* 1000)
+            {
+                m_Is5MinPause = true;
+                Global::EventObject::Instance().RaiseEvent(EVENT_DEVICE_ALARM_PAUSE_5MINTUES);
+            }
+            else if(!m_Is10MinPause && (now - m_TimeStamps.PauseStartTime) >= 10 * 60* 1000 &&
+                     (now - m_TimeStamps.PauseStartTime) < 15 * 60* 1000)
+            {
+                m_Is10MinPause = true;
+                Global::EventObject::Instance().RaiseEvent(EVENT_LOCAL_ALARM_PAUSE_10MINTUES);
+            }
+            else if(!m_Is15MinPause && (now - m_TimeStamps.PauseStartTime) >= 15 * 60* 1000)
+            {
+                m_Is15MinPause = true;
+
+                ProgramAcknownedgeType_t type =  DataManager::PROGRAM_PAUSE_TIMEOUT_15MINTUES;
+                MsgClasses::CmdProgramAcknowledge* commandPtrPauseEnable(new MsgClasses::CmdProgramAcknowledge(5000, type));
+                Q_ASSERT(commandPtrPauseEnable);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseEnable));
+
+                Global::EventObject::Instance().RaiseEvent(EVENT_REMOTE_ALARM_PAUSE_15MINTUES);
+            }
+
+        }
+
+    }
 }
 
 void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState)
@@ -1421,6 +1390,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to Rs_RV_MoveToPosition3.5");
             m_SchedulerMachine->EnterRsRVMoveToSealPosition();
         }
+        else if (CTRL_CMD_RS_ABORT == ctrlCmd)
+        {
+            LogDebug("Go to Rs_Abort");
+            m_SchedulerMachine->EnterRsAbort();
+        }
         else
         {
         }
@@ -1534,6 +1508,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RC_Restart");
         m_SchedulerMachine->HandleRcRestart(cmdName);
+    }
+    else if (SM_ERR_RS_ABORT == currentState)
+    {
+        LogDebug("In Rs_Abort");
+        m_SchedulerMachine->HandleRsAbortWorkFlow(cmdName, retCode);
     }
 }
 
@@ -1739,6 +1718,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
+        }
+        if (cmd == "rs_abort")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RS_ABORT;
         }
         if (cmd == "checkovencover")
         {
@@ -2815,12 +2799,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         scenario = 200;
         break;
     case PSSM_PAUSE:
-        scenario = 206;
-        break;
-    case PSSM_ABORTING:
-        scenario = 206;
-        break;
-    case PSSM_ABORTED:
         scenario = 206;
         break;
     case PSSM_FILLING_RVROD_HEATING:
@@ -4224,8 +4202,11 @@ HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
     {
         return LATUBE1;
     }
+#if 0
     else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
              || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == m_CurErrEventID)
+#endif
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID)
     {
         return LATUBE2;
     }
@@ -4633,6 +4614,29 @@ void SchedulerMainThreadController::CloseTheAlarm()
     CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
     cmd->SetRmtLocOpcode(-1);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+}
+
+void SchedulerMainThreadController::CompleteRsAbort()
+{
+    //program finished
+    AllStop();
+
+    m_SchedulerMachine->SendRunComplete();
+    // tell the main controller the program has been aborted
+    MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
+    Q_ASSERT(commandPtrAbortFinish);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
+
+    //update station/reagent using times
+    if(m_ProgramStatusInfor.IsRetortContaminted())
+    {
+        UpdateStationReagentStatus();
+    }
+
+    m_CurProgramStepIndex = -1;
+    LogDebug("Program aborted!");
+    RaiseEvent(EVENT_SCHEDULER_OVEN_ABORTED);
 }
 
 void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
