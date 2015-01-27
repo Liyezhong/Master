@@ -3064,6 +3064,13 @@ void ManufacturingTestHandler::GetSlaveInformation()
     }
 
     Str = p_BaseModule->ReqSerialNumber();
+
+    int i = 0;
+    while (Str.isEmpty() && i < 2) {
+        Str = p_BaseModule->ReqSerialNumber();
+        ++i;
+    }
+
     (void)Status.insert("SerialNumber", Str);
 
     Str = p_BaseModule->GetBootloaderInfo();
