@@ -311,14 +311,14 @@ void CViewHistoryDiffDlg::SetTreeProperties()
     m_Model.setColumnCount(1);
     m_Model.setHorizontalHeaderItem(0,new QStandardItem(QApplication::translate("SystemTracking::CViewHistoryDiffDlg",
                                                        "Module List", 0, QApplication::UnicodeUTF8)));
-    m_Model.setHorizontalHeaderItem(1,new QStandardItem(tr("")));
+    m_Model.setHorizontalHeaderItem(1,new QStandardItem(tr("Value")));
 
     m_ModelRight.setColumnCount(1);
     m_ModelRight.setHorizontalHeaderItem(0,new QStandardItem(QApplication::translate
                                         ("SystemTracking::CViewHistoryDiffDlg", "Module List",
                                          0, QApplication::UnicodeUTF8)));
 
-    m_ModelRight.setHorizontalHeaderItem(1,new QStandardItem(tr("")));
+    m_ModelRight.setHorizontalHeaderItem(1,new QStandardItem(tr("Value")));
 
 }
 
