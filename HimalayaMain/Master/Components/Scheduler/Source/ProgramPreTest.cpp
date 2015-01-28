@@ -84,7 +84,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
     m_IsAbortRecv = false;
-    m_TasksAborted = false
+    m_TasksAborted = false;
 }
 
 CProgramPreTest::~CProgramPreTest()
