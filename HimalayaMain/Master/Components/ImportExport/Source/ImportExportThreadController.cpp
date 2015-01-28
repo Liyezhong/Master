@@ -270,7 +270,7 @@ void ImportExportThreadController::OnGoReceived() {
             if (MountDevice(true, "*.lpkg")) {
                 // to store the files in the directory
                 QStringList DirFileNames;
-                QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
+                QDir Dir(Global::DIRECTORY_MNT_STORAGE);
                 // get the lpkg files from the directory
                 DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG), QDir::Files, QDir::Name | QDir::Time);
                 switch(DirFileNames.count()) {
@@ -974,7 +974,7 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
     EncryptionDecryption::RAMFile RFile;
     // to store the file list
     QStringList FileList;
-    QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
+    QDir Dir(Global::DIRECTORY_MNT_STORAGE);
 
     // check the file format - consider the first file
     if (FileName.split(DELIMITER_STRING_UNDERSCORE).count() > 4) {
