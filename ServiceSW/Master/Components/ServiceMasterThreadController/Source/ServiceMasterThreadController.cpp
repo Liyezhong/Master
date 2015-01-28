@@ -474,7 +474,7 @@ void ServiceMasterThreadController::AttachControllersAndStartThreads(bool BasicT
         it.value().second->start();
     }
     // start heartbeat check timer only if m_HeartbeatCheckTimeout > 0
-    m_HeartbeatCheckTimeout = 10*1000;
+    m_HeartbeatCheckTimeout = 15*1000;
    if(m_HeartbeatCheckTimeout > 0) {
        m_HeartbeatCheckTimer.setInterval(m_HeartbeatCheckTimeout);
        m_HeartbeatCheckTimer.setSingleShot(true);
