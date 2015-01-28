@@ -2,6 +2,7 @@
 #include "ui_ScreenSaverWidget.h"
 #include <QTimer>
 
+
 ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     QWidget(p),
     ui(new Ui::ScreenSaverWidget)
@@ -25,6 +26,15 @@ ScreenSaverWidget::~ScreenSaverWidget()
     }
     catch(...)
     {}
+}
+
+bool ScreenSaverWidget::event ( QEvent * event )
+{
+    if (event->type() == QEvent::WindowBlocked)
+    {
+        OnInteractStart();
+    }
+    return QWidget::event(event);
 }
 
 void ScreenSaverWidget::AppIdleForLongTime()
