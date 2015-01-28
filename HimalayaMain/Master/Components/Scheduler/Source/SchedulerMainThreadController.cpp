@@ -271,10 +271,13 @@ void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 us
              .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
 #if 1
-    if (false == m_InternalErrorRecv)
+    if(usErrorID == DCL_ERR_TIMEOUT || usErrorID == DCL_ERR_CANCOMMUTOR_COMM_FAILED)
     {
-        m_InternalErrorRecv = true;
-        SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+        if (false == m_InternalErrorRecv)
+        {
+            m_InternalErrorRecv = true;
+            SendOutErrMsg(DCL_ERR_DEV_INTER_SW_ERROR, false);
+        }
     }
 #endif
 }
