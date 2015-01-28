@@ -41,7 +41,7 @@ const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and out
  */
 /****************************************************************************/
 WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureControl *pPressureControl, QObject *pParent):
-    WrapperBase(Name, pParent), m_pPressureControl(pPressureControl), pumpStatus(false)
+    WrapperBase(Name, pParent), pumpStatus(false), m_pPressureControl(pPressureControl)
 {
     Reset();
     (void)connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, float)),

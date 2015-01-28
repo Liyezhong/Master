@@ -152,6 +152,7 @@ void CStatusConfirmDialog::HideLabel()
 void CStatusConfirmDialog::UpdateLabel(const QString& Status, const QString& Value)
 {
 //    mp_Ui->labelStatus->setText(Status);
+    Q_UNUSED(Status);
     mp_Ui->labelStatusValue->setText(Value);
 }
 
