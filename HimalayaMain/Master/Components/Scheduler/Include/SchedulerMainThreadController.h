@@ -324,7 +324,6 @@ typedef struct
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
         QVector<SlaveAttr_t>  m_SlaveAttrList;                ///< Attribute list of Slave modules
-        bool    m_IsSafeReagent;                              ///< Scheduler is in RS_Tissue_Protect state
         qint8   m_ReEnterFilling;                             ///< When restart filling, the sequence of re-entering filling
         qint64  m_TimeReEnterFilling;                         ///< Time when re-enter filling
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
@@ -1397,10 +1396,10 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of function CloseTheAlarm
+         *  \brief  Definition/Declaration of function SendSafeReagentFinishedCmd
          */
         /****************************************************************************/
-        void CloseTheAlarm();
+        void SendSafeReagentFinishedCmd();
 
         /****************************************************************************/
         /*!

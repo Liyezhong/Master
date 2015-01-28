@@ -458,7 +458,6 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         {
             emit TasksDone(false);
         }
-        emit TasksDone(true);
         m_StartReq = 0;
     }
 }

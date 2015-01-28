@@ -84,7 +84,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmProcessingSRState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVMoveToTubeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmDrainingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVPosChangeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -155,7 +154,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeFiling()), mp_PssmFillingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveToSeal()), mp_PssmRVMoveToSealState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessing()), mp_PssmProcessingState.data());
-    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessingSR()), mp_PssmProgramFinish.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
@@ -375,8 +373,11 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     }
     else
     {
-        mp_SchedulerThreadController->SetCurrentStepState(PSSM_SAFE_REAGENT_FINISH);
-        emit SigBackToBusy();
+        emit SigIdleRcRestart();
+        while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
     }
 }
 
@@ -502,11 +503,6 @@ void CSchedulerStateMachine::SendResumeRVMoveToSeal()
 void CSchedulerStateMachine::SendResumeProcessing()
 {
     emit ResumeProcessing();
-}
-
-void CSchedulerStateMachine::SendResumeProcessingSR()
-{
-    emit ResumeProcessingSR();
 }
 
 void CSchedulerStateMachine::SendResumeRVMoveTube()
@@ -690,10 +686,6 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingState.data()))
         {
             return PSSM_PROCESSING;
-        }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingSRState.data()))
-        {
-            return PSSM_SAFE_REAGENT_FINISH;
         }
         else if (mp_SchedulerMachine->configuration().contains(mp_PssmRVMoveToTubeState.data()))
         {

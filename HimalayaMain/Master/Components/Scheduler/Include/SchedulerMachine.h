@@ -78,7 +78,6 @@ private:
     QSharedPointer<QState> mp_PssmFillingState;                                         ///<  Busy State's sub state: Filling
     QSharedPointer<QState> mp_PssmRVMoveToSealState;                                    ///<  Busy State's sub state: RV move to Seal position
     QSharedPointer<QState> mp_PssmProcessingState;                                      ///<  Busy State's sub state: Processing or Soak state
-    QSharedPointer<QState> mp_PssmProcessingSRState;                                    ///<  Busy State's sub state: Processing or Soak state (for Safe Reagent)
     QSharedPointer<QState> mp_PssmRVMoveToTubeState;                                    ///<  Busy State's sub state: RV move to tube position state
     QSharedPointer<QState> mp_PssmDrainingState;                                        ///<  Busy State's sub state: Draining state
     QSharedPointer<QState> mp_PssmRVPosChangeState;                                     ///<  Busy State's sub state: RV move to next tube state
@@ -313,13 +312,6 @@ public:
      */
     /****************************************************************************/
     void SendResumeProcessing();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function SendResumeProcessingSR
-     */
-    /****************************************************************************/
-    void SendResumeProcessingSR();
 
     /****************************************************************************/
     /*!
@@ -1217,12 +1209,6 @@ signals:
    /****************************************************************************/
    void ResumeProcessing();
 
-   /****************************************************************************/
-   /*!
-    *  \brief  Definition/Declaration of signal ResumeProcessingSR
-    */
-   /****************************************************************************/
-   void ResumeProcessingSR();
    /****************************************************************************/
    /*!
     *  \brief  Definition/Declaration of signal ResumeRVMoveTube

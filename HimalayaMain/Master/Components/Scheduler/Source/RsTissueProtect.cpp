@@ -480,7 +480,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                {
                    mp_SchedulerController->LogDebug("RS_Safe_Reagent, drain safe reagent passed.");
-                   SendTasksDoneSig(true);
+                   m_CurrentStep = SAFE_REAGENT_FINISHED;
                }
                else
                {
@@ -488,6 +488,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                }
             }
         }
+        break;
+    case SAFE_REAGENT_FINISHED:
+        mp_SchedulerController->SendSafeReagentFinishedCmd();
+        mp_SchedulerController->LogDebug("RS_Safe_Reagent is finished sucessfully.");
+        SendTasksDoneSig(true);
         break;
     default:
         break;

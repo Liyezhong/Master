@@ -133,7 +133,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsCleaningProgram = false;
     m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
-    m_IsSafeReagent = false;
     m_ReEnterFilling = 0;
     m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
@@ -716,11 +715,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
            case PSSM_PROCESSING:
                 m_SchedulerMachine->SendResumeProcessing();
                 break;
-                case PSSM_SAFE_REAGENT_FINISH:
-                     m_IsSafeReagent = true;
-                     m_ProgramStatusInfor.SetErrorFlag(0);
-                 m_SchedulerMachine->SendResumeProcessingSR();
-                 break;
            case PSSM_RV_MOVE_TO_TUBE:
                 m_SchedulerMachine->SendResumeRVMoveTube();
                 break;
@@ -1140,38 +1134,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
         //send command to main controller to tell program finished
-        if(m_IsCleaningProgram && m_IsSafeReagent)
-        {
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
-            Q_ASSERT(commandPtrFinish);
-            Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-        }
-        else
-        {
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-            Q_ASSERT(commandPtrFinish);
-            Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-        }
+        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+        Q_ASSERT(commandPtrFinish);
+        Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
 
-            if(m_IsCleaningProgram && !m_IsSafeReagent)
-            {
-                m_IsCleaningProgram = false;
-                m_ProgramStatusInfor.SetProgramFinished();
-            }
-            if(m_IsSafeReagent)
-            {
-                m_IsSafeReagent = false;
-            }
-        }
-        else if(PSSM_PAUSE == stepState)
+        if(m_IsCleaningProgram)
         {
-            m_CurrentStepState = PSSM_PAUSE;
-            if(CTRL_CMD_START == ctrlCmd)
-            {
-                // resume the program
-                emit NotifyResume();
+            m_IsCleaningProgram = false;
+            m_ProgramStatusInfor.SetProgramFinished();
+        }
+    }
+    else if(PSSM_PAUSE == stepState)
+    {
+        m_CurrentStepState = PSSM_PAUSE;
+        if(CTRL_CMD_START == ctrlCmd)
+        {
+            // resume the program
+            emit NotifyResume();
 
             // tell the main controller the program is resuming
             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -4567,12 +4547,28 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
     }
 }
 
-void SchedulerMainThreadController::CloseTheAlarm()
+void SchedulerMainThreadController::SendSafeReagentFinishedCmd()
 {
-    Global::AlarmHandler::Instance().reset();
-    CmdRmtLocAlarm *cmd = new CmdRmtLocAlarm(500, this);
-    cmd->SetRmtLocOpcode(-1);
-    m_SchedulerCommandProcessor->pushCmd(cmd);
+    QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+    RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
+
+    //send command to main controller to tell program finished
+    Global::tRefType Ref = GetNewCommandRef();
+    if(m_IsCleaningProgram)
+    {
+        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+        Q_ASSERT(commandPtrFinish);
+        Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+    }
+    else
+    {
+        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+        Q_ASSERT(commandPtrFinish);
+        Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+    }
+    m_ProgramStatusInfor.SetErrorFlag(0);
 }
 
 void SchedulerMainThreadController::CompleteRsAbort()

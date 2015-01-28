@@ -17,15 +17,14 @@ namespace Scheduler{
 #define L2_PRO_FILLING                        (0x5)
 #define L2_PRO_RV_MOVE_TO_SEAL                (0x6)
 #define L2_PRO_PROCESSING                     (0x7)
-#define L2_PRO_SAFE_REAGENT_FINISH            (0x8)
-#define L2_PRO_RV_MOVE_TO_TUBE                (0x9)
-#define L2_PRO_DRAINING                       (0xA)
-#define L2_PRO_RV_POS_CHANGE                  (0xB)
-#define L2_PRO_STEP_PROGRAM_FINISH            (0xC)
-#define L2_PRO_PROGRAM_FINISH                 (0xD)
-#define L2_PRO_PAUSE                          (0xE)
-#define L2_PRO_CLEANING_DRY_STEP              (0xF)
-#define L2_PRO_POWERFAILURE_FINISH            (0x10)
+#define L2_PRO_RV_MOVE_TO_TUBE                (0x8)
+#define L2_PRO_DRAINING                       (0x9)
+#define L2_PRO_RV_POS_CHANGE                  (0xA)
+#define L2_PRO_STEP_PROGRAM_FINISH            (0xB)
+#define L2_PRO_PROGRAM_FINISH                 (0xC)
+#define L2_PRO_PAUSE                          (0xD)
+#define L2_PRO_CLEANING_DRY_STEP              (0xE)
+#define L2_PRO_POWERFAILURE_FINISH            (0xF)
 
 #define L2_ERR_WAIT                                 (0x1)
 #define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
@@ -73,7 +72,6 @@ typedef enum
     PSSM_FILLING_LEVELSENSOR_HEATING = ((L2_PRO_FILLING_LEVELSENSOR_HEATING << 8) | L1_BUSY),
     PSSM_FILLING = ((L2_PRO_FILLING << 8) | L1_BUSY),
     PSSM_RV_MOVE_TO_SEAL = ((L2_PRO_RV_MOVE_TO_SEAL << 8) | L1_BUSY),
-    PSSM_SAFE_REAGENT_FINISH = ((L2_PRO_SAFE_REAGENT_FINISH << 8) | L1_BUSY),
     PSSM_PROCESSING = ((L2_PRO_PROCESSING << 8) | L1_BUSY),
     PSSM_RV_MOVE_TO_TUBE = ((L2_PRO_RV_MOVE_TO_TUBE << 8) | L1_BUSY),
     PSSM_DRAINING = ((L2_PRO_DRAINING << 8) | L1_BUSY),

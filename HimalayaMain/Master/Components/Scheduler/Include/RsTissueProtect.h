@@ -52,7 +52,8 @@ class  CRsTissueProtect : public QObject
         MOVE_TO_SEALING,
         RELEASE_PRESSURE,
         PROCESSING_SAFE_REAGENT,
-        DRAIN_SAFE_REAGENT
+        DRAIN_SAFE_REAGENT,
+        SAFE_REAGENT_FINISHED
     } StateList_t;
 
     /*lint -e578 */
