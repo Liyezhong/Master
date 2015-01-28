@@ -1349,6 +1349,7 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
         mp_ManaufacturingDiagnosticsHandler->HideMessage();
         if (mp_SealingStatusDlg == NULL) {
             mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
+            mp_SealingStatusDlg->setModal(true);
 
             CONNECTSIGNALSIGNAL(mp_SealingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
             CONNECTSIGNALSLOT(mp_SealingStatusDlg, RefreshResultToMain(bool), mp_ManaufacturingDiagnosticsHandler, OnReturnManufacturingMsg(bool));
@@ -1357,6 +1358,9 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
             mp_SealingStatusDlg->show();
         }
         else {
+            if (!mp_SealingStatusDlg->isVisible()) {
+                mp_SealingStatusDlg->show();
+            }
             mp_SealingStatusDlg->UpdateLabel(Status);
         }
     }

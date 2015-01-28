@@ -1690,6 +1690,11 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             if (mp_MotorRV->MoveToTubePosition(Position)!=RV_MOVE_OK) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
+
+                LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position);
+                (void)Status.insert("Label", LabelStr);
+                (void)Status.insert("Finish", "1");
+                emit RefreshTestStatustoMain(TestCaseName, Status);
                 return -1;
             }
 
@@ -1773,7 +1778,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         (void)Status.insert("Label", LabelStr);
         (void)Status.insert("Finish", "1");
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        return RetValue ;
+        return RetValue;
     }
     else {
         return -1;

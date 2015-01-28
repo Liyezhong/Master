@@ -240,9 +240,7 @@ void CSVCDashboardWidget::RetortSelected()
     CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
-        int DefTarget = p_TestCase->GetParameter("RetortTargetTemp").toInt();
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(60, 10, 100, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Retort Target Temperature");
         if (p_TempSelectionDlg->exec() == 0) {
             mp_Retort->SetStatus(CGraphicsItemPart::Normal);
@@ -286,9 +284,7 @@ void CSVCDashboardWidget::OvenSelected()
     CGraphicsItemPart::PartStatus Status = mp_Oven->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
-        int DefTarget = p_TestCase->GetParameter("OvenTopTargetTemp").toInt();
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(70, 10, 85, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Paraffin Oven Target Temperature");
         if (p_TempSelectionDlg->exec() == 0) {
             mp_Oven->SetStatus(CGraphicsItemPart::Normal);
@@ -331,9 +327,7 @@ void CSVCDashboardWidget::RotaryValveSelected()
     CGraphicsItemPart::PartStatus Status = mp_RotaryValve->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
-        int DefTarget = p_TestCase->GetParameter("RVTargetTemp").toInt();
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(115, 10, 115, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Rotary Valve Target Temperature");
         if (p_TempSelectionDlg->exec() == 0) {
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Normal);
@@ -377,9 +371,7 @@ void CSVCDashboardWidget::AirTubeSelected()
     CGraphicsItemPart::PartStatus Status = mp_AirHeatingTube->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
-        int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(80, 10, 80, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Air Heating Tube Target Temperature");
         if (p_TempSelectionDlg->exec() == 0) {
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Normal);
@@ -424,9 +416,7 @@ void CSVCDashboardWidget::LiquidTubeSelected()
     CGraphicsItemPart::PartStatus Status = mp_HeatingTube->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
-        int DefTarget = p_TestCase->GetParameter("LTubeTargetTemp").toInt();
-        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(DefTarget, 40, 120, mp_Ui->graphicsView);
+        CSVCTargetTempSelectionDlg* p_TempSelectionDlg = new CSVCTargetTempSelectionDlg(80, 10, 80, mp_Ui->graphicsView);
         p_TempSelectionDlg->SetDialogTitle("Liquid Heating Tube Target Temperature");
         if (p_TempSelectionDlg->exec() == 0) {
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Normal);
@@ -583,11 +573,7 @@ void CSVCDashboardWidget::PumpSelected()
             Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -30);//vaccum
         }
         else {
-            //To show warning dialog
-//            QString Title = tr("Pump");
-//            QString Text  = tr("Valve1&2 is off, cann't create pressure.");
-//            mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
-//            mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
         }
 
         if (Ret != (int)Diagnostics::RETURN_OK) {
