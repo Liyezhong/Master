@@ -4259,34 +4259,37 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {
-        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError2.instanceID != 0)
     {
-        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError3.instanceID != 0 )
     {
-        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError4.instanceID != 0)
     {
-        LogDebug(QString("ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError5.instanceID != 0)
     {
+        LogDebug(QString("In current of range, level sensor current is: %1").arg(reportError5.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError6.instanceID != 0)
     {
+        LogDebug(QString("In current of range, AL tube1 current is: %1").arg(reportError6.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError7.instanceID != 0)
     {
+        LogDebug(QString("In current of range, AL tube2 current is: %1").arg(reportError7.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError8.instanceID != 0)
