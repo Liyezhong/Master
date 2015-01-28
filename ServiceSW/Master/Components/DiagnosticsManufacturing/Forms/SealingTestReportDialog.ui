@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>485</width>
+    <width>504</width>
     <height>358</height>
    </rect>
   </property>
@@ -27,12 +27,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="6" column="1">
       <widget class="QLabel" name="Pressure6">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -41,12 +47,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="7" column="0">
       <widget class="QLabel" name="Position7">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -55,12 +67,18 @@
        <property name="text">
         <string>Pressure</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="Position5">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -69,12 +87,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="Position3">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -83,12 +107,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QLabel" name="Pressure1">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -97,12 +127,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QLabel" name="Pressure2">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -111,12 +147,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="Position2">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -125,12 +167,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="7" column="2">
       <widget class="QLabel" name="Result7">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -139,12 +187,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="8" column="1">
       <widget class="QLabel" name="Pressure8">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -153,12 +207,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QLabel" name="Pressure3">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -167,12 +227,18 @@
        <property name="text">
         <string>Result</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="Position4">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -181,12 +247,18 @@
        <property name="text">
         <string>Position</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="Position1">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -195,6 +267,9 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="5" column="1">
@@ -202,12 +277,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="3" column="2">
       <widget class="QLabel" name="Result3">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -220,12 +301,18 @@
        <property name="text">
         <string>Position</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Pressure</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -234,12 +321,18 @@
        <property name="text">
         <string>Result</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="Position9">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -248,12 +341,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="Position10">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -262,12 +361,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="2">
       <widget class="QLabel" name="Result10">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -276,12 +381,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QLabel" name="Pressure11">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -290,12 +401,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="Position12">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -304,12 +421,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="4" column="2">
       <widget class="QLabel" name="Result12">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -318,12 +441,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="5" column="1">
       <widget class="QLabel" name="Pressure13">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -332,12 +461,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="Position14">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -346,12 +481,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="6" column="2">
       <widget class="QLabel" name="Result14">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -360,12 +501,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="7" column="1">
       <widget class="QLabel" name="Pressure15">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -374,12 +521,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="8" column="0">
       <widget class="QLabel" name="Position16">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -388,6 +541,9 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="8" column="2">
@@ -395,12 +551,18 @@
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QLabel" name="Pressure9">
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
