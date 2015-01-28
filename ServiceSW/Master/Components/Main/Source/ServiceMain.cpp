@@ -26,6 +26,7 @@
 #include "Global/Include/SignalHandler.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "DeviceControl/Include/Devices/BaseDevice.h"
 
 /****************************************************************************/
 /*!
@@ -85,6 +86,9 @@ int main(int Argc, char *p_Argv[])
     Global::SystemPaths::Instance().SetInstrumentSettingsPath("../Settings/Instrument");
 
     Global::SystemPaths::Instance().SetScriptsPath("../Scripts");
+
+    // disable sensor data check of device control.
+    DeviceControl::CBaseDevice::SetSensorDataCheckFlag(false);
 
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);

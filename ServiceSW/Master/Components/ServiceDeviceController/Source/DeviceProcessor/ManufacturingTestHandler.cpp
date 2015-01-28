@@ -1557,7 +1557,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
     else {
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
 
-        ret = mp_PressPump->Sucking(delay, 1, false);
+        ret = mp_PressPump->Sucking4Overflow(delay, 1);
 
         if (ret == SUCKING_RET_OVERFLOW) {
             result = 0;

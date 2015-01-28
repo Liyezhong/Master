@@ -853,6 +853,142 @@ SORTIE:
     SetFan(0);
     return RetValue;
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Script-API: Sucking the reagent to test overflow
+ *
+ *   This method suck the reagent to the retort from certain station by set up
+ *   vaccum. The sucking will finished by detecting overflow state, otherwise
+ *   will time out.
+ *
+ *  \iparam SuckingTime Max time to suck when get overflow .
+ *  \iparam TubePosition which bottle is sucking from.
+ *
+ *  \return 1 if succeeded, -1 error happend, -2 timeout, -3 overflow.
+ *
+ */
+/****************************************************************************/
+#define SUCKING_POOLING_TIME_OVER_FLOW      350
+qint32 WrapperFmPressureControl::Sucking4Overflow(quint32 SuckingTime, quint32 TubePosition)
+{
+    qint32 RetValue = SUCKING_RET_OK;
+    QTimer timer;
+    quint32 counter = 0;
+    QList<float> PressureBuf;
+    int levelSensorState = 0xFF;
+    bool stop = false;
+//    bool WarnShowed = false;
+    bool StopInsufficientCheck =false;
+
+    connect(&timer, SIGNAL(timeout()), this, SLOT(SuckingTimerCB()));
+    Log(tr("Start Sucking procedure."));
+
+    //release pressure
+    if(!ReleasePressure())
+    {
+        RetValue = SUCKING_RET_GENERAL_FAIL;
+        goto SORTIE;
+    }
+    Log(tr("Start Sucking now."));
+    SetTargetPressure(25, m_WorkingPressureNegative);
+    SetFan(1);
+
+    timer.setSingleShot(false);
+    timer.start(SUCKING_POOLING_TIME_OVER_FLOW);
+
+    while(!stop)
+    {
+        levelSensorState = m_LoopSuckingLevelSensor.exec();
+        counter++;
+
+        if(levelSensorState == 0)
+        {
+            Log(tr("Received 0"));
+        }
+        else if (levelSensorState == (-1))
+        {
+            Log(tr("Current procedure has been interrupted, exit now."));
+            RetValue = SUCKING_RET_GENERAL_FAIL;
+            goto SORTIE;
+        }
+        else if(levelSensorState == 3)
+        {
+            if(counter > (SuckingTime*1000 / SUCKING_POOLING_TIME_OVER_FLOW))
+            {
+                Log(tr("Do not get level sensor data in %1 seconds, Time out! Exit!").arg(SuckingTime));
+                RetValue = SUCKING_RET_TIMEOUT;
+                goto SORTIE;
+            }
+
+            //check pressure here
+            float CurrentPressure = GetPressure(0);
+            if(CurrentPressure != (-1))
+            {
+                PressureBuf.append(CurrentPressure);
+            }
+            if(PressureBuf.length() >= SUCKING_OVERFLOW_SAMPLE_SIZE)
+            {
+                //with 4 wire pump
+                float Sum = 0;
+                float DeltaSum = 0;
+                float lastValue = PressureBuf.at(0);
+                for(qint32 i = 0; i < PressureBuf.length(); i++)
+                {
+                     Sum += PressureBuf.at(i);
+                     DeltaSum += PressureBuf.at(i) - lastValue;
+                     lastValue = PressureBuf.at(i);
+                }
+
+                if(((Sum/ PressureBuf.length()) < SUCKING_OVERFLOW_PRESSURE)&&(DeltaSum < SUCKING_OVERFLOW_4SAMPLE_DELTASUM))
+                {
+                    Log(tr("Overflow occured! Exit now"));
+                    RetValue = SUCKING_RET_OVERFLOW;
+                    for(qint32 i = 0; i < PressureBuf.length(); i++)
+                    {
+                         Log(tr("Over Flow Pressure %1 is: %2").arg(i).arg(PressureBuf.at(i)));
+                    }
+                    goto SORTIE;
+                }
+                else if(((Sum/ PressureBuf.length()) < SUCKING_INSUFFICIENT_PRESSURE)&&(DeltaSum > SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM)&&(!StopInsufficientCheck))
+                {
+                    if((TubePosition > 13) && (TubePosition <=16))
+                    {
+                        Log(tr("Insufficient reagent in the station! Exit now"));
+                        for(qint32 i = 0; i < PressureBuf.length(); i++)
+                        {
+                             Log(tr("Insufficient Pressure %1 is: %2").arg(i).arg(PressureBuf.at(i)));
+                        }
+                        RetValue = SUCKING_RET_INSUFFICIENT;
+                        goto SORTIE;
+                    }
+                    else
+                    {
+                        Log(tr("Insufficient reagent in the station!"));
+                    }
+                }
+                PressureBuf.pop_front();
+
+              }
+        }
+        else
+        {
+            Log(tr("Unexpected level sensor state value: %1").arg(levelSensorState));
+        }
+    }
+
+
+SORTIE:
+    if(timer.isActive())
+    {
+        timer.stop();
+    }
+    //ReleasePressure();
+    StopCompressor();
+    SetFan(0);
+    return RetValue;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Callback function for timer in Sucking

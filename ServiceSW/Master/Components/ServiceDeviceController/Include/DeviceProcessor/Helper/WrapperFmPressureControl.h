@@ -72,6 +72,7 @@ class WrapperFmPressureControl : public WrapperBase
     bool SetCalibration(bool Enable);
     qint32 Draining(quint32 DelayTime = 2000, quint32 TubePosition = 0);
     qint32 Sucking(quint32 DelayTime = 0, quint32 TubePosition = 0,  bool IsAgitation = false);
+    qint32 Sucking4Overflow(quint32 DelayTime = 0, quint32 TubePosition = 0);
     bool Vaccum(void);
     bool Pressure(void);
     bool Agitation(quint32 TubePosition);
