@@ -1029,8 +1029,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                        m_SchedulerMachine->NotifyDrainFinished();
-                    }
+                    m_SchedulerMachine->NotifyDrainFinished();
                 }
             }
             else
@@ -1044,7 +1043,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
              {
                  LogDebug(QString("Program Step Draining succeed!"));
-                     m_SchedulerMachine->NotifyDrainFinished();
+                 m_SchedulerMachine->NotifyDrainFinished();
                  m_IsDrainDelay = false;
              }
          }
