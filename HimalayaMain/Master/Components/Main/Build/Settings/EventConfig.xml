@@ -22,7 +22,8 @@
 			<Step ID="1" Type="ACT" Action="RS_Shutdown"/>
 		</Event>
 		<Event Code="" ErrorID="520070400" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="Main">
-			<Step ID="0" Type="ACT" Action="RS_Abort"/>
+			<Step ID="0" Type="ACT" Action="RS_Abort" NextStepOnFail="1"/>
+			<Step ID="0" Type="MSG" StringID="67176223" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="Main">
 			<Step ID="0" Type="MSG" StringID="67176219" ButtonType="OK" StatusBar="YES"/>
