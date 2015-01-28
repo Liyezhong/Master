@@ -132,7 +132,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
 
         // If we are in processing for safe reagent (non-paraffin), retort heating is NOT needed. For paraffin, we need heat Retort sensors
-        if (mp_SchedulerController->GetCurrentStepState() == PSSM_PROCESSING_SR && mp_SchedulerController->GetCurrentScenario() != 274)
+        if (mp_SchedulerController->GetCurrentScenario() != 274)
         {
 
         }
@@ -189,20 +189,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
-        }
-
-        // Add sepcial handling for safe reagent (in Scheduler's PSSM_PROCESSING_SR state)
-        if (mp_SchedulerController->GetCurrentStepState() == PSSM_PROCESSING_SR)
-        {
-            if (m_CurScenario >= 272 && m_CurScenario <=277)
-            {
-                //do nothing
-            }
-            else // no-paraffin safe reagent, we should stop retort heating
-            {
-                (void)this->StopTemperatureControl("RTSide");
-                (void)this->StopTemperatureControl("RTBottom");
-            }
         }
     }
 

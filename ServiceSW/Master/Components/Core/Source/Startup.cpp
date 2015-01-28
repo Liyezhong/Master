@@ -658,6 +658,7 @@ void CStartup::InitManufacturingDiagnostic()
     CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     CONNECTSIGNALSLOTGUI(mp_FirmwareUpdate, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), mp_ManaufacturingDiagnosticsHandler, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
+    Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     ManufacturingGuiInit();
 }
 
@@ -671,11 +672,9 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
 {
     qDebug()<<"CStartup::ManufacturingGuiInit";
 
-    Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne(bReInit);
     mp_MainWindow->SetUserMode("MANUFACTURING");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
-
 
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 

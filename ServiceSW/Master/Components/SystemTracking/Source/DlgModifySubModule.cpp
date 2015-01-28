@@ -124,6 +124,7 @@ void CDlgModifySubModule::OnEditSerialNumber(void)
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetValidation(true);
     mp_KeyBoardWidget->SetLineEditValidatorExpression("^[0-9]{1,4}$"); //yuan@note: for SN;
+    mp_KeyBoardWidget->SetMinCharLength(4);
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
 }

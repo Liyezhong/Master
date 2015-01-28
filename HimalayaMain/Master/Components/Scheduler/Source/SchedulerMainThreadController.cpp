@@ -128,7 +128,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_lastPVTime = 0;
     m_ProcessingPV = 3; // 0 for Pressure and 1 for Vacuum, 3 for avoiding message to pop up too many times
     m_completionNotifierSent = false;
-    m_completionSRSent = false;
     m_IsReleasePressureOfSoakFinish = false;
     m_ReleasePressureSucessOfSoakFinish = false;
     m_IsCleaningProgram = false;
@@ -714,7 +713,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
            case PSSM_PROCESSING:
                 m_SchedulerMachine->SendResumeProcessing();
                 break;
-            case PSSM_PROCESSING_SR:
+                case PSSM_SAFE_REAGENT_FINISH:
+                     m_IsSafeReagent = true;
+                     m_ProgramStatusInfor.SetErrorFlag(0);
                  m_SchedulerMachine->SendResumeProcessingSR();
                  break;
            case PSSM_RV_MOVE_TO_TUBE:
@@ -994,18 +995,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
         }
     }
-    else if (PSSM_PROCESSING_SR == stepState)
-    {
-        m_CurrentStepState = PSSM_PROCESSING_SR;
-        if(CTRL_CMD_DRAIN_SR == ctrlCmd)
-        {
-            CloseTheAlarm();
-            m_ProgramStatusInfor.SetErrorFlag(0);
-            m_completionSRSent = false;
-            m_IsSafeReagent = true;
-            m_SchedulerMachine->NotifyProcessingFinished();
-        }
-    }
     else if(PSSM_RV_MOVE_TO_TUBE == stepState)
     {
         m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
@@ -1040,12 +1029,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Draining succeed!"));
-                    if(m_IsSafeReagent)
-                    {
-                        m_SchedulerMachine->NotifyProgramFinished();
-                    }
-                    else
-                    {
                         m_SchedulerMachine->NotifyDrainFinished();
                     }
                 }
@@ -1061,14 +1044,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
              if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
              {
                  LogDebug(QString("Program Step Draining succeed!"));
-                 if(m_IsSafeReagent)
-                 {
-                     m_SchedulerMachine->NotifyProgramFinished();
-                 }
-                 else
-                 {
                      m_SchedulerMachine->NotifyDrainFinished();
-                 }
                  m_IsDrainDelay = false;
              }
          }
@@ -1154,11 +1130,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
         m_SchedulerMachine->SendRunComplete();
 
-        if(m_IsCleaningProgram && !m_IsSafeReagent)
-        {
-            m_IsCleaningProgram = false;
-            m_ProgramStatusInfor.SetProgramFinished();
-        }
         //send command to main controller to tell the left time
         QTime leftTime(0,0,0);
         MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
@@ -1182,18 +1153,23 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
         }
 
-        if(m_IsSafeReagent)
-        {
-            m_IsSafeReagent = false;
+            if(m_IsCleaningProgram && !m_IsSafeReagent)
+            {
+                m_IsCleaningProgram = false;
+                m_ProgramStatusInfor.SetProgramFinished();
+            }
+            if(m_IsSafeReagent)
+            {
+                m_IsSafeReagent = false;
+            }
         }
-    }
-    else if(PSSM_PAUSE == stepState)
-    {
-        m_CurrentStepState = PSSM_PAUSE;
-        if(CTRL_CMD_START == ctrlCmd)
+        else if(PSSM_PAUSE == stepState)
         {
-            // resume the program
-            emit NotifyResume();
+            m_CurrentStepState = PSSM_PAUSE;
+            if(CTRL_CMD_START == ctrlCmd)
+            {
+                // resume the program
+                emit NotifyResume();
 
             // tell the main controller the program is resuming
             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -1356,14 +1332,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RS_TISSUE_PROTECT == ctrlCmd)
         {
             LogDebug("Go to RS_Tissue_Protect");
-            if (PSSM_PROCESSING_SR == m_CurrentStepState)
-            {
-                m_SchedulerMachine->EnterRcRestart();
-            }
-            else
-            {
-                m_SchedulerMachine->EnterRsTissueProtect();
-            }
+            m_SchedulerMachine->EnterRsTissueProtect();
         }
         else if (CTRL_CMD_RC_CHECK_RTLOCK == ctrlCmd)
         {
@@ -1488,7 +1457,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RS_TISSUE_PROTECT == currentState)
     {
         LogDebug("In RS_Tissue_Protect");
-        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode);
+        m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode, ctrlCmd);
     }
     else if (SM_ERR_RC_CHECK_RTLOCK == currentState)
     {
@@ -2157,14 +2126,10 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
 void SchedulerMainThreadController::SendTissueProtectMsg()
 {
-    if (false == m_completionSRSent)
-    {
-        MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
-        Q_ASSERT(CmdTissueProtectDone);
-        Global::tRefType fRef = GetNewCommandRef();
-        SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
-        m_completionSRSent = true;
-    }
+    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    Q_ASSERT(CmdTissueProtectDone);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
 }
 
 void SchedulerMainThreadController::SendCoverLidOpenMsg()
@@ -2826,7 +2791,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         reagentRelated = true;
         break;
     case PSSM_PROCESSING:
-    case PSSM_PROCESSING_SR:
         scenario = 214;
         reagentRelated = true;
         break;
@@ -4401,6 +4365,7 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
         opcode = -1;
         break;
     case CTRL_CMD_POWER_FAILURE_MEG:
+    case CTRL_CMD_DRAIN_SR:
         Global::AlarmHandler::Instance().reset();
         opcode = -1;
         break;
@@ -4450,7 +4415,7 @@ void SchedulerMainThreadController::OnSystemError()
     {
         m_ProgramStatusInfor.SetErrorFlag(1);
     }
-    if(PSSM_PROCESSING == m_CurrentStepState || PSSM_PROCESSING_SR == m_CurrentStepState)
+    if(PSSM_PROCESSING == m_CurrentStepState)
     {
         if(m_completionNotifierSent)
         {
@@ -4458,14 +4423,6 @@ void SchedulerMainThreadController::OnSystemError()
                                                                     DataManager::CANCEL_PROGRAM_WILL_COMPLETE_PROMPT));
             Global::tRefType ref = GetNewCommandRef();
             SendCommand(ref, Global::CommandShPtr_t(command));
-        }
-        if(m_completionSRSent)
-        {
-            MsgClasses::CmdProgramAcknowledge* command(new MsgClasses::CmdProgramAcknowledge(5000,
-                                                                    DataManager::CANCEL_TISSUE_PROTECT_PASSED_PROMPT));
-            Global::tRefType ref = GetNewCommandRef();
-            SendCommand(ref, Global::CommandShPtr_t(command));
-            m_completionSRSent = false;
         }
     }
 
@@ -4486,7 +4443,7 @@ void SchedulerMainThreadController::OnBackToBusy()
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrRcRestart));
 
-    if ((PSSM_PROCESSING != m_CurrentStepState) && (PSSM_PROCESSING_SR != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
+    if ((PSSM_PROCESSING != m_CurrentStepState) && (-1 != m_CurProgramStepIndex))
     {
         qint64 delta = (QDateTime::currentMSecsSinceEpoch() - m_TimeStamps.SystemErrorStartTime) / 1000;
         MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, delta));

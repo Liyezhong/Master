@@ -1084,7 +1084,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
 
-
+            p_TestCase->SetParameter("RelaySwitchStatus", "1");
             for (int j = 0; j < 2 && Result && NextFlag; ++j) {
                 NextFlag = ShowGuide(Id, j);
                 if (!NextFlag) {
@@ -1093,6 +1093,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
             }
+
             break;
         case Service::SYSTEM_SEALING_TEST:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST;

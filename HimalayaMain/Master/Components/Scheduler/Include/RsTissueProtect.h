@@ -50,7 +50,9 @@ class  CRsTissueProtect : public QObject
         FILLING,
         WAIT_8S,
         MOVE_TO_SEALING,
-        RELEASE_PRESSURE
+        RELEASE_PRESSURE,
+        PROCESSING_SAFE_REAGENT,
+        DRAIN_SAFE_REAGENT
     } StateList_t;
 
     /*lint -e578 */
@@ -92,10 +94,11 @@ public:
      *
      *  \param cmdName - command name
      *  \param retCode - return code
+     *  \param ctrlCmd - controlCommandType_t
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, ControlCommandType_t ctrlCmd);
 
 
     /****************************************************************************/
@@ -165,6 +168,8 @@ private:
     quint8 m_LevelSensorSeq;                                //!< Sequence of Level sensor heating
     quint8 m_MoveToSealSeq;                                 //!< Sequnece of Moving to Sealing position
     quint8 m_ReleasePressure;                               //!< Sequnece of release pressure
+    quint8 m_DrainSafeReagent;                              //!< Sequnece of drain safe reagent
+    quint8 m_ProcessingSafeReagent;                         //!< Sequnece of processing safe reagent
     qint64 m_StartWaitTime;                                 //!< start up time for wait
     bool   m_IsFillingSuccessful;                           //!< flag to indicate if Filling is successful or not
     StateList_t m_CurrentStep;                              //!< current step

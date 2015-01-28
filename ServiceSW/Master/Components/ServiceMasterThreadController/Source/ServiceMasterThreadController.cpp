@@ -1486,6 +1486,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
 {
     try
     {
+        bool Reachable = true;
         QString Color = "black";
         QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
         QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
@@ -1503,13 +1504,14 @@ void ServiceMasterThreadController::PerformNetworkChecks()
             }
             else if (i==2)
             {
+                Reachable = false;
                 emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , false);
                 qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
             }
         }
 
         emit SetInformationToNetworkSettings(Service::CMessageString::MSG_SERVER_CHECK_HOST_ACCESS_RIGHTS, Color);
-        if(IEClient.PerformAccessRightsCheck(ReportPath))
+        if(Reachable && IEClient.PerformAccessRightsCheck(ReportPath))
         {
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
             emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , true);

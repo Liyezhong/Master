@@ -91,9 +91,9 @@
 		<string id="100728920" text1="Rotary valve heating property station test is requested" text2=""/>
 		<string id="100728921" text1="Rotary valve heating property station test completed successfully" text2=""/>
 		<string id="100728922" text1="Rotary valve heating property station test failed" text2=""/>
-		<string id="100728923" text1="Rotary valve heating movement test is requested" text2=""/>
-		<string id="100728924" text1="Rotary valve heating movement test completed successfully" text2=""/>
-		<string id="100728925" text1="Rotary valve heating movement test failed" text2=""/>
+		<string id="100728923" text1="Rotary valve movement test is requested" text2=""/>
+		<string id="100728924" text1="Rotary valve movement test completed successfully" text2=""/>
+		<string id="100728925" text1="Rotary valve movement test failed" text2=""/>
 		<string id="100728926" text1="L&amp;A system heating liquid test is requested" text2=""/>
 		<string id="100728927" text1="L&amp;A system heating liquid test completed successfully" text2=""/>
 		<string id="100728928" text1="L&amp;A system heating liquid test failed" text2=""/>
@@ -121,7 +121,7 @@
 		<string id="100728950" text1="System liquid hose test is requested" text2=""/>
 		<string id="100728951" text1="System liquid hose test finished" text2=""/>
 		<string id="100728952" text1="System liquid hose test failed" text2=""/>
-		<string id="100728953" text1="System liquid hose test position is tube %1 pressure is %1Kpa result is %1" text2=""/>
+		<string id="100728953" text1="System liquid hose test position is tube %1 pressure is %2Kpa result is %3" text2=""/>
 		<string id="100728954" text1="System sealing function test is requested" text2=""/>
 		<string id="100728955" text1="System sealing function test completed successfully" text2=""/>
 		<string id="100728956" text1="System sealing function test failed" text2=""/>
@@ -167,8 +167,8 @@
 		<string id="100728996" text1="Manufacturing: Retort send test report" text2=""/>
 		<string id="100728997" text1="Manufacturing: Oven module test is requested" text2=""/>
 		<string id="100728998" text1="Manufacturing: Oven send test report" text2=""/>
-		<string id="100728999" text1="Manufacturing: Retort valve module test is requested" text2=""/>
-		<string id="100729000" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100728999" text1="Manufacturing: Rotary valve module test is requested" text2=""/>
+		<string id="100729000" text1="Manufacturing: Rotary valve send test report" text2=""/>
 		<string id="100729001" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
 		<string id="100729002" text1="Manufacturing: L&amp;A system send test report" text2=""/>
 		<string id="100729003" text1="Manufacturing: Main control module test is requested" text2=""/>

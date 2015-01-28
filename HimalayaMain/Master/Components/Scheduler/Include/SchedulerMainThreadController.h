@@ -312,7 +312,6 @@ typedef struct
         qint64 m_lastPVTime;                                  ///< Time for last PV operation
         qint8 m_ProcessingPV;                                 ///< flag to indicate P or V operation
         bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
-        bool m_completionSRSent;                           ///< CTRL_CMD_DRAIN_SR was clicked
         bool m_IsCleaningProgram;                             ///< cleaning program run or not
         bool m_CleanAckSentGui;                                ///< flag to indicate if cleaning ack to gui or not
         CProgramStatusInfor m_ProgramStatusInfor;              ///< Program Status Infor

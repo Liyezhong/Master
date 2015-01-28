@@ -155,7 +155,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeFiling()), mp_PssmFillingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveToSeal()), mp_PssmRVMoveToSealState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessing()), mp_PssmProcessingState.data());
-    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessingSR()), mp_PssmProcessingSRState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessingSR()), mp_PssmProgramFinish.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
@@ -179,8 +179,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, OnEnterPssmProcessing());
 
     mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
-    CONNECTSIGNALSLOT(mp_PssmProcessingSRState.data(), entered(), mp_SchedulerThreadController, SendTissueProtectMsg());
-    mp_PssmProcessingSRState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, InitRVMoveToTubeState());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
@@ -377,8 +375,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     }
     else
     {
-        mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING_SR);
-        //this->EnterRcRestart();
+        mp_SchedulerThreadController->SetCurrentStepState(PSSM_SAFE_REAGENT_FINISH);
         emit SigBackToBusy();
     }
 }
@@ -696,7 +693,7 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         }
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingSRState.data()))
         {
-            return PSSM_PROCESSING_SR;
+            return PSSM_SAFE_REAGENT_FINISH;
         }
         else if (mp_SchedulerMachine->configuration().contains(mp_PssmRVMoveToTubeState.data()))
         {
@@ -1083,9 +1080,9 @@ void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cm
     mp_RsStandbyWithTissue->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdName, ReturnCode_t retCode, ControlCommandType_t ctrlCmd)
 {
-    mp_RsTissueProtect->HandleWorkFlow(cmdName, retCode);
+    mp_RsTissueProtect->HandleWorkFlow(cmdName, retCode, ctrlCmd);
 }
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()

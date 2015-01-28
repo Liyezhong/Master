@@ -195,10 +195,12 @@ void CFirmwareUpdate::UpdateFirmware(void)
 
     int num = 0;
     for(int i=0; i<m_Model.rowCount(); i++) {
+#if 0 // disabled by Sunny on Jan, 26, 2015.
         if (m_Model.item(i, 1)->text() == m_Model.item(i, 2)->text()) {
             num++;
             continue;
         }
+#endif
 
         QString FirmWarePath = Global::SystemPaths::Instance().GetFirmwarePath() + QDir::separator() + m_Model.item(i, 0)->text() + ".bin";
 

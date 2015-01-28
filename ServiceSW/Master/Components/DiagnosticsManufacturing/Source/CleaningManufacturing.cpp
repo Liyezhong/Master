@@ -168,7 +168,7 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 /****************************************************************************/
 void CCleaning::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_CLEANING_SYSTEM_TEST_REQUESTED);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_CLEANING_SYSTEM_TEST_REQUESTED);
 
     qDebug()<<"CCleaning::BeginTest  ";
 
