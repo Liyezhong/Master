@@ -3718,6 +3718,15 @@ quint8 WrapperFmStepperMotor::GetConfigPos1StopDir()
     return m_Config.PosCode1.bStopDir;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Slot for error
+ *  \iparam InstanceID = id of instance
+ *  \iparam ErrorGroup = group of error
+ *  \iparam ErrorCode  = the code of error.
+ *  \iparam ErrorData  = the data time of the error.
+ *  \iparam ErrorTime  = the time of the error.
+ */
 void WrapperFmStepperMotor::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
 {
     Q_UNUSED(ErrorTime);

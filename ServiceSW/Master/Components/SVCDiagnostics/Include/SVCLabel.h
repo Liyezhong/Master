@@ -57,6 +57,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function setPos, change label position;
+     *  \iparam _x = x coordinate of the point.
+     *  \iparam _y = y coordinate of the point.
      */
     /****************************************************************************/
     void setPos(int _x, int _y);

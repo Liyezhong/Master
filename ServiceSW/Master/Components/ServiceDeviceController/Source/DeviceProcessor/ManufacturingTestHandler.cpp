@@ -58,7 +58,7 @@
 #define  OPTION_INFO_MESSAGES     0x1000   //!< Enable info messages
 #define  OPTION_WAIT_POWER_UP     0x2000   //!< Enable wait-for-power-good
 
-#define BASEMODULE_MODULE_ID  "0"
+#define BASEMODULE_MODULE_ID  "0"       //!< Id of base module
 #define DEFAULT_NODE_INDEX    "0"       //!< Node index (if no DIP switch)
 
 #define INFOBLOCK_SIGNATURE  0x88888888  //!< Signature for valid info blocks

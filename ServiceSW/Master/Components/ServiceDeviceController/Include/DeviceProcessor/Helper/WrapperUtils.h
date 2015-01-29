@@ -57,7 +57,6 @@ public slots:
     void Stop();
     void SendTestSignal(qint32 value);
 #ifdef PRE_ALFA_TEST
-
     /****************************************************************************/
     /*!
      *   \brief Script-API: sends a signal "MonitorT" for test purposes
@@ -67,12 +66,51 @@ public slots:
      */
     /****************************************************************************/
     void SetMonitorT(quint32 MilliSeconds);
-    void PlaySound(quint8 SoundType);
-    void LogToFile(const QString &FolderName,  const QString &FileName, bool Clear);
-    void SwitchMonitor(bool Enable);
-    quint32 ReadLoop(quint32 loopIndex);
-    void WriteLoop(quint32 loopIndex, quint32 loopCounter);
 
+    /****************************************************************************/
+    /*!
+     *   \brief play sound
+     *   \iparam   SoundType  sound type
+     *
+     */
+    /****************************************************************************/
+    void PlaySound(quint8 SoundType);
+
+    /****************************************************************************/
+    /*!
+     *   \brief write log to file
+     *   \iparam   FolderName  folder name
+     *   \iparam   FileName  file name
+     *   \iparam   Clear  clear flag
+     */
+    /****************************************************************************/
+    void LogToFile(const QString &FolderName,  const QString &FileName, bool Clear);
+
+    /****************************************************************************/
+    /*!
+     *   \brief switch monitor
+     *   \iparam   Enable  = monitor status
+     */
+    /****************************************************************************/
+    void SwitchMonitor(bool Enable);
+
+    /****************************************************************************/
+    /*!
+     *   \brief read file for loop
+     *   \iparam   loopIndex  = loop index
+     *   \return counter
+     */
+    /****************************************************************************/
+    quint32 ReadLoop(quint32 loopIndex);
+
+    /****************************************************************************/
+    /*!
+     *   \brief write file for loop
+     *   \iparam   loopIndex  = loop index
+     *   \iparam   loopCounter  = counter
+     */
+    /****************************************************************************/
+    void WriteLoop(quint32 loopIndex, quint32 loopCounter);
 #endif
 
     /****************************************************************************/

@@ -239,7 +239,7 @@ signals:
      *  \brief SDC_HeatingTest signal to test heating
      *  \iparam Ref = ref type
      *  \iparam id = key of id
-     *  \iparam HeatingIndex = index of heating
+     *  \iparam HeaterIndex = index of heating
      *  \iparam CmdType = type of cmd
      */
     /****************************************************************************/

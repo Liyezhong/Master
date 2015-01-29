@@ -133,6 +133,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Abort Bathlayout generating process
+     *  \iparam IsBlgProcessStarted = flag for process started.
      */
     /****************************************************************************/
     void BlgProcessProgress(bool IsBlgProcessStarted);

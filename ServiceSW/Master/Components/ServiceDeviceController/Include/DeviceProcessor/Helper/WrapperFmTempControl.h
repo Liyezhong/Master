@@ -49,6 +49,11 @@ class WrapperFmTempControl : public WrapperBase
     Q_OBJECT
 
  public:
+    /****************************************************************************/
+    /**
+     * \brief Struct of hard ware status
+     */
+    /****************************************************************************/
     typedef struct {
         quint8 Sensors; //!< sensor number
         quint8 Fans;    //!< fan number

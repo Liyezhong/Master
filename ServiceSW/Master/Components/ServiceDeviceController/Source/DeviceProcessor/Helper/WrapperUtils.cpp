@@ -84,26 +84,11 @@ void WrapperUtils::SendTestSignal(qint32 value)
     emit TestSignal(value);
 }
 
-/****************************************************************************/
-/*!
- *   \brief Script-API: sends a signal "MonitorT" for test purposes
- *
- *  \iparam   MilliSeconds   seconds
- *
- */
-/****************************************************************************/
 void WrapperUtils::SetMonitorT(quint32 MilliSeconds)
 {
     emit OnMonitorT(MilliSeconds);
 }
 
-/****************************************************************************/
-/*!
- *   \brief play sound
- *   \iparam   SoundType  sound type
- *
- */
-/****************************************************************************/
 void WrapperUtils::PlaySound(quint8 SoundType)
 {
 
@@ -135,14 +120,6 @@ void WrapperUtils::PlaySound(quint8 SoundType)
     (void)Proc.waitForFinished();
 }
 
-/****************************************************************************/
-/*!
- *   \brief write log to file
- *   \iparam   FolderName  folder name
- *   \iparam   FileName  file name
- *   \iparam   Clear  clear flag
- */
-/****************************************************************************/
 void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName, bool Clear)
 {
     if((Clear)&&((FileName == "NA")||(FolderName == "NA")))
@@ -174,24 +151,11 @@ void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName
     }
 }
 
-/****************************************************************************/
-/*!
- *   \brief switch monitor
- *   \iparam   Enable  = monitor status
- */
-/****************************************************************************/
 void WrapperUtils::SwitchMonitor(bool Enable)
 {
     emit OnSwitchMonitor(Enable);
 }
 
-/****************************************************************************/
-/*!
- *   \brief read file for loop
- *   \iparam   loopIndex  = loop index
- *   \return counter
- */
-/****************************************************************************/
 quint32 WrapperUtils::ReadLoop(quint32 loopIndex)
 {
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/LoopCounter.txt";
@@ -229,13 +193,6 @@ quint32 WrapperUtils::ReadLoop(quint32 loopIndex)
     }
 }
 
-/****************************************************************************/
-/*!
- *   \brief write file for loop
- *   \iparam   loopIndex  = loop index
- *   \iparam   loopCounter  = counter
- */
-/****************************************************************************/
 void WrapperUtils::WriteLoop(quint32 loopIndex, quint32 loopCounter)
 {
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/LoopCounter.txt";

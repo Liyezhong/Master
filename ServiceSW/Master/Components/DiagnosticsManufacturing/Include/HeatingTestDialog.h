@@ -99,6 +99,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Hides the abort button of the dialog
+     *  \iparam HideFlag = flag of hide status
      */
     /****************************************************************************/
     void HideAbort(bool HideFlag=false);

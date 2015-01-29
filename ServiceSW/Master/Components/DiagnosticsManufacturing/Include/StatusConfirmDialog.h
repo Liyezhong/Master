@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file StatusConfirmDialog.h
+/*! \file DiagnosticsManufacturing/Include/StatusConfirmDialog.h
  *
  *  \brief Header file for class CStatusConfirmDialog.
  *

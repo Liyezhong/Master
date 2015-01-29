@@ -43,6 +43,12 @@ namespace DeviceControl {
 class ServiceDeviceController;
 class IDeviceProcessing;
 
+
+/****************************************************************************/
+/**
+ * \brief Enum Test case status.
+ */
+/****************************************************************************/
 typedef enum {
     RV_INITIALIZING = 0, //!< rotary valve initialize
     RV_MOVE_TO_TUBE_POSITION, //!< rotary valve position move to tube

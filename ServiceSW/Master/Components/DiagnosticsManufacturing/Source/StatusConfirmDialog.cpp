@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file StatusConfirmDialog.cpp
+/*! \file DiagnosticsManufacturing/Source/StatusConfirmDialog.cpp
  *
  *  \brief Implementation of file for class StatusConfirmDialog.
  *

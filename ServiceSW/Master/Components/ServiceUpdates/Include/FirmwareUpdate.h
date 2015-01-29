@@ -83,7 +83,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief Signal emitted for module test
-     *  \iparam Name = name of module
+     *  \iparam Names = string list of module names
      *  \iparam TestCaseList = list of test case id
      */
     /****************************************************************************/

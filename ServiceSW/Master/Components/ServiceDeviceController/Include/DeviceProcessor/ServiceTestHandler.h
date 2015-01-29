@@ -44,6 +44,11 @@ namespace DeviceControl {
 
 //class DeviceControl::IDeviceProcessing;
 
+/****************************************************************************/
+/**
+ * \brief Enum error code number.
+ */
+/****************************************************************************/
 typedef enum {
     RETURN_OK = 1, //!< result ok
     RETURN_ERR_NULL_POINTER = -1, //!< return error because of null pointer
