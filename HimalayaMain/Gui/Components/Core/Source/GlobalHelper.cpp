@@ -36,6 +36,8 @@ QString CGlobalHelper::SELECTED_PROGRAM_NAME = "";
 bool CGlobalHelper::m_programIsPaused = false;
 QStringList CGlobalHelper::m_StationList;
 Core::CDataConnector* CGlobalHelper::p_StaticDataConnector = NULL;
+bool CGlobalHelper::m_IsErrorHandlingFailed = false;
+bool CGlobalHelper::m_IsSystemError = false;
 
 
 CGlobalHelper::CGlobalHelper(Core::CDataConnector *p_DataConnector) : QObject(),
@@ -224,4 +226,23 @@ void CGlobalHelper::RetranslateUI()
     m_strCancel = QApplication::translate("Core::CGlobalHelper", "Cancel", 0, QApplication::UnicodeUTF8);
 }
 
-} // end namespace Core
+
+bool CGlobalHelper::IsErrorHandlingFailed()
+{
+    return m_IsErrorHandlingFailed;
+}
+
+void CGlobalHelper::SetErrorHandlingFailed(bool bSet)
+{
+    m_IsErrorHandlingFailed = bSet;
+}
+void CGlobalHelper::SetSystemErrorStatus(bool isError)
+{
+    m_IsSystemError = isError;
+}
+
+bool CGlobalHelper::GetSystemErrorStatus()
+{
+    return m_IsSystemError;
+}
+}

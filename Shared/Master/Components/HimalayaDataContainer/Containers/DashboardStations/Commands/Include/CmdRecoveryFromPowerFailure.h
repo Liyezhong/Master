@@ -58,7 +58,8 @@ public:
      */
     /****************************************************************************/
     CmdRecoveryFromPowerFailure(int timeout, const QString& ProgramID, int StepIndex,
-                                int Scenario, int RemainingTime, const QString& ReagentGroupID, const QList<QString>& StationList);
+                                int Scenario, int RemainingTime, const QString& ReagentGroupID,
+                                const QList<QString>& StationList, bool IsErrorHandlingFailed);
     ~CmdRecoveryFromPowerFailure();
     virtual QString GetName() const;
 
@@ -111,6 +112,15 @@ public:
      */
     /****************************************************************************/
     inline const QList<QString>& GetStationList() const {return m_StationList;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition of function IsErrorHandlingFailed
+     *
+     *  \return the status of ErrorHandlingFailed
+     */
+    /****************************************************************************/
+    inline bool IsErrorHandlingFailed() const {return m_IsErrorHandlingFailed;}
+
 private:
     CmdRecoveryFromPowerFailure(const CmdRecoveryFromPowerFailure &);                     ///< Not implemented.
     const CmdRecoveryFromPowerFailure & operator = (const CmdRecoveryFromPowerFailure &); ///< Not implemented.
@@ -121,6 +131,7 @@ private:
     int m_RemainingTime;       ///<  Definition/Declaration of variable m_RemainingTime
     QString m_LastReagentGroupID; ///< the last reagent groupid if normal program.
     QList<QString> m_StationList; ///< station id list for the program!
+    bool m_IsErrorHandlingFailed;
     
 }; // end class CmdCurrentProgramStepInfor
 
@@ -144,6 +155,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdRecoveryFromPowe
     Stream << Cmd.m_RemainingTime;
     Stream << Cmd.m_LastReagentGroupID;
     Stream << Cmd.m_StationList;
+    Stream << Cmd.m_IsErrorHandlingFailed;
     return Stream;
 }
 
@@ -167,6 +179,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdRecoveryFromPowerFailu
     Stream >> Cmd.m_RemainingTime;
     Stream >> Cmd.m_LastReagentGroupID;
     Stream >> Cmd.m_StationList;
+    Stream >> Cmd.m_IsErrorHandlingFailed;
     return Stream;
 }
 } // end namespace MsgClasses

@@ -47,6 +47,7 @@
 #include <QProcess>
 #include <QDesktopWidget>
 #include <Core/Include/ReagentStatusModel.h>
+#include "Core/Include/GlobalHelper.h"
 
 namespace Core {
 const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
@@ -998,13 +999,13 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
     NetCommands::ProcessStateType processStateType = Command.GetProcessState();
     if (NetCommands::ProcessStateType::InitState == processStateType ||
             NetCommands::ProcessStateType::IdleState == processStateType) {
-        mp_MainWindow->SetSystemErrorStatus(false);
+        Core::CGlobalHelper::SetSystemErrorStatus(false);
         Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//not show running icon
     }
     else
     {
         if (NetCommands::ProcessStateType::ErrorState == processStateType){
-           mp_MainWindow->SetSystemErrorStatus(true);
+           Core::CGlobalHelper::SetSystemErrorStatus(true);
         }
         Result = mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//show running icon
     }
@@ -1866,6 +1867,7 @@ void CDataConnector::RecoveryFromPowerFailureHandler(Global::tRefType Ref, const
     emit RecoveryFromPowerFailure(Command);
     emit ProgramSelfTestFailed();
     emit ProgramStartReady();
+    Core::CGlobalHelper::SetErrorHandlingFailed(Command.IsErrorHandlingFailed());
 }
 
 void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)

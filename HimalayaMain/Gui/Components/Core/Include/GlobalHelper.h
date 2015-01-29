@@ -111,6 +111,34 @@ public:
      */
     /****************************************************************************/
     static bool CheckIfCanEdit(const QString& name = "", int CheckType = 0);
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to check whether ErrorHandling is failed or not
+     *  \return the check value
+     */
+    /****************************************************************************/
+    static bool IsErrorHandlingFailed();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to set the status to m_ErrorHandlingFailed
+     *  \param  bSet = set bool value
+     */
+    /****************************************************************************/
+    static void SetErrorHandlingFailed(bool bSet);
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to set the error status
+     *  \param  isError = set bool value
+     */
+    /****************************************************************************/
+    static void SetSystemErrorStatus(bool isError);
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to get the system error status
+     *  \param  bSet = set bool value
+     */
+    /****************************************************************************/
+    static bool GetSystemErrorStatus();
 public slots:
     /****************************************************************************/
     /*!
@@ -129,6 +157,8 @@ private:
     static QStringList m_StationList;
     static Core::CDataConnector *p_StaticDataConnector;
     Core::CDataConnector *mp_DataConnector;
+    static bool m_IsErrorHandlingFailed;
+    static bool m_IsSystemError;                //!< system is in Error state
 };
 
 } // end namespace Core

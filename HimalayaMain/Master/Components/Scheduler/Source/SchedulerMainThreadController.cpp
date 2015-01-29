@@ -414,20 +414,21 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
+        bool bErrorHandlingFailed = m_ProgramStatusInfor.GetErrorFlag();
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
         {
-
             MsgClasses::CmdRecoveryFromPowerFailure* commandPtr(
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
                                                                     GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
                                                                     m_ProgramStatusInfor.GetLastReagentGroup(),
-                                                                    m_ProgramStatusInfor.GetStationList()));
+                                                                    m_ProgramStatusInfor.GetStationList(),
+                                                                    bErrorHandlingFailed));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            if(1 == m_ProgramStatusInfor.GetErrorFlag())
+            if(1 == bErrorHandlingFailed)
             {
                 RaiseError(0, DCL_ERR_DEV_INTER_POWERFAILURE_AFTER_ERRHANDLING_FAILED, m_ProgramStatusInfor.GetScenario(), true);
                 m_SchedulerMachine->SendErrorSignal();
@@ -451,7 +452,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         }
         else
         {
-            if(1 == m_ProgramStatusInfor.GetErrorFlag())
+            if(1 == bErrorHandlingFailed)
             {
                 m_ProgramStatusInfor.SetErrorFlag(0);
             }
