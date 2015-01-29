@@ -440,6 +440,12 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                     ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
                 }
                 RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+                quint32 Scenario = m_ProgramStatusInfor.GetScenario();
+                m_CurrentScenario = Scenario;
+                if(203 == Scenario || (281 <= Scenario && Scenario <= 297))
+                {
+                    SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
+                }
                 m_SchedulerMachine->EnterPowerFailure();
             }
         }
@@ -512,7 +518,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
     }
 
-    SendOutErrMsg( DCL_ERR_DEV_POWERFAILURE);
+    SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
 }
 
 

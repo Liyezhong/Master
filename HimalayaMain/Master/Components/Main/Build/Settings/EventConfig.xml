@@ -14,6 +14,9 @@
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>
 			<Step ID="5" Type="MSG" StringID="67176216" ButtonType="OK" StatusBar="YES"/>
 		</Event>
+		<Event Code="" ErrorID="520060201" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67176224" ButtonType="OK" StatusBar="YES"/>
+		</Event>
 		<Event Code="" ErrorID="520070200" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176217" ButtonType="OK" StatusBar="YES"/>
 		</Event>

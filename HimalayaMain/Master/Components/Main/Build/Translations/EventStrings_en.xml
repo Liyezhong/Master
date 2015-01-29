@@ -819,5 +819,6 @@
 	<string id="67176221" text1="Error ID %1!  Process interval time out 4 minutes." text2=""/>
 	<string id="67176222" text1="Error ID %1!  Process end time out." text2=""/>
 	<string id="67176223" text1="Error ID %1!  Abort failed." text2=""/>
+	<string id="67176224" text1="Power failure on cleaning program, the program has been auto-restart." text2=""/>
 	</language>
 </strings>
