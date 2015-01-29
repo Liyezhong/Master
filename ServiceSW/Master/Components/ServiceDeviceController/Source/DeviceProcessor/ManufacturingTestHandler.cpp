@@ -2237,10 +2237,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
-    qint32 UsedTimeSec(0);
+    quint32 UsedTimeSec(0);
     quint32 KeepSeconds(0);
     QTime StartTime;
-    qint32 StartTimeSec(0);
+    quint32 StartTimeSec(0);
 
     Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_HEATING_STATION;
 

@@ -3718,6 +3718,7 @@ quint8 WrapperFmStepperMotor::GetConfigPos1StopDir()
     return m_Config.PosCode1.bStopDir;
 }
 
+#ifdef PRE_ALFA_TEST
 /****************************************************************************/
 /*!
  *  \brief  Slot for error
@@ -3727,10 +3728,11 @@ quint8 WrapperFmStepperMotor::GetConfigPos1StopDir()
  *  \iparam ErrorData  = the data time of the error.
  *  \iparam ErrorTime  = the time of the error.
  */
+/****************************************************************************/
 void WrapperFmStepperMotor::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
 {
     Q_UNUSED(ErrorTime);
     Log(tr("Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4").arg(InstanceID).arg(ErrorGroup).arg(ErrorCode).arg(ErrorData));
 }
-
+#endif
 // vi: set ts=4 sw=4 et:

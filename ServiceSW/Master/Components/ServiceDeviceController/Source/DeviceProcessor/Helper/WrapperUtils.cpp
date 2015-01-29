@@ -84,6 +84,7 @@ void WrapperUtils::SendTestSignal(qint32 value)
     emit TestSignal(value);
 }
 
+#ifdef PRE_ALFA_TEST
 void WrapperUtils::SetMonitorT(quint32 MilliSeconds)
 {
     emit OnMonitorT(MilliSeconds);
@@ -217,7 +218,7 @@ void WrapperUtils::WriteLoop(quint32 loopIndex, quint32 loopCounter)
     }
     (void)system("sync");
 }
-
+#endif
 
 
 // vi: set ts=4 sw=4 et:

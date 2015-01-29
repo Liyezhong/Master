@@ -115,6 +115,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Abort wait dialog
+     *  \iparam HideFlag = flag of hide status.
      */
     /****************************************************************************/
     void HideAbort(bool HideFlag=true);
