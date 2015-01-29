@@ -134,13 +134,8 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempOvenTop			= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
 	strctHWMonitor.OvenLidStatus		= mp_IDeviceProcessing->OvenGetRecentLidStatus();
 	strctHWMonitor.RetortLockStatus		= mp_IDeviceProcessing->RTGetRecentLockStatus();
-    strctHWMonitor.CurrentRTSide        = mp_IDeviceProcessing->GetSensorCurrent("Retort",0);
-    strctHWMonitor.CurrentRTBottom      = mp_IDeviceProcessing->GetSensorCurrent("Retort",1);
-    strctHWMonitor.CurrentOvenTop       = mp_IDeviceProcessing->GetSensorCurrent("Oven",0);
-    strctHWMonitor.CurrentOvenBottom    = mp_IDeviceProcessing->GetSensorCurrent("Oven",1);
-    strctHWMonitor.CurrentLALevelSensor = mp_IDeviceProcessing->GetSensorCurrent("LA",0);
-    strctHWMonitor.CurrentLATube1       = mp_IDeviceProcessing->GetSensorCurrent("LA",1);
-    strctHWMonitor.CurrentLATube2       = mp_IDeviceProcessing->GetSensorCurrent("LA",2);
+    strctHWMonitor.CurrentHeatRetortOven        = mp_IDeviceProcessing->GetSensorCurrent("Retort",0);
+    strctHWMonitor.CurrentHeatLevelSensorTubes = mp_IDeviceProcessing->GetSensorCurrent("LA",0);
     strctHWMonitor.CurrentRVTemp        = mp_IDeviceProcessing->GetSensorCurrent("RV",0);
     strctHWMonitor.Slave3Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_3);
     strctHWMonitor.Slave5Voltage        = mp_IDeviceProcessing->IDGetSlaveVoltage(Slave_5);
