@@ -4259,48 +4259,48 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
     if (reportError1.instanceID != 0)
     {
-        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError2.instanceID != 0)
     {
-        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError3.instanceID != 0 )
     {
-        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError4.instanceID != 0)
     {
-        LogDebug(QString("In current of range, ASB5 current is: %1").arg(reportError1.errorData));
+        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
     }
     if (reportError5.instanceID != 0)
     {
-        LogDebug(QString("In current of range, level sensor current is: %1").arg(reportError5.errorData));
+        LogDebug(QString("Current out of range, level sensor current is: %1").arg(reportError5.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError6.instanceID != 0)
     {
-        LogDebug(QString("In current of range, AL tube1 current is: %1").arg(reportError6.errorData));
+        LogDebug(QString("Current out of range, AL tube1 current is: %1").arg(reportError6.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError7.instanceID != 0)
     {
-        LogDebug(QString("In current of range, AL tube2 current is: %1").arg(reportError7.errorData));
+        LogDebug(QString("Current out of range, AL tube2 current is: %1").arg(reportError7.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
     if (reportError8.instanceID != 0)
     {
-        LogDebug(QString("In fan error state, Current is: %1").arg(reportError8.errorData));
+        LogDebug(QString("Current out of range, Current is: %1").arg(reportError8.errorData));
         SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
     }
 
     if (reportError9.instanceID != 0)
     {
-        LogDebug(QString("In RV heating error state, the current is :%1").arg(reportError9.errorData));
+        LogDebug(QString("Current out of range, the current is :%1").arg(reportError9.errorData));
         SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
     }
 }
