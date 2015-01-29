@@ -47,6 +47,7 @@
 
 #include "Core/Include/ServiceUtils.h"
 #include "Core/Include/CMessageString.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Threads {
 using namespace Global;
@@ -1594,6 +1595,7 @@ void ServiceMasterThreadController::PerformNetworkTests()
 void ServiceMasterThreadController::OnDownloadFirmware()
 {
     Core::CServiceUtils::delay(500);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_DOWNLOAD);
     DownloadFirmware();
 }
 
