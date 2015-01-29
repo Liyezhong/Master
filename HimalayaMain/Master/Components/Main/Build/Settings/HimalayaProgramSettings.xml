@@ -9,7 +9,7 @@
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ExchangePIDTemp" Value="110"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="132"/>
+                <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
                 <Parameter Key="ResetTime" Value="1212"/>
                 <Parameter Key="ScenarioList" Value="251,271,281"/>
@@ -21,7 +21,7 @@
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="ExchangePIDTemp" Value="110"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="132"/>
+                <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="251,271,281"/>
@@ -33,7 +33,7 @@
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ExchangePIDTemp" Value="90"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="112"/>
+                <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1212"/>
                 <Parameter Key="ScenarioList" Value="200,211,221,231,241,291"/>
@@ -45,7 +45,7 @@
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="ExchangePIDTemp" Value="90"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="112"/>
+                <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="200,211,221,231,241,291"/>
