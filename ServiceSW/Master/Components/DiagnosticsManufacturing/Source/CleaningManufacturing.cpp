@@ -141,7 +141,6 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);
-    itemCheckFlag->setSizeHint(QSize(30,30));
     itemCheckFlag->setToolTip(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
     itemList << itemCheckFlag;
 
@@ -151,7 +150,7 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QPixmap SetPixmap;
     QPixmap PixMap(QString(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
     if (!PixMap.isNull())
-        SetPixmap = (PixMap.scaled(QSize(36,36),Qt::KeepAspectRatio, Qt::FastTransformation));
+        SetPixmap = (PixMap.scaled(QSize(45,45),Qt::KeepAspectRatio, Qt::FastTransformation));
 
     QStandardItem *item = new QStandardItem;
     item->setData(SetPixmap, (int) Qt::DecorationRole);

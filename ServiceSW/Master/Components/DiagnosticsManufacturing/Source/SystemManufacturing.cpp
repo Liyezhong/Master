@@ -340,11 +340,11 @@ void CSystem::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
         if (item->toolTip() == DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id)) {
             if (Result) {
                 if (!PixMapPass.isNull())
-                    SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
+                    SetPixMap = (PixMapPass.scaled(36,36,Qt::KeepAspectRatio));
             }
             else {
                 if (!PixMapFail.isNull())
-                    SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
+                    SetPixMap = (PixMapFail.scaled(36,36,Qt::KeepAspectRatio));
             }
             (void) m_Model.setData(m_Model.index(i, 3), SetPixMap, (int) Qt::DecorationRole);
             break;

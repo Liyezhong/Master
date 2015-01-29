@@ -2618,6 +2618,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = mp_PressPump->Sucking();
     if ( Ret != SUCKING_RET_OK ) {
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         Ret = mp_PressPump->Draining();
 
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_FILLING_FAILED);
