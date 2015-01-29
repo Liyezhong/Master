@@ -2543,7 +2543,8 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         ProgramName = mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->GetName();
     }
 
-    if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
+    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
+    if ((PSSM_PAUSE != stepState) && (Cmd.ProgramActionType() == DataManager::PROGRAM_START))
     {
         if(Cmd.ProgramRunDuration() > 0) // start new program
         {
