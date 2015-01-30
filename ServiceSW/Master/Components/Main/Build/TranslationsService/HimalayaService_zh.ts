@@ -184,35 +184,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="159"/>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="173"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="160"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="174"/>
         <source>Date of Exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="160"/>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="174"/>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="188"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="161"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="175"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="189"/>
         <source>OK</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="162"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="163"/>
         <source>Date is invalid.Please select a valid date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="176"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="177"/>
         <source>Date of Exchange shall not be later than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="187"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="188"/>
         <source>Serial Number</source>
         <translation type="unfinished">序列号</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="190"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="191"/>
         <source>SerialNumber is Empty.Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -245,40 +245,40 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="165"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="166"/>
         <source>Valve 1&amp;2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="203"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="217"/>
-        <source>Date of Production</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="204"/>
         <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="218"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="232"/>
+        <source>Date of Production</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="205"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="219"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="233"/>
         <source>OK</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="206"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="207"/>
         <source>Date is invalid.Please select a valid date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="220"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="221"/>
         <source>Date of Production shall not be later than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="231"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="232"/>
         <source>Serial Number</source>
         <translation type="unfinished">序列号</translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="234"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="235"/>
         <source>SerialNumber is Empty.Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -816,42 +816,42 @@
 <context>
     <name>CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="109"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="110"/>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="280"/>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="288"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="567"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="557"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="565"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="114"/>
         <source>Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="549"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="124"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="547"/>
         <source>Yes</source>
         <translation type="unfinished">是</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="550"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="548"/>
         <source>No</source>
         <translation type="unfinished">否</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="552"/>
         <source>Continue</source>
         <translation type="unfinished">继续</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="555"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="553"/>
         <source>Stop</source>
         <translation type="unfinished">停止</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="560"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="558"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -896,12 +896,12 @@
 <context>
     <name>CRotaryValveDevice</name>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1539"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1543"/>
         <source>Seal %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1543"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1547"/>
         <source>Tube %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -909,17 +909,17 @@
 <context>
     <name>CSVCDashboardWidget</name>
     <message>
-        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="617"/>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="603"/>
         <source>Select Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="646"/>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="632"/>
         <source>Rotary valve dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="842"/>
+        <location filename="../../../SVCDiagnostics/Source/SVCDashboardWidget.cpp" line="828"/>
         <source>Rotary Valve cannot rotate, due to the minimum temperature has not been reached. Please check resistance of temperature sensors, current of heating element and function of ASB3. If no root cause found, check main relay on ASB15 and cable connections in addition. Exchange part accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -987,7 +987,7 @@
     </message>
     <message>
         <location filename="../../../SVCDiagnostics/Source/SVCValveStateInfoDlg.cpp" line="44"/>
-        <source>Vaccum</source>
+        <source>Vacuum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1047,6 +1047,15 @@
     <message>
         <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="182"/>
         <source>Module History</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CViewHistoryDiffDlg</name>
+    <message>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDiffDlg.cpp" line="314"/>
+        <location filename="../../../SystemTracking/Source/ViewHistoryDiffDlg.cpp" line="321"/>
+        <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1223,12 +1232,7 @@
         <translation type="unfinished">压力传感器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="427"/>
-        <source>Touchscreen</source>
-        <translation type="unfinished">触摸屏</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="429"/>
+        <location filename="../../../Core/Source/CalibrationHandler.cpp" line="431"/>
         <source>Calibration</source>
         <translation type="unfinished">校准</translation>
     </message>
@@ -1284,131 +1288,131 @@
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1251"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1252"/>
         <source>Alarm Status:</source>
         <translation type="unfinished">警报灯状态:</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1674"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1691"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1680"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1697"/>
         <source>Date</source>
         <translation type="unfinished">日期</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1682"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1688"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1684"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1690"/>
         <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1693"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1699"/>
         <source>Type</source>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1675"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1692"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1681"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1698"/>
         <source>TimeStamp</source>
         <translation type="unfinished">时间戳</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="404"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="406"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="751"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="752"/>
         <source>Missing Xml files</source>
         <translation type="unfinished">xml文件丢失</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="754"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="755"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1676"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1683"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1694"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1682"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1689"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1700"/>
         <source>Description</source>
         <translation type="unfinished">描述</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="683"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="684"/>
         <source>System is initializing ...</source>
         <translation type="unfinished">系统正在初始化…</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="441"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="443"/>
         <source>Service Updates</source>
         <translation type="unfinished">服务更新</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="439"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="441"/>
         <source>Settings</source>
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="437"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="439"/>
         <source>System</source>
         <translation type="unfinished">系统</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="435"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="437"/>
         <source>Data Management</source>
         <translation type="unfinished">数据管理</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="431"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="433"/>
         <source>Firmware Update</source>
         <translation type="unfinished">      固件更新      </translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
         <source>Log Viewer</source>
         <translation type="unfinished">日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="408"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="410"/>
         <source>Software Update Log</source>
         <translation type="unfinished">软件更新日志</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="406"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="408"/>
         <source>Service Log Viewer</source>
         <translation type="unfinished">服务日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="402"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="404"/>
         <source>System Log Viewer</source>
         <translation type="unfinished">系统日志监视器</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="378"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="380"/>
         <source>View History</source>
         <translation type="unfinished">查看历史记录</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="375"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="377"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished">增加/修改 配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="365"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="367"/>
         <source>Current Config</source>
         <translation type="unfinished">当前配置</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="353"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="355"/>
         <source>Himalaya Service Software</source>
         <translation type="unfinished">Himalaya售后服务软件</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="414"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
         <source>System Tracking</source>
         <translation type="unfinished">系统跟踪信息</translation>
     </message>
@@ -2153,30 +2157,30 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished">形式</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="38"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="603"/>
         <source>Abort</source>
         <translation type="unfinished">放弃</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="51"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="574"/>
         <source>TextLabel</source>
         <translation type="unfinished">文本标签</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="95"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="275"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="68"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="312"/>
         <source>Pressure</source>
         <translation type="unfinished">压力</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="207"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="282"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="228"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="322"/>
         <source>Result</source>
         <translation type="unfinished">结果</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="221"/>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="268"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="248"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SealingTestReportDialog.ui" line="302"/>
         <source>Position</source>
         <translation type="unfinished">位置 </translation>
     </message>
@@ -2255,22 +2259,22 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished">形式</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="32"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="26"/>
         <source>Please select test mode:</source>
         <translation type="unfinished">请选择测试模式：</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="38"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="32"/>
         <source>Auot test</source>
         <translation type="unfinished">自动测试</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="58"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="52"/>
         <source>Maunal test</source>
         <translation type="unfinished">手动测试</translation>
     </message>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="90"/>
+        <location filename="../../../DiagnosticsManufacturing/Forms/SelectSealingDialog.ui" line="77"/>
         <source>OK</source>
         <translation type="unfinished">确认</translation>
     </message>
@@ -3154,7 +3158,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     <name>MainMenu::CMainWindow</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="529"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="534"/>
         <source>MainWindow</source>
         <translation type="unfinished">主窗口</translation>
     </message>
@@ -3200,18 +3204,18 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
 <context>
     <name>MainMenu::CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="82"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="83"/>
         <source>Information Message</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="89"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="90"/>
         <source>Warning Message</source>
         <translation type="unfinished">警告信息</translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="96"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="101"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="97"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="102"/>
         <source>Error Message</source>
         <translation type="unfinished">错误信息</translation>
     </message>
@@ -3496,7 +3500,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="112"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="386"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="514"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1574"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1495"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="unfinished"></translation>
@@ -3506,7 +3510,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="124"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="398"/>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="525"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1586"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1507"/>
         <source>Parse error at line %1, column %2:
 %3</source>
         <translation type="unfinished"></translation>
@@ -3550,7 +3554,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Configuration/HardwareConfiguration.cpp" line="137"/>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1599"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1520"/>
         <source>The file is not a hardware config file. Tag &apos;hwconfig&apos; missed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3571,7 +3575,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1608"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/DeviceProcessing/DeviceProcessing.cpp" line="1529"/>
         <source>The process settings file version is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4096,11 +4100,6 @@ for verification</source>
         <translation type="unfinished">电源继电器关闭时电流值标准范围为：＜%1mA</translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="249"/>
-        <source>Please check if the ventilation fan is runing and check if the air flow direction is out of device</source>
-        <translation type="unfinished">请检查通风设备是否运行以及气流是否向设备外流动</translation>
-    </message>
-    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="250"/>
         <source>Please adjust retort lid lock assembly then re-test...</source>
         <translation type="unfinished">请调整反应罐盖装置锁然后重新测试</translation>
@@ -4301,6 +4300,16 @@ for verification</source>
         <translation type="unfinished">报告文件不存在</translation>
     </message>
     <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="248"/>
+        <source>Please check if the exhaust fan is running and check if the air flow direction is out of device.</source>
+        <translation type="unfinished">请检查排风扇是转动的并且转动时风扇吹风的方向是往外吹风</translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="249"/>
+        <source>Please check if the ventilation fan is running and check if the air flow direction is out of device</source>
+        <translation type="unfinished">请检查通风设备是否运行以及气流是否向设备外流动</translation>
+    </message>
+    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="265"/>
         <source>(ASB3 Current Voltage: %1 V, ASB5 Current Voltage: %2 V)</source>
         <translation type="unfinished">(ASB3 当前电压: %1 V, ASB5 当前电压: %2 V)</translation>
@@ -4404,11 +4413,6 @@ for verification</source>
         <location filename="../../../Core/Source/CMessageString.cpp" line="247"/>
         <source>&lt;br&gt;ASB3 current:%1&lt;br&gt;Result:%2</source>
         <translation type="unfinished">&lt;br&gt;ASB3电流值： %1&lt;br&gt;结果：%2</translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="248"/>
-        <source>Please check if the exhaust fan is runing and check if the air flow direction is out of device.</source>
-        <translation type="unfinished">请检查排风扇是转动的并且转动时风扇吹风的方向是往外吹风</translation>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="251"/>
@@ -4590,32 +4594,32 @@ for verification</source>
         <translation type="unfinished">更新</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="225"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="227"/>
         <source>Information Message</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="228"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="230"/>
         <source>Ok</source>
         <translation type="unfinished">确认</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="231"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="233"/>
         <source>The current firmware version has been latest</source>
         <translation type="unfinished">当前固件版本已经是最新的</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="317"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="319"/>
         <source>Slave</source>
         <translation type="unfinished">从属设备</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="319"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="321"/>
         <source>Current Version</source>
         <translation type="unfinished">当前版本</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="321"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="323"/>
         <source>Latest Version</source>
         <translation type="unfinished">最新版本</translation>
     </message>
@@ -5255,7 +5259,7 @@ for verification</source>
     <name>SystemTracking::CMainControl</name>
     <message>
         <location filename="../../../SystemTracking/Source/MainControl.cpp" line="57"/>
-        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="355"/>
+        <location filename="../../../SystemTracking/Source/MainControl.cpp" line="357"/>
         <source>Finalize Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5989,13 +5993,13 @@ for verification</source>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="137"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="165"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="183"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1279"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1381"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1476"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1529"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1585"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1641"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1704"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1415"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1517"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1612"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1665"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1721"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1777"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1840"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished">注意:意外动作的确认</translation>
     </message>
@@ -6020,11 +6024,12 @@ for verification</source>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="467"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="548"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="700"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="917"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="951"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1072"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1107"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1203"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="911"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1053"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1087"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1208"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1243"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1339"/>
         <source>Current procedure has been interrupted, exit now.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6085,11 +6090,13 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="627"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="885"/>
         <source>Start Sucking procedure.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="635"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="893"/>
         <source>Start Sucking now.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6113,6 +6120,7 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="696"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="907"/>
         <source>Received 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6124,6 +6132,7 @@ for verification</source>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="715"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="722"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="919"/>
         <source>Do not get level sensor data in %1 seconds, Time out! Exit!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6136,208 +6145,214 @@ for verification</source>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="754"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="805"/>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="833"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="945"/>
         <source>Overflow occured! Exit now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="758"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="949"/>
         <source>Over Flow Pressure %1 is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="766"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="957"/>
         <source>Insufficient reagent in the station! Exit now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="769"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="960"/>
         <source>Insufficient Pressure %1 is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="776"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="967"/>
         <source>Insufficient reagent in the station!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="841"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="976"/>
         <source>Unexpected level sensor state value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="891"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1027"/>
         <source>Start set up pressure procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="902"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1038"/>
         <source>Release pressure failed, exit now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="907"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1043"/>
         <source>Start to setup pressure now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="927"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1083"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1063"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1219"/>
         <source>Target pressure is getting steady now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="936"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1072"/>
         <source>Warning: Pressure exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="948"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1104"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1084"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1240"/>
         <source>Wait for 3 sec to get steady</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="961"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1116"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1097"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1252"/>
         <source>Finished, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1049"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1185"/>
         <source>Start set up vaccum procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1063"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1199"/>
         <source>Start to setup vaccum now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1091"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1227"/>
         <source>Warning: Vaccum exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1152"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1288"/>
         <source>Start release pressure procedure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1189"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1325"/>
         <source>Close Both Valves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1197"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1333"/>
         <source>Wait for current pressure get to ZERO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1210"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1346"/>
         <source>Warning: Release Pressure exceed maximum setup time, exit!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1234"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1370"/>
         <source>Shut down compressor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1293"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1429"/>
         <source>SetPressureCtrlON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1314"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1450"/>
         <source>StopPressureControl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1372"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1508"/>
         <source>ERROR: Target pressure control status is not reached.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1375"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1511"/>
         <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1403"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1539"/>
         <source>SetFullPowerMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1425"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1561"/>
         <source>SetPowerSaveMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1470"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1606"/>
         <source>ERROR: Target pressure ctrl operating mode not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1744"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1880"/>
         <source>GetPowerOperationMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1809"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1902"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1945"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2038"/>
         <source>GetPressureControlState</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1853"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1879"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1989"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2015"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1933"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2069"/>
         <source>New Level Sensor State is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1949"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2085"/>
         <source>Pressure control get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1982"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2118"/>
         <source>The Positive pressure is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1983"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2119"/>
         <source>The Negative pressure is: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="1994"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2130"/>
         <source>Cannot open %1.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2017"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2153"/>
         <source>%1;
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2033"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2169"/>
         <source>The Valve %1&apos;s operation time is: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2041"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2177"/>
         <source>Successfully reset Valves&apos; state to 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2045"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmPressureControl.cpp" line="2181"/>
         <source>Failed reset Valves&apos; state to 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6585,7 +6600,7 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3724"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmStepperMotor.cpp" line="3735"/>
         <source>Rotary Valve get error, Instance ID: %1, Error Group: %2, Error Code: %3, Error Data: %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6738,13 +6753,13 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="172"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="150"/>
         <source>You input empty folder name, please re-enter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="218"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="254"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="183"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="212"/>
         <source>%1;%2;
 </source>
         <translation type="unfinished"></translation>

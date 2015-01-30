@@ -357,7 +357,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
 
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
-            CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
+            CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh){
         QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_OVEN_TEMP_NO_MATCH.arg(CurrentTempTop).arg(CurrentTempBottom1)
                 .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
 
@@ -2237,10 +2237,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
-    quint32 UsedTimeSec(0);
+    qint32 UsedTimeSec(0);
     quint32 KeepSeconds(0);
     QTime StartTime;
-    quint32 StartTimeSec(0);
+    qint32 StartTimeSec(0);
 
     Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_HEATING_STATION;
 

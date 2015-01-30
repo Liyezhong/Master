@@ -110,8 +110,8 @@ public :
     static QString MSG_DIAGNOSTICS_RELAY_SWITCH_ON;                   //!< relay switch on Spec.0.3A-1.3A
     static QString MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;                  //!< relay switch off Spec.&lt;0.15A
     static QString MSG_DIAGNOSTICS_ASB3_CURRENT;                      //!< <br>ASB3 current:%1<br>Result:%2
-    static QString MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!< Please check if the exhaust fan is runing and check if the air flow direction is out of device.
-    static QString MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!< Please check if the ventilation fan is runing and check if the air flow direction is out of device
+    static QString MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!< Please check if the exhaust fan is running and check if the air flow direction is out of device.
+    static QString MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!< Please check if the ventilation fan is running and check if the air flow direction is out of device
     static QString MSG_DIAGNOSTICS_ADJUST_LID_LOCK;                   //!< Please adjust retort lid lock assembly then re-test...
     static QString MSG_DIAGNOSTICS_ASB_OUTPUT_RESULT;                 //!< ASB %1 DC output voltage is %2 (%3 V). <br>and current is %4 (%5 mA).
     static QString MSG_DIAGNOSTICS_TEST_COVER_SENSOR;                 //!< Open the retort lid. do you see water cover the level sensor?

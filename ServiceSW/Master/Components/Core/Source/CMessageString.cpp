@@ -100,8 +100,8 @@ QString CMessageString::MSG_DIAGNOSTICS_CONFIRM_ALARM_DISCONNECT;          //!< 
 QString CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON;                   //!< relay switch on Spec.0.3A-1.3A
 QString CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF;                  //!< relay switch off Spec.&lt;0.15A
 QString CMessageString::MSG_DIAGNOSTICS_ASB3_CURRENT;                      //!< <br>ASB3 current:%1<br>Result:%2
-QString CMessageString::MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!< Please check if the exhaust fan is runing and check if the air flow direction is out of device.
-QString CMessageString::MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!< Please check if the ventilation fan is runing and check if the air flow direction is out of device
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN;                 //!< Please check if the exhaust fan is running and check if the air flow direction is out of device.
+QString CMessageString::MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN;             //!< Please check if the ventilation fan is running and check if the air flow direction is out of device
 QString CMessageString::MSG_DIAGNOSTICS_ADJUST_LID_LOCK;                   //!< Please adjust retort lid lock assembly then re-test...
 QString CMessageString::MSG_DIAGNOSTICS_ASB_OUTPUT_RESULT;                 //!< ASB %1 DC output voltage is %2 (%3 V). <br>and current is %4 (%5 mA).
 QString CMessageString::MSG_DIAGNOSTICS_TEST_COVER_SENSOR;                 //!< Open the retort lid. do you see water cover the level sensor?
@@ -245,8 +245,8 @@ void CMessageString::RetranslateUI()
     MSG_DIAGNOSTICS_RELAY_SWITCH_ON                   = (QApplication::translate("Service", "relay switch on Spec.%1mA-%2mA", 0, QApplication::UnicodeUTF8));
     MSG_DIAGNOSTICS_RELAY_SWITCH_OFF                  = (QApplication::translate("Service", "relay switch off Spec.&lt;%1mA", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ASB3_CURRENT                      = (QApplication::translate("Service", "<br>ASB3 current:%1<br>Result:%2", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN                 = (QApplication::translate("Service", "Please check if the exhaust fan is runing and check if the air flow direction is out of device.", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN             = (QApplication::translate("Service", "Please check if the ventilation fan is runing and check if the air flow direction is out of device", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_CHECK_EXHAUST_FAN                 = (QApplication::translate("Service", "Please check if the exhaust fan is running and check if the air flow direction is out of device.", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN             = (QApplication::translate("Service", "Please check if the ventilation fan is running and check if the air flow direction is out of device", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_ADJUST_LID_LOCK                   = (QApplication::translate("Service", "Please adjust retort lid lock assembly then re-test...", 0, QApplication::UnicodeUTF8));
     MSG_DIAGNOSTICS_ASB_OUTPUT_RESULT                 = (QApplication::translate("Service", "ASB %1 DC output voltage is %2 (%3 V). <br>and current is %4 (%5 mA).", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_TEST_COVER_SENSOR                 = (QApplication::translate("Service", "Open the retort lid. do you see water cover the level sensor?", 0, QApplication::UnicodeUTF8));
