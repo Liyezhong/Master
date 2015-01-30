@@ -780,6 +780,7 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
                                   + Configuration.GetGroupFileName()) >= 0) {
 
                 QStringList LogFilesList = LogDirectory.entryList(QStringList() << LogFiles, QDir::Files);
+#if 0
                 if (!UserLogDirectory) {
                     if (m_EventLogFileName.compare("") != 0) {
                         // for event log files we need to copy only the specified number of files
@@ -792,7 +793,7 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
                         }
                     }
                 }
-
+#endif
                 foreach (QString FileName, LogFilesList) {
 
                     // copy the files and QDir::seperator uses generic symbol depending on the OS i.e. "/" for unix and for windows "\"
@@ -920,6 +921,9 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
 //        }
 //    }
 
+    if(!ErrorFlag){
+        ErrorFlag = ! WriteFilesInSettingsFolder();
+    }
     if (ErrorFlag  && ImportTypeList.count() > 0) {
         if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             (void)UpdateSettingsWithRollbackFolder();
@@ -1207,11 +1211,44 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         }
         /// \todo need to write code for the special verfiers
         // for the type of Leica import Program sequence is not required
-
+        for(int i = 0; i < ImportReagentList.GetNumberOfReagents(); i++)
+        {
+            DataManager::CReagent* ImportReagent = ImportReagentList.GetReagent(i);
+            if(ImportReagent != NULL && m_DataManager.GetReagentList() != NULL)
+            {
+                DataManager::CReagent* Reagent = m_DataManager.GetReagentList()->GetReagent(ImportReagent->GetReagentID());
+                if(Reagent != NULL)
+                {
+                    ImportReagent->SetMaxCassettes(Reagent->GetMaxCassettes());
+                    ImportReagent->SetMaxCycles(Reagent->GetMaxCycles());
+                    ImportReagent->SetMaxDays(Reagent->GetMaxDays());
+                }
+            }
+        }
         *(m_DataManager.GetReagentList()) = ImportReagentList;
         *(m_DataManager.GetReagentGroupList()) = ImportReagentGroupList;
         *(m_DataManager.GetReagentGroupColorList()) = ImportReagentGroupColorList;
-        *(m_DataManager.GetStationList()) = ImportDashboardDataStationList;
+
+        if(m_DataManager.GetStationList() != NULL)
+        {
+            DataManager::CDashboardDataStationList TmpStationList = *(m_DataManager.GetStationList());
+            *(m_DataManager.GetStationList()) = ImportDashboardDataStationList;
+            for(int i = 0; i < m_DataManager.GetStationList()->GetNumberOfDashboardStations(); i++)
+            {
+                DataManager::CDashboardStation* ImportStation = m_DataManager.GetStationList()->GetDashboardStation(i);
+                if(ImportStation != NULL)
+                {
+                    DataManager::CDashboardStation* Station = TmpStationList.GetDashboardStation(ImportStation->GetDashboardStationID());
+                    if(Station != NULL)
+                    {
+                        ImportStation->SetDashboardReagentActualCassettes(Station->GetDashboardReagentActualCassettes());
+                        ImportStation->SetDashboardReagentActualCycles(Station->GetDashboardReagentActualCycles());
+                        ImportStation->SetDashboardReagentExchangeDate(Station->GetDashboardReagentExchangeDate());
+                        ImportStation->SetDashboardReagentStatus(Station->GetDashboardReagentStatus());
+                    }
+                }
+            }
+        }
         *(m_DataManager.GetProgramList()) = ImportProgramList;
         //so far disable import user setting
 //        *(m_DataManager.GetUserSettingsInterface()->GetUserSettings()) = *(ImportUSInterface.GetUserSettings());
@@ -1594,12 +1631,14 @@ bool ImportExportThreadController::WriteFilesInSettingsFolder() {
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
+#if 0
     if (!m_DataManager.GetUserSettingsInterface()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                          + QDir::separator() + FILENAME_USERSETTINGS)) {
         /// this may happen if the flash does not have more space or flash is having some problem
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
+#endif
     return true;
 }
 

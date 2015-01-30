@@ -42,8 +42,8 @@ void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVer
     m_SWVersion = SWVersion;
     mp_DayEventLogger = new DataLogging::DayEventLogger(0, "DataLogging", "hd");
     QString operatingMode = "production";
-    int fileCount = 10;
-    QString baseFileName = "SensorData_ST_";
+    int fileCount = 5;
+    QString baseFileName = "SensorData_";
     mp_DayEventLogger->Configure(DataLogging::DayEventLoggerConfig(operatingMode,
                                                         m_serialNumber,
                                                         m_SWVersion,

@@ -223,7 +223,7 @@ public:
 	* \iparam Index  id
 	* \return CDashboardStation
 	*/
-    const CDashboardStation* GetDashboardStation(const unsigned int Index);  
+    CDashboardStation* GetDashboardStation(const unsigned int Index);
 
 	/**
 	* \brief AddDashboardStation

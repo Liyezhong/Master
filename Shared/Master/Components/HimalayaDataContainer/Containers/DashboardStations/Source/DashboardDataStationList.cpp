@@ -454,7 +454,7 @@ DashboardStationType_t CDashboardDataStationList::GetDashboardStationType(const 
  *  \return CDashboardStation instance
  */
 /****************************************************************************/
-const CDashboardStation* CDashboardDataStationList::GetDashboardStation(const unsigned int Index)
+CDashboardStation* CDashboardDataStationList::GetDashboardStation(const unsigned int Index)
 {
     QReadLocker locker(mp_ReadWriteLock);
 
