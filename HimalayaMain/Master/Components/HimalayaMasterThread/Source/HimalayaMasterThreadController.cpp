@@ -344,6 +344,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
     else {
         // send ACK
         SendAcknowledgeOK(Ref, AckCommandChannel);
+        DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
         Global::EventObject::Instance().RaiseEvent(EVENT_DATE_TIME_SET_DATE_TIME,Global::tTranslatableStringList()<< DateTime);
     }
 
