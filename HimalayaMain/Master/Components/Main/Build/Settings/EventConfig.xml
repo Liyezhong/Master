@@ -1145,10 +1145,10 @@
 	    <Event Code="" ErrorID="67174732" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_STOP_OVENBOT_TEMP_SUCCESS" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174732" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174733" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67174733" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SUCCESSFULLY" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174733" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174912" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_START_PRETEST" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67174912" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_START_PRETEST" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174912" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174913" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_CHECK_LEVELSENSOR" LogLevel="High" UserLog="FALSE">
@@ -1217,7 +1217,7 @@
 	    <Event Code="" ErrorID="67174996" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_RETORT" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174996" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174997" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_OVEN" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174997" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_OVEN" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174997" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174998" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_RV" LogLevel="High" UserLog="FALSE">
@@ -1271,7 +1271,7 @@
 	    <Event Code="" ErrorID="67175205" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_OVEN_PAUSE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175205" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175206" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_RELEASE_PREASURE" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175206" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_RELEASE_PREASURE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175206" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175207" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_DRAINING" LogLevel="High" UserLog="TRUE">
@@ -1295,7 +1295,7 @@
 	    <Event Code="" ErrorID="67175213" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_START_PROCESSING" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175213" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175214" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SET_PRESSURE" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175214" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SET_PRESSURE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175214" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175215" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_PROGRAM_STEP_FINISHED" LogLevel="High" UserLog="TRUE">
@@ -1318,6 +1318,12 @@
 	    </Event>
 	    <Event Code="" ErrorID="67175221" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_UNKNOW_ERROR" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175221" ButtonType="" StatusBar=""/>
+	    </Event>
+	    <Event Code="" ErrorID="67175222" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_FILLING_SUCCESSFULLY" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175222" ButtonType="" StatusBar=""/>
+	    </Event>
+	    <Event Code="" ErrorID="67175223" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_DRAINING_SUCCESSFULLY" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175223" ButtonType="" StatusBar=""/>
 	    </Event>
 	</Source>
 </EventConfigure>

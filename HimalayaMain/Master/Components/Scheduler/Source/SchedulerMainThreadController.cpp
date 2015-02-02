@@ -589,21 +589,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,QStringList()<<ProgramName);
-            //start next step
-            QString PVMode = "/";
-            if(m_CurProgramStepInfo.isPressure)
-            {
-                PVMode = "P/";
-            }
-            if(m_CurProgramStepInfo.isVacuum)
-            {
-                PVMode += "V";
-            }
-            RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
-                       << m_CurProgramStepInfo.stationID
-                       <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                       <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
-                       <<PVMode);
 
             //send command to main controller to tell the left time
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
@@ -805,7 +790,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                LogDebug(QString("Program Step Filling OK"));
+                RaiseEvent(EVENT_SCHEDULER_FILLING_SUCCESSFULLY);
                 m_SchedulerMachine->NotifyFillFinished();
             }
             else
@@ -1032,7 +1017,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    LogDebug(QString("Program Step Draining succeed!"));
+                    RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
                     m_SchedulerMachine->NotifyDrainFinished();
                 }
             }
@@ -1087,21 +1072,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(m_CurProgramStepIndex != -1)
             {
                 m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
-                //start next step
-                QString PVMode = "/";
-                if(m_CurProgramStepInfo.isPressure)
-                {
-                    PVMode = "P/";
-                }
-                if(m_CurProgramStepInfo.isVacuum)
-                {
-                    PVMode += "V";
-                }
-                RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
-                           << m_CurProgramStepInfo.stationID
-                           <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-                           <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
-                           <<PVMode);
                 m_SchedulerMachine->NotifyStepProgramFinished();
             }
             else
@@ -4453,6 +4423,21 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+    QString PVMode = "/";
+    if(m_CurProgramStepInfo.isPressure)
+    {
+        PVMode = "P/";
+    }
+    if(m_CurProgramStepInfo.isVacuum)
+    {
+        PVMode += "V";
+    }
+    RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+               << m_CurProgramStepInfo.stationID
+               <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+               <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+               <<PVMode);
 
     if(m_CurProgramStepInfo.reagentGroup == "RG6")
     {

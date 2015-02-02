@@ -61,8 +61,8 @@ void CProgramSelfTest::SendSignalSelfTestDone(bool flag)
     if(flag)
     {
         m_CurrentState = SELFTEST_UNDF;
-        emit SigSelfTestDone(true);
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SUCCESSFULLY);
+        emit SigSelfTestDone(true);
     }
     else
     {
