@@ -252,7 +252,7 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
             mp_MessageDlg->EnableButton(1, true);
         }
 
-        if ((m_CurProgramStepIndex < 3) && Core::CGlobalHelper::GetProgramPaused() && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
+        if ((m_CurProgramStepIndex < 3) && (m_ProgramStatus == Paused) && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
         {
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->SetTitle(CommonString::strInforMsg);
@@ -395,6 +395,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     ui->programPanelWidget->EnableStartButton(false);
     ui->programPanelWidget->EnablePauseButton(false);
     m_ProgramStatus = Aborting;
+    Core::CGlobalHelper::SetProgramPaused(false);
 }
 
 //this function will be invoked after program Abort and completed
@@ -403,6 +404,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
      if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
      {
         m_ProgramStatus = Undefined_ProgramStatus;
+        Core::CGlobalHelper::SetProgramPaused(false);
         //represent the retort as contaminated status
         ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
         m_IsWaitingCleaningProgram = true;
@@ -441,6 +443,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             mp_MessageDlg->HideButtons();
             (void)mp_MessageDlg->exec();
             m_ProgramStatus = Undefined_ProgramStatus;
+            Core::CGlobalHelper::SetProgramPaused(false);
             }
 
             mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -511,7 +514,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
     m_ProgramStatus = Aborted;
-
+    Core::CGlobalHelper::SetProgramPaused(false);
     if (!IsRetortContaminated)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -547,6 +550,7 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     m_IsDrainingWhenPrgrmCompleted = false;
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
     m_ProgramStatus = Completed;
+    Core::CGlobalHelper::SetProgramPaused(false);
 }
 
 void CDashboardWidget::OnProgramCompleted()
@@ -579,6 +583,7 @@ void CDashboardWidget::OnProgramCompleted()
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
     m_ProgramStatus = Completed;
+    Core::CGlobalHelper::SetProgramPaused(false);
 }
 
 void CDashboardWidget::OnProgramRunBegin()
@@ -610,6 +615,7 @@ void CDashboardWidget::OnProgramRunBegin()
             ui->programPanelWidget->EnableStartButton(true);//enable stop button
     }
     m_ProgramStatus = ProgramRunning;
+    Core::CGlobalHelper::SetProgramPaused(false);
     ui->programPanelWidget->IsResumeRun(true);
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
 }
@@ -619,6 +625,7 @@ void CDashboardWidget::OnProgramPaused()
     ui->programPanelWidget->EnableStartButton(true);//enable Abort button
     ui->programPanelWidget->ChangeStartButtonToStartState();
     m_ProgramStatus = Paused;
+    Core::CGlobalHelper::SetProgramPaused(true);
 }
 
 void CDashboardWidget::OnPauseButtonEnable(bool bEnable)
@@ -980,6 +987,27 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 
 void CDashboardWidget::CheckPreConditionsToRunProgram()
 {
+    if (ui->programPanelWidget->IsResumeRun())
+    {
+        if (!m_bRetortLocked){
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText(m_strRetortNotLock);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                ui->programPanelWidget->EnableStartButton(true);
+                return;
+            }
+        }
+
+
+        mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0, 0);
+        ui->programPanelWidget->ChangeStartButtonToStopState();
+        return;
+    }
+
     if (IsOKPreConditionsToRunProgram())
     {
         int EndTimeDelta = m_AsapEndDateTime.secsTo(m_EndDateTime);

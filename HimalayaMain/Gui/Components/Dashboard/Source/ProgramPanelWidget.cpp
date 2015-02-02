@@ -77,9 +77,6 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, UpdateProgram(DataManager::CProgram&), ui->favoriteProgramsPanel, UpdateProgram(DataManager::CProgram&));
-
-    m_Timer = new QTimer(this);
-    m_Timer->setInterval(2*60*1000);
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -186,8 +183,6 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
 
 bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
 {
-    m_Timer->stop();
-    m_Timer->start();
     return true;
 }
 
@@ -207,9 +202,7 @@ bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 {
     if ( whichBtn == Dashboard::firstButton ) {
-        Core::CGlobalHelper::SetProgramPaused(false);
         ui->startButton->setEnabled(false);//protect to click twice in a short time
-        m_Timer->stop();
 
         switch(m_ProgramNextAction)
         {      
@@ -217,13 +210,6 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
                 break;
             case DataManager::PROGRAM_START:
             {               
-                if (m_IsResumeRun)
-                {
-                    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, 0, 0);
-                    ChangeStartButtonToStopState();
-                    return;
-                }
-
                 emit CheckPreConditionsToRunProgram();
             }
             break;
@@ -246,7 +232,6 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     }
     else if (whichBtn == Dashboard::secondButton)//pause
     {
-        Core::CGlobalHelper::SetProgramPaused(true);
         ui->pauseButton->setEnabled(false);//protect to click twice in a short time
         //ui->startButton->setEnabled(false);
         if(CheckPreConditionsToPauseProgram())

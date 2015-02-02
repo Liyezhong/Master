@@ -386,7 +386,6 @@ private:
     QString m_strInformation;       ///<  Definition/Declaration of variable m_strInformation
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
-    QTimer* m_Timer;       ///<  Definition/Declaration of program resume remider m_Timer
     bool m_startButtonDisabledAsSysError;
     bool m_pauseButtonDisabledAsSysError;
 };
