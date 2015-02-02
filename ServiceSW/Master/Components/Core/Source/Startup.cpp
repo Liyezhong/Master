@@ -612,11 +612,6 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 /****************************************************************************/
 void CStartup::ServiceGuiInit()
 {
-//    Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
-//    p_InitSystem->setFixedSize(800, 600);
-//    (void)p_InitSystem->exec();
-//    delete p_InitSystem;
-
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_SERVICEUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
 
