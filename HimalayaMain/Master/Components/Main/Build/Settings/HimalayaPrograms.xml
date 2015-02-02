@@ -2,7 +2,7 @@
 <!DOCTYPE TissuePrograms>
 <TissuePrograms Version="1">
     <ProgramList NextProgramID="U1">
-        <Program ID="C01" Name="CleaningProgram" NameID="50331652" Icon="Icon_Leica" LeicaProgram="true" Favorite="false">
+        <Program ID="C01" Name="Cleaning Program" NameID="50331652" Icon="Icon_Leica" LeicaProgram="true" Favorite="false">
             <StepList NextStepID="15">
                 <Step ID="0" ReagentID="L10" Duration="2m" Temperature="67" Pressure="Off" Vacuum="Off"/>
                 <Step ID="1" ReagentID="L10" Duration="2m" Temperature="67" Pressure="Off" Vacuum="Off"/>
@@ -21,7 +21,7 @@
                 <Step ID="14" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
-        <Program ID="L02" Name="LeicaOvernight" NameID="50331650" Icon="Leica_Overnight" LeicaProgram="true" Favorite="true">
+        <Program ID="L02" Name="Leica Overnight" NameID="50331650" Icon="Leica_Overnight" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="1h" Temperature="37" Pressure="On" Vacuum="On"/>
                 <Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
@@ -39,7 +39,7 @@
                 <Step ID="13" ReagentID="L8" Duration="1h 30m" Temperature="65" Pressure="Off" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="L03" Name="LeicaBiopsie" NameID="50331651" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
+        <Program ID="L03" Name="Leica Biopsy" NameID="50331651" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="15m" Temperature="37" Pressure="On" Vacuum="On"/>
                 <Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
@@ -57,7 +57,7 @@
                 <Step ID="13" ReagentID="L8" Duration="10m" Temperature="65" Pressure="Off" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="L04" Name="FastProgram" NameID="" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
+        <Program ID="L04" Name="Fast Program" NameID="" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="1">
                 <Step ID="0" ReagentID="L1" Duration="1m" Temperature="37" Pressure="On" Vacuum="On"/>
                 <!--Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
