@@ -50,7 +50,6 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
     mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
-    CONNECTSIGNALSLOT(mp_ShutdownFailedHeater.data(), exited(), this, OnShutdownHeaters());
     CONNECTSIGNALSLOT(mp_CheckTempModuleCurrent.data(), entered(), this, OnEnterCheckingTempModuleCurrent());
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
@@ -59,7 +58,6 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
-    m_ShutdownHeatersTime = 0;
     m_StartCheckingTime = 0;
 }
 
@@ -77,7 +75,6 @@ void CRsStandbyWithTissue::Start()
     }
 
     mp_StateMachine->start();
-    m_ShutdownHeatersTime = 0;
     m_StartCheckingTime = 0;
 }
 
@@ -237,5 +234,6 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         break;
 	}
 }
+
 }
 

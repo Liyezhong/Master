@@ -1820,6 +1820,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit CancelTissueProtectPassedPrompt();
         }
         break;
+        case DataManager::CANCEL_RETORT_LID_OPEN_MSG_PROMPT:
+        {
+            emit CancelRetortCoverOpenMessagePrompt();
+        }
+        break;
 
         default:
         {

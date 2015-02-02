@@ -2132,7 +2132,7 @@ void SchedulerMainThreadController::SendCoverLidOpenMsg()
     }
     else if(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == m_CurErrEventID)
     {
-        MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+        MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CANCEL_RETORT_LID_OPEN_MSG_PROMPT);
         Q_ASSERT(CmdRetortCoverOpen);
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
@@ -3091,6 +3091,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         {
             if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
             {
+                // Notify retort lid is opened
+                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                Q_ASSERT(CmdRetortCoverOpen);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+
                 // retort is open, turn on the fan
                 m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
                 SchedulerCommandShPtr_t pResHeatingCmd;
@@ -3106,12 +3112,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 {
                     SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
                 }
-
-                // Notify retort lid is opened
-                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-                Q_ASSERT(CmdRetortCoverOpen);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
             }
 
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));

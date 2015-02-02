@@ -158,17 +158,6 @@ private slots:
     /****************************************************************************/
     void OnEnterCheckingTempModuleCurrent() { m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch(); }
 
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Slot for the time of shutting down heaters
-     *  \param  void
-     *  \return void
-     *
-     */
-    /****************************************************************************/
-    void OnShutdownHeaters() { m_ShutdownHeatersTime = QDateTime::currentMSecsSinceEpoch(); }
-
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Standby_WithTissue
@@ -177,7 +166,6 @@ private:
     QSharedPointer<QState> mp_RTSideStopTempCtrl;           //!< RT Top stop tempatrue control state
     QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check the current of temperature module status (if error message was raised not not)
     QSharedPointer<QState> mp_ReleasePressure;              //!< Release pressure
-    qint64                m_ShutdownHeatersTime;            //!< Time when the failed heaters have been down
     qint64                m_StartCheckingTime;              //!< start-up time for checking temperature module current status
     quint8                m_StandbyType;                    //!< RS_Sandby_WithTissue or RS_Standby.
 };

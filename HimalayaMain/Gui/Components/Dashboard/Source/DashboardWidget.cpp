@@ -123,6 +123,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, CancelProgramWillCompletePrompt(),
                       this, CancelProgramWillCompletePrompt());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, CancelRetortCoverOpenMessagePrompt(),
+                      this, CancelRetortCoverOpenMessage());
+
     CONNECTSIGNALSLOT(mp_DataConnector, CancelTissueProtectPassedPrompt(),
                       this, CancelTissueProtectPassedPrompt());
 
@@ -351,20 +354,30 @@ void CDashboardWidget::OnOvenCoverOpen()
     delete pMessageDlg;
 }
 
+void CDashboardWidget::CancelRetortCoverOpenMessage()
+{
+    if(mp_RetortLidOpenMsgDlg)
+        mp_RetortLidOpenMsgDlg->reject();
+}
+
 void CDashboardWidget::OnRetortCoverOpen()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    mp_MessageDlg->SetTitle(CommonString::strOK);
+    mp_RetortLidOpenMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_RetortLidOpenMsgDlg->SetIcon(QMessageBox::Critical);
     QString strTemp(m_strRetortCoverOpen);
-    mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
+    mp_RetortLidOpenMsgDlg->SetText(strTemp);
+    mp_RetortLidOpenMsgDlg->SetButtonText(1, CommonString::strOK);
+    mp_RetortLidOpenMsgDlg->HideButtons();
 
-    if (mp_MessageDlg->exec())
+    if (mp_RetortLidOpenMsgDlg->exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_RETORT_COVER_OPEN);
+        delete mp_RetortLidOpenMsgDlg;
+        mp_RetortLidOpenMsgDlg = NULL;
         return;
     }
+    delete mp_RetortLidOpenMsgDlg;
+    mp_RetortLidOpenMsgDlg = NULL;
 }
 
 void CDashboardWidget::OnPowerFailureMsg()
@@ -1184,7 +1197,7 @@ void CDashboardWidget::RetranslateUI()
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover is open, please close it then click OK button.\"OK\"", 0, QApplication::UnicodeUTF8);
-    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click \"OK\"", 0, QApplication::UnicodeUTF8);
+    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

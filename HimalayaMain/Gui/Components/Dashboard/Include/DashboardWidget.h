@@ -159,6 +159,7 @@ private:
     DataManager::CHimalayaUserSettings* m_pUserSetting;       ///<  Definition/Declaration of variable m_pUserSetting
     MainMenu::CMessageDlg* mp_MessageDlg;                      //!< Message Dialogue
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
+    MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
@@ -258,6 +259,12 @@ private slots:
      */
     /****************************************************************************/
     void CancelTissueProtectPassedPrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CancelRetortCoverOpenMessage
+     */
+    /****************************************************************************/
+    void CancelRetortCoverOpenMessage();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnTissueProtectPassed

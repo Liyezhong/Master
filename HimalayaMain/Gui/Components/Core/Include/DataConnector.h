@@ -602,6 +602,12 @@ signals:
     void CancelTissueProtectPassedPrompt();
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal CancelRetortCoverOpenMessagePrompt
+     */
+    /****************************************************************************/
+    void CancelRetortCoverOpenMessagePrompt();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed
      */
     /****************************************************************************/

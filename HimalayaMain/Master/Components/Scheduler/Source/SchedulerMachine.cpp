@@ -220,12 +220,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
-    CONNECTSIGNALSLOT(mp_RsStandby.data(), TasksDone(bool), this, OnTasksDone(bool));
+    CONNECTSIGNALSLOT(mp_RsStandby.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_Standby_WithTissue related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandByWithTissue()), mp_ErrorRsStandbyWithTissueState.data());
-    CONNECTSIGNALSLOT(mp_RsStandbyWithTissue.data(), TasksDone(bool), this, OnTasksDone(bool));
+    CONNECTSIGNALSLOT(mp_RsStandbyWithTissue.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyWithTissueState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_HeatingErr30SRetry related logic
@@ -360,6 +360,17 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
 }
+
+void CSchedulerStateMachine::OnTasksDoneRsStandyWithTissue(bool flag)
+{
+    mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
+    emit sigStateChange();
+    if(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == mp_SchedulerThreadController->GetCurErrEventID())
+    {
+        mp_SchedulerThreadController->SendCoverLidOpenMsg();
+    }
+}
+
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
     // stop Retort sensors heating
