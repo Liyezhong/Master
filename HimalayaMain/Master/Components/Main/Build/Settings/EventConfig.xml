@@ -891,6 +891,15 @@
 		<Event Code="" ErrorID="50331774" ErrorType="INFO" Name="EVENT_DM_PROG_REMMOVE_PROGRAM" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331774" ButtonType="" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="50331775" ErrorType="INFO" Name="EVENT_DM_CHANGE_TO_STANDARD_USER" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331775" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331776" ErrorType="INFO" Name="EVENT_DM_CHANGE_TO_SUPERVISOR" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331776" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331777" ErrorType="INFO" Name="EVENT_DM_CHANGE_TO_SERVICE" LogLevel="High" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="50331777" ButtonType="" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="50331718" ErrorType="Warning" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_OVERDUE" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" StatusBar=""/>
 		</Event>

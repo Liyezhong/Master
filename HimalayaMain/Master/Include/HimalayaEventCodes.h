@@ -340,5 +340,8 @@ const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM	= 50331771;	///< The 
 const quint32 EVENT_DM_PROG_ADD_NEW_PROGRAM = 50331772;	///< User add the program %1.
 const quint32 EVENT_DM_PROG_UPDATE_PROGRAM = 50331773;	///< User update the program %1.
 const quint32 EVENT_DM_PROG_REMMOVE_PROGRAM = 50331774;	///< User remove the program %1.
+const quint32 EVENT_DM_CHANGE_TO_STANDARD_USER = 50331775;	///< Change the user role to the standard user.
+const quint32 EVENT_DM_CHANGE_TO_SUPERVISOR = 50331776;	///< Change the user role to Supervisor.
+const quint32 EVENT_DM_CHANGE_TO_SERVICE = 50331777;	///< Change the user role to Service.
 #endif // HIMALAYAEVENTCODES_H
 

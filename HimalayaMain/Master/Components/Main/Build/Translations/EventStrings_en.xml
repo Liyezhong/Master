@@ -450,6 +450,9 @@
 		<string id="50331772" text1="User add the program %1." text2=""/>
 		<string id="50331773" text1="User update the program %1." text2=""/>
 		<string id="50331774" text1="User remove the program %1." text2=""/>
+		<string id="50331775" text1="Change the user role to the standard user." text2=""/>
+		<string id="50331776" text1="Change the user role to Supervisor." text2=""/>
+		<string id="50331777" text1="Change the user role to Service." text2=""/>
 		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
 		<string id="50331765" text1="Active carbon filter operation time was reset." text2=""/>
 		<string id="50331764" text1="Machine operation time was reset." text2=""/>
@@ -460,9 +463,9 @@
 		<string id="50331770" text1="Please wait for draining to be completed, and then try again!" text2=""/>
 		<string id="33619977" text1="The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable." text2=""/>
 		<string id="50331683" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
-		<string id="50331651" text1="LeicaBiopsie" text2=""/>
-		<string id="50331652" text1="CleaningProgram" text2=""/>
-		<string id="50331650" text1="LeicaOvernight" text2=""/>
+		<string id="50331651" text1="Leica Biopsy" text2=""/>
+		<string id="50331652" text1="Cleaning Program" text2=""/>
+		<string id="50331650" text1="Leica Overnight" text2=""/>
 		<string id="50331671" text1="Cleaning alcohol" text2=""/>
 		<string id="50331670" text1="Cleaning xylene" text2=""/>
 		<string id="50331666" text1="Ethanol 100%" text2=""/>
