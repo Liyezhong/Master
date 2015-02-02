@@ -461,6 +461,7 @@ void CStartup::GuiInit()
 {
     qDebug()<<"CStartup::GuiInit ---- m_DeviceName="<<m_DeviceName;
 
+    RemoveFiles();
     mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
@@ -477,6 +478,7 @@ void CStartup::GuiInit()
 /****************************************************************************/
 void CStartup::GuiInit(QString debugMode)
 {
+    RemoveFiles();
     if (debugMode.startsWith("Service") || debugMode.startsWith("ts_Service"))
     {
         CServiceUtils::delay(1000);
@@ -564,7 +566,6 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 {
     qDebug()<<"CStartup::InitializeGui  "<<SoftwareMode;
 
-    RemoveFiles();
     SetCurrentUserMode(UserMode);
     if (SoftwareMode == PlatformService::SERVICE_MODE)
     {
@@ -582,13 +583,6 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
             emit LogOnSystem();
         }
 
-        Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
-        p_InitSystem->setFixedSize(800, 600);
-        (void)p_InitSystem->exec();
-        delete p_InitSystem;
-
-        mp_SVCSceenLockWidget->SetLockStatus(false);
-        mp_SVCSceenLockWidget->StartTimer();
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {
@@ -618,6 +612,11 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 /****************************************************************************/
 void CStartup::ServiceGuiInit()
 {
+//    Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
+//    p_InitSystem->setFixedSize(800, 600);
+//    (void)p_InitSystem->exec();
+//    delete p_InitSystem;
+
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_SERVICEUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
 
@@ -644,6 +643,14 @@ void CStartup::ServiceGuiInit()
     mp_FirmwareUpdate->SetEnableUpdate(false);
 
     mp_MainWindow->SetTabWidgetIndex(0);
+
+    Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
+    p_InitSystem->setFixedSize(800, 600);
+    (void)p_InitSystem->exec();
+    delete p_InitSystem;
+
+    mp_SVCSceenLockWidget->SetLockStatus(false);
+    mp_SVCSceenLockWidget->StartTimer();
 }
 
 void CStartup::InitManufacturingDiagnostic()
