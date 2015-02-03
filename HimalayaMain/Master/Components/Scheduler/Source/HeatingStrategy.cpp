@@ -909,6 +909,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
 
+        if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+        {
+            mp_SchedulerController->LogDebug("Level sensor PID changed to high");
+        }
+        else
+        {
+            mp_SchedulerController->LogDebug("Level sensor PID changed to low");
+        }
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset));
         m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RTLevelSensor.curModuleId = iter->Id;
