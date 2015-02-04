@@ -142,6 +142,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_DrainDelayBeginTime = 0;
     m_CheckOvenCover = true;
     m_TransitionPeriod = false;
+    m_PowerFailureStep = POWERFAILURE_INIT;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -443,12 +444,6 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                     ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
                 }
                 RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
-                quint32 Scenario = m_ProgramStatusInfor.GetScenario();
-                m_CurrentScenario = Scenario;
-                if(203 == Scenario || (281 <= Scenario && Scenario <= 297))
-                {
-                    SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
-                }
                 m_SchedulerMachine->EnterPowerFailure();
             }
         }
@@ -482,46 +477,53 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     Q_UNUSED(ctrlCmd);
     Q_UNUSED(cmd);
 
-    if(m_SchedulerCommandProcessor != NULL)
+    if(POWERFAILURE_INIT == m_PowerFailureStep)
     {
-        m_SchedulerCommandProcessor->ALSetPressureDrift(m_ProgramStatusInfor.GetPressureDriftOffset());
-    }
+        if(m_SchedulerCommandProcessor != NULL)
+        {
+            m_SchedulerCommandProcessor->ALSetPressureDrift(m_ProgramStatusInfor.GetPressureDriftOffset());
+        }
 
-    QString reagentID = m_ProgramStatusInfor.GetLastReagentGroup();
-    QString curProgramID = m_ProgramStatusInfor.GetProgramId();
-    if (curProgramID.isNull() || curProgramID.isEmpty())
+        QString curProgramID = m_ProgramStatusInfor.GetProgramId();
+        if (curProgramID.isNull() || curProgramID.isEmpty())
+        {
+            return;
+        }
+
+        quint32 scenario = m_ProgramStatusInfor.GetScenario();
+        int StepID = m_ProgramStatusInfor.GetStepID();
+        if(-1 == StepID)
+        {
+            StepID = 0;
+        }
+
+        m_CurProgramID = curProgramID;
+        m_CurrentScenario = scenario;
+        m_FirstProgramStepIndex = 0;
+
+        (void)this->PrepareProgramStationList(curProgramID, 0);
+
+        m_CurProgramStepIndex = StepID - 1;
+        (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
+
+        if(203 == scenario)
+        {
+            m_IsCleaningProgram = true;
+            m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
+            SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
+        }
+        else if(281 <= scenario && scenario <= 297)
+        {
+            m_IsCleaningProgram = true;
+            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+            SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
+        }
+        m_PowerFailureStep = POWERFAILURE_RUN;
+    }
+    else if(POWERFAILURE_RUN == m_PowerFailureStep)
     {
-        return;
+      SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
     }
-
-    quint32 scenario = m_ProgramStatusInfor.GetScenario();
-    int StepID = m_ProgramStatusInfor.GetStepID();
-    if(-1 == StepID)
-    {
-        StepID = 0;
-    }
-
-    m_CurProgramID = curProgramID;
-    m_CurrentScenario = scenario;
-    m_FirstProgramStepIndex = 0;
-
-    (void)this->PrepareProgramStationList(curProgramID, 0);
-
-    m_CurProgramStepIndex = StepID - 1;
-    (void)this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);
-
-    if(203 == scenario)
-    {
-        m_IsCleaningProgram = true;
-        m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
-    }
-    else if(281 <= scenario && scenario <= 297)
-    {
-        m_IsCleaningProgram = true;
-        m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
-    }
-
-    SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
 }
 
 

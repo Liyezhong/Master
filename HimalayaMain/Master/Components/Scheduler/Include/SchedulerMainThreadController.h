@@ -177,6 +177,18 @@ typedef enum
 
 /****************************************************************************/
 /*!
+ * \brief Definition of power failure Type
+ */
+/****************************************************************************/
+typedef enum
+{
+    POWERFAILURE_INIT,
+    POWERFAILURE_RUN
+} PowerFailureStep_t;
+
+
+/****************************************************************************/
+/*!
  *  \brief struct for ProgramEndTime
  */
 /****************************************************************************/
@@ -340,6 +352,8 @@ typedef struct
         CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
         bool    m_CheckOvenCover;                             ///< check the oven cover
         bool    m_TransitionPeriod;                           ///< flag to indicate transition period
+        PowerFailureStep_t m_PowerFailureStep; ///< the power failure step
+
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
