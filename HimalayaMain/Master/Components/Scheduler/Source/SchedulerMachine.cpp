@@ -2076,6 +2076,7 @@ void CSchedulerStateMachine::OnNotifyResume()
 void CSchedulerStateMachine::OnEnterRsAbortState()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OVEN_ABORTING);
+    mp_SchedulerThreadController->SetTransitionPeriod(false);
     m_PssmAbortingSeq = 0;
 }
 

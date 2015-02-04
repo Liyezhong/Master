@@ -39,37 +39,9 @@ namespace Scheduler{
 CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-
-    mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RTTempCtrlOn = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_Wait3SRTCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-	mp_PressureCalibration = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_PressureSealingChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_BottlesChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_Initial.data());
-    mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
-
-    mp_Initial->addTransition(this, SIGNAL(RTTemperatureControlOn()), mp_RTTempCtrlOn.data());
-    mp_RTTempCtrlOn->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()), mp_Wait3SRTCurrent.data());
-    mp_Wait3SRTCurrent->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
-    mp_RTTempCtrlOff->addTransition(this, SIGNAL(PressureCalibration()), mp_PressureCalibration.data());
-    mp_PressureCalibration->addTransition(this, SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
-    mp_RVPositionChecking->addTransition(this, SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
-    mp_PressureSealingChecking->addTransition(this, SIGNAL(BottlesChecking()), mp_BottlesChecking.data());
-    mp_BottlesChecking->addTransition(this,SIGNAL(MoveToTube()), mp_MoveToTube.data());
-    mp_MoveToTube->addTransition(this, SIGNAL(TasksDone()), mp_Initial.data());
-
-
     // Start up state machine
     //mp_StateMachine->start();
-
+    m_CurrentState = PRETEST_UNDEF;
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;
@@ -89,78 +61,16 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
 
 CProgramPreTest::~CProgramPreTest()
 {
-    /*lint -e1551 */
-    mp_StateMachine->stop();
 }
 
 void CProgramPreTest::Start()
 {
-    if (mp_StateMachine->isRunning())
-    {
-        mp_StateMachine->stop();
-        // holde on 200 ms
-        QTime delayTime = QTime::currentTime().addMSecs(200);
-        while (QTime::currentTime() < delayTime)
-        {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-    }
-
-    mp_StateMachine->start();
     this->ResetVarList();
 }
 
-CProgramPreTest::StateList_t CProgramPreTest::GetCurrentState(QSet<QAbstractState*> statesList)
-{
-    StateList_t currentState = PRETEST_UNDEF;
-
-    if (statesList.contains(mp_Initial.data()))
-    {
-        currentState = PRETEST_INIT;
-    }
-    else if (statesList.contains(mp_RTTempCtrlOn.data()))
-    {
-        currentState = RT_TEMCTRL_ON;
-    }
-    else if (statesList.contains(mp_TemperatureSensorsChecking.data()))
-    {
-        currentState = TEMPSENSORS_CHECKING;
-    }
-    else if (statesList.contains(mp_Wait3SRTCurrent.data()))
-    {
-        currentState = WAIT3S_RT_CURRENT;
-    }
-    else if (statesList.contains(mp_RTTempCtrlOff.data()))
-    {
-        currentState = RT_TEMCTRL_OFF;
-    }
-    else if(statesList.contains(mp_PressureCalibration.data()))
-    {
-        currentState = PRESSURE_CALIBRATION;
-    }
-    else if (statesList.contains(mp_RVPositionChecking.data()))
-    {
-        currentState = RV_POSITION_CHECKING;
-    }
-    else if(statesList.contains(mp_PressureSealingChecking.data()))
-    {
-        currentState = PRESSURE_SEALING_CHECKING;
-    }
-    else if(statesList.contains(mp_BottlesChecking.data()))
-    {
-        currentState = BOTTLES_CHECKING;
-    }
-    else if (statesList.contains(mp_MoveToTube.data()))
-    {
-        currentState = MOVE_TO_TUBE;
-    }
-
-    return currentState;
-}
 
 void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	qreal currentPressure = 0.0;
     ReturnCode_t ret = DCL_ERR_FCT_CALL_SUCCESS;
 
@@ -177,19 +87,19 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     //Firstly, we need check if CTRL_CMD_ABORT has been received
     if (m_IsAbortRecv)
     {
-        if (PRETEST_INIT == currentState || RT_TEMCTRL_ON == currentState
-                || TEMPSENSORS_CHECKING == currentState || WAIT3S_RT_CURRENT == currentState
-                || RT_TEMCTRL_OFF == currentState || PRESSURE_CALIBRATION == currentState)
+        if (PRETEST_INIT == m_CurrentState || RT_TEMCTRL_ON == m_CurrentState
+                || TEMPSENSORS_CHECKING == m_CurrentState || WAIT3S_RT_CURRENT == m_CurrentState
+                || RT_TEMCTRL_OFF == m_CurrentState || PRESSURE_CALIBRATION == m_CurrentState)
         {
             m_TasksAborted = true;
             return;
         }
     }
 
-	switch (currentState)
+    switch (m_CurrentState)
     {
     case PRETEST_INIT:
-        emit RTTemperatureControlOn();
+        m_CurrentState = RT_TEMCTRL_ON;
         break;
     case RT_TEMCTRL_ON:
         ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTSide");
@@ -198,7 +108,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTBottom");
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
-                emit TemperatureSensorsChecking();
+                m_CurrentState = TEMPSENSORS_CHECKING;
                 m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
             }
             else
@@ -220,7 +130,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_CHECK_LEVELSENSOR_SUCCESS);
-            emit Wait3SecondsRTCurrent();
+            m_CurrentState = WAIT3S_RT_CURRENT;
             m_IsLoged = 0;
         }
         break;
@@ -234,7 +144,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if ((now - m_RTTempStartTime) >= 3*1000)
         {
             m_IsLoged = 0;
-            emit RTTemperatureControlOff();
+            m_CurrentState = RT_TEMCTRL_OFF;
         }
         else
         {
@@ -283,7 +193,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP_SUCCESS);
                 m_RTTempOffSeq = 0;
-                emit PressureCalibration();
+                m_CurrentState = PRESSURE_CALIBRATION;
             }
             else
             {
@@ -345,7 +255,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS);
                 m_PressureCalibrationSeq = 0;
                 m_PressureCalibrationCounter = 0;
-                emit RVPositionChecking();
+                m_CurrentState = RV_POSITION_CHECKING;
             }
             else if (qAbs(currentPressure) <= 2.0) //offset the calibration
             {
@@ -377,7 +287,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_RVPositioinChkSeq = 0;
-                    emit PressureSealingChecking();
+                    m_CurrentState = PRESSURE_SEALING_CHECKING;
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION_SUCCESS);
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION);
                 }
@@ -412,7 +322,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST_SUCCESS);
                     m_PressureSealingChkSeq = 0;
-                    emit BottlesChecking();
+                    m_CurrentState = BOTTLES_CHECKING;
                 }
                 else
                 {
@@ -425,7 +335,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
     case BOTTLES_CHECKING:
         if(mp_SchedulerThreadController->IsCleaningProgram() || !mp_SchedulerThreadController->IsNeedBottleCheck())
         {
-            emit MoveToTube();
+            m_CurrentState = MOVE_TO_TUBE;
         }
         else
         {
@@ -450,7 +360,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                     m_IsLoged = 0;
                     m_BottleSeq = 0; //reset
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
-                    emit MoveToTube();
+                    m_CurrentState = MOVE_TO_TUBE;
                 }
             }
             else // Wait for command response
@@ -517,6 +427,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 
 void CProgramPreTest::ResetVarList()
 {
+    m_CurrentState = PRETEST_INIT;
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;

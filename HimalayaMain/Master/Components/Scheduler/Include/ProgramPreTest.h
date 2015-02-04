@@ -102,109 +102,13 @@ signals:
 
     /****************************************************************************/
     /*!
-    *  \brief Signal for start the RT temperature sensors
-    *
-    */
-   /****************************************************************************/
-   void RTTemperatureControlOn();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for checking the status of all temperature sensors
-     *
-     */
-    /****************************************************************************/
-    void TemperatureSensorsChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal to wait to 3 seconds
-     *
-     */
-    /****************************************************************************/
-    void Wait3SecondsRTCurrent();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal to turn off RT Side and Bottom
-     *
-     */
-    /****************************************************************************/
-    void RTTemperatureControlOff();
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for Rotary Valve position checking
-     *
-     */
-    /****************************************************************************/
-    void RVPositionChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for pressure calibration
-     *
-     */
-    /****************************************************************************/
-    void PressureCalibration();
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for pressure checking
-     *
-     */
-    /****************************************************************************/
-    void PressureSealingChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for bottles status checking
-     *
-     */
-    /****************************************************************************/
-    void BottlesChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for moving to tube position
-     *
-     */
-    /****************************************************************************/
-    void MoveToTube();
-
-    /****************************************************************************/
-    /*!
      *  \brief Signal for tasks done
      *
      */
     /****************************************************************************/
     void TasksDone();
 
-    /****************************************************************************/
-    /*!
-     *  \brief signal for moving to tube when current program is cleaning program
-     *
-     */
-    /****************************************************************************/
-    void CleaningMoveToTube();
-
 private:
-    SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
-    QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
-    QSharedPointer<QState> mp_Initial;                              //!< Initial state
-    QSharedPointer<QState> mp_RTTempCtrlOn;                         //!< start RT temperature
-    QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
-    QSharedPointer<QState> mp_Wait3SRTCurrent;                      //!< Wait for 3 seconds to see if current error was raised
-    QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Turn off Retort Side and Bottom
-    QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
-    QSharedPointer<QState> mp_PressureCalibration;                  //!< Pressure Calibration state
-    QSharedPointer<QState> mp_PressureSealingChecking;              //!< Pressure test and sealing checking state
-    QSharedPointer<QState> mp_BottlesChecking;                      //!< Bottle checking state
-    QSharedPointer<QState> mp_MoveToTube;                           //!< Moving to tube state
-
-
     //!< state list of the state machine
     typedef enum
     {
@@ -220,7 +124,8 @@ private:
         BOTTLES_CHECKING,
         MOVE_TO_TUBE
     } StateList_t;
-	
+    SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
+    StateList_t m_CurrentState;                                     //!< Current state of PreTest
     qint64  m_RTTempStartTime;                                      //!< Start time for turning on RT Tempeture control On
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
 	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
@@ -237,17 +142,6 @@ private:
     quint8  m_IsLoged;                                              //!< Whether loged
     bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received
     bool    m_TasksAborted;                                         //!< Flag to indicate if tasks have been aborted
-private:
-    /****************************************************************************/
-    /*!
-     *  \brief  Get current state
-     *
-     *  \param  void
-     *
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 };
 }
 #endif // PROGRAM_PRE_TEST_H

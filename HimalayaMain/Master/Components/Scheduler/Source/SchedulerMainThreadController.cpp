@@ -141,6 +141,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsDrainDelay = false;
     m_DrainDelayBeginTime = 0;
     m_CheckOvenCover = true;
+    m_TransitionPeriod = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -371,6 +372,7 @@ void SchedulerMainThreadController::OnTickTimer()
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
 
+        m_TransitionPeriod = true;
         SendOutErrMsg(DCL_ERR_DEV_INTER_ABORT);
         return;
     }
@@ -3145,6 +3147,11 @@ void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_Dat
 bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd)
 {
     bool ret = false;
+
+    if (m_TransitionPeriod)
+    {
+        return ret;
+    }
     m_MutexDeviceControlCmdQueue.lock();
     if(!m_DeviceControlCmdQueue.isEmpty())
     {

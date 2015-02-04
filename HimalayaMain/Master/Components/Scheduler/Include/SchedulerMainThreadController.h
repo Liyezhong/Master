@@ -338,7 +338,8 @@ typedef struct
         bool    m_IsDrainDelay;                               ///< wether drain delay
         qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
         CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
-        bool    m_CheckOvenCover;                               ///< check the oven cover
+        bool    m_CheckOvenCover;                             ///< check the oven cover
+        bool    m_TransitionPeriod;                           ///< flag to indicate transition period
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -966,6 +967,15 @@ protected:
             }
             Global::EventObject::Instance().RaiseEvent(Event,ParList);
         }
+
+        /****************************************************************************/
+        /**
+         * @brief   Set transition period
+         *
+         *  \return void
+         */
+         /****************************************************************************/
+        void SetTransitionPeriod(bool flag) { m_TransitionPeriod = flag; }
         /****************************************************************************/
         /**
          * @brief Destructor.
