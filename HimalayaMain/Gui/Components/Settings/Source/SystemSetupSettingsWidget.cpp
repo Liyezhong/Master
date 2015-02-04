@@ -291,9 +291,9 @@ void CSystemSetupSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
    m_strConfirmChangeMeltingPoint =  QApplication::translate("Settings::CSystemSetupSettingsWidget",
-                                                             "Do you really want to change the melting point of paraffin?", 0, QApplication::UnicodeUTF8);
+                                                             "Do you really want to change the paraffin bath temperature?", 0, QApplication::UnicodeUTF8);
    m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
-    "With melting point changed, if you put the solid paraffin in, please select 'Yes' to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select 'No' and no need to wait any time.",
+    "With Paraffin bath temperture changed, if you put the solid paraffin in, please select 'Yes' to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select 'No' and no need to wait any time.",
                                                               0, QApplication::UnicodeUTF8);
 
 }

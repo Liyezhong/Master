@@ -894,13 +894,10 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
                     mp_MessageDlg->SetIcon(QMessageBox::Warning);
                     mp_MessageDlg->SetTitle(CommonString::strInforMsg);
                     mp_MessageDlg->SetText(m_strDiffTemp);
-                    mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-                    mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-                    mp_MessageDlg->HideCenterButton();
-                    if (!mp_MessageDlg->exec())
+                    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                    mp_MessageDlg->HideButtons();
+                    if (mp_MessageDlg->exec())
                         return false;
-                    else
-                        break;
                  }
             }
         }
@@ -1209,8 +1206,13 @@ void CDashboardWidget::RetranslateUI()
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
-    m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget",
-                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue?",
+    QString strTemp = QString("Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).") +
+    QString("Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.") +
+    QString("Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin protocol temperature! ") +
+    QString("Please confirm modifying Paraffin temperature.");
+    QByteArray ba = strTemp.toLatin1();
+    char* ch =ba.data();
+    m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget", ch,
                                             0, QApplication::UnicodeUTF8);
 }
 

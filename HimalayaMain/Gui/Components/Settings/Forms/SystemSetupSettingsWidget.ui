@@ -73,7 +73,7 @@
        <item>
         <widget class="QLabel" name="labelSpeed">
          <property name="text">
-          <string>Paraffin melting point:</string>
+          <string>Paraffin bath temperature:</string>
          </property>
         </widget>
        </item>
