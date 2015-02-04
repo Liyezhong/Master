@@ -60,6 +60,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Layer one states
     mp_InitState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
+    CONNECTSIGNALSLOT(mp_InitState.data(), entered(), this, OnEnterInitState());
     CONNECTSIGNALSLOT(mp_InitState.data(), exited(), mp_SchedulerThreadController, OnExitedInitState());
     mp_PowerFailureState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_IdleState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
@@ -2078,6 +2079,11 @@ void CSchedulerStateMachine::OnEnterRsAbortState()
     m_PssmAbortingSeq = 0;
 }
 
+void CSchedulerStateMachine::OnEnterInitState()
+{
+    EventHandler::StateHandler::Instance().setInitState();
+}
+
 void CSchedulerStateMachine::OnEnterSelfTest()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_SELFTEST);
@@ -2085,6 +2091,7 @@ void CSchedulerStateMachine::OnEnterSelfTest()
 
 void CSchedulerStateMachine::OnEnterIdleState()
 {
+    EventHandler::StateHandler::Instance().setIdleState();
     EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
 }

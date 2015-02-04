@@ -1077,6 +1077,15 @@ private slots:
     void OnEnterSelfTest();
     /****************************************************************************/
     /*!
+     *  \brief  Slot to enter Init State
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    void OnEnterInitState();
+    /****************************************************************************/
+    /*!
      *  \brief  Slot to enter Idle State
      *
      *  \param  void

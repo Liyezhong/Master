@@ -174,7 +174,7 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
     Q_UNUSED(bIsFirstStepFixation);
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    if (bProgramStartReady && !m_startButtonDisabledAsSysError)
+    if (bProgramStartReady && !Core::CGlobalHelper::GetSystemErrorStatus())
         OnProgramStartReadyUpdated();
     m_StationList.clear();
     m_StationList = selectedStationList;
@@ -233,7 +233,6 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     else if (whichBtn == Dashboard::secondButton)//pause
     {
         ui->pauseButton->setEnabled(false);//protect to click twice in a short time
-        //ui->startButton->setEnabled(false);
         if(CheckPreConditionsToPauseProgram())
         {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
