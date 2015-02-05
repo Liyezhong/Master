@@ -444,11 +444,11 @@ void CStartup::LoadCommonComponenetsTwo()
                                                                                0, QApplication::UnicodeUTF8));
 
 
-#ifdef Q_WS_QWS
-    mp_MainWindow->showFullScreen();
-#else
-    mp_MainWindow->show();
-#endif
+//#ifdef Q_WS_QWS
+//    mp_MainWindow->showFullScreen();
+//#else
+//    mp_MainWindow->show();
+//#endif
 
 }
 
@@ -639,10 +639,15 @@ void CStartup::ServiceGuiInit()
 
     mp_MainWindow->SetTabWidgetIndex(0);
 
-    Diagnostics::CInitialSystem* p_InitSystem = new Diagnostics::CInitialSystem(mp_ServiceConnector, mp_MainWindow);
-    p_InitSystem->setFixedSize(800, 600);
-    (void)p_InitSystem->exec();
-    delete p_InitSystem;
+    Diagnostics::CInitialSystem InitSystem(mp_ServiceConnector);
+    InitSystem.setFixedSize(800, 600);
+    (void)InitSystem.exec();
+
+#ifdef Q_WS_QWS
+    mp_MainWindow->showFullScreen();
+#else
+    mp_MainWindow->show();
+#endif
 
     mp_SVCSceenLockWidget->SetLockStatus(false);
     mp_SVCSceenLockWidget->StartTimer();
@@ -693,6 +698,12 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
 #endif
     mp_MainWindow->SetTabWidgetIndex(4);
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
+
+#ifdef Q_WS_QWS
+    mp_MainWindow->showFullScreen();
+#else
+    mp_MainWindow->show();
+#endif
 }
 
 /****************************************************************************/
@@ -1208,7 +1219,7 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     MainMenu::CMessageDlg *p_MsgBox = new MainMenu::CMessageDlg(mp_MainWindow);
-    p_MsgBox->SetTitle(Service::CMessageString::MSG_TITLE_SPEAKER_TEST);
+    p_MsgBox->SetTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
         p_MsgBox->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_SPEAK_LOW);
@@ -1287,7 +1298,7 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
         MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_ON.arg(LowCurrent).arg(HighCurrent);
     }
     else {
-        int Current = p_TestCase->GetParameter("SwitchOnCurrentLow").toInt();
+        int Current = p_TestCase->GetParameter("SwitchOffCurrentLow").toInt();
         MessagetText = Service::CMessageString::MSG_DIAGNOSTICS_RELAY_SWITCH_OFF.arg(Current);
     }
 

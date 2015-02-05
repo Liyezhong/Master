@@ -44,7 +44,6 @@
 			<Step>vacuum test</Step>
 		</Guide>
 	</LAAirSystem>
-
 	<RVInitialize Description="Get the initial position">
 		<Guide>
 			<Step>Make sure Rotary Valve is connected correctly to main control test fixture!</Step>
@@ -73,10 +72,9 @@
 			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station #11. And, make sure there is no water in paraffin bath.</Step>
 		</Guide>
 	</RVHeatingEndTest>
-
 	<System110v220vSwitch Description="110V/220V switch">
 		<Guide>
-			<Step>System 110V/220V System test</Step>
+			<Step>Begin 110V/220V switch test</Step>
 		</Guide>
 	</System110v220vSwitch>
 	<SystemSealing Description="Sealing function test">
@@ -88,7 +86,7 @@
 	<SystemOverflow Description="Overflow test">
 		<Guide>
 			<Step>Begin Overflow test.</Step>
-			<Step>Please put a filling-block into block and close the retort lid.</Step>
+			<Step>Please put a filling-block into retort and close the retort lid.</Step>
 			<Step>Please insert position #1 with reagent bottle filled with water.</Step>
 		</Guide>
 	</SystemOverflow>

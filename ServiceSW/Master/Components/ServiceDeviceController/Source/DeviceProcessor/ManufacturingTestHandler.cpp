@@ -365,7 +365,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         p_TestCase->SetStatus(false);
         p_TestCase->AddResult("OutOfRange", "1");
 
-        QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+        QString TargetTempStr = QString("%1~%2").arg(TargetTemp+DepartureLow).arg(TargetTemp+DepartureHigh);
 
         QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
 
@@ -418,7 +418,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         (void)Status.insert("CurrentTempBottom1", BottomValue1);
         (void)Status.insert("CurrentTempBottom2", BottomValue2);
         if (WaitSec == SumSec) {
-            QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+            QString TargetTempStr = QString("%1~%2").arg(TargetTemp+DepartureLow).arg(TargetTemp+DepartureHigh);
 
             (void)Status.insert("TargetTemp", TargetTempStr);
 
@@ -743,7 +743,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         p_TestCase->SetStatus(false);
         p_TestCase->AddResult("OutOfRange", "1");
 
-        QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
+        QString target = QString("%1~%2").arg(tgtTemp+deptLow).arg(tgtTemp+deptHigh);
         QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
         p_TestCase->AddResult("Duration", duration);
         p_TestCase->AddResult("TargetTemp", target);
@@ -766,7 +766,7 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     (void)mp_TempRetortBottom->StartTemperatureControl(btmTgtTemp+2);
 
     Service::ModuleTestStatus testStat;
-    QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
+    QString target = QString("%1~%2").arg(tgtTemp+deptLow).arg(tgtTemp+deptHigh);
     (void)testStat.insert("TargetTemp", target);
 
     QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
@@ -939,7 +939,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     }
 
     p_TestCase->AddResult("UsedTime", "00:00:00");
-    p_TestCase->AddResult("TargetTemp", QString("%1~%2").arg(MaxTemperature));
+    p_TestCase->AddResult("TargetTemp", QString("%1~%2").arg(MinTemperature).arg(MaxTemperature));
     waitSeconds = duration;
 
     for(int i=0; i<3; i++) {
@@ -1250,7 +1250,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
             if (WaitSec == SumSec) {
                 Status.clear();
-                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
+                QString TargetTempStr = QString("%1~%2").arg(TargetTempSide+DepartureLow).arg(TargetTempSide+DepartureHigh);
                 (void)Status.insert("TargetTemp", TargetTempStr);
 
                 QString Duration = p_TestCase->GetParameter("DurationTime");
@@ -1594,14 +1594,14 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 if (mp_MotorRV->MoveToInitialPosition()!=RV_MOVE_OK) {
                     EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                     p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
-                    return -1;
+                    //return -1;  //20150205 by dixiong
                 }
 
                 EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
                 if (mp_MotorRV->MoveToSealPosition(1)!=RV_MOVE_OK) {
                     EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                     p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(1));
-                    return -1;
+                    //return -1; //20150205 by dixiong
                 }
                 p_TestCase->SetParameter("RVMove", "0");
             }
@@ -2097,7 +2097,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         p_TestCase->SetStatus(false);
         p_TestCase->AddResult("OutOfRange", "1");
 
-        QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+        QString TargetTempStr = QString("%1~%2").arg(TargetTemp+DepartureLow).arg(TargetTemp+DepartureHigh);
 
         QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
 
@@ -2152,7 +2152,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         (void)Status.insert("UsedTime", UsedTime);
         (void)Status.insert("CurrentTemp", CurrentValue);
         if (WaitSec == SumSec) {
-            QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
+            QString TargetTempStr = QString("%1~%2").arg(TargetTemp+DepartureLow).arg(TargetTemp+DepartureHigh);
             (void)Status.insert("TargetTemp", TargetTempStr);
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
@@ -2537,8 +2537,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     QTime DurationTimeSensor2 = QTime::fromString(p_TestCase->GetParameter("Sensor2Duration"), "hh:mm:ss");
 
     qreal TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp").toDouble();
-    qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toDouble();
-    qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
+//    qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toDouble();
+//    qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal TargetTempSensor2 = p_TestCase->GetParameter("Sensor2TargetTemp").toDouble();
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
@@ -2566,7 +2566,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         p_TestCase->SetStatus(false);
         p_TestCase->AddResult("OutOfRange", "1");
 
-        QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
+        QString TargetTempStr = QString("%1").arg(TargetTempSensor1);
 
         QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
 
@@ -2617,6 +2617,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     // sucking
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = mp_PressPump->Sucking();
+    (void)mp_TempLSensor->StopTemperatureControl();
     if ( Ret != SUCKING_RET_OK ) {
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         Ret = mp_PressPump->Draining();
@@ -2625,8 +2626,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
-
-    (void)mp_TempLSensor->StopTemperatureControl();
 
     // set rotary valve to sealing position
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
@@ -2658,7 +2657,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         (void)Status.insert("CurrentTempSensor1", Sensor1Value);
         (void)Status.insert("CurrentTempSensor2", Sensor2Value);
         if (WaitSec == SumSec) {
-            QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
+            QString TargetTempStr = QString("%1").arg(TargetTempSensor1);
             (void)Status.insert("TargetTemp", TargetTempStr);
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
@@ -2702,7 +2701,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
      (void)mp_TempRV->StopTemperatureControl();
      (void)mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
-     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second()+60;
+     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second()+3;
      SumSec = WaitSec;
      while (!m_UserAbort && WaitSec)
      {
