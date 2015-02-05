@@ -106,7 +106,11 @@ typedef enum  {
         POWER_FAILURE_MSG,
         CANCEL_PROGRAM_WILL_COMPLETE_PROMPT,
         CANCEL_TISSUE_PROTECT_PASSED_PROMPT,
-        CANCEL_RETORT_LID_OPEN_MSG_PROMPT
+        CANCEL_RETORT_LID_OPEN_MSG_PROMPT,
+        PAUSE_WAITING_FOR_FILLING,
+        DISMISS_WAITING_FOR_FILLING,
+        PAUSE_WAITING_FOR_DRAINING,
+        DISMISS_WAITING_FOR_DRAINING
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

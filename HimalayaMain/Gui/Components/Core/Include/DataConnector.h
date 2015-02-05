@@ -608,6 +608,30 @@ signals:
     void CancelRetortCoverOpenMessagePrompt();
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of signal PauseWaitingForFilling
+     */
+    /****************************************************************************/
+    void PauseWaitingForFilling();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal DismissWaitingForFilling
+     */
+    /****************************************************************************/
+    void DismissWaitingForFilling();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal PauseWaitingForDraining
+     */
+    /****************************************************************************/
+    void PauseWaitingForDraining();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal DismissWaitingForDraining
+     */
+    /****************************************************************************/
+    void DismissWaitingForDraining();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed
      */
     /****************************************************************************/
@@ -633,7 +657,6 @@ signals:
      */
     /****************************************************************************/
     void PowerFailureMsg();
-
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramAborted

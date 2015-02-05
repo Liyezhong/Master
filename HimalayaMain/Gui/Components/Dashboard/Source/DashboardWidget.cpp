@@ -175,6 +175,18 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PowerFailureMsg(),
                       this, OnPowerFailureMsg());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, PauseWaitingForFilling(),
+                      this, OnPauseWaitingForFilling());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissWaitingForFilling(),
+                      this, OnDismissWaitingForFilling());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, PauseWaitingForDraining(),
+                      this, OnPauseWaitingForDraining());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissWaitingForDraining(),
+                      this, OnDismissWaitingForDraining());
+
     CONNECTSIGNALSLOT(this, SwitchToFavoritePanel(),
                       ui->programPanelWidget, SwitchToFavoritePanel());
 
@@ -397,6 +409,40 @@ void CDashboardWidget::OnPowerFailureMsg()
         return;
     }
     delete pMessageDlg;
+}
+
+void CDashboardWidget::ShowWaitFillDrainDialog(bool isFilling)
+{
+    mp_WaitFillDrainCompletedMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_WaitFillDrainCompletedMsgDlg->SetIcon(QMessageBox::Information);
+    if (isFilling)
+        mp_WaitFillDrainCompletedMsgDlg->SetText(m_strWaitingForFillingCompleted);
+    else
+        mp_WaitFillDrainCompletedMsgDlg->SetText(m_strWaitingForDrainingCompleted);
+    mp_WaitFillDrainCompletedMsgDlg->HideAllButtons();
+    mp_WaitFillDrainCompletedMsgDlg->exec();
+    delete mp_WaitFillDrainCompletedMsgDlg;
+    mp_WaitFillDrainCompletedMsgDlg = NULL;
+}
+
+void CDashboardWidget::OnPauseWaitingForFilling()
+{
+    ShowWaitFillDrainDialog(true);
+}
+
+void CDashboardWidget::OnPauseWaitingForDraining()
+{
+    ShowWaitFillDrainDialog(false);
+}
+
+void CDashboardWidget::OnDismissWaitingForFilling()
+{
+    mp_WaitFillDrainCompletedMsgDlg->accept();
+}
+
+void CDashboardWidget::OnDismissWaitingForDraining()
+{
+    mp_WaitFillDrainCompletedMsgDlg->accept();
 }
 
 void CDashboardWidget::OnProgramBeginAbort()
@@ -1195,6 +1241,8 @@ void CDashboardWidget::RetranslateUI()
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover is open, please close it then click OK button.\"OK\"", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
+    m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);
+    m_strWaitingForDrainingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for draining to be completed.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

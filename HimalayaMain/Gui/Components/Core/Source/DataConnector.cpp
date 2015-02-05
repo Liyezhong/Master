@@ -1825,7 +1825,26 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit CancelRetortCoverOpenMessagePrompt();
         }
         break;
-
+        case DataManager::PAUSE_WAITING_FOR_FILLING:
+        {
+            emit PauseWaitingForFilling();
+        }
+        break;
+        case DataManager::DISMISS_WAITING_FOR_FILLING:
+        {
+            emit DismissWaitingForFilling();
+        }
+        break;
+        case DataManager::PAUSE_WAITING_FOR_DRAINING:
+        {
+            emit PauseWaitingForDraining();
+        }
+        break;
+        case DataManager::DISMISS_WAITING_FOR_DRAINING:
+        {
+            emit DismissWaitingForDraining();
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

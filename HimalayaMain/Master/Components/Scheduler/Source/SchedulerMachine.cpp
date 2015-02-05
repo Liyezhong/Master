@@ -186,6 +186,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(this, sigDrainFinished(), mp_SchedulerThreadController, DisablePauseButton());
     //for safe reagent
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
+    mp_PssmDrainingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
@@ -203,7 +204,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
-
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining()), mp_PssmRVPosChangeState.data());
     //For Pssm Aborting
     CONNECTSIGNALSLOT(this, sigOnForceDrain(), mp_SchedulerThreadController, OnBeginDrain());
     CONNECTSIGNALSLOT(this, sigOnStopForceDrain(), mp_SchedulerThreadController, OnStopDrain());
@@ -2067,9 +2068,9 @@ void CSchedulerStateMachine::OnNotifyResume()
     {
         emit sigResumeToProcessing();
     }
-    else
+    else if( this->GetPreviousState() == (PSSM_DRAINING))
     {
-        //should not enter here
+        emit sigResumeToDraining();
     }
 }
 
