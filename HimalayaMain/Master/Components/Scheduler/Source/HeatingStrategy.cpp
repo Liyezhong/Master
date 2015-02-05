@@ -131,40 +131,32 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
 
-        // If we are in processing for safe reagent (non-paraffin), retort heating is NOT needed. For paraffin, we need heat Retort sensors
-        if (mp_SchedulerController->GetCurrentScenario() != 274)
+        if(4 == m_CurScenario)
         {
-
+            retCode = StopTemperatureControl("RTSide");
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                return retCode;
+            }
+            retCode = StopTemperatureControl("RTBottom");
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                return retCode;
+            }
         }
         else
         {
-            if(4 == m_CurScenario)
+            //For RTTop
+            retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                retCode = StopTemperatureControl("RTSide");
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    return retCode;
-                }
-                retCode = StopTemperatureControl("RTBottom");
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    return retCode;
-                }
+                return retCode;
             }
-            else
+            //For RTBottom
+            retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                //For RTTop
-                retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    return retCode;
-                }
-                //For RTBottom
-                retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    return retCode;
-                }
+                return retCode;
             }
         }
 
