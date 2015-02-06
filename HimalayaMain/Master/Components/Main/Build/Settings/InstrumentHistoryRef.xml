@@ -19,7 +19,7 @@
                 <parameter name="LaunchedFlag" unit=""></parameter>
                 <parameter name="EndTestDate" unit=""></parameter>
                 <parameter name="SoftwareReleaseDate" unit=""></parameter>
-                <parameter name="OperationTime" unit="seconds">0</parameter>
+                <parameter name="OperationTime" unit="minutes">0</parameter>
                 <parameter name="UniqueNumber" unit=""></parameter>
                 <parameter name="HardwareMajorVersion" unit="">0</parameter>
                 <parameter name="BootLoaderMinorVersion" unit="">0</parameter>
@@ -55,7 +55,7 @@
                 <parameter name="LaunchedFlag" unit=""></parameter>
                 <parameter name="EndTestDate" unit=""></parameter>
                 <parameter name="SoftwareReleaseDate" unit=""></parameter>
-                <parameter name="OperationTime" unit="seconds">0</parameter>
+                <parameter name="OperationTime" unit="minutes">0</parameter>
                 <parameter name="UniqueNumber" unit=""></parameter>
                 <parameter name="HardwareMajorVersion" unit=""></parameter>
                 <parameter name="BootLoaderMinorVersion" unit=""></parameter>
@@ -96,7 +96,7 @@
                 <parameter name="LaunchedFlag" unit=""></parameter>
                 <parameter name="EndTestDate" unit=""></parameter>
                 <parameter name="SoftwareReleaseDate" unit=""></parameter>
-                <parameter name="OperationTime" unit="seconds">0</parameter>
+                <parameter name="OperationTime" unit="minutes">0</parameter>
                 <parameter name="UniqueNumber" unit=""></parameter>
                 <parameter name="HardwareMajorVersion" unit=""></parameter>
                 <parameter name="BootLoaderMinorVersion" unit=""></parameter>
@@ -132,7 +132,7 @@
                 <parameter name="LaunchedFlag" unit=""></parameter>
                 <parameter name="EndTestDate" unit=""></parameter>
                 <parameter name="SoftwareReleaseDate" unit=""></parameter>
-                <parameter name="OperationTime" unit="seconds"></parameter>
+                <parameter name="OperationTime" unit="minutes"></parameter>
                 <parameter name="UniqueNumber" unit=""></parameter>
                 <parameter name="HardwareMajorVersion" unit=""></parameter>
                 <parameter name="BootLoaderMinorVersion" unit=""></parameter>
