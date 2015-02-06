@@ -195,7 +195,7 @@ private slots:
      *  \return handled str
      */
     /****************************************************************************/
-    QString HandleEscapedChar(QString str);
+    QString HandleEscapedChar(QString& str);
 
 protected:
     void changeEvent(QEvent *p_Event);

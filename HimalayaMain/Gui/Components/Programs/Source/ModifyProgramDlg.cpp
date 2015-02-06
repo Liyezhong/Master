@@ -205,8 +205,8 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     }
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
-
-    QString LongName = HandleEscapedChar(m_Program.GetName());
+    QString str = m_Program.GetName();
+    QString LongName = HandleEscapedChar(str);
 
     if (m_ButtonType == NEW_BTN_CLICKED)
     {
@@ -252,6 +252,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
             {
                 (void)LongName.remove(idx, 5);
             }
+            LongName = LongName.trimmed();
             m_Program.SetLeicaProgram(false);
             mp_Ui->btnPrgIcon->setIcon(QIcon(""));
             m_Program.SetIcon("");
@@ -698,7 +699,7 @@ void CModifyProgramDlg::OnESCClicked()
     DisconnectKeyBoardSignalSlots();
 }
 
-QString CModifyProgramDlg::HandleEscapedChar(QString str)
+QString CModifyProgramDlg::HandleEscapedChar(QString& str)
 {
     QString EscapedText;
     if (str.contains('&')) {

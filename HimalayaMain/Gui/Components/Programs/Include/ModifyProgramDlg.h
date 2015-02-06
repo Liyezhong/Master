@@ -255,7 +255,7 @@ private slots:
      *  \return handled string
      */
     /****************************************************************************/
-    QString HandleEscapedChar(QString str);
+    QString HandleEscapedChar(QString& str);
 signals:
 
     /****************************************************************************/

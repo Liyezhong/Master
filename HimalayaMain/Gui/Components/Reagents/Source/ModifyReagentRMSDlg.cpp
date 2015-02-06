@@ -129,7 +129,7 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
     UpdateRmsLabel(Option);
 }
 
-QString CModifyReagentRMSDlg::HandleEscapedChar(QString str)
+QString CModifyReagentRMSDlg::HandleEscapedChar(QString& str)
 {
     QString EscapedText;
     if (str.contains('&')) {
