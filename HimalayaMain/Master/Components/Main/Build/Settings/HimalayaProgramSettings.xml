@@ -4,14 +4,14 @@
     <DeviceList>
 		<Device Key="Retort">
             <Function Key="Heating" name="LevelSensor" sequence="11">
-                <Parameter Key="ControllerGain" Value="120"/>
+                <Parameter Key="ControllerGain" Value="1212"/>
                 <Parameter Key="CurrentSPeed" Value="High"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ExchangePIDTemp" Value="110"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
                 <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
-                <Parameter Key="ResetTime" Value="1212"/>
+                <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="251,271,281"/>
                 <Parameter Key="SlopeTempChange" Value="6"/>
             </Function>
@@ -28,14 +28,14 @@
                 <Parameter Key="SlopeTempChange" Value="6"/>
             </Function>
             <Function Key="Heating" name="LevelSensor" sequence="21">
-                <Parameter Key="ControllerGain" Value="120"/>
+                <Parameter Key="ControllerGain" Value="1212"/>
                 <Parameter Key="CurrentSPeed" Value="High"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ExchangePIDTemp" Value="90"/>
                 <Parameter Key="HeatingOverTime" Value="120"/>
                 <Parameter Key="MaxTemperature" Value="135"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
-                <Parameter Key="ResetTime" Value="1212"/>
+                <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="200,211,221,231,241,291"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
