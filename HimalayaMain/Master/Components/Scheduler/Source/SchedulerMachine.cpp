@@ -1890,9 +1890,12 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
     case PSSM_CLEANING_DRY_STEP:
     case PSSM_STEP_PROGRAM_FINISH:
     case PSSM_PROGRAM_FINISH:
+    case PSSM_INIT:
+    case PSSM_PAUSE:
          mp_SchedulerThreadController->CompleteRsAbort();
         break;
     default:
+        mp_SchedulerThreadController->CompleteRsAbort();
         break;
     }
 }

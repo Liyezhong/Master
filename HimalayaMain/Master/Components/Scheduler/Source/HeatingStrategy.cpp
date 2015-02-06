@@ -909,6 +909,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         {
             mp_SchedulerController->LogDebug("Level sensor PID changed to low");
         }
+        mp_SchedulerController->LogDebug(QString("Target temperature is: %1, SlopTemperature change is: %2, Max Temperature is: %3, Controller gain is: %4, Reset time is: %5, Derivative Time is: %6")
+                                         .arg(iter->TemperatureOffset).arg(iter->SlopTempChange).arg(iter->MaxTemperature).arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime));
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR, QStringList()<<QString("[%1]").arg(m_CurScenario)<<QString("[%1]").arg(iter->TemperatureOffset));
         m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RTLevelSensor.curModuleId = iter->Id;
