@@ -1038,6 +1038,10 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             return false;
         }
     }
+    else
+    {
+        m_AsapEndDateTime = m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(m_TimeProposedForProgram);
+    }
     return true;
 }
 

@@ -461,7 +461,7 @@ bool CProgramStatusInfor::ReadProgramStatusFile()
    QTextStream FileStream(&m_StatusFile);
    QString Line = FileStream.readLine().simplified();
    m_Status.clear();
-   while(!Line.isNull())
+   while(!Line.isEmpty())
    {
        (void)m_Status.insert(Line.split(":").at(0),Line.split(":").at(1));
        Line = FileStream.readLine().simplified();

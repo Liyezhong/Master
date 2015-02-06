@@ -144,6 +144,12 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void UpdateProgramTimerStatus(bool enable);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnUserSetEndDateTime
+         */
+        /****************************************************************************/
+        void OnUserSetEndDateTime(const QDateTime& dateTime);
     protected:
         /****************************************************************************/
         /*!
@@ -184,12 +190,7 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void UpdateEndDateTime(int endTimeDiff);
-        /****************************************************************************/
-        /*!
-         *  \brief  Definition/Declaration of slot OnUserSetEndDateTime
-         */
-        /****************************************************************************/
-        void OnUserSetEndDateTime(const QDateTime& dateTime);
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot OnUserSettingsUpdated

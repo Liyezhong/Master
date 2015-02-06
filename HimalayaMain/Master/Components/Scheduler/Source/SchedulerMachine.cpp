@@ -205,6 +205,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
     mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining()), mp_PssmRVPosChangeState.data());
+    CONNECTSIGNALSLOT(this, sigResumeToDraining(), mp_SchedulerThreadController, DisablePauseButton());
+
     //For Pssm Aborting
     CONNECTSIGNALSLOT(this, sigOnForceDrain(), mp_SchedulerThreadController, OnBeginDrain());
     CONNECTSIGNALSLOT(this, sigOnStopForceDrain(), mp_SchedulerThreadController, OnStopDrain());

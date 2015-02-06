@@ -302,6 +302,11 @@ void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_
     Q_UNUSED(startDateTime);
     if (DataManager::PROGRAM_START== ProgramActionType)
     {
+        if (m_SelectedProgramId.at(0) == 'C')
+        {
+            QDateTime endDatetime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(remainingTimeTotal);
+            ui->programRunningPanel->OnUserSetEndDateTime(endDatetime);
+        }
         ui->stackedWidget->setCurrentIndex(1);
         QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(m_SelectedProgramId)->GetIcon() + ".png";
         ui->programRunningPanel->SetPanelIcon(strIconName);
