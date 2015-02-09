@@ -662,6 +662,9 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
         mp_IDeviceProcessing->ALGetTemperatureControlState(AL_LEVELSENSOR);
         mp_IDeviceProcessing->RTGetTemperatureControlState(RT_BOTTOM);
         mp_IDeviceProcessing->RTGetTemperatureControlState(RT_SIDE);
+
+        mp_IDeviceProcessing->ALTurnOffFan();
+
         mp_IDeviceProcessing->Destroy();     // trigger shutdown of device processing layer
     }
 }

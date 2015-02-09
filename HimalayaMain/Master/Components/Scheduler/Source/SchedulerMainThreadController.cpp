@@ -417,6 +417,9 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 {
     if(flag)
     {
+        // Turn on fan, and we will open it all the time
+        m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this), false);
+
         bool bErrorHandlingFailed = m_ProgramStatusInfor.GetErrorFlag();
         if(!m_ProgramStatusInfor.IsProgramFinished())//power failure
         {
@@ -1370,6 +1373,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RS_ABORT == ctrlCmd)
         {
             LogDebug("Go to Rs_Abort");
+            m_ProgramStatusInfor.SetErrorFlag(0);
             m_SchedulerMachine->EnterRsAbort();
         }
         else
@@ -3104,7 +3108,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 Q_ASSERT(CmdRetortCoverOpen);
                 Global::tRefType fRef = GetNewCommandRef();
                 SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
-
+#if 0
                 // retort is open, turn on the fan
                 m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
                 SchedulerCommandShPtr_t pResHeatingCmd;
@@ -3115,6 +3119,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 {
                     SendOutErrMsg(retCode);
                 }
+#endif
                 SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
                 if((currentState & 0xF) == SM_BUSY && currentState != PSSM_PAUSE)
                 {
@@ -3133,6 +3138,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 		{
             if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
             {
+#if 0
                 // retort is closed, turn off the fan
                 m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
                 SchedulerCommandShPtr_t pResHeatingCmd;
@@ -3143,6 +3149,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 {
                     SendOutErrMsg(retCode);
                 }
+#endif
             }
 
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
