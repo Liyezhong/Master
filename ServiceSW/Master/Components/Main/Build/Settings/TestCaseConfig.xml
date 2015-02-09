@@ -55,7 +55,7 @@
 		<PressureSensorCalibrate TryNum="1" FirstTime="1" PressureHigh="2.0" PressureLow="0.2" />
 	</PressureSensor>
 	<SystemSelfTest>
-		<SystemSelfTest RVTargetTemp="120" RetortTargetTemp="110" />
+		<SystemSelfTest RVTargetTemp="125" RetortTargetTemp="102" />
 	</SystemSelfTest>
 	<ResetOperationTime Module="MainControl" SubModule="Ebox"></ResetOperationTime>
 </TestCaseConfig>
