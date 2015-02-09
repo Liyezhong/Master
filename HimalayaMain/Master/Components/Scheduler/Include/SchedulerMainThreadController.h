@@ -343,7 +343,6 @@ typedef struct
         bool    m_DisableAlarm;                               ///< disable alarm or not
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
-        bool    m_IsNeedBottleCheck;                          ///< whether need bottle check
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
         bool    m_InternalErrorRecv;                          ///< Internal error was received
@@ -1234,7 +1233,7 @@ protected:
          *  \return bool, true - continue; false - done;
          */
         /****************************************************************************/
-        bool IsNeedBottleCheck(){return m_IsNeedBottleCheck;}
+        bool IsNeedBottleCheck(){return (!m_ProgramStationList.empty());}
 
         /****************************************************************************/
         /**

@@ -117,7 +117,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is5MinPause(false)
         , m_Is10MinPause(false)
         , m_Is15MinPause(false)
-        ,m_IsNeedBottleCheck(true)
         ,m_InternalErrorRecv(false)
         ,m_bWaitToPause(false)
 {
@@ -1958,9 +1957,27 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     bool normalProgramFlag = false;
     bool cleaningProgramFlag = false;
     bool cleaningProgram = false;
+    ProgramStationInfo_t stationInfo;
+
     if (ProgramID.at(0) == 'C')
     {
         cleaningProgram = true;
+        if(mp_DataManager->GetProgramList()->GetProgram("C01"))
+        {
+            cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
+            if(cleaningProgramFlag)
+            {
+                if("RG6" == m_ProgramStatusInfor.GetLastReagentGroup())
+                {
+                    stationInfo.ReagentGroupID = "RG7";
+                    stationInfo.StationID = "S12";
+                    StationForNoParrffinMap.insert(12, stationInfo);
+                }
+                stationInfo.ReagentGroupID = "RG8";
+                stationInfo.StationID = "S13";
+                StationForNoParrffinMap.insert(13, stationInfo);
+            }
+        }
     }
     else if (pProgram)
     {
@@ -1970,7 +1987,6 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
 
-    ProgramStationInfo_t stationInfo;
     for (int i = beginStep; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
@@ -1979,12 +1995,11 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
-        QString stationName = stationInfo.StationID;
         if(!cleaningProgram)
         {
+            QString stationName = stationInfo.StationID;
             if(normalProgramFlag)
             {
-                m_IsNeedBottleCheck = true;
                 if("RG6" == stationInfo.ReagentGroupID)
                 {
                     StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
@@ -2000,12 +2015,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
                 {
                     if("RG1" == stationInfo.ReagentGroupID)
                     {
-                        m_IsNeedBottleCheck = true;
                         StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
-                    }
-                    else
-                    {
-                        m_IsNeedBottleCheck = false;
                     }
                 }
             }
@@ -2013,34 +2023,16 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         m_StationList.push_back(stationInfo.StationID);
         m_StationAndReagentList.push_back(stationInfo);
     }
-    // Add two cleaning bottles for bottle check
-    if(!cleaningProgram)
-    {
-        if(mp_DataManager->GetProgramList()->GetProgram("C01"))
-        {
-            cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
-            if(cleaningProgramFlag)
-            {
-                m_IsNeedBottleCheck = true;
-                stationInfo.ReagentGroupID = "RG7";
-                stationInfo.StationID = "S12";
-                StationForNoParrffinMap.insert(12, stationInfo);
-                stationInfo.ReagentGroupID = "RG8";
-                stationInfo.StationID = "S13";
-                StationForNoParrffinMap.insert(13, stationInfo);
-            }
-        }
 
-        QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
-        for(; iter != StationForNoParrffinMap.end(); iter++)
-        {
-            m_ProgramStationList.enqueue(iter.value());
-        }
-        QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
-        for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
-        {
-            m_ProgramStationList.enqueue(iterParraffin.value());
-        }
+    QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
+    for(; iter != StationForNoParrffinMap.end(); iter++)
+    {
+        m_ProgramStationList.enqueue(iter.value());
+    }
+    QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
+    for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
+    {
+        m_ProgramStationList.enqueue(iterParraffin.value());
     }
     StationForNoParrffinMap.clear();
     StationForParrffinMap.clear();
@@ -2306,22 +2298,19 @@ quint32 SchedulerMainThreadController::GetMoveSteps(qint32 firstPos, qint32 endP
 quint32 SchedulerMainThreadController::GetPreTestTime()
 {
     //level heating + RV move initialize  + pressure calibration + sealing check
-    qint64 preTesttTime = 20 + 30 + 45 + 55 + 60;
+    qint64 preTesttTime = 20 + 30 + 50 + 60;
 
     //bottle check time
     qint64 bottleTime = 0;
     qint32 firstPosition = 2;
     qreal  tmpTime = 0.0;
 
-    if(m_IsNeedBottleCheck)
+    for(int i = 0; i < m_ProgramStationList.size(); i++)
     {
-        for(int i = 0; i < m_ProgramStationList.size(); i++)
-        {
-            ProgramStationInfo_t stationInfo = m_ProgramStationList.at(i);
-            RVPosition_t targetPos = GetRVTubePositionByStationID(stationInfo.StationID);
-            tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos) + 18;
-            firstPosition = (qint32)targetPos;
-        }
+        ProgramStationInfo_t stationInfo = m_ProgramStationList.at(i);
+        RVPosition_t targetPos = GetRVTubePositionByStationID(stationInfo.StationID);
+        tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos) + 18;
+        firstPosition = (qint32)targetPos;
     }
 
     //move first tube position
@@ -2637,7 +2626,6 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     if (m_CurProgramStepIndex != -1)
     {
         m_FirstProgramStepIndex = m_CurProgramStepIndex;
-        m_IsNeedBottleCheck = true;
         (void)this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
         timeProposed = GetLeftProgramStepsNeededTime(curProgramID);
         m_CurProgramStepIndex = -1;
