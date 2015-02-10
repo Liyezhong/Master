@@ -194,7 +194,8 @@ typedef enum
 /****************************************************************************/
 typedef struct
 {
-    bool    WarningFlagForTime;                         ///< the warning flag for time
+    bool    WarningFlagForStepTime;                     ///< the warning flag for step time
+    bool    WarningFlagForBufferTime;                   ///< the warning flag for buffer time
     int     FirstParaffinIndex;                         ///< the first paraffin index
     quint32 PreTestTime;                                ///< the time of pretest (second unit)
     quint32 ParaffinStepsCostTime;                      ///< the paraffin steps cost time (second unit)

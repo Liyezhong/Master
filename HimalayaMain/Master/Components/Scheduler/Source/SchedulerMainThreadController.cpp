@@ -871,6 +871,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else
         {
+            if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
+            {
+                if(m_EndTimeAndStepTime.WarningFlagForStepTime)
+                {
+                    SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
+                    m_EndTimeAndStepTime.WarningFlagForStepTime = false;
+                }
+                else if(m_EndTimeAndStepTime.WarningFlagForBufferTime)
+                {
+                    SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+                    m_EndTimeAndStepTime.WarningFlagForBufferTime = false;
+                }
+            }
             qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
             qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
             if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
@@ -2211,7 +2224,8 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
 
 void SchedulerMainThreadController::ResetTheTimeParameter()
 {
-    m_EndTimeAndStepTime.WarningFlagForTime = false;
+    m_EndTimeAndStepTime.WarningFlagForStepTime = false;
+    m_EndTimeAndStepTime.WarningFlagForBufferTime = false;
     m_EndTimeAndStepTime.FirstParaffinIndex = 0;
     m_EndTimeAndStepTime.PreTestTime = 0;
     m_EndTimeAndStepTime.ParaffinStepsCostTime = 0;
@@ -2241,7 +2255,7 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
         }
         if(m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime > 4000 * 60)
         {
-            m_EndTimeAndStepTime.WarningFlagForTime = true;
+            m_EndTimeAndStepTime.WarningFlagForStepTime = true;
             RaiseEvent(EVENT_SCHEDULER_FOR_WARNING_FLAG, QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)<<QString("[%1]").arg(m_CurProgramStepIndex+1));
         }
         qint64 LeftTime = m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime - m_EndTimeAndStepTime.GapTime;
@@ -2262,18 +2276,16 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
         if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
         {
             m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.UserSetEndTime - QDateTime::currentMSecsSinceEpoch() - m_EndTimeAndStepTime.LastParaffinProcessingTime * 1000;
-            if(m_EndTimeAndStepTime.WarningFlagForTime)
-            {
-                SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
-            }
             if(m_EndTimeAndStepTime.BufferTime < 0)
             {
+                m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
+                LogDebug(QString("The program will be completed %1 minutes later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
                 m_EndTimeAndStepTime.BufferTime = 0;
-                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
             }
             else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
             {
-                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+                m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
+                LogDebug(QString("The program will be completed %1 minutes later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
                 m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
             }
             LogDebug(QString("The last program step:%1 buffer is:%2").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
