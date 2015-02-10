@@ -1115,45 +1115,45 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             }
 
             // the first sealing test
-//            p_TestCase->SetParameter("CurStep", "1");
-//            p_TestCase->SetParameter("RVMove", "1");
-//            while(1) {
-//                emit PerformManufacturingTest(Id);
-//                Result = GetTestResponse();
-//                if (!Result) {
-//                    if (ShowConfirmDlgForSystemSealing()) {
-//                        continue;
-//                    }
-//                    else {
-//                        NextFlag = false;
-//                        break;
-//                    }
-//                }
-//                break;
-//            }
-//            if (Result == false) {
-//                break;
-//            }
+            p_TestCase->SetParameter("CurStep", "1");
+            p_TestCase->SetParameter("RVMove", "1");
+            while(1) {
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+                if (!Result) {
+                    if (ShowConfirmDlgForSystemSealing()) {
+                        continue;
+                    }
+                    else {
+                        NextFlag = false;
+                        break;
+                    }
+                }
+                break;
+            }
+            if (Result == false) {
+                break;
+            }
 
-//            // the second sealing test
-//            p_TestCase->SetParameter("CurStep", "2");
-//            while(1) {
-//                emit PerformManufacturingTest(Id);
-//                Result = GetTestResponse();
-//                if (!Result) {
-//                    if (ShowConfirmDlgForSystemSealing()) {
-//                        continue;
-//                    }
-//                    else {
-//                        NextFlag = false;
-//                        break;
-//                    }
-//                }
-//                break;
-//            }
-//            if (Result == false) {
-//                break;
-//            }
+            // the second sealing test
+            p_TestCase->SetParameter("CurStep", "2");
+            while(1) {
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+                if (!Result) {
+                    if (ShowConfirmDlgForSystemSealing()) {
+                        continue;
+                    }
+                    else {
+                        NextFlag = false;
+                        break;
+                    }
+                }
+                break;
+            }
+            if (Result == false) {
+                break;
+            }
 
             p_TestCase->SetParameter("CurStep", "3");
             // select test mode
