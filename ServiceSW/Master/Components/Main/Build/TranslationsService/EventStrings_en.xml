@@ -8,7 +8,7 @@
 		<string id="100728837" text1="Password Not matching" text2=""/>
 		<string id="100728838" text1="Logged in Service User Name : %1" text2=""/>
 		<string id="100728839" text1="Logged in Manufacturing User Name : %1" text2=""/>
-		<string id="100728840" text1="System shut down is requested" text2=""/>
+		<string id="100728840" text1="System shut down is requested User Name : %1" text2=""/>
 		<string id="100728841" text1="log content display is requested" text2=""/>
 		<string id="100728842" text1="System log info filtering is requested based on %1" text2=""/>
 		<string id="100728843" text1="Detailed info of selected log is requested" text2=""/>

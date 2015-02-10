@@ -19,7 +19,6 @@
 /****************************************************************************/
 
 #include "ServiceUpdates/Include/System.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "Global/Include/Utils.h"
 
@@ -68,7 +67,6 @@ void CSystem::changeEvent(QEvent *p_Event)
 
 void CSystem::OnShutDown(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_SYSTEM_SHUT_DOWN);
     mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CSystem", "System is shutting down ...\n", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->HideAllButtons();
     mp_MessageDlg->Show();
