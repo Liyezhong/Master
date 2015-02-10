@@ -180,6 +180,7 @@ void CViewHistory::ExecDialog(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_TIMESTAMP_SHOWDETAILS,
                                                Global::tTranslatableStringList()<<ModuleTimeStamp);
     mp_ViewHistoryDlg->SetDialogTitle(tr("Module History"));
+    mp_ViewHistoryDlg->setModal(true);
     mp_ViewHistoryDlg->resize(600,550);
 
     ServiceDataManager::CModuleDataList *ModuleList = NULL;

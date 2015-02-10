@@ -81,6 +81,7 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
     }
     if (FinishFlag == "1") {
         mp_Ui->pushButton->setText(Service::CMessageString::MSG_BUTTON_OK);
+        mp_Ui->pushButton->setEnabled(true);
         m_IsOkButton = true;
     }
 }
@@ -90,12 +91,12 @@ void CSealingTestReportDialog::OnButtonClicked()
     m_Index = 0;
     if (!m_IsOkButton) {
         PerformManufacturingTest(Service::TEST_ABORT, Service::SYSTEM_SEALING_TEST);
+        mp_Ui->pushButton->setEnabled(false);
     }
     else {
         emit RefreshResultToMain(true);
+        (void)this->close();
     }
-
-    (void)this->close();
 }
 
 void CSealingTestReportDialog::InitLableGroup()

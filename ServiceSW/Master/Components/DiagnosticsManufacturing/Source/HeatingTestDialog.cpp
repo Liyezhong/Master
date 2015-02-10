@@ -193,6 +193,8 @@ void CHeatingTestDialog::DisplayLSensorLabel(void)
     mp_Ui->labelCurTempBottom2->hide();
     mp_Ui->labelExtTempName->hide();
     mp_Ui->labelExtTempName->hide();
+    mp_Ui->labelCurTempTopName->setText(QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                                                "Current Temperature:", 0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/

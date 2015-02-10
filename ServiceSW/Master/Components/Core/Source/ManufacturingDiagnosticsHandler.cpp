@@ -994,7 +994,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 {
     quint32 FailureId(0);
     quint32 OkId(0);
-    quint32 EventId(0);
     QString StrResult;
     QString RotatingMsg;
     DiagnosticsManufacturing::CSelectSealingDialog* p_Dlg = new DiagnosticsManufacturing::CSelectSealingDialog(mp_MainWindow);
@@ -1011,9 +1010,11 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
         switch(Id) {
         case Service::SYSTEM_110V_220V_SWITCH:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST);
+
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
                 break;
@@ -1028,9 +1029,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
             break;
         case Service::SYSTEM_EXHAUST_FAN:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
 
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
@@ -1040,9 +1042,11 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Result = GetTestResponse();
             break;
         case Service::SYSTEM_VENTILATION_FAN:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
+
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
                 break;
@@ -1050,9 +1054,11 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Result    = ShowConfirmDlgForSystemVentilationFan();
             break;
         case Service::SYSTEM_OVERFLOW:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST);
+
             RotatingMsg = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE.arg("1");
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
@@ -1064,9 +1070,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             HideMessage();
             break;
         case Service::SYSTEM_SPEARKER:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
 
             p_TestCase->SetParameter("VolumeFlag", "0");
             NextFlag = ShowGuide(Id, 0);
@@ -1079,10 +1086,11 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 Result = GetTestResponse();
             }
             break;
-        case Service::SYSTEM_MAINS_RELAY:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST;
+        case Service::SYSTEM_MAINS_RELAY:          
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST);
 
             p_TestCase->SetParameter("RelaySwitchStatus", "1");
             for (int j = 0; j < 2 && Result && NextFlag; ++j) {
@@ -1096,9 +1104,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
             break;
         case Service::SYSTEM_SEALING_TEST:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
 
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
@@ -1106,45 +1115,45 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             }
 
             // the first sealing test
-            p_TestCase->SetParameter("CurStep", "1");
-            p_TestCase->SetParameter("RVMove", "1");
-            while(1) {
-                emit PerformManufacturingTest(Id);
-                Result = GetTestResponse();
-                if (!Result) {
-                    if (ShowConfirmDlgForSystemSealing()) {
-                        continue;
-                    }
-                    else {
-                        NextFlag = false;
-                        break;
-                    }
-                }
-                break;
-            }
-            if (Result == false) {
-                break;
-            }
+//            p_TestCase->SetParameter("CurStep", "1");
+//            p_TestCase->SetParameter("RVMove", "1");
+//            while(1) {
+//                emit PerformManufacturingTest(Id);
+//                Result = GetTestResponse();
+//                if (!Result) {
+//                    if (ShowConfirmDlgForSystemSealing()) {
+//                        continue;
+//                    }
+//                    else {
+//                        NextFlag = false;
+//                        break;
+//                    }
+//                }
+//                break;
+//            }
+//            if (Result == false) {
+//                break;
+//            }
 
-            // the second sealing test
-            p_TestCase->SetParameter("CurStep", "2");
-            while(1) {
-                emit PerformManufacturingTest(Id);
-                Result = GetTestResponse();
-                if (!Result) {
-                    if (ShowConfirmDlgForSystemSealing()) {
-                        continue;
-                    }
-                    else {
-                        NextFlag = false;
-                        break;
-                    }
-                }
-                break;
-            }
-            if (Result == false) {
-                break;
-            }
+//            // the second sealing test
+//            p_TestCase->SetParameter("CurStep", "2");
+//            while(1) {
+//                emit PerformManufacturingTest(Id);
+//                Result = GetTestResponse();
+//                if (!Result) {
+//                    if (ShowConfirmDlgForSystemSealing()) {
+//                        continue;
+//                    }
+//                    else {
+//                        NextFlag = false;
+//                        break;
+//                    }
+//                }
+//                break;
+//            }
+//            if (Result == false) {
+//                break;
+//            }
 
             p_TestCase->SetParameter("CurStep", "3");
             // select test mode
@@ -1166,9 +1175,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
             break;
         case Service::SYSTEM_REMOTE_LOCAL_ALARM:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
 
             p_TestCase->SetParameter("ConnectFlag", "1");
             p_TestCase->SetParameter("AlarmFlag", "1");
@@ -1188,8 +1198,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         if (!NextFlag) {
             break;
         }
-
-        Global::EventObject::Instance().RaiseEvent(EventId);
 
         p_TestCase->SetStatus(Result);
 
@@ -1229,7 +1237,6 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
 {
     quint32 FailureId(0);
     quint32 OkId(0);
-    quint32 EventId(0);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufCleaningSystem ---" << TestCaseList;
 
     for(int i=0; i<TestCaseList.size(); i++) {
@@ -1246,9 +1253,10 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
 
         switch(Id) {
         case Service::CLEANING_SYSTEM_TEST:
-            EventId   = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS;
+
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST);
 
             p_TestCase->SetParameter("TestStep", "1");
             ShowMessage(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN);
@@ -1277,8 +1285,6 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
         if (!NextFlag) {
             break;
         }
-
-        Global::EventObject::Instance().RaiseEvent(EventId);
 
         p_TestCase->SetStatus(Result);
 

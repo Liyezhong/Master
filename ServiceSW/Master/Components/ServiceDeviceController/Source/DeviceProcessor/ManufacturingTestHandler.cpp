@@ -1850,7 +1850,10 @@ qint32 ManufacturingTestHandler::CleaningSystem()
                 goto CLEANING_EXIT;
             }
 
-            mp_PressPump->ReleasePressure();
+            (void)mp_PressPump->SetFan(0);
+            (void)mp_PressPump->SetValve(0, 0);
+            (void)mp_PressPump->SetValve(1, 0);
+            mp_Utils->Pause(20*1000);
             i++;
             EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
             if (mp_MotorRV->MoveToTubePosition(i) != RV_MOVE_OK) {
@@ -1866,7 +1869,11 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             mp_Utils->Pause(waitSec2*1000);
             EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
-            mp_PressPump->ReleasePressure();
+            (void)mp_PressPump->StopCompressor();
+            (void)mp_PressPump->SetFan(0);
+            (void)mp_PressPump->SetValve(0, 0);
+            (void)mp_PressPump->SetValve(1, 0);
+            mp_Utils->Pause(20*1000);
         } while (i < 16);
 
         return RetValue;
@@ -3535,6 +3542,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         Initialize();
     }
 
+    m_UserAbort = false;
     switch (TestId) {
     case Service::TEST_ABORT:
         OnAbortTest(0, TestId, AbortTestCaseId);
