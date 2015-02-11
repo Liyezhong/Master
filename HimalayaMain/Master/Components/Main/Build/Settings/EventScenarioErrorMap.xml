@@ -3,6 +3,7 @@
 <scenariolist prefixId="520000-000">
     <scenario id="001"    MachineState=""    ReagentGroup=""    name="Start-up"/>
     <scenario id="002"    MachineState=""    ReagentGroup=""    name="Self-test"/>
+    <scenario id="003"    MachineState=""    ReagentGroup=""    name="Delay-Paraffin-melting"/>
     <scenario id="004"    MachineState=""    ReagentGroup=""    name="Standby"/>
     <scenario id="200"    MachineState=""    ReagentGroup=""    name="Pre-test"/>
     <scenario id="203"    MachineState=""    ReagentGroup=""    name="Dry-function"/>
@@ -1122,7 +1123,7 @@
     </event>
     <event eventid="500030081">
         <error errorid="513030081">
-            <scenario type="single" id="200"/>
+            <scenario type="single" id="003"/>
         </error>
     </event>
     <event eventid="500040001">

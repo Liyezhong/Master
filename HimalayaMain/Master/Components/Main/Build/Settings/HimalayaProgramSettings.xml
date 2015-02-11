@@ -267,11 +267,11 @@
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="130"/>
-                <Parameter Key="NominalTemperature" Value="40"/>
+                <Parameter Key="NominalTemperature" Value="80"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="003"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="UserInput" Value="true"/>
+                <Parameter Key="UserInput" Value="false"/>
             </Function>
             <Function Key="Heating" name="RV_1_HeatingRod" sequence="3">
                 <Parameter Key="ControllerGain" Value="1212"/>
@@ -307,7 +307,7 @@
                 <Parameter Key="ControllerGain" Value="1212"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="HeatingOverTime" Value="-1"/>
+                <Parameter Key="HeatingOverTime" Value="1800"/>
                 <Parameter Key="MaxTemperature" Value="130"/>
                 <Parameter Key="ScenarioList" Value="003"/>
             </Function>

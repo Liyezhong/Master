@@ -94,7 +94,9 @@ typedef enum  {
 
         PROGRAM_ABORT_BEGIN,
         PROGRAM_ABORT_FINISHED,
+
         PROGRAM_SELFTEST_FAILED,
+        PROGRAM_SELFTEST_PASSED,
 
         TISSUE_PROTECT_PASSED,
 		OVEN_COVER_OPEN,
@@ -110,7 +112,9 @@ typedef enum  {
         PAUSE_WAITING_FOR_FILLING,
         DISMISS_WAITING_FOR_FILLING,
         PAUSE_WAITING_FOR_DRAINING,
-        DISMISS_WAITING_FOR_DRAINING
+        DISMISS_WAITING_FOR_DRAINING,
+        WAIT_ROTARY_VALVE_HEATING_PROMPT,
+        DISMISS_ROTARY_VALVE_HEATING_PROMPT
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

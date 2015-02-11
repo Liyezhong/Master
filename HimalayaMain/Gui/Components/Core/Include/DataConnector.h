@@ -584,6 +584,12 @@ signals:
     void ProgramSelfTestFailed();
     /****************************************************************************/
     /*!
+     *  \brief  signal of Program selfTest passed
+     */
+    /****************************************************************************/
+    void ProgramSelfTestPassed();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal ProgramWillComplete
      */
     /****************************************************************************/
@@ -815,6 +821,18 @@ signals:
      */
     /****************************************************************************/
     void PreTestDone();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal WaitRotaryValveHeatingPrompt
+     */
+    /****************************************************************************/
+    void WaitRotaryValveHeatingPrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal DismissRotaryValveHeatingPrompt
+     */
+    /****************************************************************************/
+    void DismissRotaryValveHeatingPrompt();
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);

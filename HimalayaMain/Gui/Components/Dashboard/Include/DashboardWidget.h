@@ -161,7 +161,10 @@ private:
     MainMenu::CMessageDlg* mp_MessageDlg;                      //!< Message Dialogue
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
-    MainMenu::CMessageDlg* mp_WaitFillDrainCompletedMsgDlg;          //!< waiting for filling/draining to be completed message dialog
+    MainMenu::CMessageDlg* mp_WaitFillDrainCompletedMsgDlg;     //!< waiting for filling/draining to be completed message dialog
+    MainMenu::CMessageDlg* mp_WaitRotaryValveHeatingPrompt;     //!< waiting for rotary valve heating to be completed message dialog
+
+
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
@@ -191,6 +194,7 @@ private:
     QString m_PowerFailureBoxTitle;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
+    QString m_strWaitRotaryValveHeatingPrompt;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
     bool m_IsWaitingCleaningProgram;
@@ -308,6 +312,19 @@ private slots:
      */
     /****************************************************************************/
     void OnDismissWaitingForFilling();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of OnWaitRotaryValveHeatingPrompt
+     */
+    /****************************************************************************/
+    void OnWaitRotaryValveHeatingPrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of OnDismissRotaryValveHeatingPrompt
+     */
+    /****************************************************************************/
+    void OnDismissRotaryValveHeatingPrompt();
+
     /****************************************************************************/
     /*!
      *  \brief  Declaration of OnPauseWaitingForDraining

@@ -114,7 +114,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_DataConnector, ChangeAdminPassword(const QString &), mp_Users, ChangeInAdminPassword(const QString &));
 
     CONNECTSIGNALSLOT(mp_DataConnector, EndGUIInitialization(), mp_SplashWidget, ShowModel());
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(), mp_SplashWidget, accept());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestPassed(), mp_SplashWidget, accept());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestFailed(), mp_SplashWidget, accept());
 
     mp_StatusBarManager = MainMenu::CStatusBarManager::GetInstance();

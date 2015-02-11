@@ -143,6 +143,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckOvenCover = true;
     m_TransitionPeriod = false;
     m_PowerFailureStep = POWERFAILURE_INIT;
+    m_IsWaitHeatingRV = false;
+    m_IsSendMsgForWaitHeatRV = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -456,8 +458,9 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             {
                 m_ProgramStatusInfor.SetErrorFlag(0);
             }
+            m_IsWaitHeatingRV = true;
             m_SchedulerMachine->SendSchedulerInitComplete();
-            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_PASSED));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -558,6 +561,30 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 {
     m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
+    if(m_IsWaitHeatingRV)
+    {
+        if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            m_IsWaitHeatingRV = false;
+            m_IsSendMsgForWaitHeatRV = false;
+        }
+        else
+        {
+            if(!m_IsSendMsgForWaitHeatRV)
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                m_IsSendMsgForWaitHeatRV = true;
+            }
+        }
+        return;
+    }
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
     {
         m_CleanAckSentGui = true;
@@ -2766,7 +2793,14 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         scenario = 002;
         break;
     case SM_IDLE:
-        scenario = 004;
+        if(m_IsWaitHeatingRV)
+        {
+            scenario = 003;
+        }
+        else
+        {
+            scenario = 004;
+        }
         break;
     case SM_BUSY:
         break;
@@ -2955,6 +2989,13 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
+            if(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME == retCode)
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::DISMISS_ROTARY_VALVE_HEATING_PROMPT));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            }
             LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
             SendOutErrMsg(retCode);
         }

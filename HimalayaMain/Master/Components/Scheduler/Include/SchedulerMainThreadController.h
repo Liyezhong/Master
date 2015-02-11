@@ -351,10 +351,11 @@ typedef struct
         qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
         CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
         bool    m_CheckOvenCover;                             ///< check the oven cover
-        bool    m_bWaitToPause;                                 ///< Wait to be Paused
+        bool    m_bWaitToPause;                               ///< Wait to be Paused
 		bool    m_TransitionPeriod;                           ///< flag to indicate transition period
-        PowerFailureStep_t m_PowerFailureStep; ///< the power failure step
-
+        PowerFailureStep_t m_PowerFailureStep;                ///< the power failure step
+        bool    m_IsWaitHeatingRV;                            ///< wait heating RV
+        bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

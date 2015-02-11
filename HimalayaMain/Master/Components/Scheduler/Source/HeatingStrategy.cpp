@@ -253,15 +253,23 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         return retCode;
     }
-    //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
-    if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
+
+    if(3 == m_CurScenario)
     {
-        return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
-    }
+        if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
+        {
+            return DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME;
+        }
+     }
 
     // We only check LA heating overtime in scenario 260
     if (260 == m_CurScenario)
     {
+        //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
+        if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
+        {
+            return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
+        }
         //For LA RVTube
         if (false == this->CheckSensorHeatingOverTime(m_LARVTube, strctHWMonitor.TempALTube1))
         {
@@ -1686,40 +1694,61 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         return true;
     }
-    qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (meltingPoint < 68.0)
+    if(3 == m_CurScenario)
     {
-        if (HWTemp >= meltingPoint && isEffectiveTemp(HWTemp))
+        if(isEffectiveTemp(HWTemp) && HWTemp >= 40.0)
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
-    }
-    else
-    {
-        if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+        else
         {
-            m_RV_2_Outlet.OTCheckPassed = true;
-        }
-    }
-
-    qint64 now = QDateTime::currentMSecsSinceEpoch();
-    if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
-    {
-        if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
-        {
-
-            if (meltingPoint < 68.0)
+            qint64 now = QDateTime::currentMSecsSinceEpoch();
+            if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
             {
-                if (HWTemp < meltingPoint)
+                if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
                 {
                     return false;
                 }
             }
-            else
+        }
+    }
+    else if(260 == m_CurScenario)
+    {
+        qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        if (meltingPoint < 68.0)
+        {
+            if (HWTemp >= meltingPoint && isEffectiveTemp(HWTemp))
             {
-                if (HWTemp < 68.0)
+                m_RV_2_Outlet.OTCheckPassed = true;
+            }
+        }
+        else
+        {
+            if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+            {
+                m_RV_2_Outlet.OTCheckPassed = true;
+            }
+        }
+
+        qint64 now = QDateTime::currentMSecsSinceEpoch();
+        if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
+        {
+            if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
+            {
+
+                if (meltingPoint < 68.0)
                 {
-                    return false;
+                    if (HWTemp < meltingPoint)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (HWTemp < 68.0)
+                    {
+                        return false;
+                    }
                 }
             }
         }

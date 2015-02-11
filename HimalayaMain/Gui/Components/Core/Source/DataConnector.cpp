@@ -1714,6 +1714,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              emit ProgramSelfTestFailed();
         }
         break;
+        case DataManager::PROGRAM_SELFTEST_PASSED:
+        {
+             emit ProgramSelfTestPassed();
+        }
+        break;
         case DataManager::PROGRAM_WILL_COMPLETE:
         {
              emit ProgramWillComplete();
@@ -1845,6 +1850,18 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit DismissWaitingForDraining();
         }
         break;
+        case DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT:
+        {
+            emit WaitRotaryValveHeatingPrompt();
+        }
+        break;
+        case DataManager::DISMISS_ROTARY_VALVE_HEATING_PROMPT:
+        {
+            emit DismissRotaryValveHeatingPrompt();
+        }
+        break;
+
+
         default:
         {
             qDebug() << "Do Nothing";

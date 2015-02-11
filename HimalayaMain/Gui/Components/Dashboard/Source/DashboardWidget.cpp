@@ -41,6 +41,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
+    mp_WaitRotaryValveHeatingPrompt(NULL),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinHeatingDuration(0),
@@ -181,6 +182,12 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, DismissWaitingForFilling(),
                       this, OnDismissWaitingForFilling());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
+                      this, OnWaitRotaryValveHeatingPrompt());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissRotaryValveHeatingPrompt(),
+                      this, OnDismissRotaryValveHeatingPrompt());
+
     CONNECTSIGNALSLOT(mp_DataConnector, PauseWaitingForDraining(),
                       this, OnPauseWaitingForDraining());
 
@@ -287,6 +294,8 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     m_ProgramStartReady = true;
+    if (mp_WaitRotaryValveHeatingPrompt)
+        mp_WaitRotaryValveHeatingPrompt->accept();
 }
 
 void CDashboardWidget::CancelProgramWillCompletePrompt()
@@ -443,6 +452,23 @@ void CDashboardWidget::OnDismissWaitingForFilling()
 void CDashboardWidget::OnDismissWaitingForDraining()
 {
     mp_WaitFillDrainCompletedMsgDlg->accept();
+}
+
+void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
+{
+    mp_WaitRotaryValveHeatingPrompt = new MainMenu::CMessageDlg(this);
+    mp_WaitRotaryValveHeatingPrompt->SetIcon(QMessageBox::Information);
+    mp_WaitRotaryValveHeatingPrompt->SetText(m_strWaitRotaryValveHeatingPrompt);
+    mp_WaitRotaryValveHeatingPrompt->HideAllButtons();
+    mp_WaitRotaryValveHeatingPrompt->exec();
+    delete mp_WaitRotaryValveHeatingPrompt;
+    mp_WaitRotaryValveHeatingPrompt = NULL;
+}
+
+void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
+{
+    if (mp_WaitRotaryValveHeatingPrompt)
+        mp_WaitRotaryValveHeatingPrompt->accept();
 }
 
 void CDashboardWidget::OnProgramBeginAbort()
@@ -1247,6 +1273,7 @@ void CDashboardWidget::RetranslateUI()
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForDrainingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for draining to be completed.", 0, QApplication::UnicodeUTF8);
+    m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Rotary valve is heating, please wait for about 30 minutes.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);

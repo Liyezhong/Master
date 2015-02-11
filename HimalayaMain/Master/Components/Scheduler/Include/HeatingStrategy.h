@@ -363,6 +363,14 @@ public:
     /****************************************************************************/
     bool CheckLATbueTempAbnormal(qreal temp);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Check the RV status of all the temperature sensors
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool CheckRV2TemperatureSenseorsStatus() const {   return m_RV_2_Outlet.OTCheckPassed; }
+
 private slots:
     /****************************************************************************/
     /*!
