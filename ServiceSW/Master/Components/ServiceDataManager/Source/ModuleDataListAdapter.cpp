@@ -146,7 +146,7 @@ void CModuleDataListAdapter::SetOvenLifeCycle()
                            mp_OvenRef->GetSubModuleInfo("temp_oven_top"), TIME);
 
     SetSubModuleLifeCycle(OvenModule->GetSubModuleInfo("Cover Sensor"),
-                          mp_OvenRef->GetSubModuleInfo("oven_door_status"), CYCLE);
+                          mp_OvenRef->GetSubModuleInfo("oven_door_status"), TIME);
 }
 
 void CModuleDataListAdapter::SetLaSystemLifeCycle()
@@ -187,7 +187,7 @@ void CModuleDataListAdapter::SetRetortLifeCycle()
                           mp_RetortRef->GetSubModuleInfo("temp_retort_bottom"), TIME);
 
     SetSubModuleLifeCycle(RetortModule->GetSubModuleInfo("Lid Lock"),
-                          mp_RetortRef->GetSubModuleInfo("lid_status"), CYCLE);
+                          mp_RetortRef->GetSubModuleInfo("lid_status"), TIME);
 
     SetSubModuleLifeCycle(RetortModule->GetSubModuleInfo("Level Sensor"),
                           mp_LaRef->GetSubModuleInfo("temp_lsensor"), CYCLE);
@@ -212,6 +212,10 @@ void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
     }
 
     DataManager::Parameter_t* Param = SubMouleRef->GetParameterInfo(ParameterName);
+
+    if (Param->ParameterUnit == "") {
+        ParameterName = "OperationCycles";
+    }
 
     if (Param) {
         LifeCycle = Param->ParameterValue.toInt();
