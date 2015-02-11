@@ -869,7 +869,7 @@ SORTIE:
  *
  */
 /****************************************************************************/
-#define SUCKING_POOLING_TIME_OVER_FLOW      350
+#define SUCKING_POOLING_TIME_OVER_FLOW      400
 qint32 WrapperFmPressureControl::Sucking4Overflow(quint32 SuckingTime, quint32 TubePosition)
 {
     qint32 RetValue = SUCKING_RET_OK;
