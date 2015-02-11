@@ -3572,9 +3572,9 @@ void SchedulerMainThreadController::Fill()
     else
     {
         cmd->SetDelayTime(0);
-        m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup); /// only store ReagentGroup for normal program
     }
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    m_ProgramStatusInfor.SetLastReagentGroup(ReagentGroup);
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     // For paraffin, Insufficient Check is NOT needed.
     if (272 == Scenario)
