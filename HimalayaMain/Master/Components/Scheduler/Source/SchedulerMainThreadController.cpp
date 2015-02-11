@@ -3425,7 +3425,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     switch (m_CleaningDry.CurrentState)
     {
     case CDS_READY:
-        LogDebug(QString("CDS_READY"));
         RaiseEvent(EVENT_SCHEDULER_START_DRY_PROCESSING);
         commandPtr = new MsgClasses::CmdCurrentProgramStepInfor(5000, Global::UITranslator::TranslatorInstance().Translate(STR_SCHEDULER_DRY_PROCESSING),
                                                                 m_CurProgramStepIndex, TIME_FOR_CLEANING_DRY_STEP);
@@ -3487,7 +3486,6 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         }
         break;
     case CDS_WAITING_DRY:
-        LogDebug(QString("CDS_WAITING_DRY"));
         if(QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 600000) // drying 10 minutes
         {
             m_CleaningDry.CurrentState = CDS_STOP_HEATING_VACUUM;
