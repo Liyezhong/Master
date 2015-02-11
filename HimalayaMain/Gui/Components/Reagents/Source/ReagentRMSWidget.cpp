@@ -728,7 +728,7 @@ void CReagentRMSWidget::RetranslateUI()
     (void) m_ReagentCleaningModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
     (void) m_ReagentCleaningModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                                                                 "ReagentGroup", 0, QApplication::UnicodeUTF8),0);
+                                                                                 "Reagent Group", 0, QApplication::UnicodeUTF8),0);
 
     switch(Reagents:: CReagentRMSWidget::RMSCLEANINGOPTIONS) {
         case Global::RMS_CYCLES:

@@ -29,12 +29,12 @@
         <translation>编辑信息</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="186"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="187"/>
         <source>Edit Warning</source>
         <translation>编辑警告</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="208"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="210"/>
         <source>Edit Error</source>
         <translation>编辑错误</translation>
     </message>
@@ -50,110 +50,117 @@
 <context>
     <name>CCassetteNumberInputWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="12"/>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="99"/>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="13"/>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="124"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="13"/>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="100"/>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="14"/>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="125"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="98"/>
-        <source>The entered cassette number should be between 1 and 200.</source>
-        <translation>输入的包埋盒编号必须在 1 至 200 之间</translation>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="123"/>
+        <source>The total number of cassettes should be between 1 and 200.</source>
+        <translation>The total number of cassettes should be between 1 and 200. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="126"/>
+        <source>Original cassettle number: </source>
+        <translation>Original cassettle number:  中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="127"/>
+        <source>Add more cassette:</source>
+        <translation>Add more cassette: 中文</translation>
     </message>
 </context>
 <context>
     <name>CContainerPanelWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="32"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="31"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="33"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="32"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="34"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="33"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="40"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="42"/>
         <source>Program</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="41"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="43"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="42"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="44"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="43"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="45"/>
         <source>No</source>
         <translation>否</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="44"/>
-        <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
-        <translation></translation>
     </message>
 </context>
 <context>
     <name>CDashboardDateTimeWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="80"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="81"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="82"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="83"/>
         <source>Day</source>
         <translation>天</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="85"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="86"/>
         <source>Month</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="88"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="89"/>
         <source>Year</source>
         <translation>年</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="91"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="92"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="93"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="94"/>
         <source>Hour</source>
         <translation>小时</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="96"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="97"/>
         <source>Minute</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="311"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="343"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="313"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="170"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="345"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="374"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -161,87 +168,87 @@
 <context>
     <name>CDataConnector</name>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="62"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="65"/>
         <source>Communication Error</source>
         <translation>通信错误</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="63"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="66"/>
         <source>The changes could not be saved.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="64"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="67"/>
         <source>Startup</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="65"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="68"/>
         <source>Initializing device communication ...</source>
         <translation>正在初始化设备通信...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="66"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
         <source>Disconnect</source>
         <translation>断开</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="67"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
         <source>Reinitializing device communication ...</source>
         <translation>正在重新初始化设备通信...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="68"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="73"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="74"/>
         <source>Device Communication</source>
         <translation>设备通信</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="75"/>
         <source>Saving Settings ...</source>
         <translation>正在保存设置...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="73"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="76"/>
         <source>User Export</source>
         <translation>用户导出</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="74"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="77"/>
         <source>Exporting user data ...</source>
         <translation>正在导出用户数据...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="75"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="78"/>
         <source>Service Export</source>
         <translation>维修数据导出</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="76"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="79"/>
         <source>Exporting service data ...</source>
         <translation>正在导出维修数据...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="79"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="82"/>
         <source>Log Files</source>
         <translation>日志文件</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="80"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="83"/>
         <source>Getting Daily run Log file ...</source>
         <translation>正在获取每日运行日志文件...</translation>
     </message>
@@ -249,7 +256,7 @@
 <context>
     <name>CDataManagementWidget</name>
     <message>
-        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="47"/>
+        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="49"/>
         <source>Data Management</source>
         <translation>数据管理</translation>
     </message>
@@ -313,7 +320,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="204"/>
         <source>Use</source>
-        <translation type="unfinished"></translation>
+        <translation>Use 中文</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="206"/>
@@ -343,22 +350,22 @@
 <context>
     <name>CInstallationSettingsWidget</name>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="45"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="47"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="46"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="50"/>
         <source>Installation</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="250"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="277"/>
         <source>Enter Instrument Name</source>
         <translation>输入仪器名称</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="254"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="281"/>
         <source>Instrument Name</source>
         <translation>仪器名称</translation>
     </message>
@@ -375,6 +382,7 @@
     <name>CMenuGroup</name>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="108"/>
         <source>Menu</source>
         <translation></translation>
     </message>
@@ -382,67 +390,88 @@
 <context>
     <name>CModifyProgramDlg</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="67"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
         <source>Select Icon</source>
         <translation>选择图标</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="68"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="75"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="76"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="77"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>确定要删除所选的程序步骤吗？</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="78"/>
         <source>Please enter a valid Program Name</source>
         <translation>请输入一个有效的程序名称。</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="227"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="262"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="669"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="79"/>
+        <source>Please select a Program Icon</source>
+        <translation>Please select a Program Icon 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="239"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="273"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="760"/>
         <source>%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="361"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="374"/>
         <source>Enter Program Name</source>
         <translation>输入程序名称</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="388"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="423"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="403"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="438"/>
         <source>Edit Program Step</source>
         <translation>编辑程序步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="408"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="423"/>
         <source>New Program Step</source>
         <translation>新程序步骤</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="740"/>
+        <source>Program Name</source>
+        <translation>Program Name 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="746"/>
+        <source>The Program name shall not be empty!</source>
+        <translation>The Program name shall not be empty! 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="750"/>
+        <source>The Program name shall not contain &quot;Leica&quot;</source>
+        <translation>The Program name shall not contain &quot;Leica&quot; 中文</translation>
     </message>
 </context>
 <context>
@@ -481,27 +510,27 @@
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="163"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="161"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="165"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="163"/>
         <source>Hour</source>
         <translation>小时</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="168"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="166"/>
         <source>Minute</source>
         <translation>分钟</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="184"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="182"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="187"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="185"/>
         <source>°F</source>
         <translation>°F</translation>
     </message>
@@ -522,57 +551,52 @@
 <context>
     <name>CModifyReagentRMSDlg</name>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="43"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
         <translation>更换前的包埋盒</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="44"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
         <translation>更换前的循环</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
         <translation>更换期限 (天数)</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
         <source>Please enter valid data</source>
         <translation>请输入有效的数据</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
         <source>Please Select reagent group</source>
         <translation>请选择试剂组</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
-        <source>Reagent add failed</source>
-        <translation></translation>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="527"/>
+        <source>%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
-        <source>Reagent copy failed</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="50"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="52"/>
         <source>Enter Cassette Value</source>
         <translation>输入包埋盒值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="51"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>
         <source>Enter Cycle Value</source>
         <translation>输入循环值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="52"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="54"/>
         <source>Enter Day Value</source>
         <translation>输入天数值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="458"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="453"/>
         <source>Enter Reagent Name</source>
         <translation>输入试剂名称</translation>
     </message>
@@ -580,37 +604,42 @@
 <context>
     <name>CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="491"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="124"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="547"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="492"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="548"/>
         <source>No</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="496"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="552"/>
         <source>Continue</source>
         <translation>继续</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="497"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="553"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="211"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="219"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="501"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="509"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="110"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="280"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="288"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="557"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="565"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="502"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="114"/>
+        <source>Retry</source>
+        <translation>Retry 中文</translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="558"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -618,27 +647,37 @@
 <context>
     <name>CNetworkSettingsWidget</name>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="45"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="47"/>
         <source>Enter Proxy User Name</source>
         <translation>输入代理用户名</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="46"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
         <source>Enter Proxy Password</source>
         <translation>输入代理密码</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="47"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="49"/>
         <source>Enter Proxy IP Address</source>
         <translation>输入代理 IP 地址</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="50"/>
         <source>Enter Proxy Port</source>
         <translation>输入代理端口</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="51"/>
+        <source>IP address not correct</source>
+        <translation>IP address not correct 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="52"/>
+        <source>Network port not correct</source>
+        <translation>Network port not correct 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="55"/>
         <source>Network</source>
         <translation>网络</translation>
     </message>
@@ -649,6 +688,19 @@
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="39"/>
         <source>Parameter</source>
         <translation>参数</translation>
+    </message>
+</context>
+<context>
+    <name>CPrecheckProgramModel</name>
+    <message>
+        <location filename="../../Settings/Source/PrecheckProgramModel.cpp" line="208"/>
+        <source>Apply</source>
+        <translation>应用</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/PrecheckProgramModel.cpp" line="210"/>
+        <source>Program</source>
+        <translation>程序</translation>
     </message>
 </context>
 <context>
@@ -682,19 +734,19 @@
 <context>
     <name>CProgramPanelWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="28"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="32"/>
         <source>Programs</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="227"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="248"/>
         <source>Abort</source>
         <translation>终止</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="234"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="256"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Start 中文</translation>
     </message>
 </context>
 <context>
@@ -735,7 +787,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="63"/>
         <source>Program Process has started.Editing is no longer possible.</source>
-        <translation type="unfinished"></translation>
+        <translation>Program Process has started.Editing is no longer possible. 中文</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="64"/>
@@ -756,12 +808,12 @@
 <context>
     <name>CReagentGroupModel</name>
     <message>
-        <location filename="../../Core/Source/ReagentGroupModel.cpp" line="202"/>
+        <location filename="../../Core/Source/ReagentGroupModel.cpp" line="213"/>
         <source>Reagent Group</source>
         <translation>试剂组</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentGroupModel.cpp" line="204"/>
+        <location filename="../../Core/Source/ReagentGroupModel.cpp" line="215"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
@@ -769,7 +821,7 @@
 <context>
     <name>CReagentGroupWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="30"/>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="32"/>
         <source>Select Color</source>
         <translation>选择颜色</translation>
     </message>
@@ -807,7 +859,7 @@
 <context>
     <name>CReagentRMSWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="52"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="55"/>
         <source>RMS</source>
         <translation>RMS</translation>
     </message>
@@ -815,12 +867,12 @@
 <context>
     <name>CReagentStationEditModel</name>
     <message>
-        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="260"/>
+        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="272"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="262"/>
+        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="274"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
@@ -828,12 +880,12 @@
 <context>
     <name>CReagentStationModel</name>
     <message>
-        <location filename="../../Core/Source/ReagentStationModel.cpp" line="246"/>
+        <location filename="../../Core/Source/ReagentStationModel.cpp" line="250"/>
         <source>Station</source>
         <translation>站点</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStationModel.cpp" line="248"/>
+        <location filename="../../Core/Source/ReagentStationModel.cpp" line="252"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
@@ -863,7 +915,8 @@
         <source>Cassettes
 since
 change</source>
-        <translation type="unfinished">盒子</translation>
+        <translation>已用
+盒子数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -871,20 +924,20 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="384"/>
         <source>Expiry
 Date</source>
-        <translation type="unfinished"></translation>
+        <translation>过期日期</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
         <source>Exchange
 Date</source>
-        <translation type="unfinished"></translation>
+        <translation>替换日期</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="390"/>
@@ -911,57 +964,52 @@ Date</source>
 <context>
     <name>CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="306"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="310"/>
         <source>Step</source>
         <translation>步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="308"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
-        <location filename="../../Programs/Source/StepModel.cpp" line="317"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="316"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="321"/>
         <source>Duration</source>
         <translation>持续时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="313"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="317"/>
         <source>Station</source>
         <translation>站点</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="316"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="320"/>
         <source>Temperature</source>
         <translation>温度</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="321"/>
-        <location filename="../../Programs/Source/StepModel.cpp" line="327"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="325"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="331"/>
         <source>P/V</source>
         <translation>压力/真空</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="322"/>
+        <location filename="../../Programs/Source/StepModel.cpp" line="326"/>
         <source>Temp.</source>
         <translation>温度</translation>
     </message>
 </context>
 <context>
     <name>CSystemSetupSettingsWidget</name>
-    <message>
-        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="79"/>
-        <source>Oven</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message utf8="true">
-        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="156"/>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="184"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="168"/>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="196"/>
         <source>°F</source>
         <translation>°F</translation>
     </message>
@@ -1012,140 +1060,204 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1066"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1074"/>
         <source>Communication Error</source>
         <translation>通信错误</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1067"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1075"/>
         <source>The changes could not be saved.</source>
-        <translation type="unfinished"></translation>
+        <translation>The changes could not be saved. 中文</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1068"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1076"/>
         <source>Startup</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1069"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1077"/>
         <source>Initializing device communication ...</source>
         <translation>正在初始化设备通信...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1070"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1078"/>
         <source>Disconnect</source>
         <translation>断开</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1079"/>
         <source>Reinitializing device communication ...</source>
         <translation>正在重新初始化设备通信...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1072"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1080"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1081"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1925"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1075"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1083"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1076"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1084"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1077"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1038"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1085"/>
         <source>Device Communication</source>
         <translation>设备通信</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1078"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1040"/>
+        <source>Saving settings ...</source>
+        <translation>正在保存设置...</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1086"/>
         <source>Saving Settings ...</source>
         <translation>正在保存设置...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1079"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1087"/>
         <source>User Export</source>
         <translation>用户导出</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1088"/>
         <source>Exporting user data ...</source>
         <translation>正在导出用户数据...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1082"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1090"/>
         <source>Service Export</source>
         <translation>维修数据导出</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1083"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1091"/>
         <source>Exporting service data ...</source>
         <translation>正在导出维修数据...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1085"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1093"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1086"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1094"/>
         <source>Importing data ...</source>
         <translation>正在导入数据...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1088"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1096"/>
         <source>Log Files</source>
         <translation>日志文件</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1089"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1097"/>
         <source>Getting Daily run Log file ...</source>
         <translation>正在获取每日运行日志文件...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1091"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1099"/>
         <source>Please turn off the switch on the back of machine to shutdown the machine.</source>
         <translation>请关闭机器背面的开关，以关闭机器。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1239"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1292"/>
         <source>Software Update</source>
         <translation>软件更新</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1241"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1294"/>
         <source>Updating the software ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating the software ... 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1927"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2010"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2033"/>
+        <source>Ok</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1932"/>
+        <source>New SW is available. Click on Remote SW update to start the update.</source>
+        <translation>New SW is available. Click on Remote SW update to start the update. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1938"/>
+        <source>New SW is not available</source>
+        <translation>New SW is not available 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1944"/>
+        <source>Downloading the New SW from RCServer failed. Please contact service.</source>
+        <translation>Downloading the New SW from RCServer failed. Please contact service. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1949"/>
+        <source>Downloading the New SW from remote server successful, now start to update.</source>
+        <translation>Downloading the New SW from remote server successful, now start to update. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1978"/>
+        <source>Now downloading update package from remote server, please waiting...</source>
+        <translation>Now downloading update package from remote server, please waiting... 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2008"/>
+        <source>Confirmation Message</source>
+        <translation>确认消息</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
+        <source>Remote Session has been requested by remote user</source>
+        <translation>Remote Session has been requested by remote user 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2031"/>
+        <source>Information Message</source>
+        <translation>信息消息</translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
+        <source>Remote Session ended by remote user</source>
+        <translation>Remote Session ended by remote user 中文</translation>
     </message>
 </context>
 <context>
     <name>Core::CGlobalHelper</name>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="227"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="223"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="228"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="224"/>
         <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
         <translation>当选中程序&quot;%1&quot;时，该操作将导致错误的程序结果；如果您单击&quot;是&quot;，将会取消选择所选的程序。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="229"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="225"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/GlobalHelper.cpp" line="230"/>
+        <location filename="../../Core/Source/GlobalHelper.cpp" line="226"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1153,12 +1265,12 @@ Date</source>
 <context>
     <name>Core::CReagentGroupModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="194"/>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="202"/>
         <source>Reagent Group</source>
         <translation>试剂组</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="196"/>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="204"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
@@ -1166,44 +1278,48 @@ Date</source>
 <context>
     <name>Core::CReagentRMSModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="549"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="571"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="706"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="728"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="551"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="573"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="708"/>
         <source>ReagentGroup</source>
-        <translation type="unfinished"></translation>
+        <translation>ReagentGroup 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="556"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="713"/>
         <source>Cassettes until change</source>
         <translation>更换前的包埋盒</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="559"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="578"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="716"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="735"/>
         <source>Cycles until change</source>
         <translation>更换前的循环</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="562"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="581"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="719"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="738"/>
         <source>Days until change</source>
         <translation>更换期限 (天数)</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="730"/>
+        <source>Reagent Group</source>
+        <translation>试剂组</translation>
     </message>
 </context>
 <context>
     <name>Core::CReagentStationEditModel</name>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="204"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="209"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="206"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="211"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
@@ -1224,45 +1340,47 @@ Date</source>
 <context>
     <name>Core::CReagentStatusModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="497"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="495"/>
         <source>Station</source>
         <translation>站点</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="500"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="498"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="506"/>
         <source>Cassettes
 since
 change</source>
-        <translation type="unfinished"></translation>
+        <translation>已用
+盒子数</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="511"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="524"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="509"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="522"/>
         <source>Cycles
 since
 change</source>
-        <translation type="unfinished"></translation>
+        <translation>已用
+循环</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="514"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="527"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="512"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="525"/>
         <source>Expiry
 Date</source>
-        <translation type="unfinished"></translation>
+        <translation>过期日期</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="531"/>
+        <source>Exchange
+Date</source>
+        <translation>替换日期</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="533"/>
-        <source>Exchange
-Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="535"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
@@ -1270,17 +1388,27 @@ Date</source>
 <context>
     <name>Dashboard::CCassetteNumberInputWidget</name>
     <message>
-        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="14"/>
+        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="20"/>
         <source>Dialog</source>
         <translation>对话框</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="36"/>
+        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="34"/>
+        <source>totalcassette</source>
+        <translation>totalcassette 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="47"/>
+        <source>inputhint</source>
+        <translation>inputhint 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="92"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="49"/>
+        <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="72"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1293,50 +1421,45 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="47"/>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="113"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="49"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
         <source>Dashboard</source>
         <translation>界面</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="114"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="117"/>
         <source>No</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="118"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="117"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="119"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="118"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="120"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="119"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="121"/>
         <source>Program</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="120"/>
+        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="122"/>
         <source>Information</source>
         <translation>信息</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="121"/>
-        <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1347,85 +1470,90 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="32"/>
+        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="46"/>
         <source>Selected Time</source>
         <translation>所选时间</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="55"/>
+        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="66"/>
         <source>ASAP</source>
         <translation>尽快</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="142"/>
+        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="139"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="162"/>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="247"/>
+        <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="159"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="250"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="231"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="235"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="232"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="236"/>
         <source>Day</source>
         <translation>天</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="233"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="237"/>
         <source>Month</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="234"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="238"/>
         <source>Year</source>
         <translation>年</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="237"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="241"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="238"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="242"/>
         <source>Hour</source>
         <translation>小时</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="239"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="243"/>
         <source>Minute</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="241"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="245"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="242"/>
-        <source>Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="244"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="246"/>
         <source>Program End Date Time cannot be earlier than the ASAP End Date Time.</source>
         <translation>程序结束日期时间不得早于尽快结束日期时间。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="245"/>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="247"/>
         <source>Program End Date Time cannot be later than one week.</source>
         <translation>程序结束日期时间不得晚于一周。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="248"/>
+        <source>Program End Date Time cannot be later than the ASAP End Date Time as the first program step is not Fixation reagent.</source>
+        <translation>Program End Date Time cannot be later than the ASAP End Date Time as the first program step is not Fixation reagent. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="249"/>
+        <source>Run</source>
+        <translation>Run 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="251"/>
         <source>End Time of program</source>
-        <translation type="unfinished"></translation>
+        <translation>End Time of program 中文</translation>
     </message>
 </context>
 <context>
@@ -1451,17 +1579,12 @@ Date</source>
         <translation>步骤剩余时间：</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="172"/>
-        <source>PushButton</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="189"/>
+        <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="176"/>
         <source>Abort Program</source>
         <translation>终止程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="209"/>
+        <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="196"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -1474,77 +1597,127 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="796"/>
-        <source>Do you want to Start the Program with Expired Reagents?</source>
-        <translation>是否要启动带过期试剂的程序？</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="784"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1236"/>
         <source>No safe reagent for Program step &quot;%1&quot; of &quot;%2&quot; in case of error happen.Would you like to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>No safe reagent for Program step &quot;%1&quot; of &quot;%2&quot; in case of error happen.Would you like to continue? 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="788"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1240"/>
+        <source>Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.</source>
+        <translation>Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1241"/>
+        <source>You can start in %1 hours %2 minutes.</source>
+        <translation>You can start in %1 hours %2 minutes. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1242"/>
+        <source>Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue?</source>
+        <translation>Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue? 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1243"/>
         <source>Please enter cassette number:</source>
         <translation>请输入包埋盒编号：</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="789"/>
-        <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
-        <translation>程序&quot;%1&quot;已完成！是否排空脱水缸？</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1244"/>
+        <source>Program &quot;%1&quot; has completed the last step! Would you like to drain the retort?</source>
+        <translation>Program &quot;%1&quot; has completed the last step! Would you like to drain the retort? 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="790"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1245"/>
+        <source>Tissue protect processing is done successfully, would you like to drain the retort?</source>
+        <translation>Tissue protect processing is done successfully, would you like to drain the retort? 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1246"/>
+        <source>Oven cover is open, please close it then click OK button.&quot;OK&quot;</source>
+        <translation>Oven cover is open, please close it then click OK button.&quot;OK&quot; 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1247"/>
+        <source>Retort lid was opened, please close it and then click OK.</source>
+        <translation>Retort lid was opened, please close it and then click OK. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1248"/>
+        <source>Please wait for filling to be completed.</source>
+        <translation>Please wait for filling to be completed. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1249"/>
+        <source>Please wait for draining to be completed.</source>
+        <translation>Please wait for draining to be completed. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1256"/>
+        <source>Reagents needed for this program are expired, please replace the expired ones with fresh reagents! You can&apos;t operate this program.</source>
+        <translation>Reagents needed for this program are expired, please replace the expired ones with fresh reagents! You can&apos;t operate this program. 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1257"/>
+        <source>Do you want to start the Program with Expired Reagents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1258"/>
+        <source>Please enter the new-added cassette number:</source>
+        <translation>Please enter the new-added cassette number: 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1260"/>
+        <source>Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents</source>
+        <translation>Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1250"/>
         <source>Please take out your specimen!</source>
         <translation>请取出您的样品！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="791"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1251"/>
         <source>The retort is contaminated, please lock the retort and select Cleaning Program to run!</source>
-        <translation type="unfinished"></translation>
+        <translation>The retort is contaminated, please lock the retort and select Cleaning Program to run! 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="792"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1252"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>程序&quot;%1&quot;已终止！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="793"/>
-        <source>Please close and lock the retort, then try again!</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1253"/>
+        <source>Program &quot;%1&quot; is completed successfully!</source>
+        <translation>Program &quot;%1&quot; is completed successfully! 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="794"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1254"/>
+        <source>Please close and lock the retort, then try again!</source>
+        <translation>Please close and lock the retort, then try again! 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1255"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>无法在 RMS 关闭的情况下操作徕卡程序。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="795"/>
-        <source>Reagents needed for this program are expired! You can&apos;t operate this program.</source>
-        <translation>该程序所需的试剂已过期！您无法操作该程序。</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="797"/>
-        <source>Please enter the total number of cassetts in the retort:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="798"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1259"/>
         <source>Did you add new cassetts?</source>
-        <translation type="unfinished"></translation>
+        <translation>Did you add new cassetts? 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="787"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1239"/>
         <source>Please re-set the End Date&amp;Time of the current selected program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Please re-set the End Date&amp;Time of the current selected program. 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="785"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1237"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
         <translation>无法为&quot;%2&quot;的程序步骤&quot;%1&quot;找到对应的试剂站点，一个站点在程序中只能使用一次，请为该步骤中的试剂设置一个站点。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="786"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1238"/>
         <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
         <translation>站点&quot;%1&quot;的状态在&quot;%3&quot;的程序步骤&quot;%2&quot;中设置为空，其无法执行。</translation>
     </message>
@@ -1588,62 +1761,57 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramPanelWidget.ui" line="106"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Start 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="107"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="109"/>
         <source>Programs</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="109"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="111"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="110"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="112"/>
         <source>Do you want to abort the program?</source>
         <translation>是否要终止程序？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="113"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="114"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="114"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
         <source>No</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="116"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="116"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="118"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="118"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="119"/>
         <source>Program</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="119"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="120"/>
         <source>Information</source>
         <translation>信息</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="120"/>
-        <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1659,38 +1827,32 @@ Date</source>
         <translation>程序剩余时间：</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="73"/>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="105"/>
-        <source>Reagent:</source>
-        <translation>试剂:</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="80"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="66"/>
         <source>Step Time:</source>
         <translation>步骤时间：</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="139"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="132"/>
         <source>End of program</source>
-        <translation type="unfinished"></translation>
+        <translation>End of program 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="183"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="176"/>
         <source>Program Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Program Details 中文</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="159"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="177"/>
         <source>Aborting...</source>
         <translation>正在终止...</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="160"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="178"/>
         <source>Aborted.</source>
         <translation>已终止。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="161"/>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="179"/>
         <source>Completed!</source>
         <translation>已完成！</translation>
     </message>
@@ -1698,29 +1860,29 @@ Date</source>
 <context>
     <name>KeyBoard::CKeyBoard</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1034"/>
+        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1036"/>
         <source>Information Message</source>
         <translation type="unfinished">信息消息</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1037"/>
+        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1039"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1043"/>
+        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1045"/>
         <source>Please enter text</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter text 中文</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1049"/>
+        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1051"/>
         <source>The entered text is too short. The length must be at least %1 characters.</source>
-        <translation type="unfinished"></translation>
+        <translation>The entered text is too short. The length must be at least %1 characters. 中文</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1056"/>
+        <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1058"/>
         <source>The entered text is too long. The length must not be greater than %1 characters.</source>
-        <translation type="unfinished"></translation>
+        <translation>The entered text is too long. The length must not be greater than %1 characters. 中文</translation>
     </message>
 </context>
 <context>
@@ -1890,12 +2052,12 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="48"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="228"/>
         <source>Import Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Import Files 中文</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="230"/>
         <source>Use</source>
-        <translation type="unfinished"></translation>
+        <translation>Use 中文</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="232"/>
@@ -1931,7 +2093,7 @@ Date</source>
     <name>MainMenu::CMainWindow</name>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="511"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="525"/>
         <source>MainWindow</source>
         <translation></translation>
     </message>
@@ -1977,18 +2139,18 @@ Date</source>
 <context>
     <name>MainMenu::CMsgBoxManager</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="86"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="83"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="93"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="90"/>
         <source>Warning Message</source>
         <translation>警告消息</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="100"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="105"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="97"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="102"/>
         <source>Error Message</source>
         <translation>错误消息</translation>
     </message>
@@ -2095,10 +2257,10 @@ Date</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="168"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="176"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="192"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="170"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="178"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="194"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="196"/>
         <source>Warning Messages</source>
         <translation>警告消息</translation>
     </message>
@@ -2132,7 +2294,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="173"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="904"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1005"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2143,8 +2305,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="221"/>
-        <source>New</source>
-        <translation>新建</translation>
+        <source>New Step</source>
+        <translation>New Step 中文</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="244"/>
@@ -2157,52 +2319,62 @@ Date</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="889"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="990"/>
         <source>Edit Program Step</source>
         <translation>编辑程序步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="890"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="991"/>
         <source>New Program Step</source>
         <translation>新程序步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="891"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="992"/>
         <source>Enter Program Name</source>
         <translation>输入程序名称</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="892"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="993"/>
         <source>Enter Program Short Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="901"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1002"/>
         <source>Select Icon</source>
         <translation>选择图标</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="902"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1003"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="903"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1004"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="905"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1006"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>确定要删除所选的程序步骤吗？</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="906"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1007"/>
         <source>Please enter a valid Program Name</source>
         <translation>请输入一个有效的程序名称。</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="907"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1008"/>
+        <source>Program Name duplicated!</source>
+        <translation>Program Name duplicated! 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1009"/>
+        <source>Please select a Program Icon</source>
+        <translation>Please select a Program Icon 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1010"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -2275,43 +2447,43 @@ Date</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="637"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="644"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="639"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="646"/>
         <source>Hour</source>
         <translation>小时</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="641"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="648"/>
         <source>Minute</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="644"/>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="652"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="651"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="659"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="646"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="649"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
         <source>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue? 中文</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="654"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="661"/>
         <source>No</source>
         <translation>否</translation>
     </message>
@@ -2319,27 +2491,27 @@ Date</source>
 <context>
     <name>Programs::CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="585"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="587"/>
         <source>Number</source>
         <translation>编号</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="587"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="589"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="589"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="591"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="591"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="593"/>
         <source>Duration</source>
         <translation>持续时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="593"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="595"/>
         <source>Icon</source>
         <translation>图标</translation>
     </message>
@@ -2348,7 +2520,7 @@ Date</source>
     <name>Programs::CProgramWidget</name>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="615"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="617"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
@@ -2368,52 +2540,52 @@ Date</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="582"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="584"/>
         <source>Programs</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="596"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="598"/>
         <source>Edit Program</source>
         <translation>编辑程序</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="599"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="601"/>
         <source>View Program</source>
         <translation>查看程序</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="602"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="604"/>
         <source>New Program</source>
         <translation>新程序</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="605"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="607"/>
         <source>Do you really want to delete the selected program?</source>
         <translation>确定要删除所选的程序吗？</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="608"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="610"/>
         <source>Program Process has started.Editing is no longer possible.</source>
-        <translation type="unfinished"></translation>
+        <translation>Program Process has started.Editing is no longer possible. 中文</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="612"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="614"/>
         <source>View</source>
         <translation>查看</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="617"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="619"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="619"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="621"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="620"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="622"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2421,27 +2593,27 @@ Date</source>
 <context>
     <name>Programs::CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="895"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="996"/>
         <source>Step</source>
         <translation>步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="896"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="997"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="897"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="998"/>
         <source>Duration</source>
         <translation>持续时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="898"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="999"/>
         <source>Temperature</source>
         <translation>温度</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="899"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1000"/>
         <source>P/V</source>
         <translation>压力/真空</translation>
     </message>
@@ -2457,24 +2629,24 @@ Date</source>
 <context>
     <name>Reagent::CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="480"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="478"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="481"/>
         <source>Do you want to set Station %1 as empty?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you want to set Station %1 as empty? 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="484"/>
         <source>Do you want to reset data for Station %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you want to reset data for Station %1? 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="489"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="487"/>
         <source>Do you want to set Station %1 as full?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you want to set Station %1 as full? 中文</translation>
     </message>
 </context>
 <context>
@@ -2486,23 +2658,23 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="285"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="139"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="135"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="305"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="136"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="132"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="142"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="138"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="144"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="140"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -2545,84 +2717,94 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="550"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="556"/>
         <source>Cassettes until change</source>
         <translation>更换前的包埋盒</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="553"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="559"/>
         <source>Cycles until change</source>
         <translation>更换前的循环</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="556"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="562"/>
         <source>Days until change</source>
         <translation>更换期限 (天数)</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="559"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>Please enter the reagent Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the reagent Name 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="562"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Reagent name should not contain &apos;leica&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reagent name should not contain &apos;leica&apos;. 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="544"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="580"/>
+        <source>Fail to add reagent. Please contact service</source>
+        <translation>Fail to add reagent. Please contact service 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="583"/>
+        <source>Fail to copy reagent. Please contact service</source>
+        <translation>Fail to copy reagent. Please contact service 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="550"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="545"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="551"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
         <source>The same reagent name is in use, please change the reagent name.</source>
-        <translation type="unfinished"></translation>
+        <translation>The same reagent name is in use, please change the reagent name. 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
         <source>Please enter valid data</source>
         <translation>请输入有效的数据</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
-        <source>Please Select ReagentGroup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="574"/>
-        <source>Reagent add failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="577"/>
-        <source>Reagent copy failed</source>
-        <translation type="unfinished"></translation>
+        <source>Please Select ReagentGroup</source>
+        <translation>Please Select ReagentGroup 中文</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="580"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="586"/>
         <source>Enter Cassette Value</source>
         <translation>输入包埋盒值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="583"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Enter Cycle Value</source>
         <translation>输入循环值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="586"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="592"/>
         <source>Enter Day Value</source>
         <translation>输入天数值</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="595"/>
         <source>Enter Reagent Name</source>
         <translation>输入试剂名称</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="701"/>
+        <source>Do you really want to change RMS mode? If fresh reagents are replaced, please reset data for them in the ‘Status’ page!</source>
+        <translation>Do you really want to change RMS mode? If fresh reagents are replaced, please reset data for them in the ‘Status’ page! 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="703"/>
+        <source>Do you really want to change RMS mode? When the RMS of cleaning reagent is turned off, the cleaning program can be run as usual, however, the quality of cleaning reagent shall be controlled by user.</source>
+        <translation>Do you really want to change RMS mode? When the RMS of cleaning reagent is turned off, the cleaning program can be run as usual, however, the quality of cleaning reagent shall be controlled by user. 中文</translation>
     </message>
 </context>
 <context>
@@ -2634,7 +2816,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="38"/>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="200"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="205"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2644,17 +2826,17 @@ Date</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="201"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="206"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="202"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="207"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="203"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="208"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -2672,7 +2854,7 @@ Date</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="198"/>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="206"/>
         <source>Select Color</source>
         <translation>选择颜色</translation>
     </message>
@@ -2733,42 +2915,42 @@ Date</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="533"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="686"/>
         <source>RMS</source>
         <translation>RMS</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="536"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="689"/>
         <source>Edit Reagent</source>
         <translation>编辑试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="539"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="692"/>
         <source>New Reagent</source>
         <translation>新试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="542"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="695"/>
         <source>Do you really want to delete the selected reagent</source>
         <translation>确定要删除所选的试剂吗？</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="545"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="698"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="546"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="699"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="547"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="700"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="192"/>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="200"/>
         <source>Groups</source>
         <translation>分组</translation>
     </message>
@@ -2814,17 +2996,17 @@ Date</source>
         <translation>重置数据</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="492"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="490"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="493"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="491"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="494"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="492"/>
         <source>No</source>
         <translation>否</translation>
     </message>
@@ -2866,6 +3048,14 @@ Date</source>
     </message>
 </context>
 <context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="54"/>
+        <source>Test</source>
+        <translation>Test 中文</translation>
+    </message>
+</context>
+<context>
     <name>Settings::CAlarmSettingsDlg</name>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="20"/>
@@ -2895,7 +3085,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="205"/>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="212"/>
@@ -2903,37 +3093,37 @@ Date</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="263"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="265"/>
         <source>Sound</source>
         <translation>声音</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="264"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="266"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="265"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="267"/>
         <source>Periodic Time</source>
         <translation>发生暂停时间</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="266"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="268"/>
         <source>Minute</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="268"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="270"/>
         <source>Edit Information</source>
         <translation>编辑信息</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="269"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="271"/>
         <source>Edit Error</source>
         <translation>编辑错误</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="270"/>
+        <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="272"/>
         <source>Edit Warning</source>
         <translation>编辑警告</translation>
     </message>
@@ -2960,12 +3150,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="46"/>
         <source>Sound: Sound N3</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound: Sound N3 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="53"/>
         <source>Volume: 3</source>
-        <translation type="unfinished"></translation>
+        <translation>音量: 3</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="73"/>
@@ -2987,7 +3177,7 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="102"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="178"/>
         <source>Sound: Sound E5</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound: Sound E5 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="109"/>
@@ -3036,8 +3226,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="36"/>
-        <source>Save to USB</source>
-        <translation>保存至 USB</translation>
+        <source>User Export</source>
+        <translation>用户导出</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="69"/>
@@ -3060,7 +3250,7 @@ Date</source>
         <translation>远程软件更新</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="190"/>
+        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="213"/>
         <source>Data Management</source>
         <translation>数据管理</translation>
     </message>
@@ -3094,42 +3284,44 @@ Date</source>
         <translation>仪器名称</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="46"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="49"/>
         <source>Undefined instrument</source>
         <translation>未定义的仪器</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="56"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="59"/>
         <source>Serial Number</source>
         <translation>序列号</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="68"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="71"/>
         <source>0000-0000-0000-0000</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="79"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="82"/>
         <source>Software Version</source>
         <translation>软件版本</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="133"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="151"/>
         <source>Installation</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="134"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="152"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="138"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="88"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="156"/>
         <source>SoftwareVersion: </source>
-        <translation type="unfinished"></translation>
+        <translation>SoftwareVersion:  中文</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="142"/>
+        <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="108"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="157"/>
         <source>Driver Version : </source>
         <translation>驱动程序版本：</translation>
     </message>
@@ -3174,90 +3366,100 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="26"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="169"/>
-        <source>Enable Remote Care</source>
-        <translation>启用远程维护</translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="33"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="170"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="235"/>
         <source>Direct Connection</source>
         <translation>直接连接</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="53"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="171"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="46"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="236"/>
         <source>Proxy User Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy User Name 中文</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="60"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="53"/>
         <source>The User Name</source>
-        <translation type="unfinished"></translation>
+        <translation>The User Name 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="73"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="237"/>
+        <source>Proxy Password</source>
+        <translation>Proxy Password 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="80"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="172"/>
-        <source>Proxy Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="87"/>
         <source>****************</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="107"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="173"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="100"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="238"/>
         <source>Proxy IP Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy IP Address 中文</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="114"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="107"/>
         <source>123.456.789.012</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="134"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="174"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="127"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="239"/>
         <source>Proxy Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy Port 中文</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="134"/>
         <source>XXXX</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="234"/>
+        <source>Enable Remote Care Events</source>
+        <translation>Enable Remote Care Events 中文</translation>
+    </message>
+    <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="175"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="240"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="168"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="233"/>
         <source>Network</source>
         <translation>网络</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="176"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="241"/>
         <source>Enter Proxy User Name</source>
         <translation>输入代理用户名</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="177"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="242"/>
         <source>Enter Proxy Password</source>
         <translation>输入代理密码</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="178"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="243"/>
         <source>Enter Proxy IP Address</source>
         <translation>输入代理 IP 地址</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="179"/>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="244"/>
         <source>Enter Proxy Port</source>
         <translation>输入代理端口</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="245"/>
+        <source>IP address not correct</source>
+        <translation>IP address not correct 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="246"/>
+        <source>Network port not correct</source>
+        <translation>Network port not correct 中文</translation>
     </message>
 </context>
 <context>
@@ -3283,37 +3485,37 @@ Date</source>
         <translation>日期/时间</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="125"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="126"/>
         <source>Alarm</source>
         <translation>报警</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="136"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="137"/>
         <source>Installation</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="147"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="148"/>
         <source>System Setup</source>
         <translation>系统设置</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="158"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="159"/>
         <source>Data Mgm.</source>
         <translation>数据管理</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="169"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="170"/>
         <source>Maintenance</source>
         <translation>维护</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="180"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="181"/>
         <source>Event View</source>
         <translation>事件视图</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ParametersWidget.ui" line="191"/>
+        <location filename="../../Settings/Forms/ParametersWidget.ui" line="192"/>
         <source>Network</source>
         <translation>网络</translation>
     </message>
@@ -3321,6 +3523,19 @@ Date</source>
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="88"/>
         <source>Parameter</source>
         <translation>参数</translation>
+    </message>
+</context>
+<context>
+    <name>Settings::CPrecheckProgramModel</name>
+    <message>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="298"/>
+        <source>Apply</source>
+        <translation>应用</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="301"/>
+        <source>Program</source>
+        <translation>程序</translation>
     </message>
 </context>
 <context>
@@ -3343,7 +3558,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="63"/>
         <source>Temperature Unit:</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperature Unit: 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="109"/>
@@ -3399,26 +3614,26 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
-        <source>Operation Days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="34"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="100"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="36"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="116"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="47"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="113"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="60"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="143"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="60"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="49"/>
         <source>Warning threshold:</source>
         <translation>警告阈值</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
+        <source>Preventive Maintenance Reminder [Days]</source>
+        <translation>Preventive Maintenance Reminder [Days] 中文</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="73"/>
@@ -3426,59 +3641,54 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="81"/>
-        <source>Use exhausting system</source>
-        <translation>使用排气系统</translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="88"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="98"/>
         <source>Active carbon filter [Days]</source>
         <translation>活性炭滤网 [天]</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="126"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="123"/>
         <source>Warning threshold :</source>
         <translation>警告阈值 :</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="139"/>
-        <source>150</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="152"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="130"/>
         <source>Alarm threshold :</source>
         <translation>警报阈值</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="165"/>
-        <source>240</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="192"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="243"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="205"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="204"/>
         <source>Shutdown</source>
         <translation>关机</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="228"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="150"/>
+        <source>45</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="157"/>
+        <source>60</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="180"/>
         <source>Start Service App</source>
         <translation>启动维修应用</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="328"/>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="325"/>
         <source>Maintenance</source>
         <translation>维护</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="329"/>
-        <source>If shut down now, 12 hours will be needed for melt paraffin in next startup! really shut down?</source>
-        <translation>如果现在关闭，在下次启动时需要 12 小时熔化石蜡！确定要关闭？</translation>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="326"/>
+        <source>If shut down now, %1 hours will be needed for melt paraffin in next startup, really shut down?</source>
+        <translation>If shut down now, %1 hours will be needed for melt paraffin in next startup, really shut down? 中文</translation>
     </message>
 </context>
 <context>
@@ -3489,7 +3699,7 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/SettingsWidget.cpp" line="150"/>
+        <location filename="../../Settings/Source/SettingsWidget.cpp" line="171"/>
         <source>Parameter</source>
         <translation>参数</translation>
     </message>
@@ -3502,19 +3712,34 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="46"/>
-        <source>Melting point for paraffin:</source>
-        <translation>石蜡熔点：</translation>
+        <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="49"/>
+        <source>Bottle check setting:</source>
+        <translation>Bottle check setting: 中文</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="124"/>
+        <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="76"/>
+        <source>Paraffin bath temperature:</source>
+        <translation>Paraffin bath temperature: 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="192"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="262"/>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="292"/>
         <source>System Setup</source>
         <translation>系统设置</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="293"/>
+        <source>Do you really want to change the paraffin bath temperature?</source>
+        <translation>Do you really want to change the paraffin bath temperature? 中文</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="295"/>
+        <source>With Paraffin bath temperture changed, if you put the solid paraffin in, please select &apos;Yes&apos; to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select &apos;No&apos; and no need to wait any time.</source>
+        <translation>With Paraffin bath temperture changed, if you put the solid paraffin in, please select &apos;Yes&apos; to wait %1 hours for completely melting the solid paraffin. If you put the melted liquid paraffin in, please select &apos;No&apos; and no need to wait any time. 中文</translation>
     </message>
 </context>
 <context>
@@ -3555,9 +3780,9 @@ Please wait...</source>
         <translation>用户</translation>
     </message>
     <message>
-        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="178"/>
-        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="204"/>
-        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="231"/>
+        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="175"/>
+        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="202"/>
+        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="229"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="447"/>
         <source>Enter Password</source>
         <translation>输入密码</translation>
