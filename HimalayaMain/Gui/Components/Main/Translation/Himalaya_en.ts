@@ -1101,7 +1101,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1081"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1925"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1942"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1171,59 +1171,59 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1927"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2010"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2033"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1944"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2027"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2050"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1932"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1949"/>
         <source>New SW is available. Click on Remote SW update to start the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1938"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1955"/>
         <source>New SW is not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1944"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1961"/>
         <source>Downloading the New SW from RCServer failed. Please contact service.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1949"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1966"/>
         <source>Downloading the New SW from remote server successful, now start to update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1978"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1995"/>
         <source>Now downloading update package from remote server, please waiting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2008"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
         <source>Confirmation Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2029"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2032"/>
         <source>Remote Session has been requested by remote user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2031"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2048"/>
         <source>Information Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2053"/>
         <source>Remote Session ended by remote user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1594,127 +1594,132 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1236"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1262"/>
         <source>No safe reagent for Program step &quot;%1&quot; of &quot;%2&quot; in case of error happen.Would you like to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1240"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1266"/>
         <source>Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1241"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1267"/>
         <source>You can start in %1 hours %2 minutes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1242"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1268"/>
         <source>Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1243"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1269"/>
         <source>Please enter cassette number:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1244"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1270"/>
         <source>Program &quot;%1&quot; has completed the last step! Would you like to drain the retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1245"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1271"/>
         <source>Tissue protect processing is done successfully, would you like to drain the retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1246"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1272"/>
         <source>Oven cover is open, please close it then click OK button.&quot;OK&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1247"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1273"/>
         <source>Retort lid was opened, please close it and then click OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1248"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1274"/>
         <source>Please wait for filling to be completed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1249"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1275"/>
         <source>Please wait for draining to be completed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1256"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1276"/>
+        <source>Rotary valve is heating, please wait for about 30 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1283"/>
         <source>Reagents needed for this program are expired, please replace the expired ones with fresh reagents! You can&apos;t operate this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1257"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1284"/>
         <source>Do you want to start the Program with Expired Reagents?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1258"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1285"/>
         <source>Please enter the new-added cassette number:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1260"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1287"/>
         <source>Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1250"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1277"/>
         <source>Please take out your specimen!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1251"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1278"/>
         <source>The retort is contaminated, please lock the retort and select Cleaning Program to run!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1252"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1279"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1253"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1280"/>
         <source>Program &quot;%1&quot; is completed successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1254"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1281"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1255"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1282"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1259"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1286"/>
         <source>Did you add new cassetts?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1239"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1265"/>
         <source>Please re-set the End Date&amp;Time of the current selected program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1237"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1263"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1238"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1264"/>
         <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3633,11 +3638,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="73"/>
-        <source>365</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="98"/>
         <source>Active carbon filter [Days]</source>
         <translation type="unfinished"></translation>
@@ -3660,16 +3660,6 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="180"/>
         <source>Start Service App</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="150"/>
-        <source>45</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="157"/>
-        <source>60</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

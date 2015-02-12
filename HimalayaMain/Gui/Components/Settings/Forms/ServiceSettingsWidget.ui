@@ -70,7 +70,7 @@
              </size>
             </property>
             <property name="text">
-             <string>365</string>
+             <string notr="true">365</string>
             </property>
            </widget>
           </item>
@@ -147,14 +147,14 @@
             <item>
              <widget class="QLabel" name="labelWarningThreshold">
               <property name="text">
-               <string>45</string>
+               <string notr="true">45</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="labelAlarmThreshold">
               <property name="text">
-               <string>60</string>
+               <string notr="true">60</string>
               </property>
              </widget>
             </item>
