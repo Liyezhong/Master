@@ -198,6 +198,7 @@ void CMainControl::ModifyVentFan(void)
 void CMainControl::OnFinalizeConfiguration(void)
 {
     //save config to file
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CMainControl",
                                            "Do you want to overwrite the configuration of the "
                                            "following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -219,6 +220,7 @@ void CMainControl::CurrentTabChanged(int Index)
 
 void CMainControl::ConfirmModuleConfiguration()
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CMainControl",
                                            "Main Control Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -369,7 +371,6 @@ void CMainControl::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_MAINCONTROL);
-    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         QString SubModuleName = m_SubModuleNames.at(i);

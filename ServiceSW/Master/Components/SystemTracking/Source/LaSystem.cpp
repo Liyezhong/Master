@@ -217,6 +217,7 @@ void CLaSystem::ModifyFan(void)
 
 void CLaSystem::OnFinalizeConfiguration(void)
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CLaSystem",
                                            "Do you want to overwrite the configuration of the "
                                            "following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -238,6 +239,7 @@ void CLaSystem::CurrentTabChanged(int Index)
 
 void CLaSystem::ConfirmModuleConfiguration()
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CLaSystem",
                                            "L&A System Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -373,7 +375,6 @@ void CLaSystem::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_LASYSTEM);
-    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

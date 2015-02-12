@@ -196,6 +196,7 @@ void COven::ModifyCoverSensor(void)
 
 void COven::OnFinalizeConfiguration(void)
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::COven",
                                            "Do you want to overwrite the configuration of the "
                                            "following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -222,6 +223,7 @@ void COven::CurrentTabChanged(int Index)
 
 void COven::ConfirmModuleConfiguration()
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::COven",
                                            "Paraffin Oven Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -361,7 +363,6 @@ void COven::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_OVEN);
-    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

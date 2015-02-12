@@ -229,6 +229,8 @@ void CRetort::ModifyLevelSensor(void)
 
 void CRetort::OnFinalizeConfiguration(void)
 {
+    (void)m_SubModuleNames.removeDuplicates();
+
     QString Text = QApplication::translate("SystemTracking::CRetort",
                                            "Do you want to overwrite the configuration of the "
                                            "following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -253,6 +255,8 @@ void CRetort::CurrentTabChanged(int Index)
 
 void CRetort::ConfirmModuleConfiguration()
 {
+    (void)m_SubModuleNames.removeDuplicates();
+
     QString Text = QApplication::translate("SystemTracking::CRetort",
                                            "Retort Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -392,7 +396,6 @@ void CRetort::ResetSubModuleLifeCycle()
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     p_TestCase->SetParameter("Module", MODULE_RETORT);
-    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));

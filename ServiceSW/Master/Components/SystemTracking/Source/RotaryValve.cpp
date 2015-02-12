@@ -231,6 +231,7 @@ void CRotaryValve::ModifyMotor(void)
 
 void CRotaryValve::OnFinalizeConfiguration(void)
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CRotaryValve",
                                            "Do you want to overwrite the configuration of the "
                                            "following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -256,6 +257,7 @@ void CRotaryValve::CurrentTabChanged(int Index)
 
 void CRotaryValve::ConfirmModuleConfiguration()
 {
+    (void)m_SubModuleNames.removeDuplicates();
     QString Text = QApplication::translate("SystemTracking::CRotaryValve",
                                            "Rotary valve Module has been modified. Do you want to overwrite the configuration "
                                            "of the following module or submodules?", 0, QApplication::UnicodeUTF8);
@@ -397,8 +399,6 @@ void CRotaryValve::ResetSubModuleLifeCycle()
     Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-
-    (void)m_SubModuleNames.removeDuplicates();
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         QString SubModuleName = m_SubModuleNames.at(i);
