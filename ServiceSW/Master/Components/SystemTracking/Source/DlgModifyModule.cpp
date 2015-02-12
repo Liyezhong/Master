@@ -124,8 +124,20 @@ void CDlgModifyModule::OnEditSerialNumber(void)
 void CDlgModifyModule::UpdateGUI(void)
 {
     //QDate Date = QDate::fromString(mp_Module->GetDateOfProduction(), Qt::ISODate);
+    QString SerialNumber = "N/A";
+    QString ModuleName = mp_Module->GetModuleName();
+    if (ModuleName == "Retort") {
+        SerialNumber = "041/XXXX";
+    }
+    else if (ModuleName == "Paraffin Oven") {
+        SerialNumber = "042/XXXX";
+    }
+    else if (ModuleName == "Rotary Valve") {
+        SerialNumber = "043/XXXX";
+    }
+
     QDate Date = QDate::currentDate();
-    this->UpdateGUI(mp_Module->GetSerialNumber(), Date);
+    this->UpdateGUI(SerialNumber, Date);
 
     this->SetDialogTitle(mp_Module->GetModuleName());
 }

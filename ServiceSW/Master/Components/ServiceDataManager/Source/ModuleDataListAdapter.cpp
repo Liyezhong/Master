@@ -213,11 +213,11 @@ void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
 
     DataManager::Parameter_t* Param = SubMouleRef->GetParameterInfo(ParameterName);
 
-    if (Param->ParameterUnit == "") {
-        ParameterName = "OperationCycles";
-    }
+    if (Param) {      
+        if (Param->ParameterUnit == "") {
+            ParameterName = "OperationCycles";
+        }
 
-    if (Param) {
         LifeCycle = Param->ParameterValue.toInt();
         if (Type == TIME && SubModule->GetSubModuleName() != "Motor") {
             if (Param->ParameterUnit == "seconds") {

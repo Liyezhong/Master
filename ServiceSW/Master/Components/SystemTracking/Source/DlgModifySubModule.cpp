@@ -179,7 +179,7 @@ void CDlgModifySubModule::UpdateGUI(const QString &SerialNumber,
     }
 
     if (mp_SubModule && mp_SubModule->GetSubModuleName() == "E Box") {
-        mp_Ui->pushSerialNumber->setText(SerialNumber);
+        mp_Ui->pushSerialNumber->setText("040/XXXX");
     }
 
     mp_DayWheel->SetCurrentData(DateOfProduction.day());

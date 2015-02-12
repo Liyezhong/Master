@@ -561,31 +561,11 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 //        mp_Utils->Pause(200);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
-        if ( CurrentTempTop >= MinTargetTemp &&
-             CurrentTempBottom1 >= MinTargetTemp &&
-             CurrentTempBottom2 >= MinTargetTemp )
-        {
-            if ( KeepSeconds > KeepTimeSum ) {
-                OvenStatus = 1;
-                break;
-            }
-            else {
-                KeepSeconds++;
-            }
-        }
-        else {
-            KeepSeconds = 0;
-            if (WaitSec <= 60) {
-                break;
-            }
-        }
-
         TopValue = QString("%1").arg(CurrentTempTop);
         BottomValue1 = QString("%1").arg(CurrentTempBottom1);
         BottomValue2 = QString("%1").arg(CurrentTempBottom2);
 
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
-
 
         (void)Status.insert("UsedTime", UsedTime);
         (void)Status.insert("CurrentTempTop", TopValue);
@@ -604,6 +584,25 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        if ( CurrentTempTop >= MinTargetTemp &&
+             CurrentTempBottom1 >= MinTargetTemp &&
+             CurrentTempBottom2 >= MinTargetTemp )
+        {
+            if ( KeepSeconds > KeepTimeSum ) {
+                OvenStatus = 1;
+                break;
+            }
+            else {
+                KeepSeconds++;
+            }
+        }
+        else {
+            KeepSeconds = 0;
+            if (WaitSec <= 60) {
+                break;
+            }
+        }
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
         mp_Utils->Pause(MSec);
@@ -2128,31 +2127,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
         CurrentTemp = p_TempCtrl->GetTemperature(0);
 
-        if ( CurrentTemp > MinTargetTemp)
-        {
-            if ( KeepSeconds > 60 ) {
-                LAStatus = 1;
-                break;
-            }
-            else {
-                KeepSeconds++;
-#if 0 // need not check
-                if (CurrentTemp > MaxTargetTemp)
-                {
-                    LAStatus = -1;
-                    CurrentValue = QString("%1").arg(CurrentTemp);
-                    break;
-                }
-#endif
-            }
-        }
-        else {
-            if (WaitSec <= 60) {
-                break;
-            }
-            KeepSeconds = 0;
-        }
-
         CurrentValue = QString("%1").arg(CurrentTemp);
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
@@ -2169,6 +2143,23 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        if ( CurrentTemp > MinTargetTemp)
+        {
+            if ( KeepSeconds > 60 ) {
+                LAStatus = 1;
+                break;
+            }
+            else {
+                KeepSeconds++;
+            }
+        }
+        else {
+            if (WaitSec <= 60) {
+                break;
+            }
+            KeepSeconds = 0;
+        }
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
         mp_Utils->Pause(MSec);
@@ -2337,50 +2328,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
-        qDebug()<<"1111111111   "<<CurrentTempSensor1<<"      "<<CurrentTempSensor2;
-
-
-#if 0
-        if ( (SumSec-WaitSec) >= WaitSecSensor1 ) {
-
-            // if less than target temp in duration time (1h), than exit from this process and report fail.
-            if (CurrentTempSensor1 < (TargetTempSensor1+DepartureLow)) {
-                break;
-            }
-
-            if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-                // if more than target temp in 1 minute, then the test pass
-                if (KeepSeconds > 60) {
-                    RVStatus = 1;
-                    break;
-                }
-                else {
-                    KeepSeconds++;
-                }
-            }
-            else {
-                KeepSeconds=0;
-            }
-        }
-#else
-        if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-            // if more than target temp in 1 minute, then the test pass
-            if (KeepSeconds > 120) {
-                RVStatus = 1;
-                break;
-            }
-            else {
-                KeepSeconds++;
-            }
-        }
-        else {
-            KeepSeconds=0;
-            //if (WaitSec <= 60) {
-            if (UsedTimeSec > WaitSec - 60){
-                break;
-            }
-        }
-#endif
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
         //UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
@@ -2403,6 +2350,24 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
         //WaitSec--;
+        if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+            // if more than target temp in 1 minute, then the test pass
+            if (KeepSeconds > 120) {
+                RVStatus = 1;
+                break;
+            }
+            else {
+                KeepSeconds++;
+            }
+        }
+        else {
+            KeepSeconds=0;
+            //if (WaitSec <= 60) {
+            if (UsedTimeSec > WaitSec - 60){
+                break;
+            }
+        }
+
         mp_Utils->Pause(500);
 
 //        int offset = 0;
