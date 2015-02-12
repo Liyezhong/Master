@@ -2688,22 +2688,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
              continue;
          }
 
-         if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-             if ( KeepSeconds > 3 ) {
-                 RVStatus = 1;
-                 break;
-             }
-             else {
-                 KeepSeconds++;
-             }
-         }
-         else {
-             KeepSeconds = 0;
-             if (WaitSec <= 3) {
-                 break;
-             }
-         }
-
          Sensor1Value = QString("%1").arg(CurrentTempSensor1);
          Sensor2Value = QString("%1").arg(CurrentTempSensor2);
          UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
@@ -2723,6 +2707,22 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
 
          emit RefreshTestStatustoMain(TestCaseName, Status);
+
+         if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
+             if ( KeepSeconds > 3 ) {
+                 RVStatus = 1;
+                 break;
+             }
+             else {
+                 KeepSeconds++;
+             }
+         }
+         else {
+             KeepSeconds = 0;
+             if (WaitSec <= 3) {
+                 break;
+             }
+         }
 
          int MSec = QTime().currentTime().msecsTo(EndTime);
          mp_Utils->Pause(MSec);
