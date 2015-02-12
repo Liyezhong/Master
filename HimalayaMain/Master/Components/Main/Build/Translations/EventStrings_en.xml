@@ -693,7 +693,7 @@
    		<string id="67175213" text1="Start processing." text2="" />
    		<string id="67175214" text1="Set pressure to %1." text2="" />
    		<string id="67175215" text1="Finished Step %1." text2="" />
-   		<string id="67175216" text1="Start Step %1(Station %2, %3, %4, %5 %6)." text2="" />
+   		<string id="67175216" text1="Start Step %1(Station %2, %3, %4, %5, %6)." text2="" />
    		<string id="67175217" text1="Finished Program %1." text2="" />
    		<string id="67175218" text1="Start the dry processing." text2="" />
    		<string id="67175219" text1="Finished the dry processing." text2="" />

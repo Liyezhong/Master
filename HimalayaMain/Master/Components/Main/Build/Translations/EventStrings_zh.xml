@@ -250,7 +250,7 @@
 		<string id="19398722" text1="网络层：命令 %1 在 %2 上为空。" text2=""/>
 		<string id="19398723" text1="网络层：命令 %1 在 %2 上不是正在运行的命令。" text2=""/>
 		<string id="19398697" text1="网络层：IP/客户端 %1 在 %2 上的空指针错误。" text2=""/>
-		<string id="17039362" text1="Colorado 已切换到正常状态" text2=""/>
+		<string id="17039362" text1="已切换到正常状态" text2=""/>
 		<string id="19398719" text1="网络服务器设备：客户端 %1：DateTimeSync 无法启动。" text2=""/>
 		<string id="19398717" text1="网络服务器设备：客户端 %1：无法初始化服务器。" text2=""/>
 		<string id="19398718" text1="网络服务器设备：客户端 %1：无法注册协议处理机。" text2=""/>
@@ -284,7 +284,7 @@
 		<string id="17825798" text1="电源故障阶段 1。" text2=""/>
 		<string id="17825799" text1="电源故障！正在关闭系统。" text2=""/>
 		<string id="17825793" text1="若要关闭，再次按下按钮" text2=""/>
-		<string id="17825794" text1="染色程序仍在执行中。若要关闭，再次按下按钮。" text2=""/>
+		<string id="17825794" text1="程序仍在执行中。若要关闭，再次按下按钮。" text2=""/>
 		<string id="19464197" text1="RCManager RCA 已停止工作" text2=""/>
 		<string id="19464193" text1="RCManager 已接收来自 RCA 的命令 %1 及数据 %n。" text2=""/>
 		<string id="19464195" text1="RCManager 远程会话请求已被用户接受。" text2=""/>
@@ -384,7 +384,7 @@
 		<string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
 		<string id="16842772" text1="时间偏移太大，%1 秒。允许值：%2 秒。" text2=""/>
 		<string id="16846858" text1="将日期/时间设为 %1。" text2=""/>
-		<string id="33619971" text1="着色机已启动 (序列号为 %1，型号为 %2)" text2=""/>
+		<string id="33619971" text1="已启动 (序列号为 %1，型号为 %2)" text2=""/>
 		<string id="33947653" text1="导入失败。导入文件的格式错误" text2=""/>
 		<string id="50331760" text1="导入失败。软件版本不匹配，不能导入文件" text2=""/>
 		<string id="50331763" text1="未在要导出文件的系统中找到 USB 设备" text2=""/>
@@ -407,7 +407,7 @@
 		<string id="33619972" text1="登录失败。密码错误。" text2=""/>
 		<string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
 		<string id="33619978" text1="封片机设备已连接" text2=""/>
-		<string id="33619975" text1="着色机 GUI 进程已停止" text2=""/>
+		<string id="33619975" text1="GUI 进程已停止" text2=""/>
 		<string id="50331719" text1="活性炭滤网已过期，请更换新的活性炭滤网！" text2=""/>
 		<string id="50331718" text1="请联系维修工程师进行维修保养！" text2=""/>
 		<string id="33619977" text1="下列站点发生故障：%n。使用故障站点的程序将无法再启动。" text2=""/>
