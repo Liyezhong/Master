@@ -48,6 +48,9 @@
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
    </property>
@@ -74,6 +77,9 @@
    </property>
    <property name="isWrapping" stdset="0">
     <bool>true</bool>
+   </property>
+   <property name="resizeMode">
+    <enum>QListView::Adjust</enum>
    </property>
    <property name="spacing">
     <number>7</number>

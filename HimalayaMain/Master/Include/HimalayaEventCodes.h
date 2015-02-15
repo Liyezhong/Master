@@ -302,7 +302,7 @@ const quint32 STR_DM_REAGENT_Cleaningalcohol	= 50331671;	///< Cleaning alcohol
 
 //const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331717;	///< drain
 
-const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331718;	///< Please call the service engineer for maintenance!
+const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331718;	///< To keep your instrument reliable, please call your Leica Service provider to perform a preventive maintenance.
 
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING	= 50331719;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
 
