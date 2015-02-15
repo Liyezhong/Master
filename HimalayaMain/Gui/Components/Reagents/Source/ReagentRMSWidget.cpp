@@ -402,12 +402,15 @@ void CReagentRMSWidget::OnEdit()
         mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strEditReagent);
         mp_ModifiyReagentRMSDlg->SetButtonType(EDIT_BTN_CLICKED);
 
+        bool bShowCleaningReagent = false;
         Global::RMSOptions_t rmsOption = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
         if (mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup())
         {
             rmsOption = RMSCLEANINGOPTIONS;
+            bShowCleaningReagent = true;
         }
-        mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, rmsOption);
+
+        mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, rmsOption, bShowCleaningReagent);
         mp_ModifiyReagentRMSDlg->show();
     }
 }
