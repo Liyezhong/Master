@@ -136,6 +136,7 @@ public:
     /*!
      *  \brief  by global helper to get the system error status
      *  \param  bSet = set bool value
+     *  \return the system error status.
      */
     /****************************************************************************/
     static bool GetSystemErrorStatus();

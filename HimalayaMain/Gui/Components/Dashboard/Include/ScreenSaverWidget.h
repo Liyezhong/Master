@@ -29,6 +29,15 @@ public:
     explicit ScreenSaverWidget(QWidget *parent = 0);
     ~ScreenSaverWidget();
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of function event
+     *
+     *  \param event = Reimplemented from QWidget::event().
+     *
+     *  \returns true if the event was recognized, otherwise it returns false.
+     */
+    /****************************************************************************/
     virtual bool event ( QEvent * event );
 private:
     Ui::ScreenSaverWidget *ui;       ///<  Definition/Declaration of variable ui

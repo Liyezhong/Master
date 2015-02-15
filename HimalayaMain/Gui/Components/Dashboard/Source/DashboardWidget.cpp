@@ -429,7 +429,7 @@ void CDashboardWidget::ShowWaitFillDrainDialog(bool isFilling)
     else
         mp_WaitFillDrainCompletedMsgDlg->SetText(m_strWaitingForDrainingCompleted);
     mp_WaitFillDrainCompletedMsgDlg->HideAllButtons();
-    mp_WaitFillDrainCompletedMsgDlg->exec();
+    (void)mp_WaitFillDrainCompletedMsgDlg->exec();
     delete mp_WaitFillDrainCompletedMsgDlg;
     mp_WaitFillDrainCompletedMsgDlg = NULL;
 }
@@ -460,7 +460,7 @@ void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
     mp_WaitRotaryValveHeatingPrompt->SetIcon(QMessageBox::Information);
     mp_WaitRotaryValveHeatingPrompt->SetText(m_strWaitRotaryValveHeatingPrompt);
     mp_WaitRotaryValveHeatingPrompt->HideAllButtons();
-    mp_WaitRotaryValveHeatingPrompt->exec();
+    (void)mp_WaitRotaryValveHeatingPrompt->exec();
     delete mp_WaitRotaryValveHeatingPrompt;
     mp_WaitRotaryValveHeatingPrompt = NULL;
 }

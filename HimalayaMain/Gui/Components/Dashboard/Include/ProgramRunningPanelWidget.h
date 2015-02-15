@@ -147,6 +147,7 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot OnUserSetEndDateTime
+         *  \param  dateTime = the set end datetime
          */
         /****************************************************************************/
         void OnUserSetEndDateTime(const QDateTime& dateTime);

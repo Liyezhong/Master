@@ -168,7 +168,7 @@ Qt::ItemFlags CPrecheckProgramModel::flags(const QModelIndex &Index) const
         }
     }
 
-     if (Index.column() == 0) {
+    if (Index.column() == 0) {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
                 || m_CurrentUserRole == MainMenu::CMainWindow::Service)
         {

@@ -348,9 +348,20 @@ public slots:
      */
     /****************************************************************************/
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of SendRequestedFilesToImport
+     *  \param  FileList = requested file list
+     */
+    /****************************************************************************/
     void SendRequestedFilesToImport(QStringList FileList);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SendResetOperationDays
+     *  \param lastMeltPoint = the paraffin bath temprature in last set
+     *  \param currentMeltPoint = the set paraffin bath temprature currently.
+     */
+    /****************************************************************************/
     void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint);
 
 signals:
@@ -804,6 +815,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateProgramTimerStatus
+     *  \param  enabled = enable/disable the timer for prorgram running status.
      */
     /****************************************************************************/
     void UpdateProgramTimerStatus(bool enabled);
