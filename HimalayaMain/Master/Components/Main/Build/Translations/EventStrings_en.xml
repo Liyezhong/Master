@@ -453,7 +453,7 @@
 		<string id="50331775" text1="Change the user role to the standard user." text2=""/>
 		<string id="50331776" text1="Change the user role to Supervisor." text2=""/>
 		<string id="50331777" text1="Change the user role to Service." text2=""/>
-		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
+		<string id="50331718" text1="To keep your instrument reliable, please call your Leica Service provider to perform a preventive maintenance." text2=""/>
 		<string id="50331765" text1="Active carbon filter operation time was reset." text2=""/>
 		<string id="50331764" text1="Machine operation time was reset." text2=""/>
 		<string id="50331766" text1="Pause overtime 5 minutes. Please resume program as soon as possible!" text2=""/>

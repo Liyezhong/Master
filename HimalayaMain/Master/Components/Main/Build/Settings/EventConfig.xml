@@ -919,10 +919,10 @@
 			<Step ID="0" Type="MSG" StringID="50331768" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="50331769" ErrorType="info" AlarmType="" Name="EVENT_WAIT_FILLING_FINISH" EventSource="SCHEDULER" LogLevel="" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331769" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331769" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331770" ErrorType="info" AlarmType="" Name="EVENT_WAIT_DRAINING_FINISH" EventSource="SCHEDULER" LogLevel="" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331770" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331770" ButtonType="" StatusBar=""/>
 		</Event>
 	    <Event Code="" ErrorID="67174401" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SLAVE_BOARD_INITIALIZED_SUCCESSFULLY" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174401" ButtonType="" StatusBar=""/>
