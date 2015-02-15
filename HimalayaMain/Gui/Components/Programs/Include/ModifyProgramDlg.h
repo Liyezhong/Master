@@ -99,6 +99,7 @@ private:
     QString m_strSeclectIcon;       ///<  Definition/Declaration of variable m_strSeclectIcon
     QString m_strLastProgName;       ///< Definition/Declaration of variable m_strPrevProgName
     bool    m_bIconSelected;        ///<  Definition/Declaration of variable m_bIconSelected
+    bool    m_isInSaving;           ///<    Definition/Declaration of variable m_isInSaving
 
 protected:
     void showEvent(QShowEvent *p_Event);

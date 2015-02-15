@@ -78,7 +78,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     m_strEnterValidName(tr("Please enter a valid Program Name")),
     m_strSeclectIcon(tr("Please select a Program Icon")),
     m_strLastProgName(tr("")),
-    m_bIconSelected(false)
+    m_bIconSelected(false),
+    m_isInSaving(false)
 
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -509,7 +510,11 @@ void CModifyProgramDlg::DeleteSelectedStep(DataManager::CProgram* p_CurrentProgr
 /****************************************************************************/
 void CModifyProgramDlg::OnSave()
 {
-    mp_Ui->btnSave->setEnabled(false);
+    if (m_isInSaving)
+        return;
+
+    m_isInSaving = true;
+
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
     }
@@ -522,7 +527,7 @@ void CModifyProgramDlg::OnSave()
     if(mp_Ui->btnPrgName->text() == "--"){
         mp_MessageDlg->SetText(m_strEnterValidName);
         (void) mp_MessageDlg->exec();
-        mp_Ui->btnSave->setEnabled(true);
+        m_isInSaving = false;
         return;
     }
 
@@ -552,7 +557,7 @@ void CModifyProgramDlg::OnSave()
         if (pProgram->GetIcon().isEmpty()) {
             mp_MessageDlg->SetText(m_strSeclectIcon);
             (void) mp_MessageDlg->exec();
-            mp_Ui->btnSave->setEnabled(true);
+            m_isInSaving = false;
             return;
         }
 
@@ -573,6 +578,7 @@ void CModifyProgramDlg::OnSave()
             emit AddProgram(*mp_NewProgram);
         }
     }
+    m_isInSaving = false;
 }
 
 /****************************************************************************/
