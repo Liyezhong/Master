@@ -97,7 +97,7 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
         ui->stepTimeLabel->setVisible(false);
         m_isAborting = true;
         m_curRemainingTimeTotal = m_remainingTimeTotal;
-        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
+        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
    }
    else if (DataManager::PROGRAM_START == ProgramActionType)
    {
@@ -129,7 +129,7 @@ void CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated(const QString&
     m_CurProgramStepIndex = stepIndex;
 
     m_curRemainingTimeTotal = m_remainingTimeTotal = totalRemainingTime;
-    ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
+    ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
 
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(m_curRemainingTimeTotal);
     UpdateDateTime();
@@ -154,7 +154,7 @@ void CProgramRunningPanelWidget::UpdateProgress()
     {
         // to avoid negative number
         if (m_curRemainingTimeTotal>0) {
-            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
+            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, false));
         }
     }
 }
