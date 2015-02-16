@@ -96,7 +96,7 @@ void CLogFilter::AddItem4SwUpdateLog(QString &data)
     data.replace(QString("\n"), QString(" "))
            .replace(QString(", "), QString(";"))
            .replace(QString(","), QString(";"));
-    if (data.size() < 10 || data[10] != ';')
+    if (data.size() <= 10 || data[10] != ';')
         return;
     data[10] = ' ';
     AddItem4Log(data);

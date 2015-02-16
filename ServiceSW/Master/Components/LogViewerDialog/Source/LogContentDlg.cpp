@@ -70,7 +70,7 @@ int CLogContentDlg::InitDialog(QString FilePath)
 {
     //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_LOGCONTENT_DISPLAY_INFO);
     mp_LogFilter = new CLogFilter(FilePath, m_Columns);
-    if (mp_LogFilter->InitData() == false )
+    if (mp_LogFilter->InitData() == false)
     {
         return false;
     }

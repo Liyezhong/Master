@@ -69,7 +69,6 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     (void)connect(mp_Ui->allBtn, SIGNAL(clicked()), this, SLOT(CompleteLogInfo()));
     (void)connect(mp_Ui->errorBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorLog()));
     (void)connect(mp_Ui->infoBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoLog()));
-//    (void)connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
     (void)connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
 
     (void)connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
@@ -209,8 +208,6 @@ void CSystemLogViewerDlg::SetTableModel()
     QStringList HeaderLabels;
 
     mp_Model = mp_LogFilter->GetItemModel(m_EventTypes);
-    if (mp_Model->rowCount() == 0)
-        return ;
 
     HeaderLabels.append(m_strDate);
     HeaderLabels.append(m_strTimeStamp);
@@ -220,9 +217,10 @@ void CSystemLogViewerDlg::SetTableModel()
 
     mp_Model->setHorizontalHeaderLabels(HeaderLabels);
 
+    if (mp_Model->rowCount() == 0)
+        return ;
 
     mp_TableWidget->setModel(mp_Model);
-
 }
 
 void CSystemLogViewerDlg::RetranslateUI()
@@ -347,28 +345,6 @@ void CSystemLogViewerDlg::FilteredInfoLog()
 
     m_EventTypes = (1<<(int)Global::EVTTYPE_INFO);
     SetTableModel();
-}
-
-void CSystemLogViewerDlg::FilteredUndefinedLog()
-{
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
-//                                               Global::tTranslatableStringList() << "Undefined");
-//    mp_Ui->showDetailsBtn->setEnabled(false);
-//    mp_Ui->serviceHelpTextBtn->setEnabled(false);
-//    mp_TableWidget->clearSelection();
-
-//    if (mp_Ui->undefinedBtn->isChecked()) {
-//        m_EventTypes |= (1<<(int)Global::EVTTYPE_UNDEFINED);
-//    }
-//    else {
-//        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_UNDEFINED));
-//    }
-//    if (m_EventTypes == 0) {
-//        mp_TableWidget->setModel(NULL);
-//    }
-//    else {
-//       SetTableModel();
-//    }
 }
 
 void CSystemLogViewerDlg::FilteredWarningLog()
