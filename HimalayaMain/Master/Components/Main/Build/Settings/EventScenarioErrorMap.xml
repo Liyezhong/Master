@@ -1218,9 +1218,6 @@
             <scenario type="single" id="254"/>
             <scenario type="single" id="274"/>
         </error>
-        <error errorid="511040022">
-            <scenario type="single" id="203"/>
-        </error>
     </event>
     <event eventid="500040051">
         <error errorid="512040052">
