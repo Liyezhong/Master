@@ -1803,6 +1803,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
     case PSSM_FILLING:
     case PSSM_DRAINING:
     case PSSM_PROCESSING:
+    case PSSM_PAUSE:
         if (0 == m_PssmAbortingSeq)
         {
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
@@ -1856,6 +1857,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                 }
             }
         }
+        break;
     case PSSM_RV_MOVE_TO_SEAL:
         if (mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
         {
@@ -1891,7 +1893,6 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
     case PSSM_STEP_PROGRAM_FINISH:
     case PSSM_PROGRAM_FINISH:
     case PSSM_INIT:
-    case PSSM_PAUSE:
          mp_SchedulerThreadController->CompleteRsAbort();
         break;
     default:
