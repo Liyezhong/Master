@@ -215,6 +215,16 @@ int CProgramStatusInfor::GetStepID()
     return step;
 }
 
+void CProgramStatusInfor::SetStationID(QString& StationID)
+{
+    SetStatus("StationID", StationID);
+}
+
+QString CProgramStatusInfor::GetStationID()
+{
+    return GetStatus("StationID");
+}
+
 void CProgramStatusInfor::SetErrorFlag(int ErrFlag)
 {
     SetStatus("ErrorFlag", QString::number(ErrFlag));

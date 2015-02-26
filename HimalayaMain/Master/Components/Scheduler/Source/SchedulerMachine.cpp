@@ -2101,6 +2101,7 @@ void CSchedulerStateMachine::OnEnterIdleState()
 {
     EventHandler::StateHandler::Instance().setIdleState();
     EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
+    EventHandler::StateHandler::Instance().setAvailability(false, EVENT_SCHEDULER_IN_ERROR_STATE);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
 }
 

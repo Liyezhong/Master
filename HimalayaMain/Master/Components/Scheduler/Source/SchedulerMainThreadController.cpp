@@ -432,7 +432,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                                                                     GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
                                                                     m_ProgramStatusInfor.GetLastReagentGroup(),
                                                                     m_ProgramStatusInfor.GetStationList(),
-                                                                    bErrorHandlingFailed));
+                                                                    bErrorHandlingFailed, m_ProgramStatusInfor.GetStationID()));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -612,6 +612,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         m_ProgramStatusInfor.SetStationList(m_StationList);
         (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+        m_ProgramStatusInfor.SetStationID(m_CurProgramStepInfo.stationID);
 
         if(m_CurProgramStepIndex != -1)
         {
@@ -1164,6 +1165,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(m_CurProgramStepIndex != -1)
             {
                 m_ProgramStatusInfor.SetStepID(m_CurProgramStepIndex); ///For Powerfailure:store current step id
+                m_ProgramStatusInfor.SetStationID(m_CurProgramStepInfo.stationID);
                 m_SchedulerMachine->NotifyStepProgramFinished();
             }
             else

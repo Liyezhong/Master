@@ -1023,7 +1023,7 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
     }
 }
 
-void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID)
+void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID, const QString& stationID)
 {
     if (!reagentGroupID.isEmpty())
     {
@@ -1033,6 +1033,20 @@ void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t reto
         (void)m_CurrentReagentColorValue.prepend("#");
     }
     mp_DashboardStationRetort->SetContainerStatus(retortStatusType, m_CurrentReagentColorValue);
+
+    if (retortStatusType == DataManager::CONTAINER_STATUS_FULL)
+    {
+        for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+        {
+             Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+             if (item->GetStationItemID()== stationID)
+             {
+                 item->SetContainerStatus(DataManager::CONTAINER_STATUS_EMPTY, "");
+                 break;
+             }
+        }
+    }
+
 }
 
 void CDashboardScene::UpdateRetortLockedStatus(bool locked)

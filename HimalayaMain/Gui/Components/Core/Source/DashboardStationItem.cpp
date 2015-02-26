@@ -551,7 +551,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         fillBottleWidth = m_BottleBoundingRectWidth - 12;  // Manual Pixel Calculation
         fillBottleHeight = m_BottleBoundingRectHeight - m_BottleCoverHeight;  // Manual Pixel Calculation
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
-                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_EMPTY)
         {
             fillBottleHeight = m_CurrentBoundingRectReagentHeight;
         }

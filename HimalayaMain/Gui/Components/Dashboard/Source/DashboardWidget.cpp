@@ -491,7 +491,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
         m_ProgramStatus = Undefined_ProgramStatus;
         Core::CGlobalHelper::SetProgramPaused(false);
         //represent the retort as contaminated status
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
         m_IsWaitingCleaningProgram = true;
         //only show Cleaning program in the favorite panel
         emit AddItemsToFavoritePanel(true);
@@ -539,7 +539,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             if (mp_MessageDlg->exec())
             {
                 //represent the retort as contaminated status
-                ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID);
+                ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
 
                 mp_MessageDlg->SetText(m_strRetortContaminated);
                 mp_MessageDlg->SetButtonText(1, CommonString::strOK);
@@ -1128,7 +1128,7 @@ void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryF
     QString scenarioID = QString::number(cmd.GetScenario());
     if ('4' == scenarioID.at(scenarioID.count() - 1))
     {
-        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_FULL, cmd.GetLastReagentGroupID());
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_FULL, cmd.GetLastReagentGroupID(), cmd.GetStationID());
     }
 }
 

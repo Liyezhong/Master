@@ -96,11 +96,11 @@ public:
      *
      *  \param retortStatusType = DataManager::ContainerStatusType_t type parameter
      *  \param reagentGroupID = reagent Group ID
-     *
+     *  \param stationID = station ID
      *  \return from UpdateRetortStatus
      */
     /****************************************************************************/
-    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID);
+    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType, const QString& reagentGroupID, const QString& stationID);
     static QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
     static QString m_strYes;          ///<  Definition/Declaration of variable m_strYes
     static QString m_strCancel;       ///<   Definition/Declaration of variable m_strCancel
