@@ -1269,7 +1269,7 @@ void CDashboardWidget::RetranslateUI()
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue protect processing is done successfully, would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
-    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover is open, please close it then click OK button.\"OK\"", 0, QApplication::UnicodeUTF8);
+    m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover is open, please close it then click OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForDrainingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for draining to be completed.", 0, QApplication::UnicodeUTF8);
