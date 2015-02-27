@@ -2685,6 +2685,10 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         //cheack safe reagent
         whichStep = WhichStepHasNoSafeReagent(curProgramID);
     }
+    else
+    {
+        m_StationList.clear();
+    }
 
     m_ProcessCassetteCount = 0;
     m_CurrentBottlePosition.ReagentGrpId = "";

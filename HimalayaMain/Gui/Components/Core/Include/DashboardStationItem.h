@@ -189,6 +189,13 @@ public:
     void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus, const QString& reagentGroupID = "");
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function GetContainerStatus
+     *  \return from GetContainerStatus
+     */
+    /****************************************************************************/
+    DataManager::ContainerStatusType_t GetContainerStatus();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function SetContainerRetortLockedStatus
      *
      *  \param locked = bool type parameter
