@@ -176,6 +176,7 @@ const quint32 EVENT_SCHEDULER_FOR_WARNING_FLAG = SCHEDULER_BASE_ID + 0x0334; ///
 const quint32 EVENT_SCHEDULER_UNKNOW_ERROR = SCHEDULER_BASE_ID + 0x0335; ///< Filter the unknown error, event id %1, scenario %2.
 const quint32 EVENT_SCHEDULER_FILLING_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x0336; ///< Filling successfully.
 const quint32 EVENT_SCHEDULER_DRAINING_SUCCESSFULLY = SCHEDULER_BASE_ID + 0x0337; ///< Draining successfully.
+const quint32 Event_SCHEDULER_COOLING_DOWN = SCHEDULER_BASE_ID + 0x0338; ///< Start cooling down.
 
 /// strings
 const quint32 STR_SCHEDULER_PRECHECK = SCHEDULER_BASE_ID + 0x0400; ///< Prechecking

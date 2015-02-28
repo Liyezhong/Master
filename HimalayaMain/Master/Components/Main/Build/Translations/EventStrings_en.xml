@@ -701,6 +701,7 @@
    		<string id="67175221" text1="Filter the unknown error, event id %1, scenario %2." text2="" />
    		<string id="67175222" text1="Filling successfully." text2="" />
    		<string id="67175223" text1="Draining successfully." text2="" />
+   		<string id="67175224" text1="Start cooling down." text2="" />
         <string id="67175424" text1="prechecking" text2=""/>
         <string id="67175425" text1="drying process" text2=""/>
         <string id="67175936" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>

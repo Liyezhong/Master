@@ -88,6 +88,7 @@ const qint64 TIME_FOR_FIX_TIME = 195;    ///< seconds for fix time
 #define TIME_FOR_MOVE_TUBE                    5      ///< seconds for move tube
 #define TIME_FOR_DRAIN                        60     ///< seconds for draing
 #define TIME_FOR_MOVE_NEXT_TUBE               8      ///< seconds for move next tube
+#define TIME_FOR_COOLING_DOWN                 1200   ///< seconds for cooling down
 
 /****************************************************************************/
 /*!
@@ -246,7 +247,9 @@ typedef enum
     CDS_VACUUM,
     CDS_WAIT_HIT_PPRESSURE,
     CDS_WAITING_DRY,
-    CDS_STOP_HEATING_VACUUM,
+    CDS_STOP_VACUUM,
+    CDS_STOP_HEATING,
+    CDS_WAIT_COOLDWON,
     CDS_SUCCESS,
     CDS_ERROR
 }DryStepsStateMachine;

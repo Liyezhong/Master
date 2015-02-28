@@ -206,6 +206,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(this, OnInteractStart(), ui->containerPanelWidget, OnInteractStart());
 
     CONNECTSIGNALSIGNAL(this, UpdateProgram(DataManager::CProgram&), ui->programPanelWidget, UpdateProgram(DataManager::CProgram&));
+
+    CONNECTSIGNALSLOT(mp_DataConnector, CoolingDown(), this, OnCoolingDown());
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -469,6 +471,22 @@ void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
 {
     if (mp_WaitRotaryValveHeatingPrompt)
         mp_WaitRotaryValveHeatingPrompt->accept();
+}
+
+void CDashboardWidget::OnCoolingDown()
+{
+    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
+    pMessageDlg->SetIcon(QMessageBox::Information);
+    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
+    pMessageDlg->SetText(m_strCoolingDown);
+    pMessageDlg->SetButtonText(1, CommonString::strOK);
+    pMessageDlg->HideButtons();
+    if (pMessageDlg->exec())
+    {
+        delete pMessageDlg;
+        return;
+    }
+    delete pMessageDlg;
 }
 
 void CDashboardWidget::OnProgramBeginAbort()
@@ -1285,6 +1303,7 @@ void CDashboardWidget::RetranslateUI()
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
+    m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature too high, please waiting some minutes let it cooling down before next program.", 0, QApplication::UnicodeUTF8);
     QString strTemp = QString("Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).") +
     QString("Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.") +
     QString("Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin protocol temperature! ") +

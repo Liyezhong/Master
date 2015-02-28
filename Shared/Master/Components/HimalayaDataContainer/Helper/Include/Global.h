@@ -114,7 +114,8 @@ typedef enum  {
         PAUSE_WAITING_FOR_DRAINING,
         DISMISS_WAITING_FOR_DRAINING,
         WAIT_ROTARY_VALVE_HEATING_PROMPT,
-        DISMISS_ROTARY_VALVE_HEATING_PROMPT
+        DISMISS_ROTARY_VALVE_HEATING_PROMPT,
+        PROGRAM_COOLING_DWON
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!

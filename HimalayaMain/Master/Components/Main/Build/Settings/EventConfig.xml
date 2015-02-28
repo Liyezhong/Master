@@ -1320,5 +1320,8 @@
 	    <Event Code="" ErrorID="67175223" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_DRAINING_SUCCESSFULLY" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175223" ButtonType="" StatusBar=""/>
 	    </Event>
+	    <Event Code="" ErrorID="67175224" ErrorType="INFO" AlarmType="No" Name="Event_SCHEDULER_COOLING_DOWN" LogLevel="High" UserLog="TRUE">
+	     <Step ID="0" Type="MSG" StringID="67175224" ButtonType="" StatusBar=""/>
+	    </Event>
 	</Source>
 </EventConfigure>

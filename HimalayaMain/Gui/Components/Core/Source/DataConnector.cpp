@@ -1860,7 +1860,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit DismissRotaryValveHeatingPrompt();
         }
         break;
-
+        case DataManager::PROGRAM_COOLING_DWON:
+        {
+            emit CoolingDown();
+        }
+        break;
 
         default:
         {

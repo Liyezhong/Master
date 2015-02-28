@@ -845,6 +845,12 @@ signals:
      */
     /****************************************************************************/
     void DismissRotaryValveHeatingPrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CoolingDown
+     */
+    /****************************************************************************/
+    void CoolingDown();
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);

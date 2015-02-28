@@ -195,6 +195,7 @@ private:
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QString m_strWaitRotaryValveHeatingPrompt;
+    QString m_strCoolingDown;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
     bool m_IsWaitingCleaningProgram;
@@ -324,6 +325,12 @@ private slots:
      */
     /****************************************************************************/
     void OnDismissRotaryValveHeatingPrompt();
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of OnCoolingDown
+     */
+    /****************************************************************************/
+    void OnCoolingDown();
 
     /****************************************************************************/
     /*!
