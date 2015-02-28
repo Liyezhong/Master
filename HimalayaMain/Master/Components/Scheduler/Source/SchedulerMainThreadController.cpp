@@ -429,7 +429,7 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
                         new MsgClasses::CmdRecoveryFromPowerFailure(5000,m_ProgramStatusInfor.GetProgramId(),
                                                                     m_ProgramStatusInfor.GetStepID(),
                                                                     m_ProgramStatusInfor.GetScenario(),
-                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId()),
+                                                                    GetLeftProgramStepsNeededTime(m_ProgramStatusInfor.GetProgramId(), m_ProgramStatusInfor.GetStepID()),
                                                                     m_ProgramStatusInfor.GetLastReagentGroup(),
                                                                     m_ProgramStatusInfor.GetStationList(),
                                                                     bErrorHandlingFailed, m_ProgramStatusInfor.GetStationID()));
@@ -2370,7 +2370,7 @@ quint32 SchedulerMainThreadController::GetPreTestTime()
     return preTesttTime;
 }
 
-quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
+quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int BeginProgramStepID)
 {
     quint32 leftTime = 0;
 
@@ -2418,7 +2418,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         CleaningKnowonTime += TIME_FOR_PRESSURE_CHECK;
         CleaningKnowonTime += TIME_FOR_DRAIN;
     }
-    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
+    for (int i = BeginProgramStepID; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();

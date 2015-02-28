@@ -452,11 +452,12 @@ typedef struct
           *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
           *
           *  \param ProgramID = const QString type parameter
+          *  \param BeginProgramStepID = int type  default parameter
           *
           *  \return from GetLeftProgramStepsNeededTime
           */
          /****************************************************************************/
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
+         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int BeginProgramStepID = 0);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime

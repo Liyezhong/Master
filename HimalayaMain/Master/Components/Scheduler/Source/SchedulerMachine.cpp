@@ -1737,7 +1737,7 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
             mp_SchedulerThreadController->MoveRV(SEAL_POS);
             startReq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
+        else if(mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
         {
             startReq = 0;
             m_RsMoveToPSeal = REALSE_PRESSRE;
