@@ -337,7 +337,7 @@ void CTestSettings::utTestSettingsWidget() {
     sysSetupWgt->RetranslateUI();
     sysSetupWgt->ResetButtons();
     sysSetupWgt->changeEvent(new QEvent(QEvent::None));
-    sysSetupWgt->showEvent(new QShowEvent);
+    //sysSetupWgt->showEvent(new QShowEvent);
     sysSetupWgt->OnProcessStateChanged();
     sysSetupWgt->OnUserRoleChanged();
     //sysSetupWgt->OnApply();
