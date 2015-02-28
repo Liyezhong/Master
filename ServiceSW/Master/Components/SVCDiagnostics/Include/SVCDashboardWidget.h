@@ -160,7 +160,7 @@ public slots:
      *  \iparam Current   = The value of oven Current
      */
     /****************************************************************************/
-    void UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current);
+    void UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, quint16 Current);
 
     /****************************************************************************/
     /*!
@@ -171,7 +171,7 @@ public slots:
      *  \iparam Current     = The value of Retort current
      */
     /****************************************************************************/
-    void UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current);
+    void UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, quint16 Current);
 
     /****************************************************************************/
     /*!
@@ -183,7 +183,7 @@ public slots:
      *  \iparam RVCurrent  = rotary valve Current
      */
     /****************************************************************************/
-    void UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent);
+    void UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, quint16 RVCurrent);
 
     /****************************************************************************/
     /*!
@@ -192,7 +192,7 @@ public slots:
      *  \iparam Current = Air heating tube Current
      */
     /****************************************************************************/
-    void UpdateAirHeatingTubeLabel(qreal Temp, qreal Current);
+    void UpdateAirHeatingTubeLabel(qreal Temp, quint16 Current);
 
     /****************************************************************************/
     /*!
@@ -201,7 +201,7 @@ public slots:
      *  \iparam Current = Liquid heating tube Current
      */
     /****************************************************************************/
-    void UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current);
+    void UpdateLiquidHeatingTubeLabel(qreal Temp, quint16 Current);
 
     /****************************************************************************/
     /*!

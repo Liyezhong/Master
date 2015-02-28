@@ -788,7 +788,7 @@ void CSVCDashboardWidget::UpdatePartStatus()
     mp_Pump->SetStatus(p_DevProc->PumpGetStatus() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
 }
 
-void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, qreal Current)
+void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, quint16 Current)
 {
     mp_OvenTemp1->setText(QString().sprintf("Oven1:%.2f\260C", OvenTemp1));
     mp_OvenTemp2->setText(QString().sprintf("Oven2:%.2f\260C", OvenTemp2));
@@ -796,7 +796,7 @@ void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qrea
     mp_OvenCurrent->setText(QString().sprintf("Current:%dmA", Current));
 }
 
-void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, qreal Current)
+void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2, qreal RetortTemp3, quint16 Current)
 {
     mp_RetortTemp1->setText(QString().sprintf("Retort1:%.2f\260C", RetortTemp1));
     mp_RetortTemp2->setText(QString().sprintf("Retort2:%.2f\260C", RetortTemp2));
@@ -804,7 +804,7 @@ void CSVCDashboardWidget::UpdateRetortLabel(qreal RetortTemp1, qreal RetortTemp2
     mp_RetortCurrent->setText(QString().sprintf("Current:%dmA", Current));
 }
 
-void CSVCDashboardWidget::UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, qreal RVCurrent)
+void CSVCDashboardWidget::UpdateRotaryValveLabel(bool RVTubeFlag, qreal RVPosition, qreal RVTemp1, qreal RVTemp2, quint16 RVCurrent)
 {
     QString PositionStr = PostionToStr(RVTubeFlag, RVPosition);
 
@@ -870,13 +870,13 @@ void CSVCDashboardWidget::ShowFailedDlg(const QString& Title, const QString& Tex
     mp_MsgDlg->ShowMessage(Title, Text, Diagnostics::RETURN_ERR_FAIL);
 }
 
-void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, qreal Current)
+void CSVCDashboardWidget::UpdateAirHeatingTubeLabel(qreal Temp, quint16 Current)
 {
     mp_AirHeatingTubeTemp->setText(QString().sprintf("Temp:%.2f\260C", Temp));
     mp_AirHeatingTubeCurrent->setText(QString().sprintf("Current:%dmA", Current));
 }
 
-void CSVCDashboardWidget::UpdateLiquidHeatingTubeLabel(qreal Temp, qreal Current)
+void CSVCDashboardWidget::UpdateLiquidHeatingTubeLabel(qreal Temp, quint16 Current)
 {
     mp_HeatingTubeTemp->setText(QString().sprintf("Temp:%.2f\260C", Temp));
     mp_HeatingTubeCurrent->setText(QString().sprintf("Current:%dmA", Current));
