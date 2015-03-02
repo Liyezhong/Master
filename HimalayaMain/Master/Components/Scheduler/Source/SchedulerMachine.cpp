@@ -27,6 +27,7 @@
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
@@ -1734,10 +1735,12 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     case MOVE_SEALPOSITION:
         if(0 == startReq)
         {
-            mp_SchedulerThreadController->MoveRV(SEAL_POS);
+            CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
+            CmdMvRV->SetRVPosition(DeviceControl::RV_SEAL_16);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
             startReq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
+        else if(DeviceControl::RV_SEAL_16 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
         {
             startReq = 0;
             m_RsMoveToPSeal = REALSE_PRESSRE;
