@@ -69,7 +69,7 @@ CViewHistoryDiffDlg::CViewHistoryDiffDlg(QWidget *p_Parent)
     mp_Ui->moduleListWidget->SetContent(mp_TreeView);
     mp_Ui->moduleListDiffWidget->SetContent(mp_TreeViewRight);   
 
-    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg = new MainMenu::CMessageDlg(p_Parent);
     mp_MessageDlg->setModal(true);
 
     CONNECTSIGNALSLOTGUI(mp_Ui->closeBtn, clicked(), this, CloseDialog());

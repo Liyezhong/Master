@@ -64,7 +64,7 @@ CViewHistory::CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget 
     mp_MessageDialog = new MainMenu::CMessageDlg(this);
     mp_Ui->showDiffBtn->setEnabled(false);
 
-    CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOTGUI(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOTGUI(mp_Ui->showDetailsBtn, clicked(), this, ExecDialog());
     CONNECTSIGNALSLOTGUI(mp_Ui->showDiffBtn, clicked(), this, ExecDiffDialog());
 }
@@ -108,19 +108,25 @@ void CViewHistory::SelectionChanged(QModelIndex Index)
         m_IndexofLast = Index;
     }
 
-    if (m_SelectedRowValues.count() == 2)
+    if (m_SelectedRowValues.count() == 2) {
         m_IndexofLast = Index;
+    }
 
     QCoreApplication::processEvents(QEventLoop::AllEvents);
     if (m_SelectedRowValues.count() > 2) {
-        mp_TableWidget->selectionModel()->setCurrentIndex(m_IndexofFirst, QItemSelectionModel::Toggle);
+        mp_TableWidget->selectionModel()->clear();
+        mp_TableWidget->selectionModel()->setCurrentIndex(m_IndexofFirst, QItemSelectionModel::Deselect);
+        mp_TableWidget->selectionModel()->setCurrentIndex(m_IndexofLast, QItemSelectionModel::Select);
+        mp_TableWidget->selectionModel()->setCurrentIndex(Index, QItemSelectionModel::Select);
+
         m_IndexofFirst = m_IndexofLast;
         m_IndexofLast = Index;
-        m_SelectedRowValues.removeAt(0);
+        m_SelectedRowValues.removeFirst();
     }
 
-    if (m_SelectedRowValues.count() == 0)
+    if (m_SelectedRowValues.count() == 0) {
         mp_Ui->showDiffBtn->setEnabled(false);
+    }
 
     if (m_SelectedRowValues.count() == 1) {
         mp_Ui->showDetailsBtn->setEnabled(true);
