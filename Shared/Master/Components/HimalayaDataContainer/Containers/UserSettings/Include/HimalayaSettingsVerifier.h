@@ -30,7 +30,8 @@
 namespace DataManager {
 
 const int MIN_SOUND_LEVEL_ERROR = 2; ///< Minimum value for error sound level
-const int MIN_PERIODIC_TIME     = 1; ///< Minimum value for the periodic time
+//const int MIN_PERIODIC_TIME     = 1; ///< Minimum value for the periodic time
+const int MIN_PERIODIC_TIME     = 0; ///< Minimum value for the periodic time
 const int MAX_PERIODIC_TIME     = 600; ///< Maximum value for the periodic time
 const int MIN_PARAFFIN_TEMP     = 50; ///< Minimum value for paraffin bath temp.
 const int MAX_PARAFFIN_TEMP     = 70; ///< Maximum value for paraffin bath temp.
