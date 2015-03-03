@@ -799,9 +799,9 @@
         <string id="67176195" text1="Error ID %1!  Sealing failed in processing scenario." text2=""/>
         <string id="67176196" text1="Error ID %1!  Wax bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
         <string id="67176197" text1="Error ID %1! AC Voltage is not stable." text2=""/>
-        <string id="67176198" text1="Bottle check failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176198" text1="Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176199" text1="Bottle %1 seems to be insufficent filled. Please check bottle according to user manual. After that press Retry button." text2=""/>
-        <string id="67176200" text1="Draining of Retort has failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176200" text1="Draining of Retort has failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176201" text1="Error ID %1! Please call service!" text2=""/>
         <string id="67176202" text1="Error ID %1! Exhaust system failed! Please inform service!" text2=""/>
         <string id="67176203" text1="Error ID %1! Please call service!" text2=""/>
@@ -811,7 +811,7 @@
         <string id="67176207" text1="Local alarm system not connected! Please connect the device with local alarm system" text2=""/>
         <string id="67176208" text1="Please close paraffin oven cover!" text2=""/>
         <string id="67176209" text1="Please close the retort lid and confirm Retry button." text2=""/>
-        <string id="67176210" text1="Pressure test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
+        <string id="67176210" text1="Pressure test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
         <string id="67176212" text1="The station no %1 is filled insufficent! Please check filling level, correct them and then press Retry button." text2=""/>
         <string id="67176213" text1="Vacuum test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
