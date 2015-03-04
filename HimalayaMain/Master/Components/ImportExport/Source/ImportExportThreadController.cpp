@@ -950,6 +950,7 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
 
     // update the rollback checksum value
     QProcess Md5sumProcess;
+    QProcess RollbackProcess;
     Md5sumProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
                         + QString("/EBox-Utils.sh") , QStringList() <<
                         QString("update_md5sum_for_settings"));
@@ -959,7 +960,14 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
                         + QString("/EBox-Utils.sh") , QStringList() <<
                         QString("update_settings_to_rollback"));
     (void)Md5sumProcess.waitForFinished();
-    (void)QProcess::startDetached("sync &"); //WARNING: ubifs' f**k perf, sigh...
+
+    // need to upate rollback files;
+    RollbackProcess.start(Global::SystemPaths::Instance().GetScriptsPath()
+                    + QString("/EBox-Utils.sh") , QStringList() <<
+                    QString("update_settings_to_rollback"));
+    (void)RollbackProcess.waitForFinished();
+
+    (void)QProcess::startDetached("sync &");
     // emit the thread finished flag
     emit ThreadFinished(true, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
 
