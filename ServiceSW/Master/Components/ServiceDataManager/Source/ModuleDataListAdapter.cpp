@@ -201,7 +201,7 @@ void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
         return;
     }
 
-    int LifeCycle = 0;
+    qreal LifeCycle(0);
     QString ParameterName;
 
     if (Type == TIME) {
@@ -218,7 +218,7 @@ void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
             ParameterName = "OperationCycles";
         }
 
-        LifeCycle = Param->ParameterValue.toInt();
+        LifeCycle = Param->ParameterValue.toDouble();
         if (Type == TIME && SubModule->GetSubModuleName() != "Motor") {
             if (Param->ParameterUnit == "seconds") {
                 LifeCycle = LifeCycle/(60*60); //to hours
@@ -229,31 +229,39 @@ void CModuleDataListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
         }
     }
 
-    (void)SubModule->UpdateParameterInfo(ParameterName, QString::number(LifeCycle));
+    QString ParamValue;
+    if (ParameterName == "OperationTime") {
+        ParamValue = QString().sprintf("%.1f", LifeCycle);
+    }
+    else {
+        ParamValue = QString::number(LifeCycle);
+    }
+
+    (void)SubModule->UpdateParameterInfo(ParameterName, ParamValue);
 }
 
-void CModuleDataListAdapter::SetSubModuleLifeCycle(CSubModule *SubModule, int LifeCycle, LifeCycleType Type)
+void CModuleDataListAdapter::SetSubModuleLifeCycle(CSubModule *SubModule, qreal LifeCycle, LifeCycleType Type)
 {
     if (SubModule == NULL) {
         qDebug()<<"CModuleDateListAdapter::SetSubModuleLifeCycle-> invalid submoudle";
         return;
     }
     if (Type == TIME) {
-        (void)SubModule->UpdateParameterInfo("OperationTime", QString::number(LifeCycle));
+        (void)SubModule->UpdateParameterInfo("OperationTime", QString().sprintf("%.1f", LifeCycle));
     }
     else {
         (void)SubModule->UpdateParameterInfo("OperationCycles", QString::number(LifeCycle));
     }
 }
 
-int CModuleDataListAdapter::GetLAPressureCycle(QString ParamName, LifeCycleType Type)
+qreal CModuleDataListAdapter::GetLAPressureCycle(QString ParamName, LifeCycleType Type)
 {
-    int Cycle = 0;
+    qreal Cycle(0);
     DataManager::CSubModule* PressureRef = mp_LaRef->GetSubModuleInfo("pressurectrl");
     DataManager::Parameter_t* Param = PressureRef->GetParameterInfo(ParamName);
 
     if (Param) {
-        Cycle = Param->ParameterValue.toInt();
+        Cycle = Param->ParameterValue.toDouble();
 
         if (Type == TIME) {
             if (Param->ParameterUnit == "seconds") {

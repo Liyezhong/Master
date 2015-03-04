@@ -124,8 +124,16 @@ private:
      * \!param Type = the type of life cycle
      */
     /****************************************************************************/
-    void SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule, int LifeCycle, LifeCycleType Type);
-    int GetLAPressureCycle(QString ParamName, LifeCycleType Type);
+    void SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule, qreal LifeCycle, LifeCycleType Type);
+
+    /****************************************************************************/
+    /**
+     * \brief Get LA pressure cycle number.
+     * \!param ParamName = name of param
+     * \!param Type = the type of life cycle
+     */
+    /****************************************************************************/
+    qreal GetLAPressureCycle(QString ParamName, LifeCycleType Type);
 
     ServiceDataManager::CModuleDataList* mp_ModuleList;        //!< Store module list data
     DataManager::CInstrumentHistory* mp_InstrumentHistoryRef;  //!< Store module list ref data

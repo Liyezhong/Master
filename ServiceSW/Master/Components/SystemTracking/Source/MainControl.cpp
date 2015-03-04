@@ -469,10 +469,10 @@ QString CMainControl::GetOperationTime2Second(ServiceDataManager::CSubModule* Su
         ServiceDataManager::Parameter_t* Param = SubModule->GetParameterInfo("OperationTime");
         if (Param) {
             if (Param->ParameterUnit == "hours") {
-                return QString::number(Param->ParameterValue.toInt()*60*60);
+                return QString::number(Param->ParameterValue.toDouble()*60*60);
             }
             else if (Param->ParameterUnit == "minutes") {
-                return QString::number(Param->ParameterValue.toInt()*60);
+                return QString::number(Param->ParameterValue.toDouble()*60);
             }
         }
     }

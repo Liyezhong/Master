@@ -24,7 +24,7 @@
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
-#include "ui_StatusConfirmDialog.h"
+#include "DiagnosticsManufacturing/Build/ui_StatusConfirmDialog.h"
 #include <QDebug>
 
 namespace DiagnosticsManufacturing {
