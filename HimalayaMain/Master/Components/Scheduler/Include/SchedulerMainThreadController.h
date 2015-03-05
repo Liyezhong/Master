@@ -1448,16 +1448,23 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function IsWaitingToPause
+         *  \return from bool
          */
         /****************************************************************************/
         bool IsWaitingToPause();
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function SetWaitingToPause
+         *  \param  set - status value
          */
         /****************************************************************************/
         void SetWaitingToPause(bool set);
-
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function DismissPausingMsgDlg
+         */
+        /****************************************************************************/
+        void DismissPausingMsgDlg();
     public slots:
 
         /****************************************************************************/
