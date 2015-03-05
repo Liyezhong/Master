@@ -145,6 +145,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_PowerFailureStep = POWERFAILURE_INIT;
     m_IsWaitHeatingRV = false;
     m_IsSendMsgForWaitHeatRV = false;
+    m_IsErrorStateForHM = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -2976,42 +2977,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    m_IsErrorStateForHM = false;
 
-	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    //LogDebug(strctHWMonitor.toLogString());  //log to event logging file
-    SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString()); // log to Sensor data file
+    HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+    // log to Sensor data file
+    SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString());
     if(StepID.compare("INIT") != 0)
     {
         m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);
-    }
-
-    if("ERROR" == StepID)
-    {
-        mp_HeatingStrategy->SetHeatingStrategyScenario(0);
-    }
-    // Run Heating Strategy
-    if ("ERROR" != StepID && Scenario > 2)
-    {
-        DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            if(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME == retCode)
-            {
-                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::DISMISS_ROTARY_VALVE_HEATING_PROMPT));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            }
-            LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-            SendOutErrMsg(retCode);
-        }
-    }
-
-    // Monitor the sensors' current
-    if ("ERROR" != StepID && 0 != Scenario)
-    {
-        m_CurrentScenario = Scenario; //Scenario for Run or Idle state
-        this->CheckSlaveSensorCurrentOverRange(Scenario);
     }
 
     // Monitor local and remote alarm
@@ -3029,62 +3002,46 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         }
     }
 
-
-    // Monitor Slave module's voltage and current
-    if ("ERROR" != StepID && 0 != Scenario)
+    if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
     {
-        // For voltage related
-        quint16 slave3UpperLimit = (m_SlaveAttrList[0].Voltagerated24VDC + m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
-        quint16 slave3LowerLimit = (m_SlaveAttrList[0].Voltagerated24VDC - m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
-        if (strctHWMonitor.Slave3Voltage < slave3LowerLimit || strctHWMonitor.Slave3Voltage > slave3UpperLimit)
+        if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
         {
-            LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
-            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE);
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
-
-        quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
-        quint16 slave5LowerLimit =  (m_SlaveAttrList[1].Voltagerated24VDC - m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
-        if (strctHWMonitor.Slave5Voltage < slave5LowerLimit || strctHWMonitor.Slave5Voltage > slave5UpperLimit)
+        if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
         {
-            LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
-            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE);
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
-
-        quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
-        quint16 slave15LowerLimit = (m_SlaveAttrList[2].Voltagerated24VDC - m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
-        if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
-        {
-            LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
-            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
-        }
-
-        // For current related
-        if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
-        {
-            LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
-            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
-        }
-        if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
-        {
-            LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
-            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
-        }
-
+        m_OvenLidStatus = strctHWMonitor.RetortLockStatus;
     }
 
-    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
-	{
-        m_PressureAL = strctHWMonitor.PressureAL;
-        if ("ERROR" != StepID && "IDLE" != StepID && 0 != Scenario)
-        {
-            if(qAbs(m_PressureAL) >40.0 )
-            {
-                LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
-                SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE);
-            }
-        }
-	}
+    if("ERROR" == StepID)
+    {
+        m_IsErrorStateForHM = true;
+        mp_HeatingStrategy->SetHeatingStrategyScenario(0);
+    }
 
+    // Monitor the sensors' current
+    if ("ERROR" != StepID && 0 != Scenario)
+    {
+        m_CurrentScenario = Scenario;
+        this->CheckSlaveAllSensor(Scenario, strctHWMonitor);
+    }
+
+    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
+    {
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+    }
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
+    {
+        m_PressureAL = strctHWMonitor.PressureAL;
+    }
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALLevelSensor))
 	{
         m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;
@@ -3104,16 +3061,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV2))
 	{
         m_TempRV2 = strctHWMonitor.TempRV2;
-        if (200 == Scenario)
-        {
-#if 0
-            if (m_TempRV2 < 40)
-            {
-                LogDebug(QString("The RV(2) temperature is: %1, in scenario:%2").arg(m_TempRV2).arg(Scenario));
-                SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_30DEGREEC_OVERTIME);
-            }
-#endif
-        }
 	}
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
 	{
@@ -3130,113 +3077,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenTop))
 	{
         m_TempOvenTop = strctHWMonitor.TempOvenTop;
-    }
-    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
-    {
-        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
-        if (1 ==  m_OvenLidStatus)
-        {
-            //oven is open
-            if(m_CheckOvenCover)
-            {
-                if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
-                     || (Scenario >= 281 && Scenario <= 297) )
-                {
-                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
-                    m_CheckOvenCover = false;
-                }
-            }
-            if(Scenario >= 271 && Scenario <= 277)
-            {
-                if ("ERROR" != StepID && "IDLE" != StepID)
-                {
-                    ReleasePressure();
-                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
-                }
-            }
-        }
-    }
-    if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
-	{
-        if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
-        {
-            if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
-            {
-                // Notify retort lid is opened
-                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-                Q_ASSERT(CmdRetortCoverOpen);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
-#if 0
-                // retort is open, turn on the fan
-                m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
-                SchedulerCommandShPtr_t pResHeatingCmd;
-                PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOnFan");
-                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                (void)pResHeatingCmd->GetResult(retCode);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    SendOutErrMsg(retCode);
-                }
-#endif
-                SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-                if((currentState & 0xF) == SM_BUSY && currentState != PSSM_PAUSE)
-                {
-                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
-                }
-            }
-
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-
-        }
-        if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
-		{
-            if ("ERROR" != StepID && "IDLE" != StepID && m_CurrentStepState != PSSM_PAUSE)
-            {
-#if 0
-                // retort is closed, turn off the fan
-                m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
-                SchedulerCommandShPtr_t pResHeatingCmd;
-                PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOffFan");
-                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-                (void)pResHeatingCmd->GetResult(retCode);
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    SendOutErrMsg(retCode);
-                }
-#endif
-            }
-
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-		}
-        m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
-	}
-
-    //Check No-Signal error for Retort sensors
-    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom1))
-    {
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
-    }
-    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
-    {
-        LogDebug("The RT bottom2 no signal");
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
-    }
-    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTSide))
-    {
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
-    }
-    //the Level Scenario no signal is the same with over range
-    if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
-    {
-        SendOutErrMsg(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
     }
     m_PositionRV = strctHWMonitor.PositionRV;
 }
@@ -4328,9 +4168,27 @@ bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, q
     return true;
 }
 
-void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Scenario)
+void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const HardwareMonitor_t& strctHWMonitor)
 {
-    Q_UNUSED(Scenario);
+    // Run Heating Strategy
+    if (Scenario > 2)
+    {
+        DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            if(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME == retCode)
+            {
+                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::DISMISS_ROTARY_VALVE_HEATING_PROMPT));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            }
+            SendOutErrMsg(retCode);
+            if(m_IsErrorStateForHM)
+                return ;
+        }
+    }
+
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));
     ReportError_t reportError2;
@@ -4362,21 +4220,29 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     {
         LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
     }
     if (reportError2.instanceID != 0)
     {
         LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
     }
     if (reportError3.instanceID != 0 )
     {
         LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
     }
     if (reportError4.instanceID != 0)
     {
         LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
         SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
     }
     if (reportError5.instanceID != 0)
     {
@@ -4397,12 +4263,137 @@ void SchedulerMainThreadController::CheckSlaveSensorCurrentOverRange(quint32 Sce
     {
         LogDebug(QString("Current out of range, Current is: %1").arg(reportError8.errorData));
         SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
+        if(m_IsErrorStateForHM)
+            return ;
     }
-
     if (reportError9.instanceID != 0)
     {
         LogDebug(QString("Current out of range, the current is :%1").arg(reportError9.errorData));
         SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    // For voltage related
+    quint16 slave3UpperLimit = (m_SlaveAttrList[0].Voltagerated24VDC + m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
+    quint16 slave3LowerLimit = (m_SlaveAttrList[0].Voltagerated24VDC - m_SlaveAttrList[0].VoltageTolerance24VDC)*1000;
+    if (strctHWMonitor.Slave3Voltage < slave3LowerLimit || strctHWMonitor.Slave3Voltage > slave3UpperLimit)
+    {
+        LogDebug(QString("slave 3 voltage is: %1").arg(strctHWMonitor.Slave3Voltage));
+        SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    quint16 slave5UpperLimit =  (m_SlaveAttrList[1].Voltagerated24VDC + m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
+    quint16 slave5LowerLimit =  (m_SlaveAttrList[1].Voltagerated24VDC - m_SlaveAttrList[1].VoltageTolerance24VDC)*1000;
+    if (strctHWMonitor.Slave5Voltage < slave5LowerLimit || strctHWMonitor.Slave5Voltage > slave5UpperLimit)
+    {
+        LogDebug(QString("slave 5 voltage is: %1").arg(strctHWMonitor.Slave5Voltage));
+        SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    quint16 slave15UpperLimit = (m_SlaveAttrList[2].Voltagerated24VDC + m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
+    quint16 slave15LowerLimit = (m_SlaveAttrList[2].Voltagerated24VDC - m_SlaveAttrList[2].VoltageTolerance24VDC)*1000;
+    if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
+    {
+        LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
+        SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    // For current related
+    if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
+    {
+        LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
+        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
+    {
+        LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
+        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    //Check No-Signal error for Retort sensors
+    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom1))
+    {
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
+    {
+        LogDebug("The RT bottom2 no signal");
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTSide))
+    {
+        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+    //the Level Scenario no signal is the same with over range
+    if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
+    {
+        SendOutErrMsg(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
+        if(m_IsErrorStateForHM)
+            return ;
+    }
+
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
+    {
+        if(qAbs(strctHWMonitor.PressureAL) > 40.0 )
+        {
+            LogDebug(QString("The pressure in the error case is: %1").arg(strctHWMonitor.PressureAL));
+            SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE);
+            if(m_IsErrorStateForHM)
+                return ;
+        }
+    }
+
+    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE && 1 == strctHWMonitor.OvenLidStatus)
+    {
+        //oven is open
+        if(m_CheckOvenCover)
+        {
+            if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
+                 || (Scenario >= 281 && Scenario <= 297) )
+            {
+                SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
+                m_CheckOvenCover = false;
+            }
+        }
+        if(Scenario >= 271 && Scenario <= 277)
+        {
+            ReleasePressure();
+            SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
+            if(m_IsErrorStateForHM)
+                return ;
+        }
+    }
+    if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
+    {
+        if(1 == strctHWMonitor.RetortLockStatus && Scenario >=200 && Scenario <= 297 && m_CurrentStepState != PSSM_PAUSE)
+        {
+            // Notify retort lid is opened
+            MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+            Q_ASSERT(CmdRetortCoverOpen);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+
+            SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
+            if(m_IsErrorStateForHM)
+                return ;
+        }
     }
 }
 
@@ -4732,6 +4723,7 @@ void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsE
         if(IsErrorMsg)
         {
             m_SchedulerMachine->SendErrorSignal();
+            m_IsErrorStateForHM = true;
         }
     }
 }

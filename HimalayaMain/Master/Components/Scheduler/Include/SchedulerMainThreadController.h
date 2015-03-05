@@ -359,6 +359,7 @@ typedef struct
         PowerFailureStep_t m_PowerFailureStep;                ///< the power failure step
         bool    m_IsWaitHeatingRV;                            ///< wait heating RV
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
+        bool    m_IsErrorStateForHM;                               ///< enter the error state
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -579,7 +580,7 @@ typedef struct
           *  \return void
           */
          /****************************************************************************/
-         void CheckSlaveSensorCurrentOverRange(quint32 Scenario);
+         void CheckSlaveAllSensor(quint32 Scenario, const HardwareMonitor_t& strctHWMonitor);
          /****************************************************************************/
          /*!
           *  \brief Enable pause button
