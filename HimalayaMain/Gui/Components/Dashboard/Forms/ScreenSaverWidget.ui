@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>299</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="autoFillBackground">
@@ -39,19 +39,6 @@
    </property>
    <property name="pixmap">
     <pixmap resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png</pixmap>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnTest">
-   <property name="geometry">
-    <rect>
-     <x>690</x>
-     <y>360</y>
-     <width>102</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Test</string>
    </property>
   </widget>
  </widget>
