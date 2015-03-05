@@ -841,6 +841,8 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
                     if (NumOfSteps < MAX_PROGRAM_STEPS) {
                         mp_Ui->btnNew->setEnabled(true);
                     }
+                    else
+                        mp_Ui->btnNew->setEnabled(false);
                     mp_Ui->btnCancel->setEnabled(true);
                     mp_Ui->btnSave->setEnabled(true);
                     mp_Ui->btnDelete->setEnabled(false);
