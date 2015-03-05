@@ -921,12 +921,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
-                    if (m_bWaitToPause)
-                    {
-                        //dismiss the prompt of waiting for pause
-                        SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                        m_bWaitToPause = false;
-                    }
                     SendOutErrMsg(retCode);
                 }
             }
@@ -1098,6 +1092,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_RV_MOVE_TO_TUBE == stepState)
     {
         m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
+
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPause = true;
+        }
         m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
     }
     else if(PSSM_DRAINING == stepState)
@@ -1139,12 +1139,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                if (m_bWaitToPause)
-                {
-                     //dismiss the prompt of waiting for pause
-                    SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                    m_bWaitToPause = false;
-                }
                 SendOutErrMsg(retCode);
             }
         }
@@ -1193,12 +1187,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else
         {
-            if (m_bWaitToPause)
-            {
-                //dismiss the prompt of waiting for pause
-                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                m_bWaitToPause = false;
-            }
             if("Scheduler::RVReqMoveToRVPosition" == cmdName)
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -4836,5 +4824,11 @@ void SchedulerMainThreadController::SetWaitingToPause(bool set)
 {
     m_bWaitToPause = set;
 }
+
+void SchedulerMainThreadController::DismissPausingMsgDlg()
+{
+     SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+}
+
 
 }

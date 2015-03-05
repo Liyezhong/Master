@@ -194,6 +194,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, InitRVMoveToTubeState());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
@@ -1985,7 +1986,16 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
             //startTime
             mp_SchedulerThreadController->CalculateTheGapTimeAndBufferTime(true, false);
             m_PssmMVTubeSeq = 0;
-            this->NotifyRVMoveToTubeReady();
+            if (mp_SchedulerThreadController->IsWaitingToPause())
+            {
+				mp_SchedulerThreadController->DismissPausingMsgDlg();
+                mp_SchedulerThreadController->SetWaitingToPause(false);
+                emit sigPause();
+            }
+            else
+            {
+                this->NotifyRVMoveToTubeReady();
+            }
         }
         else
         {
