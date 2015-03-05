@@ -585,7 +585,7 @@ void WrapperFmPressureControl::AgitationTimerCB(void)
 #define SUCKING_POOLING_TIME          (400)
 #define SUCKING_SETUP_WARNING_TIME    (120*1000)
 #define SUCKING_MAX_SETUP_TIME        (240*1000)
-#define SUCKING_OVERFLOW_SAMPLE_SIZE    (4) //used to be 4 with old pump
+#define SUCKING_OVERFLOW_SAMPLE_SIZE    (8) //used to be 4 with old pump
 #define SUCKING_OVERFLOW_TOLERANCE      (2)
 #define SUCKING_OVERFLOW_WINDOW_SIZE    (3)
 #define SUCKING_OVERFLOW_THRESHOLD      (10)
