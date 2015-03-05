@@ -176,23 +176,17 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PowerFailureMsg(),
                       this, OnPowerFailureMsg());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, PauseWaitingForFilling(),
-                      this, OnPauseWaitingForFilling());
+    CONNECTSIGNALSLOT(mp_DataConnector, ShowPauseMsgDialog(),
+                      this, OnShowPauseMsgDialog());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, DismissWaitingForFilling(),
-                      this, OnDismissWaitingForFilling());
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissPauseMsgDialog(),
+                      this, OnDismissPauseMsgDialog());
 
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, OnWaitRotaryValveHeatingPrompt());
 
     CONNECTSIGNALSLOT(mp_DataConnector, DismissRotaryValveHeatingPrompt(),
                       this, OnDismissRotaryValveHeatingPrompt());
-
-    CONNECTSIGNALSLOT(mp_DataConnector, PauseWaitingForDraining(),
-                      this, OnPauseWaitingForDraining());
-
-    CONNECTSIGNALSLOT(mp_DataConnector, DismissWaitingForDraining(),
-                      this, OnDismissWaitingForDraining());
 
     CONNECTSIGNALSLOT(this, SwitchToFavoritePanel(),
                       ui->programPanelWidget, SwitchToFavoritePanel());
@@ -422,38 +416,24 @@ void CDashboardWidget::OnPowerFailureMsg()
     delete pMessageDlg;
 }
 
-void CDashboardWidget::ShowWaitFillDrainDialog(bool isFilling)
+
+void CDashboardWidget::OnShowPauseMsgDialog()
 {
-    mp_WaitFillDrainCompletedMsgDlg = new MainMenu::CMessageDlg(this);
-    mp_WaitFillDrainCompletedMsgDlg->SetIcon(QMessageBox::Information);
-    if (isFilling)
-        mp_WaitFillDrainCompletedMsgDlg->SetText(m_strWaitingForFillingCompleted);
-    else
-        mp_WaitFillDrainCompletedMsgDlg->SetText(m_strWaitingForDrainingCompleted);
-    mp_WaitFillDrainCompletedMsgDlg->HideAllButtons();
-    (void)mp_WaitFillDrainCompletedMsgDlg->exec();
-    delete mp_WaitFillDrainCompletedMsgDlg;
-    mp_WaitFillDrainCompletedMsgDlg = NULL;
+    mp_PausingMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_PausingMsgDlg->SetIcon(QMessageBox::Information);
+    mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    mp_PausingMsgDlg->HideAllButtons();
+    (void)mp_PausingMsgDlg->exec();
+    delete mp_PausingMsgDlg;
+    mp_PausingMsgDlg = NULL;
 }
 
-void CDashboardWidget::OnPauseWaitingForFilling()
+void CDashboardWidget::OnDismissPauseMsgDialog()
 {
-    ShowWaitFillDrainDialog(true);
-}
-
-void CDashboardWidget::OnPauseWaitingForDraining()
-{
-    ShowWaitFillDrainDialog(false);
-}
-
-void CDashboardWidget::OnDismissWaitingForFilling()
-{
-    mp_WaitFillDrainCompletedMsgDlg->accept();
-}
-
-void CDashboardWidget::OnDismissWaitingForDraining()
-{
-    mp_WaitFillDrainCompletedMsgDlg->accept();
+    if (mp_PausingMsgDlg)
+    {
+        mp_PausingMsgDlg->accept();
+    }
 }
 
 void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
@@ -727,6 +707,7 @@ void CDashboardWidget::OnProgramPaused()
 {
     ui->programPanelWidget->EnableStartButton(true);//enable Abort button
     ui->programPanelWidget->ChangeStartButtonToStartState();
+    qDebug()<< "OnProgramPaused---ChangeStartButtonToStartState";
     m_ProgramStatus = Paused;
     Core::CGlobalHelper::SetProgramPaused(true);
 }
@@ -1290,7 +1271,7 @@ void CDashboardWidget::RetranslateUI()
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Oven cover is open, please close it then click OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);
-    m_strWaitingForDrainingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for draining to be completed.", 0, QApplication::UnicodeUTF8);
+    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "It is pausing...", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Rotary valve is heating, please wait for about 30 minutes.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);

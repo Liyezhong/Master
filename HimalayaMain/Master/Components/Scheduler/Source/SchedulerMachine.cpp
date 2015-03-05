@@ -164,33 +164,51 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
 
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
+    CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, EnablePauseButton());
+
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), exited(), mp_SchedulerThreadController, OnPreTestDone());
 
 
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
+
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
+    mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), entered(), mp_SchedulerThreadController, Fill());
-    CONNECTSIGNALSLOT(mp_PssmFillingState.data(), entered(), mp_SchedulerThreadController, EnablePauseButton());
+
+    mp_PssmFillingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigRVMoveToSealReady()), mp_PssmProcessingState.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
 
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), exited(), mp_SchedulerThreadController, OnStopFill());
     mp_PssmFillingState->addTransition(this, SIGNAL(sigFillFinished()), mp_PssmRVMoveToSealState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToSealState.data(), entered(), this, OnRVMoveToSeal());
     mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigRVMoveToSealReady()), mp_PssmProcessingState.data());
+    mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+
     CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, OnEnterPssmProcessing());
 
     mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, InitRVMoveToTubeState());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
+    mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigPause()), mp_PssmPause.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
-    CONNECTSIGNALSLOT(this, sigDrainFinished(), mp_SchedulerThreadController, DisablePauseButton());
+
+    mp_PssmDrainingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
+
     //for safe reagent
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
-    mp_PssmDrainingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
     mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
+    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmStepFinish.data());
+    CONNECTSIGNALSLOT(this, sigStepFinished(), mp_SchedulerThreadController, DisablePauseButton());
 
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigStepProgramFinished()),mp_PssmFillingHeatingRVState.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
@@ -204,9 +222,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
 
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
-    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToProcessing()), mp_PssmProcessingState.data());
-    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining()), mp_PssmRVPosChangeState.data());
-    CONNECTSIGNALSLOT(this, sigResumeToDraining(), mp_SchedulerThreadController, DisablePauseButton());
 
     //For Pssm Aborting
     CONNECTSIGNALSLOT(this, sigOnForceDrain(), mp_SchedulerThreadController, OnBeginDrain());
@@ -2073,14 +2088,36 @@ QString CSchedulerStateMachine::GetDeviceName()
 
 void CSchedulerStateMachine::OnNotifyResume()
 {
-    if( this->GetPreviousState() == (PSSM_PROCESSING))
+    SchedulerStateMachine_t previousState = this->GetPreviousState();
+    if(previousState == PSSM_FILLING_RVROD_HEATING)
+    {
+        emit sigRVRodHeatingReady();
+    }
+    else if(previousState == PSSM_FILLING_LEVELSENSOR_HEATING)
+    {
+        emit sigLevelSensorHeatingReady();
+    }
+    else if((previousState == PSSM_FILLING) || (previousState == PSSM_RV_MOVE_TO_SEAL))
+    {
+        emit sigRVMoveToSealReady();
+    }
+    else if (previousState == PSSM_PROCESSING)
     {
         emit sigResumeToProcessing();
     }
-    else if( this->GetPreviousState() == (PSSM_DRAINING))
+    else if(previousState == PSSM_RV_MOVE_TO_TUBE)
     {
         emit sigResumeToDraining();
     }
+    else if(previousState == PSSM_DRAINING)
+    {
+        emit sigDrainFinished();
+    }
+    else if(previousState == PSSM_RV_POS_CHANGE)
+    {
+        emit sigStepFinished();
+    }
+
 }
 
 void CSchedulerStateMachine::OnEnterRsAbortState()

@@ -797,23 +797,60 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
         if(m_CurProgramStepInfo.reagentGroup == "RG6")
         {
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+                m_bWaitToPause = true;
+            }
+
             if(mp_HeatingStrategy->Check260SensorsTemp())
             {
                 LogDebug("Program Step Heating Rotary Valve heating rod OK");
+                if (m_bWaitToPause)
+                {
+                   //dismiss the prompt of pausing
+                   SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                   m_bWaitToPause = false;
+                   LogDebug(QString("Program Step Beginning Pause"));
+                   m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                   return;
+                }
                 m_SchedulerMachine->NotifyRVRodHeatingReady();
             }
         }
         else
         {
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
+            }
+
             m_SchedulerMachine->NotifyRVRodHeatingReady();
         }
     }
     else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
     {
         m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
+
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPause = true;
+        }
+
         if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
         {
             LogDebug("Program Step Heating Level sensor stage OK");
+            if (m_bWaitToPause)
+            {
+                //dismiss the prompt of waiting for pause
+                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                m_bWaitToPause = false;
+                LogDebug(QString("Program Step Beginning Pause"));
+                m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
+            }
             m_SchedulerMachine->NotifyLevelSensorHeatingReady();
         }
         else
@@ -824,9 +861,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_FILLING == stepState)
     {
         m_CurrentStepState = PSSM_FILLING;
+
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            SendProgramAcknowledge(PAUSE_WAITING_FOR_FILLING);
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
@@ -850,7 +888,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            SendProgramAcknowledge(PAUSE_WAITING_FOR_FILLING);
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
         }
 
@@ -865,6 +903,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
             }
+
+            if (m_bWaitToPause)
+            {
+                //dismiss the prompt of waiting for pause
+                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                m_bWaitToPause = false;
+                LogDebug(QString("Program Step Beginning Pause"));
+                m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
+            }
             m_SchedulerMachine->NotifyRVMoveToSealReady();
         }
         else
@@ -873,6 +921,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
+                    if (m_bWaitToPause)
+                    {
+                        //dismiss the prompt of waiting for pause
+                        SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                        m_bWaitToPause = false;
+                    }
                     SendOutErrMsg(retCode);
                 }
             }
@@ -881,21 +935,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_PROCESSING == stepState)
     {
         m_CurrentStepState = PSSM_PROCESSING;
-        if(m_bWaitToPause || CTRL_CMD_PAUSE == ctrlCmd)
+        if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-            if (m_bWaitToPause)
-            {
-                 //dismiss the prompt of waiting for pause
-                SendProgramAcknowledge(DISMISS_WAITING_FOR_FILLING);
-                m_bWaitToPause = false;
-            }
-
-            LogDebug(QString("Program Step Beginning Pause"));
             if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
             {
                 AllStop();
                 m_lastPVTime = 0;
             }
+            LogDebug(QString("Program Step Beginning Pause"));
             m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
         }
         else
@@ -1051,27 +1098,21 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_RV_MOVE_TO_TUBE == stepState)
     {
         m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
-
-        if (CTRL_CMD_PAUSE == ctrlCmd)
-        {
-            SendProgramAcknowledge(PAUSE_WAITING_FOR_DRAINING);
-            m_bWaitToPause = true;
-        }
         m_SchedulerMachine->HandlePssmMoveTubeWorkflow(cmdName, retCode);
     }
     else if(PSSM_DRAINING == stepState)
     {
         m_CurrentStepState = PSSM_DRAINING;
 
-         if (CTRL_CMD_PAUSE == ctrlCmd)
-         {
-             SendProgramAcknowledge(PAUSE_WAITING_FOR_DRAINING);
-             m_bWaitToPause = true;
-         }
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPause = true;
+        }
 
-         //In case that Scheduler was recovered from Error
-         if( "Scheduler::ALDraining"== cmdName)
-         {
+        //In case that Scheduler was recovered from Error
+        if( "Scheduler::ALDraining"== cmdName)
+        {
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 if(m_EndTimeAndStepTime.GapTime > 0)
@@ -1081,65 +1122,83 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    if(m_bWaitToPause || CTRL_CMD_PAUSE == ctrlCmd)
-                    {
-                        if (m_bWaitToPause)
-                        {
-                             //dismiss the prompt of waiting for pause
-                            SendProgramAcknowledge(DISMISS_WAITING_FOR_DRAINING);
-                            m_bWaitToPause = false;
-                        }
+                    RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
 
-                        LogDebug(QString("Program Step Beginning Pause"));
-                        m_SchedulerMachine->NotifyPause(PSSM_DRAINING);
-                    }
-                    else
+                    if (m_bWaitToPause)
                     {
-                        RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
-                        m_SchedulerMachine->NotifyDrainFinished();
+                         //dismiss the prompt of waiting for pause
+                        SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                        m_bWaitToPause = false;
+                        LogDebug(QString("Program Step Beginning Pause"));
+                        m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                        return;
                     }
+                    m_SchedulerMachine->NotifyDrainFinished();
                 }
             }
             else
             {
                 LogDebug(QString("Program Step Draining Build Pressure timeout"));
+                if (m_bWaitToPause)
+                {
+                     //dismiss the prompt of waiting for pause
+                    SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                    m_bWaitToPause = false;
+                }
                 SendOutErrMsg(retCode);
             }
-         }
-         if(m_IsDrainDelay)
-         {
+        }
+        if(m_IsDrainDelay)
+        {
              if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
              {
-                 if(m_bWaitToPause || CTRL_CMD_PAUSE == ctrlCmd)
-                 {
-                     if (m_bWaitToPause)
-                     {
-                          //dismiss the prompt of waiting for pause
-                         SendProgramAcknowledge(DISMISS_WAITING_FOR_DRAINING);
-                         m_bWaitToPause = false;
-                     }
-
+                LogDebug(QString("Program Step Draining succeed!"));
+                if (m_bWaitToPause)
+                {
+                      //dismiss the prompt of waiting for pause
+                     SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                     m_bWaitToPause = false;
                      LogDebug(QString("Program Step Beginning Pause"));
-                     m_SchedulerMachine->NotifyPause(PSSM_DRAINING);
-                 }
-                 else
-                 {
-                    LogDebug(QString("Program Step Draining succeed!"));
-                    m_SchedulerMachine->NotifyDrainFinished();
-                    m_IsDrainDelay = false;
-                 }
+                     m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                     m_IsDrainDelay = false;
+                     return;
+                }
+                m_SchedulerMachine->NotifyDrainFinished();
+                m_IsDrainDelay = false;
              }
-         }
+        }
     }
     else if(PSSM_RV_POS_CHANGE == stepState)
     {
         m_CurrentStepState = PSSM_RV_POS_CHANGE;
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPause = true;
+        }
+
         if(IsRVRightPosition(NEXT_TUBE_POS))
         {
+            if (m_bWaitToPause)
+            {
+                //dismiss the prompt of waiting for pause
+                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                m_bWaitToPause = false;
+                LogDebug(QString("Program Step Beginning Pause"));
+                m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
+            }
+
             m_SchedulerMachine->NotifyStepFinished();
         }
         else
         {
+            if (m_bWaitToPause)
+            {
+                //dismiss the prompt of waiting for pause
+                SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                m_bWaitToPause = false;
+            }
             if("Scheduler::RVReqMoveToRVPosition" == cmdName)
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -1230,9 +1289,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-            m_TimeStamps.PauseStartTime = 0;
         }
-        else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)
+        else if(CTRL_CMD_USER_RESPONSE_PAUSE_ALARM == ctrlCmd)//get from user's response and EventConfig.xml
         {
             m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
             m_Is5MinPause = false;
@@ -3929,7 +3987,11 @@ void SchedulerMainThreadController::Pause()
 {
     RaiseEvent(EVENT_SCHEDULER_OVEN_PAUSE);
     //update the remaining time for the current step
-    m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
+    if (PSSM_PROCESSING == m_SchedulerMachine->GetPreviousState())
+    {
+        m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
+    }
+    LogDebug("SchedulerMainThreadController Paused");
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
 
     //send command to main controller to tell program is actually pasued
@@ -4763,6 +4825,16 @@ bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCod
         Global::EventObject::Instance().RaiseEvent(EventKey, 0, ActionResult,Active);
     }
     return true;
+}
+
+bool SchedulerMainThreadController::IsWaitingToPause()
+{
+    return m_bWaitToPause;
+}
+
+void SchedulerMainThreadController::SetWaitingToPause(bool set)
+{
+    m_bWaitToPause = set;
 }
 
 }

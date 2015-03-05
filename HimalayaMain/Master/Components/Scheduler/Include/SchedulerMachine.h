@@ -1587,12 +1587,6 @@ signals:
     void sigResumeToSoak();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigResumeToStepFinished
-     */
-    /****************************************************************************/
-    void sigResumeToStepFinished();
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal sigResumeToReadyToTubeAfter
      */
     /****************************************************************************/
@@ -1933,18 +1927,16 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigResumeToProcessing
-     */
-    /****************************************************************************/
-    void sigResumeToProcessing();
-
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal sigResumeToDraining
      */
     /****************************************************************************/
     void sigResumeToDraining();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigResumeToProcessing
+     */
+    /****************************************************************************/
+    void sigResumeToProcessing();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal SigRcReHeating

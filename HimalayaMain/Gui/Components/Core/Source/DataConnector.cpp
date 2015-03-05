@@ -1830,24 +1830,14 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit CancelRetortCoverOpenMessagePrompt();
         }
         break;
-        case DataManager::PAUSE_WAITING_FOR_FILLING:
+        case DataManager::SHOW_PAUSE_MSG_DLG:
         {
-            emit PauseWaitingForFilling();
+            emit ShowPauseMsgDialog();
         }
         break;
-        case DataManager::DISMISS_WAITING_FOR_FILLING:
+        case DataManager::DISMISS_PAUSING_MSG_DLG:
         {
-            emit DismissWaitingForFilling();
-        }
-        break;
-        case DataManager::PAUSE_WAITING_FOR_DRAINING:
-        {
-            emit PauseWaitingForDraining();
-        }
-        break;
-        case DataManager::DISMISS_WAITING_FOR_DRAINING:
-        {
-            emit DismissWaitingForDraining();
+            emit DismissPauseMsgDialog();
         }
         break;
         case DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT:

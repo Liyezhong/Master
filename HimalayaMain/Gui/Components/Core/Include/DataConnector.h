@@ -625,28 +625,16 @@ signals:
     void CancelRetortCoverOpenMessagePrompt();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of signal PauseWaitingForFilling
+     *  \brief  Declaration of signal ShowPauseMsgDialog
      */
     /****************************************************************************/
-    void PauseWaitingForFilling();
+    void ShowPauseMsgDialog();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of signal DismissWaitingForFilling
+     *  \brief  Declaration of signal DismissPauseMsgDialog
      */
     /****************************************************************************/
-    void DismissWaitingForFilling();
-    /****************************************************************************/
-    /*!
-     *  \brief  Declaration of signal PauseWaitingForDraining
-     */
-    /****************************************************************************/
-    void PauseWaitingForDraining();
-    /****************************************************************************/
-    /*!
-     *  \brief  Declaration of signal DismissWaitingForDraining
-     */
-    /****************************************************************************/
-    void DismissWaitingForDraining();
+    void DismissPauseMsgDialog();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal TissueProtectPassed

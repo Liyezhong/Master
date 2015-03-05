@@ -150,7 +150,6 @@ private:
     void RetranslateUI();
     void SetCassetteNumber();
     bool IsOKPreConditionsToRunProgram();
-    void ShowWaitFillDrainDialog(bool isFilling);
     Ui::CDashboardWidget *ui;       ///<  Definition/Declaration of variable ui
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -161,7 +160,7 @@ private:
     MainMenu::CMessageDlg* mp_MessageDlg;                      //!< Message Dialogue
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
-    MainMenu::CMessageDlg* mp_WaitFillDrainCompletedMsgDlg;     //!< waiting for filling/draining to be completed message dialog
+    MainMenu::CMessageDlg* mp_PausingMsgDlg;                    //!< message dialog "It is pausing..."
     MainMenu::CMessageDlg* mp_WaitRotaryValveHeatingPrompt;     //!< waiting for rotary valve heating to be completed message dialog
 
 
@@ -190,7 +189,7 @@ private:
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
     QString m_strWaitingForFillingCompleted;
-    QString m_strWaitingForDrainingCompleted;
+    QString m_strItIsPausing;
     QString m_PowerFailureBoxTitle;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
@@ -303,16 +302,16 @@ private slots:
     void OnPowerFailureMsg();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of OnPauseWaitingForFilling
+     *  \brief  Declaration of OnShowPauseMsgDialog
      */
     /****************************************************************************/
-    void OnPauseWaitingForFilling();
+    void OnShowPauseMsgDialog();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of OnDismissWaitingForFilling
+     *  \brief  Declaration of OnDismissPauseMsgDialog
      */
     /****************************************************************************/
-    void OnDismissWaitingForFilling();
+    void OnDismissPauseMsgDialog();
     /****************************************************************************/
     /*!
      *  \brief  Declaration of OnWaitRotaryValveHeatingPrompt
@@ -331,19 +330,6 @@ private slots:
      */
     /****************************************************************************/
     void OnCoolingDown();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Declaration of OnPauseWaitingForDraining
-     */
-    /****************************************************************************/
-    void OnPauseWaitingForDraining();
-    /****************************************************************************/
-    /*!
-     *  \brief  Declaration of OnDismissWaitingForDraining
-     */
-    /****************************************************************************/
-    void OnDismissWaitingForDraining();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramAborted
