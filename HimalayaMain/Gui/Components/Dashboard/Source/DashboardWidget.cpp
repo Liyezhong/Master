@@ -1009,7 +1009,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         mp_MessageDlg->SetTitle(CommonString::strWarning);
         QTime time(0,0,0);
         time = time.addSecs(timeDelta);
-        QString waitTime = m_strWaitTimeforParaffinMelt.arg(QString::number(time.hour())).arg(QString::number(time.minute()));
+        QString waitTime = m_strWaitTimeforParaffinMelt.arg(QString::number(time.hour())).arg(QString::number(time.minute())).arg(QString::number(time.second()));
         mp_MessageDlg->SetText(m_strCannotStartParaffinMelt + '\n' + waitTime);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
@@ -1263,7 +1263,7 @@ void CDashboardWidget::RetranslateUI()
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
     m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start as paraffin is not melted completely, as well as the first program step is not fixation reagent.", 0, QApplication::UnicodeUTF8);
-    m_strWaitTimeforParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "You can start in %1 hours %2 minutes.", 0, QApplication::UnicodeUTF8);
+    m_strWaitTimeforParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "You can start in %1 hours %2 minutes %3 seconds.", 0, QApplication::UnicodeUTF8);
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed the last step! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
