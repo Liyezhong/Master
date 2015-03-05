@@ -38,6 +38,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
+#include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 #include <QDebug>
 
 #define RV_MOVE_OK              1 //!< rotary valve move result
@@ -174,13 +175,13 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
-        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);        
+        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
     }
 
     pDigitalOutput = NULL;
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
-        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);        
+        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
     }
 
     pTemperature = NULL;
@@ -263,7 +264,7 @@ bool ManufacturingTestHandler::IsInitialized()
 
 /****************************************************************************/
 void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseId)
-{   
+{
     Q_UNUSED(id);
     Q_UNUSED(Ref);
 
@@ -954,7 +955,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             (void)mp_TempLSensor->StartTemperatureControl(TargetTemperature, TargetDropRange);
             mp_Utils->Pause(200);
         }
-        else {            
+        else {
             waitSeconds = remainder;
         }
 
@@ -1181,7 +1182,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         (void)mp_PressPump->Draining();
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        p_TestCase->SetStatus(false);       
+        p_TestCase->SetStatus(false);
         return -1;
     }
     else {
@@ -1760,7 +1761,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;
         Status.clear();
         (void)Status.insert("Label", LabelStr);
-        emit RefreshTestStatustoMain(TestCaseName, Status);     
+        emit RefreshTestStatustoMain(TestCaseName, Status);
         (void)mp_PressPump->SetFan(0);
         (void)mp_PressPump->SetValve(0, 0);
         (void)mp_PressPump->SetValve(1, 0);
@@ -1880,7 +1881,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     else {
         (void)mp_PressPump->SetFan(1);
         for (int i = 1; i <= 16; ++i) {
-            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);           
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure2);
             if (!CreatePressure(waitSec3, targetPressure2, departure, TestCaseName)) {
                 EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
                 p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
@@ -2753,7 +2754,7 @@ RV_HEATING_END_EXIT:
             return 1;
         }
         else
-        {            
+        {
             return -1;
         }
     }
@@ -3313,27 +3314,36 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
     if (Module == "Main Control") {
         if (SubModule == "ASB3") {
             Ret = mp_BaseModule3->ReqDataReset();
+            Ret &= ResetOperationTime2Ref("RotaryValveDevice", "asb3_0", "OperationTime");
         }
         else if (SubModule == "ASB5") {
             Ret = mp_BaseModule5->ReqDataReset();
+            Ret &= ResetOperationTime2Ref("OvenDevice", "asb5_0", "OperationTime");
+            Ret &= ResetOperationTime2Ref("RetortDevice", "asb5_0", "OperationTime");
         }
         else if (SubModule == "ASB15") {
             Ret = mp_BaseModule15->ReqDataReset();
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "asb15_0", "OperationTime");
         }
         else {
             QString ParamName;
+            QString ParamNameRef;
 
             if (SubModule == "EBox") {
                 ParamName = "EBox_LifeTime";
+                ParamNameRef = "EBox";
             }
             else if (SubModule == "TouchScreen") {
                 ParamName = "Touch_Screen_LifeTime";
+                ParamNameRef = "Touch_Screen";
             }
             else if (SubModule == "VentilationFan") {
                 ParamName = "Ventilation_Fan_LifeTime";
+                ParamNameRef = "Ventilation_Fan";
             }
 
-            return ResetOperationTime2Ebox("OtherDevice", SubModule, ParamName);
+            Ret = ResetOperationTime2Ebox("OtherDevice", SubModule, ParamName);
+            Ret &= ResetOperationTime2Ref("OtherDevice", ParamNameRef, "OperationTime");
         }
     }
     else if (Module =="Retort") {
@@ -3341,58 +3351,83 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             Ret = mp_TempRetortSide->ResetHeaterOperatingTime(0);
             Ret &= mp_TempRetortBottom->ResetHeaterOperatingTime(0);
             Ret &= mp_TempRetortBottom->ResetHeaterOperatingTime(1);
+            Ret &= ResetOperationTime2Ebox("RetortDevice", "temp_retort_bottom", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("RetortDevice", "temp_retort_bottom", "OperationTime");
         }
         else if (SubModule == "LidLock") {
-            return ResetOperationTime2Ebox("RetortDevice", "Retort_Lid_Lock", "Retort_Lid_Lock_LifeCycle");
+            Ret = ResetOperationTime2Ebox("RetortDevice", "Retort_Lid_Lock", "Retort_Lid_Lock_LifeCycle");
+            Ret &= ResetOperationTime2Ref("RetortDevice", "lid_status", "OperationTime");
         }
         else if (SubModule == "LevelSensor") {
-            return ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
+            Ret = ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "temp_lsensor", "OperationTime");
         }
     }
     else if (Module =="Paraffin Oven"){
         if (SubModule == "Heater") {
             Ret = mp_TempOvenTop->ResetHeaterOperatingTime(0);
-            Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(0);
-            Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(1);
+            Ret &= mp_TempOvenBottom->ResetHeaterOperatingTime(0);
+            Ret &= mp_TempOvenBottom->ResetHeaterOperatingTime(1);
+
+            Ret &= ResetOperationTime2Ebox("OvenDevice", "temp_oven_bottom", "History_OperationTime");
+            Ret &= ResetOperationTime2Ebox("OvenDevice", "temp_oven_top", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("OvenDevice", "temp_oven_top", "OperationTime");
+            Ret &= ResetOperationTime2Ref("OvenDevice", "temp_oven_bottom", "OperationTime");
         }
         else if (SubModule == "CoverSensor") {
-            return ResetOperationTime2Ebox("OvenDevice", "Oven_Cover_Sensor", "oven_door_status_LifeCycle");
+            Ret = ResetOperationTime2Ebox("OvenDevice", "Oven_Cover_Sensor", "oven_door_status_LifeCycle");
+            Ret &= ResetOperationTime2Ref("OvenDevice", "oven_door_status", "OperationTime");
         }
     }
     else if (Module == "Rotary Valve"){
         if (SubModule == "Heater") {
             Ret = mp_TempRV->ResetHeaterOperatingTime(0);
+            Ret &= ResetOperationTime2Ebox("RotaryValveDevice", "temp_rv", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("RotaryValveDevice", "temp_rv", "OperationTime");
         }
         else if (SubModule == "Motor") {
             Ret = mp_MotorRV->ReqDataReset();
+            Ret &= ResetOperationTime2Ebox("RotaryValveDevice", "motor_rv", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("RotaryValveDevice", "motor_rv", "OperationTime");
         }
     }
     else if (Module == "L&A System") {
         if (SubModule == "Pump") {
             Ret = mp_PressPump->ResetPumpOperatingTime(0);
+            Ret &= ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "History_Pump_OperationTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "PumpOperationTime");
         }
         else if (SubModule == "Valve1") {
-            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve1_LifeCycle");
+            Ret = ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve1_LifeCycle");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "Valve1OperationCycle");
         }
         else if (SubModule == "Valve2") {
-            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve2_LifeCycle");
+            Ret = ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve2_LifeCycle");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "Valve2OperationCycle");
         }
         else if (SubModule == "AirHeatingTube") {
             Ret = mp_TempTubeAir->ResetHeaterOperatingTime(0);
+            Ret &= ResetOperationTime2Ebox("LA", "temp_tube2", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "temp_tube2", "OperationTime");
         }
         else if (SubModule == "LiquidHeatingTube") {
             Ret = mp_TempTubeLiquid->ResetHeaterOperatingTime(0);
+            Ret &= ResetOperationTime2Ebox("LA", "temp_tube1", "History_OperationTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "temp_tube1", "OperationTime");
         }
         else if (SubModule == "PressureSensor") {
-            return ResetOperationTime2Ebox("OtherDevice", "PressureSensor", "Pressure_Sensor_LifeTime");
+            Ret = ResetOperationTime2Ebox("OtherDevice", "PressureSensor", "Pressure_Sensor_LifeTime");
+            Ret &= ResetOperationTime2Ref("OtherDevice", "Pressure_Sensor", "OperationTime");
         }
         else if (SubModule == "CarbonFilter") {
             // TBD
-            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "ActiveCarbonFilter_LifeTime");
+            Ret = ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "ActiveCarbonFilter_LifeTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "ActiveCarbonFilterLifeTime");
         }
         else if (SubModule == "ExhaustFan") {
             // TBD
-            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Exhaust_Fan_LifeTime");
+            Ret = ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Exhaust_Fan_LifeTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "ExhaustFanLifeTime");
         }
     }
 
@@ -3403,11 +3438,11 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
     return -1;
 }
 
-qint32 ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName, const QString &SubModuleName, const QString &ParamName)
+bool ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName, const QString &SubModuleName, const QString &ParamName)
 {
     DeviceLifeCycleRecord *p_DeviceRecord = new DeviceLifeCycleRecord();
     if (p_DeviceRecord == NULL) {
-        return -1;
+        return false;
     }
     p_DeviceRecord->ReadRecord();
 
@@ -3415,19 +3450,56 @@ qint32 ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleNa
 
     if (p_ModuleRecord == NULL) {
         delete p_DeviceRecord;
-        return -1;
+        return false;
     }
 
     PartLifeCycleRecord* p_PartRecord = p_ModuleRecord->m_PartLifeCycleMap.value(SubModuleName);
     if (p_PartRecord == NULL) {
         delete p_DeviceRecord;
-        return -1;
+        return false;
     }
 
     p_PartRecord->m_ParamMap[ParamName] = "0";
     p_DeviceRecord->WriteRecord();
     delete p_DeviceRecord;
-    return 0;
+    return true;
+}
+
+bool ManufacturingTestHandler::ResetOperationTime2Ref(const QString& ModuleName, const QString& SubModuleName, const QString& ParamName)
+{
+    QString FilenameRef = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistoryRef.xml";
+    DataManager::CInstrumentHistory InstrumentHistoryRef;
+    if (!InstrumentHistoryRef.ReadFile(FilenameRef)) {
+        qDebug()<<"ManufacturingTestHandler::ResetOperationTime2Ref::read ref file failed.";
+        return false;
+    }
+
+    DataManager::CModuleDataList* ModuleListRef = InstrumentHistoryRef.GetModuleList(0);
+
+    if (!ModuleListRef) {
+        qDebug()<<"ManufacturingTestHandler::ResetOperationTime2Ref failed: invalid MoudlistRef.";
+        return false;
+    }
+
+    DataManager::CModule* p_ModuleRef = ModuleListRef->GetModule(ModuleName);
+
+    if (p_ModuleRef) {
+        DataManager::CSubModule* p_SubModuleRef = p_ModuleRef->GetSubModuleInfo(SubModuleName);
+        if (p_SubModuleRef) {
+            DataManager::Parameter_t* p_Param = p_SubModuleRef->GetParameterInfo(ParamName);
+            if (p_Param) {
+                p_Param->ParameterValue = "0";
+            }
+        }
+        //p_ModuleRef->GetSubModuleInfo(SubModuleName)->GetParameterInfo(ParamName)->ParameterValue = "0";
+    }
+
+    if (!InstrumentHistoryRef.Write()) {
+        qDebug()<<"ManufacturingTestHandler::ResetOperationTime2Ref MoudleListRef write failed.";
+        return false;
+    }
+
+    return true;
 }
 
 void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)

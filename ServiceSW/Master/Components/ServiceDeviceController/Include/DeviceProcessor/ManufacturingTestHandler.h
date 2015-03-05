@@ -430,10 +430,25 @@ private:
 
     /****************************************************************************/
     /**
-     * \brief Reset operation time to DeviceLifeCycleRecord.xml.
+     *  \brief Reset operation time to DeviceLifeCycleRecord.xml.
+     *  \iparam ModuleName = The name of module
+     *  \iparam SubModuleName = The sub module name
+     *  \iparam ParamName = The parameter name
+     *  \return true or false
      */
     /****************************************************************************/
-    qint32 ResetOperationTime2Ebox(const QString& ModuleName, const QString& SubModuleName, const QString& ParamName );
+    bool ResetOperationTime2Ebox(const QString& ModuleName, const QString& SubModuleName, const QString& ParamName );
+
+    /****************************************************************************/
+    /**
+     *  \brief Reset operation time to InstrumentHistoryRef.xml.
+     *  \iparam ModuleName = The name of module
+     *  \iparam SubModuleName = The sub module name
+     *  \iparam ParamName = the default param name
+     *  \return true or false
+     */
+    /****************************************************************************/
+    bool ResetOperationTime2Ref(const QString& ModuleName, const QString& SubModuleName, const QString& ParamName);
 
     /****************************************************************************/
     /**
