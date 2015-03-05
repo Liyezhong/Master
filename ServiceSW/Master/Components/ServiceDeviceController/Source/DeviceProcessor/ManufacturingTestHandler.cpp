@@ -3075,6 +3075,18 @@ void ManufacturingTestHandler::GetSlaveInformation()
         (void)Status.insert("SoftwareReleaseDate", "DATE");
     }
 
+    Str = p_BaseModule->GetEndTestResultInfo();
+    if (Str != "error" && Str != "request error") {
+        QStringList EndTestInfo = Str.split("/");
+
+        (void) Status.insert("EndTestResult", EndTestInfo[0]);
+        (void) Status.insert("EndTestDate", EndTestInfo[1]);
+    }
+    else {
+        (void) Status.insert("EndTestResult", "Open");
+        (void) Status.insert("EndTestDate", "DATE");
+    }
+
     qDebug()<<Status;
 
     emit RefreshTestStatustoMain(TestCaseName, Status);

@@ -686,7 +686,13 @@ void WrapperFmBaseModule::OnEndTestResult(quint32 InstanceID, ReturnCode_t Retur
                 ResultString = "Undefined";
                 break;
         }
+
+        m_EndTestResultInfo.TestResult = ResultString;
+
         ResultString.append(tr(" (%1)").arg((qint32)Result));
+
+
+        m_EndTestResultInfo.Date = Date;
     }
 
     if (m_LoopEndTestResult.isRunning()) {
@@ -790,6 +796,40 @@ QString WrapperFmBaseModule::GetBootloaderInfo()
 
     return loaderInfo;
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Script-API: Get end test result info
+ *
+ *  This method get the end test result and date of board.
+ *
+ *  \return endTestInfo string with test result and test date
+ *
+ */
+/****************************************************************************/
+QString WrapperFmBaseModule::GetEndTestResultInfo()
+{
+    bool ok = HandleErrorCode(m_pBaseModule->ReqEndTestResult());
+    if (!ok) {
+        // TODO: use const String from BaseWrapper
+        return "request error";
+    }
+    qint32 ret = m_LoopEndTestResult.exec();
+
+    QString endTestInfo;
+    QTextStream out;
+    out.setString(&endTestInfo);
+
+    if (ret == 1) {
+        QString date = QString("%1-%2-%3").arg(m_EndTestResultInfo.Date.year()).arg(m_EndTestResultInfo.Date.month()).arg(m_EndTestResultInfo.Date.day());
+        out << dec << m_EndTestResultInfo.TestResult << "/"<< date;
+    }
+    else
+        out << "error";
+
+    return endTestInfo;
+}
+
 
 /****************************************************************************/
 /*!

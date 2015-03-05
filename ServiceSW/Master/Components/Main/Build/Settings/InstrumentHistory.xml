@@ -13,6 +13,7 @@
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">MAJOR_VER</parameter>
+                <parameter name="EndTestResult" unit="QString"></parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">DATE</parameter>
@@ -27,6 +28,7 @@
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">MAJOR_VER</parameter>
+                <parameter name="EndTestResult" unit="QString"></parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">DATE</parameter>
@@ -41,6 +43,7 @@
                 <parameter name="HardwareProductionDate" unit="QDate">DATE</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">MINOR_VER</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">MAJOR_VER</parameter>
+                <parameter name="EndTestResult" unit="QString"></parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">DATE</parameter>

@@ -81,6 +81,7 @@ public slots:
     QString GetSWInfo();
     QString GetSWVersions();
     QString GetBootloaderInfo();
+    QString GetEndTestResultInfo();
     bool ReqDataReset();
     bool ReqFormatMemory();
     QString ReqSerialNumber();
@@ -141,6 +142,11 @@ private:
         QDate Date;             //!< Bootloader version release date
     } BootLoaderInfo_t;
 
+    typedef struct {
+        QString TestResult;   //!< End test result
+        QDate Date;         //!< End test date
+    } EndTestResultInfo_t;
+
     CBaseModule *m_pBaseModule;         //!< Pointer to CBaseModule
     QEventLoop   m_LoopSetNodeState;    //!< Loop for blocking commands.
     QEventLoop   m_LoopReqNodeState;    //!< Loop for blocking commands.
@@ -167,6 +173,8 @@ private:
     quint64      m_ModuleSerialNumber;  //!< Module serial number
     CResetData  *mp_ResetData;          //!< Support for the reset data command
     BootLoaderInfo_t    m_BootloaderInfo; //!< Bootloader information
+    EndTestResultInfo_t       m_EndTestResultInfo;     //!< End test information
+
 };
 
 #endif // WRAPPERFMBASEMODULE_H
