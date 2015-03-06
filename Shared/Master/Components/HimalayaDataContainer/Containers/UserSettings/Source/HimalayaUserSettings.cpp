@@ -130,26 +130,6 @@ bool CHimalayaUserSettings::GetSoundPeriodicError(void) const
 
 /****************************************************************************/
 /*!
- *  \brief Get the warning sound periodic flag
- *
- *  \return warning sound periodic flag
- */
-/****************************************************************************/
-bool CHimalayaUserSettings::GetSoundPeriodicWarning(void) const
-{
-    QString Value = GetValue(WARNING_TONE_PERIODIC).toLower();
-    if (PERIODIC_ON == Value)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-/****************************************************************************/
-/*!
  *  \brief Set the warning sound periodic flag
  *
  *  \iparam SoundPeriodicWarning = periodic on/off
@@ -230,19 +210,6 @@ void CHimalayaUserSettings::SetSoundPeriodicTimeError(
 {
     SetValue(ERROR_TONE_PERIODIC_TIME,
              Helper::ConvertSecondsToTimeString(SoundPeriodicTimeError));
-}
-
-/****************************************************************************/
-/*!
- *  \brief Get the warning sound periodic time
- *
- *  \return warning sound periodic time
- */
-/****************************************************************************/
-int CHimalayaUserSettings::GetSoundPeriodicTimeWarning(void) const
-{
-    return Helper::ConvertTimeStringToSeconds
-            (GetValue(WARNING_TONE_PERIODIC_TIME));
 }
 
 /****************************************************************************/
