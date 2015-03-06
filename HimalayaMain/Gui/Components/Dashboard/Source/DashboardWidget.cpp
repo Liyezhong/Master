@@ -1282,7 +1282,7 @@ void CDashboardWidget::RetranslateUI()
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired, please replace the expired ones with fresh reagents! You can't operate this program.", 0, QApplication::UnicodeUTF8);
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
-    m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
+    m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassettes?", 0, QApplication::UnicodeUTF8);
     m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
     m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature too high, please waiting some minutes let it cooling down before next program.", 0, QApplication::UnicodeUTF8);
     QString strTemp = QString("Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).") +
