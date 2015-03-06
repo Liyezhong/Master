@@ -289,10 +289,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  check the temperature of sensors in scenario 260
+     *  \param  IsPowerFailure bool default parameter
      *  \return bool
      */
     /****************************************************************************/
-    bool Check260SensorsTemp();
+    bool Check260SensorsTemp(bool IsPowerFailure = false);
 
     /****************************************************************************/
     /*!

@@ -1952,11 +1952,12 @@ void HeatingStrategy::Init260ParamList()
     m_SensorsChecking.LATube1Pass = false;
 }
 
-bool HeatingStrategy::Check260SensorsTemp()
+bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
 {
+    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
     if (false == m_SensorsChecking.ovenTopPass)
     {
-        qreal ovenTopTemp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenTop;
+        qreal ovenTopTemp = strctHWMonitor.TempOvenTop;
         if (ovenTopTemp >= (m_SensorsChecking.meltingPoint-4))
         {
             m_SensorsChecking.ovenTopPass = true;
@@ -1965,7 +1966,7 @@ bool HeatingStrategy::Check260SensorsTemp()
 
     if (false == m_SensorsChecking.LATube1Pass)
     {
-        qreal LATube1Temp = mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().TempALTube1;
+        qreal LATube1Temp = strctHWMonitor.TempALTube1;
         if (LATube1Temp >= (m_SensorsChecking.meltingPoint+2))
         {
             m_SensorsChecking.LATube1Pass = true;
@@ -1973,10 +1974,41 @@ bool HeatingStrategy::Check260SensorsTemp()
     }
 
     // For LA tube2, we only check it heating status. If it is off, we just log it.
-    if (false == mp_SchedulerCommandProcessor->HardwareMonitor().LATube2HeatingStatus)
+    if (false == strctHWMonitor.LATube2HeatingStatus)
     {
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_LATBUE2_OFF);
     }
+
+    if(IsPowerFailure)
+    {
+        qreal HWTemp = 0.0;
+        if(!m_RV_2_Outlet.OTCheckPassed)
+        {
+            HWTemp = strctHWMonitor.TempRV2;
+            if (m_SensorsChecking.meltingPoint < 68.0)
+            {
+                if (HWTemp >= m_SensorsChecking.meltingPoint && isEffectiveTemp(HWTemp))
+                    m_RV_2_Outlet.OTCheckPassed = true;
+            }
+            else
+            {
+                if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+                    m_RV_2_Outlet.OTCheckPassed = true;
+            }
+        }
+        if(!m_RTTop.OTCheckPassed)
+        {
+            if ((m_RTTop.functionModuleList[m_RTTop.curModuleId].OTTargetTemperature)<= HWTemp && isEffectiveTemp(HWTemp))
+                m_RTTop.OTCheckPassed = true;
+        }
+
+        if(!m_RTBottom.OTCheckPassed)
+        {
+            if ((m_RTBottom.functionModuleList[m_RTBottom.curModuleId].OTTargetTemperature)<= HWTemp && isEffectiveTemp(HWTemp))
+                m_RTBottom.OTCheckPassed = true;
+        }
+    }
+
     // for NON-first bottle, we need not check minimal time
     bool ret = m_RTTop.OTCheckPassed && m_RTBottom.OTCheckPassed && m_SensorsChecking.ovenTopPass
             && m_RV_2_Outlet.OTCheckPassed && m_SensorsChecking.LATube1Pass;

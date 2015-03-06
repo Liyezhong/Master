@@ -163,8 +163,9 @@ bool CRcReHeating::StartHeatingSensor()
 
     if(m_LastScenario >= 271 && m_LastScenario <= 277)
     {
-       ret =  mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("RTSide");
-       mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating retort top,retCode:%1").arg(ret));
+        mp_SchedulerThreadController->GetHeatingStrategy()->Init260ParamList();
+        ret =  mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("RTSide");
+        mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating retort top,retCode:%1").arg(ret));
         if(DCL_ERR_FCT_CALL_SUCCESS != ret)
             return false;
 
@@ -208,7 +209,7 @@ void CRcReHeating::CheckTheTemperature()
         qint64 CurrentTime = QDateTime::currentMSecsSinceEpoch();
         if( CurrentTime - m_StartHeatingTime > mp_SchedulerThreadController->GetOvenHeatingRemainingTime() )
         {
-            if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp())
+            if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp(true))
             {
                 m_CurrentStep = GET_RV_POSOTION;
             }
