@@ -102,9 +102,9 @@ void CTouchscreen::TouchScreenCalibration()
     }
 #else
     if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        system("echo ts_Service >/tmp/.ts_calibrate");
+        (void)system("echo ts_Service >/tmp/.ts_calibrate");
     } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
-        system("echo ts_Manufacturing > /tmp/.ts_calibrate");
+        (void)system("echo ts_Manufacturing > /tmp/.ts_calibrate");
     }
 
     emit ShutdownSystem(false);

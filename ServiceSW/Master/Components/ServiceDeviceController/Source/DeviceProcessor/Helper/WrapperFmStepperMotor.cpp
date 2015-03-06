@@ -1168,7 +1168,7 @@ bool WrapperFmStepperMotor::MoveFromPosition(qint32 Distance, qint32 Timeout)
     // initial absolute position will be available. But you never know...
     if (!m_CurrentPositionKnown) {
         bool ok;
-        GetPosition().toLong(&ok);
+        (void)GetPosition().toLong(&ok);
         if (!ok) {
             Log(tr("ERROR: Can't get current position for relative movement."));
             return false;

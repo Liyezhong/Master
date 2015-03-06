@@ -21,6 +21,7 @@
 #include "ServiceDataManager/Include/ModuleDataListVerifier.h"
 
 //lint -e613
+//lint -e1536
 
 namespace ServiceDataManager
 {

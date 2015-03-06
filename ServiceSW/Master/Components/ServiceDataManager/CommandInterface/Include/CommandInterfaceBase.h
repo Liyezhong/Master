@@ -130,7 +130,7 @@ protected:
     {
         if (mp_MasterThreadController) {
             mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-            mp_MasterThreadController->SendCommand(Command, AckCommandChannel);
+            (void)mp_MasterThreadController->SendCommand(Command, AckCommandChannel);
         }
     }
 };

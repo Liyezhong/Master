@@ -49,6 +49,8 @@
 #include "Core/Include/CMessageString.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
+//lint -e539
+
 namespace Threads {
 using namespace Global;
 
@@ -123,7 +125,8 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     if (!connect(mp_GUIStartup, SIGNAL(AbortTest()),
-                 this, SLOT(sendAbortTestCommand()))) {
+                 this, SLOT(sendAbortTestCommand())))
+    {
         qDebug() << "CStartup: cannot connect 'AbortTest' signal";
     }
 
@@ -134,24 +137,28 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
 
     // Refresh heating status to GUI
    if (!connect(this, SIGNAL(RefreshTestStatustoMain(QString, Service::ModuleTestStatus)),
-                mp_GUIStartup, SLOT(RefreshTestStatus(QString, Service::ModuleTestStatus)))) {
+                mp_GUIStartup, SLOT(RefreshTestStatus(QString, Service::ModuleTestStatus))))
+   {
        qDebug() << "CStartup: cannot connect 'RefreshTestStatustoMain' signal";
    }
 
     if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
-                 mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
+                 mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool ))))
+    {
         qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
     }
     //
 
     // Service Tests
     if (!connect(mp_GUIStartup, SIGNAL(SendServRequest(QString,QStringList)),
-                 this, SLOT(sendServiceTestRequest(QString,QStringList)))) {
+                 this, SLOT(sendServiceTestRequest(QString,QStringList))))
+    {
         qDebug() << "CStartup: cannot connect 'SendServRequest' signal";
     }
 
     if (!connect(this, SIGNAL(ReturnServiceRequestResult(QString, int, QStringList)),
-                 mp_GUIStartup, SLOT(OnReturnServiceRequestResult(QString,int,QStringList)))) {
+                 mp_GUIStartup, SLOT(OnReturnServiceRequestResult(QString,int,QStringList))))
+    {
         qDebug() << "CStartup: cannot connect 'ReturnServiceRequestResult' signal";
     }
     //
@@ -172,23 +179,28 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'SetNetworkSettingsResult' signal";
     }
     if (!QObject::connect(this, SIGNAL(SetInformationToNetworkSettings(QString, QString)),
-                          mp_GUIStartup, SIGNAL(SetInformationToNetworkSettings(QString, QString)))) {
+                          mp_GUIStartup, SIGNAL(SetInformationToNetworkSettings(QString, QString))))
+    {
         qDebug() << "CStartup: cannot connect 'SetInformationToNetworkSettings' signal";
     }
     if (!QObject::connect(mp_GUIStartup, SIGNAL(PerformNetworkTests()),
-                          this , SLOT(PerformNetworkTests()))) {
+                          this , SLOT(PerformNetworkTests())))
+    {
         qDebug() << "CStartup: cannot connect 'PerformNetworkTests' signal";
     }
     if (!QObject::connect(mp_GUIStartup, SIGNAL(DownloadFirmware()),
-                          this , SLOT(OnDownloadFirmware()))) {
+                          this , SLOT(OnDownloadFirmware())))
+    {
         qDebug() << "CStartup: cannot connect 'DownloadFirmware' signal";
     }
 
-    if(!connect(mp_GUIStartup, SIGNAL(ImportExportProcess(QString,QString)), this, SLOT(StartImportExportProcess(QString,QString)))) {
+    if(!connect(mp_GUIStartup, SIGNAL(ImportExportProcess(QString,QString)), this, SLOT(StartImportExportProcess(QString,QString))))
+    {
         qDebug() << "CStartup: cannot connect 'ImportExportProcess' signal";
     }
 
-    if(!connect(this, SIGNAL(ImportExportCompleted(int, bool)), mp_GUIStartup, SLOT(ImportExportCompleted(int, bool)))) {
+    if(!connect(this, SIGNAL(ImportExportCompleted(int, bool)), mp_GUIStartup, SLOT(ImportExportCompleted(int, bool))))
+    {
         qDebug() << "ServiceMasterThreadController: cannot connect 'ImportExportCompleted' signal";
     }
 

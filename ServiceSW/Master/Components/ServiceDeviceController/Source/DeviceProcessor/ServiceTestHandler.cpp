@@ -38,6 +38,10 @@
 #include "Global/Include/SystemPaths.h"
 #include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
+//lint -e438
+//lint -e514
+//lint -e515
+//lint -e516
 namespace DeviceControl {
 
 #define RV_MOVE_OK      1  //!< rotary valve move result
@@ -335,7 +339,7 @@ void ServiceTestHandler::AlarmSetOnOff(QString& ReqName, QStringList& Params)
 void ServiceTestHandler::AlarmGetState(QString& ReqName, QStringList& Params )
 {
     int LocalRemote = Params.at(0).toInt();
-    qint32 RetState;
+    qint32 RetState(0);
 
     QStringList Results;
     Results.clear();
@@ -400,8 +404,8 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
         return ;
     }
 
-    mp_TempOvenBottom->StopTemperatureControl();
-    mp_TempOvenTop->StopTemperatureControl();
+    (void)mp_TempOvenBottom->StopTemperatureControl();
+    (void)mp_TempOvenTop->StopTemperatureControl();
 
     if (TargetTempBottom > 0) {
         Ret = mp_TempOvenBottom->StartTemperatureControl(TargetTempBottom);
@@ -415,8 +419,8 @@ void ServiceTestHandler::OvenStartHeating(QString& ReqName, QStringList& Params)
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
-        mp_TempOvenBottom->StopTemperatureControl();
-        mp_TempOvenTop->StopTemperatureControl();
+        (void)mp_TempOvenBottom->StopTemperatureControl();
+        (void)mp_TempOvenTop->StopTemperatureControl();
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
     }
 }
@@ -558,8 +562,8 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
     qreal TargetTempSide = Params.at(0).toFloat();
     qreal TargetTempBottom = Params.at(1).toFloat();
 
-    mp_TempRetortBottom->StopTemperatureControl();
-    mp_TempRetortSide->StopTemperatureControl();
+    (void)mp_TempRetortBottom->StopTemperatureControl();
+    (void)mp_TempRetortSide->StopTemperatureControl();
 
     Ret = mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom);
     Ret &= mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
@@ -569,8 +573,8 @@ void ServiceTestHandler::RetortStartHeating(QString& ReqName, QStringList& Param
         emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
     }
     else {
-        mp_TempRetortBottom->StopTemperatureControl();
-        mp_TempRetortSide->StopTemperatureControl();
+        (void)mp_TempRetortBottom->StopTemperatureControl();
+        (void)mp_TempRetortSide->StopTemperatureControl();
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
     }
 }
@@ -937,8 +941,8 @@ void ServiceTestHandler::RVStartHeating(QString& ReqName, QStringList& Params)
     }
     qreal TargetTemp = Params.at(0).toFloat();
 
-    mp_TempRV->StopTemperatureControl();
-    Ret = mp_TempRV->StartTemperatureControl(TargetTemp);
+    Ret = mp_TempRV->StopTemperatureControl();
+    Ret |= mp_TempRV->StartTemperatureControl(TargetTemp);
     qDebug()<<"RVStartHeating : target="<<TargetTemp<<"   Ret="<<Ret;
 
     if (Ret) {
@@ -1209,7 +1213,7 @@ void ServiceTestHandler::LSStartHeating(QString& ReqName, QStringList& Params)
     Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
 
     if (Ret == false) {
-        mp_TempLSensor->StopTemperatureControl();
+        (void)mp_TempLSensor->StopTemperatureControl();
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
     }
     else {
@@ -1298,7 +1302,6 @@ void ServiceTestHandler::LSHeatingLevelSensor(QString &ReqName, QStringList &Par
     quint16 ExchangePIDTemp(0);
     int WaitSeconds = 120;
     int ReadyStatus(-1);
-    bool Ret(true);
 
     if (WaterFlag) {
         TargetTemp = 95;
@@ -1318,12 +1321,13 @@ void ServiceTestHandler::LSHeatingLevelSensor(QString &ReqName, QStringList &Par
         return ;
     }
 
-    mp_TempLSensor->StopTemperatureControl();
+    bool Ret(true);
+    (void)mp_TempLSensor->StopTemperatureControl();
     Ret = mp_TempLSensor->SetTemperaturePid(MaxTemp, ControllerGainHigh, ResetTimeHigh, DerivativeTimeHigh);
     Ret &= mp_TempLSensor->StartTemperatureControl(TargetTemp, DropTemp);
 
     if (Ret == false) {
-        mp_TempLSensor->StopTemperatureControl();
+        (void)mp_TempLSensor->StopTemperatureControl();
         emit ReturnServiceRequestResult(ReqName, RETURN_ERR_FAIL, Results);
         return ;
     }
@@ -1531,7 +1535,7 @@ void ServiceTestHandler::PumpStopCompressor(QString& ReqName, QStringList& Param
         return ;
     }
 
-    mp_PressPump->StopCompressor();
+    (void)mp_PressPump->StopCompressor();
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }
@@ -1620,7 +1624,7 @@ void ServiceTestHandler::PumpWritePressureDrift(QString &ReqName, QStringList &P
     }
 
     float Drift = Params.at(0).toFloat();
-    mp_PressPump->WritePressureDrift(Drift);
+    (void)mp_PressPump->WritePressureDrift(Drift);
 
     emit ReturnServiceRequestResult(ReqName, RETURN_OK, Results);
 }

@@ -44,6 +44,7 @@ namespace DeviceControl {
 ServiceDeviceController::ServiceDeviceController(Global::gSourceType TheHeartBeatSource)
     : DeviceCommandProcessor::DeviceCommandProcessorThreadController(TheHeartBeatSource, "HimalayaDeviceCommand")
      , m_ProcessSettings(false)
+     , mp_DeviceProcessor(NULL)
 {
     //qRegisterMetaType<DeviceControl::DevInstanceID_t>("DeviceControl::DevInstanceID_t");
     qRegisterMetaType<Service::DeviceCalibrationCmdType>("Service::DeviceCalibrationCmdType");

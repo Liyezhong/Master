@@ -22,6 +22,8 @@
 /****************************************************************************/
 #include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h"
 
+//lint -e570
+
 const qint32 UNDEFINED = -1; //!< undefined value for temperature and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range
 

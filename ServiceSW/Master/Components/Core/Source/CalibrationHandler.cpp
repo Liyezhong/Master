@@ -105,7 +105,7 @@ void CCalibrationHanlder::ServiceCalibation()
                                               0, QApplication::UnicodeUTF8);
 
             // we reset the offset to 0 in case the old value is wrong after last failed calibration.
-            p_Dev->PumpWritePressureDrift(0);
+            (void)p_Dev->PumpWritePressureDrift(0);
         }
         else if (i==1) {
             Text = QApplication::translate("Core::CCalibrationHanlder",

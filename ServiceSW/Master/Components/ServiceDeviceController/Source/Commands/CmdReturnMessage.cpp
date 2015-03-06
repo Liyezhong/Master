@@ -30,6 +30,12 @@ CmdReturnMessage::CmdReturnMessage(QString ReturnMessage)
     : Global::Command(m_CmdTimeout)
     , m_ReturnMessage(ReturnMessage)
     , m_DeviceId(0)
+    , m_MessageType(Service::GUIMSGTYPE_UNDEFINED)
+    , m_AirFlowStatus(false)
+    , m_HoodStatus(false)
+    , m_CalibStatus(false)
+    , m_ModuleTestResult(false)
+    , m_ServErrorCode(0)
 {
 }
 

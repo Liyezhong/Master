@@ -30,6 +30,7 @@
 #include "DeviceControl/Include/SlaveModules/StepperMotor.h"
 #include "DeviceControl/Include/SlaveModules/ModuleConfig.h"
 
+//lint -e553
 using namespace DeviceControl;
 
 class CResetData;

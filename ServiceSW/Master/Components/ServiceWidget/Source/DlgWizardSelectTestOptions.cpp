@@ -25,7 +25,8 @@
 namespace MainMenu {
 
 CDlgWizardSelectTestOptions::CDlgWizardSelectTestOptions(QWidget *parent, QWidget *pMainWindow)
-    : CDlgWizardBase(parent, pMainWindow)
+    : CDlgWizardBase(parent, pMainWindow),
+      m_radioBtnIndex(0)
 {
     m_pDlgSelectTestOptions = new CDlgSelectTestOptions(parent);
     this->AddWidget(m_pDlgSelectTestOptions);

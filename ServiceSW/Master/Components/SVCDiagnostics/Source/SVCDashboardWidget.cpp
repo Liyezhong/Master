@@ -35,7 +35,7 @@
 #include "Diagnostics/Include/SelectBottleNReagentDialog.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
-
+//lint -e539
 using namespace SVCDiagnostics;
 
 CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
@@ -234,7 +234,7 @@ void CSVCDashboardWidget::RetortSelected()
 {
     qDebug()<<"retort selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
     Global::tTranslatableStringList StrList;
     StrList<<"Retort";
     CGraphicsItemPart::PartStatus Status = mp_Retort->Status();
@@ -277,7 +277,7 @@ void CSVCDashboardWidget::OvenSelected()
 {
     qDebug()<<"Oven selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
     Global::tTranslatableStringList StrList;
     StrList<<"Oven";
 
@@ -320,7 +320,7 @@ void CSVCDashboardWidget::RotaryValveSelected()
 {
     qDebug()<<"Rotary Valve selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
     Global::tTranslatableStringList StrList;
     StrList<<"Rotary Valve";
 
@@ -364,7 +364,7 @@ void CSVCDashboardWidget::AirTubeSelected()
 {
     qDebug()<<"Air Heating Tube selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
     Global::tTranslatableStringList StrList;
     StrList<<"Air Tube";
 
@@ -409,7 +409,7 @@ void CSVCDashboardWidget::LiquidTubeSelected()
 {
     qDebug()<<"Liquid Heating Tube selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
     Global::tTranslatableStringList StrList;
     StrList<<"Liquid Tube";
 
@@ -454,7 +454,7 @@ void CSVCDashboardWidget::FanSelected()
 {
     qDebug()<<"Fan selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_Fan->Status();
 
@@ -482,7 +482,7 @@ void CSVCDashboardWidget::Valve1Selected()
 {
     qDebug()<<"Valve1 selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
 
@@ -520,7 +520,7 @@ void CSVCDashboardWidget::Valve2Selected()
 {
     qDebug()<<"Valve1 selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
 
@@ -558,7 +558,7 @@ void CSVCDashboardWidget::PumpSelected()
 {
     qDebug()<<"Pump selected.";
 
-    quint32 EventId;
+    quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
 

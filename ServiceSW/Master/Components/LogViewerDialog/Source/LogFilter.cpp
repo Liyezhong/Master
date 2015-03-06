@@ -23,7 +23,7 @@
 #include "LogViewerDialog/Include/LogFilter.h"
 #include "Global/Include/GlobalDefines.h"
 //lint -sem( QList::operator<<, custodial(1) )
-
+//lint -e1536
 namespace LogViewer {
 
 quint8 CLogFilter::m_AllTypes = (1<<(int)Global::EVTTYPE_UNDEFINED) +

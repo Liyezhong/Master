@@ -64,6 +64,12 @@
 
 #define INFOBLOCK_SIGNATURE  0x88888888  //!< Signature for valid info blocks
 
+//lint -e438
+//lint -e514
+//lint -e515
+//lint -e516
+//lint -e525
+
 namespace DeviceControl {
 
 /****************************************************************************/
@@ -2229,7 +2235,7 @@ qint32 ManufacturingTestHandler::TestRVSelectingAndSealing(Service::ModuleTestCa
 
 qint32 ManufacturingTestHandler::TestRVHeatingStation()
 {
-    quint32 WaitSec(0);
+    qint32 WaitSec(0);
     quint32 SumSec(0);
     qint32  RVStatus(-1);
     qreal   CurrentTempSensor1(0), CurrentTempSensor2(0);
@@ -2498,7 +2504,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     QString Sensor1Value;
     QString Sensor2Value;
     QString UsedTime;
-    int Ret(0);
     quint8 Position(0);
 
     Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_HEATING_END;
@@ -2556,7 +2561,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         return -1;
     }
 
-
+    int Ret(0);
     // heating level sensor
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
@@ -2676,8 +2681,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
      WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second()+3;
      SumSec = WaitSec;
-     while (!m_UserAbort && WaitSec)
-     {
+     while (!m_UserAbort && WaitSec) {
          QTime EndTime = QTime().currentTime().addSecs(1);
 
          CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
@@ -2779,9 +2783,9 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
     CBaseModule *pBaseModule = m_rIdevProc.GetBaseModule(SlaveType);
 
     bool ret(false);
+    bool RetValue(false);
 
     WrapperFmBootLoader* p_WrapperBootLoader(NULL);
-    bool RetValue(false);
     CBootLoader *pBootLoader(NULL);
 
     if (pBaseModule == NULL) {
@@ -2913,7 +2917,7 @@ bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloade
 
     BoardOption.append(BASEMODULE_MODULE_ID);  // 0
     BoardOption.append("6");                   // 1
-    str.setNum(BASEMODULE_OPTIONS, 10);
+    (void)str.setNum(BASEMODULE_OPTIONS, 10);
     BoardOption.append(str);                    // 2
     BoardOption.append(DEFAULT_NODE_INDEX);     // 3
 
@@ -2926,11 +2930,11 @@ bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloade
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
 
-        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        (void)str.setNum(MODULE_ID_TEMPERATURE, 10);
         BoardOption.append(str);                        //8
         BoardOption.append("1");                        //9
 
-        str.setNum(0x31012, 10);
+        (void)str.setNum(0x31012, 10);
         BoardOption.append(str);                        //10
     }
     else if (SlaveType == Slave_5) {
@@ -2941,20 +2945,20 @@ bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloade
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
 
-        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        (void)str.setNum(MODULE_ID_TEMPERATURE, 10);
         BoardOption.append(str);                        //8
         BoardOption.append("4");                        //9
 
-        str.setNum(0x11011, 10);
+        (void)str.setNum(0x11011, 10);
         BoardOption.append(str);                        //10
 
-        str.setNum(0xF11012, 10);
+        (void)str.setNum(0xF11012, 10);
         BoardOption.append(str);                        //11
 
-        str.setNum(0x11012, 10);
+        (void)str.setNum(0x11012, 10);
         BoardOption.append(str);                        //12
 
-        str.setNum(0x11011, 10);
+        (void)str.setNum(0x11011, 10);
         BoardOption.append(str);                        //13
     }
     else if (SlaveType == Slave_15) {
@@ -2965,20 +2969,20 @@ bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloade
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitWarning")); //6
         BoardOption.append(p_TestCase->GetParameter("CurrentLimitFailure")); //7
 
-        str.setNum(MODULE_ID_TEMPERATURE, 10);
+        (void)str.setNum(MODULE_ID_TEMPERATURE, 10);
         BoardOption.append(str);                        //8
         BoardOption.append("3");                        //9
 
-        str.setNum(0x11041011, 10);
+        (void)str.setNum(0x11041011, 10);
         BoardOption.append(str);                        //10
 
-        str.setNum(0x01041011, 10);
+        (void)str.setNum(0x01041011, 10);
         BoardOption.append(str);                        //11
 
-        str.setNum(0x01041011, 10);
+        (void)str.setNum(0x01041011, 10);
         BoardOption.append(str);                        //12
 
-        str.setNum(MODULE_ID_DIGITAL_OUT, 10);
+        (void)str.setNum(MODULE_ID_DIGITAL_OUT, 10);
         BoardOption.append(str);                        //13
 
         BoardOption.append("6");                        //14
@@ -2989,12 +2993,12 @@ bool ManufacturingTestHandler::WriteBoardOption(WrapperFmBootLoader* p_Bootloade
         BoardOption.append("1");                        //19
         BoardOption.append("1");                        //20
 
-        str.setNum(MODULE_ID_PRESSURE, 10);
+        (void)str.setNum(MODULE_ID_PRESSURE, 10);
         BoardOption.append(str);                        //21
 
         BoardOption.append("1");                        //22
 
-        str.setNum(0x2111, 10);
+        (void)str.setNum(0x2111, 10);
         BoardOption.append(str);                        //23
     }
 
@@ -3107,7 +3111,7 @@ void ManufacturingTestHandler::CalibratePressureSensor()
 
     if (FirstTime == 1) {
         p_TestCase->SetParameter("FirstTime", "0");
-        mp_PressPump->WritePressureDrift(0.0);
+        (void)mp_PressPump->WritePressureDrift(0.0);
     }
 
     (void)mp_PressPump->SetValve(0, 0);

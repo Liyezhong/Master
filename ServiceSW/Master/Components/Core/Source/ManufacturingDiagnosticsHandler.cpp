@@ -1278,7 +1278,6 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
             HideMessage();
-        default:
             break;
         }
 

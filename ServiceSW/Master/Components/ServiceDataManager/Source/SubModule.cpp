@@ -140,8 +140,12 @@ CSubModule::~CSubModule()
 void CSubModule::DeleteAllParameters()
 {
     // get parameter pointer for each entry and free memory
-    foreach(Parameter_t* p, m_ListOfParameters) {
-        delete p;
+//    foreach(Parameter_t* p, m_ListOfParameters) {
+//        delete p;
+//    }
+    QList<Parameter_t*> ParamList = m_ListOfParameters.values();
+    for (int i = 0; i < ParamList.count(); ++i) {
+        delete ParamList.at(i);
     }
     m_ListOfParameters.clear();
     m_ParameterNames.clear();

@@ -40,6 +40,8 @@ public:
     CModuleCommandInterface(CServiceDataManager *p_DataManager, Threads::ServiceMasterThreadController *p_MasterThreadController,
                             ServiceDataContainer *p_DataContainer);
 
+    ~CModuleCommandInterface();
+
 	/****************************************************************************/
 	/**
 	 * \brief rearrange module list information

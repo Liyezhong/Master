@@ -154,7 +154,7 @@ void CFirmwareUpdate::RefreshLatestVersion()
     QString CurrentVersion = "";
     for(int i = 0; i < SWVersionList.GetNumberOfSWDetails(); ++i) {
         DataManager::CSWDetails SlaveInfo;
-        SWVersionList.GetSWDetails(i, SlaveInfo);
+        (void)SWVersionList.GetSWDetails(i, SlaveInfo);
         QString Slave = SlaveInfo.GetSWName().remove(".bin");
         QString LatestVersion = SlaveInfo.GetSWVersion();
         if (SlaveInfo.GetSWType() == FIRMWARE) {
@@ -283,7 +283,10 @@ void CFirmwareUpdate::UpdateSlaveVersion()
             return;
         }
         QFile HWVersionList(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "Slave_HW_Version.txt");
-        HWVersionList.open(QIODevice::WriteOnly);
+        if (!HWVersionList.open(QIODevice::WriteOnly)) {
+            qDebug()<<"CFirmwareUpdate: open Slave_HW_Version file failed.";
+            return;
+        }
         QTextStream SlaveHW(&HWVersionList);
         DataManager::CSWDetails* SlaveDetails = NULL;
         ServiceDataManager::CSubModule* SlaveModule = NULL;

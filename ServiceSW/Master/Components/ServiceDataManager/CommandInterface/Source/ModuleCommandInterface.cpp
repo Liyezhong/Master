@@ -44,6 +44,16 @@ CModuleCommandInterface::CModuleCommandInterface(CServiceDataManager *p_DataMana
     RegisterCommands();
 }
 
+CModuleCommandInterface::~CModuleCommandInterface()
+{
+    try {
+        delete mp_InstrumentHistory;
+    }
+    catch(...) {
+        //to PC_lint
+    }
+}
+
 /****************************************************************************/
 /**
  * \brief Register Commands related to ModuleList container
@@ -71,16 +81,15 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
     Q_UNUSED(Ref);
     Q_UNUSED(AckCommandChannel);
 
-    qDebug()<<"CModuleCommandInterface::ModuleUpdateHandler "<<m_ModuleCount;
-    DataManager::CModule* Module = new CModule();   
+    qDebug()<<"CModuleCommandInterface::ModuleUpdateHandler "<<m_ModuleCount;  
 
-    Module = const_cast<CModule*>(Cmd.GetModuleData());
+    DataManager::CModule* Module = const_cast<CModule*>(Cmd.GetModuleData());
 
     qDebug()<<"Module Details = "<<Module;
     qDebug()<<"GetModuleName "<<Module->GetModuleName();
 
     ++m_ModuleCount;
-    mp_InstrumentHistory->AddModule(Module);
+    (void)mp_InstrumentHistory->AddModule(Module);
     if (m_TotalModuleCount == m_ModuleCount) {
 
         // Function to be added to rearrange the module list
