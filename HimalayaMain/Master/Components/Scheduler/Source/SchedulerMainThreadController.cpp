@@ -3064,7 +3064,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
-        m_OvenLidStatus = strctHWMonitor.RetortLockStatus;
+        m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
     }
 
     if("ERROR" == StepID)
