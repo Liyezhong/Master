@@ -3367,7 +3367,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             Ret &= ResetOperationTime2Ref("RetortDevice", "temp_retort_bottom", "OperationTime");
         }
         else if (SubModule == "LidLock") {
-            Ret = ResetOperationTime2Ebox("RetortDevice", "Retort_Lid_Lock", "Retort_Lid_Lock_LifeCycle");
+            Ret = ResetOperationTime2Ebox("RetortDevice", "Retort_Lid_Lock", "lid_status_LifeCycle");
             Ret &= ResetOperationTime2Ref("RetortDevice", "lid_status", "OperationTime");
         }
         else if (SubModule == "LevelSensor") {

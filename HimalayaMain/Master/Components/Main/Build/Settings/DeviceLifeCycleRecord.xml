@@ -52,7 +52,7 @@
         <Device Key="RetortDevice">
             <Functionmodules>
                 <Functionmodule Key="Retort_Lid_Lock">
-                    <Parameter Key="Retort_Lid_Lock_LifeCycle" Value="0"/>
+                    <Parameter Key="lid_status_LifeCycle" Value="0"/>
                 </Functionmodule>
                 <Functionmodule Key="temp_retort_bottom">
                     <Parameter Key="History_OperationTime" Value="0"/>
