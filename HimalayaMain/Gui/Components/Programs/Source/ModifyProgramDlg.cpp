@@ -998,7 +998,6 @@ void CModifyProgramDlg::RetranslateUI()
     mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
     mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
 
     // Added void to please lint
     (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", 0, QApplication::UnicodeUTF8),0);
@@ -1013,7 +1012,7 @@ void CModifyProgramDlg::RetranslateUI()
     m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
     m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
-    m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program Name duplicated!", 0, QApplication::UnicodeUTF8);
+    m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program name is duplicated!", 0, QApplication::UnicodeUTF8);
     m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
     m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 

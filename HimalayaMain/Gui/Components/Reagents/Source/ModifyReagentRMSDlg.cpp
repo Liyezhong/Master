@@ -575,7 +575,7 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                "Please enter valid data", 0, QApplication::UnicodeUTF8);
 
     m_strSelectReagentGroup =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Please Select ReagentGroup", 0, QApplication::UnicodeUTF8);
+                                               "Please select reagent group", 0, QApplication::UnicodeUTF8);
 
     m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                "Fail to add reagent. Please contact service", 0, QApplication::UnicodeUTF8);

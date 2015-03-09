@@ -48,8 +48,8 @@ CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     m_strEnterProxyPassword(tr("Enter Proxy Password")),
     m_strEnterProxyIP(tr("Enter Proxy IP Address")),
     m_strEnterProxyPort(tr("Enter Proxy Port")),
-    m_strErrIP(tr("IP address not correct")),
-    m_strErrPort(tr("Network port not correct"))
+    m_strErrIP(tr("IP address is not correct")),
+    m_strErrPort(tr("Network port is not correct"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Network"));
@@ -242,8 +242,8 @@ void CNetworkSettingsWidget::RetranslateUI()
     m_strEnterProxyPassword = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Password", 0, QApplication::UnicodeUTF8);
     m_strEnterProxyIP = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8);
     m_strEnterProxyPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Port", 0, QApplication::UnicodeUTF8);
-    m_strErrIP = QApplication::translate("Settings::CNetworkSettingsWidget", "IP address not correct", 0, QApplication::UnicodeUTF8);
-    m_strErrPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Network port not correct", 0, QApplication::UnicodeUTF8);
+    m_strErrIP = QApplication::translate("Settings::CNetworkSettingsWidget", "IP address is not correct", 0, QApplication::UnicodeUTF8);
+    m_strErrPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Network port is not correct", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/

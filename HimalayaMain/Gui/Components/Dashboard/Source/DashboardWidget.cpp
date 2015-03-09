@@ -1272,7 +1272,7 @@ void CDashboardWidget::RetranslateUI()
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);
     m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "It is pausing...", 0, QApplication::UnicodeUTF8);
-    m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Rotary valve is heating, please wait for about 30 minutes.", 0, QApplication::UnicodeUTF8);
+    m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Rotary valve is heating, please wait about 30 minutes.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
@@ -1283,8 +1283,8 @@ void CDashboardWidget::RetranslateUI()
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the new-added cassette number:", 0, QApplication::UnicodeUTF8);
     m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassettes?", 0, QApplication::UnicodeUTF8);
-    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because waiting time out (5 minutes), instrument will auto re-heat and fill safety reagents", 0, QApplication::UnicodeUTF8);
-    m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature too high, please waiting some minutes let it cooling down before next program.", 0, QApplication::UnicodeUTF8);
+    m_PowerFailureBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Because the wait timed out for five minutes, instrument will re-heat and fill safety reagents automatically", 0, QApplication::UnicodeUTF8);
+    m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature is too high, please wait a few minutes to cool it down before the next program.", 0, QApplication::UnicodeUTF8);
     QString strTemp = QString("Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).") +
     QString("Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.") +
     QString("Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin protocol temperature! ") +

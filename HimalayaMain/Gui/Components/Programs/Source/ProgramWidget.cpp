@@ -372,7 +372,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
     if (Index.column() == 1)  // apply column
     {
         Qt::ItemFlags flags = m_ProgramModel.flags(Index);
-        if (flags == Qt::ItemIsSelectable)  // if the column is disabled, no action will be done.
+        //if (flags == Qt::ItemIsSelectable)  // if the column is disabled, no action will be done.
             return ;
     }
 
