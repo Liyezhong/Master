@@ -3167,20 +3167,20 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     int LSENSOR_PID_TI_SLOW = 1000;
     int LSENSOR_PID_TD_SLOW = 0;
 
+    int ExchangeTemp = 90;
+    int TargetTemp = LSENSOR_TEMP_WATER;
 
-    int LSensorTemp = LSENSOR_TEMP_WATER;  // desired temp
-    int LSensorTempHigh = LSensorTemp + 10;
     int LSensorTempChange = LSENSOR_SLOPE_TEMPCHANGE_NORMAL;   // Slope temp
 
     (void)mp_TempLSensor->StopTemperatureControl();
     (void)mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
                                       LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
-    (void)mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    (void)mp_TempLSensor->StartTemperatureControl(TargetTemp, LSensorTempChange);
 
     int WaitSeconds = TEST_LSENSOR_TIMEOUT;
     int ReadyStatus(-1);
     while(WaitSeconds){
-        if (mp_TempLSensor->GetTemperature() > (LSensorTemp-TEST_LSENSOR_TEMP_TOLERANCE)) {
+        if (mp_TempLSensor->GetTemperature() > ExchangeTemp) {
             ReadyStatus = 1;
             break;
         }
@@ -3195,12 +3195,12 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     (void)mp_TempLSensor->StopTemperatureControl();
     (void)mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
-    (void)mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    (void)mp_TempLSensor->StartTemperatureControl(TargetTemp, LSensorTempChange);
 
     mp_Utils->Pause(1000);
 
     while(WaitSeconds){
-        if (mp_TempLSensor->GetTemperature() > (LSensorTemp-TEST_LSENSOR_TEMP_TOLERANCE)) {
+        if (mp_TempLSensor->GetTemperature() > (TargetTemp-TEST_LSENSOR_TEMP_TOLERANCE)) {
             ReadyStatus = 1;
             break;
         }

@@ -103,7 +103,7 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
             return false;
         }
         (void)p_DevProc->LSGetTemp(&CurrentTemp);
-        if (CurrentTemp > ExchangePIDTemp) {
+        if (CurrentTemp > TargetTemp-2) {
             break;
         }
 
