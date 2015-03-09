@@ -1221,11 +1221,10 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
             m_RV_2_Outlet.curModuleId = iter->Id;
-            if( -1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario) )
+            if(m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].HeatingOverTime > 0)
             {
                 m_RV_2_Outlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
                 m_RV_2_Outlet.OTCheckPassed = false;
-                m_RV_2_Outlet.needCheckOT = true;
             }
             break;
         }
@@ -1459,9 +1458,6 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RV_2_Outlet.heatingStartTime = 0;
     m_RV_2_Outlet.curModuleId = "";
     m_RV_2_Outlet.OTCheckPassed = false;
-    m_RV_2_Outlet.needCheckOT = false;
-    m_RV_2_Outlet.needCheckOTModuleId = "";
-    m_RV_2_Outlet.HeatingOverTime = 0;
     sequenceList << "1" << "2" << "3" << "4";
 
     iter = sequenceList.begin();
@@ -1497,15 +1493,13 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         }
         funcModule.MaxTemperature = maxTemperature;
 
-        qreal heatingOverTime = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "HeatingOverTime", ok);
+        qreal heatingOverTime = 0.0;
+        heatingOverTime = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "HeatingOverTime", ok);
         if (false == ok)
         {
             return false;
         }
-        if (heatingOverTime > 0){
-            m_RV_2_Outlet.needCheckOTModuleId = *iter;
-            m_RV_2_Outlet.HeatingOverTime = heatingOverTime;
-        }
+        funcModule.HeatingOverTime = heatingOverTime;
 
         (void)m_RV_2_Outlet.functionModuleList.insert(*iter, funcModule);
     }
@@ -1703,9 +1697,10 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         else
         {
             qint64 now = QDateTime::currentMSecsSinceEpoch();
-            if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
+            if (m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].HeatingOverTime > 0
+                    && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].HeatingOverTime*1000) )
             {
-                if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
+                if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].ScenarioList.indexOf(m_CurScenario))
                 {
                     return false;
                 }
@@ -1731,9 +1726,10 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         }
 
         qint64 now = QDateTime::currentMSecsSinceEpoch();
-        if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
+        if ( m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].HeatingOverTime
+             && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].HeatingOverTime*1000) )
         {
-            if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
+            if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].ScenarioList.indexOf(m_CurScenario))
             {
 
                 if (meltingPoint < 68.0)

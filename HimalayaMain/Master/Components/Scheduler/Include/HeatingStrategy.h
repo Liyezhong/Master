@@ -391,7 +391,7 @@ private:
     OvenSensor                          m_OvenTop;                      //!< oven of top heat sensor
     OvenSensor                          m_OvenBottom;                   //!< oven of bottom heat sensor
     RVSensor                            m_RV_1_HeatingRod;              //!< rotary valve of heat rod
-    RVOutlet							m_RV_2_Outlet;                  //!< rotary valve of outlet
+    HeatingSensor                       m_RV_2_Outlet;                  //!< rotary valve of outlet
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
