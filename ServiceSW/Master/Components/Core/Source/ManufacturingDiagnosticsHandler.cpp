@@ -1279,6 +1279,9 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             Result = GetTestResponse();
             HideMessage();
             break;
+        default:
+            qDebug()<<"CManufacturingDiagnosticsHandler:PerformManufCleaningSystem invalid test Id";
+            break;
         }
 
         if (!NextFlag) {
