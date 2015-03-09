@@ -194,7 +194,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, InitRVMoveToTubeState());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
     mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigPause()), mp_PssmPause.data());
-    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining), mp_PssmDrainingState.data());
+    mp_PssmPause->addTransition(this, SIGNAL(sigResumeToDraining()), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
