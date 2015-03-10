@@ -26,6 +26,7 @@
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 //#include "Core/Include/CMessageString.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Core {
 
@@ -76,14 +77,22 @@ CCalibrationHanlder::~CCalibrationHanlder()
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
 {
+    bool Ret = false;
     if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        ServiceCalibation();
+        Ret = ServiceCalibation();
     } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
-        ManufacturingCalibation();
+        Ret = ManufacturingCalibation();
+    }
+
+    if (Ret) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR_PASS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR_FAIL);
     }
 }
 
-void CCalibrationHanlder::ServiceCalibation()
+bool CCalibrationHanlder::ServiceCalibation()
 {
     Diagnostics::ServiceDeviceProcess* p_Dev = Diagnostics::ServiceDeviceProcess::Instance();
 
@@ -181,10 +190,12 @@ Calibation_Finished:
 
     delete WaitDlg;
     delete MsgDlg;
+    return Ret;
 }
 
-void CCalibrationHanlder::ManufacturingCalibation()
+bool CCalibrationHanlder::ManufacturingCalibation()
 {
+    bool Ret = false;
     QString Msg;
     MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     MsgDlg->HideAllButtons();
@@ -235,6 +246,8 @@ void CCalibrationHanlder::ManufacturingCalibation()
                                                   0, QApplication::UnicodeUTF8);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Msg, true);
 
+            Ret = true;
+
             break;
         }
         else if (m_Result == 2) {
@@ -256,6 +269,7 @@ void CCalibrationHanlder::ManufacturingCalibation()
     }
     mp_PressureSensor->SetButtonStatus(true);
     delete MsgDlg;
+    return Ret;
 }
 
 /****************************************************************************/

@@ -102,16 +102,18 @@ private:
     /****************************************************************************/
     /*!
      *  \brief Service calibation
+     *  \return true or false
      */
     /****************************************************************************/
-    void ServiceCalibation();
+    bool ServiceCalibation();
 
     /****************************************************************************/
     /*!
      *  \brief Manufacturing calibation
+     *  \return true or flase
      */
     /****************************************************************************/
-    void ManufacturingCalibation();
+    bool ManufacturingCalibation();
 
 signals:
     /****************************************************************************/
