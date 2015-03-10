@@ -370,6 +370,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = 0;
+    m_PssmAbortingInMoveToTube = false;
     m_PssmMVTubeSeq = 0;
     m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
     m_ErrorRcRestartSeq = 0;
@@ -1888,13 +1889,18 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
         }
         break;
     case PSSM_RV_MOVE_TO_TUBE:
-        if (mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
+        if (0 == m_PssmAbortingSeq)
         {
-            mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
+            this->HandlePssmMoveTubeWorkflow(cmdName, retCode, true);
+            if (m_PssmAbortingInMoveToTube)
+            {
+                m_PssmAbortingSeq++;
+            }
         }
         else
         {
-            // do nothing
+            m_PssmAbortingSeq = 0;
+            mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
         }
     break;
     case PSSM_RV_POS_CHANGE:
@@ -1921,7 +1927,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
 }
 
 
-void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState)
 {
     if (0 == m_PssmMVTubeSeq)
     {
@@ -1929,7 +1935,15 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                if (isAbortState)
+                {
+                    m_PssmAbortingInMoveToTube = true;
+                    return;
+                }
+                else
+                {
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
             }
             else
             {
@@ -1946,7 +1960,15 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         if ((QDateTime::currentMSecsSinceEpoch() - m_PssmMVTubePressureTime) > 30*1000)
         {
             m_PssmMVTubeSeq = 0;
-            mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
+            if (isAbortState)
+            {
+                m_PssmAbortingInMoveToTube = true;
+                return;
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
+            }
         }
         if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= 25.0)
         {
@@ -1961,8 +1983,17 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                 m_PssmMVTubeSeq = 0;
-                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                m_PssmMVTubeSeq = 0;
+                if (isAbortState)
+                {
+                    m_PssmAbortingInMoveToTube = true;
+                    return;
+                }
+                else
+                {
+
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
             }
             else
             {
@@ -1976,11 +2007,22 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
     }
     else if (3 == m_PssmMVTubeSeq)
     {
+        if (isAbortState)
+        {
+            m_PssmAbortingInMoveToTube = true;
+            return;
+        }
+
         mp_SchedulerThreadController->MoveRV(TUBE_POS);
         m_PssmMVTubeSeq++;
     }
     else if (4 == m_PssmMVTubeSeq)
     {
+        if (isAbortState)
+        {
+            m_PssmAbortingInMoveToTube = true;
+            return;
+        }
         if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
         {
             //startTime
@@ -2135,6 +2177,7 @@ void CSchedulerStateMachine::OnEnterRsAbortState()
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OVEN_ABORTING);
     mp_SchedulerThreadController->SetTransitionPeriod(false);
     m_PssmAbortingSeq = 0;
+    m_PssmAbortingInMoveToTube = false;
 }
 
 void CSchedulerStateMachine::OnEnterInitState()

@@ -200,6 +200,7 @@ private:
     RS_MOVESEAL_t   m_RsMoveToPSeal;                                            ///< the RsMoveToPSealp3.5 state step
 
     quint8  m_PssmAbortingSeq;                                                  ///< Sequence of Rs_Abort
+    bool    m_PssmAbortingInMoveToTube;                                         ///< Flag to indicate if Aborting is in Move_To_Tube
     bool    m_EnableLowerPressure;                                              ///< Enable lower pressure
     quint8  m_PssmMVTubeSeq;                                                    ///< Sequence of PSSM_MoveTube
     qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
@@ -975,10 +976,11 @@ public:
      *  \brief  Handle PSSM Move to Tube work flow
      *  \param  cmdName - command name
      *  \param  retCode - return code
+     *  \param  isAbortState - Abort state or not
      *  \return void
      */
     /****************************************************************************/
-    void HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState=false);
 
     /****************************************************************************/
     /*!
