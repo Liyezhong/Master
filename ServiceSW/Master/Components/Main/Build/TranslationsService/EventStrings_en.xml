@@ -59,15 +59,15 @@
 		<string id="100728888" text1="Retort level sensor heating test is requested" text2=""/>
 		<string id="100728889" text1="Retort level sensor heating test completed successfully" text2=""/>
 		<string id="100728890" text1="Retort level sensor heating test failed" text2=""/>
-		<string id="100728891" text1="Retort level sensor detecting test with bottle position %1 is requested" text2=""/>
+		<string id="100728891" text1="Retort level sensor detecting test is requested" text2=""/>
 		<string id="100728892" text1="Retort level sensor detecting test completed successfully" text2=""/>
 		<string id="100728893" text1="Retort level sensor detecting test failed" text2=""/>
 		<string id="100728894" text1="Retort heating test empty is requested" text2=""/>
 		<string id="100728895" text1="Retort heating test empty completed successfully" text2=""/>
 		<string id="100728896" text1="Retort heating test empty failed" text2=""/>
-		<string id="100728897" text1="Retort heating test with liquid is requested" text2=""/>
-		<string id="100728898" text1="Retort heating test with liquid completed successfully" text2=""/>
-		<string id="100728899" text1="Retort heating test with liquid failed" text2=""/>
+		<string id="100728897" text1="Retort heating test with (with water) is requested" text2=""/>
+		<string id="100728898" text1="Retort heating test with (with water) completed successfully" text2=""/>
+		<string id="100728899" text1="Retort heating test with (with water) failed" text2=""/>
 		<string id="100728900" text1="Oven heating test empty is requested" text2=""/>
 		<string id="100728901" text1="Oven heating test empty completed successfully" text2=""/>
 		<string id="100728902" text1="Oven heating test empty failed" text2=""/>
@@ -158,7 +158,7 @@
 		<string id="100728987" text1="Cleaning system test failed" text2=""/>
 		<string id="100728988" text1="Enter the SVC diagnostics screen is accept risk" text2=""/>
 		<string id="100728989" text1="Enter the SVC diagnostics screen is abort" text2=""/>
-		<string id="100728990" text1="Heating %1 activated and set temperature was %2 °C" text2=""/>
+		<string id="100728990" text1="Heating %1 activated and set temperature was %2\260C" text2=""/>
 		<string id="100728991" text1="%1 is activated" text2=""/>
 		<string id="100728992" text1="%1 is deactivated" text2=""/>
 		<string id="100728993" text1="Selected position %1 for Rotary valve" text2=""/>
