@@ -1044,6 +1044,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     }
 
     EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_TUBE_POSITION, bottlePos);
+    mp_Utils->Pause(1000);
     if(mp_MotorRV->MoveToTubePosition(bottlePos)!=RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(bottlePos));
@@ -1494,16 +1495,19 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
         ASB3Current = mp_TempRV->GetCurrent();
 
         Result = (ASB3Current > SwitchOnCurrentLow && ASB3Current < SwitchOnCurrentHigh);
-        (void)mp_TempRV->StopTemperatureControl();
-        (void)mp_DigitalOutputMainRelay->SetLow();
+        if (!Result) {
+            (void)mp_TempRV->StopTemperatureControl();
+            (void)mp_DigitalOutputMainRelay->SetLow();
+        }
 
         p_TestCase->AddResult("ASB3Current", QString("%1mA").arg(ASB3Current));
     }
     else {
          // switch off
         (void)mp_DigitalOutputMainRelay->SetLow();
-
         ASB3Current = mp_TempRV->GetCurrent();
+        (void)mp_TempRV->StopTemperatureControl();
+
         Result = (ASB3Current < SWitchOffCurrentLow);
         p_TestCase->AddResult("ASB3Current", QString("%1mA").arg(ASB3Current));
     }
@@ -1856,6 +1860,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
                 goto CLEANING_EXIT;
             }
 
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
             (void)mp_PressPump->SetFan(0);
             (void)mp_PressPump->SetValve(0, 0);
             (void)mp_PressPump->SetValve(1, 0);
@@ -1875,11 +1880,13 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             mp_Utils->Pause(waitSec2*1000);
             EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
             (void)mp_PressPump->StopCompressor();
             (void)mp_PressPump->SetFan(0);
             (void)mp_PressPump->SetValve(0, 0);
             (void)mp_PressPump->SetValve(1, 0);
             mp_Utils->Pause(20*1000);
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         } while (i < 16);
 
         return RetValue;
@@ -3376,7 +3383,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
         }
         else if (SubModule == "LevelSensor") {
             Ret = ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
-            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "temp_lsensor", "OperationTime");
+            Ret &= ResetOperationTime2Ref("AirLiquidDevice", "temp_lsensor", "OperationCycles");
         }
     }
     else if (Module =="Paraffin Oven"){
