@@ -255,9 +255,9 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
             }
             LongName = LongName.trimmed();
             m_Program.SetLeicaProgram(false);
-            mp_Ui->btnPrgIcon->setIcon(QIcon(""));
-            m_Program.SetIcon("");
         }
+        mp_Ui->btnPrgIcon->setIcon(QIcon(""));
+        m_Program.SetIcon("");
 
         switch (LongName.length()) {
         case 18:
