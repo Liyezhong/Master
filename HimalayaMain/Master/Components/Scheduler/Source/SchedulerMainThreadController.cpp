@@ -3235,35 +3235,38 @@ void SchedulerMainThreadController::ReleasePressure()
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
     // We only release pressure if neither P or V exists.
-    RaiseEvent(EVENT_SCHEDULER_START_PROCESSING);
-    if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
+    if(m_CurrentStepState != PSSM_PROCESSING)
     {
-        RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
-        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-    }
-    m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
-    m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-
-    m_lastPVTime = 0;
-    m_completionNotifierSent = false;
-    m_IsReleasePressureOfSoakFinish = false;
-
-    if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
-    {
-        m_IsInSoakDelay = true;
-        return;
-    }
-    if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
-    {
-        if(m_CurProgramStepInfo.isPressure)
+        RaiseEvent(EVENT_SCHEDULER_START_PROCESSING);
+        if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
         {
-            m_ProcessingPV = 0;
-            Pressure();
+            RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
+            m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         }
-        else
+        m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+        m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+        m_lastPVTime = 0;
+        m_completionNotifierSent = false;
+        m_IsReleasePressureOfSoakFinish = false;
+
+        if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
         {
-            m_ProcessingPV = 1;
-            Vaccum();
+            m_IsInSoakDelay = true;
+            return;
+        }
+        if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
+        {
+            if(m_CurProgramStepInfo.isPressure)
+            {
+                m_ProcessingPV = 0;
+                Pressure();
+            }
+            else
+            {
+                m_ProcessingPV = 1;
+                Vaccum();
+            }
         }
     }
 }
@@ -4550,6 +4553,7 @@ void SchedulerMainThreadController::OnSystemError()
                                                                     DataManager::CANCEL_PROGRAM_WILL_COMPLETE_PROMPT));
             Global::tRefType ref = GetNewCommandRef();
             SendCommand(ref, Global::CommandShPtr_t(command));
+            m_completionNotifierSent = false;
         }
     }
 
