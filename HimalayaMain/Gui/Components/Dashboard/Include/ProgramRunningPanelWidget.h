@@ -24,6 +24,8 @@ namespace Dashboard {
         class CProgramRunningPanelWidget;
     }
 
+    class CDashboardProgramStatusWidget;
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class Dashboard::CProgramRunningPanelWidget
@@ -99,6 +101,12 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void SetSelectedProgramId(const QString& programID);
+        /****************************************************************************/
+        /*!
+         *  \brief  disable the Abort button in the program running details dialog
+         */
+        /****************************************************************************/
+        void UpdateAbortButtonStatus();
     public slots:
         /****************************************************************************/
         /*!
@@ -260,6 +268,7 @@ namespace Dashboard {
         int m_CurProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex
         bool m_isAborting;       ///<  Definition/Declaration of variable m_isAborting
         int m_firstProgramStepIndex;   ///< the first Program Step Index
+        CDashboardProgramStatusWidget* m_pProgramStatusWidget;
     };
 }
 

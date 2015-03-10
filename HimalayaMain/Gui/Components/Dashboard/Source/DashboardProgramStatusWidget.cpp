@@ -95,16 +95,15 @@ void CDashboardProgramStatusWidget::changeEvent(QEvent *p_Event)
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
             ui->retranslateUi(this);
-            this->RetranslateUI();
             break;
         default:
             break;
     }
 }
 
-void CDashboardProgramStatusWidget::RetranslateUI()
+void CDashboardProgramStatusWidget::DisableAbortButton()
 {
-    //?
+    ui->btnAbort->setEnabled(false);
 }
 
 

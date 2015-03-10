@@ -25,7 +25,8 @@ CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *p):
     m_DateTimeStr(""),
     m_selectedProgramId(""),
     m_isAborting(false),
-    m_firstProgramStepIndex(-1)
+    m_firstProgramStepIndex(-1),
+    m_pProgramStatusWidget(NULL)
 {
     qDebug()<<"CProgramRunningPanelWidget::CProgramRunningPanelWidget  m_remainingTimeTotal = "<<m_remainingTimeTotal;
 
@@ -348,13 +349,13 @@ void CProgramRunningPanelWidget::OnProgramDetail()
     if (m_selectedProgramId.isEmpty())
         return;
 
-    CDashboardProgramStatusWidget *pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
-    pProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
+    m_pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
+    m_pProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
 
     Core::CStartup* pStartup = Core::CStartup::instance();
     MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
     //for position the window of ProgramStatusWidget
-    pProgramStatusWidget->SetMainWindow(pMainWin);
+    m_pProgramStatusWidget->SetMainWindow(pMainWin);
 
     const DataManager::CProgram* pProgram = pStartup->DataConnector()->ProgramList ->GetProgram(m_selectedProgramId);
     Q_ASSERT(pProgram);
@@ -371,16 +372,25 @@ void CProgramRunningPanelWidget::OnProgramDetail()
 
 
     bool bAboutEnable = pStartup->Dashboard()->IsAbortEnabled();
-    pProgramStatusWidget->InitDialog(const_cast<DataManager::CProgram*>(pProgram), pStartup->DataConnector(),
+    m_pProgramStatusWidget->InitDialog(const_cast<DataManager::CProgram*>(pProgram), pStartup->DataConnector(),
                                        stationNameList, m_CurProgramStepIndex,
                                         m_CurRemainingTime,
                                        m_curRemainingTimeTotal,
                                        m_DateTimeStr, bAboutEnable);
 
-    (void)QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
-    (void)pProgramStatusWidget->exec();
-    (void)QObject::disconnect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
-    delete pProgramStatusWidget;
+    (void)QObject::connect(m_pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
+    (void)m_pProgramStatusWidget->exec();
+    (void)QObject::disconnect(m_pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
+    delete m_pProgramStatusWidget;
+    m_pProgramStatusWidget = NULL;
+}
+
+void CProgramRunningPanelWidget::UpdateAbortButtonStatus()
+{
+    if (m_pProgramStatusWidget)
+    {
+        m_pProgramStatusWidget->DisableAbortButton();
+    }
 }
 
 }

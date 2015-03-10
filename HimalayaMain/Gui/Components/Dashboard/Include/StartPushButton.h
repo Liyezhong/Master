@@ -51,11 +51,18 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function IsStartStatus
-     *
+     *  \param bSet =  bool type parameter
      *  \return from IsStartStatus
      */
     /****************************************************************************/
-    void IsStartStatus(bool);
+    void IsStartStatus(bool bSet);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsStartStatus
+     *  \return from IsStartStatus
+     */
+    /****************************************************************************/
+    inline bool IsStartStatus() { return m_IsStartStatus; }
 private:
     void paintEvent(QPaintEvent *);
     QString m_Text;       ///<  Definition/Declaration of variable m_Text

@@ -262,6 +262,11 @@ void CProgramPanelWidget::ChangeStartButtonToStartState()
 void CProgramPanelWidget::EnableStartButton(bool bEnable)
 {
     ui->startButton->setEnabled(bEnable);
+
+    if (!bEnable && !(ui->startButton->IsStartStatus()))
+    {
+        ui->programRunningPanel->UpdateAbortButtonStatus();
+    }
 }
 
 void CProgramPanelWidget::ResumePauseRunningStatus(bool bEnable)

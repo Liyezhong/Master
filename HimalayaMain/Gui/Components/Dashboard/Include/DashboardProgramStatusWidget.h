@@ -64,7 +64,13 @@ public:
      /****************************************************************************/
      void InitDialog(DataManager::CProgram*, const Core::CDataConnector*, QList<QString>&, int, int,
                      int, const QString& endDateTime, bool bAbortButtonEnabled);
-
+     /****************************************************************************/
+     /*!
+      *  \brief  Disable the Abort button
+      *
+      */
+     /****************************************************************************/
+     void DisableAbortButton();
 protected:
      /****************************************************************************/
      /*!
@@ -82,14 +88,6 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;       ///<  Definition/Declaration of variable mp_TableWidget
     Programs::CStepModel m_StepModel;       ///<  Definition/Declaration of variable m_StepModel
     void ResizeHorizontalSection();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function RetranslateUI
-     *
-     *  \return from RetranslateUI
-     */
-    /****************************************************************************/
-    void RetranslateUI();
 private slots:
     /****************************************************************************/
     /*!
