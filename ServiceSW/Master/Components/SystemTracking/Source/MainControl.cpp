@@ -255,9 +255,6 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
 
-            if (m_SubModuleNames.contains("ASB3") || m_SubModuleNames.contains("ASB5") || m_SubModuleNames.contains("ASB15")) {
-                emit UpdateSlaveVersion();
-            }
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
@@ -265,6 +262,10 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
                                           "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->show();
+
+            if (m_SubModuleNames.contains("ASB3") || m_SubModuleNames.contains("ASB5") || m_SubModuleNames.contains("ASB15")) {
+                emit UpdateSlaveVersion();
+            }
         }
         else
         {

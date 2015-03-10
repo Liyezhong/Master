@@ -31,6 +31,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Core/Include/ServiceUtils.h"
 
 namespace SystemTracking {
 
@@ -296,9 +297,7 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
         {
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
-            if (m_SubModuleNames.contains("ASB3")) {
-                emit UpdateSlaveVersion();
-            }
+
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
@@ -306,6 +305,10 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
                                           "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->show();
+
+            if (m_SubModuleNames.contains("ASB3")) {
+                emit UpdateSlaveVersion();
+            }
         }
         else
         {
@@ -402,6 +405,7 @@ void CRotaryValve::ResetSubModuleLifeCycle()
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         QString SubModuleName = m_SubModuleNames.at(i);
+
         if (SubModuleName == QString("ASB3")) {
             p_TestCase->SetParameter("Module", "Main Control");
         }
@@ -409,9 +413,11 @@ void CRotaryValve::ResetSubModuleLifeCycle()
             p_TestCase->SetParameter("Module", MODULE_ROTARYVALVE);
         }
 
-        p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
+        p_TestCase->SetParameter("SubModule", SubModuleName);
 
         emit PerformManufacturingTest(Id);
+
+        Core::CServiceUtils::delay(500);
     }
 }
 
