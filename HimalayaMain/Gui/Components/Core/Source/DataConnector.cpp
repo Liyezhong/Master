@@ -1737,7 +1737,13 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         break;
         case DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT:
         {
-             emit CleanPrgmCompleteAsSafeReagent();
+            emit CleanPrgmCompleteAsSafeReagent();
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+        case DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT:
+        {
+            emit ProgramCompleted(true);
             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;

@@ -145,8 +145,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramBeginAbort(),
                               this, OnProgramBeginAbort());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(),
-                              this, OnProgramCompleted());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(bool),
+                              this, OnProgramCompleted(bool));
     CONNECTSIGNALSLOT(mp_DataConnector, CleanPrgmCompleteAsSafeReagent(),
                               this, OnCleanPrgmCompleteAsSafeReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
@@ -508,25 +508,29 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
      else
      {
              if (m_ProgramStatus == Completed ||
-            m_ProgramStatus == Aborted)
+            m_ProgramStatus == Aborted || m_ProgramStatus == CompletedAsSafeReagent)
             {
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(CommonString::strInforMsg);
-            QString strTemp;
-            if (m_ProgramStatus == Completed)
-            {
-                strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-            }
-            else
-            {
-                strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-            }
-            mp_MessageDlg->SetText(strTemp);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            (void)mp_MessageDlg->exec();
-            m_ProgramStatus = Undefined_ProgramStatus;
-            Core::CGlobalHelper::SetProgramPaused(false);
+                mp_MessageDlg->SetIcon(QMessageBox::Information);
+                mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+                QString strTemp;
+                if (m_ProgramStatus == Completed)
+                {
+                    strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+                }
+                else if (m_ProgramStatus == Aborted)
+                {
+                    strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+                }
+
+                if (m_ProgramStatus != CompletedAsSafeReagent)
+                {
+                    mp_MessageDlg->SetText(strTemp);
+                    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                    mp_MessageDlg->HideButtons();
+                    (void)mp_MessageDlg->exec();
+                }
+                m_ProgramStatus = Undefined_ProgramStatus;
+                Core::CGlobalHelper::SetProgramPaused(false);
             }
 
             mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -636,7 +640,7 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     Core::CGlobalHelper::SetProgramPaused(false);
 }
 
-void CDashboardWidget::OnProgramCompleted()
+void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent)
 {
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
@@ -665,7 +669,10 @@ void CDashboardWidget::OnProgramCompleted()
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
-    m_ProgramStatus = Completed;
+    if (isDueToSafeReagent)
+        m_ProgramStatus = CompletedAsSafeReagent;
+    else
+        m_ProgramStatus = Completed;
     Core::CGlobalHelper::SetProgramPaused(false);
 }
 

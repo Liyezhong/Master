@@ -4727,7 +4727,7 @@ void SchedulerMainThreadController::SendSafeReagentFinishedCmd()
     }
     else
     {
-        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT));
         Q_ASSERT(commandPtrFinish);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));

@@ -680,7 +680,7 @@ signals:
      *  \brief  Definition/Declaration of signal ProgramCompleted
      */
     /****************************************************************************/
-    void ProgramCompleted();
+    void ProgramCompleted(bool isDueToSafeReagent = false);
     /****************************************************************************/
     /*!
      *  \brief  Declaration of signal ProgramCompleted

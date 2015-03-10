@@ -69,6 +69,7 @@ public:
         Paused,
         Aborting,
         Completed,
+        CompletedAsSafeReagent,
         Aborted
     } ProgramStatus_t;
 
@@ -354,7 +355,7 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/
-    void OnProgramCompleted();
+    void OnProgramCompleted(bool isDueToSafeReagent = false);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramRunBegin
