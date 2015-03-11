@@ -148,6 +148,7 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
         mp_TableWidget->horizontalHeader()->show();
         mp_TableWidget->SetVisibleRows(6);
         mp_TableWidget->horizontalHeader()->resizeSection(0, 90);
+        mp_TableWidget->horizontalHeader()->resizeSection(1, 120);
     }
 }
 
