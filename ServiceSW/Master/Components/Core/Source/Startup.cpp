@@ -443,7 +443,6 @@ void CStartup::LoadCommonComponenetsTwo()
     mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, QApplication::translate("Core::CStartup", "Service Updates",
                                                                                0, QApplication::UnicodeUTF8));
 
-
 //#ifdef Q_WS_QWS
 //    mp_MainWindow->showFullScreen();
 //#else
@@ -686,6 +685,13 @@ void CStartup::ManufacturingGuiInit(bool bReInit)
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 
     LoadCommonComponenetsTwo();
+
+    mp_SystemTrackingGroup->SetEnableButton(1, false);
+    mp_SystemTrackingGroup->SetEnableButton(2, false);
+    mp_LogViewerGroup->SetEnableButton(0, false);
+    mp_LogViewerGroup->SetEnableButton(1, false, true);
+    mp_LogViewerGroup->SetEnableButton(3, false);
+    mp_ServiceUpdateGroup->SetEnableButton(1, false);
 
     if (m_SelfTestFinished == false) {
         mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::CStartup", "System is initializing ...", 0, QApplication::UnicodeUTF8));

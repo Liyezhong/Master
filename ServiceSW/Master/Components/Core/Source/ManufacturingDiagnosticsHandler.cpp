@@ -127,6 +127,7 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
         mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_SYSTEM, mp_SystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING, mp_CleaningManuf);
+        mp_DiagnosticsManufGroup->SetEnableButton(0, false, true);
     }
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, Service::CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS);
 }
