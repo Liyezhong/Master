@@ -1959,12 +1959,12 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
     }
     else if(RemoteCare::SWUpdate_DownloadFailed == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Downloading the new software from RCServer failed. Please contact service.",
+                        "Failed to download new software from RCServer. Please contact service.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = false;
     } else if (RemoteCare::SWUpdate_DownloadSuccess == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Downloading the new software from remote server successful, now start to update.",
+                        "Download the software from a remote server has been successfully, now start to update.",
                                                        0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         (void)mp_MessageDlg->exec();

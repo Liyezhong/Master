@@ -83,7 +83,6 @@ private:
     QString m_strViewProgram;       ///<  Definition/Declaration of variable m_strViewProgram
     QString m_strNewProgram;       ///<  Definition/Declaration of variable m_strNewProgram
     QString m_strDelProgram;       ///<  Definition/Declaration of variable m_strDelProgram
-    QString m_strNotEditProgram;       ///<  Definition/Declaration of variable m_strNotEditProgram
     QString m_strView;       ///<  Definition/Declaration of variable m_strView
     QString m_strEdit;       ///<  Definition/Declaration of variable m_strEdit
     QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg

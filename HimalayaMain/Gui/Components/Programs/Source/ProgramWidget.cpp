@@ -60,7 +60,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                                    m_strViewProgram(tr("View Program")),
                                    m_strNewProgram(tr("New Program")),
                                    m_strDelProgram(tr("Do you really want to delete the selected program?")),
-                                   m_strNotEditProgram(tr("Program Process has started.Editing is no longer possible.")),
                                    m_strView(tr("View")),
                                    m_strEdit(tr("Edit"))
 {
@@ -606,10 +605,6 @@ void CProgramWidget::RetranslateUI()
 
     m_strDelProgram = QApplication::translate("Programs::CProgramWidget", "Do you really want to delete the selected program?",
                                               0, QApplication::UnicodeUTF8);
-
-    m_strNotEditProgram = QApplication::translate("Programs::CProgramWidget", "Program Process has started.Editing is no longer possible.",
-                                              0, QApplication::UnicodeUTF8);
-
 
     m_strView = QApplication::translate("Programs::CProgramWidget", "View",
                                               0, QApplication::UnicodeUTF8);

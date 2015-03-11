@@ -95,7 +95,6 @@ private:
     QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
     QString m_strDelProgramStep;       ///<  Definition/Declaration of variable m_strDelProgramStep
     QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
-    QString m_strNameDuplicated;       ///<  Definition/Declaration of variable m_strNameDuplicated
     QString m_strSeclectIcon;       ///<  Definition/Declaration of variable m_strSeclectIcon
     QString m_strLastProgName;       ///< Definition/Declaration of variable m_strPrevProgName
     bool    m_bIconSelected;        ///<  Definition/Declaration of variable m_bIconSelected

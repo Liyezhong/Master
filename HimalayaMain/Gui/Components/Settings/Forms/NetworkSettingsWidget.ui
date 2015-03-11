@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>277</height>
+    <width>362</width>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
       <item row="2" column="2">
        <widget class="QPushButton" name="proxyUserNameButton">
         <property name="text">
-         <string>The User Name</string>
+         <string notr="true">The User Name</string>
         </property>
        </widget>
       </item>

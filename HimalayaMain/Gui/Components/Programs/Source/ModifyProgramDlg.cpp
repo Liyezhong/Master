@@ -1012,7 +1012,6 @@ void CModifyProgramDlg::RetranslateUI()
     m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
     m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
-    m_strNameDuplicated = QApplication::translate("Programs::CModifyProgramDlg", "Program name is duplicated!", 0, QApplication::UnicodeUTF8);
     m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
     m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 
