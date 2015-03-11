@@ -19,6 +19,7 @@
 /****************************************************************************/
 #include "HimalayaDataManager/CommandInterface/Include/StationCommandInterface.h"
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
+#include "DataManager/Helper/Include/DataManagerEventCodes.h"
 
 
 namespace DataManager {
@@ -92,6 +93,9 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
     else {
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdStationChangeReagent(10000, cmd.StationID(), cmd.ReagentID())));
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_CHANGE_STATION,
+                                                   Global::tTranslatableStringList() << cmd.StationID()
+                                                   << static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(cmd.ReagentID())->GetReagentName());
 
     }
 
@@ -122,6 +126,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                  new MsgClasses::CmdStationResetData(10000, cmd.StationID())));
+         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_RESET_STATION,
+                                                    Global::tTranslatableStringList() << cmd.StationID());
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
@@ -153,6 +159,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                  new MsgClasses::CmdStationSetAsFull(10000, cmd.StationID())));
+         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_SET_STATION_FULL,
+                                                    Global::tTranslatableStringList() << cmd.StationID());
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
@@ -181,6 +189,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                  new MsgClasses::CmdStationSetAsEmpty(10000, Cmd.StationID())));
+         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_SET_STATION_EMPTY,
+                                                    Global::tTranslatableStringList() << Cmd.StationID());
 
      }
      (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();

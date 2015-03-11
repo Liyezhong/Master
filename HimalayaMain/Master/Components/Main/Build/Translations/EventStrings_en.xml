@@ -47,25 +47,8 @@
 		<string id="17235981" text1="%1  is not a valid temperature format ." text2=""/>
 		<string id="17235980" text1="%1  is not a valid time format." text2=""/>
 		<string id="17235996" text1="NULL pointer error in DataManager component" text2=""/>
-		<string id="19136513" text1="ParameterSet list count %1 exceeds the limit .Maximum 10 racks allowed." text2=""/>
 		<string id="17236016" text1="Reading ProcessSettings.xml failed." text2=""/>
 		<string id="17236017" text1="Verifying ProcessSettings.xml failed." text2=""/>
-		<string id="18808846" text1="Rack %1 colorado end time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
-		<string id="18808844" text1="Rack %1 color %2 in invalid. Only white-yellow-lightblue-darkblue-pink-red-green-black-grey are allowed." text2=""/>
-		<string id="18808837" text1="Rack list count %1 exceeds the limit .Maximum 100 racks allowed." text2=""/>
-		<string id="18808836" text1="Deleting rack failed .Rack with rfid %1 not found in the list." text2=""/>
-		<string id="18808838" text1="Rack RF ID %1 is too big. Maximum 9999999999 allowed." text2=""/>
-		<string id="18808834" text1="Rack with rfid %1 not found in the list." text2=""/>
-		<string id="18808833" text1="Rack with rfid %1 already exists in the list." text2=""/>
-		<string id="17236018" text1="Rack %1 has been inserted into drawer %2 and consists of %3 slides" text2=""/>
-		<string id="18808835" text1="Deleting rack failed. Invalid rack index." text2=""/>
-		<string id="18808848" text1="Invalid rack size: %1. Valid rack size : 30/20/5." text2=""/>
-		<string id="18808841" text1=" Invalid Parameter Set ID for Rack %1. Valid range for Parameter Set ID is 1-8. Current Value is %2." text2=""/>
-		<string id="17236019" text1="Rack %1 has been removed from instrument." text2=""/>
-		<string id="18808847" text1="Rack %1 coverslipper end time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
-		<string id="18808845" text1="Rack %1 start time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
-		<string id="18808843" text1="Rack %1 Station ID %2 is too big. Max 10 characters are allowed." text2=""/>
-
 		<string id="19070983" text1="RCConfig: Certificate FileName %1 length is out of range min %2 max %3." text2=""/>
 		<string id="17236007" text1="Verifying RCConfig.xml failed." text2=""/>
 		<string id="17236006" text1="Reading RCConfig.xml failed." text2=""/>
@@ -277,7 +260,7 @@
 		<string id="19398722" text1="NetworkLayer: command %1 is empty at %2." text2=""/>
 		<string id="19398723" text1="NetworkLayer: command %1 is not a running command at %2." text2=""/>
 		<string id="19398697" text1="NetworkLayer: IP/client %1. Null pointer error at %2." text2=""/>
-		<string id="17039362" text1="Colorado has switched to normal state" text2=""/>
+		<string id="17039362" text1="Instrument has switched to normal state" text2=""/>
 		<string id="19398719" text1="NetworkServerDevice: Client %1: DateTimeSync cannot be started." text2=""/>
 		<string id="19398717" text1="NetworkServerDevice: Client %1: cannot initialize Server." text2=""/>
 		<string id="19398718" text1="NetworkServerDevice: Client %1: cannot register protocol handler." text2=""/>
@@ -334,7 +317,6 @@
 		<string id="17367043" text1="Error removing transition between states  %1  and  %2  for index %3." text2=""/>
 		<string id="17367041" text1="Transition between states  %1  and  %2  for index %3 already exists." text2=""/>
 		<string id="17367048" text1="Unknown state  %1 ." text2=""/>
-		<string id="19595266" text1="File writing failed for RMS/Data logging/Configuration files. Don t accept any racks" text2=""/>
 		<string id="19005441" text1="Software update could not started due to error" text2=""/>
 		<string id="19005442" text1="Software update failed" text2=""/>
 		<string id="19005443" text1="Software update rollback failed" text2=""/>
@@ -826,5 +808,12 @@
 	<string id="67176222" text1="Error ID %1!  Process end time out." text2=""/>
 	<string id="67176223" text1="Error ID %1!  Abort failed." text2=""/>
 	<string id="67176224" text1="Power failure on cleaning program, the program has been auto-restart." text2=""/>
+	<string id="19202061" text1="User reset the Station %1." text2=""/>
+	<string id="19202062" text1="User change the reagent of Station %1 to %2." text2=""/>
+	<string id="19202063" text1="User set the Station %1 to full." text2=""/>
+	<string id="19202064" text1="User set the Station %1 to empty." text2=""/>
+	<string id="19267602" text1="User add reagent %1." text2=""/>
+	<string id="19267603" text1="User delete reagent %1." text2=""/>
+	<string id="19267604" text1="User update reagent %1." text2=""/>
 	</language>
 </strings>

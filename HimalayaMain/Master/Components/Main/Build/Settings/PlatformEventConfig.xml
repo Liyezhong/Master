@@ -914,9 +914,6 @@
 		<Event Code="" ErrorID="17367048" ErrorType="Error" AlarmType="No" Name="EVENT_STATEMACHINES_ERROR_UNKNOWN_STATE" LogLevel="Low" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17367048" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19595266" ErrorType="Warning" AlarmType="No" Name="EVENT_STOP_ACCEPT_NEW_RACK" LogLevel="Low" UserLog="FALSE">
-			<Step ID="0" Type="MSG" StringID="19595266" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19005441" ErrorType="Error" AlarmType="No" Name="EVENT_SW_UPDATE_STARTER_FAILED" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="19005441" ButtonType="Ok" StatusBar=""/>
 		</Event>
@@ -1144,6 +1141,27 @@
 		</Event>
 		<Event Code="" ErrorID="19333720" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_CONNECTED_ENTERPRISE_SERVE" LogLevel="Low" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19333720" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19202061" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19202061" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19202062" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19202062" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19202063" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19202063" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19202064" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19202064" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19267602" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19267602" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19267603" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19267603" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19267604" ErrorType="Info" AlarmType="No" Name="" LogLevel="Low" UserLog="TRUE">
+			<Step ID="0" Type="MSG" StringID="19267604" ButtonType="" StatusBar=""/>
 		</Event>
 	</Source>
 </EventConfigure>

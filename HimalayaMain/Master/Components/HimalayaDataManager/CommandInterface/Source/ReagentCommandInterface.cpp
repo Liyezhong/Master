@@ -19,6 +19,7 @@
 /****************************************************************************/
 #include "HimalayaDataManager/CommandInterface/Include/ReagentCommandInterface.h"
 #include "NetCommands/Include/CmdConfigurationFile.h"
+#include "DataManager/Helper/Include/DataManagerEventCodes.h"
 
 //lint -sem(DataManager::CReagentCommandInterface::AddReagent, custodial(1))
 //lint -sem(DataManager::CReagentCommandInterface::DeleteReagent, custodial(2))
@@ -100,6 +101,8 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         ReagentDataStream << Reagent;
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentAdd(10000, ReagentDataStream)));
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ADD_REAGENT,
+                                                   Global::tTranslatableStringList() << Reagent.GetReagentName());
         qDebug()<<"\n\n\n Adding New Reagent Success";
         /*lint -e429 */
     }
@@ -124,6 +127,7 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
     bool Result = true;
     bool ResultUpdateStation = true;
     //Also the Station should be updated
+    QString ReagentName  = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(Cmd.GetReagentID())->GetReagentName();
     ResultUpdateStation = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->StationList->UpdateStationsByReagentDelete(Cmd.GetReagentID());
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->DeleteReagent(Cmd.GetReagentID());
     if (!Result || !ResultUpdateStation) {
@@ -137,6 +141,8 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
     else {
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentRemove(10000, Cmd.GetReagentID())));
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_DEL_REAGENT,
+                                                   Global::tTranslatableStringList() << ReagentName);
         qDebug()<<"\n\n Delete Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
@@ -177,6 +183,8 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         ReagentDataStream << Reagent;
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentUpdate(10000, ReagentDataStream)));
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_UPDATE_REAGENT,
+                                                   Global::tTranslatableStringList() << Reagent.GetReagentName());
         qDebug()<<"\n\n Update Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
