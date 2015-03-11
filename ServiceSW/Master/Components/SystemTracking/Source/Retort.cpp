@@ -47,6 +47,7 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
     , m_ModifiedModule(false)
+    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -99,7 +100,7 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "CRetort::UpdateModule !"
              << Module.GetModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -130,6 +131,7 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
 
     emit ModuleListChanged();
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -137,7 +139,7 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CRetort::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -160,6 +162,7 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void CRetort::ModifyRetort(void)
@@ -167,7 +170,7 @@ void CRetort::ModifyRetort(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_MODULE);
     qDebug() << "CRetort::ModifyRetort !";
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -327,13 +330,16 @@ void CRetort::ConfirmModuleConfiguration(QString& Text)
     }
     m_ModifiedModule = false;
     m_SubModuleNames.clear();
+    m_ModifiedModuleList = false;
+    delete mp_ModuleList;
+    mp_ModuleList = NULL;
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void CRetort::ModifySubModule(const QString &ModuleName,
                               const QString &SubModuleName)
 {
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {

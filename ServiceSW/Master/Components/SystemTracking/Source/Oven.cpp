@@ -46,6 +46,7 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
     , mp_DataConnector(&DataConnector)
     , mp_ModuleList(NULL)
     , m_ModifiedModule(false)
+    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -109,6 +110,7 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
     (void)mp_ModuleList->UpdateModule(&Module);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -116,7 +118,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "COven::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -139,11 +141,12 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void COven::ModifyOven(void)
 {
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -294,13 +297,16 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     }
     m_ModifiedModule = false;
     m_SubModuleNames.clear();
+    m_ModifiedModuleList = false;
+    delete mp_ModuleList;
+    mp_ModuleList = NULL;
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void COven::ModifySubModule(const QString &ModuleName,
                             const QString &SubModuleName)
 {
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {

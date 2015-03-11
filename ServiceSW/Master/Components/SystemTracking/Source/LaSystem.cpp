@@ -50,6 +50,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
     , mp_Ui(new Ui::CLaSystemConfiguration)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
+    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -59,6 +60,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
     mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CLaSystem",
                                                     "Finalize Configuration", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->setModal(true);
+
     (void)connect(mp_Ui->modifyPump,
                   SIGNAL(clicked()),
                   this,
@@ -121,7 +123,7 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CLaSystem::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -150,6 +152,7 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     }
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void CLaSystem::ModifyPump(void)
@@ -306,13 +309,16 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->show();
     }
     m_SubModuleNames.clear();
+    m_ModifiedModuleList = false;
+    delete mp_ModuleList;
+    mp_ModuleList = NULL;
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void CLaSystem::ModifySubModule(const QString &ModuleName,
                                 const QString &SubModuleName)
 {
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {

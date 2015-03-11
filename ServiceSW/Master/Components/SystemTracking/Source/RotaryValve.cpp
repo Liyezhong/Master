@@ -46,6 +46,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
     , m_ModifiedModule(false)
+    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -96,7 +97,7 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "CRotaryValve::UpdateModule !"
              << Module.GetModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -140,6 +141,7 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
     //emit ModuleListChanged();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -147,7 +149,7 @@ void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CRotaryValve::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -170,6 +172,7 @@ void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+    m_ModifiedModuleList = true;
 }
 
 void CRotaryValve::ModifyRotaryValve(void)
@@ -177,7 +180,7 @@ void CRotaryValve::ModifyRotaryValve(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_MODULE);
     qDebug() << "CRotaryValve::ModifyRotaryValve !";
 
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -333,6 +336,9 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->show();
     }
     m_ModifiedModule = false;
+    m_ModifiedModuleList = false;
+    delete mp_ModuleList;
+    mp_ModuleList = NULL;
     m_SubModuleNames.clear();
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
@@ -340,7 +346,7 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
 void CRotaryValve::ModifySubModule(const QString &ModuleName,
                                    const QString &SubModuleName)
 {
-    if (!mp_ModuleList) {
+    if (!m_ModifiedModuleList && !mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
