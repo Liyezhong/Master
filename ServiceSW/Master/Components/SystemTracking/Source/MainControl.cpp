@@ -31,6 +31,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Core/Include/ServiceUtils.h"
 
 namespace SystemTracking {
 
@@ -379,8 +380,18 @@ void CMainControl::ResetSubModuleLifeCycle()
             SaveLifeCycle2Device(SubModuleName);
             //Core::CServiceUtils::delay(1000);
         }
+        p_TestCase->AddResult("Result", "0");
         p_TestCase->SetParameter("SubModule", SubModuleName);
         emit PerformManufacturingTest(Id);
+
+        for (int j = 0; j < 5; ++j) {
+            if (p_TestCase->GetResult().value("Result") == "0") {
+                Core::CServiceUtils::delay(200);
+            }
+            else {
+                break;
+            }
+        }
     }
 }
 

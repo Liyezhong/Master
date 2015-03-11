@@ -3453,7 +3453,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             Ret &= ResetOperationTime2Ref("AirLiquidDevice", "pressurectrl", "ExhaustFanLifeTime");
         }
     }
-
+    p_TestCase->AddResult("Result", "1");
     if (Ret) {
         return 0;
     }

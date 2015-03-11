@@ -405,7 +405,7 @@ void CRotaryValve::ResetSubModuleLifeCycle()
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
         QString SubModuleName = m_SubModuleNames.at(i);
-
+        p_TestCase->AddResult("Result", "0");
         if (SubModuleName == QString("ASB3")) {
             p_TestCase->SetParameter("Module", "Main Control");
         }
@@ -417,7 +417,15 @@ void CRotaryValve::ResetSubModuleLifeCycle()
 
         emit PerformManufacturingTest(Id);
 
-        Core::CServiceUtils::delay(500);
+        //Core::CServiceUtils::delay(500);
+        for (int j = 0; j < 5; ++j) {
+            if (p_TestCase->GetResult().value("Result") == "0") {
+                Core::CServiceUtils::delay(200);
+            }
+            else {
+                break;
+            }
+        }
     }
 }
 

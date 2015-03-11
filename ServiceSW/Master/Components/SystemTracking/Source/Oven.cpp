@@ -31,6 +31,7 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Core/Include/ServiceUtils.h"
 
 namespace SystemTracking {
 
@@ -365,8 +366,18 @@ void COven::ResetSubModuleLifeCycle()
     p_TestCase->SetParameter("Module", MODULE_OVEN);
 
     for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        p_TestCase->AddResult("Result", "0");
         p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
         emit PerformManufacturingTest(Id);
+
+        for (int j = 0; j < 5; ++j) {
+            if (p_TestCase->GetResult().value("Result") == "0") {
+                Core::CServiceUtils::delay(200);
+            }
+            else {
+                break;
+            }
+        }
     }
 }
 
