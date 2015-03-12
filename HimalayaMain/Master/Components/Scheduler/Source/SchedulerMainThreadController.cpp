@@ -4654,10 +4654,9 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
     switch(ErrorID)
     {
         case 513040012:
-        case 512040013:
         case 513040161:
         case 513040163:
-            EventStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
+            EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(m_CurrentBottlePosition.StationID);
             break;
         case 513040203:
