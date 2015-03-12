@@ -41,8 +41,8 @@
    <widget class="QLabel" name="labelUsedTime">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>25</y>
+      <x>270</x>
+      <y>20</y>
       <width>101</width>
       <height>17</height>
      </rect>
@@ -73,7 +73,7 @@
    <widget class="QLabel" name="labelDuration">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>270</x>
       <y>48</y>
       <width>101</width>
       <height>17</height>
@@ -105,7 +105,7 @@
    <widget class="QLabel" name="labelTargetTemp">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>270</x>
       <y>71</y>
       <width>81</width>
       <height>17</height>
@@ -133,18 +133,18 @@
      <rect>
       <x>17</x>
       <y>94</y>
-      <width>188</width>
+      <width>211</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Current Temperature (Top):</string>
+     <string>Current Temperature (Top)(°C):</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelCurTempTop">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>270</x>
       <y>94</y>
       <width>61</width>
       <height>17</height>
@@ -159,18 +159,18 @@
      <rect>
       <x>17</x>
       <y>117</y>
-      <width>227</width>
+      <width>251</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Current Temeprature (Bottom 1):</string>
+     <string>Current Temeprature (Bottom 1)(°C):</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelCurTempBottom1">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>270</x>
       <y>117</y>
       <width>71</width>
       <height>17</height>
@@ -185,18 +185,18 @@
      <rect>
       <x>17</x>
       <y>140</y>
-      <width>227</width>
+      <width>251</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Current Temperature (Bottom 2):</string>
+     <string>Current Temperature (Bottom 2)(°C):</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelCurTempBottom2">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>270</x>
       <y>140</y>
       <width>81</width>
       <height>17</height>

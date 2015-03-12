@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
+    <width>403</width>
     <height>307</height>
    </rect>
   </property>
@@ -74,7 +74,7 @@
     <item row="3" column="0">
      <widget class="QLabel" name="labelCurTempSideName">
       <property name="text">
-       <string>Current Temperature (Side):</string>
+       <string>Current Temperature (Side)(°C):</string>
       </property>
      </widget>
     </item>
@@ -88,7 +88,7 @@
     <item row="4" column="0">
      <widget class="QLabel" name="labelCurTempBottom1Name">
       <property name="text">
-       <string>Current Temeprature (Bottom 1):</string>
+       <string>Current Temeprature (Bottom 1)(°C):</string>
       </property>
      </widget>
     </item>
@@ -102,7 +102,7 @@
     <item row="5" column="0">
      <widget class="QLabel" name="labelCurTempBottom2Name">
       <property name="text">
-       <string>Current Temperature (Bottom 2):</string>
+       <string>Current Temperature (Bottom 2)(°C):</string>
       </property>
      </widget>
     </item>
