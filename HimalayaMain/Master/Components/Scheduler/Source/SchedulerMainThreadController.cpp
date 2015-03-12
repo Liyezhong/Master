@@ -3898,8 +3898,15 @@ void SchedulerMainThreadController::Drain()
 {
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
-    //todo: get delay time here
-    cmd->SetDelayTime(5000);
+
+    if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
+    {
+        cmd->SetDelayTime(25000);
+    }
+    else
+    {
+        cmd->SetDelayTime(5000);
+    }
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
