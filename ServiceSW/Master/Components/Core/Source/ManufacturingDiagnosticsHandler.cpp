@@ -1219,7 +1219,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
+            QString Text = QString("%1 - %2<br>").arg(TestCaseDescription, Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
