@@ -261,6 +261,11 @@ void CProgramPanelWidget::ChangeStartButtonToStartState()
 
 void CProgramPanelWidget::EnableStartButton(bool bEnable)
 {
+    if (bEnable && (m_SelectedProgramId.at(0) == 'C'))
+    {
+        return;
+    }
+
     ui->startButton->setEnabled(bEnable);
 
     if (!bEnable && !(ui->startButton->IsStartStatus()))
@@ -291,7 +296,7 @@ bool CProgramPanelWidget::IsResumeRun()
 
 bool CProgramPanelWidget::IsAbortEnabled()
 {
-    return this->ui->startButton->isEnabled();
+    return (this->ui->startButton->isEnabled() && !(ui->startButton->IsStartStatus()));
 }
 
 void CProgramPanelWidget::OnProgramStartReadyUpdated()

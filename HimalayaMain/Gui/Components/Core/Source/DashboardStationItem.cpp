@@ -580,7 +580,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         fillParaffinbathWidth = m_ParaffinbathBoundingRectWidth - 9;
         fillParaffinbathHeight = m_ParaffinbathBoundingRectHeight - m_ParaffinbathCoverHeight;
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
-                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING
+                || m_ContainerStatusType == DataManager::CONTAINER_STATUS_EMPTY)
         {
             fillParaffinbathHeight = m_CurrentBoundingRectReagentHeight;
         }

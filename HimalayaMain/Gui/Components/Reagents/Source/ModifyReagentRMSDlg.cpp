@@ -218,6 +218,7 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
             //mp_Ui->buttonReagentName->setText(m_Reagent.GetReagentName());
             m_strLastReagentName = m_Reagent.GetReagentName();
             mp_Ui->buttonReagentName->setText(HandleEscapedChar(m_strLastReagentName));
+            mp_Ui->buttonValue->setEnabled(true);
             mp_Ui->buttonValue->setVisible(true);
             mp_Ui->labelRMSStaticName->setVisible(true);
             UpdateRmsLabel(Option);
