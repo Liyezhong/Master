@@ -47,8 +47,6 @@
 		<string id="17235981" text1="%1  is not a valid temperature format ." text2=""/>
 		<string id="17235980" text1="%1  is not a valid time format." text2=""/>
 		<string id="17235996" text1="NULL pointer error in DataManager component" text2=""/>
-		<string id="17236016" text1="Reading ProcessSettings.xml failed." text2=""/>
-		<string id="17236017" text1="Verifying ProcessSettings.xml failed." text2=""/>
 		<string id="19070983" text1="RCConfig: Certificate FileName %1 length is out of range min %2 max %3." text2=""/>
 		<string id="17236007" text1="Verifying RCConfig.xml failed." text2=""/>
 		<string id="17236006" text1="Reading RCConfig.xml failed." text2=""/>
@@ -72,8 +70,6 @@
 		<string id="19070994" text1="RCConfig: Proxy protocol %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070977" text1="RCConfig: Queue size %1 is out of range min %2 max %3." text2=""/>
 		<string id="19071002" text1="RCConfig: remote session name %1 length is out of range min %2 max %3." text2=""/>
-		<string id="19267598" text1="Internal Software Error. Reagent Add failed. " text2=""/>
-		<string id="19267600" text1="Internal Software Error. Reagent Delete failed. " text2=""/>
 		<string id="19267589" text1="Reagent count exceeds the limit. Max 100 allowed." text2=""/>
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
@@ -443,8 +439,6 @@
 		<string id="50331768" text1="Program can not resume as pausing overtime 15 minutes." text2=""/>
 		<string id="50331769" text1="Please wait for filling to be completed, and then try again!" text2=""/>
 		<string id="50331770" text1="Please wait for draining to be completed, and then try again!" text2=""/>
-		<string id="33619977" text1="The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable." text2=""/>
-		<string id="50331683" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
 		<string id="50331651" text1="Leica Biopsy" text2=""/>
 		<string id="50331652" text1="Cleaning Program" text2=""/>
 		<string id="50331650" text1="Leica Overnight" text2=""/>
@@ -467,51 +461,6 @@
 		<string id="50331668" text1="Paraffin" text2=""/>
 		<string id="50331669" text1="Processing Water" text2=""/>
 		<string id="50331667" text1="Xylene" text2=""/>
-		<string id="50331678" text1="ERROR" text2=""/>
-		<string id="50331720" text1="Scheduler execute command %1" text2=""/>
-		<string id="50331721" text1="Scheduler execute command %1 result %2" text2=""/>
-		<string id="50331684" text1="Finish program %1" text2=""/>
-		<string id="50331676" text1="IDLE" text2=""/>
-		<string id="50331675" text1="INIT" text2=""/>
-		<string id="50331716" text1="abort program" text2=""/>
-		<string id="50331717" text1="drain" text2=""/>
-		<string id="50331715" text1="pause program" text2=""/>
-		<string id="50331714" text1="start program" text2=""/>
-		<string id="50331705" text1="bottle check result: %1" text2=""/>
-		<string id="50331709" text1="blockage" text2=""/>
-		<string id="50331710" text1="empty" text2=""/>
-		<string id="50331711" text1="error" text2=""/>
-		<string id="50331708" text1="not full" text2=""/>
-		<string id="50331707" text1="OK" text2=""/>
-		<string id="50331712" text1="timeout" text2=""/>
-		<string id="50331713" text1="unexpected" text2=""/>
-		<string id="50331704" text1="checking bottle %1" text2=""/>
-		<string id="50331703" text1="checking temperature and pressure" text2=""/>
-		<string id="50331706" text1="selftest finished" text2=""/>
-		<string id="50331702" text1="start selftest" text2=""/>
-		<string id="50331681" text1="Current program step state: %1" text2=""/>
-		<string id="50331699" text1="aborted" text2=""/>
-		<string id="50331700" text1="aborting" text2=""/>
-		<string id="50331693" text1="draining" text2=""/>
-		<string id="50331696" text1="Error" text2=""/>
-		<string id="50331690" text1="filling" text2=""/>
-		<string id="50331695" text1="finished" text2=""/>
-		<string id="50331686" text1="heating level sensor 1" text2=""/>
-		<string id="50331687" text1="heating level sensor 2" text2=""/>
-		<string id="50331689" text1="moving to tube to draing" text2=""/>
-		<string id="50331688" text1="moving to tube to fill" text2=""/>
-		<string id="50331697" text1="pause" text2=""/>
-		<string id="50331698" text1="pause during drain" text2=""/>
-		<string id="50331694" text1="ready to drain" text2=""/>
-		<string id="50331691" text1="sealing" text2=""/>
-		<string id="50331692" text1="soaking" text2=""/>
-		<string id="50331685" text1="step initializing" text2=""/>
-		<string id="50331701" text1="unknown" text2=""/>
-		<string id="50331677" text1="RUN" text2=""/>
-		<string id="50331674" text1="Scheduler main controller state: %1" text2=""/>
-		<string id="50331680" text1="Scheduler receive action command from GUI: %1" text2=""/>
-		<string id="50331682" text1="Start program %1" text2=""/>
-		<string id="50331679" text1="unexpected state" text2=""/>
 
         <string id="19333713" text1="Device was successfully registered" text2=""/>
         <string id="19333714" text1="Received command for setting a tag" text2=""/>
@@ -689,7 +638,6 @@
         <string id="67175936" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>
         <string id="67175937" text1="Bottle check: Pressure cannot build up. Potential reasons include: 1. sealing issure such as retort lid; 2. RV malpositioned on tube position instead of sealing position;" text2=""/>
         <string id="67175938" text1="Bottle check: Station no. %1  detected as empty. Other potential reasons are a leakage or missing bottle. Please check the station, check if the retort lid is locked correctly and recover the error! " text2=""/>
-        <string id="67175939" text1="Bottle check: Station no. %1  detected as  Insufficient. Other potential reason is  leakage.  Please check the station, check if the retort lid is locked correctly and recover the error! " text2=""/>
         <string id="67175940" text1="Air System: Pressure did not reach target value during pre-test. The pressure reached max. %1 kPa. " text2=""/>
         <string id="67175941" text1="Station no. %1 is filled with an insufficent amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level." text2=""/>
         <string id="67175942" text1="Station no. %1 is filled with an insufficent amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level. Station no. %1 is filling with an insufficent amount of reagent (retry)." text2=""/>
@@ -732,8 +680,6 @@
         <string id="67175978" text1="RotaryValve: Heating current of Rotary valve is out of range during pre-test." text2=""/>
         <string id="67175979" text1="RotaryValve: Heating current of Rotary valve is out of range before or after protocol." text2=""/>
         <string id="67175980" text1="RotaryValve: Value of Rotary Valve temperature sensor2 is less than 30 degree C. Please check the heating function of Rotary Valve." text2=""/>
-        <string id="67175981" text1="RotaryValve: The Rotary valve lost its current position, during moving. This occured during cleaning steps." text2=""/>
-        <string id="67175982" text1="The Rotary valve lost current position, during moving." text2=""/>
         <string id="67175983" text1="Pressure Sensor: Incorrect zero-value during pre-test. Please check zero-value at ambient pressure. If it is abnormal (>1.5Kpa), please retry with open retort lid. If still abnormal, exchange the pressure sensor." text2=""/>
         <string id="67175984" text1="Pressure Sensor: The pressure value during processing is out of the range [-100, +100]Kpa. Please check function of pressure sensor and exchange if necessary." text2=""/>
         <string id="67175985" text1="Exhaust system: Exhaust fan does not work due to no or insufficient current flow.  Please check voltage on according connector. If proper voltage is present, exchange exhaust fan." text2=""/>
@@ -743,17 +689,12 @@
         <string id="67175989" text1="Heated air tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
         <string id="67175990" text1="Retort or Oven heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
         <string id="67175991" text1="Retort or Waxbath heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
-        <string id="67175992" text1="Paraffin oven heating: Top sensor cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
-        <string id="67175993" text1="Paraffin oven heating: Bottom Sensor 1 cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
-        <string id="67175994" text1="Paraffin oven heating: Bottom Sensor 2 cannot reach the target temperature before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
         <string id="67175995" text1="Paraffin oven heating: Top sensor cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
         <string id="67175996" text1="Paraffin oven heating: Bottom sensor 1 cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
         <string id="67175997" text1="Paraffin oven heating: Bottom sensor 2 cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
         <string id="67175998" text1="RotaryValve: Moving from tube position %1 to %2, lower limiter is %3, internal steps is %4." text2=""/>
         <string id="67175999" text1="RotaryValve: Moving from tube position %1 to %2 failed before or after processing tissue. Lower limiter is %3, internal steps is %4." text2=""/>
         <string id="67176000" text1="RotaryValve: Temperature Sensor 2 of Rotary Valve cannot reach the target temperature before start of paraffin process step. Please check the heating function of Rotary Valve." text2=""/>
-        <string id="67176001" text1="RotaryValve: The Rotary valve lost its current position, during moving from position %1 to position %2. This occured during pre-test or processing." text2=""/>
-        <string id="67176002" text1="RotaryValve: The Rotary valve lost  its current position, during moving from position %1 to position %2. This occured during cleaning steps." text2=""/>
         <string id="67176003" text1="Draining of retort to station 1% failed during processing or cleaning! Draining time exceeds 4 minutes." text2=""/>
         <string id="67176004" text1="Heated reagent tube: The tube cannot heat to target temperature in 15min. Please perform self-test and confirm the tube status." text2=""/>
         <string id="67176005" text1="Voltage monitoring: DC 5V error." text2=""/>
@@ -762,7 +703,6 @@
         <string id="67176008" text1="Retort heating: Retort heating can not get to target temperature in 15 minutes. " text2=""/>
         <string id="67176009" text1="Paraffin Oven: The user opened the paraffin oven cover during processing. This could potentially have caused the paraffin to solidify." text2=""/>
         <string id="67176010" text1="Paraffin Oven: The user opened the paraffin oven cover before or after processing and potentially refilled paraffin." text2=""/>
-        <string id="67176011" text1="Air System: Pressure did not reach target value. The pressure reached max. %1 kPa. " text2=""/>
         <string id="67176012" text1="Air System: Vacuum did not reach target value. The vacuum reached max. %1 kPa. " text2=""/>
         <string id="67176013" text1="Remote / Local Alarm: Please check the connection of the external remote alarm system." text2=""/>
         <string id="67176014" text1="Remote / Local Alarm: Please check the connection of the external local alarm system." text2=""/>
@@ -780,7 +720,6 @@
         <string id="67176194" text1="Error ID %1!  Sealing failed in dry scenario." text2=""/>
         <string id="67176195" text1="Error ID %1!  Sealing failed in processing scenario." text2=""/>
         <string id="67176196" text1="Error ID %1!  Wax bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
-        <string id="67176197" text1="Error ID %1! AC Voltage is not stable." text2=""/>
         <string id="67176198" text1="Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176199" text1="Bottle %1 seems to be insufficent filled. Please check bottle according to user manual. After that press Retry button." text2=""/>
         <string id="67176200" text1="Draining of Retort has failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
@@ -788,17 +727,13 @@
         <string id="67176202" text1="Error ID %1! Exhaust system failed! Please inform service!" text2=""/>
         <string id="67176203" text1="Error ID %1! Please call service!" text2=""/>
         <string id="67176204" text1="Error ID %1! Please remove and protect the specimen. Please call service!" text2=""/>
-        <string id="67176205" text1="Error ID %1! Please restart the instrument as first option,if the problem occur again, Please call service!" text2=""/>
-        <string id="67176206" text1="Level sensor failed, please open retort lid and clean level sensor as recommend in the user manual, then close retort lid and press Retry button." text2=""/>
         <string id="67176207" text1="Local alarm system not connected! Please connect the device with local alarm system" text2=""/>
         <string id="67176208" text1="Please close paraffin oven cover!" text2=""/>
         <string id="67176209" text1="Please close the retort lid and confirm Retry button." text2=""/>
         <string id="67176210" text1="Pressure test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
         <string id="67176212" text1="The station no %1 is filled insufficent! Please check filling level, correct them and then press Retry button." text2=""/>
-        <string id="67176213" text1="Vacuum test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual. Close the retort by confirming Retry button." text2=""/>
         <string id="67176214" text1="Protocol was interrupted by power failure. Please remove the specimen and abort the protocol." text2=""/>
-        <string id="67176215" text1="Please remove and protect the specimen. Please call service! Tissue is in %1 reagents protect more than %2 minutes." text2=""/>
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service. If you want to enter the normal state next time. Please shut down the program by the Shutdown button." text2=""/>
 	<string id="67176218" text1="Error ID %1!  Software internal error." text2=""/>
