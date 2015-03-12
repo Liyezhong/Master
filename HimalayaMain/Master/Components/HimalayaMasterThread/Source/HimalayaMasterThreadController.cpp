@@ -1014,6 +1014,7 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
             // there is no password for the operator
             m_AuthenticatedLevel = Global::OPERATOR;
             bPassed = true;
+            m_PasswordManager.SetFallbackPasswordFlag(false);
             LogEvent = EVENT_DM_CHANGE_TO_STANDARD_USER;
             break;
         default:
