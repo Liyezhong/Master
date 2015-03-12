@@ -134,7 +134,20 @@
    <item row="1" column="0" colspan="3">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="MainMenu::CScrollTable" name="scrollTable" native="true"/>
+      <widget class="MainMenu::CScrollTable" name="scrollTable" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>496</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="verticalSpacer_3">

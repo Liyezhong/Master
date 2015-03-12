@@ -149,7 +149,7 @@ void CProgramWidget::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(1, 60);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 210);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 70);
+    mp_TableWidget->horizontalHeader()->resizeSection(4, 50);
 }
 
 /****************************************************************************/
