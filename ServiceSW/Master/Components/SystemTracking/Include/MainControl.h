@@ -253,7 +253,6 @@ private:
     ServiceDataManager::CModuleDataList *mp_ModuleList;   //!< Current list of modules
     Core::CServiceGUIConnector *mp_DateConnector;         //!< Global data connector
     QStringList m_SubModuleNames;                         //!< Store Updated sub moudule names
-    bool         m_ModifiedModuleList;                    //!< Flag of module list has been modifyed
 };
 
 

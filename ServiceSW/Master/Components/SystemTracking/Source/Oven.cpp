@@ -46,7 +46,6 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
     , mp_DataConnector(&DataConnector)
     , mp_ModuleList(NULL)
     , m_ModifiedModule(false)
-    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -110,7 +109,6 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
     (void)mp_ModuleList->UpdateModule(&Module);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
-    m_ModifiedModuleList = true;
 }
 
 void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -118,7 +116,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "COven::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    if (!m_ModifiedModuleList && !mp_ModuleList) {
+    if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -141,12 +139,11 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
-    m_ModifiedModuleList = true;
 }
 
 void COven::ModifyOven(void)
 {
-    if (!m_ModifiedModuleList && !mp_ModuleList) {
+    if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -178,8 +175,6 @@ void COven::ModifyOven(void)
     (void)dlg->exec();
 
     delete dlg;
-
-    m_ModifiedModule = true;
 }
 
 void COven::ModifyHeater(void)
@@ -216,6 +211,10 @@ void COven::OnFinalizeConfiguration(void)
     }
 
     ConfirmModuleConfiguration(Text);
+    if (mp_ModuleList) {
+        delete mp_ModuleList;
+        mp_ModuleList = NULL;
+    }
 }
 
 void COven::CurrentTabChanged(int Index)
@@ -242,6 +241,11 @@ void COven::ConfirmModuleConfiguration()
     }
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
+    }
+
+    if (mp_ModuleList) {
+        delete mp_ModuleList;
+        mp_ModuleList = NULL;
     }
 }
 
@@ -297,23 +301,19 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     }
     m_ModifiedModule = false;
     m_SubModuleNames.clear();
-    m_ModifiedModuleList = false;
-    delete mp_ModuleList;
-    mp_ModuleList = NULL;
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void COven::ModifySubModule(const QString &ModuleName,
                             const QString &SubModuleName)
 {
-    if (!m_ModifiedModuleList && !mp_ModuleList) {
+    if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
             qDebug() << "COven::UpdateSubModule(): Invalid module list!";
             return;
         }
-
         *mp_ModuleList = *ModuleList;
     }
 

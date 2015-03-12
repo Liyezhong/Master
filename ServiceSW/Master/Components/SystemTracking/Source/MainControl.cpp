@@ -49,7 +49,6 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
     , mp_Ui(new Ui::CMainControlConfiguration)
     , mp_ModuleList(NULL)
     , mp_DateConnector(&DataConnector)
-    , m_ModifiedModuleList(false)
 {
     mp_Ui->setupUi(this);
 
@@ -108,7 +107,7 @@ CMainControl::~CMainControl()
 
 ServiceDataManager::CModule* CMainControl::GetModule()
 {
-    if (!m_ModifiedModuleList && !mp_ModuleList) {
+    if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
         if (!ModuleList) {
@@ -141,7 +140,6 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
-    m_ModifiedModuleList = true;
 }
 
 void CMainControl::ModifyEBox()
@@ -212,6 +210,10 @@ void CMainControl::OnFinalizeConfiguration(void)
     }
 
     ConfirmModuleConfiguration(Text);
+    if (mp_ModuleList) {
+        delete mp_ModuleList;
+        mp_ModuleList = NULL;
+    }
 }
 
 void CMainControl::CurrentTabChanged(int Index)
@@ -234,6 +236,11 @@ void CMainControl::ConfirmModuleConfiguration()
     }
     if (mp_Ui->finalizeConfigBtn->isEnabled()) {
         ConfirmModuleConfiguration(Text);
+    }
+
+    if (mp_ModuleList) {
+        delete mp_ModuleList;
+        mp_ModuleList = NULL;
     }
 }
 
@@ -293,9 +300,6 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
         mp_MessageDlg->show();
     }
     m_SubModuleNames.clear();
-    m_ModifiedModuleList = false;
-    delete mp_ModuleList;
-    mp_ModuleList = NULL;
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
