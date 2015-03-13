@@ -589,8 +589,8 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
             break;
         case Service::MAINCONTROL_ASB15:
             EventId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE;
-            OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS;
+            FailureId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_SUCCESS;
             ASBIndex = 15;
             break;
         default:

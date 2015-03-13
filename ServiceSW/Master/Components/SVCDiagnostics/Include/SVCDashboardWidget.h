@@ -263,6 +263,16 @@ private:
 
     /****************************************************************************/
     /*!
+     *  \brief To Set valve1&2 status
+     *  \iparam ValveIndex = 0:valve1, 1:valve2
+     *  \iparam Status = 1:open, 0:close
+     *  \return true or false
+     */
+    /****************************************************************************/
+    bool SetValveStatus(quint8 ValveIndex, quint8 Status);
+
+    /****************************************************************************/
+    /*!
      *  \brief Create all part
      *  \iparam PartResName = the name of the part
      *  \iparam Pos = the pos of the part

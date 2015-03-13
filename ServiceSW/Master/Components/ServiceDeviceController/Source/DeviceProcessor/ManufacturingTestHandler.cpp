@@ -2503,9 +2503,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
 qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 {
-    quint32 WaitSec(0);
+    qint32 WaitSec(0);
     quint32 WaitSecSensor1(0);
-    quint32 SumSec(0);
+    qint32 SumSec(0);
     qint32  RVStatus(-1);
     qreal   CurrentTempSensor1(0), CurrentTempSensor2(0);
     QString Sensor1Value;
@@ -2520,6 +2520,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     QTime DurationTimeSensor1 = QTime::fromString(p_TestCase->GetParameter("Sensor1Duration"), "hh:mm:ss");
     QTime DurationTimeSensor2 = QTime::fromString(p_TestCase->GetParameter("Sensor2Duration"), "hh:mm:ss");
+    QTime DepartureTime = QTime::fromString(p_TestCase->GetParameter("DepartureTime"), "hh:mm:ss");
+    int DepartureTimeSec = DepartureTime.hour()*60*60 + DepartureTime.minute()*60 + DepartureTime.second();
 
     qreal TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp").toDouble();
 //    qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toDouble();
@@ -2686,7 +2688,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
      (void)mp_TempRV->StopTemperatureControl();
      (void)mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
-     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second()+3;
+     WaitSec = DurationTimeSensor2.hour()*60*60 + DurationTimeSensor2.minute()*60 + DurationTimeSensor2.second() + DepartureTimeSec;
      SumSec = WaitSec;
      while (!m_UserAbort && WaitSec) {
          QTime EndTime = QTime().currentTime().addSecs(1);
@@ -2709,7 +2711,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          (void)Status.insert("CurrentTempSensor1", Sensor1Value);
          (void)Status.insert("CurrentTempSensor2", Sensor2Value);
          if (WaitSec == SumSec) {
-             QString TargetTempStr = QString("%1").arg(TargetTempSensor2);//.arg(DepartureLow).arg(DepartureHigh);
+             QString TargetTempStr = QString(">=%1").arg(TargetTempSensor2);//.arg(DepartureLow).arg(DepartureHigh);
              (void)Status.insert("TargetTemp", TargetTempStr);
 
              QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
@@ -2721,7 +2723,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          emit RefreshTestStatustoMain(TestCaseName, Status);
 
          if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-             if ( KeepSeconds > 3 ) {
+             if ( KeepSeconds > DepartureTimeSec ) {
                  RVStatus = 1;
                  break;
              }
@@ -2731,7 +2733,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
          else {
              KeepSeconds = 0;
-             if (WaitSec <= 3) {
+             if (WaitSec <= DepartureTimeSec) {
                  break;
              }
          }

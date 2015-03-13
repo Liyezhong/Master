@@ -487,12 +487,18 @@ void CSVCDashboardWidget::Valve1Selected()
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 1) == (int)Diagnostics::RETURN_OK) {
-            //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        if ((mp_GV2->Status() == CGraphicsItemPart::Working)) {
+            if (SetValveStatus(1, 0)) {
+                mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+                Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+            }
+            else {
+                ShowFailedDlg("Valve1", "Valve2 close failed");
+                return;
+            }
         }
-        else {
+
+        if (!SetValveStatus(0, 1)) {
             ShowFailedDlg("Valve1", "Valve1 open failed");
             mp_GV1->SetStatus(CGraphicsItemPart::Normal);
             return;
@@ -500,12 +506,7 @@ void CSVCDashboardWidget::Valve1Selected()
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(0, 0) == (int)Diagnostics::RETURN_OK) {
-            //mp_GV1StateUp->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
-            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
-        }
-        else {
+        if (!SetValveStatus(0, 0)) {
             ShowFailedDlg("Valve1", "Valve1 close failed");
             mp_GV1->SetStatus(CGraphicsItemPart::Working);
             return;
@@ -525,12 +526,18 @@ void CSVCDashboardWidget::Valve2Selected()
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 1) == (int)Diagnostics::RETURN_OK) {
-            //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        if (mp_GV1->Status() == CGraphicsItemPart::Working) {
+            if (SetValveStatus(0, 0)) {
+                mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+                Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+            }
+            else {
+                ShowFailedDlg("Valve2", "Valve1 close failed");
+                return;
+            }
         }
-        else {
+
+        if (!SetValveStatus(1, 1)) {
             ShowFailedDlg("Valve2", "Valve2 open failed");
             mp_GV2->SetStatus(CGraphicsItemPart::Normal);
             return;
@@ -538,12 +545,7 @@ void CSVCDashboardWidget::Valve2Selected()
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(1, 0) == (int)Diagnostics::RETURN_OK) {
-            //mp_GV2StateUp->SetStatus(CGraphicsItemPart::Normal);
-            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
-            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
-        }
-        else {
+        if (!SetValveStatus(1, 0)) {
             ShowFailedDlg("Valve2", "Valve2 close failed");
             mp_GV2->SetStatus(CGraphicsItemPart::Working);
             return;
@@ -552,6 +554,35 @@ void CSVCDashboardWidget::Valve2Selected()
     }
 
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve2");
+}
+
+bool CSVCDashboardWidget::SetValveStatus(quint8 ValveIndex, quint8 Status)
+{
+    if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetValve(ValveIndex, Status) !=
+            (int)Diagnostics::RETURN_OK) {
+        return false;
+    }
+    if (ValveIndex == 0) {
+        if (Status == 0) {
+            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+        }
+        else {         
+            mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        }
+    }
+    else {
+        if (Status == 0) {
+            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+        }
+        else {            
+            mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
+            mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+        }
+    }
+    return true;
 }
 
 void CSVCDashboardWidget::PumpSelected()
