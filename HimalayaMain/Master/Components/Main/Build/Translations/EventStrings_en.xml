@@ -721,7 +721,7 @@
         <string id="67176195" text1="Error ID %1!  Sealing failed in processing scenario." text2=""/>
         <string id="67176196" text1="Error ID %1!  Wax bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
         <string id="67176198" text1="Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
-        <string id="67176199" text1="Bottle %1 seems to be insufficent filled. Please check bottle according to user manual. After that press Retry button." text2=""/>
+        <string id="67176199" text1="Please check bottle according to user manual." text2=""/>
         <string id="67176200" text1="Draining of Retort has failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176201" text1="Error ID %1! Please call service!" text2=""/>
         <string id="67176202" text1="Error ID %1! Exhaust system failed! Please inform service!" text2=""/>
