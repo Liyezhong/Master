@@ -1207,8 +1207,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (1 == m_PssmStepFinSeq)
         {
-            // Update station reagent status
-            this->UpdateStationReagentStatus();
             (void)this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1)
             {
@@ -3501,6 +3499,9 @@ void SchedulerMainThreadController::Fill()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+    // Update station reagent status
+    this->UpdateStationReagentStatus();
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {
@@ -4752,12 +4753,6 @@ void SchedulerMainThreadController::CompleteRsAbort()
     Q_ASSERT(commandPtrAbortFinish);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
-
-    //update station/reagent using times
-    if(m_ProgramStatusInfor.IsRetortContaminted())
-    {
-        UpdateStationReagentStatus();
-    }
 
     m_CurProgramStepIndex = -1;
     LogDebug("Program aborted!");
