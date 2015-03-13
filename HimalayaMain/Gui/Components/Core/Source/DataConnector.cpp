@@ -48,6 +48,7 @@
 #include <QDesktopWidget>
 #include <Core/Include/ReagentStatusModel.h>
 #include "Core/Include/GlobalHelper.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 namespace Core {
 const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
@@ -911,6 +912,35 @@ void CDataConnector::ReagentRemoveHandler(Global::tRefType Ref,
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
 }
+
+void CDataConnector::ServiceStart()
+{
+    bool IsNeedUpdate = false;
+    QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
+    DataManager::CHimalayaUserSettings* HimalayaUserSettings = SettingsInterface->GetUserSettings();
+    if ("" ==  HimalayaUserSettings->GetOperationLastResetDate())
+    {
+        IsNeedUpdate = true;
+        HimalayaUserSettings->SetOperationLastResetDate(strDate);
+    }
+
+    if ("" == HimalayaUserSettings->GetActiveCarbonLastResetDate())
+    {
+        IsNeedUpdate = true;
+        HimalayaUserSettings->SetActiveCarbonLastResetDate(strDate);
+    }
+
+    if (IsNeedUpdate)
+    {
+        QByteArray ByteArray;
+        QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
+        SettingsDataStream << *HimalayaUserSettings;
+        (void)SettingsDataStream.device()->reset();
+        MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
+        (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Handles incoming configuration file commands
@@ -955,6 +985,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         case NetCommands::USER_SETTING:
             DataStream >> *SettingsInterface;
             SettingsInterface->SetDataVerificationMode(false);
+            ServiceStart();
             emit UserSettingsUpdated();
             break;
         case NetCommands::DEVICE_CONFIGURATION:
@@ -1381,30 +1412,6 @@ void CDataConnector::SettingsUpdateHandler(Global::tRefType Ref, const MsgClasse
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
-///****************************************************************************/
-///*!
-// *  \brief Handles CmdAlarmToneTest
-// *
-// *  \iparam Ref = Command reference
-// *  \iparam Command = Change User Settings command
-// */
-///****************************************************************************/
-//void CDataConnector::TestAlarmHandler(Global::tRefType Ref, const MsgClasses::CmdAlarmToneTest &Command)
-//{
-//    QByteArray SettingsData(const_cast<QByteArray &>(Command.GetUserSettings()));
-//    QDataStream SettingsDataStream(&SettingsData, QIODevice::ReadWrite);
-//    SettingsDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-//    DataManager::CUserSettings Settings;
-//    SettingsDataStream >> Settings;
-//    bool Result = false;
-//    if (SettingsInterface) {
-//        Result = SettingsInterface->UpdateUserSettings(&Settings);
-//        if (Result) {
-//            emit UserSettingsUpdated();
-//        }
-//    }
-//    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
-//}
 
 /****************************************************************************/
 /****************************************************************************/

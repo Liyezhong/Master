@@ -844,6 +844,7 @@ protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 
 private:
+    void ServiceStart();
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
     void UpdateProgramHandler(Global::tRefType Ref, const MsgClasses::CmdProgramUpdate &Command);
