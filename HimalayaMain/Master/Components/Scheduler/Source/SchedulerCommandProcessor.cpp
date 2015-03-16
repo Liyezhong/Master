@@ -592,7 +592,8 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
     }
     else if ("Scheduler::IDSealingCheck" == cmdName)
     {
-        scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure()));
+        scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure(),
+                                                              qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetSealPosition() ) );
     }
     else if ("Scheduler::RmtLocAlarm" == cmdName)
     {

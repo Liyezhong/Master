@@ -98,7 +98,26 @@ public:
 	 */
 	/****************************************************************************/
 	void SetThresholdPressure(qreal ThresholdPressure){m_ThresholdPressure = ThresholdPressure;}
-	
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetSealPosition
+     *
+     *  \return from GetSealPosition
+     */
+    /****************************************************************************/
+    DeviceControl::RVPosition_t GetSealPosition(){return m_SealPos;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetSealPosition
+     *
+     *  \param SealPosition = RVPosition_t type parameter
+     *
+     *  \return from SetSealPosition
+     */
+    /****************************************************************************/
+    void SetSealPosition(DeviceControl::RVPosition_t SealPosition){m_SealPos = SealPosition;}
+
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetParameters
@@ -124,6 +143,7 @@ private:
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
 	mutable qreal m_ThresholdPressure;       ///<  Definition/Declaration of variable m_ThresholdPressure
+    mutable DeviceControl::RVPosition_t m_SealPos;         ///< Definition/Declaration of variable m_SealPos
 	
 };
 

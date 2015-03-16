@@ -289,7 +289,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                     m_RVPositioinChkSeq = 0;
                     m_CurrentState = PRESSURE_SEALING_CHECKING;
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION_SUCCESS);
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION);
                 }
                 else
                 {
@@ -303,7 +302,9 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (0 == m_PressureSealingChkSeq)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST);
+            RVPosition_t RVSealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(mp_SchedulerThreadController->GetCurrentStationID());
             CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, mp_SchedulerThreadController);
+            cmd->SetSealPosition(RVSealPos);
             cmd->SetThresholdPressure(5.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
             m_PressureSealingChkSeq++;
