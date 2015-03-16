@@ -47,9 +47,9 @@
 	<Firmware>
 		<FirmwareUpdate SlaveType="3" Path="" />
 		<FirmwareGetSlaveInfo SlaveType="3" />
-		<BoardOptionASB3 VoltageLimitWarning="21600" VoltageLimitFailure="16000" CurrentLimitWarning="300" CurrentLimitFailure="500" />
-		<BoardOptionASB5 VoltageLimitWarning="21600" VoltageLimitFailure="16000" CurrentLimitWarning="500" CurrentLimitFailure="700" />
-		<BoardOptionASB15 VoltageLimitWarning="21600" VoltageLimitFailure="16000" CurrentLimitWarning="800" CurrentLimitFailure="1000" />
+		<BoardOptionASB3 VoltageLimitWarning="21600" VoltageLimitFailure="21000" CurrentLimitWarning="300" CurrentLimitFailure="500" />
+		<BoardOptionASB5 VoltageLimitWarning="21600" VoltageLimitFailure="21000" CurrentLimitWarning="500" CurrentLimitFailure="700" />
+		<BoardOptionASB15 VoltageLimitWarning="21600" VoltageLimitFailure="21000" CurrentLimitWarning="800" CurrentLimitFailure="1000" />
 	</Firmware>
 	<PressureSensor>
 		<PressureSensorCalibrate TryNum="1" FirstTime="1" PressureHigh="2.0" PressureLow="0.2" />
