@@ -102,7 +102,7 @@
 			<Step ID="6" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040163" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175942" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="2"/>
 			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
 			<Step ID="2" Type="MSG" StringID="67176212" ButtonType="RETRY" NextStepOnClickRetry="3" StatusBar="YES"/>
 			<Step ID="3" Type="ACT" Action="RC_Filling" NextStepOnFail="5" NextStepOnSuccess="4"/>
