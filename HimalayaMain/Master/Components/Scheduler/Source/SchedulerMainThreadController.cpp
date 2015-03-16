@@ -4820,16 +4820,6 @@ bool SchedulerMainThreadController::RaiseError(const quint32 EventKey, ReturnCod
     return true;
 }
 
-bool SchedulerMainThreadController::IsWaitingToPause()
-{
-    return m_bWaitToPause;
-}
-
-void SchedulerMainThreadController::SetWaitingToPause(bool set)
-{
-    m_bWaitToPause = set;
-}
-
 void SchedulerMainThreadController::DismissPausingMsgDlg()
 {
      SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
