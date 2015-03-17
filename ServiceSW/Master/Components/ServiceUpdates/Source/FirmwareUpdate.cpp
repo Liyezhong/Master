@@ -240,6 +240,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
     else {
         emit UpdateModule(*mp_Module);
         UpdateSlaveVersion();
+        //CopyFilesToRollBackDir();
     }
 
     mp_Ui->updateBtn->setEnabled(true);
@@ -315,6 +316,16 @@ void CFirmwareUpdate::UpdateSlaveVersion()
 void CFirmwareUpdate::SetEnableUpdate(bool Enable)
 {
     mp_Ui->updateBtn->setEnabled(Enable);
+}
+
+void CFirmwareUpdate::CopyFilesToRollBackDir()
+{
+    QString FirmwareFilePath = Global::SystemPaths::Instance().GetFirmwarePath();
+    QString RollBackPath = Global::SystemPaths::Instance().GetRollbackPath();
+
+    QString CmdStr = "cp -rf " + FirmwareFilePath + "/* " + RollBackPath;
+
+    (void)system(CmdStr.toStdString().c_str());
 }
 
 void CFirmwareUpdate::RetranslateUI()

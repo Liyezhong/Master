@@ -823,7 +823,9 @@ Sealing_Test_Twice:
             break;
         }
 
-        Global::EventObject::Instance().RaiseEvent(EventId);
+        if (SealingTestNum < 2) {
+            Global::EventObject::Instance().RaiseEvent(EventId);
+        }
         emit PerformManufacturingTest(Id);
 
         bool Result = GetTestResponse();
@@ -896,14 +898,13 @@ Sealing_Test_Twice:
                     Text = QString("%1 - %2").arg(TestCaseDescription).arg(Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
                     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-
                     mp_RotaryValveManuf->SetTestResult(Id, Result);
                     mp_RotaryValveManuf->EnableButton(true);
                     return ;
                 }
                 else {
                     if (SealingTestNum == 1) {
-                        Global::EventObject::Instance().RaiseEvent(OkId);
+                        //Global::EventObject::Instance().RaiseEvent(OkId);
                         goto Sealing_Test_Twice;
                     }
                     else {

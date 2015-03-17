@@ -1442,6 +1442,7 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    ServiceDataManager::CModuleDataList *ModuleList = NULL;
     ServiceDataManager::CModule* EboxModule = NULL;
     ServiceDataManager::CSubModule* SlaveModule = NULL;
     bool InitFlag = false;
@@ -1457,8 +1458,9 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
             mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
         }
 
-        if (mp_ServiceConnector->GetModuleListContainer()) {
-            EboxModule = mp_ServiceConnector->GetModuleListContainer()->GetModule("Main Control");
+        ModuleList = mp_ServiceConnector->GetModuleListContainer();
+        if (ModuleList) {
+            EboxModule = ModuleList->GetModule("Main Control");
         }
     }
 
@@ -1503,6 +1505,10 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
             }
         }
         if (InitFlag && EboxModule) {
+            QDateTime DateTime = QDateTime::currentDateTime();
+            QString CurrentDateTime = DateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
+            ModuleList->SetModuleTimeStamp(CurrentDateTime);
+
             mp_ServiceConnector->SendModuleUpdate(*EboxModule);
             mp_FirmwareUpdate->UpdateGUI();
         }
