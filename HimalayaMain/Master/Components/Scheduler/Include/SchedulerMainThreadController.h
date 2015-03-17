@@ -78,7 +78,7 @@ typedef struct {
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
-const qint64 TIME_FOR_FIX_TIME = 195;    ///< seconds for fix time
+const qint64 TIME_FOR_FIX_TIME = 180;    ///< seconds for fix time
 
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
@@ -359,7 +359,8 @@ typedef struct
         PowerFailureStep_t m_PowerFailureStep;                ///< the power failure step
         bool    m_IsWaitHeatingRV;                            ///< wait heating RV
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
-        bool    m_IsErrorStateForHM;                               ///< enter the error state
+        bool    m_IsErrorStateForHM;                          ///< enter the error state
+        bool    m_IsProcessing;                               ///< in processing
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

@@ -146,6 +146,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsWaitHeatingRV = false;
     m_IsSendMsgForWaitHeatRV = false;
     m_IsErrorStateForHM = false;
+    m_IsProcessing = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -1013,6 +1014,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         m_completionNotifierSent = false;
                         m_IsReleasePressureOfSoakFinish = false;
                         m_ReleasePressureSucessOfSoakFinish = false;
+                        m_IsProcessing = false;
                     }
                 }
                 else
@@ -1024,6 +1026,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         m_TimeStamps.CurStepSoakStartTime = 0;
                         m_IsReleasePressureOfSoakFinish = false;
                         m_ReleasePressureSucessOfSoakFinish = false;
+                        m_IsProcessing = false;
                     }
                 }
             }
@@ -3233,8 +3236,9 @@ void SchedulerMainThreadController::ReleasePressure()
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
     // We only release pressure if neither P or V exists.
-    if(m_CurrentStepState != PSSM_PROCESSING)
+    if(!m_IsProcessing)
     {
+        m_IsProcessing = true;
         RaiseEvent(EVENT_SCHEDULER_START_PROCESSING);
         if (!m_CurProgramStepInfo.isPressure && !m_CurProgramStepInfo.isVacuum)
         {
