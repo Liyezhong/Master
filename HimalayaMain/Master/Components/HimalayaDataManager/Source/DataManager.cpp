@@ -102,7 +102,6 @@ quint32 CDataManager::InitializeDataContainer()
     if (0 == activeCarbonFilterLifeTime)
     {
         CHimalayaUserSettings tempSettings(*mp_DataContainer->SettingsInterface->GetUserSettings());
-        tempSettings.SetActiveCarbonHours(0);
         QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
         tempSettings.SetActiveCarbonLastResetDate(strDate);
         (void)mp_DataContainer->SettingsInterface->UpdateUserSettings(&tempSettings);

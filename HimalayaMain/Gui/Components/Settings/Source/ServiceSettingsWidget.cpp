@@ -212,7 +212,6 @@ void CServiceSettingsWidget::OnResetOperationDays()
 
 void CServiceSettingsWidget::OnResetCarbonFilter()
 {
-    m_UserSettingsTemp.SetActiveCarbonHours(0);
     QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();
     m_UserSettingsTemp.SetActiveCarbonLastResetDate(strDate);
     QString dateStr = GetFormattedCurrentDateString();

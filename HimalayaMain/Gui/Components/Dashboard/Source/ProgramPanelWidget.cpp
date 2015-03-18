@@ -26,7 +26,8 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     m_pUserSetting(NULL),
     mp_ProgramList(NULL),
     m_startButtonDisabledAsSysError(false),
-    m_pauseButtonDisabledAsSysError(false)
+    m_pauseButtonDisabledAsSysError(false),
+    m_ProgramStartReady(false)
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
@@ -77,6 +78,8 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, UpdateProgram(DataManager::CProgram&), ui->favoriteProgramsPanel, UpdateProgram(DataManager::CProgram&));
+    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, ProgramStartReadyUpdated(),
+                      this, OnProgramStartReadyUpdated());
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -301,8 +304,11 @@ bool CProgramPanelWidget::IsAbortEnabled()
 
 void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
-    if (!m_SelectedProgramId.isEmpty())
-        this->ui->startButton->setEnabled(true);
+    if (m_ProgramStartReady && !Core::CGlobalHelper::GetSystemErrorStatus())
+	{
+    	if (!m_SelectedProgramId.isEmpty())
+        	this->ui->startButton->setEnabled(true);
+	}
 }
 
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
@@ -344,6 +350,11 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
     const DataManager::CReagent *p_Reagent = mp_DataConnector->ReagentList->GetReagent(strReagentID);
     ui->programRunningPanel->OnCurrentProgramStepInforUpdated(p_Reagent->GetReagentName(), 0,
                                                               cmd.GetRemainingTime(), cmd.GetStepIndex());
+}
+
+void CProgramPanelWidget::ProgramStartReady(bool bSet)
+{
+    m_ProgramStartReady = bSet;
 }
 
 void CProgramPanelWidget::OnPreTestDone()

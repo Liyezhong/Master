@@ -184,8 +184,11 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
 
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
 {
-    m_ButtonGroup.setExclusive(false);
     int checkedID = m_ButtonGroup.checkedId();
+    if (-1 == checkedID)
+        return;
+
+    m_ButtonGroup.setExclusive(false);
     if (checkedID != -1)
     {
         m_ButtonGroup.button(checkedID)->setChecked(false);
@@ -193,13 +196,16 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
     m_LastCanBeSelectedButtonId = -1;
+    Core::CGlobalHelper::UnselectProgram();
+    emit UpdateFavProgram();
 }
 
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 {
     if ((m_LastSelectedButtonId == m_ButtonGroup.checkedId()) && (m_FavProgramIDs.at(0) != "C01"))
     {
-
+        //send signal to update start button status
+        emit ProgramStartReadyUpdated();
     }
     else
     {   //on selected a program

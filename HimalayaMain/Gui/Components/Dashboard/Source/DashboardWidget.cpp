@@ -290,6 +290,7 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     m_ProgramStartReady = true;
+    ui->programPanelWidget->ProgramStartReady(true);
     if (mp_WaitRotaryValveHeatingPrompt)
         mp_WaitRotaryValveHeatingPrompt->accept();
 }

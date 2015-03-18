@@ -161,6 +161,15 @@ public:
      */
     /****************************************************************************/
     void SwitchToProgramRunningStatus(const MsgClasses::CmdRecoveryFromPowerFailure& cmd);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of function ProgramStartReady
+     *  \param  bSet = the set value
+     *
+     *  \return from ProgramStartReady
+     */
+    /****************************************************************************/
+    void ProgramStartReady(bool bSet);
 signals:
     /****************************************************************************/
     /*!
@@ -388,6 +397,7 @@ private:
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
     bool m_startButtonDisabledAsSysError;
     bool m_pauseButtonDisabledAsSysError;
+    bool m_ProgramStartReady;
 };
 
 }// end namespace Dashboard
