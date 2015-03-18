@@ -210,7 +210,27 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
                              mp_DayWheel->GetCurrentData().toInt()));
 
     m_selDateTime.setTime(QTime(mp_HourWheel->GetCurrentData().toInt(), mp_MinWheel->GetCurrentData().toInt()));
-    mp_Ui->lblDateTimeDisplay->setText(m_ASAPDateTime.toString());
+
+    Global::DateFormat DateFmt = mp_UserSetting->GetDateFormat();
+    QString Date, Time;
+    if (DateFmt == Global::DATE_INTERNATIONAL) {
+        Date = m_ASAPDateTime.date().toString("dd.MM.yyyy");
+    }
+    else if (DateFmt == Global::DATE_ISO) {
+        Date = m_ASAPDateTime.date().toString(Qt::ISODate);
+    }
+    else {
+        Date = m_ASAPDateTime.date().toString("MM/dd/yyyy");
+    }
+
+    if (TimeFormat == Global::TIME_24) {
+        Time = m_ASAPDateTime.time().toString("hh:mm");
+    }
+    else {
+        Time = m_ASAPDateTime.time().toString("hh:mm a");
+    }
+
+    mp_Ui->lblDateTimeDisplay->setText(Date + " " + Time);
 }
 
 /****************************************************************************/
