@@ -598,6 +598,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
+        m_IsProcessing = false;
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
@@ -842,6 +843,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
         if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
         {
+            m_IsProcessing = false;
             LogDebug("Program Step Heating Level sensor stage OK");
             if (m_bWaitToPause)
             {
