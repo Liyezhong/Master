@@ -213,6 +213,8 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
 
         CONNECTSIGNALSLOT(this, SendRCCmdToGui(const Global::CommandShPtr_t &),
                                      this, SendRCCmdToGuiChannel(const Global::CommandShPtr_t &));
+        CONNECTSIGNALSLOT(this, SendCmdToGui(const Global::CommandShPtr_t &),
+                                     this, SendRCCmdToGuiChannel(const Global::CommandShPtr_t &));
     }
     catch (...) {
         qDebug()<<"Create And Initialize Failed";
@@ -1107,17 +1109,11 @@ void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, 
 {
     Q_UNUSED(Ref);
     Q_UNUSED(AckCommandChannel);
-
     qDebug() << "In the event handling for CMD system Action for event " << Cmd.GetEventID();
-
-                switch (Cmd.GetAction()) {
-                    case Global::ACNTYPE_SHUTDOWN:
-                        qDebug()<<"Shutting Down system";
-                        Shutdown();
-                        break;
-                    default:
-                        break;
-                }
+    if(Cmd.GetAction() == Global::ACNTYPE_SHUTDOWN || Cmd.GetActionString().compare("RS_Shutdown") == 0){
+        qDebug()<<"Shutting Down system";
+        Shutdown();
+    }
 }
 
 

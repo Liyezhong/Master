@@ -736,7 +736,7 @@
         <string id="67176214" text1="Protocol was interrupted by power failure. Please remove the specimen and abort the protocol." text2=""/>
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service. If you want to enter the normal state next time. Please shut down the program by the Shutdown button." text2=""/>
-	<string id="67176218" text1="Error ID %1!  Software internal error." text2=""/>
+	<string id="67176218" text1="system error,  confirm to shutdown." text2=""/>
 	<string id="67176219" text1="Safe reagent failed. Please call service." text2=""/>
 	<string id="67176220" text1="Please clear level sensor by sourcing pad." text2=""/>
 	<string id="67176221" text1="Error ID %1! In whole processing, some process interval time out 4 minutes." text2=""/>
