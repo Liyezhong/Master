@@ -280,10 +280,17 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
+        mp_MessageDlg->HideAllButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CLaSystem",
+                                                       "Saving data, please wait...", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->Show();
+
         if(mp_DateConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
+            ResetMessageBox();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
@@ -294,6 +301,7 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
         }
         else
         {
+            ResetMessageBox();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

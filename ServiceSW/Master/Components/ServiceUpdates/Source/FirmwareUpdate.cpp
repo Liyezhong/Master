@@ -222,7 +222,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
     }
 
     if (num == 3) {
-
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE_REJECT);
         MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
         dlg->SetTitle(QApplication::translate("ServiceUpdates::CFirmwareUpdate", "Information Message",
                                                         0, QApplication::UnicodeUTF8));
@@ -262,10 +262,14 @@ void CFirmwareUpdate::SetUpdateResult(int Index, bool Result)
     m_Result = Result;
 
     if (Result) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE_SUCCESS,
+                                                   Global::tTranslatableStringList()<<m_Model.item(Index, 0)->text());
         if (!PixMapPass.isNull())
             SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
     }
     else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE_FAILURE,
+                                                   Global::tTranslatableStringList()<<m_Model.item(Index, 0)->text());
         if (!PixMapFail.isNull())
             SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
     }

@@ -1597,6 +1597,12 @@ void ServiceMasterThreadController::DownloadFirmware()
 Download_Finished:
     emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , Ret);
     //Core::CServiceUtils::delay(500);
+    if (Ret) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_DOWNLOAD_SUCCESS);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_DOWNLOAD_FAILURE);
+    }
     emit SetInformationToNetworkSettings(Information, Color);
 }
 

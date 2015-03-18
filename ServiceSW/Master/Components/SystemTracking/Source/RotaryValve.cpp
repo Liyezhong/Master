@@ -303,10 +303,17 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
+        mp_MessageDlg->HideAllButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                                       "Saving data, please wait...", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->Show();
+
         if(mp_DateConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
+            ResetMessageBox();
 
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
@@ -322,6 +329,7 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
         }
         else
         {
+            ResetMessageBox();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

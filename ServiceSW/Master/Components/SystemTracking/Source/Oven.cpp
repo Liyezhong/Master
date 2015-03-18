@@ -265,10 +265,17 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
+        mp_MessageDlg->HideAllButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::COven",
+                                                       "Saving data, please wait...", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->Show();
+
         if(mp_DataConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             ResetSubModuleLifeCycle();
+            ResetMessageBox();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
@@ -279,6 +286,7 @@ void COven::ConfirmModuleConfiguration(QString& Text)
         }
         else
         {
+            ResetMessageBox();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

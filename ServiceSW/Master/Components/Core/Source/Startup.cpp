@@ -1511,6 +1511,7 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
 
             mp_ServiceConnector->SendModuleUpdate(*EboxModule);
             mp_FirmwareUpdate->UpdateGUI();
+            mp_ViewHistory->UpdateGUI();
         }
         emit AutoDetect();
     }
