@@ -78,9 +78,9 @@
 		<string id="100728907" text1="Oven heating test empty is requested" text2=""/>
 		<string id="100728908" text1="Oven heating test empty completed successfully" text2=""/>
 		<string id="100728909" text1="Oven heating test empty failed" text2=""/>
-		<string id="100728910" text1="Oven heating test with liquid is requested" text2=""/>
-		<string id="100728911" text1="Oven heating test with liquid completed successfully" text2=""/>
-		<string id="100728912" text1="Oven heating test with liquid failed" text2=""/>
+		<string id="100728910" text1="Oven heating test with water is requested" text2=""/>
+		<string id="100728911" text1="Oven heating test with water completed successfully" text2=""/>
+		<string id="100728912" text1="Oven heating test with water failed" text2=""/>
 		<string id="100728913" text1="Oven cover sensor test is requested" text2=""/>
 		<string id="100728914" text1="Oven cover sensor test completed successfully" text2=""/>
 		<string id="100728915" text1="Oven cover sensor test failed" text2=""/>

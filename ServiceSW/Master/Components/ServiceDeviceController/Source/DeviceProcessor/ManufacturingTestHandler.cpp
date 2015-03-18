@@ -1044,7 +1044,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     }
 
     EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_TUBE_POSITION, bottlePos);
-    mp_Utils->Pause(1000);
+    //mp_Utils->Pause(1000);
     if(mp_MotorRV->MoveToTubePosition(bottlePos)!=RV_MOVE_OK) {
         EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
         p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(bottlePos));
@@ -1096,6 +1096,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     }
 
     // draing
+    EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_TUBE_POSITION, bottlePos);
     (void)mp_MotorRV->MoveToTubePosition(bottlePos);
     EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
     (void)mp_PressPump->Draining(0);
