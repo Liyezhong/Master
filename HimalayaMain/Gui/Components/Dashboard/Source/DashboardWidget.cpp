@@ -626,6 +626,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
                 //switch to the dashboard page
                 mp_MainWindow->SetTabWidgetIndex();
                 emit SwitchToFavoritePanel();
+                OnUnselectProgram();
             }
         }
     }
