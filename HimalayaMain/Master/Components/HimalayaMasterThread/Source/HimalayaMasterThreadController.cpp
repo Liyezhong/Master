@@ -472,6 +472,15 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
         EventHandler::StateHandler::Instance().setIdleState();
         qDebug()<<"SYSTEM INIT COMPLETE \n\n\n\n";
 
+        //only for debug crash issue
+        QString StartMonitor = Global::SystemPaths::Instance().GetScriptsPath() + "/start_monitor.sh";
+        QString EboxMonitor = Global::SystemPaths::Instance().GetScriptsPath() + "/ebox_monitor.sh";
+        if(QFile::exists(StartMonitor) && QFile::exists(EboxMonitor))
+        {
+            EboxMonitor = QString("%1 HIM &").arg(StartMonitor);
+            system(EboxMonitor.toStdString().c_str());
+        }
+
         //SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(true)), m_CommandChannelSchedulerMain);
     } catch(const Global::Exception &E) {
         // destroy controllers and threads
