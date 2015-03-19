@@ -633,9 +633,6 @@
 			<Step ID="1" Type="ACT" Action="open_oven_change_heating_paraffin"/>
 			<Step ID="2" Type="ACT" Action="CheckOvenCover"/>
 		</Event>
-		<Event Code="" ErrorID="512040053" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176012" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176194" ButtonType="OK" StatusBar="YES"/>
-		</Event>
 		<Event Code="" ErrorID="512050401" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176013" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176211" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 		    <Step ID="1" Type="ACT" Action="Rs_CheckRemoteAlarmStatus"/>

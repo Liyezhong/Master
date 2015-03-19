@@ -2602,6 +2602,11 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
         if(IsLastStep(programStepIDIndex, m_CurProgramID))
         {
             leftTime += m_EndTimeAndStepTime.BufferTime;
+            if("RG6" == GetReagentGroupID(pProgramStep->GetReagentID()))
+            {
+                //last paraffin will drain delay 25 seconds
+                leftTime += 25;
+            }
         }
     }
     return leftTime;
@@ -3386,6 +3391,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         }
 
         //Check if pressure reaches negative 25kpa, if no, report out warning message
+    #if 0
         if (QDateTime::currentMSecsSinceEpoch() - m_CleaningDry.StepStartTime >= 120*1000 && m_CleaningDry.warningReport == false)
         {
            m_CleaningDry. warningReport = true;
@@ -3394,6 +3400,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
                 SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
             }
         }
+    #endif
         break;
     case CDS_STOP_VACUUM:
         ReleasePressure();
