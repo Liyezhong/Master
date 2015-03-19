@@ -39,7 +39,6 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
     , mp_Ui(new Ui::CFirmwareUpdate)
     , mp_DataConnector(p_DataConnector)
     , mp_Module(NULL)
-    , m_Result(false)
 {
     mp_Ui->setupUi(this);
     //RetranslateUI();
@@ -214,10 +213,6 @@ void CFirmwareUpdate::UpdateFirmware(void)
 
         emit BeginModuleTest(Service::FIRMWARE, TestCaseList);
 
-        if (m_Result) {
-            m_Model.item(i, 1)->setText(m_Model.item(i, 2)->text());
-        }
-
         //emit UpdateModule(*mp_Module);
     }
 
@@ -259,11 +254,11 @@ void CFirmwareUpdate::SetUpdateResult(int Index, bool Result)
     QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
     QPixmap SetPixMap;
 
-    m_Result = Result;
-
     if (Result) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE_SUCCESS,
                                                    Global::tTranslatableStringList()<<m_Model.item(Index, 0)->text());
+
+        m_Model.item(Index, 1)->setText(m_Model.item(Index, 2)->text());
         if (!PixMapPass.isNull())
             SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
     }

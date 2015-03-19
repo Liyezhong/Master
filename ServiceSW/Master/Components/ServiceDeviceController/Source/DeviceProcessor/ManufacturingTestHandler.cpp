@@ -2890,7 +2890,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
             if (mp_DOLocalAlarm) {
                 (void)mp_DOLocalAlarm->SetHigh();
             }
-            (void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
+            //(void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
         }
     }
 ERROR_EXIT:

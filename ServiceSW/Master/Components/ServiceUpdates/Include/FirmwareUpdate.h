@@ -166,7 +166,6 @@ private:
     ServiceDataManager::CModule* mp_Module;        //!< EBox Module information
     MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
     QStandardItemModel m_Model;             //!< Model for the table
-    bool m_Result;                      //!< Firmware Update result
 
     /****************************************************************************/
     /*!
