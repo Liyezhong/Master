@@ -126,6 +126,7 @@ int CHeatingTestEmpty::Run(void)
                           "Temperature sensors are out of specification. Please "
                           "check resistance of temperature sensors to verify, "
                           "exchange paraffin oven module and repeat this test."));
+        ret = RETURN_ERR_FAIL;
         goto _fail_;
     }
 
