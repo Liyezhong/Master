@@ -2882,16 +2882,16 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
             mp_Utils->Pause(5000);
         }
 
-        if (SlaveType == Slave_15) {
-            if (mp_DORemoteAlarm) {
-                (void)mp_DORemoteAlarm->SetHigh();
-            }
+//        if (SlaveType == Slave_15) {
+//            if (mp_DORemoteAlarm) {
+//                (void)mp_DORemoteAlarm->SetHigh();
+//            }
 
-            if (mp_DOLocalAlarm) {
-                (void)mp_DOLocalAlarm->SetHigh();
-            }
-            //(void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
-        }
+//            if (mp_DOLocalAlarm) {
+//                (void)mp_DOLocalAlarm->SetHigh();
+//            }
+//            //(void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
+//        }
     }
 ERROR_EXIT:
     if (p_WrapperBootLoader) {
