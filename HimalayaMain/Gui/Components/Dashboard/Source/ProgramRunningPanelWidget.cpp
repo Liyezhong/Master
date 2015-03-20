@@ -98,7 +98,7 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
         ui->stepTimeLabel->setVisible(false);
         m_isAborting = true;
         m_curRemainingTimeTotal = m_remainingTimeTotal;
-        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
+        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
    }
    else if (DataManager::PROGRAM_START == ProgramActionType)
    {
