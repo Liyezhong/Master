@@ -180,10 +180,12 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
     for (int i = 0; i < m_ButtonGroup.buttons().count(); i++)
     {
         m_ButtonGroup.button(i)->setEnabled(true);
+        m_ButtonGroup.setExclusive(false);
         m_ButtonGroup.button(i)->setChecked(false);
+        m_ButtonGroup.setExclusive(true);
     }
 
-    //loop all used icons, diable it
+    //loop all used icons, disable it
     int count = pProgramList->GetNumberOfPrograms();
     for (int j = 0; j< count; j++)
     {
@@ -193,6 +195,7 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
             m_ButtonGroup.button(idx)->setEnabled(false);
         }
     }
+    mp_Ui->btnOk->setEnabled(false);
 }
 
 void CModifyProgramIconDlg::RetranslateUI()
