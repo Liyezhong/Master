@@ -60,7 +60,7 @@ void CProgramRunningPanelWidget::OnProgramActionStopped(DataManager::ProgramStat
     else if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
     {
         ui->lblReagentName->setText(m_strAborted);
-        ui->lblRemainTime->setText("00:00");
+        ui->lblRemainTime->setText("00:00:00");
     }
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {
@@ -155,7 +155,7 @@ void CProgramRunningPanelWidget::UpdateProgress()
     {
         // to avoid negative number
         if (m_curRemainingTimeTotal>0) {
-            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, false));
+            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
         }
     }
 }

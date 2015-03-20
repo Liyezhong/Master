@@ -1296,7 +1296,7 @@ void CDashboardWidget::RetranslateUI()
     m_strCoolingDown = QApplication::translate("Dashboard::CDashboardWidget", "Retort temperature is too high, please wait a few minutes to cool it down before the next program.", 0, QApplication::UnicodeUTF8);
     QString strTemp = QString("Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).") +
     QString("Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.") +
-    QString("Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin protocol temperature! ") +
+    QString("Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! ") +
     QString("Please confirm modifying Paraffin temperature.");
     QByteArray ba = strTemp.toLatin1();
     char* ch =ba.data();
