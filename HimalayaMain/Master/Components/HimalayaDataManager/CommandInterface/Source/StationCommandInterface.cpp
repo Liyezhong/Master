@@ -93,9 +93,19 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
     else {
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdStationChangeReagent(10000, cmd.StationID(), cmd.ReagentID())));
+        QString reagentName;
+        QString reagentId = cmd.ReagentID();
+        if ("" == reagentId)
+        {
+            reagentName = "None";
+        }
+        else
+        {
+            reagentName = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(cmd.ReagentID())->GetReagentName();
+        }
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_CHANGE_STATION,
                                                    Global::tTranslatableStringList() << cmd.StationID()
-                                                   << static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(cmd.ReagentID())->GetReagentName());
+                                                   << reagentName);
 
     }
 
