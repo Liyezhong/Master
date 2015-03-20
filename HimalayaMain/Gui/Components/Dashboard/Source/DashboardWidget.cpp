@@ -475,7 +475,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     //show "aborting"
     //time countdown
     //Todo:20, Abort time, will be given a rough value later;
-    emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
+    emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 90, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
     ui->programPanelWidget->EnableStartButton(false);
     ui->programPanelWidget->EnablePauseButton(false);
     m_ProgramStatus = Aborting;
