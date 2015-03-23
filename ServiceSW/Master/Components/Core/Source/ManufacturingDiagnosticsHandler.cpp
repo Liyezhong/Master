@@ -1274,6 +1274,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
 
             NextFlag = ShowGuide(Id, 1) && ShowGuide(Id, 2);
             if (!NextFlag) {
+                HideMessage();
                 break;
             }
 

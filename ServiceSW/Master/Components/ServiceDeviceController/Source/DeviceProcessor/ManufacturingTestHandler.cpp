@@ -1930,7 +1930,7 @@ CLEANING_EXIT:
     return RetValue;
 }
 
-bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressure, float departure, const QString& TestCaseName)
+bool ManufacturingTestHandler:: CreatePressure(int waitSecond, float targetPressure, float departure, const QString& TestCaseName)
 {
     bool result = false;
 
@@ -1945,6 +1945,7 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
         (void)mp_PressPump->SetTargetPressure(9, targetPressure);
     }
 
+    float pressure = mp_PressPump->GetPressure();
     waitSecond += 1;
     while (waitSecond) {
         QTime EndTime = QTime().currentTime().addSecs(1);
@@ -1953,7 +1954,7 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
             result = false;
             break;
         }
-        float pressure = mp_PressPump->GetPressure();
+        pressure = mp_PressPump->GetPressure();
 
         if (departure == 0) {
             if (targetPressure > 0 && pressure >= targetPressure) {
@@ -1980,6 +1981,7 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
             }
         }
         else if (pressure >= (targetPressure - qAbs(departure)) && pressure <= (targetPressure + qAbs(departure))) {
+            qDebug()<<"Current pressure "<<pressure<<" target pressure: "<<targetPressure<<"  departure:"<<departure;
             result = true;
             break;
         }
@@ -1992,13 +1994,16 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, float targetPressu
         mp_Utils->Pause(MSec);
     }
     if (result == true) {
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+        qDebug()<<"CreatePressure : currentPressure ================================== "<<pressure;
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, pressure);
         mp_Utils->Pause(1000);
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
-        mp_Utils->Pause(1000);
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
-        mp_Utils->Pause(1000);
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+//        mp_Utils->Pause(1000);
+//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+//        mp_Utils->Pause(1000);
+//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
+//        mp_Utils->Pause(1000);
+//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
     }
 
     qDebug()<<"CreatePressure : currentPressure = "<<mp_PressPump->GetPressure();
