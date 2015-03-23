@@ -40,6 +40,8 @@ CONFIG(debug, debug|release) {
                QT_NO_DEBUG_OUTPUT \
                            DBT_TRACE_DISCARD \
                NDEBUG
+    QMAKE_LFLAGS_RELEASE += -rdynamic
+    QMAKE_CXXFLAGS_RELEASE += -g
     CONFIG(gcov) {
         QMAKE_CXXFLAGS_RELEASE += -fprofile-arcs -ftest-coverage
         QMAKE_LFLAGS_RELEASE += -fprofile-arcs
