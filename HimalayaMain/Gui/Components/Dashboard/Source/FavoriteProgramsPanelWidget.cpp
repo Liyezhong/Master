@@ -225,9 +225,7 @@ void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
             m_ButtonGroup.setExclusive(false);
             m_ButtonGroup.button(m_LastCanBeSelectedButtonId)->setChecked(true);
             m_ButtonGroup.setExclusive(true);
-            m_LastSelectedButtonId = m_ButtonGroup.checkedId();
-            m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
-            SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+            OnEndTimeButtonClicked();
         }
         else {
             m_LastSelectedButtonId = -1;
