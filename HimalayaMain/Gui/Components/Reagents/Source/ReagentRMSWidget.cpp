@@ -49,7 +49,8 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     mp_ModifiyReagentRMSDlg(NULL),
     mp_Reagent(NULL),
     m_lastSelectRMSMoldeID(-1),
-    m_lastSelectCleaningRMSMoldeID(-1)
+    m_lastSelectCleaningRMSMoldeID(-1),
+    m_IsCleaningReagentSelected(false)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("RMS"));
@@ -469,6 +470,8 @@ void CReagentRMSWidget::OnDelete()
 void CReagentRMSWidget::OnCancelPressed()
 {
     mp_TableWidget->clearSelection();
+    mp_TableWidgetCleaning->clearSelection();
+    m_IsCleaningReagentSelected = false;
     ResetButtons();
 }
 
@@ -507,6 +510,7 @@ void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
             return;
         }
     }
+    m_IsCleaningReagentSelected = false;
     QString Id = m_ReagentRMSModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
 }
@@ -529,6 +533,7 @@ void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
             return;
         }
     }
+    m_IsCleaningReagentSelected = true;
     QString Id = m_ReagentCleaningModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
 
@@ -543,7 +548,7 @@ void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
  *  \iparam Id = Reagent ID
  */
 /****************************************************************************/
-void CReagentRMSWidget::UpdateButtons(QString Id)
+void CReagentRMSWidget::UpdateButtons(QString& Id)
 {
     mp_Reagent = mp_ReagentList->GetReagent(Id);
     if (mp_Reagent) {
@@ -662,7 +667,10 @@ void CReagentRMSWidget::ResetButtons()
         }
         else {
             //Edit Mode
-            mp_Ui->btnNew->setEnabled(true);
+            if (!m_IsCleaningReagentSelected)
+            {
+                mp_Ui->btnNew->setEnabled(true);
+            }
             mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->groupRMS->setEnabled(true);
@@ -858,7 +866,7 @@ void CReagentRMSWidget::showEvent(QShowEvent *)
     }
 
     m_ReagentCleaningModel.UpdateReagentList();
-
+    m_IsCleaningReagentSelected = false;
     ResetButtons();
 }
 

@@ -91,6 +91,7 @@ private:
     QButtonGroup m_ButtonGroupCleaningRMSMode;       ///<  manage the Cleaning RMS mode radio buttons
     int m_lastSelectRMSMoldeID;             ///< last selection of Cleaning RMS mode
     int m_lastSelectCleaningRMSMoldeID;             ///< last selection of Cleaning RMS mode
+    bool m_IsCleaningReagentSelected;               ///<Indicate the current selected reagent.
 
 public:
     explicit CReagentRMSWidget(QWidget *p_Parent = 0);
@@ -108,7 +109,7 @@ private:
     void ResizeHorizontalSection();
     void ResetButtons();
     void RetranslateUI();
-    void UpdateButtons(QString Id);
+    void UpdateButtons(QString& Id);
 
 protected:
     void changeEvent(QEvent *p_Event);

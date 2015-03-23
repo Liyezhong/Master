@@ -61,6 +61,7 @@ void CProgramRunningPanelWidget::OnProgramActionStopped(DataManager::ProgramStat
     {
         ui->lblReagentName->setText(m_strAborted);
         ui->lblRemainTime->setText("00:00:00");
+        m_isAborting = false;
     }
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {
@@ -322,7 +323,8 @@ void CProgramRunningPanelWidget::UpdateProgramTimerStatus(bool enable)
     }
     else
     {
-        mp_ProgressTimer->stop();
+        if (!m_isAborting)
+            mp_ProgressTimer->stop();
     }
 }
 

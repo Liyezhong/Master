@@ -90,12 +90,10 @@ void CReagentStationModel::UpdateReagentList()
             const DataManager::CDashboardStation* p_Station = mp_StationList->GetDashboardStation(StationCounter);
             if (p_Station) {
                 QString ReagentName;
-                QString ReagentID;
                 if (mp_ReagentList) {
                     DataManager::CReagent *p_Reagent = mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID());
                     if (p_Reagent) {
                         ReagentName =  p_Reagent->GetReagentName();
-                        ReagentID =  p_Reagent->GetReagentID();
                     }
                 }
                 m_StationIDs << p_Station->GetDashboardStationID();
