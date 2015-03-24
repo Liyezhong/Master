@@ -50,6 +50,16 @@ namespace Scheduler
 /*lint -e534 */
 /*lint -e616 */
 
+static void DelaySomeTime(int DelayTime)
+{
+    if(DelayTime > 0)
+    {
+        QEventLoop event;
+        QTimer::singleShot(DelayTime, &event, SLOT(quit()));
+        event.exec();
+    }
+}
+
 CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController)
     :mp_SchedulerThreadController(SchedulerThreadController)
 {
@@ -408,7 +418,7 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
         emit SigIdleRcRestart();
         while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
         {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            DelaySomeTime(100);
         }
     }
 }
@@ -473,7 +483,7 @@ void CSchedulerStateMachine::EnterPowerFailure()
     emit SigPowerFailure();
     while (false == mp_SchedulerMachine->configuration().contains(mp_PowerFailureState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -482,7 +492,7 @@ void CSchedulerStateMachine::SendSchedulerInitComplete()
     emit SchedulerInitComplete();
     while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -491,9 +501,9 @@ void CSchedulerStateMachine::SendRunSignal()
     emit RunSignal();
 
     //Make sure the state machine is in Busy state
-    while (false == mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
+    while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+        DelaySomeTime(100);
     }
 }
 
@@ -504,7 +514,7 @@ void CSchedulerStateMachine::SendRunComplete()
     //Make sure the state machine is in Idle state
     while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+        DelaySomeTime(100);
     }
 }
 
@@ -562,9 +572,9 @@ void CSchedulerStateMachine::SendErrorSignal()
     emit ErrorSignal();
 
     // Make sure the state machine is in ERROR state
-    while (false == mp_SchedulerMachine->configuration().contains(mp_ErrorState.data()))
+    while (false == mp_SchedulerMachine->configuration().contains(mp_ErrorWaitState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -870,7 +880,7 @@ void CSchedulerStateMachine::NotifyStepFinished()
     emit sigStepFinished();
     while(false == mp_SchedulerMachine->configuration().contains(mp_PssmStepFinish.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -879,7 +889,7 @@ void CSchedulerStateMachine::NotifyProgramFinished()
     emit sigProgramFinished();
     while(false == mp_SchedulerMachine->configuration().contains(mp_PssmProgramFinish.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -888,7 +898,7 @@ void CSchedulerStateMachine::NotifyEnterCleaningDryStep()
     emit sigEnterDryStep();
     while(false == mp_SchedulerMachine->configuration().contains(mp_PssmCleaningDryStep.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        DelaySomeTime(100);
     }
 }
 
@@ -898,7 +908,7 @@ void CSchedulerStateMachine::NotifyStepProgramFinished()
 
     while (false == mp_SchedulerMachine->configuration().contains(mp_PssmFillingHeatingRVState.data()))
     {
-        QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+        DelaySomeTime(100);
     }
 }
 
@@ -1635,9 +1645,9 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
 
                 emit SigBackToBusy();
                 // Make sure the state machine is in Busy state
-                while (false == mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
+                while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
                 {
-                    QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+                    DelaySomeTime(100);
                 }
             }
             else
@@ -1669,9 +1679,9 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
                 m_ErrorRcRestartSeq = 0;
                 emit SigBackToBusy();
                 // Make sure the state machine is in Busy state
-                while (false == mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
+                while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
                 {
-                    QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+                    DelaySomeTime(100);
                 }
             }
             else
@@ -1688,9 +1698,9 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
         emit SigBackToBusy();
 
         // Make sure the state machine is in Busy state
-        while (false == mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
+        while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
         {
-            QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+            DelaySomeTime(100);
         }
     }
 }
@@ -2052,9 +2062,9 @@ void CSchedulerStateMachine::EnterRcRestart()
         emit SigSelfRcRestart();
 
         // Make sure the state macine is in Init state
-        while (false == mp_SchedulerMachine->configuration().contains(mp_InitState.data()))
+        while (false == mp_SchedulerMachine->configuration().contains(mp_SelfTestState.data()))
         {
-            QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+            DelaySomeTime(100);
         }
     }
     else if(SM_IDLE == mp_SchedulerThreadController->GetCurrentStepState())
@@ -2062,7 +2072,7 @@ void CSchedulerStateMachine::EnterRcRestart()
         emit SigIdleRcRestart();
         while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
         {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            DelaySomeTime(100);
         }
     }
     else
@@ -2070,7 +2080,7 @@ void CSchedulerStateMachine::EnterRcRestart()
         emit SigEnterRcRestart();
         while (false == mp_SchedulerMachine->configuration().contains(mp_ErrorRcRestartState.data()))
         {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            DelaySomeTime(100);
         }
     }
 }

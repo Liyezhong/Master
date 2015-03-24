@@ -1118,6 +1118,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         //In case that Scheduler was recovered from Error
         if( "Scheduler::ALDraining"== cmdName)
         {
+            LogDebug("ALDraining has been got in Scheduler");
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 if(m_EndTimeAndStepTime.GapTime > 0)
@@ -3183,6 +3184,10 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
+    if ("Scheduler::ALDraining" == CmdPtr->GetName())
+    {
+        LogDebug("ALDraing has been added to m_DeviceControlCmdQueue");
+    }
     m_WaitCondition.wakeAll();
     m_MutexDeviceControlCmdQueue.unlock();
 }

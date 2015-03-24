@@ -193,6 +193,10 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
     if(newCmdComing(scmd))
     {
         this->ExecuteCmd(scmd);
+        if ("Scheduler::ALDraining" == scmd->GetName())
+        {
+            mp_SchedulerThreadController->LogDebug("ALDraining will be added to PushDeviceControlCmdQueue");
+        }
         mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
     }
 }
