@@ -126,7 +126,7 @@ void CPressureInputDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 /****************************************************************************/
 bool CPressureInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
 {
-    if ((p_Object == mp_Ui->lineEdit || p_Object == mp_Ui->lineEdit_2 )
+    if ((p_Object == mp_Ui->lineEdit || (p_Object == mp_Ui->lineEdit_2 && mp_Ui->lineEdit_2->isEnabled()))
             && p_Event->type() == QEvent::MouseButtonPress)
     {
         ConnectKeyBoardSignalSlots();
@@ -142,7 +142,6 @@ bool CPressureInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
         mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
         mp_KeyBoardWidget->show();
 
-        m_Timer->stop();
         return true;
     }
     if (p_Event->type() == QEvent::MouseButtonPress || p_Event->type() == QEvent::MouseButtonRelease) {
@@ -194,13 +193,13 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
             mp_Ui->lineEdit->selectAll();
         }
         else {
-
             QTime DurationTime = QTime::fromString(mp_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
             m_WaitSeconds  = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
             qDebug()<<"Wait Seconds = "<<m_WaitSeconds;
-            m_Timer->stop();
             m_Seconds = 0;
-            m_Timer->start(1000);
+            if (!mp_Ui->lineEdit_2->isEnabled()) {
+                m_Timer->start(1000);
+            }
         }
     }
     else if (p_Obj == mp_Ui->lineEdit_2) {
