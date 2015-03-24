@@ -11,7 +11,6 @@
 		<string id="19398663" text1="ConnectionManager: Client %1. writing outgoing data to Socket failed !." text2=""/>
 		<string id="17039371" text1="Event %1 is not properly configured in column %2" text2=""/>
 		<string id="17039372" text1="Event Code: %1,  Scenario: %2,  Action: %3,  Action Result: %4." text2=""/>
-		<string id="17825795" text1="Switch off not allowed. Wait until transportation is completed." text2=""/>
 		<string id="16973834" text1="Data logging is disabled. Please contact your service specialist." text2=""/>
 		<string id="16973828" text1="Event Id %1 does not exist in the event string xml file" text2=""/>
 		<string id="16973829" text1="Unable to create file %1" text2=""/>
@@ -19,7 +18,6 @@
 		<string id="16973825" text1="Unable to open the file %1" text2=""/>
 		<string id="16973830" text1="Unable to remove file %1" text2=""/>
 		<string id="16973831" text1="Unable to write to file %1" text2=""/>
-		<string id="19529732" text1="Can not change the date and time less/more than 24 hours if the current system date time is %1." text2=""/>
 		<string id="17235997" text1="Check user log for more info." text2=""/>
 		<string id="17235986" text1="DeviceConfiguration Verification Failed" text2=""/>
 		<string id="17235984" text1="Device Configuration XML file Read failed" text2=""/>
@@ -123,11 +121,8 @@
 		<string id="17629208" text1="Export failed. Hash-based message authentication code has not initialized" text2=""/>
 		<string id="17629205" text1="Export failed. Hash chain index and USB device indexes are matching" text2=""/>
 		<string id="17629190" text1="Export failed. Container initialization failed" text2=""/>
-		<string id="17629210" text1="Export failed. Size of the array shall be either 4 or 2 or 1" text2=""/>
 		<string id="17629199" text1="Export failed. Invalid type of requested export" text2=""/>
 		<string id="17629212" text1="Export failed. Wrong file mode is detected" text2=""/>
-		<string id="17629207" text1="Export failed. Key file size is not matching with the in-built key file size" text2=""/>
-		<string id="17629206" text1="Export failed. Key file size is more by comparing with hash block size" text2=""/>
 		<string id="17629197" text1="Export failed. Log directory does not exist" text2=""/>
 		<string id="17629211" text1="Export failed. Most significant bit not set for calculations" text2=""/>
 		<string id="17629195" text1="Export failed. Source directory does not exist" text2=""/>
@@ -178,9 +173,6 @@
 		<string id="16842776" text1="Unhandled exception caught" text2=""/>
 		<string id="16842753" text1="Unknown String ID" text2=""/>
 		<string id="16843278" text1="User Login" text2=""/>
-		<string id="16843304" text1="Heated cuvette is %1 for the Reagent %2 and temperature is %3" text2=""/>
-		<string id="16843302" text1="Heated cuvette start mode is changed to %1 for the Reagent %2" text2=""/>
-		<string id="16843303" text1="Heated cuvette temperature is changed to %1 for the Reagent %2" text2=""/>
 		<string id="16843295" text1="Off" text2=""/>
 		<string id="16843294" text1="On" text2=""/>
 		<string id="16843314" text1="Cleaning RMS state changed to %1." text2=""/>
@@ -196,15 +188,10 @@
 		<string id="16843272" text1="Language set to %1" text2=""/>
 		<string id="16843275" text1="Network Settings changed" text2=""/>
 		<string id="16843285" text1="Oven start mode changed to %1" text2=""/>
-		<string id="16843298" text1="Permanent" text2=""/>
-		<string id="16843299" text1="Program Start" text2=""/>
 		<string id="16843274" text1="Oven temperature changed to %1" text2=""/>
 		<string id="16843293" text1="Processing RMS state changed to %1" text2=""/>
 		<string id="16843286" text1="Temperature format changed to %1" text2=""/>
 		<string id="16843287" text1="Time format changed to %1" text2=""/>
-		<string id="16843284" text1="Water type changed to %1" text2=""/>
-		<string id="16843297" text1="Distilled" text2=""/>
-		<string id="16843296" text1="Tap" text2=""/>
 		<string id="17825801" text1="GPIO Error: %1." text2=""/>
 		<string id="17825802" text1="GPIO:Info:%1" text2=""/>
 		<string id="17039363" text1="GUI is available" text2=""/>
@@ -289,8 +276,6 @@
 		<string id="17825800" text1="System recovered from power failure." text2=""/>
 		<string id="17825798" text1="Power Failure Stage 1." text2=""/>
 		<string id="17825799" text1="Power failed! Shutting down system." text2=""/>
-		<string id="17825793" text1="To switch off press button again" text2=""/>
-		<string id="17825794" text1="Staining procedure is still in progress.To switch off press button again." text2=""/>
         <string id="19464193" text1="RCManager.Received command %1 with data %n from RCA." text2=""/>
         <string id="19464194" text1="RCManager.Remote Session request denied. %1." text2=""/>
         <string id="19464195" text1="RCManager.Remote Session request accepted by user." text2=""/>
@@ -300,9 +285,7 @@
         <string id="19464199" text1="RCManager.Value %1 of data item %2 is invalid." text2=""/>
         <string id="19464200" text1="RCManager.Type %1 of data item %2 is invalid." text2=""/>
         <string id="19464201" text1="RCManager.RemoteCare subscription is not set." text2=""/>
-		<string id="17825803" text1="The Master Software will shutdown in few seconds." text2=""/>
 		<string id="17891329" text1="SoftSwitch monitor started" text2=""/>
-		<string id="17825796" text1="Shutdown is not possible at the moment. System is in initialization phase. Please wait till initialization completes" text2=""/>
 		<string id="17825797" text1="Shutdown is not possible at the moment. %1 is in progress. Please wait till %1 completes" text2=""/>
 		<string id="17891330" text1="SoftSwitch pressed for the first time after bootup" text2=""/>
 		<string id="17367045" text1="Error adding state  %1 ." text2=""/>
@@ -412,7 +395,6 @@
 		<string id="33947655" text1="Import failed. Required files are not available to Import" text2=""/>
 		<string id="33947659" text1="Import failed. Rollback failed" text2=""/>
 		<string id="33947662" text1="Import successful." text2=""/>
-		<string id="33947663" text1="Import successful." text2=""/>
 		<string id="33947656" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
 		<string id="50331759" text1="Import failed. Archive file is tampered" text2=""/>
 		<string id="50331761" text1="Type of import is not valid" text2=""/>

@@ -28,9 +28,6 @@
 		<Event Code="" ErrorID="17039371" ErrorType="Error" AlarmType="No" Name="EVENT_CONFIG_FILE" LogLevel="HIGH" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17039371" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17825795" ErrorType="Warning" AlarmType="Yes" Name="EVENT_CRITICAL_ACTION_WARNING_MESG" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17825795" ButtonType="Ok" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16973834" ErrorType="Warning" AlarmType="Yes" Name="EVENT_DATALOGGING_ERROR_DATA_LOGGING_DISABLED" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16973834" ButtonType="Ok" StatusBar="Yes"/>
 		</Event>
@@ -51,9 +48,6 @@
 		</Event>
 		<Event Code="" ErrorID="16973831" ErrorType="Error" AlarmType="No" Name="EVENT_DATALOGGING_ERROR_FILE_WRITE" LogLevel="High" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="16973831" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19529732" ErrorType="Error" AlarmType="No" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS" LogLevel="Medium" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="19529732" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235997" ErrorType="Info" AlarmType="No" Name="EVENT_DM_CHECK_USER_LOG_FOR_MORE_INFO" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17235997" ButtonType="" StatusBar=""/>
@@ -133,7 +127,7 @@
 		<Event Code="" ErrorID="17235980" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_TIMEFORMAT" LogLevel="Low" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17235980" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17235996" ErrorType="Info" AlarmType="No" Name="EVENT_DM_NULL_PTR" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17235996" ErrorType="Info" AlarmType="No" Name="EVENT_DM_NULL_PTR" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17235996" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19070983" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RC_CERT_FILENAME_LENGHT_OUTOF_RANGE" LogLevel="Low" UserLog="FALSE">
@@ -364,20 +358,11 @@
 		<Event Code="" ErrorID="17629190" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INIT_CONTAINER_FAILED" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17629190" ButtonType="OK" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17629210" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INTEGER_SIZE_IS_MORE" LogLevel="Medium" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17629210" ButtonType="OK" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17629199" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INVALID_EXPORT" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17629199" ButtonType="OK" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629212" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INVALID_FILE_MODE" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17629212" ButtonType="OK" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17629207" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING" LogLevel="Medium" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17629207" ButtonType="OK" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17629206" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_KEY_SIZE_LESS" LogLevel="Medium" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17629206" ButtonType="OK" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629197" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17629197" ButtonType="OK" StatusBar=""/>
@@ -529,15 +514,6 @@
 		<Event Code="" ErrorID="16843278" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_OPERATOR_LOGIN" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843278" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843304" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_HC" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843304" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843302" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_HC_MODE" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843302" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843303" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_HC_TEMPERATURE" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843303" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16843295" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_STATE_CHANGED_OFF" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843295" ButtonType="" StatusBar=""/>
 		</Event>
@@ -571,12 +547,6 @@
 		<Event Code="" ErrorID="16843285" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_OVEN_START_MODE_CHANGED" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843285" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843298" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_OVEN_START_MODE_CHANGED_PERMANENT" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843298" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843299" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_OVEN_START_MODE_CHANGED_PROGSTART" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843299" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16843274" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_OVEN_TEMP_CHANGED" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843274" ButtonType="" StatusBar=""/>
 		</Event>
@@ -592,15 +562,6 @@
 		</Event>
 		<Event Code="" ErrorID="16843287" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_TIME_FORMAT_CHANGED" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16843287" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843284" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_WATER_TYPE_CHANGED" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843284" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843297" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_WATER_TYPE_CHANGED_DISTILLED" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843297" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843296" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_WATER_TYPE_CHANGED_TAP" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="16843296" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17825801" ErrorType="Error" AlarmType="No" Name="EVENT_GPIO_ERROR" LogLevel="High" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17825801" ButtonType="" StatusBar=""/>
@@ -818,28 +779,28 @@
 		<Event Code="" ErrorID="19529729" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORD_INCORRECT" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="19529729" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694727" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_BASIC_TAG_VALUE_IS_WRONG" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694727" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_BASIC_TAG_VALUE_IS_WRONG" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694727" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694724" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_CHECKSUM_NOT_MATCHED" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694724" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_CHECKSUM_NOT_MATCHED" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694724" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694725" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_DATE_IS_EXPIRED" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694725" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_DATE_IS_EXPIRED" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694725" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694726" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_DEVICENAME_NOT_EXISTS" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694726" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_DEVICENAME_NOT_EXISTS" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694726" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694723" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_HASH_NOT_MATCHED" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694723" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_HASH_NOT_MATCHED" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694723" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694722" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_KEY_FILE_NOT_FOUND" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694722" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_KEY_FILE_NOT_FOUND" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694722" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694728" ErrorType="Info" AlarmType="No" Name="EVENT_PASSWORDMANAGER_LOG_SERVICE_ID" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694728" ErrorType="Info" AlarmType="No" Name="EVENT_PASSWORDMANAGER_LOG_SERVICE_ID" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694728" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17694721" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_NO_USB_DEVICE_EXISTS" LogLevel="Medium" UserLog="TRUE">
+		<Event Code="" ErrorID="17694721" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORDMANAGER_NO_USB_DEVICE_EXISTS" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17694721" ButtonType="Ok" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19529730" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORD_NOT_MATCHING" LogLevel="Medium" UserLog="TRUE">
@@ -853,12 +814,6 @@
 		</Event>
 		<Event Code="" ErrorID="17825799" ErrorType="Error" AlarmType="No" Name="EVENT_POWER_FAIL_STAGE2" LogLevel="High" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17825799" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17825793" ErrorType="Info" AlarmType="No" Name="EVENT_PRESS_SOFTSWITCH_TO_SHUTDOWN" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17825793" ButtonType="WB" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17825794" ErrorType="Warning" AlarmType="Yes" Name="EVENT_PRESS_SOFTSWITCH_TO_SHUTDOWN_WITH_WARNING" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17825794" ButtonType="Ok" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19464197" ErrorType="Info" AlarmType="No" Name="EVENT_RCMANAGER_RCA_STOPPED_FOREVER" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19464197" ButtonType="" StatusBar=""/>
@@ -875,14 +830,8 @@
 		<Event Code="" ErrorID="19464196" ErrorType="Info" AlarmType="No" Name="EVENT_RCMANAGER_SENT_COMMAND" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19464196" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17825803" ErrorType="Info" AlarmType="No" Name="EVENT_SHUTDOWN_IN_FEW_SECONDS" LogLevel="Low" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17825803" ButtonType="WB" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17891329" ErrorType="Info" AlarmType="No" Name="EVENT_SOFTSWITCH_MONITOR_START" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="17891329" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17825796" ErrorType="Info" AlarmType="No" Name="EVENT_SOFTSWITCH_PRESSED_DURING_INIT_STATE" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="17825796" ButtonType="Ok" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17825797" ErrorType="Warning" AlarmType="Yes" Name="EVENT_SOFTSWITCH_PRESSED_DURING_USER_ACTION" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="17825797" ButtonType="Ok" StatusBar=""/>

@@ -846,9 +846,6 @@
 		<Event Code="" ErrorID="33947662" ErrorType="Info" AlarmType="" Name="EVENT_IMPORT_SUCCESS" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33947662" ButtonType="Ok" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="33947663" ErrorType="Info" AlarmType="" Name="EVENT_IMPORT_SUCCESS_LANGUAGE" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="33947663" ButtonType="Ok" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="33947656" ErrorType="Error" AlarmType="" Name="EVENT_IMPORT_SWVERSION_NOT_MATCHING" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33947656" ButtonType="Ok" StatusBar=""/>
 		</Event>
@@ -1235,22 +1232,22 @@
 	    <Event Code="" ErrorID="67175168" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175168" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175169" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175169" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175169" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175170" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175170" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175170" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175171" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175171" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175171" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175172" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175184" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_IDLE_STATE" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175184" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_IDLE_STATE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175184" ButtonType="" StatusBar=""/>
 	 	</Event>
-	    <Event Code="" ErrorID="67175185" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_ERROR_STATE" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175185" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_ERROR_STATE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175185" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175186" ErrorType="WARNING" AlarmType="No" Name="EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL" LogLevel="High" UserLog="TRUE">
@@ -1319,7 +1316,7 @@
 	    <Event Code="" ErrorID="67175220" ErrorType="WARNING" AlarmType="No" Name="EVENT_SCHEDULER_FOR_WARNING_FLAG" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175220" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175221" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_UNKNOW_ERROR" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67175221" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_UNKNOW_ERROR" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175221" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175222" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_FILLING_SUCCESSFULLY" LogLevel="High" UserLog="TRUE">
