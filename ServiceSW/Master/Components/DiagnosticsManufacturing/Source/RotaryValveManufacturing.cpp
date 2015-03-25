@@ -225,6 +225,9 @@ void CRotaryValve::OnOkClicked(const QString& EnteredString)
 
     mp_Ui->rvSNEdit->setText(m_RVSNString);
 
+    QString LogString = "The serial number of rotary valve is changed to be " + m_RVSNString;
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
+
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 

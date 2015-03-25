@@ -554,6 +554,16 @@ void CStartup::StartTimer()
 void CStartup::OnSelectTestOptions(int Index)
 {
     CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(Index));
+
+    QString LogString;
+    if (Index == 0) {
+        LogString = "Station test is selected.";
+    }
+    else {
+        LogString = "End test is selected.";
+    }
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
 }
 
 /****************************************************************************/

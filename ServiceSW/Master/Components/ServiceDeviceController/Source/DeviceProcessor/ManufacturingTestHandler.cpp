@@ -1506,6 +1506,7 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
     else {
          // switch off
         (void)mp_DigitalOutputMainRelay->SetLow();
+        mp_Utils->Pause(2000);
         ASB3Current = mp_TempRV->GetCurrent();
         (void)mp_TempRV->StopTemperatureControl();
 

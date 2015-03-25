@@ -228,6 +228,9 @@ void CMainControl::OnOkClicked(const QString& EnteredString)
     m_EboxSNString.append(EnteredString.simplified());
     mp_Ui->eboxSNEdit->setText(m_EboxSNString);
 
+    QString LogString = "The serial number of main control is changed to be " + m_EboxSNString;
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
+
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 

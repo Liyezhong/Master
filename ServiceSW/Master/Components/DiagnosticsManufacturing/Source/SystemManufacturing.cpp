@@ -191,7 +191,7 @@ void CSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);
-    itemCheckFlag->setSizeHint(QSize(30,30));
+    //itemCheckFlag->setSizeHint(QSize(30,30));
     itemCheckFlag->setToolTip(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
     ItemList << itemCheckFlag;
 
@@ -201,7 +201,7 @@ void CSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QPixmap SetPixmap;
     QPixmap PixMap(QString(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
     if (!PixMap.isNull())
-        SetPixmap = (PixMap.scaled(QSize(36,36),Qt::KeepAspectRatio, Qt::FastTransformation));
+        SetPixmap = (PixMap.scaled(QSize(42,42),Qt::KeepAspectRatio, Qt::FastTransformation));
 
     QStandardItem *item = new QStandardItem;
     item->setData(SetPixmap, (int) Qt::DecorationRole);
@@ -219,11 +219,13 @@ void CSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 /****************************************************************************/
 void CSystem::OnOkClicked(const QString& EnteredString)
 {
-
     mp_KeyBoardWidget->hide();
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     QString CurrentDateTime = DateTime.toString("MM.yyyy");
     m_SystemSNString = EnteredString + "/" + CurrentDateTime;
+
+    QString LogString = "The serial number of system is changed to be " + m_SystemSNString;
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
 
     mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
@@ -340,11 +342,11 @@ void CSystem::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
         if (item->toolTip() == DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id)) {
             if (Result) {
                 if (!PixMapPass.isNull())
-                    SetPixMap = (PixMapPass.scaled(36,36,Qt::KeepAspectRatio));
+                    SetPixMap = (PixMapPass.scaled(42,42,Qt::KeepAspectRatio));
             }
             else {
                 if (!PixMapFail.isNull())
-                    SetPixMap = (PixMapFail.scaled(36,36,Qt::KeepAspectRatio));
+                    SetPixMap = (PixMapFail.scaled(42,42,Qt::KeepAspectRatio));
             }
             (void) m_Model.setData(m_Model.index(i, 3), SetPixMap, (int) Qt::DecorationRole);
             break;
@@ -419,20 +421,20 @@ void CSystem::RetranslateUI()
                                                     << "");
     AddItem(1, Service::SYSTEM_110V_220V_SWITCH);
     AddItem(2, Service::SYSTEM_SEALING_TEST);
-    AddItem(3, Service::SYSTEM_OVERFLOW);
-    AddItem(4, Service::SYSTEM_SPEARKER);
-    AddItem(5, Service::SYSTEM_EXHAUST_FAN);
-    AddItem(6, Service::SYSTEM_VENTILATION_FAN);
-    AddItem(7, Service::SYSTEM_REMOTE_LOCAL_ALARM);
-    AddItem(8, Service::SYSTEM_MAINS_RELAY);
+    //AddItem(3, Service::SYSTEM_OVERFLOW);
+    AddItem(3, Service::SYSTEM_SPEARKER);
+    AddItem(4, Service::SYSTEM_EXHAUST_FAN);
+    AddItem(5, Service::SYSTEM_VENTILATION_FAN);
+    AddItem(6, Service::SYSTEM_REMOTE_LOCAL_ALARM);
+    AddItem(7, Service::SYSTEM_MAINS_RELAY);
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
 
-    for (int i = 0; i < 8; i++) {
-        mp_TableWidget->setRowHeight(i, 30);
+    for (int i = 0; i < 7; i++) {
+        mp_TableWidget->setRowHeight(i, 35);
     }
 
 }

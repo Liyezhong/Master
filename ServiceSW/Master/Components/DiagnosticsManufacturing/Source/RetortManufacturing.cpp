@@ -233,6 +233,9 @@ void CRetort::OnOkClicked(const QString& EnteredString)
 
     mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
+    QString LogString = "The serial number of retort is changed to be " + m_RetortSNString;
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
+
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 

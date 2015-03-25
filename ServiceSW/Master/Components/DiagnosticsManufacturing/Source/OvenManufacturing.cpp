@@ -226,6 +226,9 @@ void COven::OnOkClicked(const QString& EnteredString)
 
     mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
+    QString LogString = "The serial number of paraffin oven is changed to be " + m_OvenSNString;
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << LogString);
+
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
