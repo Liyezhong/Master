@@ -570,7 +570,7 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                    "Reagent name should not contain 'leica'.", 0, QApplication::UnicodeUTF8);
 
     m_strInputReagentSameName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                         "The same reagent name is in use, please change the reagent name.", 0, QApplication::UnicodeUTF8);
+                                                         "The same reagent name is in use. Please change the reagent name.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                "Please enter valid data", 0, QApplication::UnicodeUTF8);
@@ -579,10 +579,10 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                "Please select reagent group", 0, QApplication::UnicodeUTF8);
 
     m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Fail to add reagent. Please contact service", 0, QApplication::UnicodeUTF8);
+                                               "Fail to add the reagent. Please contact your service.", 0, QApplication::UnicodeUTF8);
 
     m_strReagentCopyFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Fail to copy reagent. Please contact service", 0, QApplication::UnicodeUTF8);
+                                               "Fail to copy the reagent. Please contact your service.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                        "Enter Cassette Value", 0, QApplication::UnicodeUTF8);

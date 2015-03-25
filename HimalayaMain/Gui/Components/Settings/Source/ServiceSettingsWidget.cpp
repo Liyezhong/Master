@@ -323,7 +323,7 @@ void CServiceSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Maintenance", 0, QApplication::UnicodeUTF8));
    m_strShutdownConfirm12Hrs = QApplication::translate("Settings::CServiceSettingsWidget",
-                        "If shut down now, %1 hours will be needed for melt paraffin in next startup, really shut down?",
+                        "If the instrument is shut down now, you have to wait at most %1 hours for melting the paraffin in next program running. Do you really want to shut down?",
                                            0, QApplication::UnicodeUTF8);
 }
 

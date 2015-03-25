@@ -178,7 +178,6 @@ private:
     int m_TimeDelta;
     QDateTime m_AsapEndDateTime;
     QDateTime m_ParaffinStartHeatingTime;
-    QString m_strResetEndTime;
     QString m_strCannotStartParaffinMelt;
     QString m_strWaitTimeforParaffinMelt;
     QString m_strPromptProgramDelay;

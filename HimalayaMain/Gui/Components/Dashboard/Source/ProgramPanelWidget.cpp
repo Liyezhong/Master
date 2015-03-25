@@ -112,7 +112,7 @@ void CProgramPanelWidget::RetranslateUI()
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
                                                                  0, QApplication::UnicodeUTF8));
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
-    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
+    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Would you like to abort the program?", 0, QApplication::UnicodeUTF8);
 
     m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);

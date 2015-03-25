@@ -64,7 +64,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
     m_LanguageChangeCount(0), m_ConsumableType(KIT), m_BottleCount(0), m_GuiInit(true),
     m_strCommunicationError(tr("Communication Error")),
-    m_strChangeNotSave(tr("The changes could not be saved.")),
+    m_strChangeNotSave(tr("The changes can not be saved.")),
     m_strStartup(tr("Startup")),
     m_strInitDevCom(tr("Initializing device communication ...")),
     m_strDisconnect(tr("Disconnect")),
@@ -81,7 +81,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_strImport("Import"),
     m_strImportData("Importing data ..."),
     m_strLogFile(tr("Log Files")),
-    m_strGettingDailyLog(tr("Getting Daily run Log file ...")),
+    m_strGettingDailyLog(""),
     mp_WaitDlgExecChanged(NULL)
 
 {
@@ -1125,9 +1125,9 @@ void CDataConnector::RetranslateUI()
    m_strImportData = QApplication::translate("Core::CDataConnector", "Importing data ...", 0, QApplication::UnicodeUTF8);
 
    m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
-   m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting Daily run Log file ...", 0, QApplication::UnicodeUTF8);
+   m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting the daily run log file ...", 0, QApplication::UnicodeUTF8);
 
-   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back of machine to shutdown the machine.", 0, QApplication::UnicodeUTF8);
+   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back on the insturment to shutdown the insturment.", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -1954,7 +1954,7 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
 
     if(RemoteCare::SWUpdate_Available == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "New software is available. Click 'Remote SW Update' button to start the update.",
+                                                       "New software is available. Click on 'Remote SW Update' to start the update.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = true;
     }
@@ -1966,12 +1966,12 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
     }
     else if(RemoteCare::SWUpdate_DownloadFailed == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Failed to download new software from RCServer. Please contact service.",
+                        "Fail to download the new software from RCServer. Please contact your service.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = false;
     } else if (RemoteCare::SWUpdate_DownloadSuccess == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Download the software from a remote server has been successfully, now start to update.",
+                        "Downloading the new software from remote server is successful. Now start to update.",
                                                        0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         (void)mp_MessageDlg->exec();
@@ -2000,7 +2000,7 @@ void CDataConnector::SendRCSWUpdate()
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                    "Now downloading update package from remote server, please waiting...",
+                    "Now download the update package from the remote server. Please wait......",
                                                    0, QApplication::UnicodeUTF8));
     mp_MessageDlg->HideAllButtons();
     (void)mp_MessageDlg->show();
@@ -2036,7 +2036,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg->SetButtonText(3, QApplication::translate("Core::CDataConnector", "Cancel",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideCenterButton();
-        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by remote user",
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by the remote user",
                                                         0, QApplication::UnicodeUTF8));
         if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
             // Send command CmdRCRequestRemoteSession on "ok" pressed.
@@ -2057,7 +2057,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session is ended by remote user",
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session is ended by the remote user",
                                                         0, QApplication::UnicodeUTF8));
         (void)mp_MessageDlg->exec();
     }

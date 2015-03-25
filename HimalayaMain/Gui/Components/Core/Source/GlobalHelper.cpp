@@ -221,7 +221,7 @@ void CGlobalHelper::SetProgramPaused(bool pauseFlag)
 void CGlobalHelper::RetranslateUI()
 {
     m_strWarning = QApplication::translate("Core::CGlobalHelper", "Warning", 0, QApplication::UnicodeUTF8);
-    m_strMsgUnselect = QApplication::translate("Core::CGlobalHelper", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.", 0, QApplication::UnicodeUTF8);
+    m_strMsgUnselect = QApplication::translate("Core::CGlobalHelper", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will be unselected.", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Core::CGlobalHelper", "Yes", 0, QApplication::UnicodeUTF8);
     m_strCancel = QApplication::translate("Core::CGlobalHelper", "Cancel", 0, QApplication::UnicodeUTF8);
 }

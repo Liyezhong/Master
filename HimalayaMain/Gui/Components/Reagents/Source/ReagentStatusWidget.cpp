@@ -479,13 +479,13 @@ void CReagentStatusWidget::RetranslateUI()
                                                                  "Status", 0, QApplication::UnicodeUTF8));
 
     m_strSetAsEmpty = QApplication::translate("Reagent::CReagentStatusWidget",
-                                              "Do you want to set Station %1 as empty?", 0, QApplication::UnicodeUTF8);
+                                              "Would you like to set Station %1 as empty?", 0, QApplication::UnicodeUTF8);
 
     m_strResetData = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Do you want to reset data for Station %1?", 0, QApplication::UnicodeUTF8);
+                                             "Would you like to reset data for Station %1?", 0, QApplication::UnicodeUTF8);
 
     m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Do you want to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
+                                             "Would you like to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);
