@@ -449,7 +449,7 @@ void TestDashboardStationList::utTestCmdRecoveryFromPowerFailure()
     QList<QString> stationList;
     MsgClasses::CmdRecoveryFromPowerFailure *p_CmdRecoveryFromPowerFailure = new MsgClasses::CmdRecoveryFromPowerFailure(0, "L02",
                                                                                                         0, 206, 50000,
-                                                                                                        "RG1", stationList);
+                                                                                                                         "RG1", stationList, false, "");
     p_CmdRecoveryFromPowerFailure->NAME = "CmdRecoveryFromPowerFailure";
 
     QCOMPARE(p_CmdRecoveryFromPowerFailure->GetName(), QString("CmdRecoveryFromPowerFailure"));

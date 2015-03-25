@@ -272,8 +272,6 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->OnSystemError();
 
-    m_pSchedulerMainController->OnEnterRcRestart();
-
     m_pSchedulerMainController->OnFillingHeatingRV();
 
     m_pSchedulerMainController->OnPreTestDone();

@@ -165,12 +165,12 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->SendResumeFiling();
     m_pSchedulerMachine->SendResumeRVMoveToSeal();
     m_pSchedulerMachine->SendResumeProcessing();
-    m_pSchedulerMachine->SendResumeProcessingSR();
+    //m_pSchedulerMachine->SendResumeProcessingSR();
     m_pSchedulerMachine->SendResumeRVMoveTube();
     m_pSchedulerMachine->SendResumeDraining();
     m_pSchedulerMachine->SendResumeRVPosChange();
     m_pSchedulerMachine->SendResumeDryStep();
-    m_pSchedulerMachine->SendResumeAborting();
+    //m_pSchedulerMachine->SendResumeAborting();
    // m_pSchedulerMachine->SendErrorSignal();
     m_pSchedulerMachine->GetPreviousState();
     m_pSchedulerMachine->NotifyStInitOK();
@@ -200,7 +200,7 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->NotifyEnterCleaningDryStep();
     m_pSchedulerMachine->NotifyStepProgramFinished();
     m_pSchedulerMachine->NotifyError();
-    m_pSchedulerMachine->NotifyAbort();
+    //m_pSchedulerMachine->NotifyAbort();
     m_pSchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
     m_pSchedulerMachine->NotifyRcReport();
     m_pSchedulerMachine->NotifyRsReleasePressure();
