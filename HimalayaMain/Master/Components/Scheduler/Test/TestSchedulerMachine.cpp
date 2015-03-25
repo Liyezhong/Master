@@ -195,10 +195,10 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->NotifyProcessingFinished();
     m_pSchedulerMachine->NotifyHitTubeAfter();
     m_pSchedulerMachine->NotifyDrainFinished();
-    m_pSchedulerMachine->NotifyStepFinished();
-    m_pSchedulerMachine->NotifyProgramFinished();
-    m_pSchedulerMachine->NotifyEnterCleaningDryStep();
-    m_pSchedulerMachine->NotifyStepProgramFinished();
+    //m_pSchedulerMachine->NotifyStepFinished();
+    //m_pSchedulerMachine->NotifyProgramFinished();
+    //m_pSchedulerMachine->NotifyEnterCleaningDryStep();
+    //m_pSchedulerMachine->NotifyStepProgramFinished();
     m_pSchedulerMachine->NotifyError();
     //m_pSchedulerMachine->NotifyAbort();
     m_pSchedulerMachine->NotifyRsRvMoveToInitPositionFinished();

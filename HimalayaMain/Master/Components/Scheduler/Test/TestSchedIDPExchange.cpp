@@ -208,6 +208,12 @@ public:
         EXPECT_CALL(*mp_IDeviceProcessing, OvenSetTempCtrlOFF(_))
                 .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, GetCurrentLowerLimit())
+                .WillRepeatedly(Return(0));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALGetHeatingStatus(_))
+                .WillRepeatedly(Return(true));
     }
 
     ~TestSchedIDPExchange()
