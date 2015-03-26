@@ -85,13 +85,18 @@ quint32 CDataManager::InitializeDataContainer()
     DeviceControl::DeviceLifeCycleRecord deviceLifeCycleRecord;
     deviceLifeCycleRecord.ReadRecord();
 
-    qint32 activeCarbonFilterLifeTime = -1;
+    uint activeCarbonFilterLifeTime = -1;
+    uint carbonFilter_FirstRecord_Flag = 0;
+    
     DeviceControl::ModuleLifeCycleRecord* pModuleLifeCycleRecord = deviceLifeCycleRecord.m_ModuleLifeCycleMap.value("LA");
     if (pModuleLifeCycleRecord)
     {
         DeviceControl::PartLifeCycleRecord* pPartLifeCycleRecord = pModuleLifeCycleRecord->m_PartLifeCycleMap.value("AL_pressure_ctrl");
         if (pPartLifeCycleRecord)
+        {
             activeCarbonFilterLifeTime = pPartLifeCycleRecord->m_ParamMap.value("ActiveCarbonFilter_LifeTime").toUInt();
+            carbonFilter_FirstRecord_Flag = pPartLifeCycleRecord->m_ParamMap.value("CarbonFilter_FirstRecord_Flag").toUInt();
+        }
     }
 
     ReturnCode = CDataManagerBase::InitDataContainer();
@@ -99,7 +104,7 @@ quint32 CDataManager::InitializeDataContainer()
         return ReturnCode;
     }
 
-    if (0 == activeCarbonFilterLifeTime)
+    if ((0 == activeCarbonFilterLifeTime) && (1 == carbonFilter_FirstRecord_Flag))
     {
         CHimalayaUserSettings tempSettings(*mp_DataContainer->SettingsInterface->GetUserSettings());
         QString strDate = Global::AdjustedTime::Instance().GetCurrentDateTime().toString();

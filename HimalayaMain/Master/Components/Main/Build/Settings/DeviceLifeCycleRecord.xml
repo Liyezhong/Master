@@ -6,7 +6,8 @@
                     <Parameter Key="temp_lsensor_LifeCycle" Value="0"/>
                 </Functionmodule>
                 <Functionmodule Key="AL_pressure_ctrl">
-                    <Parameter Key="ActiveCarbonFilter_LifeTime" Value="1"/>
+                    <Parameter Key="ActiveCarbonFilter_LifeTime" Value="0"/>
+                    <Parameter Key="CarbonFilter_FirstRecord_Flag" Value="1"/>
                     <Parameter Key="Exhaust_Fan_LifeTime" Value="0"/>
                     <Parameter Key="History_Pump_OperationTime" Value="0"/>
                     <Parameter Key="Valve1_LifeCycle" Value="0"/>
