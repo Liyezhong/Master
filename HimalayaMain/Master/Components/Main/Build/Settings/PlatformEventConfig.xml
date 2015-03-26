@@ -25,9 +25,6 @@
 		<Event Code="" ErrorID="19398663" ErrorType="Error" AlarmType="No" Name="EVENT_CM_OUTGOINGMSG_WRITE_FAILED" LogLevel="Medium" UserLog="FALSE">
 			<Step ID="0" Type="MSG" StringID="19398663" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17039371" ErrorType="Error" AlarmType="No" Name="EVENT_CONFIG_FILE" LogLevel="HIGH" UserLog="FALSE">
-			<Step ID="0" Type="MSG" StringID="17039371" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16973834" ErrorType="Warning" AlarmType="Yes" Name="EVENT_DATALOGGING_ERROR_DATA_LOGGING_DISABLED" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="16973834" ButtonType="Ok" StatusBar="Yes"/>
 		</Event>

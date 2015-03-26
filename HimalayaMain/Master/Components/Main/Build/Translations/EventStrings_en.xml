@@ -9,7 +9,6 @@
 		<string id="19398661" text1="ConnectionManager: Client %1. cannot convert outgoing QString message to QDomDocument! Error:%2" text2=""/>
 		<string id="19398662" text1="ConnectionManager: Client %1. outgoing QByteArray is empty." text2=""/>
 		<string id="19398663" text1="ConnectionManager: Client %1. writing outgoing data to Socket failed !." text2=""/>
-		<string id="17039371" text1="Event %1 is not properly configured in column %2" text2=""/>
 		<string id="17039372" text1="Event Code: %1,  Scenario: %2,  Action: %3,  Action Result: %4." text2=""/>
 		<string id="16973834" text1="Data logging is disabled. Please contact your service specialist." text2=""/>
 		<string id="16973828" text1="Event Id %1 does not exist in the event string xml file" text2=""/>
@@ -72,7 +71,7 @@
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
 		<string id="19267585" text1="Reagent name %1 already in use. Please choose different reagent name." text2=""/>
-		<string id="19267599" text1="Internal Software Error. %1 failed." text2=""/>
+		<string id="19267599" text1="Faile to %1." text2=""/>
 		<string id="17236009" text1="Verifying Reagents.xml failed." text2=""/>
 		<string id="17236008" text1="Reading Reagents.xml failed." text2=""/>
 		<string id="17760274" text1="Saving user settings failed. Please contact service." text2=""/>
@@ -354,10 +353,10 @@
 		<string id="33816578" text1="Error in retrieving service information for device %1" text2=""/>
 		<string id="33816608" text1="Step ID %2 in Program %1 is invalid" text2=""/>
 		<string id="33817862" text1="The Parafin temperature is out of range" text2=""/>
-		<string id="33816626" text1="Internal Software Error. Adding program failed. Please contact service." text2=""/>
+		<string id="33816626" text1="Adding program failed." text2=""/>
 		<string id="33816597" text1="Program list contains more than %1 programs. Only %1 programs allowed" text2=""/>
 		<string id="33816624" text1="Delete program failed due to invalid Program ID %1." text2=""/>
-		<string id="33816631" text1="Internal Software Error. Program delete failed. Please contact service." text2=""/>
+		<string id="33816631" text1="Program delete failed." text2=""/>
 		<string id="33816623" text1="Program ID %1 associated with Program %2 is not unique ." text2=""/>
 		<string id="33816620" text1="Program step(s) in Program %1 contains invalid duration format" text2=""/>
 		<string id="33818117" text1="Length of the Program name exceeds limitation for the program  %1 . Valid Range  %2  -  %3  characters." text2=""/>
