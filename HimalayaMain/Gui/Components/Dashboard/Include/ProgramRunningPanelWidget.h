@@ -149,6 +149,7 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief Update Program Timer's Status
+         *  \param  enable = enable flag
          */
         /****************************************************************************/
         void UpdateProgramTimerStatus(bool enable);

@@ -678,6 +678,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramCompleted
+     *  \param  isDueToSafeReagent = safe reagent is due
      */
     /****************************************************************************/
     void ProgramCompleted(bool isDueToSafeReagent = false);
@@ -797,6 +798,7 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateProgramEndTime
+     *  \param  EndTimeDiff = end time diff
      */
     /****************************************************************************/
     void UpdateProgramEndTime(int EndTimeDiff);
