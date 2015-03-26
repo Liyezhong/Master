@@ -196,7 +196,8 @@ void CTestReagents::utTestReagentWidget() {
     ragtRmsWgt->ResizeHorizontalSection();
     ragtRmsWgt->ResetButtons();
     ragtRmsWgt->RetranslateUI();
-    ragtRmsWgt->UpdateButtons(QString(""));
+    QString str = QString("");
+    ragtRmsWgt->UpdateButtons(str);
     ragtRmsWgt->changeEvent(new QEvent(QEvent::None));
     ragtRmsWgt->showEvent((new QShowEvent));
     ragtRmsWgt->UpdateReagentList();
