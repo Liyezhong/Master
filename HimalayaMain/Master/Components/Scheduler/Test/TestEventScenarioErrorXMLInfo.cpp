@@ -19,7 +19,6 @@
 /****************************************************************************/
 
 #include <QTest> 
-#include <QDir>
 
 #include <Global/Include/Exception.h>
 #include <Global/Include/Utils.h>
@@ -105,7 +104,7 @@ void TestEventScenarioErrorXMLInfo::UTAll()
 /******************************************************************ls**********/
 void TestEventScenarioErrorXMLInfo::initTestCase()
 {
-    QString AbsCurrentPath = QDir::currentPath();
+    QString AbsCurrentPath = QCoreApplication::applicationDirPath();
     QString xmlFilePath = AbsCurrentPath + "/../../../Main/Build/Settings/EventScenarioErrorMap.xml";
     m_pESEXMLInfo = QSharedPointer<EventScenarioErrXMLInfo>(new EventScenarioErrXMLInfo(xmlFilePath));
     bool ret = m_pESEXMLInfo->InitXMLInfo();
