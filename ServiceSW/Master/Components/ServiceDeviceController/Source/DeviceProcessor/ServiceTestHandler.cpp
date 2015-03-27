@@ -42,6 +42,7 @@
 //lint -e514
 //lint -e515
 //lint -e516
+//lint -e64
 namespace DeviceControl {
 
 #define RV_MOVE_OK      1  //!< rotary valve move result

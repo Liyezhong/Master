@@ -69,6 +69,9 @@
 //lint -e515
 //lint -e516
 //lint -e525
+//lint -e64
+//lint -e84
+//lint -e1025
 
 namespace DeviceControl {
 
@@ -231,7 +234,7 @@ void ManufacturingTestHandler::CreateWrappers()
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
-        connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
+        (void)connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
     }
 
     CBaseModule *pBaseModule = NULL;

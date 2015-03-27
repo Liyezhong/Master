@@ -42,7 +42,7 @@ void WrapperBase::Log(const QString& Message)
 #ifndef PRE_ALFA_TEST
     emit LogMessageAdded(
         QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
-        + " " + Name() + ": " + Message
+        + " " + GetName() + ": " + Message
     );
 #else
     emit LogMessageAdded(

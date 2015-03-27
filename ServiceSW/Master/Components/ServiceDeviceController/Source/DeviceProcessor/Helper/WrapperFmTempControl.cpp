@@ -227,7 +227,7 @@ qreal WrapperFmTempControl::GetTemperature(quint8 Index)
       return UNDEFINED;
     }
 
-    return m_CurrentTemperature;
+    return m_CurrentTemperature[Index];
 #endif
 }
 

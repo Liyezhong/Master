@@ -33,6 +33,8 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "Core/Include/ServiceUtils.h"
 
+//lint -e1512
+
 namespace SystemTracking {
 
 const QString MODULE_ROTARYVALVE("Rotary Valve"); //!< Rotary valve name
