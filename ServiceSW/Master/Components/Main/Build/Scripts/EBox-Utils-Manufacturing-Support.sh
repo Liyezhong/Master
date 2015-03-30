@@ -83,6 +83,8 @@ test_file_copy_to_SaM_server()
 #######################################################
 send_reports_to_SaM_server()
 {
+	ssh "$2" mkdir -p "$3" >/dev/null 2>&1
+	[ $? -ne 0 ] && return $MkdirFailed
     scp -o ConnectTimeout=$TIME_OUT "$1" "$2":"$3" >/dev/null 2>&1
     return $?
 }

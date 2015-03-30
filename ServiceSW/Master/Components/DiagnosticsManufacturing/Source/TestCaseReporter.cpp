@@ -192,12 +192,16 @@ bool CTestCaseReporter::SendReportFile()
 */
     if (QFile::exists(m_TestReportFile)) {
         QString ReportPath = m_ReportDir;
+        QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+        QString SubDir = DateTime.toString("MM_yyyy");
+        qDebug()<<"subdir : "<<SubDir;
         if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-            ReportPath.append("/endtest");
+            ReportPath.append("/endtest/");
         }
         else {
-            ReportPath.append("/stationtest");
+            ReportPath.append("/stationtest/");
         }
+        ReportPath.append(SubDir);
         if (p_IEClient->SendReprotFile(m_TestReportFile, ReportPath)) {
             Result = true;
             Msg = Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_OK;
