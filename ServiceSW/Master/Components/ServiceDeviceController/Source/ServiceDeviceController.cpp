@@ -32,6 +32,8 @@
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include <Core/Include/CMessageString.h>
 
+//lint -e1512
+
 namespace DeviceControl {
 
 /****************************************************************************/

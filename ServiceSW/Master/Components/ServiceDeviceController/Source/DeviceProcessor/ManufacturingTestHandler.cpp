@@ -41,6 +41,9 @@
 #include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 #include <QDebug>
 
+//lint -e613
+//lint -e505
+
 #define RV_MOVE_OK              1 //!< rotary valve move result
 
 

@@ -23,6 +23,8 @@
 
 #include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmAnalogInput.h"
 
+//lint -e1566
+
 /****************************************************************************/
 /*!
  *  \brief Constructor of class WrapperFmAnalogInput

@@ -43,6 +43,8 @@
 //lint -e515
 //lint -e516
 //lint -e64
+//lint -e628
+//lint -e526
 namespace DeviceControl {
 
 #define RV_MOVE_OK      1  //!< rotary valve move result
@@ -230,7 +232,7 @@ void ServiceTestHandler::CreateWrappers()
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
-        connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
+        (void) connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
     }
 
     CBaseModule *pBaseModule = NULL;

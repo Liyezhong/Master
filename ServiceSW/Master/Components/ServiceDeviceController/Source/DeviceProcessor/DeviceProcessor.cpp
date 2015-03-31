@@ -150,7 +150,7 @@ void DeviceProcessor::OnAbortTest(Global::tRefType Ref, quint32 id)
 
 void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortId)
 {
-    qDebug()<<"DeviceProcessor::OnModuleManufacturingTest  test="<<TestName;
+//    qDebug()<<"DeviceProcessor::OnModuleManufacturingTest  test="<<TestName;
     if(!IsInitialized()){
         Initialize();
     }

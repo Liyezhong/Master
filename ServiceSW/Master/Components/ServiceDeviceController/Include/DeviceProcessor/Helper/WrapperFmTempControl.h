@@ -78,7 +78,7 @@ class WrapperFmTempControl : public WrapperBase
     bool ResetHeaterOperatingTime(quint8 Index);
     quint32 GetHeaterOperatingTime(quint8 Index);
     quint16 GetFanSpeed(quint8 Index);
-    HardwareStatus_t *GetHardwareStatus();
+
     quint16 GetCurrent();
 
     /****************************************************************************/
@@ -133,6 +133,7 @@ private slots:
     bool IsTemperatureControlOff();
     bool IsInsideRange();
     bool IsOutsideRange();
+    HardwareStatus_t *GetHardwareStatus();
 
     QEventLoop m_LoopSetTemperature;            //!< Loop for blocking commands.
     QEventLoop m_LoopGetTemperature;            //!< Loop for blocking commands.

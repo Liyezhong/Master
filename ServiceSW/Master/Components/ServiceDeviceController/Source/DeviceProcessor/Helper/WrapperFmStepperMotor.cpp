@@ -27,6 +27,8 @@
 #include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
 #include <unistd.h>
 
+//lint -e641
+
 const QString WrapperFmStepperMotor::ROTATION = QString("rotation");
 const QString WrapperFmStepperMotor::LINEAR = QString("linear");
 
