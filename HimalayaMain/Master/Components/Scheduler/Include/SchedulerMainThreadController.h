@@ -250,6 +250,8 @@ typedef enum
     CDS_STOP_VACUUM,
     CDS_STOP_HEATING,
     CDS_WAIT_COOLDWON,
+    CDS_MOVE_TO_RV_TUBE_2,
+    CDS_WAIT_HIT_RV_TUBE_2,
     CDS_SUCCESS,
     CDS_ERROR
 }DryStepsStateMachine;

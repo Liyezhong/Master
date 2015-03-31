@@ -25,9 +25,9 @@
                             <limitswitch index="1">
                                 <configuration polarity="0" sample_rate="10" debounce="4"/>
                             </limitswitch>
-                            <position_code value="1" stop="1" stop_dir="ccw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
-                            <position_code value="2" stop="0" stop_dir="ccw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
-                            <position_code value="3" stop="1" stop_dir="ccw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
+                            <position_code value="1" stop="1" stop_dir="cw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
+                            <position_code value="2" stop="0" stop_dir="cw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
+                            <position_code value="3" stop="1" stop_dir="cw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
                         </limitswitches>
                     </position_coverage>
                     <supervision steploss_warn_limit="10" steploss_error_limit="50" current_limit="3500"/>

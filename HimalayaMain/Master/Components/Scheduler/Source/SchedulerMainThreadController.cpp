@@ -3421,7 +3421,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     case CDS_WAIT_COOLDWON:
         if(m_TempRTBottom < 40 && m_TempRTSide < 40)
         {
-            m_CleaningDry.CurrentState = CDS_SUCCESS;
+            m_CleaningDry.CurrentState = CDS_MOVE_TO_RV_TUBE_2;
             break;
         }
 
@@ -3431,7 +3431,30 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             Q_ASSERT(CmdCoolingDownFaild);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(CmdCoolingDownFaild));
-            m_CleaningDry.CurrentState = CDS_SUCCESS;
+            m_CleaningDry.CurrentState = CDS_MOVE_TO_RV_TUBE_2;
+        }
+        break;
+    case CDS_MOVE_TO_RV_TUBE_2:
+        CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+        CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
+        m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
+        m_CleaningDry.CurrentState = CDS_WAIT_HIT_RV_TUBE_2;
+        break;
+    case CDS_WAIT_HIT_RV_TUBE_2:
+        if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
+        {
+            (void)cmd->GetResult(retCode);
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_CleaningDry.CurrentState = CDS_SUCCESS;
+                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
+            }
+            else
+            {
+                m_CleaningDry.CurrentState = CDS_READY;
+                m_CleaningDry.StepStartTime = 0;
+                SendOutErrMsg(retCode);
+            }
         }
         break;
     case CDS_SUCCESS:
