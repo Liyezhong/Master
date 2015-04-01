@@ -288,12 +288,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         //Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if (strctHWMonitor.TempALTube1 < (userInputMeltingPoint -1) || qAbs(strctHWMonitor.TempALTube1 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube1 < (userInputMeltingPoint -1) || qFuzzyCompare(strctHWMonitor.TempALTube1,299))
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
         }
 
-        if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qAbs(strctHWMonitor.TempALTube2 - 299) <=0.000001)
+        if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qFuzzyCompare(strctHWMonitor.TempALTube2,299))
         {
             return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
         }
@@ -1023,7 +1023,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
         qint64 now = QDateTime::currentMSecsSinceEpoch();
 
-        if(50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
+        if (50 <= userInputMeltingPoint && 64 >= userInputMeltingPoint)
         {
             if (0 == heatingSensor.heatingStartTime)
             {
@@ -1044,7 +1044,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
                 timeElapse = now - heatingSensor.heatingStartTime;
             }
         }
-        else if(65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
+        else if (65 <= userInputMeltingPoint && 70 >= userInputMeltingPoint)
         {
             if (0 == heatingSensor.heatingStartTime)
             {
@@ -1690,7 +1690,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     }
     if(3 == m_CurScenario)
     {
-        if(isEffectiveTemp(HWTemp) && HWTemp >= 40.0)
+        if(isEffectiveTemp(HWTemp) && (HWTemp >40.0 || qFuzzyCompare(HWTemp,40.0)))
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
@@ -1712,14 +1712,14 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         if (meltingPoint < 68.0)
         {
-            if (HWTemp >= meltingPoint && isEffectiveTemp(HWTemp))
+            if ((HWTemp > meltingPoint || qFuzzyCompare(HWTemp, meltingPoint))&& isEffectiveTemp(HWTemp))
             {
                 m_RV_2_Outlet.OTCheckPassed = true;
             }
         }
         else
         {
-            if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+            if ((HWTemp > 68.0 || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
             {
                 m_RV_2_Outlet.OTCheckPassed = true;
             }
@@ -1852,7 +1852,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
 
 bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
 {
-    if (UNDEFINED_VALUE == HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp || HWTemp >= 298)
+    if (qFuzzyCompare(UNDEFINED_VALUE,HWTemp) || qFuzzyCompare(UNDEFINED_1_BYTE,HWTemp) || qFuzzyCompare(UNDEFINED_2_BYTE,HWTemp) || qFuzzyCompare(UNDEFINED_4_BYTE,HWTemp) || HWTemp >= 298)
     {
         return false;
     }
@@ -1954,7 +1954,8 @@ bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
     if (false == m_SensorsChecking.ovenTopPass)
     {
         qreal ovenTopTemp = strctHWMonitor.TempOvenTop;
-        if (ovenTopTemp >= (m_SensorsChecking.meltingPoint-4))
+        qreal checkTemp = m_SensorsChecking.meltingPoint-4;
+        if ((ovenTopTemp >m_SensorsChecking.meltingPoint-4) || qFuzzyCompare(ovenTopTemp,checkTemp))
         {
             m_SensorsChecking.ovenTopPass = true;
         }
@@ -1963,7 +1964,8 @@ bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
     if (false == m_SensorsChecking.LATube1Pass)
     {
         qreal LATube1Temp = strctHWMonitor.TempALTube1;
-        if (LATube1Temp >= (m_SensorsChecking.meltingPoint+2))
+        qreal checkTemp = m_SensorsChecking.meltingPoint+2;
+        if (LATube1Temp >checkTemp || qFuzzyCompare(LATube1Temp, checkTemp))
         {
             m_SensorsChecking.LATube1Pass = true;
         }
@@ -1983,12 +1985,12 @@ bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
             HWTemp = strctHWMonitor.TempRV2;
             if (m_SensorsChecking.meltingPoint < 68.0)
             {
-                if (HWTemp >= m_SensorsChecking.meltingPoint && isEffectiveTemp(HWTemp))
+                if ((HWTemp > m_SensorsChecking.meltingPoint || qFuzzyCompare(HWTemp, m_SensorsChecking.meltingPoint)) && isEffectiveTemp(HWTemp))
                     m_RV_2_Outlet.OTCheckPassed = true;
             }
             else
             {
-                if (HWTemp >= 68.0 && isEffectiveTemp(HWTemp))
+                if ((HWTemp > 68.0 || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
                     m_RV_2_Outlet.OTCheckPassed = true;
             }
         }
@@ -2033,7 +2035,7 @@ bool HeatingStrategy::CheckLATbueTempAbnormal(qreal temp)
 {
     //Parrifin melting point (user input)
     qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-    if (temp < (userInputMeltingPoint -1) || qAbs(temp - 299) <=0.000001)
+    if (temp < (userInputMeltingPoint -1) || qFuzzyCompare(temp,299))
     {
         return false;
     }

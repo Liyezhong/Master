@@ -3749,7 +3749,7 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
         temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
         temp3 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2;
-        if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001 || qAbs(temp3 - 299) <= 0.000000000001)
+        if (qFuzzyCompare(temp1,299) || qFuzzyCompare(temp2,299) || qFuzzyCompare(temp3,299))
         {
             return false;
         }
@@ -4256,7 +4256,7 @@ bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenar
             || (Scenario >= 281 && Scenario <= 297) )
     {
         //if (qFuzzyCompare((qAbs(HWTemp-299+1)), 0.0+1))
-        if (qAbs(HWTemp-299) < 0.000000000001)
+        if (qFuzzyCompare(HWTemp,299))
         {
             return false;
         }
@@ -4269,7 +4269,7 @@ bool SchedulerMainThreadController::CheckLevelSensorNoSignal(quint32 Scenario, q
     if (200 == Scenario || 203 == Scenario || (Scenario >= 211 && Scenario <= 257)
         || (Scenario >= 271 && Scenario <= 297) )
     {
-        if (qAbs(HWTemp-299) < 0.000000000001)
+        if (qFuzzyCompare(HWTemp,299))
         {
             return false;
         }
