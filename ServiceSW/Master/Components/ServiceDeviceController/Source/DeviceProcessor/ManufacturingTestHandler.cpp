@@ -2057,7 +2057,8 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
         p_TestCase->AddResult("VoltageRet", Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
     }
 
-    if (ActualCurrent>=CurrentLow && ActualCurrent<= CurrentHigh) {
+    // for CurrentLow is 0. It's failed that ActualCurrent=0
+    if (ActualCurrent>CurrentLow && ActualCurrent<= CurrentHigh) {
         p_TestCase->AddResult("CurrentRet", Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS);
     }
     else {
@@ -2065,7 +2066,7 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
     }
 
     if (ActualVoltage>=VolLow && ActualVoltage<= VolHigh &&
-            ActualCurrent>=CurrentLow && ActualCurrent<= CurrentHigh) {
+            ActualCurrent>CurrentLow && ActualCurrent<= CurrentHigh) {
         return 0;
     }
     else {

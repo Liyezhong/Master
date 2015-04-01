@@ -85,14 +85,15 @@ int CASBTest::Run(void)
 
     qreal VoltageV = Voltage/1000.0;
 
-    if (Current <= CurrentRangeLow || Current >= CurrentRangeHigh ) {
+    // for CurrentRangeLow is 0, it's failed when Current is equal to 0
+    if (Current <= CurrentRangeLow || Current > CurrentRangeHigh ) {
         if (SlaveType != Slave_15) {
             CurrentResult = "failed";
             Ret = RETURN_ERR_FAIL;
         }
     }
 
-    if (VoltageV <= VoltageRangeLow || VoltageV >= VoltageRangeHigh) {
+    if (VoltageV < VoltageRangeLow || VoltageV > VoltageRangeHigh) {
         Ret = RETURN_ERR_FAIL;
         VoltageResult = "failed";
     }
