@@ -3249,7 +3249,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
 
     (void)mp_TempRV->SetTemperatureSwitchState(-1, 1);
 
-    (void)mp_TempRetortSide->SetTemperatureSwitchState(-1, 1);
+    (void)mp_TempRetortBottom->SetTemperatureSwitchState(-1, 1);
 
     (void)mp_DigitalOutputMainRelay->SetHigh();
 
@@ -3259,12 +3259,8 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
     qreal RVTargetTemp = p_TestCase->GetParameter("RVTargetTemp").toInt();
     qreal RetortTargetTemp = p_TestCase->GetParameter("RetortTargetTemp").toInt();
 
-    // Miles change the target temperature to 120 for RV and 110 for Retort on Dec, 02, 2014
     (void)mp_TempRV->StartTemperatureControl(RVTargetTemp);
     (void)mp_TempRetortBottom->StartTemperatureControl(RetortTargetTemp);
-//    (void)mp_TempRetortSide->StartTemperatureControl(70);
-//    (void)mp_TempOvenBottom->StartTemperatureControl(70);
-//    (void)mp_TempOvenTop->StartTemperatureControl(70);
 
     int i=0;
     while(i<10)
@@ -3275,9 +3271,6 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_TempRetortBottom->StopTemperatureControl();
-//    (void)mp_TempRetortSide->StopTemperatureControl();
-//    (void)mp_TempOvenBottom->StopTemperatureControl();
-//    (void)mp_TempOvenTop->StopTemperatureControl();
 
     (void)mp_DigitalOutputMainRelay->SetLow();
 #if 0 // Disabled by Sunny on Oct, 31, 2014.
@@ -3295,7 +3288,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
     }
 #endif
     (void)mp_TempRV->SetTemperatureSwitchState(-1, 0);
-    (void)mp_TempRetortSide->SetTemperatureSwitchState(-1, 0);
+    (void)mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0);
 
     return RetVal;
 }
