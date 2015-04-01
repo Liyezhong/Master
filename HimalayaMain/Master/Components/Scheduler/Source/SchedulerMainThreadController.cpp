@@ -2708,6 +2708,13 @@ void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, co
 {
     m_ProcessCassetteCount += Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
+	SchedulerStateMachine_t previousState = m_SchedulerMachine->GetPreviousState();
+    if (previousState == PSSM_RV_MOVE_TO_SEAL ||
+        previousState == PSSM_PROCESSING ||
+        previousState == PSSM_RV_MOVE_TO_TUBE)
+    {
+        this->UpdateStationReagentStatus();
+    }
 }
 
 void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
