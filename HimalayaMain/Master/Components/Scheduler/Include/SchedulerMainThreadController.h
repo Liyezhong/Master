@@ -319,6 +319,7 @@ typedef struct
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
         QList<ProgramStationInfo_t> m_StationAndReagentList;    ///<    Definition/Declaration of variable m_StationList
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
+        int m_ProcessCassetteNewCount;       ///<  Definition/Declaration of variable m_ProcessCassetteNewCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
         quint32 m_CurrentScenario;                            ///< Current Scenario
@@ -816,11 +817,11 @@ private slots:
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function UpdateStationReagentStatus
-          *
+          *  \iparam  bOnlyNew = only add new added cassette numbers
           *  \return from UpdateStationReagentStatus
           */
          /****************************************************************************/
-         void UpdateStationReagentStatus();
+         void UpdateStationReagentStatus(bool bOnlyNew);
 protected:
 
         /****************************************************************************/

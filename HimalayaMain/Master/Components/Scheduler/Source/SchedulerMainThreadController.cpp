@@ -109,6 +109,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_OvenLidStatus(0)
         , m_RetortLockStatus(UNDEFINED_VALUE)
         , m_ProcessCassetteCount(0)
+        , m_ProcessCassetteNewCount(0)
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
@@ -653,7 +654,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     }
 }
 
-void SchedulerMainThreadController::UpdateStationReagentStatus()
+void SchedulerMainThreadController::UpdateStationReagentStatus(bool bOnlyNew)
 {
     m_UsedStationIDs.clear();
     m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
@@ -686,7 +687,12 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
         }
         else
         {
-            commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, m_ProcessCassetteCount);//toDo: 100, should get the actual number
+            int tempCount = 0;
+            if (bOnlyNew)
+                tempCount = m_ProcessCassetteNewCount;
+            else
+                tempCount = m_ProcessCassetteCount;
+            commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, tempCount);//toDo: 100, should get the actual number
         }
     }
 
@@ -2707,13 +2713,14 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
 {
     m_ProcessCassetteCount += Cmd.CassetteCount();
+    m_ProcessCassetteNewCount = Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
 	SchedulerStateMachine_t previousState = m_SchedulerMachine->GetPreviousState();
     if (previousState == PSSM_RV_MOVE_TO_SEAL ||
         previousState == PSSM_PROCESSING ||
         previousState == PSSM_RV_MOVE_TO_TUBE)
     {
-        this->UpdateStationReagentStatus();
+        this->UpdateStationReagentStatus(true);
     }
 }
 
@@ -2754,6 +2761,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     }
 
     m_ProcessCassetteCount = 0;
+    m_ProcessCassetteNewCount = 0;
     m_CurrentBottlePosition.ReagentGrpId = "";
     m_CurrentBottlePosition.RvPos = RV_UNDEF;
     //send back the proposed program end time
@@ -3549,7 +3557,7 @@ void SchedulerMainThreadController::Fill()
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
     // Update station reagent status
-    this->UpdateStationReagentStatus();
+    this->UpdateStationReagentStatus(false);
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {
