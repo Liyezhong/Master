@@ -4041,6 +4041,10 @@ void SchedulerMainThreadController::AllStop()
 void SchedulerMainThreadController::Pause()
 {
     RaiseEvent(EVENT_SCHEDULER_OVEN_PAUSE);
+
+    //First of all, release pressure
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
+
     //update the remaining time for the current step
     if (PSSM_PROCESSING == m_SchedulerMachine->GetPreviousState())
     {
