@@ -70,18 +70,18 @@
 		<string id="100728899" text1="Retort level sensor detecting test is requested" text2=""/>
 		<string id="100728900" text1="Retort level sensor detecting test completed successfully" text2=""/>
 		<string id="100728901" text1="Retort level sensor detecting test failed" text2=""/>
-		<string id="100728902" text1="Retort heating test empty is requested" text2=""/>
-		<string id="100728903" text1="Retort heating test empty completed successfully" text2=""/>
-		<string id="100728904" text1="Retort heating test empty failed" text2=""/>
-		<string id="100728905" text1="Retort heating test with (with water) is requested" text2=""/>
-		<string id="100728906" text1="Retort heating test with (with water) completed successfully" text2=""/>
-		<string id="100728907" text1="Retort heating test with (with water) failed" text2=""/>
-		<string id="100728908" text1="Oven heating test empty is requested" text2=""/>
-		<string id="100728909" text1="Oven heating test empty completed successfully" text2=""/>
-		<string id="100728910" text1="Oven heating test empty failed" text2=""/>
-		<string id="100728911" text1="Oven heating test with water is requested" text2=""/>
-		<string id="100728912" text1="Oven heating test with water completed successfully" text2=""/>
-		<string id="100728913" text1="Oven heating test with water failed" text2=""/>
+		<string id="100728902" text1="Retort heating test (empty) is requested" text2=""/>
+		<string id="100728903" text1="Retort heating test (empty) completed successfully" text2=""/>
+		<string id="100728904" text1="Retort heating test (empty) failed" text2=""/>
+		<string id="100728905" text1="Retort heating test (with water) is requested" text2=""/>
+		<string id="100728906" text1="Retort heating test (with water) completed successfully" text2=""/>
+		<string id="100728907" text1="Retort heating test (with water) failed" text2=""/>
+		<string id="100728908" text1="Oven heating test (empty) is requested" text2=""/>
+		<string id="100728909" text1="Oven heating test (empty) completed successfully" text2=""/>
+		<string id="100728910" text1="Oven heating test (empty) failed" text2=""/>
+		<string id="100728911" text1="Oven heating test (with water) is requested" text2=""/>
+		<string id="100728912" text1="Oven heating test (with water) completed successfully" text2=""/>
+		<string id="100728913" text1="Oven heating test (with water) failed" text2=""/>
 		<string id="100728914" text1="Oven cover sensor test is requested" text2=""/>
 		<string id="100728915" text1="Oven cover sensor test completed successfully" text2=""/>
 		<string id="100728916" text1="Oven cover sensor test failed" text2=""/>
