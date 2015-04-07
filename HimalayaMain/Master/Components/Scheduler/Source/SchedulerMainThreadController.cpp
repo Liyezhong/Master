@@ -324,6 +324,7 @@ void SchedulerMainThreadController::OnTickTimer()
         //send shutdown command to MasterThreadController
         SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new Global::CmdShutDown(true)));
         m_TickTimer.stop();
+        m_ProgramStatusInfor.SetErrorFlag(0);
         m_SchedulerCommandProcessor->ShutDownDevice();
         return;
     }
