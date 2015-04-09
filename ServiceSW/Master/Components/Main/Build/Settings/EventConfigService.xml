@@ -400,22 +400,22 @@
 		<Event AlarmType="No" Code="" ErrorID="100728965" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728965" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728966" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728966" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728966" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728967" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728967" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728967" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728968" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728968" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728968" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728969" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728969" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728969" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728970" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728970" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728970" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728971" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728971" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728971" Type="MSG" UserLog="TRUE"/>
 		</Event>
 		<Event AlarmType="No" Code="" ErrorID="100728972" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST">

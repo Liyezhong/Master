@@ -134,12 +134,12 @@
 		<string id="100728963" text1="System sealing function test is requested" text2=""/>
 		<string id="100728964" text1="System sealing function test completed successfully" text2=""/>
 		<string id="100728965" text1="System sealing function test failed" text2=""/>
-		<string id="100728966" text1="System exhaust fun test is requested" text2=""/>
-		<string id="100728967" text1="System exhaust fun test completed successfully" text2=""/>
+		<string id="100728966" text1="System exhaust fan test is requested" text2=""/>
+		<string id="100728967" text1="System exhaust fan test completed successfully" text2=""/>
 		<string id="100728968" text1="System exhaust fun test failed" text2=""/>
-		<string id="100728969" text1="System ventilation fun test is requested" text2=""/>
-		<string id="100728970" text1="System ventilation fun test completed successfully" text2=""/>
-		<string id="100728971" text1="System ventilation fun test failed" text2=""/>
+		<string id="100728969" text1="System ventilation fan test is requested" text2=""/>
+		<string id="100728970" text1="System ventilation fan test completed successfully" text2=""/>
+		<string id="100728971" text1="System ventilation fan test failed" text2=""/>
 		<string id="100728972" text1="System filling and draining test is requested" text2=""/>
 		<string id="100728973" text1="System filling and draining test completed successfully" text2=""/>
 		<string id="100728974" text1="System filling and draining test failed" text2=""/>
@@ -151,13 +151,13 @@
 		<string id="100728980" text1="System speaker test failed" text2=""/>
 		<string id="100728981" text1="System remote local alarm test is requested" text2=""/>
 		<string id="100728982" text1="System remote local alarm test completed successfully" text2=""/>
-		<string id="100728983" text1="System remote local alarm test is failed" text2=""/>
+		<string id="100728983" text1="System remote local alarm test failed" text2=""/>
 		<string id="100728984" text1="System usb test is requested" text2=""/>
 		<string id="100728985" text1="System usb test completed successfully" text2=""/>
 		<string id="100728986" text1="System usb test failed" text2=""/>
 		<string id="100728987" text1="System mains relay test is requested" text2=""/>
 		<string id="100728988" text1="System mains relay test completed successfully" text2=""/>
-		<string id="100728989" text1="System mains relay test is failed" text2=""/>
+		<string id="100728989" text1="System mains relay test failed" text2=""/>
 		<string id="100728990" text1="System 110V/220V switching test is requested" text2=""/>
 		<string id="100728991" text1="System 110V/220V switching test completed successfully" text2=""/>
 		<string id="100728992" text1="System 110V/220V switching test failed" text2=""/>

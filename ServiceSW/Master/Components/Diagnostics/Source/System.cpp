@@ -227,16 +227,16 @@ void CSystem::StartRemoteAlarmTest(void)
 
 void CSystem::StartExhaustFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST);
     qDebug() << "System: start exhaust fan test";
 
     emit SetGUITabEnable(false);
     System::CExhaustFanTest Test(mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS);
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_SUCCESS);
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE);
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_FAILURE);
     }
 
     emit SetGUITabEnable(true);
@@ -244,16 +244,16 @@ void CSystem::StartExhaustFanTest(void)
 
 void CSystem::StartVentilationFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST);
     qDebug() << "System: start ventilation fan test";
 
     emit SetGUITabEnable(false);
     System::CVentilationFanTest Test(mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS);
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_SUCCESS);
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE);
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_FAILURE);
     }
 
     emit SetGUITabEnable(true);

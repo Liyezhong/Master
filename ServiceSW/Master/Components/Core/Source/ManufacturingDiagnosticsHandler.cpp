@@ -1031,10 +1031,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
             break;
         case Service::SYSTEM_EXHAUST_FAN:
-            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE;
-            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_SUCCESS;
 
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST);
 
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
@@ -1044,10 +1044,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Result = GetTestResponse();
             break;
         case Service::SYSTEM_VENTILATION_FAN:
-            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
-            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_SUCCESS;
 
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST);
 
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {

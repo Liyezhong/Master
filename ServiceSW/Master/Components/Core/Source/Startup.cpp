@@ -833,6 +833,7 @@ void CStartup::OnSetGUITabEnable(bool Enable)
     mp_MainWindow->SetTabEnabled(1, Enable);
     mp_MainWindow->SetTabEnabled(3, Enable);
     mp_MainWindow->SetTabEnabled(4, Enable);
+    mp_MainWindow->SetTabEnabled(5, Enable);
 
     mp_DiagnosticsGroup->setEnabled(Enable);
 }
