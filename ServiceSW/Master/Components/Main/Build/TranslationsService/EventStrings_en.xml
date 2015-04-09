@@ -136,7 +136,7 @@
 		<string id="100728965" text1="System sealing function test failed" text2=""/>
 		<string id="100728966" text1="System exhaust fan test is requested" text2=""/>
 		<string id="100728967" text1="System exhaust fan test completed successfully" text2=""/>
-		<string id="100728968" text1="System exhaust fun test failed" text2=""/>
+		<string id="100728968" text1="System exhaust fan test failed" text2=""/>
 		<string id="100728969" text1="System ventilation fan test is requested" text2=""/>
 		<string id="100728970" text1="System ventilation fan test completed successfully" text2=""/>
 		<string id="100728971" text1="System ventilation fan test failed" text2=""/>
