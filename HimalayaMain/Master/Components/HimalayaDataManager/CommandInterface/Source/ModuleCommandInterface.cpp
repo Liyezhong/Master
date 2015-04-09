@@ -128,6 +128,10 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
             }
             if(!p_Module->UpdateSubModule(p_SubModule))
             {
+                if ("temp_retort_side" == p_SubModule->GetSubModuleName() ||
+                        "heater_relay" == p_SubModule->GetSubModuleName())
+                    continue;
+
                 Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,
                                                            Global::FmtArgs() << QString("CModuleCommandInterface::ModuleUpdateHandler, Error Updating SubModuleName = %1 , NoOfParameters = %2").arg(p_SubModule->GetSubModuleName())
                                                            .arg((int)p_SubModule->GetNumberOfParameters()));

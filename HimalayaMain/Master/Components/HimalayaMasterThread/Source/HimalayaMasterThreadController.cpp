@@ -1037,13 +1037,6 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
         Global::EventObject::Instance().RaiseEvent(EVENT_PASSWORD_INCORRECT);
     }
 
-    if (bPassed)
-
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd.GetTimeout(),
-                                                                                     Cmd.GetUserLevel(),
-                                                                                     Cmd.GetPassword())),
-                          m_CommandChannelEventThread);
-
     // send the authenticated command to GUI
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
     // check the whether fallback password is validated for the successful login

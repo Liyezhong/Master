@@ -245,7 +245,7 @@ void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode
 {
     Q_UNUSED(ReturnCode)
     //send command
-    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(3000, ModuleInfo, DeviceType, false)));
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(30000, ModuleInfo, DeviceType, false)));
 }
 
 void SchedulerMainThreadController::ResetActiveCarbonFilterLifetime()
