@@ -62,10 +62,13 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
         return;
     }
 
-    if (m_LockStatus) {
-        ui->labelText->setText(QString("<font color='Red'>%1</font>").arg("Instrument was left in a critical stage and must be switched off immediately.<br>"
-                               "Do not open the retort and do not remove any reagent bottle or wax bath before<br>"
-                               "switching off! Incompliance might harm your health!"));
+    if (m_LockStatus) {        
+        ui->labelText->setText(QString("<font color='Red'>%1</font>").arg("Instrument was left in a critical state and must be switched off immediately.<br>"
+                                                                          "Do not open the retort and do not remove any reagent bottle or wax bath <br>"
+                                                                          "before switching off. Non-compliance might harm your health!<br>"
+                                                                          "Leave instrument switched off for at least one minute, switch back on and <br>"
+                                                                          "wait for reboot. Then carefully open the retort. If necessary call Service <br>"
+                                                                          "to resolve a potential issue."));
     }
     else {
         ui->labelText->setText("Instrument was left in service software.<br>"
