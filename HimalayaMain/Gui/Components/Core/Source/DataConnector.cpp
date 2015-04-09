@@ -51,7 +51,7 @@
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 namespace Core {
-const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
+const int COMMAND_TIME_OUT = 30000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
 const int RC_REQUEST_COMMAND_TIME_OUT = 30000;        //!< Remote Care Command Timeout
 
 /****************************************************************************/
