@@ -286,6 +286,7 @@ private slots:
 	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
     int FileExistanceCheck();
     void RemoveFiles();
+    void OnSetGUITabEnable(bool Enable);
 
     void OnCurrentTabChanged(int TabIndex);
 private:

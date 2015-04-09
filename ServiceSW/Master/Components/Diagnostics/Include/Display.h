@@ -56,6 +56,15 @@ private:
     CBasicColorTestDlg *mp_ColorTestDialog;
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Set gui tab click status
+     *  \iparam Enable = flag of enable
+     */
+    /****************************************************************************/
+
+    void SetGUITabEnable(bool Enable);
+
     /**********************************************************************************/
     /**
      * \brief Signal is emitted for basic color test

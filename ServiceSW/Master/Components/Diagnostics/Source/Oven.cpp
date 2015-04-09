@@ -59,6 +59,7 @@ void COven::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
     qDebug() << "Oven: start heating test empty";
 
+    emit SetGUITabEnable(false);
     Oven::CHeatingTestEmpty test(dlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
@@ -68,6 +69,8 @@ void COven::StartHeatingTestEmpty(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"oven heating empty");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void COven::StartCoverSensorTest(void)
@@ -75,6 +78,7 @@ void COven::StartCoverSensorTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
     qDebug() << "Oven: start cover sensor test";
 
+    emit SetGUITabEnable(false);
     Oven::CCoverSensorTest test(dlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
@@ -84,6 +88,8 @@ void COven::StartCoverSensorTest(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"Cover sensor");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 /****************************************************************************/

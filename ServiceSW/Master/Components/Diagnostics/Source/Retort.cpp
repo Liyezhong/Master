@@ -95,6 +95,7 @@ void CRetort::StartLidLockTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST);
     qDebug() << "Retort: start lid lock test";
 
+    emit SetGUITabEnable(false);
     Retort::CLidLockTest Test(mp_MessageDlg, this);
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
     if (ret == RETURN_OK)
@@ -103,6 +104,8 @@ void CRetort::StartLidLockTest(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort lid lock");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void CRetort::StartDrainReagentTest(void)
@@ -110,6 +113,7 @@ void CRetort::StartDrainReagentTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST);
     qDebug() << "Retort: start drain reagent test";
 
+    emit SetGUITabEnable(false);
     Retort::CDrainReagentTest Test(mp_MessageDlg, this);
 
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
@@ -119,6 +123,8 @@ void CRetort::StartDrainReagentTest(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort drain reagent");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void CRetort::StartLevelSensorDetectionTest(void)
@@ -126,6 +132,7 @@ void CRetort::StartLevelSensorDetectionTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST);
     qDebug() << "Retort: start level sensor detecting test";
 
+    emit SetGUITabEnable(false);
     Retort::CLevelSensorDetectingTest Test(mp_MessageDlg, this);
 
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
@@ -135,6 +142,8 @@ void CRetort::StartLevelSensorDetectionTest(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"level sensor detecting");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void CRetort::StartHeatingTestEmpty(void)
@@ -142,6 +151,7 @@ void CRetort::StartHeatingTestEmpty(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST);
     qDebug() << "Retort: start heating test empty";
 
+    emit SetGUITabEnable(false);
     Retort::CHeatingTestEmpty test(mp_MessageDlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
@@ -151,6 +161,8 @@ void CRetort::StartHeatingTestEmpty(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort heating empty");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void CRetort::StartHeatingTestWithWater(void)
@@ -158,6 +170,7 @@ void CRetort::StartHeatingTestWithWater(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
     qDebug() << "Retort: start heating test with water";
 
+    emit SetGUITabEnable(false);
     Retort::CHeatingTestWithWater test(mp_MessageDlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
@@ -167,6 +180,8 @@ void CRetort::StartHeatingTestWithWater(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort heating with water");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 /****************************************************************************/

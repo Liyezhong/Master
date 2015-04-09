@@ -114,6 +114,7 @@ void CSystem::StartSealingTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
     qDebug() << "System: start sealing test";
 
+    emit SetGUITabEnable(false);
     System::CSystemSealingTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
     if (Ret == RETURN_OK) {
@@ -125,6 +126,8 @@ void CSystem::StartSealingTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartFillingNDrainingTest(void)
@@ -132,6 +135,7 @@ void CSystem::StartFillingNDrainingTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST);
     qDebug() << "System: start filling and draining test";
 
+    emit SetGUITabEnable(false);
     System::CFillingNDrainingTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
     if (Ret == RETURN_OK) {
@@ -144,6 +148,8 @@ void CSystem::StartFillingNDrainingTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartLiquidHoseTest(void)
@@ -151,6 +157,7 @@ void CSystem::StartLiquidHoseTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST);
     qDebug() << "System: start liquid hose test";
 
+    emit SetGUITabEnable(false);
     System::CLiquidHoseTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
     if (Ret == RETURN_OK) {
@@ -163,6 +170,8 @@ void CSystem::StartLiquidHoseTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartSpeakerTest(void)
@@ -170,6 +179,7 @@ void CSystem::StartSpeakerTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
     qDebug() << "System: start speaker test";
 
+    emit SetGUITabEnable(false);
     System::CSpeakerTest Test(mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS);
@@ -177,6 +187,8 @@ void CSystem::StartSpeakerTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartLocalAlarmTest(void)
@@ -184,6 +196,7 @@ void CSystem::StartLocalAlarmTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start local alarm test";
 
+    emit SetGUITabEnable(false);
     System::CAlarmTest Test("Local", mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
@@ -191,6 +204,8 @@ void CSystem::StartLocalAlarmTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartRemoteAlarmTest(void)
@@ -198,6 +213,7 @@ void CSystem::StartRemoteAlarmTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start retmote alarm test";
 
+    emit SetGUITabEnable(false);
     System::CAlarmTest Test("Remote", mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
@@ -205,6 +221,8 @@ void CSystem::StartRemoteAlarmTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartExhaustFanTest(void)
@@ -212,6 +230,7 @@ void CSystem::StartExhaustFanTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST);
     qDebug() << "System: start exhaust fan test";
 
+    emit SetGUITabEnable(false);
     System::CExhaustFanTest Test(mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS);
@@ -219,6 +238,8 @@ void CSystem::StartExhaustFanTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CSystem::StartVentilationFanTest(void)
@@ -226,6 +247,7 @@ void CSystem::StartVentilationFanTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST);
     qDebug() << "System: start ventilation fan test";
 
+    emit SetGUITabEnable(false);
     System::CVentilationFanTest Test(mp_MessageDlg, this);
     if (Test.Run() == RETURN_OK) {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS);
@@ -233,6 +255,8 @@ void CSystem::StartVentilationFanTest(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 } // namespace Diagnostics

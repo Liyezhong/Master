@@ -172,7 +172,7 @@
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
                 <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
-                <parameter name="CalibrationDate" unit="QDate">N/A</parameter>
+                <parameter name="CalibrationDate" unit="QDate">DATE</parameter>
             </SubModule>
             <SubModule name="Carbon Filter" type="Filter" description="Carbon Filter">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>

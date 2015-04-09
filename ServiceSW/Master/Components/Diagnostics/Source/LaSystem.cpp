@@ -61,6 +61,7 @@ void CLaSystem::StartLiquidHeatingTubeTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
     qDebug() << "Start Liquid heating tube test";
 
+    emit SetGUITabEnable(false);
     LaSystem::CLiquidHeatingTubeTest test(dlg);
     ErrorCode_t ret = (ErrorCode_t)test.Run();
     if (ret == RETURN_OK)
@@ -69,6 +70,8 @@ void CLaSystem::StartLiquidHeatingTubeTest(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<" Liquid heating tube");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 
 void CLaSystem::StartAirHeatingTubeTest(void)
@@ -76,14 +79,17 @@ void CLaSystem::StartAirHeatingTubeTest(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST);
     qDebug() << "Start Air heating tube test";
 
+    emit SetGUITabEnable(false);
     LaSystem::CAirHeatingTubeTest test(dlg);
-     ErrorCode_t ret = (ErrorCode_t)test.Run();
+    ErrorCode_t ret = (ErrorCode_t)test.Run();
     if (ret == RETURN_OK)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS);
     else if (ret == RETURN_ABORT)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<" Air heating tube");
     else
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE);
+
+    emit SetGUITabEnable(true);
 }
 /****************************************************************************/
 /*!

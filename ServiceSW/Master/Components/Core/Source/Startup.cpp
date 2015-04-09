@@ -171,6 +171,14 @@ CStartup::CStartup() : QObject(),
     mp_System           = new Diagnostics::CSystem;
     mp_MainControl      = new Diagnostics::CMainControl;
 
+    CONNECTSIGNALSLOT(mp_Display, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_Retort, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_Oven, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_RotaryValve, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_LaSystem, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_System, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+    CONNECTSIGNALSLOT(mp_MainControl, SetGUITabEnable(bool), this, OnSetGUITabEnable(bool));
+
     CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_Retort, OnEnableTestButton());
     CONNECTSIGNALSLOT(mp_RotaryValve, EnableTestButton(), mp_System, OnEnableTestButton());
 
@@ -183,7 +191,7 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_SVCSceenLockWidget, OnInteractStart());
 
     //Diagnostics1 Manufacturing
-    mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
+    //mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
 
     // Software upate
     mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
@@ -298,7 +306,7 @@ CStartup::~CStartup()
         }
 
         //Diagnostics1 Manufacturing
-        delete mp_DiagnosticsManufGroup;
+        //delete mp_DiagnosticsManufGroup;
 
         // Log viewer
         delete mp_SoftwareUpdateLogViewer;
@@ -817,6 +825,16 @@ void CStartup::RemoveFiles()
 //    if (!QFile::remove(FilePath + QDir::separator() + "BootConfig.txt")) {
 //        qDebug()<<"CStartup: RemoveFiles BootConfig.txt file failed.";
 //    }
+}
+
+void CStartup::OnSetGUITabEnable(bool Enable)
+{
+    mp_MainWindow->SetTabEnabled(0, Enable);
+    mp_MainWindow->SetTabEnabled(1, Enable);
+    mp_MainWindow->SetTabEnabled(3, Enable);
+    mp_MainWindow->SetTabEnabled(4, Enable);
+
+    mp_DiagnosticsGroup->setEnabled(Enable);
 }
 
 /****************************************************************************/

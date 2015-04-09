@@ -118,12 +118,14 @@ void CDisplay::OnFactoryBasicColorTest()
 /****************************************************************************/
 void CDisplay::DoBasicColorTest()
 {
+    emit SetGUITabEnable(false);
     if (mp_ColorTestDialog) {
         delete mp_ColorTestDialog;
     }
     mp_ColorTestDialog = new CBasicColorTestDlg(this);
-    mp_ColorTestDialog->setModal(true);
-    mp_ColorTestDialog->show();
+    (void)mp_ColorTestDialog->exec();
+
+    emit SetGUITabEnable(true);
 }
 
 /****************************************************************************/

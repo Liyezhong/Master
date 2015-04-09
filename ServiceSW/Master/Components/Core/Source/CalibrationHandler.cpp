@@ -90,6 +90,8 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR_FAIL);
     }
+
+    SetCalibrationDate();
 }
 
 bool CCalibrationHanlder::ServiceCalibation()
@@ -414,7 +416,22 @@ void CCalibrationHanlder::RefreshCalibrationMessagetoMain(const Service::ModuleT
 
 }
 
+void CCalibrationHanlder::SetCalibrationDate()
+{
+    if (mp_ServiceConnector) {
+        ServiceDataManager::CModuleDataList* ModuleList = mp_ServiceConnector->GetModuleListContainer();
+        if (ModuleList) {
+            ServiceDataManager::CModule* Module = ModuleList->GetModule("L&A System");
+            if (Module) {
+                Module->GetSubModuleInfo("Pressure Sensor")->GetParameterInfo("CalibrationDate")
+                        ->ParameterValue = QDate::currentDate().toString(Qt::ISODate);
 
+                mp_ServiceConnector->SendModuleUpdate(*Module);
+            }
+        }
+    }
+
+}
 
 /****************************************************************************/
 /*!

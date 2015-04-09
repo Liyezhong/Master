@@ -66,6 +66,7 @@ void CMainControl::StartASB3Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST);
     qDebug() << "CMainControl: start ASB3 test";
 
+    emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_3, this);
 
     if (Test.Run() == RETURN_OK) {
@@ -74,6 +75,8 @@ void CMainControl::StartASB3Test(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CMainControl::StartASB5Test(void)
@@ -81,6 +84,7 @@ void CMainControl::StartASB5Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST);
     qDebug() << "CMainControl: start ASB5 test";
 
+    emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_5, this);
 
     if (Test.Run() == RETURN_OK) {
@@ -89,6 +93,8 @@ void CMainControl::StartASB5Test(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 
 void CMainControl::StartASB15Test(void)
@@ -96,6 +102,7 @@ void CMainControl::StartASB15Test(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST);
     qDebug() << "CMainControl: start ASB15 test";
 
+    emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_15, this);
 
     if (Test.Run() == RETURN_OK) {
@@ -104,6 +111,8 @@ void CMainControl::StartASB15Test(void)
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_FAILURE);
     }
+
+    emit SetGUITabEnable(true);
 }
 /****************************************************************************/
 /*!
