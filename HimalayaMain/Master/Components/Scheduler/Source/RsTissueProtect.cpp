@@ -502,10 +502,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 {
     quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
-    if(200 == Scenario)
-    {
-        return FIRST_STEP;
-    }
+
     ReturnCode_t EventId = mp_SchedulerController->GetCurErrEventID();
 
     //Firstly, check if the event id is related with Level Sensor or not
@@ -557,6 +554,10 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
 #endif
 
     ReagentType_t ret = UNKNOWN;
+    if(200 == Scenario)
+    {
+        return FIRST_STEP;
+    }
     if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
     {
         ret = Fixation;
