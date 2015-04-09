@@ -57,6 +57,7 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_IsLoged = 0;
     m_IsAbortRecv = false;
     m_TasksAborted = false;
+    CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
 }
 
 CProgramPreTest::~CProgramPreTest()
@@ -67,7 +68,6 @@ void CProgramPreTest::Start()
 {
     this->ResetVarList();
 }
-
 
 void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
