@@ -2004,16 +2004,8 @@ bool ManufacturingTestHandler:: CreatePressure(int waitSecond, float targetPress
         qDebug()<<"CreatePressure : currentPressure ================================== "<<pressure;
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, pressure);
         mp_Utils->Pause(1000);
-//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
-//        mp_Utils->Pause(1000);
-//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
-//        mp_Utils->Pause(1000);
-//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
-//        mp_Utils->Pause(1000);
-//        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CURRENT_PRESSURE, mp_PressPump->GetPressure());
     }
 
-    qDebug()<<"CreatePressure : currentPressure = "<<mp_PressPump->GetPressure();
     return result;
 }
 

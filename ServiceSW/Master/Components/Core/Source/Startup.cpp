@@ -1731,9 +1731,10 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
     else {
         QStringList HeaderLabels;
         QList<int> Columns;
+        quint32 EventId(0);
 
         if (FileName.startsWith(DeviceName + "_Service")) {  // Service log
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
+            EventId = EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO;
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
@@ -1741,7 +1742,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(4);
         }
         else if (FileName.startsWith("ServiceHelpText")) { // Service Help Text
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICESERVICEHELPTEXT_DISPLAY_INFO);
+            EventId = EVENT_GUI_LOGVIEWER_SERVICESERVICEHELPTEXT_DISPLAY_INFO;
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Service Help Text Text", 0, QApplication::UnicodeUTF8));
@@ -1750,7 +1751,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(2);
         }
         else if (FileName.startsWith("SW_Update_Events"))  {// SW Update log
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO);
+            EventId = EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO;
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8));
@@ -1771,6 +1772,8 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         mp_LogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
         (void) mp_LogContentDlg->InitDialog(Path);
         mp_LogContentDlg->show();
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
     }
 }
 
