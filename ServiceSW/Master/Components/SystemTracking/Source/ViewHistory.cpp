@@ -124,16 +124,13 @@ void CViewHistory::SelectionChanged(QModelIndex Index)
         m_SelectedRowValues.removeFirst();
     }
 
-    if (m_SelectedRowValues.count() == 0) {
-        mp_Ui->showDiffBtn->setEnabled(false);
-    }
-
-    if (m_SelectedRowValues.count() == 1) {
-        mp_Ui->showDetailsBtn->setEnabled(true);
-        mp_Ui->showDiffBtn->setEnabled(false);
-    } else {
+    if (m_SelectedRowValues.count() == 2) {
         mp_Ui->showDetailsBtn->setEnabled(false);
         mp_Ui->showDiffBtn->setEnabled(true);
+    }
+    else {
+        mp_Ui->showDetailsBtn->setEnabled(true);
+        mp_Ui->showDiffBtn->setEnabled(false);
     }
 }
 
