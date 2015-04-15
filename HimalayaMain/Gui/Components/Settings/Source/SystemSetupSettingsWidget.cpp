@@ -374,7 +374,7 @@ void CSystemSetupSettingsWidget::OnApply()
     m_UserSettingsTemp.SetTemperatureParaffinBath(temp);
     emit TemperatureChanged(m_UserSettingsTemp);
 
-    if (temp <= 63)
+    if (temp <= 64)
     {
         ConfirmationMessageDlg.SetText(m_strChangeMeltPointConfirm12Hrs.arg("12"));
     }

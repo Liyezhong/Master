@@ -229,7 +229,7 @@ void CServiceSettingsWidget::OnPrepareShutdown()
     MainMenu::CMessageDlg ConfirmationMessageDlg;
     ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
     int paraffinMeltingPoint = mp_UserSettings->GetTemperatureParaffinBath();
-    if (paraffinMeltingPoint <= 63)
+    if (paraffinMeltingPoint <= 64)
     {
         ConfirmationMessageDlg.SetText(m_strShutdownConfirm12Hrs.arg("12"));
     }

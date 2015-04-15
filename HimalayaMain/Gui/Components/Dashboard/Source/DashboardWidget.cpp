@@ -811,7 +811,7 @@ int CDashboardWidget::GetParaffinHeatingDuration()
         return 0;
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     int paraffinMeltingPoint = userSetting->GetTemperatureParaffinBath();
-    if (paraffinMeltingPoint <= 63)
+    if (paraffinMeltingPoint <= 64)
     {
         return 12;
     } else
