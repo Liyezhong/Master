@@ -95,23 +95,26 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
     qDebug() << Status;
 
     QString CoverSensorStatus = QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
-                                                        "cover sensor status:", 0, QApplication::UnicodeUTF8) + Status.value("OvenCoverSensorStatus");
+                                                        "Cover sensor status: ", 0, QApplication::UnicodeUTF8) + Status.value("OvenCoverSensorStatus");
     if (Status.value("OvenCoverSensorStatus").isEmpty())
         return;
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 
-    if (Status.value("OvenCoverSensorStatus") == "Open")
-        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
-                                               "border-width:1px; border-style:solid;"
-                                               "background-color: rgb(255, 241, 44);");
-    else if(Status.value("OvenCoverSensorStatus") == "Close")
-        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
-                                               "border-width:1px; border-style:solid;"
-                                               "background-color: rgb(85, 255, 0);");
-    else
+    if(Status.value("OvenCoverSensorStatus") != "Close" && Status.value("OvenCoverSensorStatus") != "Open"){
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                        "border-width:1px; border-style:solid;"
                                        "background-color: rgb(255, 0, 0);");
+    }
+    else if (Status.value("OvenCoverSensorStatus") == Status.value("TestStatus")) {
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(85, 255, 0);");
+    }
+    else {
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(255, 252, 135);");
+    }
 }
 
 /****************************************************************************/
@@ -124,23 +127,27 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
 void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &Status)
 {
     QString CoverSensorStatus = QApplication::translate("DiagnosticsManufacturing::CStatusConfirmDialog",
-                                                        "Retort lid lock status:", 0, QApplication::UnicodeUTF8) + Status.value("LidLockerStatus");
+                                                        "Retort lid lock status: ", 0, QApplication::UnicodeUTF8) + Status.value("LidLockerStatus");
     if (Status.value("LidLockerStatus").isEmpty())
         return;
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 
-    if (Status.value("LidLockerStatus") == "Open")
-        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
-                                               "border-width:1px; border-style:solid;"
-                                               "background-color: rgb(255, 241, 44);");
-    else if(Status.value("LidLockerStatus") == "Close")
+    if (Status.value("LidLockerStatus") == "Open" && Status.value("StepNum")=="1" ||
+            Status.value("LidLockerStatus") == "Close" && Status.value("StepNum")=="2") {
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                                "border-width:1px; border-style:solid;"
                                                "background-color: rgb(85, 255, 0);");
-    else
+    }
+    else if(Status.value("LidLockerStatus") == "Close" || Status.value("LidLockerStatus") == "Open") {
+        mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
+                                               "border-width:1px; border-style:solid;"
+                                               "background-color: rgb(255, 252, 135);");
+    }
+    else {
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                        "border-width:1px; border-style:solid;"
                                        "background-color: rgb(255, 0, 0);");
+    }
 }
 
 void CStatusConfirmDialog::HideLabel()

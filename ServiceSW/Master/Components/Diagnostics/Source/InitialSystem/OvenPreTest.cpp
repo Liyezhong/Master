@@ -24,6 +24,7 @@
 
 #include <QDebug>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 using namespace DeviceControl;
 
@@ -42,6 +43,10 @@ COvenPreTest::~COvenPreTest(void)
 
 int COvenPreTest::Run(void)
 {
+    QString TestName = "Pre-test Oven";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
     int Ret(RETURN_OK);
 
     qreal OvenTempTop(0);
@@ -61,6 +66,8 @@ int COvenPreTest::Run(void)
     qDebug()<<"OvenGetTemp ---- "<<OvenTempSensor1<<"  "<<OvenTempSensor2;
 
     if (Ret != RETURN_OK || qAbs(OvenTempSensor1-OvenTempSensor2) > DiffTemp) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;
@@ -76,8 +83,14 @@ int COvenPreTest::Run(void)
     ShowWaitingMessage(false);
 
     if (Ret != RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowFailMessage(2);
     }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
+    }
+
     return Ret;
 }
 
@@ -92,6 +105,9 @@ void COvenPreTest::StartPreHeating(qreal MeltPoint)
     else {
         MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp2").toFloat();
     }
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                               QString("Start Pre-heating Oven with target temperature %1 centigrade.").arg(MeltPoint+MoreTargetTemp));
 
     qDebug()<<"OvenStartHeating   " << MeltPoint+MoreTargetTemp;
     (void)ServiceDeviceProcess::Instance()->OvenStartHeating(MeltPoint+MoreTargetTemp, MeltPoint+MoreTargetTemp);

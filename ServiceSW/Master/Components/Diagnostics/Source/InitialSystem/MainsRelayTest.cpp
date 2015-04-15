@@ -24,6 +24,7 @@
 #include <QDebug>
 #include "Diagnostics/Include/ServiceDeviceProcess/ServiceDeviceProcess.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Diagnostics {
 
@@ -40,6 +41,11 @@ CMainsRelayTest::~CMainsRelayTest(void)
 
 int CMainsRelayTest::Run(void)
 {
+    QString TestName = "Mains Relay Self-test";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
+
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SMainsRelay");
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
@@ -82,9 +88,13 @@ int CMainsRelayTest::Run(void)
         ShowWaitingMessage(false);
 
         if (Current < SwitchOffCurrent) {
+            Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
+
             return RETURN_OK;
         }
         else {
+            Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
             ShowFailMessage(1);
             return RETURN_ERR_FAIL;
         }
@@ -118,14 +128,20 @@ int CMainsRelayTest::Run(void)
             ShowWaitingMessage(false);
 
             if (Current < SwitchOffCurrent) {
+                Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
+
                 return RETURN_OK;
             }
             else {
+                Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
                 ShowFailMessage(1);
                 return RETURN_ERR_FAIL;
             }
         }
         else {
+            Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
             (void)p_DevProc->OvenStopHeating();
 
             ShowWaitingMessage(false);

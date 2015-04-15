@@ -45,13 +45,17 @@ CCoverSensorTest::~CCoverSensorTest(void)
 {
 }
 
-int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &text, QString &value)
+int CCoverSensorTest::CoverSensorStatusConfirmDlg(QString &title, QString &testStatus, QString &value)
 {
+    QString text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus);
+
     // dlg->ParentWidget() == mp_MainWindow
     Diagnostics::CStatusConfirmDialog confirmDlg(dlg->ParentWidget());
     Service::ModuleTestStatus status;
     QString key("OvenCoverSensorStatus");
     (void)status.insert(key, value);
+    (void)status.insert("TestStatus", testStatus);
+
     confirmDlg.SetDialogTitle(title);
     confirmDlg.SetText(text);
     confirmDlg.UpdateOvenLabel(status);
@@ -82,7 +86,7 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
     };
 
     (void)dev->OvenGetCoverSensorState(&status);
-    qDebug() << "cover sensor state : " << status;
+    qDebug() << "Cover sensor state : " << status;
 
     text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus);
 
@@ -93,7 +97,7 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
     else
         statusStr = tr("Error");
 
-    ret = CoverSensorStatusConfirmDlg(title, text, statusStr);
+    ret = CoverSensorStatusConfirmDlg(title, testStatus, statusStr);
     if (ret == CDiagnosticMessageDlg::NO)
         return __FAIL__;
 

@@ -85,7 +85,7 @@ CInitialSystem::CInitialSystem(Core::CServiceGUIConnector *p_DataConnector, QWid
 
     CONNECTSIGNALSLOT(mp_InitialSystemCheck, PreTestFinished(), this, FinishedCheck());
 
-    CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, close());
+    CONNECTSIGNALSLOT(mp_Ui->mainDisplayBtn, clicked(), this, CloseDialog());
     CONNECTSIGNALSLOT(mp_Ui->retortHeatingBtn, clicked(), mp_InitialSystemCheck, RetortPreHeating());
 
     mp_HeatingTimer = new QTimer;
@@ -226,6 +226,13 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
 void CInitialSystem::FinishedCheck(void)
 {
     mp_Ui->mainDisplayBtn->setEnabled(true);
+}
+
+void CInitialSystem::CloseDialog(void)
+{
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Enter SVC Main Display."));
+
+    (void) close();
 }
 
 void CInitialSystem::UpdateOvenHeatingStatus()

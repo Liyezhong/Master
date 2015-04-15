@@ -30,6 +30,7 @@
 #include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
 #include "Diagnostics/Include/InitialSystem/RVPreTest.h"
 #include "Diagnostics/Include/SelectMeltingPointDialog.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include <QDebug>
 
@@ -55,12 +56,14 @@ int CInitialSystemCheck::Run(void)
 {   
      int Ret = 0;
 
+     Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start Initial System Check."));
+
     CMainsRelayTest *MainsRelayTest = new CMainsRelayTest(mp_Parent);
     qDebug()<<"Start MainsRelayTest";
 
     Ret = MainsRelayTest->Run();
 
-    //Ret = RETURN_OK; // only for test
+//    Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_MAINS_RELAY, Ret);
     delete MainsRelayTest;
@@ -75,7 +78,7 @@ int CInitialSystemCheck::Run(void)
     CACVoltageTest *ACVoltageTest = new CACVoltageTest(mp_Parent);
     Ret = ACVoltageTest->Run();
 
-    //Ret = RETURN_OK; // only for test
+//    Ret = RETURN_OK; // only for test
 
     emit RefreshStatusToGUI(Service::INITIAL_AC_VOLTAGE, Ret);
     delete ACVoltageTest;
@@ -208,6 +211,8 @@ void CInitialSystemCheck::ConfirmParaffinBath(void)
     DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->SetParameter("PMeltingPoint",
                                                                                           QString::number(ParaffinBath));
 
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Paraffin melting point is selected to be %1 centigrade.").arg(m_ParaffinMeltPoint));
+
     qDebug()<<"InitialSystemCheck Paraffin melting point :"<<m_ParaffinMeltPoint;
 }
 
@@ -227,9 +232,17 @@ void CInitialSystemCheck::ConfirmRetortCondition(void)
     int Ret = dlg->exec();
     if (Ret == 0) {
         m_IsParaffinInRetort = true;
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                                   QString("The content/condition within the retort is selected to be Paraffin."));
     }
     else if (m_IsEmptyInRetort) {
         Ret = 2;
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                                   QString("The content/condition within the retort is selected to be Empty."));
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                                   QString("The content/condition within the retort is selected to be Other Reagent."));
     }
 
     DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->SetParameter("RetortCondition",

@@ -86,7 +86,7 @@ int CLidLockTest::Run(void)
 
 int CLidLockTest::ShowConfirmDlg(int StepNum)
 {
-    QString Title = tr("Retort Lid Lock");
+    QString Title = tr("Lid Lock Test");
     QString Text;
     CDiagnosticMessageDlg::BUTTON_TYPE BtnType = CDiagnosticMessageDlg::NEXT_CANCEL;
     if (StepNum == 1) {
@@ -102,7 +102,7 @@ int CLidLockTest::ShowConfirmDlg(int StepNum)
 
 void CLidLockTest::ShowFinishDlg(int RetNum)
 {
-    QString Title = tr("Retort Lid Lock");
+    QString Title = tr("Lid Lock Test");
     QString Text;
     ErrorCode_t Ret = RETURN_ERR_FAIL;
 
@@ -119,7 +119,7 @@ void CLidLockTest::ShowFinishDlg(int RetNum)
 
 int CLidLockTest::ShowLidLockStatusDlg(int StepNum, QString& LidLockState)
 {
-    QString Title = tr("Retort Lid Lock");
+    QString Title = tr("Lid Lock Test");
     QString ConfirmString = tr("Do you see the retort lid '%1'?").arg(StepNum == 1 ? "Open" : "Close");
 
     Diagnostics::CStatusConfirmDialog ConfirmDlg(mp_Parent);
@@ -128,6 +128,7 @@ int CLidLockTest::ShowLidLockStatusDlg(int StepNum, QString& LidLockState)
     Service::ModuleTestStatus Status;
     QString Key("LidLockerStatus");
     (void)Status.insert(Key, LidLockState);
+    (void)Status.insert("StepNum", QString("%1").arg(StepNum));
 
     ConfirmDlg.UpdateRetortLabel(Status);
 

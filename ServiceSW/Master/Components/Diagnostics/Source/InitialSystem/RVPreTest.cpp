@@ -24,6 +24,7 @@
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 using namespace DeviceControl;
 
@@ -42,6 +43,10 @@ CRVPreTest::~CRVPreTest(void)
 
 int CRVPreTest::Run(void)
 {
+    QString TestName = "Pre-test Rotary Valve";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
     int Ret(RETURN_OK);
 
     qreal RVTempSensor1(0);
@@ -60,6 +65,8 @@ int CRVPreTest::Run(void)
 
 
     if (Ret != RETURN_OK || qAbs(RVTempSensor1-RVTempSensor2)>DiffTemp) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;
@@ -74,7 +81,12 @@ int CRVPreTest::Run(void)
     ShowWaitingMessage(false);
 
     if (Ret != RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowFailMessage(2);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
     }
 
     return Ret;
@@ -84,6 +96,11 @@ void CRVPreTest::StartPreHeating()
 {
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
     qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
+
+    qDebug()<<"RV pre-heating "<<TargetTemp;
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                               QString("Start Pre-heating Rotary Valve with target temperature %1 centigrade.").arg(TargetTemp));
 
     (void)ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
 }

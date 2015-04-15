@@ -26,6 +26,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include "DiagnosticsManufacturing/Include/Select110v220vDialog.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Diagnostics {
 
@@ -42,6 +43,10 @@ CACVoltageTest::~CACVoltageTest(void)
 
 int CACVoltageTest::Run(void)
 {
+    QString TestName = "AC Voltage Selection Self-test";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SACVoltage");
 
     ServiceDeviceProcess* p_DevProc = ServiceDeviceProcess::Instance();
@@ -49,6 +54,8 @@ int CACVoltageTest::Run(void)
     qreal RetortTargetTemp = p_TestCase->GetParameter("RetortBottomTargetTemp").toFloat();
 
     if (p_DevProc == NULL) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         return RETURN_ERR_NULL_POINTER;
     }
 
@@ -78,20 +85,28 @@ int CACVoltageTest::Run(void)
     qDebug()<<"RVSwitchType="<<RVSwitchType<<"  RetortSwitchType="<<RetortSwitchType;
 
     if (RetortSwitchType == 0) { // undefined
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;
     }
     else if (RetortSwitchType == RVSwitchType){
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
+
         return RETURN_OK;
     }
     else {
         int SwitchType = GetCurrentSwitchType();
 
         if (SwitchType == RVSwitchType) {
+            Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
             ShowFailMessage(1);
             return RETURN_ERR_FAIL;
         }
         else {
+            Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
             ShowFailMessage(2);
             return RETURN_ERR_FAIL;
         }

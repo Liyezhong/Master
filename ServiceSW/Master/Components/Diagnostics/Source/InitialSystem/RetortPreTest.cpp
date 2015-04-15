@@ -25,6 +25,7 @@
 #include <QDebug>
 
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 using namespace DeviceControl;
 
@@ -43,6 +44,10 @@ CRetortPreTest::~CRetortPreTest(void)
 
 int CRetortPreTest::Run(void)
 {
+    QString TestName = "Pre-test Retort";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
     int Ret(RETURN_OK);
 
     qreal RetortTempSide(0);
@@ -63,6 +68,8 @@ int CRetortPreTest::Run(void)
 
 
     if (Ret != RETURN_OK || qAbs(RetortTempBottom1-RetortTempBottom2) > DiffTemp) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;
@@ -78,7 +85,12 @@ int CRetortPreTest::Run(void)
     ShowWaitingMessage(false);
 
     if (Ret != RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowFailMessage(2);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
     }
 
     return Ret;
@@ -88,6 +100,9 @@ void CRetortPreTest::StartPreHeating(qreal MeltPoint)
 {
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
     qreal MoreTargetTemp = p_TestCase->GetParameter("PreHeatingMoreTargetTemp").toFloat();
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                               QString("Start Pre-heating Retort with target temperature %1 centigrade.").arg(MeltPoint+MoreTargetTemp));
 
     (void)ServiceDeviceProcess::Instance()->RetortStartHeating(MeltPoint+MoreTargetTemp+7, MeltPoint+MoreTargetTemp+2);
     p_TestCase->SetParameter("TargetTemp", QString::number(MeltPoint+MoreTargetTemp));

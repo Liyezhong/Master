@@ -25,6 +25,7 @@
 #include <QDebug>
 
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 using namespace DeviceControl;
 
@@ -43,6 +44,10 @@ CLTubePreTest::~CLTubePreTest(void)
 
 int CLTubePreTest::Run(void)
 {
+    QString TestName = "Pre-test Liquid Heating Tube";
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
+
     int Ret(RETURN_OK);
 
     qreal LTubeTempSensor(0);
@@ -60,6 +65,8 @@ int CLTubePreTest::Run(void)
 
 
     if (Ret != RETURN_OK || (LTubeTempSensor) >= RangeTemp) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowWaitingMessage(false);
         ShowFailMessage(1);
         return RETURN_ERR_FAIL;
@@ -76,7 +83,12 @@ int CLTubePreTest::Run(void)
 
     ShowWaitingMessage(false);
     if (Ret != RETURN_OK) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Failed.").arg(TestName));
+
         ShowFailMessage(2);
+    }
+    else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 Successful.").arg(TestName));
     }
 
     return Ret;
@@ -86,6 +98,9 @@ void CLTubePreTest::StartPreHeating()
 {
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
     qreal TargetTemp = p_TestCase->GetParameter("PreHeatingTargetTemp").toFloat();
+
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() <<
+                                               QString("Start Pre-heating Liquid Heating Tube with target temperature %1 centigrade.").arg(TargetTemp));
 
     (void)ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
 }
