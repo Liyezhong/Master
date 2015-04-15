@@ -130,6 +130,15 @@ private Q_SLOTS:
     void StartVentilationFanTest(void);
     
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief Write result to service log file
+     *  \iparam TestName = the name of test case
+     *  \iparam RetError = test result
+     */
+    /****************************************************************************/
+    void LogResult(QString& TestName, int RetError);
+
     Ui::CSystem *mp_Ui;                         //!< User Interface
     CDiagnosticMessageDlg*   mp_MessageDlg;     //!< The pointer message dialog
 };

@@ -84,6 +84,17 @@ CRetort::~CRetort()
     }
 }
 
+void CRetort::LogResult(QString &TestName, ErrorCode_t RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
 void CRetort::OnEnableTestButton()
 {
     mp_Ui->testLevelSensorDetection->setEnabled(true);
@@ -92,94 +103,73 @@ void CRetort::OnEnableTestButton()
 
 void CRetort::StartLidLockTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST);
-    qDebug() << "Retort: start lid lock test";
+    QString TestName = QString("Retort %1").arg(mp_Ui->testLidLock->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     Retort::CLidLockTest Test(mp_MessageDlg, this);
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort lid lock");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE);
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CRetort::StartDrainReagentTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST);
-    qDebug() << "Retort: start drain reagent test";
+    QString TestName = QString("Retort %1").arg(mp_Ui->testDrainReagent->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     Retort::CDrainReagentTest Test(mp_MessageDlg, this);
 
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort drain reagent");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_DRAINREAGENT_TEST_FAILURE);
 
+    LogResult(TestName, ret);
     emit SetGUITabEnable(true);
 }
 
 void CRetort::StartLevelSensorDetectionTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST);
-    qDebug() << "Retort: start level sensor detecting test";
+    QString TestName = QString("Retort %1").arg(mp_Ui->testLevelSensorDetection->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     Retort::CLevelSensorDetectingTest Test(mp_MessageDlg, this);
 
     ErrorCode_t ret = (ErrorCode_t)Test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"level sensor detecting");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CRetort::StartHeatingTestEmpty(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST);
-    qDebug() << "Retort: start heating test empty";
+    QString TestName = QString("Retort %1").arg(mp_Ui->testHeatingEmpty->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     Retort::CHeatingTestEmpty test(mp_MessageDlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort heating empty");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CRetort::StartHeatingTestWithWater(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
-    qDebug() << "Retort: start heating test with water";
+    QString TestName = QString("Retort %1").arg(mp_Ui->testHeatingWater->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     Retort::CHeatingTestWithWater test(mp_MessageDlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"retort heating with water");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE);
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }

@@ -97,6 +97,15 @@ private Q_SLOTS:
     void StartASB15Test(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief Write result to service log file
+     *  \iparam TestName = the name of test case
+     *  \iparam RetError = test result
+     */
+    /****************************************************************************/
+    void LogResult(QString& TestName, int RetError);
+
     Ui::CMainControl *ui;   //!< User Interface
 };
 

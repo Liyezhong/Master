@@ -61,56 +61,63 @@ CMainControl::~CMainControl()
     delete ui;
 }
 
+
+void CMainControl::LogResult(QString &TestName, int RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
+
 void CMainControl::StartASB3Test(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST);
-    qDebug() << "CMainControl: start ASB3 test";
+    QString TestName = QString("%1 Test").arg(ui->testASB3->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_3, this);
 
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CMainControl::StartASB5Test(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST);
-    qDebug() << "CMainControl: start ASB5 test";
+    QString TestName = QString("%1 Test").arg(ui->testASB5->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_5, this);
 
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CMainControl::StartASB15Test(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST);
-    qDebug() << "CMainControl: start ASB15 test";
+    QString TestName = QString("%1 Test").arg(ui->testASB15->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     MainControl::CASBTest Test(Slave_15, this);
 
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
+
 
     emit SetGUITabEnable(true);
 }

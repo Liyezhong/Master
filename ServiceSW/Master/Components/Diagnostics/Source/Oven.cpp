@@ -54,40 +54,46 @@ COven::~COven()
     }
 }
 
+void COven::LogResult(QString &TestName, ErrorCode_t RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
+
 void COven::StartHeatingTestEmpty(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
-    qDebug() << "Oven: start heating test empty";
+    QString TestName = QString("Paraffin Oven %1").arg(ui->testHeatingEmpty->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     Oven::CHeatingTestEmpty test(dlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"oven heating empty");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }
 
 void COven::StartCoverSensorTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
-    qDebug() << "Oven: start cover sensor test";
+    QString TestName = QString("Paraffin Oven %1").arg(ui->testCoverSensor->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     Oven::CCoverSensorTest test(dlg);
 
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"Cover sensor");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }

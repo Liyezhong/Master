@@ -102,6 +102,17 @@ CSystem::~CSystem()
     }
 }
 
+void CSystem::LogResult(QString &TestName, int RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
 void CSystem::OnEnableTestButton()
 {
     mp_Ui->testSealing->setEnabled(true);
@@ -111,150 +122,110 @@ void CSystem::OnEnableTestButton()
 
 void CSystem::StartSealingTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST);
-    qDebug() << "System: start sealing test";
+    QString TestName = mp_Ui->testSealing->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CSystemSealingTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
-    if (Ret == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS);
-    }
-    else if (Ret == RETURN_ABORT) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"System sealing");
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE);
-    }
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartFillingNDrainingTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST);
-    qDebug() << "System: start filling and draining test";
+    QString TestName = mp_Ui->testFillingDraining->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CFillingNDrainingTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
-    if (Ret == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS);
-    }
-    else if (Ret == RETURN_ABORT) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
-                                                   Global::tTranslatableStringList()<<"System Filling&Draining");
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
-    }
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartLiquidHoseTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST);
-    qDebug() << "System: start liquid hose test";
+    QString TestName = mp_Ui->testLiquidHose->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CLiquidHoseTest Test(mp_MessageDlg, this);
     int Ret = Test.Run();
-    if (Ret == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_SUCCESS);
-    }
-    else if (Ret == RETURN_ABORT) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT,
-                                                   Global::tTranslatableStringList()<<"System liquid hose");
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_LIQUIDHOSE_TEST_FAILURE);
-    }
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartSpeakerTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
-    qDebug() << "System: start speaker test";
+    QString TestName = mp_Ui->testSpeaker->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CSpeakerTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartLocalAlarmTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
-    qDebug() << "System: start local alarm test";
+    QString TestName = mp_Ui->testLocalAlarm->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CAlarmTest Test("Local", mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartRemoteAlarmTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
-    qDebug() << "System: start retmote alarm test";
+    QString TestName = mp_Ui->testRemoteAlarm->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CAlarmTest Test("Remote", mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartExhaustFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST);
-    qDebug() << "System: start exhaust fan test";
+    QString TestName = mp_Ui->testExhaustFan->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     System::CExhaustFanTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FAN_TEST_FAILURE);
-    }
+
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CSystem::StartVentilationFanTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST);
-    qDebug() << "System: start ventilation fan test";
+    QString TestName = mp_Ui->testVentilationFan->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     System::CVentilationFanTest Test(mp_MessageDlg, this);
-    if (Test.Run() == RETURN_OK) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_SUCCESS);
-    }
-    else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FAN_TEST_FAILURE);
-    }
+    int Ret = Test.Run();
+
+    LogResult(TestName, Ret);
 
     emit SetGUITabEnable(true);
 }

@@ -53,21 +53,27 @@ CRotaryValve::~CRotaryValve()
     }
 }
 
+void CRotaryValve::LogResult(QString &TestName, ErrorCode_t RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
 void CRotaryValve::StartMovementTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST);
-    qDebug() << "Rotary Valve: start movement test";
+    QString TestName = QString("Rotary Valve %1").arg(ui->movementTest->text());
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     RotaryValve::CMovementTest test(mp_MessageDlg);
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK) {
-        emit EnableTestButton();
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_SUCCESS);
-    } else if (ret == RETURN_ABORT) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<"rotary valve movement");
-    } else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_MOVEMENT_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }

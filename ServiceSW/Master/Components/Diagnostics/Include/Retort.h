@@ -89,8 +89,18 @@ private Q_SLOTS:
     void StartHeatingTestWithWater(void);
     
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief Write result to service log file
+     *  \iparam TestName = the name of test case
+     *  \iparam RetError = test result
+     */
+    /****************************************************************************/
+    void LogResult(QString& TestName, ErrorCode_t RetError);
+
     Ui::CRetort *mp_Ui;                         //!< User Interface
     CDiagnosticMessageDlg*   mp_MessageDlg;     //!< The pointer message dialog
+
 
 };
 

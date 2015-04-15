@@ -56,38 +56,42 @@ CLaSystem::~CLaSystem()
     delete ui;
 }
 
+
+void CLaSystem::LogResult(QString &TestName, ErrorCode_t RetError)
+{
+    if (RetError == RETURN_OK)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is successful.").arg(TestName));
+    else if (RetError == RETURN_ABORT)
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is aborted.").arg(TestName));
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is failed.").arg(TestName));
+
+}
+
 void CLaSystem::StartLiquidHeatingTubeTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
-    qDebug() << "Start Liquid heating tube test";
+    QString TestName = ui->testLiquidHeatingTube->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
+
 
     emit SetGUITabEnable(false);
     LaSystem::CLiquidHeatingTubeTest test(dlg);
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<" Liquid heating tube");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_FAILURE);
+
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }
 
 void CLaSystem::StartAirHeatingTubeTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST);
-    qDebug() << "Start Air heating tube test";
+    QString TestName = ui->testAirHeatingTube->text();
+    Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);
     LaSystem::CAirHeatingTubeTest test(dlg);
     ErrorCode_t ret = (ErrorCode_t)test.Run();
-    if (ret == RETURN_OK)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS);
-    else if (ret == RETURN_ABORT)
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_TEST_ABORT, Global::tTranslatableStringList()<<" Air heating tube");
-    else
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE);
+    LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
 }

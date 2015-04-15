@@ -88,6 +88,15 @@ private Q_SLOTS:
     void StartCoverSensorTest(void);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief Write result to service log file
+     *  \iparam TestName = the name of test case
+     *  \iparam RetError = test result
+     */
+    /****************************************************************************/
+    void LogResult(QString& TestName, ErrorCode_t RetError);
+
     Ui::COven *ui; //!< Oven ui
     CDiagnosticMessageDlg *dlg; //!< For show message dialog
 };

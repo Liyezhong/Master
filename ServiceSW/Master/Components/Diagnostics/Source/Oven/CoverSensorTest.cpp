@@ -88,8 +88,6 @@ CCoverSensorTest::TestCaseRet CCoverSensorTest::TestCase(QString testStatus)
     (void)dev->OvenGetCoverSensorState(&status);
     qDebug() << "Cover sensor state : " << status;
 
-    text = tr("Do you see the cover sensor status shows '%1' ?").arg(testStatus);
-
     if (status == __OPEN__)
         statusStr = tr("Open");
     else if (status == __CLOSE__)

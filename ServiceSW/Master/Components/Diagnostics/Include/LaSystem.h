@@ -77,6 +77,15 @@ private Q_SLOTS:
     void StartAirHeatingTubeTest(void);
     
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief Write result to service log file
+     *  \iparam TestName = the name of test case
+     *  \iparam RetError = test result
+     */
+    /****************************************************************************/
+    void LogResult(QString& TestName, ErrorCode_t RetError);
+
     Ui::CLaSystem *ui; //!< L & A ui
     CDiagnosticMessageDlg *dlg; //!< For show message dialog
 };

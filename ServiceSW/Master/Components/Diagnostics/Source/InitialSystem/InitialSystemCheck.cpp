@@ -58,6 +58,12 @@ int CInitialSystemCheck::Run(void)
 
      Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start Initial System Check."));
 
+     int ParaffinBath = mp_DataConnector->GetUserSettingInterface()->GetUserSettings()->GetTemperatureParaffinBath();
+     m_ParaffinMeltPoint = ParaffinBath;
+
+     DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SGlobal")->SetParameter("PMeltingPoint",
+                                                                                           QString::number(ParaffinBath));
+
     CMainsRelayTest *MainsRelayTest = new CMainsRelayTest(mp_Parent);
     qDebug()<<"Start MainsRelayTest";
 
