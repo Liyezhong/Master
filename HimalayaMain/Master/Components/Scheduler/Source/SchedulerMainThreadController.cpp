@@ -391,9 +391,11 @@ void SchedulerMainThreadController::OnTickTimer()
     case SM_INIT:
         //In INIT state will do self test
         HardwareMonitor("INIT");
+        HandleRmtLocAlarm(newControllerCmd);
         HandleInitState(newControllerCmd, cmd);
         break;
     case SM_POWER_FAILURE:
+        HandleRmtLocAlarm(newControllerCmd);
         HandlePowerFailure(newControllerCmd, cmd);
         break;
     case SM_IDLE:
