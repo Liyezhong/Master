@@ -7,3 +7,4 @@ SUBDIRS += TestProgramStatusInfor.pro
 SUBDIRS += TestRcReheating.pro
 SUBDIRS += TestSchedulerMachine.pro
 SUBDIRS += TestEventScenarioErrorXMLInfo.pro
+SUBDIRS += TestErrHandlingMap.pro
