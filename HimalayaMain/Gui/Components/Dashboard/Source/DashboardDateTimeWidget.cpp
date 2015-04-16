@@ -167,6 +167,7 @@ void CDashboardDateTimeWidget::showEvent(QShowEvent *p_Event)
         RefreshDateTime(mp_UserSetting->GetTimeFormat());
     }
     mp_Ui->btnASAP->setChecked(false);
+    m_IsASAPMode = false;
     mp_Ui->btnOK->setText(tr("OK"));
     DisabledWheel(false);
 }
