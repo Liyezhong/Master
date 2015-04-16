@@ -554,12 +554,12 @@
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" NextStepOnTimeOut="2" TimeOut="15m" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="513050001" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67176006" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513050001" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67176005" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" NextStepOnTimeOut="2" TimeOut="15m" StatusBar="YES"/>
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="513050101" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67176006" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513050101" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67176005" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
 		</Event>
@@ -608,11 +608,11 @@
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES" NextStepOnTimeOut="2" TimeOut="15m"/>
 			<Step ID="2" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
-		<Event Code="" ErrorID="513030011" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513030011" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67176023" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="513030012" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
+		<Event Code="" ErrorID="513030012" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE" ServiceString="67176024" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
 			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
 		</Event>
