@@ -24,10 +24,17 @@
 #include <Global/Include/Utils.h>
 #include <Scheduler/Include/EventScenarioErrorXMLInfo.h>
 #include <EventHandler/Include/EventXMLInfo.h>
+#include <QXmlStreamReader>
+#include <QHash>
 
 using namespace EventHandler;
 
 namespace Scheduler {
+
+typedef struct{
+    QString StationID;
+    QString ReagentID;
+}ReagentStationList_t;
 
 /****************************************************************************/
 /**
@@ -38,10 +45,13 @@ class TestErrHandlingMap: public QObject {
     Q_OBJECT
 
 private:
+    QString GetSafeReagentType(const QString& Scenario);
+    bool ReadReagentList(const QString& FileList);
+
     QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;
     QSharedPointer<EventXMLInfo> m_pEventXMLInfo;
-
-    QString GetSafeReagentType(const QString& Scenario);
+    QList<ReagentStationList_t>      m_ReagentStationList;
+    void GetSafeReagentStation(const QString& ReagentID, ReagentStationList_t& reagentStation);
 
 private slots:
     /****************************************************************************/
@@ -74,31 +84,151 @@ private slots:
 
 }; // end class TestEventCSVInfo
 
+void TestErrHandlingMap::GetSafeReagentStation(const QString& ReagentID, ReagentStationList_t& reagentStation)
+{
+    ReagentStationList_t ReagentStation, RG1Reagent, RG3Reagent, RG4Reagent;
+    for(int i = 0; i < m_ReagentStationList.size(); ++i)
+    {
+        ReagentStation = m_ReagentStationList.at(i);
+        if ( (ReagentID == "RG1") || (ReagentID == "RG5") || (ReagentID == "RG6") || (ReagentID == "RG3") )
+        {
+            if(ReagentID == ReagentStation.ReagentID)
+            {
+                reagentStation = ReagentStation;
+                return;
+            }
+        }
+        if(ReagentID == "RG2")
+        {
+            if("RG3" == ReagentStation.ReagentID)
+            {
+                RG3Reagent = ReagentStation;
+            }
+            if("RG1" == ReagentStation.ReagentID)
+            {
+                RG1Reagent = ReagentStation;
+            }
+        }
+        if(ReagentID == "RG4")
+        {
+            if("RG3" == ReagentStation.ReagentID)
+            {
+                RG3Reagent = ReagentStation;
+            }
+            if("RG4" == ReagentStation.ReagentID)
+            {
+                RG4Reagent = ReagentStation;
+            }
+        }
+    }
+    if(ReagentID == "RG2")
+    {
+        if(!RG3Reagent.ReagentID.isEmpty() && !RG3Reagent.StationID.isEmpty())
+        {
+            reagentStation = RG3Reagent;
+        }
+        else
+        {
+            reagentStation = RG1Reagent;
+        }
+    }
+    if(ReagentID == "RG4")
+    {
+        if(!RG3Reagent.ReagentID.isEmpty() && !RG3Reagent.StationID.isEmpty())
+        {
+            reagentStation = RG3Reagent;
+        }
+        else
+        {
+            reagentStation = RG4Reagent;
+        }
+    }
+}
+
+bool TestErrHandlingMap::ReadReagentList(const QString& FileList)
+{
+    m_ReagentStationList.clear();
+    QString XMLFile = FileList;
+    QSharedPointer<QXmlStreamReader> pXMLReader;
+    QFile xmlFile(FileList);
+    if (xmlFile.exists())
+    {
+        if (xmlFile.open(QIODevice::ReadOnly)){
+            pXMLReader = QSharedPointer<QXmlStreamReader>(new QXmlStreamReader(xmlFile.readAll()));
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+    if(pXMLReader == NULL)
+    {
+        return false;
+    }
+    if(!pXMLReader->atEnd())
+    {
+        pXMLReader->readNextStartElement();
+        while (pXMLReader->name() != "Reagents" || !pXMLReader->isEndElement())
+        {
+            pXMLReader->readNextStartElement();
+            if (pXMLReader->name() == "Reagent" && !pXMLReader->isEndElement())
+            {
+                QString StationId = pXMLReader->attributes().value("StationID").toString();
+                QString ReagentGroup = pXMLReader->attributes().value("ReagentGroup").toString();
+                if(!StationId.isEmpty())
+                {
+                    ReagentStationList_t reagentStation;
+                    reagentStation.StationID = StationId;
+                    reagentStation.ReagentID = ReagentGroup;
+
+                    m_ReagentStationList.push_back(reagentStation);
+                }
+            }
+        }
+    }
+
+    return true;
+}
 
 QString TestErrHandlingMap::GetSafeReagentType(const QString& Scenario)
 {
+    ReagentStationList_t reagentStation;
     QString SafeReagentType = "";
     quint32 scenario = Scenario.toInt();
+    QString ReagentID;
+
     if(200 == scenario)
     {
-        SafeReagentType = "Program_first_position";
+        reagentStation = m_ReagentStationList.at(0);//Program_first_position";
     }
     else if(scenario >= 211 && scenario <= 217)
     {
-        SafeReagentType = "TissueProtect_Fixation" ;
+        GetSafeReagentStation("RG1", reagentStation);
     }
-    else if(scenario >= 221 && scenario <= 247)
+    else if(scenario >= 221 && scenario <= 227)
     {
-        SafeReagentType = "TissueProtect_min_concentration_Dehydration";
+        GetSafeReagentStation("RG2", reagentStation);
+    }
+    else if(scenario >= 231 && scenario <= 237)
+    {
+        GetSafeReagentStation("RG3", reagentStation);
+    }
+    else if(scenario >= 241 && scenario <= 247)
+    {
+        GetSafeReagentStation("RG4", reagentStation);
     }
     else if(scenario >= 251 && scenario <= 260)
     {
-        SafeReagentType = "TissueProtect_clearing";
+        GetSafeReagentStation("RG5", reagentStation);
     }
     else if(scenario >= 271 && scenario <= 277)
     {
-        SafeReagentType = "TissueProtect_paraffin";
+        GetSafeReagentStation("RG6", reagentStation);
     }
+
+    SafeReagentType = reagentStation.StationID + "_" + reagentStation.ReagentID;
     return SafeReagentType;
 }
 
@@ -117,7 +247,7 @@ void TestErrHandlingMap::UTAll()
         }
     }
     QTextStream stream(&file);
-    stream << "#EventId; ScenarioId; ErrorId; Type; ResponseId; SafeReagentGroup;" << "\n";
+    stream << "#EventId; ScenarioId; ErrorId; Type; ResponseId; SafeReagentStationGroup;" << "\n";
 
     QHash< quint32,QSharedPointer<ESEInfo> > ESEInfoList = m_pESEXMLInfo->GetHashESEInfoList();
     QHash< quint32, QSharedPointer<XMLEvent> > EventConfigList = m_pEventXMLInfo->GetEventList();
@@ -157,7 +287,7 @@ void TestErrHandlingMap::UTAll()
                         stream << ";  Type:" << Type << ";  ResponseId:" << Action;
                     }
                 }
-                stream << ";  SafeReagentGroup:/;\n";
+                stream << ";  SafeReagentStationGroup:/;\n";
             }
         }
         else
@@ -199,11 +329,11 @@ void TestErrHandlingMap::UTAll()
                     }
                     if(HasSafeReagent)
                     {
-                        stream << ";  SafeReagentGroup:" << GetSafeReagentType(Scenario) << ";\n";
+                        stream << ";  SafeReagentStationGroup:" << GetSafeReagentType(Scenario) << ";\n";
                     }
                     else
                     {
-                        stream << ";  SafeReagentGroup:/;\n";
+                        stream << ";  SafeReagentStationGroup:/;\n";
                     }
                 }
                 sceErrIter++;
@@ -230,6 +360,11 @@ void TestErrHandlingMap::initTestCase()
     QStringList EventConfigXmlFilePath(tmp);
     m_pEventXMLInfo = QSharedPointer<EventXMLInfo>(new EventXMLInfo(EventConfigXmlFilePath));
     ret = m_pEventXMLInfo->InitXMLInfo();
+    QVERIFY(ret);
+
+    ret = false;
+    QString ReagentFilePath = "../Settings/ReagentStations.xml";
+    ret = ReadReagentList(ReagentFilePath);
     QVERIFY(ret);
 }
 
