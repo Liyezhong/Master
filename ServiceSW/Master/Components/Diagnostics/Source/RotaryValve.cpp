@@ -73,6 +73,9 @@ void CRotaryValve::StartMovementTest(void)
     RotaryValve::CMovementTest test(mp_MessageDlg);
     ErrorCode_t ret = (ErrorCode_t)test.Run();
 
+    if (ret == RETURN_OK) {
+        emit EnableTestButton();
+    }
     LogResult(TestName, ret);
 
     emit SetGUITabEnable(true);
