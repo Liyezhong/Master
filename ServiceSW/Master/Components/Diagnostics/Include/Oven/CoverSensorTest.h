@@ -80,7 +80,7 @@ protected:
     /*!
      *  \brief To show confirm dialog
      *  \iparam title = dialog title
-     *  \iparam text =  test status
+     *  \iparam testStatus =  test status
      *  \iparam value = cover sensor status
      *  \return clicked code.
      */

@@ -127,6 +127,10 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(const QString& MessageTitle, const
         dlg->SetButtonText(3, "Cancel");
         dlg->EnableButton(3, false);
         break;
+    case YES_CANCEL:
+        dlg->SetButtonText(1, "Yes");
+        dlg->SetButtonText(3, "Cancel");
+        break;
     }
 
     dlg->setModal(true);

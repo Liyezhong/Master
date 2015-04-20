@@ -46,6 +46,7 @@ public:
         OK_ABORT = 1,   //!< OK and Abort
         NEXT_CANCEL = 2,    //!< Next and Cancel
         NEXT_CANCEL_DISABLE = 3,    //!< Next disable
+        YES_CANCEL = 4,  //!< YES and Cancel
 
         NEXT = 1,       //!< Next
         CANCEL = 0,     //!< Cancel

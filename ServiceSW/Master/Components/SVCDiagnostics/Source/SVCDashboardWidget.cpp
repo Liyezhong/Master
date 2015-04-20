@@ -702,6 +702,15 @@ void CSVCDashboardWidget::OnSelectPosition()
         return;
     }
 
+    if (Postion == 14 || Postion == 15 || Postion == 16) {
+        Text = "Do you really want to use paraffin?";
+        int Ret = mp_MsgDlg->ShowConfirmMessage(Title, Text, Diagnostics::CDiagnosticMessageDlg::YES_CANCEL);
+
+        if (Ret == (int)Diagnostics::CDiagnosticMessageDlg::CANCEL) {
+            return;
+        }
+    }
+
     QString PositionStr = PostionToStr(Flag, Postion);
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_SELECTED_POSITION, Global::tTranslatableStringList()<<PositionStr);
 
