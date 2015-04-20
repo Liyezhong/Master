@@ -4787,6 +4787,12 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
                                <<QString("%1").arg(m_SchedulerCommandProcessor->HardwareMonitor().LowerLimit)
                                <<QString("%1").arg(InternalSteps);
             break;
+        case 513030011:
+        case 513030012:
+            EventStringParList<<QString("%1").arg(ErrorID);
+            RVPosition = (quint32)m_ProgramStatusInfor.GetLastRVPosition();
+            EventRDStringParList<<QString("%1").arg(RVPosition)<<QString("%1").arg(m_CurrentBottlePosition.RvPos);
+            break;
         case 513040020:
         case 511040021:
         case 511040022:
