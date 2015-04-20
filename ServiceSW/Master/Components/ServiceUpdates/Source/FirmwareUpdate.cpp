@@ -211,9 +211,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
 
         p_TestCase1->SetParameter("SlaveType", SlaveTypes[i]);
 
-       // emit BeginModuleTest(Service::FIRMWARE, TestCaseList); // disable for test
-
-        //emit UpdateModule(*mp_Module);
+        emit BeginModuleTest(Service::FIRMWARE, TestCaseList);
     }
 
     if (num == 3) {
@@ -233,6 +231,7 @@ void CFirmwareUpdate::UpdateFirmware(void)
         delete dlg;
     }
     else {
+
         emit UpdateModule(*mp_Module);
         UpdateSlaveVersion();
         CopyFilesToRollBackDir();
@@ -320,12 +319,11 @@ void CFirmwareUpdate::SetEnableUpdate(bool Enable)
 void CFirmwareUpdate::CopyFilesToRollBackDir()
 {
     QString FirmwareFilePath = Global::SystemPaths::Instance().GetFirmwarePath();
-    QString RollBackPath = Global::SystemPaths::Instance().GetRollbackPath() + "/Firmware/";
+    QString RollBackPath = Global::SystemPaths::Instance().GetRollbackPath();
 
-    QString CmdStr = "mkdir -p " + RollBackPath;
-    (void) system(CmdStr.toStdString().c_str());
+    QString CmdStr = "cp -rf " + FirmwareFilePath + " " + RollBackPath;
 
-    CmdStr = "cp -rf " + FirmwareFilePath + "/* " + RollBackPath;
+    qDebug()<<CmdStr;
 
     (void)system(CmdStr.toStdString().c_str());
 }
