@@ -494,6 +494,11 @@ void CDashboardStationItem::EnableBlink(bool bEnable)
     m_ExpiredColorRed = false;
 }
 
+bool CDashboardStationItem::IsBlinkEnable()
+{
+    return m_EnableBlink;
+}
+
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 {
     int fillBottleWidth;

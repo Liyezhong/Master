@@ -710,8 +710,11 @@ void CDashboardScene::EnableBlink(bool bEnable)
          {
              if (item->IsReagentExpired() && item->isVisible())
              {
-                 item->EnableBlink(bEnable);
-                 item->DrawStationItemImage();
+                 if (bEnable != item->IsBlinkEnable())
+                 {
+                    item->EnableBlink(bEnable);
+                    item->DrawStationItemImage();
+                 }
              }
          }
     }

@@ -216,6 +216,15 @@ public:
     void EnableBlink(bool bEnable);
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of function IsBlinkEnable, check whether the blinking of item is enable or not.
+     *
+     *
+     *  \return from IsBlinkEnable
+     */
+    /****************************************************************************/
+    bool IsBlinkEnable();
+    /****************************************************************************/
+    /*!
      *  \brief Sets the selected station
      *
      *  \iparam Selected = True if station is selected else False.
