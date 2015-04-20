@@ -166,7 +166,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_HeatingTargetTemp->setPos(358, 163);
     mp_HeatingTubeTemp->setText("Temp: 0\260C");
     mp_HeatingTubeCurrent->setText("Current: 0A");
-    mp_HeatingTargetTemp->setText("Target: 0\260C");
+    mp_HeatingTargetTemp->setText("Target: N/A");
 
     mp_AirHeatingTubeTemp    = new SVCLabel(true, mp_Ui->graphicsView);
     mp_AirHeatingTubeCurrent = new SVCLabel(true, mp_Ui->graphicsView);
@@ -176,7 +176,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_AirHeatingTargetTemp->setPos(596, 44);
     mp_AirHeatingTubeTemp->setText("Temp: 0\260C");
     mp_AirHeatingTubeCurrent->setText("Current : 0A");
-    mp_AirHeatingTargetTemp->setText("Target: 0\260C");
+    mp_AirHeatingTargetTemp->setText("Target: N/A");
 
     mp_OvenTemp1   = new SVCLabel(true, mp_Ui->graphicsView);
     mp_OvenTemp2   = new SVCLabel(true, mp_Ui->graphicsView);
@@ -192,7 +192,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_OvenTemp2->setText("Oven2: 0\260C");
     mp_OvenTemp3->setText("Oven3: 0\260C");
     mp_OvenCurrent->setText("Current: 0A");
-    mp_OvenTargetTemp->setText("Target: 0\260C");
+    mp_OvenTargetTemp->setText("Target: N/A");
 
     mp_RetortTemp1 = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RetortTemp2 = new SVCLabel(true, mp_Ui->graphicsView);
@@ -208,7 +208,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_RetortTemp2->setText("Retort_Temperature2");
     mp_RetortTemp3->setText("Retort_Temperature3");
     mp_RetortCurrent->setText("Current: 0A");
-    mp_RetortTargetTemp->setText("Target: 0\260C");
+    mp_RetortTargetTemp->setText("Target: N/A");
 
     mp_RotaryValvePosition = new SVCLabel(true, mp_Ui->graphicsView);
     mp_RotaryValveTemp1    = new SVCLabel(true, mp_Ui->graphicsView);
@@ -224,7 +224,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_RotaryValveTemp1->setText("Temp1: 0\260C");
     mp_RotaryValveTemp2->setText("Temp1: 0\260C");
     mp_RotaryValveCurrent->setText("Current: 0A");
-    mp_RotaryValveTargetTemp->setText("Target: 0\260C");
+    mp_RotaryValveTargetTemp->setText("Target: N/A");
 
     mp_PressureLabel = new SVCLabel(false, mp_Ui->graphicsView);
     mp_PressureLabel->setPos(608, 78);
@@ -289,7 +289,7 @@ void CSVCDashboardWidget::RetortSelected()
             mp_Retort->SetStatus(CGraphicsItemPart::Working);
             return;
         }
-        mp_RetortTargetTemp->setText("Target: 0\260C");
+        mp_RetortTargetTemp->setText("Target: N/A");
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
@@ -334,7 +334,7 @@ void CSVCDashboardWidget::OvenSelected()
             mp_Oven->SetStatus(CGraphicsItemPart::Working);
             return;
         }
-        mp_OvenTargetTemp->setText("Target: 0\260C");
+        mp_OvenTargetTemp->setText("Target: N/A");
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
     Global::EventObject::Instance().RaiseEvent(EventId, StrList);
@@ -378,7 +378,7 @@ void CSVCDashboardWidget::RotaryValveSelected()
             mp_RotaryValve->SetStatus(CGraphicsItemPart::Working);
             return;
         }
-        mp_RotaryValveTargetTemp->setText("Target: 0\260C");
+        mp_RotaryValveTargetTemp->setText("Target: N/A");
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
@@ -424,7 +424,7 @@ void CSVCDashboardWidget::AirTubeSelected()
             mp_AirHeatingTube->SetStatus(CGraphicsItemPart::Working);
             return;
         }
-        mp_AirHeatingTargetTemp->setText("Target: 0\260C");
+        mp_AirHeatingTargetTemp->setText("Target: N/A");
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
@@ -470,7 +470,7 @@ void CSVCDashboardWidget::LiquidTubeSelected()
             mp_HeatingTube->SetStatus(CGraphicsItemPart::Working);
             return;
         }
-        mp_HeatingTargetTemp->setText("Target: 0\260C");
+        mp_HeatingTargetTemp->setText("Target: N/A");
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
