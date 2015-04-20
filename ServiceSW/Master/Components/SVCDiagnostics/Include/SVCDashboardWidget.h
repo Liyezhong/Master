@@ -329,24 +329,29 @@ private:
 
     SVCLabel* mp_HeatingTubeTemp;    //!< Liquid heating tube temperature label
     SVCLabel* mp_HeatingTubeCurrent; //!< Liquid heating tube current label
+    SVCLabel* mp_HeatingTargetTemp;  //!< Liquid heating tube target temperature label
 
     SVCLabel* mp_AirHeatingTubeTemp;  //!< Air heating tube temperature label
     SVCLabel* mp_AirHeatingTubeCurrent;  //!< Air heating tube current label
+    SVCLabel* mp_AirHeatingTargetTemp;   //!< Air heating tube target temperature label
 
     SVCLabel* mp_OvenTemp1;     //!< Oven temperature 1 label
     SVCLabel* mp_OvenTemp2;     //!< Oven temperature 2 label
     SVCLabel* mp_OvenTemp3;     //!< Oven temperature 3 label
     SVCLabel* mp_OvenCurrent;   //!< Oven current label
+    SVCLabel* mp_OvenTargetTemp;//!< Oven target temperature label
 
     SVCLabel* mp_RetortTemp1;   //!< Retort temperature 1 label
     SVCLabel* mp_RetortTemp2;   //!< Retort temperature 2 label
     SVCLabel* mp_RetortTemp3;   //!< Retort temperature 3 label
     SVCLabel* mp_RetortCurrent; //!< Retort current lable
+    SVCLabel* mp_RetortTargetTemp; //!< Retort target temperature label
 
     SVCLabel* mp_RotaryValvePosition;   //!< Rotary valve position label
     SVCLabel* mp_RotaryValveTemp1;      //!< Rotary valve temperature1 label
     SVCLabel* mp_RotaryValveTemp2;      //!< Rotary valve temperature2 label
     SVCLabel* mp_RotaryValveCurrent;    //!< Rotary valve current label
+    SVCLabel* mp_RotaryValveTargetTemp; //!< Rotary valve target temperature label
 
     SVCLabel* mp_PressureLabel;         //!< Pressure label
 };
