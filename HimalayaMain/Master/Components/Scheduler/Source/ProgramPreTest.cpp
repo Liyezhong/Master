@@ -403,6 +403,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 m_TasksAborted = true;
                 break;
             }
+            mp_SchedulerThreadController->StopTimer();
             emit TasksDone();
         }
         else

@@ -99,7 +99,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         #else
         , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceProcessing>(this))
         #endif
-        , m_SchedulerMachine(new CSchedulerStateMachine(this))
+        , m_SchedulerMachine(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
         , m_FirstProgramStepIndex(0)
@@ -229,9 +229,6 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     {
         //
     }
-    //for debug
-    LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
-    m_SchedulerMachine->Start();
 }
 
 void SchedulerMainThreadController::DevProcDestroyed()
@@ -274,7 +271,7 @@ void SchedulerMainThreadController::OnReportDrainingTimeOut2Min()
 void SchedulerMainThreadController::OnReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp)
 {
     LogDebug(QString("In OnReportError, instanceID=%1, usErrorGroup=%2, usErrorID=%3, usErrorData=%4 and timeStamp=%5")
-             .arg(instanceID).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
+             .arg(instanceID, 0, 16).arg(usErrorGroup).arg(usErrorID).arg(usErrorData).arg(timeStamp.toString()));
 
 #if 1
     if(usErrorID == DCL_ERR_TIMEOUT || usErrorID == DCL_ERR_CANCOMMUTOR_COMM_FAILED)
@@ -2255,11 +2252,18 @@ void SchedulerMainThreadController::SendCoverLidOpenMsg()
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
     }
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::OnEnterPssMStepFin()
 {
     m_PssmStepFinSeq = 0;
+    m_TickTimer.start();
+}
+
+void SchedulerMainThreadController::OnEnterPssMProgFin()
+{
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::OnEnterDryStepState()
@@ -2267,6 +2271,7 @@ void SchedulerMainThreadController::OnEnterDryStepState()
     m_CleaningDry.CurrentState = CDS_READY;
     m_CleaningDry.StepStartTime = 0;
     m_CleaningDry.warningReport = false;
+    m_TickTimer.start();
 }
 
 /**
@@ -3042,7 +3047,11 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     }
 	// Create HeatingStrategy
     mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this, m_SchedulerCommandProcessor, mp_DataManager));
-    m_TickTimer.start();
+    m_SchedulerMachine = new CSchedulerStateMachine(this);
+    //for debug
+    LogDebug(QString("Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
+    m_SchedulerMachine->Start();
+    //m_TickTimer.start();
 
 }
 
@@ -3248,6 +3257,7 @@ void SchedulerMainThreadController::RcBottleCheckI()
     {
         LogDebug(QString("BottleCheckI RvPosition:%1, ReagentGrpId is empty").arg(m_CurrentBottlePosition.RvPos));
     }
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::MoveRVToInit()
@@ -3285,6 +3295,7 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
         {
             m_IsInSoakDelay = true;
+            m_TickTimer.start();
             return;
         }
         if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
@@ -3301,6 +3312,8 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
             }
         }
     }
+
+    m_TickTimer.start();
 }
 
 bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
@@ -3561,6 +3574,7 @@ void SchedulerMainThreadController::Fill()
 
     // Update station reagent status
     this->UpdateStationReagentStatus(false);
+    m_TickTimer.start();
 }
 bool SchedulerMainThreadController::ShutdownFailedHeaters()
 {
@@ -3952,6 +3966,7 @@ void SchedulerMainThreadController::RCDrain()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::Drain()
@@ -3973,6 +3988,7 @@ void SchedulerMainThreadController::Drain()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::RcDrainAtOnce()
@@ -3990,6 +4006,7 @@ void SchedulerMainThreadController::RcDrainAtOnce()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::OnBeginDrain()
@@ -4016,6 +4033,7 @@ void SchedulerMainThreadController::Pressure()
 {
     RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_POSITIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, this));
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::HighPressure()
@@ -4025,6 +4043,7 @@ void SchedulerMainThreadController::HighPressure()
     CmdALPressure* cmd = new CmdALPressure(500, this);
     cmd->SetTargetPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::Vaccum()
@@ -4032,6 +4051,7 @@ void SchedulerMainThreadController::Vaccum()
 
     RaiseEvent(EVENT_SCHEDULER_SET_PRESSURE,QStringList()<<QString("[%1]").arg(AL_TARGET_PRESSURE_NEGATIVE));
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, this));
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::AllStop()
@@ -4061,6 +4081,7 @@ void SchedulerMainThreadController::Pause()
     Q_ASSERT(commandPtrPauseFinish);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseFinish));
+    m_TickTimer.start();
 }
 
 
@@ -4682,6 +4703,9 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     {
         RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
     }
+
+    this->EnablePauseButton();
+    m_TickTimer.start();
 }
 
 void SchedulerMainThreadController::OnPreTestDone()

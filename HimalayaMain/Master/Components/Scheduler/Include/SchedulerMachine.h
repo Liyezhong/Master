@@ -81,9 +81,7 @@ private:
     QSharedPointer<QState> mp_PssmRVMoveToTubeState;                                    ///<  Busy State's sub state: RV move to tube position state
     QSharedPointer<QState> mp_PssmDrainingState;                                        ///<  Busy State's sub state: Draining state
     QSharedPointer<QState> mp_PssmRVPosChangeState;                                     ///<  Busy State's sub state: RV move to next tube state
-    QSharedPointer<QState> mp_PssmError;                                                ///<  Busy State's sub state: Step error state
     QSharedPointer<QState> mp_PssmPause;                                                ///<  Busy State's sub state: Pause state
-    QSharedPointer<QState> mp_PssmPauseDrain;                                           ///<  Busy State's sub state: Pause drain state
     QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: step finish state
     QSharedPointer<QState> mp_PssmCleaningDryStep;                                      ///<  Busy State's sub state: cleaning dry step
     QSharedPointer<QFinalState> mp_PssmProgramFinish;                                   ///<  Busy State's sub state: Program Finished state
@@ -111,7 +109,6 @@ private:
     QSharedPointer<QState> mp_ErrorRsTissueProtectState;                                ///<  Error State's sub state: for RS_Tissue_Protect
     QSharedPointer<QState> mp_ErrorRcCheckRTLockState;                                  ///<  Error State's sub state: for RC_Check_RTLock
     QSharedPointer<QState> mp_ErrorRcReHeatingState;                                    ///<  Error State's sub state: for RC_ReHeating
-    QSharedPointer<QState> mp_ErrorRsReagentCheckState;                                 ///<  Error State's sub state: for RS_ReagentCheck
     QSharedPointer<QState> mp_ErrorRsRvMoveToSealPositionState;                         ///<  Error State's sub state: for Rs_Rv_MoveToPosition3.5
     QSharedPointer<QState> mp_ErrorRsAbortState;                                        ///<  Error State's sub state: for Rs_Abort
 
@@ -452,34 +449,17 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyHitTubeBefore
-     */
-    /****************************************************************************/
-    void NotifyHitTubeBefore();
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of function NotifyFillFinished
      */
     /****************************************************************************/
     void NotifyFillFinished();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyHitSeal
-     */
-    /****************************************************************************/
-    void NotifyHitSeal();
+;
     /****************************************************************************/
     /*!
      *  \brief  Notify processing finished
      */
     /****************************************************************************/
     void NotifyProcessingFinished();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyHitTubeAfter
-     */
-    /****************************************************************************/
-    void NotifyHitTubeAfter();
 
     /****************************************************************************/
     /*!
@@ -1464,34 +1444,18 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigHitTubeBefore
-     */
-    /****************************************************************************/
-    void sigHitTubeBefore();
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of signal sigFillFinished
      */
     /****************************************************************************/
     void sigFillFinished();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal sigHitSeal
-     */
-    /****************************************************************************/
-    void sigHitSeal();
+
     /****************************************************************************/
     /*!
      *  \brief  Signal for Processing(soak) finished
      */
     /****************************************************************************/
     void sigProcessingFinished();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal sigHitTubeAfter
-     */
-    /****************************************************************************/
-    void sigHitTubeAfter();
+
     /****************************************************************************/
     /*!
      *  \brief  Signal for Draining finished

@@ -50,16 +50,6 @@ namespace Scheduler
 /*lint -e534 */
 /*lint -e616 */
 
-static void DelaySomeTime(int DelayTime)
-{
-    if(DelayTime > 0)
-    {
-        QEventLoop event;
-        QTimer::singleShot(DelayTime, &event, SLOT(quit()));
-        event.exec();
-    }
-}
-
 CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController)
     :mp_SchedulerThreadController(SchedulerThreadController)
 {
@@ -88,6 +78,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Layer two states (for Busy state)
     mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    CONNECTSIGNALSLOT(mp_PssmInitState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_PssmPreTestState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     CONNECTSIGNALSLOT(mp_PssmPreTestState.data(), entered(), this, OnEnterPretest());
     mp_PssmFillingHeatingRVState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -102,11 +93,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmStepFinish = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmCleaningDryStep = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProgramFinish = QSharedPointer<QFinalState>(new QFinalState(mp_BusyState.data()));
-    mp_PssmError = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
 
     // Layer two states (for Error state)
     mp_ErrorWaitState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    CONNECTSIGNALSLOT(mp_ErrorWaitState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRsStandbyState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsStandbyWithTissueState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcLevelSensorHeatingOvertimeState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -128,7 +119,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsTissueProtectState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcCheckRTLockState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcReHeatingState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_ErrorRsReagentCheckState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRvMoveToSealPositionState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsAbortState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
@@ -153,7 +143,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState->addTransition(this, SIGNAL(SigIdleRcRestart()), mp_IdleState.data());
     mp_ErrorState->addTransition(this, SIGNAL(RunComplete()), mp_IdleState.data());
     CONNECTSIGNALSLOT(this, SigBackToBusy(), mp_SchedulerThreadController, OnBackToBusy());
-    CONNECTSIGNALSLOT(this, ErrorSignal(), mp_SchedulerThreadController, OnSystemError());
+    CONNECTSIGNALSLOT(mp_ErrorState.data(), entered(), mp_SchedulerThreadController, OnSystemError());
 
     // Sate machines for Run handling
     mp_ProgramPreTest = QSharedPointer<CProgramPreTest>(new CProgramPreTest(mp_SchedulerThreadController));
@@ -174,7 +164,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
 
     CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, OnFillingHeatingRV());
-    CONNECTSIGNALSLOT(mp_PssmFillingHeatingRVState.data(), entered(), mp_SchedulerThreadController, EnablePauseButton());
 
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
@@ -221,6 +210,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
     mp_PssmStepFinish->addTransition(this, SIGNAL(sigEnterDryStep()), mp_PssmCleaningDryStep.data());
     CONNECTSIGNALSLOT(mp_PssmStepFinish.data(), entered(), mp_SchedulerThreadController, OnEnterPssMStepFin());
+    CONNECTSIGNALSLOT(mp_PssmProgramFinish.data(), entered(), mp_SchedulerThreadController, OnEnterPssMProgFin());
 
     mp_PssmCleaningDryStep->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
     CONNECTSIGNALSLOT(mp_PssmCleaningDryStep.data(), entered(), mp_SchedulerThreadController, OnEnterDryStepState());
@@ -247,35 +237,42 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsStandbyState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsStandby.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_Standby_WithTissue related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandByWithTissue()), mp_ErrorRsStandbyWithTissueState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsStandbyWithTissueState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsStandbyWithTissue.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyWithTissueState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_HeatingErr30SRetry related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsHeatingErr30SRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsHeatingErr30SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_PressureOverRange_3SRetry related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsPressureOverRange3SRetry()), mp_ErrorRsPressureOverRange3SRetryState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsPressureOverRange3SRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsPressureOverRange3SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsPressureOverRange3SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //Rs_TSensorErr3MinRetry
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRSTSensorErr3MinRetry()), mp_ErrorRsTSensorErr3MinRetryState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsTSensorErr3MinRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsTSensorErr3MinRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsTSensorErr3MinRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Levelsensor_Heating_Overtime related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRcLevelSensorHeatingOvertimeState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRcLevelSensorHeatingOvertimeState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRcLevelSensorHeatingOvertimeState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_RV_GetOriginalPositionAgain related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsRVGetOriginalPositionAgain()), mp_ErrorRsRVGetOriginalPositionAgainState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsRVGetOriginalPositionAgainState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRsRVGetOriginalPositionAgainState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Pressure
@@ -290,6 +287,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RC_Filling
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcFilling()), mp_RcFilling.data());
+    CONNECTSIGNALSLOT(mp_RcFilling.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(this, SigRcFillingBegin(), mp_SchedulerThreadController, Fill());
     CONNECTSIGNALSLOT(mp_RcFilling.data(), exited(), mp_SchedulerThreadController, OnStopFill());
     mp_RcFilling->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
@@ -313,6 +311,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_FillingAfterFlush
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsFillingAfterFlush()), mp_ErrorRsFillingAfterFlushState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsFillingAfterFlushState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsFillingAfterFlush.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsFillingAfterFlushState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
@@ -328,28 +327,29 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_RV_WaitingTempUp
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsRVWaitingTempUp()), mp_ErrorRsRVWaitintTempUpState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsRVWaitintTempUpState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRsRVWaitintTempUpState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_Tissue_Protect
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsTissueProtectState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RsTissueProtect.data(), TasksDone(bool), this, OnTasksDoneRSTissueProtect(bool));
     mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Check_RTLock
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcCheckRTLock()), mp_ErrorRcCheckRTLockState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRcCheckRTLockState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRcCheckRTLockState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //Rc_ReHeating
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcReHeating()), mp_ErrorRcReHeatingState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRcReHeatingState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     CONNECTSIGNALSLOT(mp_RcReHeating.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRcReHeatingState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
-    //RS_ReagentCheck
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsReagentCheck()), mp_ErrorRsReagentCheckState.data());
-    mp_ErrorRsReagentCheckState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
-
     //Rs_Rv_MoveToPosition3.5
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsRvMoveToSealPositon()), mp_ErrorRsRvMoveToSealPositionState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsRvMoveToSealPositionState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
     mp_ErrorRsRvMoveToSealPositionState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Restart
@@ -385,12 +385,14 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
 }
 
 void CSchedulerStateMachine::OnTasksDoneRsStandyWithTissue(bool flag)
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_SchedulerThreadController->RaiseError(mp_SchedulerThreadController->GetEventKey(), DCL_ERR_FCT_CALL_SUCCESS, 0, flag);
     emit sigStateChange();
     if(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == mp_SchedulerThreadController->GetCurErrEventID())
@@ -401,6 +403,7 @@ void CSchedulerStateMachine::OnTasksDoneRsStandyWithTissue(bool flag)
 
 void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 {
+    mp_SchedulerThreadController->StopTimer();
     // stop Retort sensors heating
     mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTSide");
     mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
@@ -413,16 +416,13 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
     else
     {
         emit SigIdleRcRestart();
-        while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
-        {
-            DelaySomeTime(100);
-        }
     }
 }
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
 {
     mp_SchedulerThreadController->MoveRV(SEAL_POS);
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::InitRVMoveToTubeState()
@@ -430,17 +430,20 @@ void CSchedulerStateMachine::InitRVMoveToTubeState()
     m_PssmMVTubeSeq = 0;
     mp_SchedulerThreadController->Pressure();
     m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnteErrorRcRestartState()
 {
     m_ErrorRcRestartSeq = 0;
     m_TimeReEnterFilling = 0;
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
 {
     mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS);
+    mp_SchedulerThreadController->StartTimer();
 }
 
 /****************************************************************************/
@@ -477,51 +480,37 @@ void CSchedulerStateMachine::Stop()
 
 void CSchedulerStateMachine::EnterPowerFailure()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigPowerFailure();
-    while (false == mp_SchedulerMachine->configuration().contains(mp_PowerFailureState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::SendSchedulerInitComplete()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SchedulerInitComplete();
-    while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::SendRunSignal()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit RunSignal();
-
-    //Make sure the state machine is in Busy state
-    while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::SendRunComplete()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit RunComplete();
-
-    //Make sure the state machine is in Idle state
-    while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::SendResumeFillingRVRodHeating()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeFillingRVRodHeating();
 }
 
 void CSchedulerStateMachine::SendResumeFillingLevelSensorHeating()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeFillingLevelSensorHeating();
 }
 
@@ -536,16 +525,19 @@ void CSchedulerStateMachine::StartPreCheck()
 
 void CSchedulerStateMachine::SendResumeRVMoveToSeal()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeRVMoveToSeal();
 }
 
 void CSchedulerStateMachine::SendResumeProcessing()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeProcessing();
 }
 
 void CSchedulerStateMachine::SendResumeRVMoveTube()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeRVMoveTube();
 }
 
@@ -556,23 +548,20 @@ void CSchedulerStateMachine::SendResumeDraining()
 
 void CSchedulerStateMachine::SendResumeRVPosChange()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeRVPosChange();
 }
 
 void CSchedulerStateMachine::SendResumeDryStep()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ResumeDryStep();
 }
 
 void CSchedulerStateMachine::SendErrorSignal()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit ErrorSignal();
-
-    // Make sure the state machine is in ERROR state
-    while (false == mp_SchedulerMachine->configuration().contains(mp_ErrorWaitState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
@@ -682,10 +671,6 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRcReHeatingState.data()))
         {
             return SM_ERR_RC_REHEATING;
-        }
-        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsReagentCheckState.data()))
-        {
-            return SM_ERR_RS_REAGENTCHECK;
         }
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsRvMoveToSealPositionState.data()))
         {
@@ -825,88 +810,67 @@ void CSchedulerStateMachine::NotifyTempsReady()
 
 void CSchedulerStateMachine::NotifyLevelSensorHeatingReady()
 {
+     mp_SchedulerThreadController->StopTimer();
     emit sigLevelSensorHeatingReady();
 }
 
 void CSchedulerStateMachine::NotifyRVRodHeatingReady()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigRVRodHeatingReady();
 }
 
 void CSchedulerStateMachine::NotifyRVMoveToSealReady()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigRVMoveToSealReady();
 }
 void CSchedulerStateMachine::NotifyRVMoveToTubeReady()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigRVMoveToTubeReady();
-}
-
-void CSchedulerStateMachine::NotifyHitTubeBefore()
-{
-    emit sigHitTubeBefore();
 }
 
 void CSchedulerStateMachine::NotifyFillFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigFillFinished();
-}
-
-void CSchedulerStateMachine::NotifyHitSeal()
-{
-    emit sigHitSeal();
 }
 
 void CSchedulerStateMachine::NotifyProcessingFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigProcessingFinished();
-}
-
-void CSchedulerStateMachine::NotifyHitTubeAfter()
-{
-    emit sigHitTubeAfter();
 }
 
 void CSchedulerStateMachine::NotifyDrainFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigDrainFinished();
 }
 
 void CSchedulerStateMachine::NotifyStepFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigStepFinished();
-    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmStepFinish.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::NotifyProgramFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigProgramFinished();
-    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmProgramFinish.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::NotifyEnterCleaningDryStep()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigEnterDryStep();
-    while(false == mp_SchedulerMachine->configuration().contains(mp_PssmCleaningDryStep.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::NotifyStepProgramFinished()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigStepProgramFinished();
-
-    while (false == mp_SchedulerMachine->configuration().contains(mp_PssmFillingHeatingRVState.data()))
-    {
-        DelaySomeTime(100);
-    }
 }
 
 void CSchedulerStateMachine::NotifyError()
@@ -918,6 +882,7 @@ void CSchedulerStateMachine::NotifyError()
 void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
 {
     Q_UNUSED(PreviousState);
+    mp_SchedulerThreadController->StopTimer();
     emit sigPause();
 }
 
@@ -960,98 +925,116 @@ void CSchedulerStateMachine::NotifyResumeDrain()
 
 void CSchedulerStateMachine::EnterRsStandBy()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsStandby->Start();
     emit SigEnterRsStandBy();
 }
 
 void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsHeatingErr30SRetry->Start();
     emit SigEnterRsHeatingErr30SRetry();
 }
 
 void CSchedulerStateMachine::EnterRsPressureOverRange3SRetry()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsPressureOverRange3SRetry->Start();
     emit SigEnterRsPressureOverRange3SRetry();
 }
 
 void CSchedulerStateMachine::EnterRsTSensorErr3MinRetry()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsTSensorErr3MinRetry->Start();
     emit SigEnterRSTSensorErr3MinRetry();
 }
 
 void CSchedulerStateMachine::EnterRsStandByWithTissue()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsStandbyWithTissue->Start();
     emit SigEnterRsStandByWithTissue();
 }
 
 void CSchedulerStateMachine::EnterRcPressure()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRcPressure();
 }
 
 void CSchedulerStateMachine::EnterRcVacuum()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRcVacuum();
 }
 
 void CSchedulerStateMachine::EnterRcFilling()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRcFilling();
 }
 
 void CSchedulerStateMachine::EnterRcDraining()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRcDraining();
 }
 
 void CSchedulerStateMachine::EnterRsDrainAtOnce()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsDrainAtOnce();
 }
 
 void CSchedulerStateMachine::EnterRcBottleCheckI()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRcBottleCheckI();
 }
 
 void CSchedulerStateMachine::EnterRsFillingAfterFlush()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsFillingAfterFlush->Start();
     emit SigRsFillingAfterFlush();
 }
 
 void CSchedulerStateMachine::EnterRsCheckBlockage()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsCheckBlockage();
 }
 
 void CSchedulerStateMachine::EnterRsPause()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsPause();
 }
 
 void CSchedulerStateMachine::EnterRsRVWaitingTempUp()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsRVWaitingTempUp();
 }
 
 void CSchedulerStateMachine::EnterRsTissueProtect()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_RsTissueProtect->Start();
     emit SigEnterRsTissueProtect();
 }
 
 void CSchedulerStateMachine::EnterRcCheckRTLock()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigEnterRcCheckRTLock();
 }
 
 void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedRunCleaning)
 {
+    mp_SchedulerThreadController->StopTimer();
     if(NeedRunCleaning)
     {
         mp_RcReHeating->SetNeedRunCleaning(NeedRunCleaning);
@@ -1063,16 +1046,19 @@ void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& R
 
 void CSchedulerStateMachine::EnterRsReagentCheck()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsReagentCheck();
 }
 
 void CSchedulerStateMachine::EnterRsRVMoveToSealPosition()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigRsRvMoveToSealPositon();
 }
 
 void CSchedulerStateMachine::EnterRsAbort()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit sigAbort();
 }
 
@@ -1118,6 +1104,7 @@ void CSchedulerStateMachine::HandleRsTissueProtectWorkFlow(const QString& cmdNam
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigEnterRcLevelsensorHeatingOvertime();
 }
 
@@ -1640,12 +1627,8 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
                 m_ErrorRcRestartSeq = 0;
                 m_TimeReEnterFilling = 0;
 
+                mp_SchedulerThreadController->StopTimer();
                 emit SigBackToBusy();
-                // Make sure the state machine is in Busy state
-                while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
-                {
-                    DelaySomeTime(100);
-                }
             }
             else
             {
@@ -1674,12 +1657,8 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
             if ("Scheduler::IDForceDraining" == cmdName)
             {
                 m_ErrorRcRestartSeq = 0;
+                mp_SchedulerThreadController->StopTimer();
                 emit SigBackToBusy();
-                // Make sure the state machine is in Busy state
-                while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
-                {
-                    DelaySomeTime(100);
-                }
             }
             else
             {
@@ -1692,13 +1671,8 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
     }
     else
     {
+        mp_SchedulerThreadController->StopTimer();
         emit SigBackToBusy();
-
-        // Make sure the state machine is in Busy state
-        while (false == mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
-        {
-            DelaySomeTime(100);
-        }
     }
 }
 
@@ -2053,41 +2027,30 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
 
 void CSchedulerStateMachine::EnterRcRestart()
 {
+    mp_SchedulerThreadController->StopTimer();
     if(false == mp_ProgramSelfTest->IsSelfTestDone())
     {
         mp_ProgramSelfTest->ResetVarList();
         emit SigSelfRcRestart();
-
-        // Make sure the state macine is in Init state
-        while (false == mp_SchedulerMachine->configuration().contains(mp_SelfTestState.data()))
-        {
-            DelaySomeTime(100);
-        }
     }
     else if(SM_IDLE == mp_SchedulerThreadController->GetCurrentStepState())
     {
         emit SigIdleRcRestart();
-        while (false == mp_SchedulerMachine->configuration().contains(mp_IdleState.data()))
-        {
-            DelaySomeTime(100);
-        }
     }
     else
     {
         emit SigEnterRcRestart();
-        while (false == mp_SchedulerMachine->configuration().contains(mp_ErrorRcRestartState.data()))
-        {
-            DelaySomeTime(100);
-        }
     }
 }
 
 void CSchedulerStateMachine::EnterRsRVGetOriginalPositionAgain()
 {
+    mp_SchedulerThreadController->StopTimer();
     emit SigEnterRsRVGetOriginalPositionAgain();
 }
 void CSchedulerStateMachine::SendRunPreTest()
 {
+    mp_SchedulerThreadController->StopTimer();
     mp_ProgramPreTest->ResetVarList();
     emit RunPreTest();
 }
@@ -2137,6 +2100,7 @@ QString CSchedulerStateMachine::GetDeviceName()
 
 void CSchedulerStateMachine::OnNotifyResume()
 {
+    mp_SchedulerThreadController->StopTimer();
     SchedulerStateMachine_t previousState = this->GetPreviousState();
     if(previousState == PSSM_FILLING_RVROD_HEATING)
     {
@@ -2171,6 +2135,7 @@ void CSchedulerStateMachine::OnEnterRsAbortState()
     mp_SchedulerThreadController->SetTransitionPeriod(false);
     m_PssmAbortingSeq = 0;
     m_PssmAbortingInMoveToTube = false;
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnterInitState()
@@ -2181,6 +2146,7 @@ void CSchedulerStateMachine::OnEnterInitState()
 void CSchedulerStateMachine::OnEnterSelfTest()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_SELFTEST);
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnterIdleState()
@@ -2189,6 +2155,7 @@ void CSchedulerStateMachine::OnEnterIdleState()
     EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     EventHandler::StateHandler::Instance().setAvailability(false, EVENT_SCHEDULER_IN_ERROR_STATE);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnterErrorState()
@@ -2201,6 +2168,7 @@ void CSchedulerStateMachine::OnEnterErrorState()
 void CSchedulerStateMachine::OnPowerFailureState()
 {
     EventHandler::StateHandler::Instance().setAvailability(true, EVENT_SCHEDULER_POWER_FAILURE);
+    mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::OnEnterBusyState()
@@ -2211,9 +2179,11 @@ void CSchedulerStateMachine::OnEnterBusyState()
 void CSchedulerStateMachine::OnEnterPretest()
 {
      mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_PRETEST);
+     mp_SchedulerThreadController->StartTimer();
 }
 void CSchedulerStateMachine::OnEnterHeatingLevelSensor()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
+    mp_SchedulerThreadController->StartTimer();
 }
 }

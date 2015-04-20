@@ -48,9 +48,8 @@ namespace Scheduler{
 #define L2_ERR_RS_TISSUE_PROTECT                    (0x14)
 #define L2_ERR_RC_CHECK_RTLOCK                      (0x15)
 #define L2_ERR_RC_REHEATING                         (0x16)
-#define L2_ERR_RS_REAGENTCHECK                      (0x17)
-#define L2_ERR_RS_RV_MOVETOPOSITIONSEAL             (0x18)
-#define L2_ERR_RS_ABORT                             (0x19)
+#define L2_ERR_RS_RV_MOVETOPOSITIONSEAL             (0x17)
+#define L2_ERR_RS_ABORT                             (0x18)
 
 typedef enum
 {
@@ -104,7 +103,6 @@ typedef enum
     SM_ERR_RS_TISSUE_PROTECT = ((L2_ERR_RS_TISSUE_PROTECT << 8) | L1_ERROR),
     SM_ERR_RC_CHECK_RTLOCK = ((L2_ERR_RC_CHECK_RTLOCK << 8) | L1_ERROR),
     SM_ERR_RC_REHEATING = ((L2_ERR_RC_REHEATING << 8) | L1_ERROR),
-    SM_ERR_RS_REAGENTCHECK = ((L2_ERR_RS_REAGENTCHECK << 8) | L1_ERROR),
     SM_ERR_RS_RV_MOVETOPOSITIONSEAL = ((L2_ERR_RS_RV_MOVETOPOSITIONSEAL << 8) | L1_ERROR),
     SM_ERR_RS_ABORT = ((L2_ERR_RS_ABORT << 8) | L1_ERROR)
 } SchedulerStateMachine_t;
