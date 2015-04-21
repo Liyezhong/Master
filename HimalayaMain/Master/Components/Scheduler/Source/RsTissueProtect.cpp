@@ -147,7 +147,6 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
         if (0 == m_DrainCurReagentSeq)
         {
-            mp_SchedulerController->LogDebug("Send cmd to DCL to force Drain current reagent in RS_Tissue_Protect");
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerController);
             QString stationID = mp_SchedulerController->GetCurrentStationID();
             mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(stationID));
@@ -155,12 +154,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             cmd->SetRVPosition((quint32)(tubePos));
             cmd->SetDrainPressure(40.0);
             mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+            mp_SchedulerController->OnBeginDrain();
             m_DrainCurReagentSeq++;
         }
         else
         {
             if ("Scheduler::IDForceDraining" == cmdName)
             {
+                mp_SchedulerController->OnStopDrain();
                 m_DrainCurReagentSeq = 0;
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
@@ -558,36 +559,36 @@ CRsTissueProtect::ReagentType_t CRsTissueProtect::GetReagentType()
     {
         return FIRST_STEP;
     }
-    if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
+    if (false == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 221)
     {
         ret = Fixation;
     }
-    if (false == m_IsLevelSensorRelated && Scenario >= 221 && Scenario <= 247)
+    if (false == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
     {
         ret = Concentration_Dehydration;
     }
-    if (false == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 260)
+    if (false == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
     {
         ret = Clearing;
     }
-    if (false == m_IsLevelSensorRelated && Scenario >= 271 && Scenario <= 277)
+    if (false == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
     {
         ret = Paraffin;
     }
 
-    if (true == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 217)
+    if (true == m_IsLevelSensorRelated && Scenario >= 211 && Scenario <= 221)
     {
         ret = Fixation_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 221 && Scenario <= 247)
+    if (true == m_IsLevelSensorRelated && Scenario >= 222 && Scenario <= 247)
     {
         ret = Concentration_Dehydration_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 260)
+    if (true == m_IsLevelSensorRelated && Scenario >= 251 && Scenario <= 271)
     {
         ret = Clearing_Overflow;
     }
-    if (true == m_IsLevelSensorRelated && Scenario >= 271 && Scenario <= 277)
+    if (true == m_IsLevelSensorRelated && Scenario >= 272 && Scenario <= 277)
     {
         ret = Paraffin_Overflow;
     }
