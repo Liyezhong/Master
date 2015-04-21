@@ -2051,7 +2051,7 @@ void CSchedulerStateMachine::EnterRsRVGetOriginalPositionAgain()
 void CSchedulerStateMachine::SendRunPreTest()
 {
     mp_SchedulerThreadController->StopTimer();
-    mp_ProgramPreTest->ResetVarList();
+    mp_ProgramPreTest->ResetVarList(true);
     emit RunPreTest();
 }
 

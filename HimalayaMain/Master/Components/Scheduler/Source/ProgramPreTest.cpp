@@ -427,9 +427,12 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
 	}
 }
 
-void CProgramPreTest::ResetVarList()
+void CProgramPreTest::ResetVarList(bool resume)
 {
-    m_CurrentState = PRETEST_INIT;
+    if (false == resume)
+    {
+        m_CurrentState = PRETEST_INIT;
+    }
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;

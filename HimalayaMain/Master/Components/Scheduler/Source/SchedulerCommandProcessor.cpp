@@ -197,6 +197,10 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
         {
             mp_SchedulerThreadController->LogDebug("ALDraining will be added to PushDeviceControlCmdQueue");
         }
+        if ("Scheduler::ALFilling" == scmd->GetName())
+        {
+            mp_SchedulerThreadController->LogDebug("ALFilling will be added to PushDeviceControlCmdQueue");
+        }
         mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
     }
 }

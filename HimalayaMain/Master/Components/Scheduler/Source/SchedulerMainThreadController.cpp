@@ -3215,6 +3215,10 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
     {
         LogDebug("ALDraing has been added to m_DeviceControlCmdQueue");
     }
+    if ("Scheduler::ALFilling" == CmdPtr->GetName())
+    {
+        LogDebug("ALFilling has been added to m_DeviceControlCmdQueue");
+    }
     m_WaitCondition.wakeAll();
     m_MutexDeviceControlCmdQueue.unlock();
 }
