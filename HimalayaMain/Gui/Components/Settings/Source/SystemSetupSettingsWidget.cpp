@@ -358,7 +358,7 @@ void CSystemSetupSettingsWidget::OnApply()
     if (temp == lastMeltPoint)
         return;
 
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
+    MainMenu::CMessageDlg ConfirmationMessageDlg(this);
     ConfirmationMessageDlg.SetTitle(CommonString::strWarning);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetText(m_strConfirmChangeMeltingPoint);

@@ -945,14 +945,15 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         else if(userRole == MainMenu::CMainWindow::Admin ||
             userRole == MainMenu::CMainWindow::Service)
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText(m_strStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
+            MainMenu::CMessageDlg messageDlg(this);
+            messageDlg.SetIcon(QMessageBox::Warning);
+            messageDlg.SetTitle(CommonString::strWarning);
+            messageDlg.SetText(m_strStartExpiredReagent);
+            messageDlg.SetButtonText(3, CommonString::strNo);
+            messageDlg.SetButtonText(1, CommonString::strYes);
+            messageDlg.HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
-            if (!mp_MessageDlg->exec())
+            if (!messageDlg.exec())
                 return false;
         }
     }
