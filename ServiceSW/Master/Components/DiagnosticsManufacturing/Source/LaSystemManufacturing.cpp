@@ -167,8 +167,6 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 /****************************************************************************/
 void CLaSystem::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
-
     qDebug()<<"CLaSystem::BeginTest  ";
 
     if (!mp_TestReporter->CheckSystemSN()) {
@@ -197,6 +195,8 @@ void CLaSystem::BeginTest()
         mp_MessageDlg->show();
     }
     else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
+
         EnableButton(false);
         mp_Ui->widget->setFocus();
 

@@ -289,8 +289,6 @@ void CRetort::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CRetort::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_RETORT_TEST_REQUESTED);
-
     bool IsEndTest = (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST);
     if (IsEndTest) {
         if (!mp_TestReporter->CheckSystemSN()) {
@@ -337,6 +335,8 @@ void CRetort::BeginTest()
         mp_MessageDlg->show();
     }
     else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_RETORT_TEST_REQUESTED);
+
         EnableButton(false);
         mp_Ui->widget->setFocus();
         emit BeginModuleTest(Service::RETORT, TestCaseList);

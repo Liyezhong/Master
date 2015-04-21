@@ -281,8 +281,6 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CRotaryValve::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
-
     bool IsEndTest = (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST);
     if (IsEndTest) {
         if (!mp_TestReporter->CheckSystemSN()) {
@@ -345,6 +343,8 @@ void CRotaryValve::BeginTest()
                 return;
             }
         }
+
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
 
         EnableButton(false);
         mp_Ui->widget->setFocus();

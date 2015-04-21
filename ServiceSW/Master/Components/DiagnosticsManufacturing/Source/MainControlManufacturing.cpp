@@ -284,8 +284,6 @@ void CMainControl::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CMainControl::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED);
-
     if (!mp_TestReporter->CheckSystemSN()) {
         return;
     }
@@ -326,6 +324,8 @@ void CMainControl::BeginTest()
         mp_MessageDlg->show();
     }
     else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED);
+
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
