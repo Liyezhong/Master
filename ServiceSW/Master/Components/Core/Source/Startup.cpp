@@ -605,6 +605,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
     }
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {
+        Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFUSER, Global::tTranslatableStringList() << UserMode);
         mp_USBKeyValidator->HideKeyBoard();
         MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, QApplication::desktop()->screen());
         CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
@@ -684,7 +685,6 @@ void CStartup::InitManufacturingDiagnostic()
     CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     CONNECTSIGNALSLOTGUI(mp_FirmwareUpdate, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), mp_ManaufacturingDiagnosticsHandler, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
-    Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     ManufacturingGuiInit();
 }
 
