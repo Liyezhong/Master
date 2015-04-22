@@ -26,6 +26,9 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QEventLoop>
+#include <QTimer>
+
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "DeviceControl/Include/SlaveModules/Module.h"
 
@@ -98,6 +101,16 @@ public:
      */
     /****************************************************************************/
     QString GetNameByInstanceID(quint32 instanceID);
+
+    /****************************************************************************/
+    /*!
+     *   \brief  set time out for event loop
+     *   \param  p_EventLoop = a pointer to event loop
+     *   \param  MilliSeconds = time to quit (milliseconds )
+     */
+    /****************************************************************************/
+    void SetEventLoopTimeOut(QTimer &p_Timer, QEventLoop &p_EventLoop, quint32 MilliSeconds=1000);
+
 public slots:
     void Log(const QString &);
 

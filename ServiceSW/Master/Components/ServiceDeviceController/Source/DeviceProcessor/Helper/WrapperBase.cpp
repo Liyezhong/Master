@@ -24,6 +24,7 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QMetaProperty>
+#include <QTimer>
 #include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
 
 /****************************************************************************/
@@ -204,6 +205,14 @@ QString WrapperBase::GetNameByInstanceID(quint32 instanceID)
     name += tr("Node index: %1 ").arg((instanceID & 0xFF00)>>8);
 
     return name;
+}
+
+void WrapperBase::SetEventLoopTimeOut(QTimer &timer, QEventLoop &p_EventLoop, quint32 MilliSeconds)
+{
+    timer.setSingleShot(true);
+    timer.setInterval(MilliSeconds);
+    timer.start();
+    (void)connect(&timer, SIGNAL(timeout()), &p_EventLoop, SLOT(quit()));
 }
 
 /*

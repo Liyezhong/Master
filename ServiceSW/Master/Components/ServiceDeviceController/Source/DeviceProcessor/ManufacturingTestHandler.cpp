@@ -2857,14 +2857,15 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         }
 
         if (SlaveType == Slave_15) {
-            if (mp_DORemoteAlarm) {
-                (void)mp_DORemoteAlarm->SetHigh();
+            if ((mp_DORemoteAlarm && mp_DORemoteAlarm->SetHigh()) &&
+                   mp_DOLocalAlarm && mp_DOLocalAlarm->SetHigh()) {
+                if (AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST) == -1) {
+                    goto ERROR_EXIT;
+                }
             }
-
-            if (mp_DOLocalAlarm) {
-                (void)mp_DOLocalAlarm->SetHigh();
+            else {
+                goto ERROR_EXIT;
             }
-            (void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
         }
 
         Service::ModuleTestStatus Status;
@@ -3280,8 +3281,9 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
     }
 #endif
     (void)mp_TempRV->SetTemperatureSwitchState(-1, 0);
-    (void)mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0);
-
+    if (mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0) == false) {
+        return -1;
+    }
     return RetVal;
 }
 

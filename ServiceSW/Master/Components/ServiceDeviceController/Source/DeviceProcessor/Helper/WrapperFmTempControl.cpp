@@ -204,6 +204,9 @@ qreal WrapperFmTempControl::GetTemperature(quint8 Index)
         }
         else
         {
+
+            QTimer timer;
+            SetEventLoopTimeOut(timer, m_LoopGetTemperature, 1000);
             qint32 ret = m_LoopGetTemperature.exec();
             if (ret != 1)
             {
@@ -248,6 +251,9 @@ bool WrapperFmTempControl::SetTemperature(qreal NominalTemperature, quint8 Slope
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetTemperature);
     qint32 ret = m_LoopSetTemperature.exec();
     return (ret == 1);
 }
@@ -440,6 +446,9 @@ bool WrapperFmTempControl::SetOperatingMode(TempCtrlOperatingMode_t TempCtrlOpMo
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetOperatingMode);
     qint32 ret = m_LoopSetOperatingMode.exec();
     return (ret == 1);
 }
@@ -497,6 +506,9 @@ bool WrapperFmTempControl::ResetHeaterOperatingTime(quint8 Index)
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopResetHeaterOperatingTime);
     qint32 ret = m_LoopResetHeaterOperatingTime.exec();
     return (ret == 1);
 }
@@ -548,6 +560,9 @@ quint32 WrapperFmTempControl::GetHeaterOperatingTime(quint8 Index)
     if (!ok) {
         return UNDEFINED;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetHeaterOperatingTime);
     qint32 ret = m_LoopGetHeaterOperatingTime.exec();
     if (ret != 1) {
         return UNDEFINED;
@@ -603,6 +618,9 @@ quint16 WrapperFmTempControl::GetFanSpeed(quint8 Index)
     if (!ok) {
         return UNDEFINED;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetFanSpeed);
     qint32 ret = m_LoopGetFanSpeed.exec();
     if (ret != 1) {
         return UNDEFINED;
@@ -658,6 +676,9 @@ WrapperFmTempControl::HardwareStatus_t *WrapperFmTempControl::GetHardwareStatus(
     if (!ok) {
         return NULL;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetHardwareStatus);
     qint32 ret = m_LoopGetHardwareStatus.exec();
     if (ret != 1) {
         return NULL;
@@ -894,6 +915,9 @@ QString WrapperFmTempControl::GetTemperatureControlState()
         m_CurrentTempCtrlStatus = TEMPCTRL_STATUS_UNDEF;
         return "Error";
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetTemperatureControl, 1000);
     qint32 ret = m_LoopGetTemperatureControl.exec();
     QString controlstate = "";
     if (ret != 1) {
@@ -987,6 +1011,9 @@ QString WrapperFmTempControl::GetMainsVoltageState()
         m_MainsVoltageStatus = TEMPCTRL_VOLTAGE_UNDEF;
         return "Error";
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetVoltageState);
     qint32 ret = m_LoopGetVoltageState.exec();
     QString voltagestate = "";
     if (ret != 1) {
@@ -1007,6 +1034,9 @@ bool WrapperFmTempControl::SetTemperaturePid(quint16 MaxTemperature, quint16 Con
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetTemperaturePid);
     qint32 ret = m_LoopSetTemperaturePid.exec();
     return (ret == 1);
 }
@@ -1017,6 +1047,9 @@ bool WrapperFmTempControl::SetTemperatureSwitchState(qint8 SwitchState, qint8 Au
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetSwitchState);
     qint32 ret = m_LoopSetSwitchState.exec();
     return (ret == 1);
 }

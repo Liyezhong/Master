@@ -76,6 +76,10 @@ bool WrapperFmAnalogOutput::SetValue(quint16 OutputValue, quint16 Duration, quin
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetValue);
+
     qint32 ret = m_LoopSetValue.exec();
     return (ret == 1);
 }
@@ -133,6 +137,10 @@ quint16 WrapperFmAnalogOutput::GetValue()
         return 0;
     }
     m_ReadOutputValue = 0; //setting to 0 incase of error
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetValue);
+
     qint32 ret = m_LoopGetValue.exec();
     if (ret != 1) {
         Log(tr("error"));

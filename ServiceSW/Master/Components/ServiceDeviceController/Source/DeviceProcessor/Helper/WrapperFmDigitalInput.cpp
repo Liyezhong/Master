@@ -70,6 +70,9 @@ qint32 WrapperFmDigitalInput::GetValue()
     if (!ok) {
         return UNDEFINED;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetValue);
     qint32 ret = m_LoopGetValue.exec();
     if (ret != 1) {
         return UNDEFINED;

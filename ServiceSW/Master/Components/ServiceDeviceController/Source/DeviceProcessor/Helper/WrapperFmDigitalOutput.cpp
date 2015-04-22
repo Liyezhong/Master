@@ -131,6 +131,9 @@ bool WrapperFmDigitalOutput::SetValue(quint16 OutputValue, quint16 Duration, qui
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopSetOutputValue);
     qint32 ret = m_LoopSetOutputValue.exec();
     return (ret == 1);
 }
@@ -188,6 +191,9 @@ quint16 WrapperFmDigitalOutput::GetValue()
     if (!ok) {
         return 0;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetOutputValue);
     qint32 ret = m_LoopGetOutputValue.exec();
     if (ret != 1) {
       return 0;
@@ -243,6 +249,9 @@ bool WrapperFmDigitalOutput::GetLifetimeData()
     if (!ok) {
         return false;
     }
+
+    QTimer timer;
+    SetEventLoopTimeOut(timer, m_LoopGetLifetimeData);
     qint32 ret = m_LoopGetLifetimeData.exec();
     return (ret == 1);
 }
