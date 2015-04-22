@@ -350,7 +350,7 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
 			{
                 int MaxCassettes = Reagent.GetMaxCassettes();
                 int ActualCassettes = pDashboardStation->GetDashboardReagentActualCassettes();
-                if ( (MaxCassettes - ActualCassettes) < 0 ){
+                if ( (MaxCassettes - ActualCassettes) <= 0 ){
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
                 }
                 else{
@@ -364,7 +364,7 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
 			{
                 int MaxCycles = Reagent.GetMaxCycles();
                 int ActualRecycles = pDashboardStation->GetDashboardReagentActualCycles();
-                if ( (MaxCycles - ActualRecycles) < 0 ){
+                if ( (MaxCycles - ActualRecycles) <= 0 ){
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
                 }
                 else{
