@@ -109,7 +109,7 @@ public:
      *   \param  MilliSeconds = time to quit (milliseconds )
      */
     /****************************************************************************/
-    void SetEventLoopTimeOut(QTimer &p_Timer, QEventLoop &p_EventLoop, quint32 MilliSeconds=1000);
+    void SetEventLoopTimeOut(QTimer &p_Timer, QEventLoop &p_EventLoop, quint32 MilliSeconds=2000);
 
 public slots:
     void Log(const QString &);
