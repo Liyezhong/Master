@@ -612,7 +612,7 @@ void HimalayaMasterThreadController::SendXML() {
     TempTranslations = Global::UITranslator::TranslatorInstance().GetTranslations();
     EventDataStream << TempTranslations;
     (void)EventDataStream.device()->reset();
-    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(5000, EventDataStream)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(10000, EventDataStream)), m_CommandChannelGui);
 
     delete p_ByteArray;
 }
