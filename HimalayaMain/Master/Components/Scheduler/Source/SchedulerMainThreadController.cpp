@@ -3029,7 +3029,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        m_SchedulerMachine->SendErrorSignal();
+        return;
     }
 
     // Get the slave module attribute list
