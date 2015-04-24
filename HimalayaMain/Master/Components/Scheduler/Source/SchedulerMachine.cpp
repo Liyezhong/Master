@@ -226,43 +226,38 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(this, sigOnStopForceDrain(), mp_SchedulerThreadController, DisablePauseButton());
 
     // State machines for Error handling
-    mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
-    mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController));
-    mp_RsPressureOverRange3SRetry = QSharedPointer<CRsPressureOverRange3SRetry>(new CRsPressureOverRange3SRetry(SchedulerThreadController));
-    mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController));
-    mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
-    mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController));
-    mp_RsTissueProtect = QSharedPointer<CRsTissueProtect>(new CRsTissueProtect(SchedulerThreadController));
-    mp_RcReHeating = QSharedPointer<CRcReHeating>(new CRcReHeating(SchedulerThreadController));
+    mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, this, 1));
+    mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController, this));
+    mp_RsPressureOverRange3SRetry = QSharedPointer<CRsPressureOverRange3SRetry>(new CRsPressureOverRange3SRetry(SchedulerThreadController, this));
+    mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController, this));
+    mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, this));
+    mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController, this));
+    mp_RsTissueProtect = QSharedPointer<CRsTissueProtect>(new CRsTissueProtect(SchedulerThreadController, this));
+    mp_RcReHeating = QSharedPointer<CRcReHeating>(new CRcReHeating(SchedulerThreadController, this));
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsStandbyState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsStandby.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_Standby_WithTissue related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandByWithTissue()), mp_ErrorRsStandbyWithTissueState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsStandbyWithTissueState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsStandbyWithTissue.data(), TasksDone(bool), this, OnTasksDoneRsStandyWithTissue(bool));
     mp_ErrorRsStandbyWithTissueState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_HeatingErr30SRetry related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsHeatingErr30SRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsHeatingErr30SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_PressureOverRange_3SRetry related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsPressureOverRange3SRetry()), mp_ErrorRsPressureOverRange3SRetryState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsPressureOverRange3SRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsPressureOverRange3SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsPressureOverRange3SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //Rs_TSensorErr3MinRetry
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRSTSensorErr3MinRetry()), mp_ErrorRsTSensorErr3MinRetryState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsTSensorErr3MinRetryState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsTSensorErr3MinRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsTSensorErr3MinRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Levelsensor_Heating_Overtime related logic
@@ -312,7 +307,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //RS_FillingAfterFlush
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsFillingAfterFlush()), mp_ErrorRsFillingAfterFlushState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsFillingAfterFlushState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsFillingAfterFlush.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsFillingAfterFlushState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_Check_Blockage
@@ -333,7 +327,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //RS_Tissue_Protect
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsTissueProtect()), mp_ErrorRsTissueProtectState.data());
     CONNECTSIGNALSLOT(mp_ErrorRsTissueProtectState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RsTissueProtect.data(), TasksDone(bool), this, OnTasksDoneRSTissueProtect(bool));
     mp_ErrorRsTissueProtectState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Check_RTLock
@@ -344,7 +337,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //Rc_ReHeating
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcReHeating()), mp_ErrorRcReHeatingState.data());
     CONNECTSIGNALSLOT(mp_ErrorRcReHeatingState.data(), entered(), mp_SchedulerThreadController, OnStartTimer());
-    CONNECTSIGNALSLOT(mp_RcReHeating.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRcReHeatingState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //Rs_Rv_MoveToPosition3.5

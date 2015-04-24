@@ -28,6 +28,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 
 /****************************************************************************/
 /*!
@@ -77,10 +78,11 @@ public:
      *  \brief  Constructor of class CRsTissueProtect
      *
      *  \param SchedController = pointer to SchedulerMainThreadController
+     *  \param StateMachine = pointer to CSchedulerStateMachine
      *
      */
     /****************************************************************************/
-    CRsTissueProtect(SchedulerMainThreadController* SchedController);
+    CRsTissueProtect(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -108,17 +110,6 @@ public:
      */
     /****************************************************************************/
     void Start();
-
-signals:
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for Tasks done
-     *  \param  flag = bool ture- tasks done successfully, false - tasks failed
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool flag);
 
 private:
     /****************************************************************************/
@@ -160,6 +151,7 @@ private:
 
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
+    CSchedulerStateMachine*        mp_StateMachine;         //!< Pointer to CSchedulerStateMachine
     bool m_IsLevelSensorRelated;                            //!< flag to indicate if the error is related to level sensor
     QString m_StationID;                                    //!< Station ID
     QString m_ReagentGroup;                                 //!< Reagent group

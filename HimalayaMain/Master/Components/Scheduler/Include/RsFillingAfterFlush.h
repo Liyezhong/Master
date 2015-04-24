@@ -44,10 +44,11 @@ public:
      *  \brief Constructor of CRsFillingAfterFlush
      *
      *  \param SchedController from SchedulerMainThreadController
+     *  \param StateMachine from CSchedulerStateMachine
      *
      */
     /****************************************************************************/
-    CRsFillingAfterFlush(SchedulerMainThreadController* SchedController);
+    CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -74,71 +75,6 @@ public:
     /****************************************************************************/
     void Start();
 
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for build pressure
-     *
-     */
-    /****************************************************************************/
-    void SigBuildPressure();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for wait 30s
-     *
-     */
-    /****************************************************************************/
-    void SigWait30s();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for heat LevelSensor
-     *
-     */
-    /****************************************************************************/
-    void SigHeatLevelSensor();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for check LevelSensor temperature
-     *
-     */
-    /****************************************************************************/
-    void SigCheckLevelSensorTemp();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for Filling
-     *
-     */
-    /****************************************************************************/
-    void SigFilling();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for moving to sealing position
-     *
-     */
-    /****************************************************************************/
-    void SigMoveToSealing();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for releasing pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressure();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for tasks done
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool);
-
 private:
     typedef enum
     {
@@ -153,38 +89,12 @@ private:
         RSFILLINGAFTERFLUSH_RELEASEPRESSURE
     } StateList_t;
 
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Get current state
-     *  \param  void
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
-private slots:
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to enter RV_Move_To_Seal state.
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnMoveToSealing() { mp_SchedulerThreadController->MoveRV(SEAL_POS);}
-
 private:
     SchedulerMainThreadController*   mp_SchedulerThreadController;  //!< Pointer to Scheduler Thread Controller
-    QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
-    QSharedPointer<QState>          mp_Initial;                     //!< Initial state
-    QSharedPointer<QState>          mp_BuildPressure;               //!< Build Pressure state
-    QSharedPointer<QState>          mp_Wait30s;                     //!< wait 30s state
-    QSharedPointer<QState>          mp_HeatLevelSensor;             //!< heating level sensor
-    QSharedPointer<QState>          mp_CheckLevelSensorTemp;        //!< check the level sensor temperature
-    QSharedPointer<QState>          mp_Filling;                     //!< filling again state
-    QSharedPointer<QState>          mp_MoveToSealing;               //!< move to Sealing state
-    QSharedPointer<QState>          mp_ReleasePressure;             //!< Release Pressure state
-    qint64                          m_StartTime;                    //!< The begin time
-    quint8                          m_MoveToSealingSeq;             //!< Sequence of moving to seaing position
+    CSchedulerStateMachine*          mp_StateMachine;               //!< State machine for FillingAfterFlush
+    StateList_t                      m_CurrentState;                //!< Current state
+    qint64                           m_StartTime;                    //!< The begin time
+    quint8                           m_MoveToSealingSeq;             //!< Sequence of moving to seaing position
 };
 
 }

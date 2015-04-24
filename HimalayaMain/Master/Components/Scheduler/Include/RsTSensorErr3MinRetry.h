@@ -29,6 +29,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 
 /****************************************************************************/
 /*!
@@ -43,9 +44,10 @@ public:
     /*!
      *  \brief Constructor of class CRsTSensorErr3MinRetry
      *  \param SchedController is pointer of class SchedulerMainThreadController
+     *  \param StateMachine is pointer of class CSchedulerStateMachine
      */
     /****************************************************************************/
-    CRsTSensorErr3MinRetry(SchedulerMainThreadController* SchedController);
+    CRsTSensorErr3MinRetry(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -70,55 +72,6 @@ public:
     /****************************************************************************/
     void Start();
 
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to release pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressure();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to stop temperature control
-     *
-     */
-    /****************************************************************************/
-    void StopTempCtrlTSensor();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to wait 3min
-     *
-     */
-    /****************************************************************************/
-    void Wait3MinTSensor();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to start temperature control
-     *
-     */
-    /****************************************************************************/
-    void StartTempCtrlTSensor();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to check the related device's temp
-     *
-     */
-    /****************************************************************************/
-    void CheckTSensorStatus();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to indicate tasks are done
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool);
-
 private:
     //!< state list of the state machine
     typedef enum{
@@ -133,17 +86,6 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function GetCurrentState
-     *
-     *  \param statesList = QSet<QAbstractState*>
-     *
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
-
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of function CheckTSensorCurrentStatus
      *
      *	\return bool
@@ -153,14 +95,9 @@ private:
 
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
-    QSharedPointer<QStateMachine>   mp_SchedulerMachine;    //!< stateMechine of RS_TSensorErr_3Min_Rety
-    QSharedPointer<QState>          mp_Initial;             //!< Initial state
-    QSharedPointer<QState>          mp_ReleasePressure;     //!< Release Pressure state
-    QSharedPointer<QState>          mp_StopTempCtrl;        //!< Stop tempature control state
-    QSharedPointer<QState>          mp_Wait3Min;            //!< wait 3min
-    QSharedPointer<QState>          mp_CheckTemp;           //!< Check Device temp
-    QSharedPointer<QState>          mp_StartTempCtrl;       //!< Start tempature control state
-    qint64                          mp_WaitBeginTime;       //!< Wait 3Min begin time
+    CSchedulerStateMachine*         mp_SchedulerMachine;    //!< stateMechine of RS_TSensorErr_3Min_Rety
+    StateList_t                     m_CurrentState;         //!< the current state
+    qint64                          m_WaitBeginTime;       //!< Wait 3Min begin time
 };
 
 }

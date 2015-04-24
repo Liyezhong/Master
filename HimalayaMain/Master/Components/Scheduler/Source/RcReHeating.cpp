@@ -31,19 +31,17 @@
 
 namespace Scheduler{
 
-CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController)
+CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine)
     :mp_SchedulerThreadController(SchedController)
+    ,mp_StateMachine(StateMachine)
     ,m_CurrentStep(INIT_STATE)
     ,m_LastScenario(0)
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
     ,m_StartPressureTime(0)
     ,m_IsNeedRunCleaning(false)
-    ,m_DrainIsOk(false)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
 {
-    CONNECTSIGNALSLOT(this, SignalDrain(), mp_SchedulerThreadController, OnBeginDrain());
-    CONNECTSIGNALSLOT(this, SignalStopDrain(), mp_SchedulerThreadController, OnStopDrain());
 }
 
 CRcReHeating::~CRcReHeating()
@@ -65,7 +63,7 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
             }
             else
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
             break;
         case CHECK_TEMPERATURE:
@@ -188,7 +186,7 @@ void CRcReHeating::CheckTheTemperature()
         tmperature = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2;
         if(!mp_SchedulerThreadController->GetHeatingStrategy()->isEffectiveTemp(tmperature))
         {
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDone(false);
             return;
         }
         if(tmperature > RV_SENSOR2_TEMP)
@@ -199,7 +197,7 @@ void CRcReHeating::CheckTheTemperature()
         {
             if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_RV_SENSOR2_TEMP * 1000)
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
         }
     }
@@ -217,7 +215,7 @@ void CRcReHeating::CheckTheTemperature()
             {
                 if( CurrentTime - m_StartHeatingTime > WAIT_PARAFFIN_TEMP_TIME * 1000)
                 {
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                 }
             }
         }
@@ -225,7 +223,7 @@ void CRcReHeating::CheckTheTemperature()
     else
     {
         mp_SchedulerThreadController->LogDebug(QString("Invalid scenario in power failure"));
-        emit TasksDone(false);
+        mp_StateMachine->OnTasksDone(false);
     }
 }
 
@@ -245,14 +243,14 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            emit TasksDone(true);
+            mp_StateMachine->OnTasksDone(true);
             m_StartReq = 0;
         }
         else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
         {
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
                 m_StartReq = 0;
             }
         }
@@ -315,7 +313,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 {
                     m_RsReagentCheckStep = FORCE_DRAIN;
                     m_StartReq = 0;
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                 }
             }
             else if(2 == m_StartReq)
@@ -333,7 +331,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                     {
                         m_StartReq = 0;
                         m_RsReagentCheckStep = FORCE_DRAIN;
-                        emit TasksDone(false);
+                        mp_StateMachine->OnTasksDone(false);
                     }
                 }
             }
@@ -355,7 +353,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
                     m_RsReagentCheckStep = FORCE_DRAIN;
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                     m_StartReq = 0;
                 }
             }
@@ -366,7 +364,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 if( !mp_SchedulerThreadController->MoveRV(TUBE_POS) )
                 {
                     m_RsReagentCheckStep = FORCE_DRAIN;
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                     m_StartReq = 0;
                 }
                 else
@@ -386,7 +384,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                     {
                         m_RsReagentCheckStep = FORCE_DRAIN;
-                        emit TasksDone(false);
+                        mp_StateMachine->OnTasksDone(false);
                     }
                 }
             }
@@ -405,7 +403,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
                 }
                 else
                 {
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                 }
                 m_StartReq = 0;
                 m_RsReagentCheckStep = FORCE_DRAIN;
@@ -430,34 +428,22 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
         cmd->SetReagentGrpID(GetReagentID());
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
         m_StartReq ++;
-        emit SignalDrain();
+        mp_SchedulerThreadController->OnBeginDrain();
     }
     else if ("Scheduler::IDForceDraining" == cmdName)
     {
-        emit SignalStopDrain();
+        mp_SchedulerThreadController->OnStopDrain();
         if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-        {
-            m_DrainIsOk = true;
-        }
-        else
-        {
-            m_DrainIsOk = false;
-        }
-        m_StartReq++;
-    }
-    else if(2 == m_StartReq)
-    {
-        if(m_DrainIsOk)
         {
             if(m_IsNeedRunCleaning)
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
-            emit TasksDone(true);
+            mp_StateMachine->OnTasksDone(true);
         }
         else
         {
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDone(false);
         }
         m_StartReq = 0;
     }

@@ -27,6 +27,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 
 /****************************************************************************/
 /*!
@@ -54,10 +55,11 @@ public:
      *  \brief  Constructor of class CRsStandbyWithTissue
      *  \param  type - quint8
      *  \param  SchedController = pointer to SchedulerMainThreadController
+     *  \param  StateMachine = pointer to CSchedulerStateMachine
      *
      */
     /****************************************************************************/
-    CRsStandbyWithTissue (SchedulerMainThreadController* SchedController, quint8 type=0);
+    CRsStandbyWithTissue (SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine, quint8 type=0);
 
     /****************************************************************************/
     /*!
@@ -95,47 +97,6 @@ public:
     /****************************************************************************/
     void Start();
 
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for stopping RTBottom temperature control
-     *
-     */
-    /****************************************************************************/
-    void StopRTBottomTempCtrl();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for stopping RTSide temperature control
-     *
-     */
-    /****************************************************************************/
-    void StopRTSideTempCtrl();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for checking RTBottom temperature
-     *
-     */
-    /****************************************************************************/
-    void CheckTempModuleCurrernt();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for releasing pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressure();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for Tasks done
-     *  \param  flag - bool ture- tasks done successfully, false - tasks failed
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool flag);
 private slots:
 
     /****************************************************************************/
@@ -148,24 +109,10 @@ private slots:
     /****************************************************************************/
     void OnReleasePressure();
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Slot for entering state of checking temperature module status
-     *  \param  void
-     *  \return void
-     *
-     */
-    /****************************************************************************/
-    void OnEnterCheckingTempModuleCurrent() { m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch(); }
-
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
-    QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Standby_WithTissue
-    QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
-    QSharedPointer<QState> mp_RTBottomStopTempCtrl;         //!< RT Bottom stop tempature control state
-    QSharedPointer<QState> mp_RTSideStopTempCtrl;           //!< RT Top stop tempatrue control state
-    QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check the current of temperature module status (if error message was raised not not)
-    QSharedPointer<QState> mp_ReleasePressure;              //!< Release pressure
+    CSchedulerStateMachine*        mp_StateMachine;         //!< State machine for RS_Standby_WithTissue
+    StateList_t                    m_CurrentState;          //!< The current state
     qint64                m_StartCheckingTime;              //!< start-up time for checking temperature module current status
     quint8                m_StandbyType;                    //!< RS_Sandby_WithTissue or RS_Standby.
 };

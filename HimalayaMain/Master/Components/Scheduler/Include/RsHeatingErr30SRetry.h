@@ -28,6 +28,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 
 /****************************************************************************/
 /*!
@@ -56,10 +57,11 @@ public:
      *  \brief Constructor of class CRsHeatingErr30SRetry
      *
      *  \param SchedController = pointer to SchedulerMainThreadController
+     *  \param StateMachine = pointer to CSchedulerStateMachine
      *
      */
     /****************************************************************************/
-    CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController);
+    CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -67,17 +69,6 @@ public:
      */
     /****************************************************************************/
     ~CRsHeatingErr30SRetry();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetCurrentState
-     *
-     *  \param statesList = QSet<QAbstractState*>
-     *
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
@@ -97,72 +88,10 @@ public:
     /****************************************************************************/
     void Start();
 
-signals:
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal release pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressureSig();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to shut down failed heaters
-     *
-     */
-    /****************************************************************************/
-    void ShutdownFailedHeaters();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to wait for 3 seconds
-     *
-     */
-    /****************************************************************************/
-    void WaitFor10Seconds();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to restart failed heater
-     *
-     */
-    /****************************************************************************/
-    void RestartFailedHeater();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Signal for checking RTBottom temperature
-     *
-     */
-    /****************************************************************************/
-    void CheckTempModuleCurrernt();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to retry above 3 steps
-     *
-     */
-    /****************************************************************************/
-    void Retry();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to indicate tasks are done
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool);
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
-    QSharedPointer<QStateMachine>  mp_StateMachine;         //!< State machine for RS_HeatingErr_30SRetry
-    QSharedPointer<QState> mp_Initialize;                   //!< the initialize state
-    QSharedPointer<QState> mp_ReleasePressure;              //!< Rlease pressure state
-    QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
-    QSharedPointer<QState> mp_WaitFor10Seconds;              //!< Wait for 3 seconds state
-    QSharedPointer<QState> mp_RestartFailedHeater;          //!< Restart failed heater
-    QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check current of the temperature module
+    CSchedulerStateMachine*        mp_StateMachine;         //!< State machine for RS_HeatingErr_30SRetry
+    StateList_t                    m_CurrentState;          //!< Current state
     qint64 m_ShutdownHeaterTime;                            //!< Time of shutting down heater
     qint64  m_StartTime;                                    //!< Start up time
     quint32 m_Counter;                                      //!< counter for retry times

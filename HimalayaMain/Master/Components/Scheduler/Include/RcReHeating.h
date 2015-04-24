@@ -32,6 +32,7 @@ namespace Scheduler{
 #define WAIT_PARAFFIN_TEMP_TIME (900)           //!< Wait paraffin timeout
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 /****************************************************************************/
 /*!
  * \brief Program running State machine for RcReheating
@@ -48,9 +49,10 @@ public:
     /*!
      *  \brief  conctruction of CRcReHeating
      *  \param  SchedController = SchedulerMainThreadController
+     *  \param  StateMachine = CSchedulerStateMachine
      */
     /****************************************************************************/
-    CRcReHeating(SchedulerMainThreadController* SchedController);
+    CRcReHeating(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -175,32 +177,6 @@ private:
     /****************************************************************************/
     CRcReHeating& operator=(const CRcReHeating& rhs);
 
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for tasks done
-     *  \param flag - bool
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool flag);
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for tasks done
-     *
-     */
-    /****************************************************************************/
-    void SignalDrain();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for tasks done
-     *
-     */
-    /****************************************************************************/
-    void SignalStopDrain();
-
 private:
     /****************************************************************************/
     /*!
@@ -232,13 +208,13 @@ private:
 
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
+    CSchedulerStateMachine*         mp_StateMachine;                    //!< pointer to scheduler state machine
     StateList_t                     m_CurrentStep;                      //!< the current step
     qint32                          m_LastScenario;                     //!< last scenario of power failure
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
     qint64                          m_StartPressureTime;                //!< the start pressure time
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
-    bool                            m_DrainIsOk;                        //!< is drain OK
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
     QString                         m_LastReagentID;                    //!< last reagent ID
 };

@@ -977,8 +977,7 @@ public:
     /****************************************************************************/
     SchedulerStateMachine_t GetPreviousState();
 
-private slots:
-
+public slots:
     /****************************************************************************/
     /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
@@ -990,15 +989,6 @@ private slots:
 
     /****************************************************************************/
     /*!
-     *  \brief	Slot to handle the actions when all the tasks are done.
-     *  \param	bool flag to indicate if the whole execution succeeds or not
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnTasksDoneRsStandyWithTissue(bool flag);
-
-    /****************************************************************************/
-    /*!
      *  \brief	Slot to handle the actions when RS_Tissue_Protect is done.
      *  \param	bool flag to indicate if the whole execution succeeds or not
      *  \return	void
@@ -1006,6 +996,16 @@ private slots:
     /****************************************************************************/
     void OnTasksDoneRSTissueProtect(bool flag);
 
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to handle the actions when all the tasks are done.
+     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnTasksDoneRsStandyWithTissue(bool flag);
+
+private slots:
     /****************************************************************************/
     /*!
      *  \brief	Slot to enter RV_Move_To_Seal state.

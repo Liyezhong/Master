@@ -35,8 +35,9 @@ using namespace DeviceControl;
 namespace Scheduler{
 /*lint -e534 */
 
-CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController)
+CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachhine)
     :mp_SchedulerController(SchedController)
+    ,mp_StateMachine(StateMachhine)
     ,m_StationID("")
 {
     m_IsLevelSensorRelated = false;
@@ -73,7 +74,7 @@ void CRsTissueProtect::Start()
 
 void CRsTissueProtect::SendTasksDoneSig(bool flag)
 {
-    emit TasksDone(flag);
+    mp_StateMachine->OnTasksDoneRSTissueProtect(flag);
     m_CurrentStep = UNDEF;
 }
 

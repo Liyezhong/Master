@@ -28,121 +28,38 @@ namespace Scheduler{
 /*lint -e1551 */
 /*lint -e616 */
 
-CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedController)
+CRsFillingAfterFlush::CRsFillingAfterFlush(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine)
     :mp_SchedulerThreadController(SchedController)
+    ,mp_StateMachine(StateMachine)
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-
-    mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_BuildPressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_Wait30s = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_HeatLevelSensor = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_CheckLevelSensorTemp = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_Filling = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_MoveToSealing = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_Initial.data());
-
-    mp_Initial->addTransition(this, SIGNAL(SigBuildPressure()), mp_BuildPressure.data());
-    CONNECTSIGNALSLOT(mp_BuildPressure.data(), entered(), mp_SchedulerThreadController, HighPressure());
-    mp_BuildPressure->addTransition(this, SIGNAL(SigWait30s()), mp_Wait30s.data());
-    mp_Wait30s->addTransition(this, SIGNAL(SigHeatLevelSensor()), mp_HeatLevelSensor.data());
-    mp_HeatLevelSensor->addTransition(this, SIGNAL(SigCheckLevelSensorTemp()), mp_CheckLevelSensorTemp.data());
-    mp_CheckLevelSensorTemp->addTransition(this, SIGNAL(SigFilling()), mp_Filling.data());
-    CONNECTSIGNALSLOT(mp_Filling.data(), entered(), mp_SchedulerThreadController, Fill());
-    CONNECTSIGNALSLOT(mp_Filling.data(), exited(), mp_SchedulerThreadController, OnStopFill());
-    mp_Filling->addTransition(this, SIGNAL(SigMoveToSealing()), mp_MoveToSealing.data());
-    CONNECTSIGNALSLOT(mp_MoveToSealing.data(), entered(), this, OnMoveToSealing());
-    mp_MoveToSealing->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-
-    //for error case
-    mp_BuildPressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_Wait30s->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_HeatLevelSensor->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_CheckLevelSensorTemp->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_Filling->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_MoveToSealing->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-
+    m_CurrentState = RSFILLINGAFTERFLUSH_INIT;
     m_StartTime = 0;
     m_MoveToSealingSeq = 0;
 }
 
 void CRsFillingAfterFlush::Start()
 {
-    if (mp_StateMachine->isRunning())
-    {
-        mp_StateMachine->stop();
-        // holde on 200 ms
-        QTime delayTime = QTime::currentTime().addMSecs(200);
-        while (QTime::currentTime() < delayTime)
-        {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-    }
-
-    mp_StateMachine->start();
+    m_CurrentState = RSFILLINGAFTERFLUSH_INIT;
     m_StartTime = 0;
     m_MoveToSealingSeq = 0;
 }
 
 CRsFillingAfterFlush::~CRsFillingAfterFlush()
 {
-    mp_StateMachine->stop();
 }
 
-CRsFillingAfterFlush::StateList_t CRsFillingAfterFlush::GetCurrentState(QSet<QAbstractState*> statesList)
-{
-    StateList_t currentState = RSFILLINGAFTERFLUSH_UNDEF;
-
-     if (statesList.contains(mp_Initial.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_INIT;
-     }
-     else if (statesList.contains(mp_BuildPressure.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_PRESSURE;
-     }
-     else if (statesList.contains(mp_Wait30s.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_WAIT;
-     }
-     else if (statesList.contains(mp_HeatLevelSensor.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_HEATINGLEVELSENSOR;
-     }
-     else if (statesList.contains(mp_CheckLevelSensorTemp.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP;
-     }
-     else if (statesList.contains(mp_Filling.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_FILLING;
-     }
-     else if (statesList.contains(mp_MoveToSealing.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_MOVETOSEALING;
-     }
-     else if (statesList.contains(mp_ReleasePressure.data()))
-     {
-         currentState = RSFILLINGAFTERFLUSH_RELEASEPRESSURE;
-     }
-
-     return currentState;
-}
 
 void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    StateList_t currentState = GetCurrentState(mp_StateMachine->configuration());
     qint64 nowTime = 0;
     quint16 retValue = 0;
     qreal tempLevelSensor = 0.0;
 
-    switch(currentState)
+    switch(m_CurrentState)
     {
     case RSFILLINGAFTERFLUSH_INIT:
-        emit SigBuildPressure();
+        mp_SchedulerThreadController->HighPressure();
+        m_CurrentState = RSFILLINGAFTERFLUSH_PRESSURE;
         break;
     case RSFILLINGAFTERFLUSH_PRESSURE:
         mp_SchedulerThreadController->LogDebug("RsFillingAfterFlush: In set pressure state");
@@ -150,12 +67,12 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         {
             if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
             else
             {
                 m_StartTime = QDateTime::currentMSecsSinceEpoch();
-                emit SigWait30s();
+                m_CurrentState = RSFILLINGAFTERFLUSH_WAIT;
             }
         }
         break;
@@ -164,7 +81,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         nowTime = QDateTime::currentMSecsSinceEpoch();
         if(nowTime - m_StartTime >= 30 * 1000)
         {
-            emit SigHeatLevelSensor();
+            m_CurrentState = RSFILLINGAFTERFLUSH_HEATINGLEVELSENSOR;
         }
         break;
     case RSFILLINGAFTERFLUSH_HEATINGLEVELSENSOR:
@@ -173,11 +90,11 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         {
             m_StartTime = 0;
             m_MoveToSealingSeq = 0;
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDone(false);
         }
         else
         {
-            emit SigCheckLevelSensorTemp();
+            m_CurrentState = RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP;
         }
         break;
     case RSFILLINGAFTERFLUSH_CHECKLEVELSENSORTEMP:
@@ -192,26 +109,29 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
         {
             m_StartTime = 0;
             m_MoveToSealingSeq = 0;
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDone(false);
         }
         else if (2 == retValue)
         {
-            emit SigFilling();
+            mp_SchedulerThreadController->Fill();
+            m_CurrentState = RSFILLINGAFTERFLUSH_FILLING;
         }
         break;
     case RSFILLINGAFTERFLUSH_FILLING:
         mp_SchedulerThreadController->LogDebug("RsFillingAfterFlush: In filling state");
         if( "Scheduler::ALFilling" == cmdName)
         {
+            mp_SchedulerThreadController->OnStopFill();
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 m_StartTime = 0;
                 m_MoveToSealingSeq = 0;
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
             else
             {
-                emit SigMoveToSealing();
+                mp_SchedulerThreadController->MoveRV(SEAL_POS);
+                m_CurrentState = RSFILLINGAFTERFLUSH_MOVETOSEALING;
             }
         }
         break;
@@ -225,7 +145,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
                 {
                     m_StartTime = 0;
                     m_MoveToSealingSeq = 0;
-                    emit TasksDone(false);
+                    mp_StateMachine->OnTasksDone(false);
                 }
                 else
                 {
@@ -240,7 +160,7 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
 
                 m_MoveToSealingSeq = 0;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                emit ReleasePressure();
+                m_CurrentState = RSFILLINGAFTERFLUSH_RELEASEPRESSURE;
             }
             else
             {
@@ -258,13 +178,13 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_PROCESSING);
                 m_StartTime = 0;
                 m_MoveToSealingSeq = 0;
-                emit TasksDone(true);
+                mp_StateMachine->OnTasksDone(true);
             }
             else
             {
                 m_StartTime = 0;
                 m_MoveToSealingSeq = 0;
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
         }
 

@@ -29,59 +29,21 @@ using namespace DeviceControl;
 
 namespace Scheduler{
 
-CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedController, quint8 type)
-    :mp_SchedulerController(SchedController), m_StandbyType(type)
+CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine, quint8 type)
+    :mp_SchedulerController(SchedController), mp_StateMachine(StateMachine), m_StandbyType(type)
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-
-    mp_ShutdownFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RTBottomStopTempCtrl = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_RTSideStopTempCtrl = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_CheckTempModuleCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_ShutdownFailedHeater.data());
-
-    /*lint -e534 */
-    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(StopRTBottomTempCtrl()), mp_RTBottomStopTempCtrl.data());
-    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data()); //For RS_Standby
-    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(StopRTSideTempCtrl()), mp_RTSideStopTempCtrl.data());
-    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
-    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
-
-    CONNECTSIGNALSLOT(mp_CheckTempModuleCurrent.data(), entered(), this, OnEnterCheckingTempModuleCurrent());
-    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
-
-	//For error cases
-    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
-    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
-    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
-
+    m_CurrentState = SHUTDOWN_FAILED_HEATER;
     m_StartCheckingTime = 0;
 }
 
 void CRsStandbyWithTissue::Start()
 {
-    if (mp_StateMachine->isRunning())
-    {
-        mp_StateMachine->stop();
-        // holde on 200 ms
-        QTime delayTime = QTime::currentTime().addMSecs(200);
-        while (QTime::currentTime() < delayTime)
-        {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-    }
-
-    mp_StateMachine->start();
+    m_CurrentState = SHUTDOWN_FAILED_HEATER;
     m_StartCheckingTime = 0;
 }
 
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
-    /*lint -e1551 */
-    mp_StateMachine->stop();
 }
 
 void CRsStandbyWithTissue::OnReleasePressure()
@@ -90,39 +52,8 @@ void CRsStandbyWithTissue::OnReleasePressure()
     mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
 }
 
-CRsStandbyWithTissue::StateList_t CRsStandbyWithTissue::GetCurrentState(QSet<QAbstractState*> statesList)
-{
-    StateList_t currentState = UNDEF;
-
-    if(statesList.contains(mp_ShutdownFailedHeater.data()))
-    {
-           currentState = SHUTDOWN_FAILED_HEATER;
-    }
-    else if (statesList.contains(mp_RTBottomStopTempCtrl.data()))
-    {
-        currentState = RTBOTTOM_STOP_TEMPCTRL;
-    }
-    else if (statesList.contains(mp_RTSideStopTempCtrl.data()))
-    {
-        currentState = RTSIDE_STOP_TEMPCTRL;
-    }
-    else if (statesList.contains(mp_CheckTempModuleCurrent.data()))
-    {
-        currentState = CHECK_TEMPMODULE_CURRENT;
-    }
-    else if(statesList.contains(mp_ReleasePressure.data()))
-    {
-        currentState = RELEASE_PRESSURE;
-    }
-
-    return currentState;
-}
-
-
 void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-
-    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     qint64 now = 0;
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));
@@ -130,7 +61,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
     memset(&reportError2, 0, sizeof(reportError2));
 
     /*lint -e525 */
-	switch (currentState)
+    switch (m_CurrentState)
     {
     case SHUTDOWN_FAILED_HEATER:
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state SHUTDOWN_FAILD_HEATER");
@@ -141,44 +72,46 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                 m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
                 if (RETORT != mp_SchedulerController->GetFailerHeaterType())
                 {
-                    emit StopRTBottomTempCtrl();
+                    m_CurrentState = RTBOTTOM_STOP_TEMPCTRL;
                 }
                 else
                 {
-                    emit CheckTempModuleCurrernt();
+                    m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
+                    m_CurrentState = CHECK_TEMPMODULE_CURRENT;
                 }
             }
             else //RS_Standby
             {
 				m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
-                emit CheckTempModuleCurrernt();
+                m_CurrentState = CHECK_TEMPMODULE_CURRENT;
             }
         }
         else
         {
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
         }
         break;
     case RTBOTTOM_STOP_TEMPCTRL:
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTBOTTOM_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTBottom"))
         {
-            emit StopRTSideTempCtrl();
+            m_CurrentState = RTSIDE_STOP_TEMPCTRL;
         }
         else
         {
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
         }
         break;
     case RTSIDE_STOP_TEMPCTRL:
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTSIDE_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide"))
         {
-            emit CheckTempModuleCurrernt();
+            m_CurrentState = CHECK_TEMPMODULE_CURRENT;
+            m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
         }
         else
         {
-            emit TasksDone(false);
+            mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
         }
         break;
     case CHECK_TEMPMODULE_CURRENT:
@@ -186,7 +119,8 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_StartCheckingTime) > 3*1000)
         {
-            emit ReleasePressure();
+            OnReleasePressure();
+            m_CurrentState = RELEASE_PRESSURE;
         }
         else
         {
@@ -198,17 +132,17 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                     reportError2 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"Retort", RT_SIDE);
                     if (reportError1.instanceID != 0 && (now - reportError1.errorTime) <= 3*1000)
                     {
-                        emit TasksDone(false);
+                        mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
                     }
                     if (reportError2.instanceID != 0 && (now - reportError2.errorTime) <= 3*1000)
                     {
-                        emit TasksDone(false);
+                        mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
                     }
                 }
             }
             if (false == mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3))
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
             }
         }
         break;
@@ -218,11 +152,11 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                emit TasksDone(true);
+                mp_StateMachine->OnTasksDoneRsStandyWithTissue(true);
             }
             else
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDoneRsStandyWithTissue(false);
             }
         }
         else

@@ -34,43 +34,18 @@ using namespace DeviceControl;
  *  \iparam   SchedController: Pointer to ScheduleMainThreadController 
  */
 /****************************************************************************/
-CRsPressureOverRange3SRetry::CRsPressureOverRange3SRetry(SchedulerMainThreadController* SchedController)
+CRsPressureOverRange3SRetry::CRsPressureOverRange3SRetry(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine)
     :mp_SchedulerController(SchedController)
+    ,mp_StateMachine(StateMachine)
 {
-    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
-    mp_CheckPressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_WaitFor1S = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-
-    mp_StateMachine->setInitialState(mp_CheckPressure.data());
-
-    /*lint -e534 */
-    mp_CheckPressure->addTransition(this, SIGNAL(WaitFor1S()), mp_WaitFor1S.data());
-    mp_WaitFor1S->addTransition(this, SIGNAL(Retry()), mp_CheckPressure.data());
-    mp_WaitFor1S->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this, SIGNAL(TasksDone(bool)), mp_CheckPressure.data());
-    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController,ReleasePressure());
-
-    // For error cases
-    mp_WaitFor1S->addTransition(this, SIGNAL(TasksDone(bool)), mp_CheckPressure.data());
+    m_CurrentState = CHECK_PRESSURE;
     m_Counter = 0;
     m_CheckPressureTime = 0;
 }
 
 void CRsPressureOverRange3SRetry::Start()
 {
-    if (mp_StateMachine->isRunning())
-    {
-        mp_StateMachine->stop();
-        // holde on 200 ms
-        QTime delayTime = QTime::currentTime().addMSecs(200);
-        while (QTime::currentTime() < delayTime)
-        {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-    }
-
-    mp_StateMachine->start();
+    m_CurrentState = CHECK_PRESSURE;
     m_Counter = 0;
     m_CheckPressureTime = 0;
 }
@@ -82,45 +57,13 @@ void CRsPressureOverRange3SRetry::Start()
 /****************************************************************************/
 CRsPressureOverRange3SRetry::~CRsPressureOverRange3SRetry()
 {
-    /*lint -e1551 */
-    /*lint -e1540 */
-    mp_StateMachine->stop();
-}
-
-/****************************************************************************/
-/*!
- *  \brief   Return the current state of the state machine
- *  \iparam statesList = A list contains the current state, usually get from
- *                       the State Machine current states belogs to
- *
- *  \return The current state of the state machine
- */
-/****************************************************************************/
-CRsPressureOverRange3SRetry::StateList_t CRsPressureOverRange3SRetry::GetCurrentState(QSet<QAbstractState*> statesList)
-{
-    StateList_t currentState = UNDEF;
-    if(statesList.contains(mp_CheckPressure.data()))
-    {
-        currentState = CHECK_PRESSURE;
-    }
-    else if(statesList.contains(mp_WaitFor1S.data()))
-    {
-        currentState = WAIT_FOR_1S;
-    }
-    else if(statesList.contains(mp_ReleasePressure.data()))
-    {
-        currentState = RELEASE_PRESSURE;
-    }
-
-    return currentState;
 }
 
 void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     qint64 now = 0;
 
-    switch (currentState)
+    switch (m_CurrentState)
     {
     case CHECK_PRESSURE:
         mp_SchedulerController->LogDebug("RS_PressureOverRange_3SRetry, in state CHECK_PRESSURE");
@@ -128,11 +71,11 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
         {
             m_CheckPressureTime = QDateTime::currentMSecsSinceEpoch();
             m_Counter++;
-            emit WaitFor1S();
+            m_CurrentState = WAIT_FOR_1S;
         }
         else
         {
-            emit TasksDone(true);
+           mp_StateMachine->OnTasksDone(true);
         }
         break;
     case WAIT_FOR_1S:
@@ -142,11 +85,13 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
         {
             if (m_Counter < 3)
             {
-                emit Retry();
+                //Retry
+                m_CurrentState = CHECK_PRESSURE;
             }
             else
             {
-                emit ReleasePressure();
+                mp_SchedulerController->ReleasePressure();
+                m_CurrentState = RELEASE_PRESSURE;
             }
         }
         break;
@@ -157,11 +102,11 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
             // We always return failure
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
             else
             {
-                emit TasksDone(false);
+                mp_StateMachine->OnTasksDone(false);
             }
         }
         break;

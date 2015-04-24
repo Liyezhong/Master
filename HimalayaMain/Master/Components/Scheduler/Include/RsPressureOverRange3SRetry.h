@@ -28,6 +28,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class CSchedulerStateMachine;
 
 /****************************************************************************/
 /*!
@@ -53,10 +54,11 @@ public:
      *  \brief Constructor of class CRsPressureOverRange3SRetry
      *
      *  \param SchedController = pointer to SchedulerMainThreadController
+     *  \param StateMachine = pointer to CSchedulerStateMachine
      *
      */
     /****************************************************************************/
-    CRsPressureOverRange3SRetry(SchedulerMainThreadController* SchedController);
+    CRsPressureOverRange3SRetry(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachine);
 
     /****************************************************************************/
     /*!
@@ -64,17 +66,6 @@ public:
      */
     /****************************************************************************/
     ~CRsPressureOverRange3SRetry();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetCurrentState
-     *
-     *  \param statesList = QSet<QAbstractState*>
-     *
-     *	\return StateList_t
-     */
-    /****************************************************************************/
-    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
@@ -94,45 +85,10 @@ public:
     /****************************************************************************/
     void Start();
 
-signals:
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to wait for 1 second
-     *
-     */
-    /****************************************************************************/
-    void WaitFor1S();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to release pressure
-     *
-     */
-    /****************************************************************************/
-    void ReleasePressure();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to retry above 2 steps
-     *
-     */
-    /****************************************************************************/
-    void Retry();
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief	signal to indicate tasks are done
-     *
-     */
-    /****************************************************************************/
-    void TasksDone(bool);
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
-    QSharedPointer<QStateMachine>  mp_StateMachine;         //!< State machine for RS_Standby_WithTissue
-    QSharedPointer<QState> mp_CheckPressure;         		//!< Check Pressure state
-    QSharedPointer<QState> mp_WaitFor1S;              		//!< Wait for 1 second state
-    QSharedPointer<QState> mp_ReleasePressure;          	//!< Release Pressure state
+    CSchedulerStateMachine*  mp_StateMachine;               //!< State machine for RS_Standby_WithTissue
+    StateList_t              m_CurrentState;                //!< The current state
     qint64  m_CheckPressureTime;                            //!< time for checking pressure
     quint32 m_Counter;                                      //!< counter for retry times
 };
