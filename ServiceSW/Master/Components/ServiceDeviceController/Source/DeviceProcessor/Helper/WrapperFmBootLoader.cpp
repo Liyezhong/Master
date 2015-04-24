@@ -74,9 +74,6 @@ bool WrapperFmBootLoader::UpdateFirmware(const QString &FirmwarePath)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopUpdateFirmware, 60000);
-
     qint32 ret = m_LoopUpdateFirmware.exec();
     return (ret == 1);
 }
@@ -271,8 +268,6 @@ bool WrapperFmBootLoader::UpdateInfo(const QStringList &Info, quint8 UpdateType)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopUpdateInfo, 10000);
     qint32 ret = m_LoopUpdateInfo.exec();
     return (ret == 1);
 }

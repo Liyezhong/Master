@@ -73,9 +73,6 @@ bool WrapperFmAnalogInput::SetState(bool Enable)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetState);
-
     qint32 ret = m_LoopSetState.exec();
     return (ret == 1);
 }
@@ -125,9 +122,6 @@ qint16 WrapperFmAnalogInput::GetValue()
     if (!ok) {
         return 0;
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetValue);
 
     qint32 ret = m_LoopGetValue.exec();
     if (ret != 1) {

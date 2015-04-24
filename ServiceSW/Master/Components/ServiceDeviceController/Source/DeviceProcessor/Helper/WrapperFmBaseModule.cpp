@@ -155,9 +155,6 @@ QString WrapperFmBaseModule::SetNodeState(quint8 NodeState)
         return "request error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetNodeState);
-
     qint32 ret = m_LoopSetNodeState.exec();
 
     QString state;
@@ -201,9 +198,6 @@ quint8 WrapperFmBaseModule::ReqNodeState()
     if (!ok) {
         return 0;
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopReqNodeState);
 
     qint32 ret = m_LoopReqNodeState.exec();
     if (ret == 1) {
@@ -336,9 +330,6 @@ QString WrapperFmBaseModule::GetHWInfo()
         return "request error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetHWInfo);
-
     qint32 ret = m_LoopGetHWInfo.exec();
 
     QString hwInfo;
@@ -406,8 +397,7 @@ QString WrapperFmBaseModule::GetSWInfo()
         // TODO: use const String from BaseWrapper
         return "request error";
     }
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetSWInfo);
+
     qint32 ret = m_LoopGetSWInfo.exec();
 
     QString swInfo;
@@ -565,9 +555,6 @@ bool WrapperFmBaseModule::ReqFormatMemory()
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopFormatMemory, 60000);
-
     qint32 ret = m_LoopFormatMemory.exec();
     return (ret == 1);
 }
@@ -612,9 +599,6 @@ QString WrapperFmBaseModule::ReqSerialNumber()
     if (!ok) {
         return QString();
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSerialNumber);
 
     qint32 ret = m_LoopSerialNumber.exec();
     if (ret == 1) {
@@ -665,9 +649,6 @@ bool WrapperFmBaseModule::ReqEndTestResult()
     if (!ok) {
         return false;
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopEndTestResult);
 
     qint32 ret = m_LoopEndTestResult.exec();
     return (ret == 1);
@@ -745,9 +726,6 @@ bool WrapperFmBaseModule::ReqLoaderInfo()
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopLoaderInfo);
-
     qint32 ret = m_LoopLoaderInfo.exec();
     return (ret == 1);
 }
@@ -809,8 +787,6 @@ QString WrapperFmBaseModule::GetBootloaderInfo()
         return "request error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopLoaderInfo);
     qint32 ret = m_LoopLoaderInfo.exec();
 
     QString loaderInfo;
@@ -845,9 +821,6 @@ QString WrapperFmBaseModule::GetEndTestResultInfo()
         return "request error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopEndTestResult);
-
     qint32 ret = m_LoopEndTestResult.exec();
 
     QString endTestInfo;
@@ -881,8 +854,6 @@ bool WrapperFmBaseModule::ReqLifeCycleData()
     if (!ok) {
         return false;
     }
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopLifeCycleData);
 
     qint32 ret = m_LoopLifeCycleData.exec();
     return (ret == 1);
@@ -938,9 +909,6 @@ bool WrapperFmBaseModule::ReqLaunchDate()
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopLaunchDate);
-
     qint32 ret = m_LoopLaunchDate.exec();
     return (ret == 1);
 }
@@ -989,9 +957,6 @@ QString WrapperFmBaseModule::ReqBoardName()
     if (!ok) {
         return QString();
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopBoardName);
 
     qint32 ret = m_LoopBoardName.exec();
     if (ret == 1) {
@@ -1065,9 +1030,6 @@ bool WrapperFmBaseModule::ReqVoltageState()
     if (!ok) {
         return false;
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopVoltageState);
 
     qint32 ret = m_LoopVoltageState.exec();
     return (ret == 1);
@@ -1146,9 +1108,6 @@ bool WrapperFmBaseModule::ReqCurrentState()
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopCurrentState);
-
     qint32 ret = m_LoopCurrentState.exec();
     return (ret == 1);
 }
@@ -1205,9 +1164,6 @@ QString WrapperFmBaseModule::ReqUniqueNumber()
     }
 
     QTextStream out;
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopUniqueNumber);
 
     qint32 ret = m_LoopUniqueNumber.exec();
     if (ret == 1) {
@@ -1266,9 +1222,6 @@ QString WrapperFmBaseModule::ReqModuleSerialNumber()
     if (!ok) {
         return QString();
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopModuleSerial);
 
     qint32 ret = m_LoopModuleSerial.exec();
     if (ret == 1) {
@@ -1345,9 +1298,6 @@ bool WrapperFmBaseModule::UpdateBootLoader(const QString &BootLoaderPath)
     if (!ok) {
         return false;
     }
-
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopUpdateBootLoader, 20000);
 
     qint32 ret = m_LoopUpdateBootLoader.exec();
     return (ret == 1);

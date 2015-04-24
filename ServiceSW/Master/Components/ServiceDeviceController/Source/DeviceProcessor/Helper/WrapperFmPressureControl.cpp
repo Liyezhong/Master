@@ -213,9 +213,7 @@ float WrapperFmPressureControl::GetPressure(quint8 Index)
             RetValue = UNDEFINED;
         }
         else
-        {
-            QTimer timer;
-            SetEventLoopTimeOut(timer, m_LoopGetPressure);
+        {           
             qint32 ret = m_LoopGetPressure.exec();
             if (ret != 1)
             {
@@ -254,8 +252,6 @@ bool WrapperFmPressureControl::SetPressure(quint8 flag, float NominalPressure)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetPressure);
     qint32 ret = m_LoopSetPressure.exec();
     if (ret == 1)
         pumpStatus = (bool)flag;
@@ -281,8 +277,6 @@ bool WrapperFmPressureControl::SetFan(quint8 State)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetFan);
     qint32 ret = m_LoopSetFan.exec();
     return (ret == 1);
 }
@@ -306,8 +300,6 @@ bool WrapperFmPressureControl::SetValve(quint8 ValveIndex, quint8 ValveState)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetValve);
     qint32 ret = m_LoopSetValve.exec();
     return (ret == 1);
 }
@@ -1591,8 +1583,6 @@ bool WrapperFmPressureControl::SetOperatingMode(PressureCtrlOperatingMode_t Pres
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopSetOperatingMode);
     qint32 ret = m_LoopSetOperatingMode.exec();
     return (ret == 1);
 }
@@ -1652,8 +1642,6 @@ bool WrapperFmPressureControl::ResetPumpOperatingTime(quint8 Index)
         return false;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopResetHeaterOperatingTime);
     qint32 ret = m_LoopResetHeaterOperatingTime.exec();
     return (ret == 1);
 }
@@ -1707,8 +1695,6 @@ quint32 WrapperFmPressureControl::GetPumpOperatingTime(quint8 Index)
         return UNDEFINED;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetHeaterOperatingTime);
     qint32 ret = m_LoopGetHeaterOperatingTime.exec();
     if (ret != 1) {
         return UNDEFINED;
@@ -1766,8 +1752,6 @@ quint16 WrapperFmPressureControl::GetFanSpeed(quint8 Index)
         return UNDEFINED;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetFanSpeed);
     qint32 ret = m_LoopGetFanSpeed.exec();
     if (ret != 1) {
         return UNDEFINED;
@@ -1825,8 +1809,6 @@ WrapperFmPressureControl::HardwareStatus_t *WrapperFmPressureControl::GetHardwar
         return NULL;
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetHardwareStatus);
     qint32 ret = m_LoopGetHardwareStatus.exec();
     if (ret != 1) {
         return NULL;
@@ -1975,8 +1957,6 @@ QString WrapperFmPressureControl::GetPressureControlState()
         return "Error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetPressureControl);
     qint32 ret = m_LoopGetPressureControl.exec();
     QString controlstate = "";
     if (ret != 1) {
@@ -2071,8 +2051,6 @@ QString WrapperFmPressureControl::GetMainsVoltageState()
         return "Error";
     }
 
-    QTimer timer;
-    SetEventLoopTimeOut(timer, m_LoopGetVoltageState);
     qint32 ret = m_LoopGetVoltageState.exec();
     QString voltagestate = "";
     if (ret != 1) {

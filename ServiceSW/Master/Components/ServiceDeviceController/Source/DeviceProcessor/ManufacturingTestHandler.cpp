@@ -2784,6 +2784,23 @@ RV_HEATING_END_EXIT:
     }
 }
 
+void ManufacturingTestHandler::EmitFailMsgTimeout()
+{
+    if (m_BootFirmwareFinishd == false) {
+
+        Service::ModuleTestStatus Status;
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::FIRMWARE_UPDATE);
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+        QString Index = p_TestCase->GetParameter("Index");
+
+        (void)Status.insert("Result", "false");
+        (void)Status.insert("Index", Index);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        m_BootFirmwareFinishd = true;
+    }
+}
+
 qint32 ManufacturingTestHandler::UpdateFirmware()
 {
     Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
@@ -2844,6 +2861,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
     RetValue &= p_WrapperBootLoader->UpdateFirmware(BinPath);
 
+    m_BootFirmwareFinishd = false;
     if (RetValue == true) {
         mp_Utils->Pause(2000);
 
@@ -2853,8 +2871,14 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
             mp_Utils->Pause(10000);
         }
         else {
-            mp_Utils->Pause(5000);
+            mp_Utils->Pause(6000);
         }
+
+        QTimer timer;
+        timer.setSingleShot(true);
+        timer.setInterval(10000);
+        (void) connect(&timer, SIGNAL(timeout()), this, SLOT(EmitFailMsgTimeout()));
+        timer.start();
 
         if (SlaveType == Slave_15) {
             if ((mp_DORemoteAlarm && mp_DORemoteAlarm->SetHigh()) &&
@@ -2875,6 +2899,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         emit RefreshTestStatustoMain(TestCaseName, Status);
         delete p_WrapperBootLoader;
 
+        m_BootFirmwareFinishd = true;
         return 0;
     }
     else {
@@ -2908,7 +2933,7 @@ ERROR_EXIT:
     (void)Status.insert("Result", "false");
     (void)Status.insert("Index", Index);
     emit RefreshTestStatustoMain(TestCaseName, Status);
-
+    m_BootFirmwareFinishd = true;
     return -1;
 }
 
@@ -3281,9 +3306,8 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType(Service::ModuleTest
     }
 #endif
     (void)mp_TempRV->SetTemperatureSwitchState(-1, 0);
-    if (mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0) == false) {
-        return -1;
-    }
+    (void)mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0);
+
     return RetVal;
 }
 

@@ -445,6 +445,17 @@ void CServiceGUIConnector::SetDateTime(const QDateTime& DateTime)
     //        (void) system("echo himalaya | sudo -S hwclock -w");
         (void) system("hwclock -w");
 
+        QString FileDateTime = DateTime.toString("yyyyMMddhhmm");
+        QString FileDateCommand = QString("echo %1 > /etc/timestamp").arg(FileDateTime);
+        if(0 != system(FileDateCommand.toStdString().c_str()))
+        {
+            qDebug()<<"Failed to execute system command";
+        }
+        if(0 != system("sync"))
+        {
+            qDebug()<<"Failed to execute system command";
+        }
+
         Global::AdjustedTime::Instance().AdjustToDateTime(DateTime);
 }
 

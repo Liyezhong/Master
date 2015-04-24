@@ -183,6 +183,14 @@ signals:
     /****************************************************************************/
     void ReturnServiceRequestResult(QString ReqName, int ErrorCode, QStringList Results);
 
+private slots:
+    /****************************************************************************/
+    /**
+     * \brief EmitFailMsgTimeout
+     */
+    /****************************************************************************/
+    void EmitFailMsgTimeout();
+
 private:
     /****************************************************************************/
     /**
@@ -470,7 +478,6 @@ private:
     void EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, qreal Param=0);
 
 
-
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
     bool                        m_UserAbort;
@@ -510,6 +517,8 @@ private:
     QProcess*   mp_SpeakProc;
 
     bool        m_Continue;
+
+    bool m_BootFirmwareFinishd;
 
 };
 
