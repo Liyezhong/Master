@@ -567,7 +567,7 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                            "Please enter the reagent Name", 0, QApplication::UnicodeUTF8);
 
     m_strReagentNameHasLaicaString =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                   "Reagent name should not contain 'leica'.", 0, QApplication::UnicodeUTF8);
+                                                   "Reagent name shall not contain 'leica'.", 0, QApplication::UnicodeUTF8);
 
     m_strInputReagentSameName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                          "The same reagent name is in use. Please change the reagent name.", 0, QApplication::UnicodeUTF8);

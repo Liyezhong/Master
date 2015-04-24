@@ -63,7 +63,7 @@ const int RC_REQUEST_COMMAND_TIME_OUT = 30000;        //!< Remote Care Command T
 CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::CDataContainer(),
     mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
     m_LanguageChangeCount(0), m_ConsumableType(KIT), m_BottleCount(0), m_GuiInit(true),
-    m_strCommunicationError(tr("Communication Error")),
+    m_strCommunicationErrorTitle(tr("Communication Error")),
     m_strChangeNotSave(tr("The changes can not be saved.")),
     m_strStartup(tr("Startup")),
     m_strInitDevCom(tr("Initializing device communication ...")),
@@ -72,7 +72,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_strError(tr("Error")),
     m_strInformation(tr("Information")),
     m_strWarning(tr("Warning")),
-    m_strDeviceCommunication(tr("Device Communication")),
+    m_strDeviceCommunication(tr("Operation ongoing")),
     m_strSavingSettings(tr("Saving Settings ...")),
     m_strUserExport(tr("User Export")),
     m_strExportUserData(tr("Exporting user data ...")),
@@ -157,7 +157,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_MessageDlg->SetTitle(m_strCommunicationError);
+    mp_MessageDlg->SetTitle(m_strCommunicationErrorTitle);
     mp_MessageDlg->SetText(m_strChangeNotSave);
     mp_MessageDlg->SetIcon(QMessageBox::Critical);
     mp_MessageDlg->SetButtonText(1, m_strOK);
@@ -303,7 +303,7 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
             mp_MessageDlg->SetText(Ack.GetText());
         }
         else {
-            mp_MessageDlg->SetTitle(m_strCommunicationError);
+            mp_MessageDlg->SetTitle(m_strCommunicationErrorTitle);
             mp_MessageDlg->SetText(m_strCommunicationError);
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
@@ -1102,7 +1102,8 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
 /****************************************************************************/
 void CDataConnector::RetranslateUI()
 {
-   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
+   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error, please try it again or contact your local service", 0, QApplication::UnicodeUTF8);
+   m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
    m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes could not be saved.", 0, QApplication::UnicodeUTF8);
    m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
    m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8);
@@ -1113,7 +1114,7 @@ void CDataConnector::RetranslateUI()
 
    m_strWarning = QApplication::translate("Core::CDataConnector", "Warning", 0, QApplication::UnicodeUTF8);
    m_strOK = QApplication::translate("Core::CDataConnector", "OK", 0, QApplication::UnicodeUTF8);
-   m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Device Communication", 0, QApplication::UnicodeUTF8);
+   m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Operation ongoing", 0, QApplication::UnicodeUTF8);
    m_strSavingSettings = QApplication::translate("Core::CDataConnector", "Saving Settings ...", 0, QApplication::UnicodeUTF8);
    m_strUserExport = QApplication::translate("Core::CDataConnector", "User Export", 0, QApplication::UnicodeUTF8);
    m_strExportUserData = QApplication::translate("Core::CDataConnector", "Exporting user data ...", 0, QApplication::UnicodeUTF8);

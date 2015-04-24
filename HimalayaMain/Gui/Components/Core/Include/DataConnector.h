@@ -1015,6 +1015,7 @@ private:
     bool m_GuiAllConfigurationReceived;             //!< True -if all configuration data (XML)from Main is received
     bool m_GuiInit;                                 //!< True - if Gui is getting initialized
     int m_CurrentTabIndex;       ///<  Definition/Declaration of variable m_CurrentTabIndex
+    QString m_strCommunicationErrorTitle;       ///<  the title string for a messageBox
     QString m_strCommunicationError;       ///<  Definition/Declaration of variable m_strCommunicationError
     QString m_strChangeNotSave;       ///<  Definition/Declaration of variable m_strChangeNotSave
     QString m_strStartup;       ///<  Definition/Declaration of variable m_strStartup

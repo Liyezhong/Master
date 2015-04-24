@@ -1270,7 +1270,7 @@ void CDashboardWidget::RetranslateUI()
 {
     m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent is found for Program step \"%1\" of \"%2\",if errors happen.Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station. One station can be used only once in the program. Please set a station for the reagent of this step.", 0, QApplication::UnicodeUTF8);
-    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\". It can not be run.", 0, QApplication::UnicodeUTF8);
+    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "You cannot start the program, because the Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\".", 0, QApplication::UnicodeUTF8);
     m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start because the paraffin is not melted completely and the first program step is not fixation reagent.", 0, QApplication::UnicodeUTF8);
     m_strWaitTimeforParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "You can start in %1 hours %2 minutes %3 seconds.", 0, QApplication::UnicodeUTF8);
     m_strPromptProgramDelay =  QApplication::translate("Dashboard::CDashboardWidget", "Program will be delayed for some minutes in the first step as the paraffin is not melted completely. Would you like to continue?", 0, QApplication::UnicodeUTF8);
