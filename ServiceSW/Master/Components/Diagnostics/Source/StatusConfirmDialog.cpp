@@ -132,8 +132,8 @@ void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &St
         return;
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 
-    if (Status.value("LidLockerStatus") == "Open" && Status.value("StepNum")=="1" ||
-            Status.value("LidLockerStatus") == "Close" && Status.value("StepNum")=="2") {
+    if ((Status.value("LidLockerStatus") == "Open" && Status.value("StepNum")=="1") ||
+            (Status.value("LidLockerStatus") == "Close" && Status.value("StepNum")=="2")) {
         mp_Ui->labelStatusValue->setStyleSheet("border-color: rgb(0, 0, 0); "
                                                "border-width:1px; border-style:solid;"
                                                "background-color: rgb(85, 255, 0);");

@@ -109,6 +109,8 @@ bool CCalibrationHanlder::ServiceCalibation()
                                              "Pressure sensor calibration",
                                              0, QApplication::UnicodeUTF8));
     WaitDlg->setModal(true);
+    mp_PressureSensor->SetButtonStatus(false);
+
     for (int i = 0; i < 3; ++i) {
         if (i==0) {
             Text = QApplication::translate("Core::CCalibrationHanlder",
@@ -190,6 +192,7 @@ Calibation_Finished:
     MsgDlg->SetText(Text);
     (void)MsgDlg->exec();
 
+    mp_PressureSensor->SetButtonStatus(true);
     delete WaitDlg;
     delete MsgDlg;
     return Ret;
