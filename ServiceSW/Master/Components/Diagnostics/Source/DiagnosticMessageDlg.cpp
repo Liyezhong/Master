@@ -105,7 +105,10 @@ int CDiagnosticMessageDlg::ShowConfirmMessage(const QString& MessageTitle, const
 
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_Parent);
     dlg->SetTitle(MessageTitle);
-    dlg->SetIcon(QMessageBox::Question);
+    if (MessageText == "Do you really want to use paraffin?") {
+        dlg->SetIcon(QMessageBox::Warning);
+    }
+
     dlg->SetText(MessageText);
     dlg->HideCenterButton();
 

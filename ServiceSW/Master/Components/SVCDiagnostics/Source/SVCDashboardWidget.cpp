@@ -704,7 +704,7 @@ void CSVCDashboardWidget::OnSelectPosition()
 
     if (Postion == 14 || Postion == 15 || Postion == 16) {
         Text = "Do you really want to use paraffin?";
-        int Ret = mp_MsgDlg->ShowConfirmMessage(Title, Text, Diagnostics::CDiagnosticMessageDlg::YES_CANCEL);
+        int Ret = mp_MsgDlg->ShowConfirmMessage("WARNING!", Text, Diagnostics::CDiagnosticMessageDlg::YES_CANCEL);
 
         if (Ret == (int)Diagnostics::CDiagnosticMessageDlg::CANCEL) {
             return;
