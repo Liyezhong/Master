@@ -1942,7 +1942,16 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURE_TEST);
             }
         }
-        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= 25.0)
+        qreal threshPressure = 0.0;
+        if (m_EnableLowerPressure)
+        {
+            threshPressure = 15.0;
+        }
+        else
+        {
+            threshPressure = 25.0;
+        }
+        if (mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= threshPressure)
         {
             mp_SchedulerThreadController->ReleasePressure();
             m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
