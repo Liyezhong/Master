@@ -175,7 +175,7 @@ void TestSchedulerMainThreadController::TestSlots()
     m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
     m_pSchedulerMainController->HandlePowerFailure(ctrlCmd, cmd);
 
-    m_pSchedulerMainController->UpdateStationReagentStatus();
+    m_pSchedulerMainController->UpdateStationReagentStatus(true);
 
     ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
     m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);

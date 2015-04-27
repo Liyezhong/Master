@@ -189,11 +189,8 @@ void TestSchedulerMachine::TestAPIs()
     m_pSchedulerMachine->NotifyRVRodHeatingReady();
     m_pSchedulerMachine->NotifyRVMoveToSealReady();
     m_pSchedulerMachine->NotifyRVMoveToTubeReady();
-    m_pSchedulerMachine->NotifyHitTubeBefore();
     m_pSchedulerMachine->NotifyFillFinished();
-    m_pSchedulerMachine->NotifyHitSeal();
     m_pSchedulerMachine->NotifyProcessingFinished();
-    m_pSchedulerMachine->NotifyHitTubeAfter();
     m_pSchedulerMachine->NotifyDrainFinished();
     //m_pSchedulerMachine->NotifyStepFinished();
     //m_pSchedulerMachine->NotifyProgramFinished();

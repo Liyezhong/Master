@@ -52,6 +52,7 @@ private slots:
 private:
     Himalaya::HimalayaMasterThreadController*   mp_HMThreadController;
     SchedulerMainThreadController*              mp_SchedulerMainController;
+    CSchedulerStateMachine*                     m_pSchedulerMachine;
     MockIDeviceProcessing*                      mp_IDeviceProcessing;
     DataManager::CDataManager*                  mp_DataManager;
     CRcReHeating*                           mp_ReHeating;
@@ -70,7 +71,9 @@ TestRcReheating::TestRcReheating()
     mp_SchedulerMainController->DataManager(mp_DataManager);
     dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchedulerMainController->GetSchedCommandProcessor())->SetIDeviceProcessing(mp_IDeviceProcessing);
 
-    mp_ReHeating = new CRcReHeating(mp_SchedulerMainController);
+    m_pSchedulerMachine = new CSchedulerStateMachine(mp_SchedulerMainController);
+    mp_ReHeating = new CRcReHeating(mp_SchedulerMainController, m_pSchedulerMachine);
+    m_pSchedulerMachine->Start();
 }
 
 TestRcReheating::~TestRcReheating()
@@ -107,8 +110,8 @@ void TestRcReheating::UTAllCase()
         mp_ReHeating->HandleWorkFlow("", DCL_ERR_FCT_CALL_SUCCESS);
 
         mp_ReHeating->HandleInint();
-        mp_ReHeating->GetRvPosition("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
-        mp_ReHeating->ProcessDraining("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
+        //mp_ReHeating->GetRvPosition("Scheduler::RVReqMoveToInitialPosition", DCL_ERR_FCT_CALL_SUCCESS);
+        //mp_ReHeating->ProcessDraining("Scheduler::IDForceDraining", DCL_ERR_FCT_CALL_SUCCESS);
     }
 }
 

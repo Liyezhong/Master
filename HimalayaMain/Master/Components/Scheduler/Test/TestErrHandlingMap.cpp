@@ -86,7 +86,7 @@ private slots:
 
 void TestErrHandlingMap::GetSafeReagentStation(const QString& ReagentID, ReagentStationList_t& reagentStation)
 {
-    ReagentStationList_t ReagentStation, RG1Reagent, RG3Reagent, RG4Reagent;
+    ReagentStationList_t ReagentStation;
     for(int i = 0; i < m_ReagentStationList.size(); ++i)
     {
         ReagentStation = m_ReagentStationList.at(i);
@@ -97,50 +97,6 @@ void TestErrHandlingMap::GetSafeReagentStation(const QString& ReagentID, Reagent
                 reagentStation = ReagentStation;
                 return;
             }
-        }
-        if(ReagentID == "RG2")
-        {
-            if("RG3" == ReagentStation.ReagentID)
-            {
-                RG3Reagent = ReagentStation;
-            }
-            if("RG1" == ReagentStation.ReagentID)
-            {
-                RG1Reagent = ReagentStation;
-            }
-        }
-        if(ReagentID == "RG4")
-        {
-            if("RG3" == ReagentStation.ReagentID)
-            {
-                RG3Reagent = ReagentStation;
-            }
-            if("RG4" == ReagentStation.ReagentID)
-            {
-                RG4Reagent = ReagentStation;
-            }
-        }
-    }
-    if(ReagentID == "RG2")
-    {
-        if(!RG3Reagent.ReagentID.isEmpty() && !RG3Reagent.StationID.isEmpty())
-        {
-            reagentStation = RG3Reagent;
-        }
-        else
-        {
-            reagentStation = RG1Reagent;
-        }
-    }
-    if(ReagentID == "RG4")
-    {
-        if(!RG3Reagent.ReagentID.isEmpty() && !RG3Reagent.StationID.isEmpty())
-        {
-            reagentStation = RG3Reagent;
-        }
-        else
-        {
-            reagentStation = RG4Reagent;
         }
     }
 }
@@ -203,27 +159,19 @@ QString TestErrHandlingMap::GetSafeReagentType(const QString& Scenario)
     {
         reagentStation = m_ReagentStationList.at(0);//Program_first_position";
     }
-    else if(scenario >= 211 && scenario <= 217)
+    else if(scenario >= 211 && scenario <= 221)
     {
         GetSafeReagentStation("RG1", reagentStation);
     }
-    else if(scenario >= 221 && scenario <= 227)
-    {
-        GetSafeReagentStation("RG2", reagentStation);
-    }
-    else if(scenario >= 231 && scenario <= 237)
+    else if(scenario >= 221 && scenario <= 247)
     {
         GetSafeReagentStation("RG3", reagentStation);
     }
-    else if(scenario >= 241 && scenario <= 247)
-    {
-        GetSafeReagentStation("RG4", reagentStation);
-    }
-    else if(scenario >= 251 && scenario <= 260)
+    else if(scenario >= 251 && scenario <= 271)
     {
         GetSafeReagentStation("RG5", reagentStation);
     }
-    else if(scenario >= 271 && scenario <= 277)
+    else if(scenario >= 272 && scenario <= 277)
     {
         GetSafeReagentStation("RG6", reagentStation);
     }
