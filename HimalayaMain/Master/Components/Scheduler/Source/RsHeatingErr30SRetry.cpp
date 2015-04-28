@@ -129,7 +129,11 @@ void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t 
             m_ShutdownHeaterTime = 0;
             m_StartTime = 0;
             m_Counter = 0;
-            (void)mp_SchedulerController->ShutdownFailedHeaters();
+            //For FAN, we need NOT trun off it.
+            if (heaterType != FAN)
+            {
+                (void)mp_SchedulerController->ShutdownFailedHeaters();
+            }
             mp_StateMachine->OnTasksDone(true);
         }
         else
