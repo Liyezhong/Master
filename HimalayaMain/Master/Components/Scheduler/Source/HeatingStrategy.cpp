@@ -967,6 +967,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             (void)this->StopTemperatureControl("RTSide");
             (void)this->StopTemperatureControl("RTBottom");
+            //it should check the retort temperature over range
+            heatingSensor.curModuleId = iter->Id;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
 
