@@ -98,6 +98,7 @@ public:
     /****************************************************************************/
     bool TasksAborted() { return m_TasksAborted; }
 
+    void PressureForCleaning();
 signals:
 
     /****************************************************************************/
@@ -142,6 +143,8 @@ private:
     quint8  m_IsLoged;                                              //!< Whether loged
     bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received
     bool    m_TasksAborted;                                         //!< Flag to indicate if tasks have been aborted
+    quint8  m_PressureForCleaningSeq;
+    qint64  m_PressureStartTime;
 };
 }
 #endif // PROGRAM_PRE_TEST_H

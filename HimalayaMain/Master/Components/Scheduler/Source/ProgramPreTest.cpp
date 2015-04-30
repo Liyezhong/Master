@@ -27,6 +27,7 @@
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
+#include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 
 using namespace DeviceControl;
@@ -58,6 +59,8 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_IsAbortRecv = false;
     m_TasksAborted = false;
     CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
+    m_PressureForCleaningSeq = 0;
+    m_PressureStartTime = 0;
 }
 
 CProgramPreTest::~CProgramPreTest()
@@ -102,23 +105,39 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         m_CurrentState = RT_TEMCTRL_ON;
         break;
     case RT_TEMCTRL_ON:
-        ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTSide");
-        if (DCL_ERR_FCT_CALL_SUCCESS == ret)
+        if(0 == m_IsLoged)
         {
-            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTBottom");
-            if(DCL_ERR_FCT_CALL_SUCCESS == ret)
+            ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTSide");
+            if (DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
-                m_CurrentState = TEMPSENSORS_CHECKING;
-                m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
+                ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPreTest("RTBottom");
+                if(DCL_ERR_FCT_CALL_SUCCESS == ret)
+                {
+                    //m_CurrentState = TEMPSENSORS_CHECKING;
+                    m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
+                }
+                else
+                {
+                    mp_SchedulerThreadController->SendOutErrMsg(ret);
+                }
             }
             else
             {
                 mp_SchedulerThreadController->SendOutErrMsg(ret);
             }
+            m_IsLoged++;
         }
-        else
+        else if(1 == m_IsLoged)
         {
-            mp_SchedulerThreadController->SendOutErrMsg(ret);
+            if(mp_SchedulerThreadController->IsCleaningProgram())
+            {
+                PressureForCleaning();
+            }
+            else
+            {
+                m_CurrentState = TEMPSENSORS_CHECKING;
+                m_IsLoged = 0;
+            }
         }
         break;
     case TEMPSENSORS_CHECKING:
@@ -448,6 +467,31 @@ void CProgramPreTest::ResetVarList(bool resume)
     m_BottleSeq = 0;
     m_IsAbortRecv = false;
     m_TasksAborted = false;
+    m_PressureForCleaningSeq = 0;
+    m_PressureStartTime = 0;
+}
+
+void CProgramPreTest::PressureForCleaning()
+{
+    if(0 == m_PressureForCleaningSeq)
+    {
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
+        m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_PressureForCleaningSeq++;
+        mp_SchedulerThreadController->LogDebug("Drain for 20 seconds before cleaning.");
+    }
+    else if(1 == m_PressureForCleaningSeq)
+    {
+        if(QDateTime::currentMSecsSinceEpoch() - m_PressureStartTime> 20*1000)
+        {
+
+            mp_SchedulerThreadController->ReleasePressure();
+            m_CurrentState = TEMPSENSORS_CHECKING;
+            m_IsLoged = 0;
+            m_PressureForCleaningSeq = 0;
+            mp_SchedulerThreadController->LogDebug("Finish draining for 20 seconds before cleaning.");
+        }
+    }
 }
 
 }
