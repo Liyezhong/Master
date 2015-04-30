@@ -161,7 +161,19 @@ void CReagentStatusWidget::OnResetData()
             emit UnselectProgram();
 
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
+
+        ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+        ConfirmationMessageDlg.SetButtonText(3, m_strNo);
+        ConfirmationMessageDlg.HideCenterButton();
+        if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+        {
+            emit BottleCheck();
+        }
     }
+
+
 }
 
 /****************************************************************************/
@@ -185,6 +197,16 @@ void CReagentStatusWidget::OnSetAsFull()
         ResetButtons();
         mp_Ui->btnEmpty->setEnabled(true);
         mp_Ui->btnReset->setEnabled(true);
+
+        ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+        ConfirmationMessageDlg.SetButtonText(3, m_strNo);
+        ConfirmationMessageDlg.HideCenterButton();
+        if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+        {
+            emit BottleCheck();
+        }
     }
 }
 
@@ -486,6 +508,9 @@ void CReagentStatusWidget::RetranslateUI()
 
     m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
                                              "Would you like to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
+
+    m_strBottleCheckConfirm = QApplication::translate("Reagent::CReagentStatusWidget",
+                                             "Please check that the retort is empty and clean prior starting bottle check and then press \“yes\”. Bottle check function will require approximate XX minutes.", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);

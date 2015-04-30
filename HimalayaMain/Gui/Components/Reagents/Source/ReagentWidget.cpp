@@ -103,6 +103,9 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, UnselectProgram(),
                       this, UnselectProgram());
 
+    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, BottleCheck(),
+                      this, BottleCheck());
+
     CONNECTSIGNALSLOT(this, UpdateSelectedStationList(QList<QString>&),
                       mp_Ui->pageReagentStatus, UpdateSelectedStationList(QList<QString>&));
 
