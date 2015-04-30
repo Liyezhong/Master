@@ -103,8 +103,13 @@ void CLanguageWidget::SetLanguages(QStringList LanguageList)
         QString LanguageName = m_LanguageList.at(i);
 
         QLocale Locale(Global::StringToLanguage(LanguageName));
-
-        QString LangaugeNativeName = Locale.nativeLanguageName();
+        QString LangaugeNativeName;
+        if (LanguageName == "en")
+        {
+            LangaugeNativeName = "English";
+        }
+        else
+            LangaugeNativeName = Locale.nativeLanguageName();
         if (LangaugeNativeName.isEmpty())
         {
             continue;
