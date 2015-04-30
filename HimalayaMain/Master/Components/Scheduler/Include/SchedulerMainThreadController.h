@@ -49,6 +49,7 @@ namespace MsgClasses
     class CmdQuitAppShutdown;
     class CmdSavedServiceInfor;
     class CmdParaffinMeltPointChanged;
+    class CmdBottleCheck;
 }
 
 namespace DataManager
@@ -923,6 +924,17 @@ protected:
          */
         /****************************************************************************/
         void OnParaffinMeltPointChanged(Global::tRefType Ref, const MsgClasses::CmdParaffinMeltPointChanged & Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnBottleCheck
+         *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param Cmd =  MsgClasses::CmdBottleCheck type parameter
+         *
+         *  \return from OnBottleCheck
+         */
+        /****************************************************************************/
+        void OnBottleCheck(Global::tRefType Ref, const MsgClasses::CmdBottleCheck & Cmd);
     public:
         /****************************************************************************/
         /**

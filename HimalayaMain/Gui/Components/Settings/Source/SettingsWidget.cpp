@@ -91,6 +91,9 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, UpdateProgram(DataManager::CProgram &),
                       mp_Data, SendProgramUpdate(DataManager::CProgram &));
 
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, BottleCheck(),
+                      mp_Data, SendBottleCheck());
+
     CONNECTSIGNALSIGNAL(mp_Ui->pageSystemSetup, UnselectProgram(),
                       this, UnselectProgram());
 

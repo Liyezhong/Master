@@ -177,6 +177,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="btnBottleCheck">
+     <property name="text">
+      <string>Bottle Check</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

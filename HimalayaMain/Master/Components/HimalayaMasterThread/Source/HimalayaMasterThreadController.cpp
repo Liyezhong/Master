@@ -82,6 +82,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <SWUpdateManager/Include/SWUpdateManager.h>
@@ -370,6 +371,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdParaffinMeltPointChanged>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdBottleCheck>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdUpdateProgramEndTime>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdRecoveryFromPowerFailure>(&m_CommandChannelGui);
 

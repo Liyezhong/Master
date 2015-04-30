@@ -363,6 +363,13 @@ public slots:
      */
     /****************************************************************************/
     void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of SendBotttleCheck
+     *
+     */
+    /****************************************************************************/
+    void SendBottleCheck();
 
 signals:
 

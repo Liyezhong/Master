@@ -65,6 +65,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -187,6 +188,10 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdParaffinMeltPointChanged,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnParaffinMeltPointChanged, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdBottleCheck,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnBottleCheck, this);
+
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, SchedulerMainThreadController>
             (&SchedulerMainThreadController::OnAcknowledge, this);
 
@@ -2812,6 +2817,11 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
     }
     m_ProgramStatusInfor.ResetOvenHeatingTime(ParaffinMeltPoint,true);;
     mp_HeatingStrategy->ResetTheOvenHeating();
+}
+
+void SchedulerMainThreadController::OnBottleCheck(Global::tRefType Ref, const MsgClasses::CmdBottleCheck & Cmd)
+{
+
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)

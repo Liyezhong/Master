@@ -31,8 +31,7 @@
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
-
-
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
@@ -1231,6 +1230,12 @@ void CDataConnector::SendRequestedFilesToImport(QStringList FileList)
 void CDataConnector::SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint)
 {
     MsgClasses::CmdParaffinMeltPointChanged Command(COMMAND_TIME_OUT, lastMeltPoint, currentMeltPoint);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
+
+void  CDataConnector::SendBottleCheck()
+{
+    MsgClasses::CmdBottleCheck Command(COMMAND_TIME_OUT);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 

@@ -87,6 +87,7 @@ CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : Main
     mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheel, 0);
 
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnApply());
+    CONNECTSIGNALSLOT(mp_Ui->btnBottleCheck, clicked(), this, OnBottleCheck());
 }
 
 /****************************************************************************/
@@ -388,6 +389,11 @@ void CSystemSetupSettingsWidget::OnApply()
     {
         emit ParaffinMeltPointchanged(lastMeltPoint, temp);
     }
+}
+
+void CSystemSetupSettingsWidget::OnBottleCheck()
+{
+    emit BottleCheck();
 }
 
 } // end namespace Settings
