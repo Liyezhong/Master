@@ -116,24 +116,21 @@ void CRcReHeating::HandleInint()
 bool CRcReHeating::StartHeatingSensor()
 {
     ReturnCode_t ret = DCL_ERR_FCT_CALL_SUCCESS;
-    if( 200 == m_LastScenario || 260 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257) )
+    if( 200 == m_LastScenario || 260 == m_LastScenario || (m_LastScenario >= 211 && m_LastScenario <= 257)
+            || 203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
     {
         mp_SchedulerThreadController->GetHeatingStrategy()->SetHeatingStrategyScenario(4);
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
-    {
-        mp_SchedulerThreadController->GetHeatingStrategy()->SetHeatingStrategyScenario(4);
-        ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("RV");
-        mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating RV,retCode:%1").arg(ret));
-        if(DCL_ERR_FCT_CALL_SUCCESS != ret)
-            return false;
-        else
-            return true;
-    }
-    else
+    else if(m_LastScenario >= 271 && m_LastScenario <= 277)
     {
         mp_SchedulerThreadController->GetHeatingStrategy()->SetHeatingStrategyScenario(260);
     }
+    else
+    {
+        mp_SchedulerThreadController->LogDebug(QString("Invalid scenario in power failure"));
+        return false;
+    }
+
     ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("RV");
     mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating RV,retCode:%1").arg(ret));
     if(DCL_ERR_FCT_CALL_SUCCESS != ret)
@@ -219,11 +216,6 @@ void CRcReHeating::CheckTheTemperature()
                 }
             }
         }
-    }
-    else
-    {
-        mp_SchedulerThreadController->LogDebug(QString("Invalid scenario in power failure"));
-        mp_StateMachine->OnTasksDone(false);
     }
 }
 
