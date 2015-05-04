@@ -57,6 +57,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
         mp_SchedulerController->RaiseEvent(EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED);
     }
     memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
+    m_SensorsChecking.firstBottle = true;
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
@@ -1935,21 +1936,20 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
 
 void HeatingStrategy::Init260ParamList()
 {
-    memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
-    m_SensorsChecking.firstBottle = true;
-
-    m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
-    m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-
-    if (m_SensorsChecking.meltingPoint <= 64.0)
+    if(m_SensorsChecking.firstBottle = true)
     {
-        m_SensorsChecking.minTime = 5*60*1000;
-    }
-    else
-    {
-        m_SensorsChecking.minTime = 8*60*1000;
-    }
+        m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
+        m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
 
+        if (m_SensorsChecking.meltingPoint <= 64.0)
+        {
+            m_SensorsChecking.minTime = 5*60*1000;
+        }
+        else
+        {
+            m_SensorsChecking.minTime = 8*60*1000;
+        }
+    }
     m_SensorsChecking.ovenTopPass = false;
     m_SensorsChecking.LATube1Pass = false;
 }

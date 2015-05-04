@@ -648,9 +648,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             // Start up PssmPrecheck state machine
             m_SchedulerMachine->StartPreCheck();
 
-            //Initialize parameter list in scenario 260
-            mp_HeatingStrategy->Init260ParamList();
-
             m_SchedulerMachine->SendRunSignal();
         }
         break;
@@ -4721,6 +4718,7 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
 
     if(m_CurProgramStepInfo.reagentGroup == "RG6")
     {
+        mp_HeatingStrategy->Init260ParamList();
         RaiseEvent(EVENT_SCHEDULER_WAITING_FOR_FILLING_PARAFFIN);
     }
 
