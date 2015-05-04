@@ -1930,6 +1930,10 @@ qint32 ManufacturingTestHandler::CleaningSystem()
                 goto CLEANING_EXIT;
             }
         }
+
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 2);
+        mp_MotorRV->MoveToTubePosition(2);
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
     }
 CLEANING_EXIT:
     (void)mp_PressPump->ReleasePressure();
