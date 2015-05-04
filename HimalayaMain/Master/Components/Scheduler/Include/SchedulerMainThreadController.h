@@ -1482,6 +1482,15 @@ protected:
          */
         /****************************************************************************/
         void StartTimer() { m_TickTimer.start(); }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Get last reagent group
+         *  \return QString last reagent group
+         */
+        /****************************************************************************/
+        QString GetLastReagentGroup() { return m_ProgramStatusInfor.GetLastReagentGroup(); }
+
     public slots:
 
         /****************************************************************************/

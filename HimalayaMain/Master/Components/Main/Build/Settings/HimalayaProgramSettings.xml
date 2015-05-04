@@ -58,7 +58,7 @@
                 <Parameter Key="MaxTemperature" Value="107"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
-                <Parameter Key="ScenarioList" Value="203,211,212,213,215,216,217,221,222,223,225,226,227,231,232,233,235,236,237,241,242,243,245,246,247,251,252,253,255,256,257,271,272,273,275,276,277,281,282,283,285,286,287,291,292,293,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,203,211,212,213,215,216,217,221,222,223,225,226,227,231,232,233,235,236,237,241,242,243,245,246,247,251,252,253,255,256,257,271,272,273,275,276,277,281,282,283,285,286,287,291,292,293,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TempDifference" Value="20"/>
             </Function>
@@ -102,7 +102,7 @@
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="203,211,212,213,215,216,217,221,222,223,225,226,227,231,232,233,235,236,237,241,242,243,245,246,247,251,252,253,255,256,257,271,272,273,275,276,277,281,282,283,285,286,287,291,292,293,295,296,297"/>
+                <Parameter Key="ScenarioList" Value="004,203,211,212,213,215,216,217,221,222,223,225,226,227,231,232,233,235,236,237,241,242,243,245,246,247,251,252,253,255,256,257,271,272,273,275,276,277,281,282,283,285,286,287,291,292,293,295,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
 			</Function>
             <Function Key="Heating" name="RTTop" sequence="2">

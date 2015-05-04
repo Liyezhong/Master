@@ -131,7 +131,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
 
-        if(4 == m_CurScenario)
+        if(4 == m_CurScenario && "RG6" != mp_SchedulerController->GetLastReagentGroup())
         {
             retCode = StopTemperatureControl("RTSide");
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -958,6 +958,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
                 && mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())->IsCleaningProgram())
         {
             userInputTemp = 80;
+        }
+        else if(4 == m_CurScenario && "RG6" == mp_SchedulerController->GetLastReagentGroup())
+        {
+            userInputTemp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         }
         else
         {

@@ -11,14 +11,9 @@
                 <Step ID="4" ReagentID="L10" Duration="1m" Temperature="67" Pressure="Off" Vacuum="Off"/>
                 <Step ID="5" ReagentID="L10" Duration="1m" Temperature="67" Pressure="Off" Vacuum="Off"/>
                 <Step ID="6" ReagentID="L10" Duration="1m" Temperature="67" Pressure="Off" Vacuum="Off"/>
-                <Step ID="7" ReagentID="L10" Duration="1m" Temperature="67" Pressure="Off" Vacuum="Off"/>
-                <Step ID="8" ReagentID="L10" Duration="1m" Temperature="67" Pressure="Off" Vacuum="Off"/>
+                <Step ID="7" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
+                <Step ID="8" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
                 <Step ID="9" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
-                <Step ID="10" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
-                <Step ID="11" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
-                <Step ID="12" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
-                <Step ID="13" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
-                <Step ID="14" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
         <Program ID="L02" Name="Leica Overnight" NameID="50331650" Icon="Leica_Overnight" LeicaProgram="true" Favorite="true">

@@ -2437,6 +2437,12 @@ quint32 SchedulerMainThreadController::GetPreTestTime()
     }
     bottleTime = tmpTime;
     preTesttTime += bottleTime;
+
+    if(m_IsCleaningProgram)
+    {
+        //the cleaning pret-est should pressure 20 seconds
+        preTesttTime += 20;
+    }
     return preTesttTime;
 }
 
