@@ -58,6 +58,7 @@ private:
     QString m_strSetAsEmpty;       ///<  Definition/Declaration of variable m_strSetAsEmpty
     QString m_strResetData;       ///<  Definition/Declaration of variable m_strResetData
     QString m_strSetAsFull;       ///<  Definition/Declaration of variable m_strSetAsFull
+    QString m_strBottleCheckConfirm;    ///<  Definition/Declaration of variable m_strBottleCheckConfirm
     QString m_CurrentStationName;       ///<  Definition/Declaration of variable m_CurrentStationName
     QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
     QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
@@ -205,6 +206,12 @@ signals:
      */
     /****************************************************************************/
     void UnselectProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal BottleCheck
+     */
+    /****************************************************************************/
+    void BottleCheck();
 
 };
 
