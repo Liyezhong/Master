@@ -82,6 +82,7 @@
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h>
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheckReply.h>
 
 
 
@@ -373,6 +374,9 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterExternalMessage<MsgClasses::CmdBottleCheck, HimalayaGui::HimalayaGuiController>
                 (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdBottleCheck>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdBottleCheckReply, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdBottleCheckReply>, this);
+
     // RemoteCare arthur 2014/7/14
     RegisterExternalMessage<RemoteCare::CmdRCRequestRemoteSession, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<RemoteCare::CmdRCRequestRemoteSession>, this);

@@ -45,8 +45,8 @@ CBottleCheckStatusModel::CBottleCheckStatusModel(QObject *p_Parent) : QAbstractT
 {
     mp_ReagentList = NULL;
     mp_StationList = NULL;
-    m_Columns = 0;
-    m_VisibleRowCount = 7;
+    m_Columns = 3;
+    m_VisibleRowCount = 8;
 }
 
 /****************************************************************************/
@@ -54,18 +54,15 @@ CBottleCheckStatusModel::CBottleCheckStatusModel(QObject *p_Parent) : QAbstractT
  *  \brief Initializes the reagent data
  *
  *  \iparam p_ReagentList = Reagent data
- *  \iparam p_ReagentGroupList = ReagentGroup data
  *  \iparam p_StationList = Station data
- *  \iparam Columns = Table columns
+ *
  */
  /****************************************************************************/
 void CBottleCheckStatusModel::SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
-                                                DataManager::CDashboardDataStationList *p_StationList,
-                                                qint32 Columns)
+                                                DataManager::CDashboardDataStationList *p_StationList)
 {
     mp_ReagentList = p_ReagentList;
     mp_StationList = p_StationList;
-    m_Columns = Columns;
     UpdateReagentList();
 }
 
@@ -223,18 +220,13 @@ QVariant CBottleCheckStatusModel::data(const QModelIndex &Index, int Role) const
 /****************************************************************************/
 QVariant CBottleCheckStatusModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
-    if (Role == (int)Qt::SizeHintRole && Orientation == Qt::Horizontal) {
-        QSize size(100, 64);
-        return size;
-    }
-
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {
         switch (Section) {//column head
         case 0:
             return tr("Station");
         case 1:
             return tr("Reagent");
-        case 3:
+        case 2:
             return tr("Status");
         }
     }

@@ -32,6 +32,7 @@
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheckReply.h"
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
@@ -141,6 +142,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdDayRunLogReplyFile>(&CDataConnector::DayRunLogReplyFileHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdDayRunLogReply>(&CDataConnector::DayRunLogReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdGuiInit>(&CDataConnector::OnCmdGuiInit, this);
+
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdBottleCheckReply>(&CDataConnector::BottleCheckReplyHandler, this);
     // Signal/slot for DateAndTime reporting
     CONNECTSIGNALSLOT(&m_NetworkObject, SigDateAndTime(QDateTime), this, SetDateTime(QDateTime));
     // Signal/slot for timeout reporting
@@ -2083,6 +2086,22 @@ void CDataConnector::RemoteCareStateHandler(Global::tRefType Ref, const NetComma
 
     Result = Command.GetRemoteCareState();
     emit SetRemoteCareIcon(Result);
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    return;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Handles incoming Bottle Check reply commands
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = bottle check command
+ */
+/****************************************************************************/
+void CDataConnector::BottleCheckReplyHandler(Global::tRefType Ref, const MsgClasses::CmdBottleCheckReply &Command)
+{
+    Q_UNUSED(Command);
+    emit BottleCheckReply();
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     return;
 }

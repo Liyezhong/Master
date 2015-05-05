@@ -5,6 +5,11 @@
 #include "MainMenu/Include/BaseTable.h"
 #include "Settings/Include/BottleCheckStatusModel.h"
 
+namespace Core
+{
+    class CDataConnector;
+}
+
 namespace Settings {
 
 namespace Ui {
@@ -16,12 +21,13 @@ class CBottleCheckStatusDlg : public MainMenu::CDialogFrame
     Q_OBJECT
     
 public:
-    explicit CBottleCheckStatusDlg(QWidget *parent = 0);
+    explicit CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector*);
     ~CBottleCheckStatusDlg();
 
 protected:
     void changeEvent(QEvent *p_Event);
-
+private slots:
+    void OnClose();
 private:
     void RetranslateUI();
     Ui::CBottleCheckStatusDlg *ui;

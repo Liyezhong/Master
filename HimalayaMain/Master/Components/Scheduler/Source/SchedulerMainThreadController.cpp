@@ -66,6 +66,7 @@
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheckReply.h"
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -2824,6 +2825,8 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
 
 void SchedulerMainThreadController::OnBottleCheck(Global::tRefType Ref, const MsgClasses::CmdBottleCheck & Cmd)
 {
+    this->SendAcknowledgeOK(Ref);
+
 
 }
 

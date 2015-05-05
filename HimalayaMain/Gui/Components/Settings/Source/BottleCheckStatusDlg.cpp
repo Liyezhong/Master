@@ -1,8 +1,9 @@
 #include "Settings/Include/BottleCheckStatusDlg.h"
 #include "ui_BottleCheckStatusDlg.h"
+#include "Core/Include/DataConnector.h"
 
 namespace Settings {
-    CBottleCheckStatusDlg::CBottleCheckStatusDlg(QWidget *parent) :
+    CBottleCheckStatusDlg::CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector* pDataConnect) :
         MainMenu::CDialogFrame(parent),
         ui(new Ui::CBottleCheckStatusDlg)
     {
@@ -10,16 +11,16 @@ namespace Settings {
         SetDialogTitle(tr("Bottle check"));
 
         mp_TableWidget = new MainMenu::CBaseTable;
-        m_BottleCheckStatusModel.SetVisibleRowCount(8);
         mp_TableWidget->setModel(&m_BottleCheckStatusModel);
         ui->bottleCheckStatusTable->SetContent(mp_TableWidget);
-
+        m_BottleCheckStatusModel.SetRequiredContainers(pDataConnect->ReagentList, pDataConnect->DashboardStationList);
         mp_TableWidget->horizontalHeader()->show();
-        mp_TableWidget->SetVisibleRows(8);
-        m_BottleCheckStatusModel.SetVisibleRowCount(8);
+        mp_TableWidget->SetVisibleRows(7);
+        m_BottleCheckStatusModel.SetVisibleRowCount(7);
         mp_TableWidget->horizontalHeader()->resizeSection(0, 80);
-        mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
+        mp_TableWidget->horizontalHeader()->resizeSection(1, 160);
         mp_TableWidget->horizontalHeader()->resizeSection(2, 80);
+        CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
     }
 
     CBottleCheckStatusDlg::~CBottleCheckStatusDlg()
@@ -56,7 +57,19 @@ namespace Settings {
     /****************************************************************************/
     void CBottleCheckStatusDlg::RetranslateUI()
     {
+        (void) m_BottleCheckStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
+                                                                                     "Station", 0, QApplication::UnicodeUTF8),0);
 
+        (void) m_BottleCheckStatusModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
+                                                                                     "Reagent", 0, QApplication::UnicodeUTF8),0);
+
+        (void) m_BottleCheckStatusModel.setHeaderData(2, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
+                                                                                     "Status", 0, QApplication::UnicodeUTF8),0);
+    }
+
+    void CBottleCheckStatusDlg::OnClose()
+    {
+        this->close();
     }
 
 }

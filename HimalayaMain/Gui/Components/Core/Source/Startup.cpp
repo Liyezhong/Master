@@ -118,6 +118,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_DataConnector, EndGUIInitialization(), mp_SplashWidget, ShowModel());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestPassed(), mp_SplashWidget, accept());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestFailed(), mp_SplashWidget, accept());
+    CONNECTSIGNALSLOT(mp_DataConnector, BottleCheckReply(), mp_Settings, BottleCheckReply());
 
     mp_StatusBarManager = MainMenu::CStatusBarManager::GetInstance();
     CONNECTSIGNALSLOTGUI(mp_DataConnector,SetProcessStateIcon(bool &),mp_StatusBarManager,SetProcessState(bool &));

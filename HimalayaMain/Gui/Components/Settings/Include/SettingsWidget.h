@@ -25,8 +25,10 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "KeyBoard/Include/KeyBoard.h"
 
+
 namespace Settings {
 
+class CBottleCheckStatusDlg;
 namespace Ui {
     class CSettingsWidget;
 }
@@ -59,7 +61,7 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     void RetranslateUI();
     void UpdateEventViewPanel();
-
+    CBottleCheckStatusDlg*  m_BottleCheckStatusDlg;
 private slots:
     /****************************************************************************/
     /*!
@@ -88,6 +90,7 @@ private slots:
 
     void OnCurrentTabChanged(int CurrentTabIndex);
 
+    void BottleCheckReply();
 signals:
     /****************************************************************************/
     /*!
@@ -102,6 +105,7 @@ signals:
      */
     /****************************************************************************/
     void UserLevelChanged(QDataStream &);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UnselectProgram

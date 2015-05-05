@@ -21,6 +21,8 @@
 #include "Settings/Include/SettingsWidget.h"
 #include "Global/Include/Commands/CmdDateAndTime.h"
 #include "ui_SettingsWidget.h"
+#include "Settings/Include/BottleCheckStatusDlg.h"
+
 
 namespace Settings {
 
@@ -260,6 +262,12 @@ void CSettingsWidget::PanelSelected(int Index)
         // call the daily run log files
         mp_Data->RequestDayRunLogFileNames();
     }
+}
+
+void CSettingsWidget::BottleCheckReply()
+{
+    m_BottleCheckStatusDlg = new CBottleCheckStatusDlg(mp_MainWindow, mp_Data);
+    m_BottleCheckStatusDlg->exec();
 }
 
 } // end namespace Settings

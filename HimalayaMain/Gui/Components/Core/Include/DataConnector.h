@@ -84,6 +84,7 @@ namespace MsgClasses
     class CmdEnterCleaningProgram;
     class CmdProgramAborted;
     class CmdLockStatus;
+    class CmdBottleCheckReply;
 }
 
 
@@ -848,7 +849,12 @@ signals:
      */
     /****************************************************************************/
     void CoolingDown();
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal BottleCheckReply
+     */
+    /****************************************************************************/
+    void BottleCheckReply();
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 
@@ -1003,6 +1009,7 @@ private:
     void OnRCSoftwareUpdateHandler(Global::tRefType Ref, const RemoteCare::CmdRCSoftwareUpdate &Command);
     void OnRCRequestRemoteSessionHandler(Global::tRefType Ref,
                                           const RemoteCare::CmdRCRequestRemoteSession &Command);
+    void BottleCheckReplyHandler(Global::tRefType Ref, const MsgClasses::CmdBottleCheckReply &Command);
 
     NetLayer::CMasterLinkDevice m_NetworkObject;    //!< The network layer
     MainMenu::CMainWindow *mp_MainWindow;           //!< Main window of the GUI

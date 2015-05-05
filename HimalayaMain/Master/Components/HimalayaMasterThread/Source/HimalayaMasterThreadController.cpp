@@ -83,6 +83,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheck.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheckReply.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <SWUpdateManager/Include/SWUpdateManager.h>
@@ -382,6 +383,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<NetCommands::CmdExecutionStateChanged>(&m_CommandChannelGui);
     RegisterCommandForRouting<NetCommands::CmdDayRunLogReplyFile>(&m_CommandChannelGui);
 
+    RegisterCommandForRouting<MsgClasses::CmdBottleCheckReply>(&m_CommandChannelGui);
     // -> device
 
     // so far the only registration with real function:

@@ -42,8 +42,7 @@ class CBottleCheckStatusModel : public QAbstractTableModel
 public:
     CBottleCheckStatusModel(QObject *p_Parent = NULL);
     void SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
-                               DataManager::CDashboardDataStationList *p_StationList,
-                               qint32 Columns);
+                               DataManager::CDashboardDataStationList *p_StationList);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
