@@ -2100,8 +2100,7 @@ void CDataConnector::RemoteCareStateHandler(Global::tRefType Ref, const NetComma
 /****************************************************************************/
 void CDataConnector::BottleCheckReplyHandler(Global::tRefType Ref, const MsgClasses::CmdBottleCheckReply &Command)
 {
-    Q_UNUSED(Command);
-    emit BottleCheckReply();
+    emit BottleCheckReply(Command.StationID(), Command.BottleCheckStatusType());
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     return;
 }

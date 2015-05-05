@@ -40,7 +40,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
                                  mp_Ui(new Ui::CSettingsWidget),mp_Data(p_Data),mp_MainWindow(p_Parent),
                                  mp_KeyBoardWidget(p_Keyboard),
                                  m_CurrentTab(false),
-                                 m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole())
+                                 m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole()),
+                                 m_BottleCheckStatusDlg(NULL)
 {
     mp_Ui->setupUi(this);
     DataManager::CHimalayaUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
@@ -264,10 +265,21 @@ void CSettingsWidget::PanelSelected(int Index)
     }
 }
 
-void CSettingsWidget::BottleCheckReply()
+void CSettingsWidget::BottleCheckReply(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType)
 {
-    m_BottleCheckStatusDlg = new CBottleCheckStatusDlg(mp_MainWindow, mp_Data);
-    m_BottleCheckStatusDlg->exec();
+    if (bottleCheckStatusType == DataManager::BOTTLECHECK_STARTED)
+    {
+        m_BottleCheckStatusDlg = new CBottleCheckStatusDlg(mp_MainWindow, mp_Data);
+        m_BottleCheckStatusDlg->exec();
+    }
+    else
+    {
+        if (!m_BottleCheckStatusDlg)
+            return;
+        m_BottleCheckStatusDlg->UpdateCurrentStationStatus(stationID, bottleCheckStatusType);
+    }
 }
+
+
 
 } // end namespace Settings

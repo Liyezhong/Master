@@ -22,11 +22,7 @@
 #include "Global/Include/Exception.h"
 #include "Settings/Include/BottleCheckStatusModel.h"
 #include "MainMenu/Include/BaseTable.h"
-#include "MainMenu/Include/DialogFrame.h"
-#include "MainMenu/Include/MessageDlg.h"
-#include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "Application/Include/LeicaStyle.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 //lint -e613
@@ -47,6 +43,7 @@ CBottleCheckStatusModel::CBottleCheckStatusModel(QObject *p_Parent) : QAbstractT
     mp_StationList = NULL;
     m_Columns = 3;
     m_VisibleRowCount = 8;
+
 }
 
 /****************************************************************************/
@@ -63,19 +60,19 @@ void CBottleCheckStatusModel::SetRequiredContainers(DataManager::CDataReagentLis
 {
     mp_ReagentList = p_ReagentList;
     mp_StationList = p_StationList;
-    UpdateReagentList();
+    LoadStationData();
 }
 
 
 /****************************************************************************/
 /*!
- *  \brief Updates the reagent data
+ *  \brief Loads the station data
  *
- *  This slot needs to be called whenever the content of the reagent list is
+ *  This slot needs to be called whenever the content of the status list is
  *  changed.
  */
 /****************************************************************************/
-void CBottleCheckStatusModel::UpdateReagentList()
+void CBottleCheckStatusModel::LoadStationData()
 {
     beginResetModel();
     m_Identifiers.clear();
@@ -92,9 +89,6 @@ void CBottleCheckStatusModel::UpdateReagentList()
                     p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID()));
                     if (p_Reagent) {
                         ReagentName =  p_Reagent->GetReagentName();
-                        if(p_Reagent->GetVisibleState()== true){
-                            m_VisibleReagentIds << p_Reagent->GetReagentName();
-                        }
                     }
                 }
                 m_ReagentNames << ReagentName;
@@ -109,7 +103,20 @@ void CBottleCheckStatusModel::UpdateReagentList()
     endResetModel();
 }
 
-
+/****************************************************************************/
+/*!
+ *  \brief Updates the status data
+ *
+ *  This slot needs to be called whenever the content of the status list is
+ *  changed.
+ */
+/****************************************************************************/
+void CBottleCheckStatusModel::UpdateStatusData(const QString& stationID, const QString& status)
+{
+    beginResetModel();
+    m_StatusIdentifiers[stationID] = status;
+    endResetModel();
+}
 
 /****************************************************************************/
 /*!
@@ -163,6 +170,7 @@ QVariant CBottleCheckStatusModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     DataManager::CDashboardStation *p_Station = NULL;
+    QString strStatus;
     if (mp_ReagentList == NULL || mp_StationList == NULL) {
         return QVariant();
     }
@@ -170,6 +178,7 @@ QVariant CBottleCheckStatusModel::data(const QModelIndex &Index, int Role) const
     if (Index.row() < m_ReagentNames.count()) {
         p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]]));
         p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]));
+        strStatus = m_StatusIdentifiers[p_Station->GetDashboardStationID()];
     }
 
     if (!p_Reagent && p_Station) {
@@ -193,16 +202,12 @@ QVariant CBottleCheckStatusModel::data(const QModelIndex &Index, int Role) const
                 else {
                     return QString("None");
                 }
-            case 2://column 3
-                   return QString("");
+            case 2:
+                   return strStatus;
 
             }
         }
-        if (Role == (int)Qt::UserRole)
-            return p_Station->GetDashboardStationID();
-    } else if (Role == (int)Qt::BackgroundRole) {
-         QPalette Palette;
-         return QVariant(Palette.color(QPalette::Window));
+
     }
     return QVariant();
 }
@@ -250,27 +255,6 @@ QString CBottleCheckStatusModel::GetReagentID(const QString ReagentName)
 
 /****************************************************************************/
 /*!
-  * \brief Returns true if reagent is present in the reagent list else false
-  *  is returned.
-  * \iparam ReagentID
-  * \return  ReagentID = Reagent ID
-  */
-/****************************************************************************/
-bool CBottleCheckStatusModel::ContainsReagent(QString ReagentID)
-{
-    if (m_VisibleReagentIds.isEmpty()) {
-        return false;
-    }
-    if (m_VisibleReagentIds.contains(ReagentID)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-/****************************************************************************/
-/*!
  *  \brief Returns item model flags of a cell
  *
  *  \iparam Index = Index of a table cell
@@ -282,4 +266,20 @@ Qt::ItemFlags CBottleCheckStatusModel::flags(const QModelIndex &Index) const
 {
     return QAbstractItemModel::flags(Index);
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Set BottleCheck Status Map
+ *
+ *  \iparam statusMap = BottleCheck status map
+ *
+ *  \return SetBottleCheckStatusMap
+ */
+/****************************************************************************/
+void CBottleCheckStatusModel::SetBottleCheckStatusMap(QMap<QString, QString>& statusMap)
+{
+    m_StatusIdentifiers.clear();
+    m_StatusIdentifiers = statusMap;
+}
+
 } // end namespace Settings

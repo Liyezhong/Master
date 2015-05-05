@@ -49,7 +49,7 @@ public:
     /*!
       * \brief constructor
     */
-    CmdBottleCheckReply(int TimeOut);
+    CmdBottleCheckReply(int TimeOut, const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 
     /*!
       * \brief constructor
@@ -67,7 +67,8 @@ public:
     */
     virtual QString GetName(void) const;
     static QString NAME; ///< Command name.
-
+    inline QString StationID() const { return m_StationID; }
+    inline DataManager::BottleCheckStatusType_t BottleCheckStatusType() const { return m_BottleCheckStatusType; }
 private:
     /*!
       * \brief copy constructor
@@ -78,6 +79,9 @@ private:
       * \return from CmdBottleCheckReply
     */
     const CmdBottleCheckReply &operator = (const CmdBottleCheckReply &); ///< Not implemented.
+    QString m_StationID;
+    DataManager::BottleCheckStatusType_t m_BottleCheckStatusType;
+
  }; // end class CmdBottleCheckReply
 
 /****************************************************************************/
@@ -92,6 +96,8 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdBottleCheckReply
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
+    Stream << Cmd.StationID();
+    Stream << (int)Cmd.BottleCheckStatusType();
     return Stream;
 }
 
@@ -107,6 +113,10 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdBottleCheckReply &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
+    Stream >> Cmd.m_StationID;
+    int temp;
+    Stream >> temp;
+    Cmd.m_BottleCheckStatusType = (DataManager::BottleCheckStatusType_t)temp;
     return Stream;
 }
 

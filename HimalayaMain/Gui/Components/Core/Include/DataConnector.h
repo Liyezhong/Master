@@ -854,7 +854,7 @@ signals:
      *  \brief  Declaration of signal BottleCheckReply
      */
     /****************************************************************************/
-    void BottleCheckReply();
+    void BottleCheckReply(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 

@@ -70,36 +70,36 @@ public:
         m_CurrentReagentName = ReagentName;
     }
 
-    /****************************************************************************/
-    /**
-     * \brief Function to hide the Leica reagents in the table.
-     *        Note - Call this function before setting Reagent list.
-     * \iparam Filter = if true filter Leica reagents else show.
-     */
-    /****************************************************************************/
-    void FilterLeicaReagents(bool Filter) { m_FilterLeicaReagent = Filter; }
-
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(const QString ReagentName);
-    bool ContainsReagent(QString ReagentID);
+    void SetBottleCheckStatusMap(QMap<QString, QString> & statusMap);
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of UpdateReagentList
+     *  \brief  Definition/Declaration of LoadStationData
      */
     /****************************************************************************/
-    void UpdateReagentList();
+    void LoadStationData();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateStatusData
+     *  \iparam stationID = station ID
+     *  \iparam status = bottle check status
+     */
+    /****************************************************************************/
+    void UpdateStatusData(const QString& stationID, const QString& status);
+
 private:
 
     DataManager::CDataReagentList *mp_ReagentList;      //!< Reagent list
     DataManager::CDashboardDataStationList *mp_StationList; //!< Station list
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QMap<QString, QString> m_StationIdentifiers;               //!< Identifiers of stations currently displayed
+    QMap<QString, QString> m_StatusIdentifiers;               //!< Identifiers of stations status displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
     QStringList m_StationNames;                         //!< sttion names
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
-    bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
 };

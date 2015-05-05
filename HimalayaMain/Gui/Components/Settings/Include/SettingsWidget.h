@@ -90,7 +90,7 @@ private slots:
 
     void OnCurrentTabChanged(int CurrentTabIndex);
 
-    void BottleCheckReply();
+    void BottleCheckReply(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 signals:
     /****************************************************************************/
     /*!

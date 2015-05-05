@@ -167,6 +167,21 @@ typedef enum {
 
 /****************************************************************************/
 /*!
+ *  \brief  Definition/Declaration of enum BottleCheckStatusType_t
+ */
+/****************************************************************************/
+typedef enum {
+  	BOTTLECHECK_STARTED = 0,
+    BOTTLECHECK_WAITING,
+    BOTTLECHECK_EMPTY,
+    BOTTLECHECK_PASSED,
+    BOTTLECHECK_BLOCKAGE,
+    BOTTLECHECK_CHECKING,
+    BOTTLECHECK_WILLNOTPROCESS
+} BottleCheckStatusType_t;
+
+/****************************************************************************/
+/*!
  *  \brief  Definition/Declaration of enum ReagentStatusType_t
  */
 /****************************************************************************/

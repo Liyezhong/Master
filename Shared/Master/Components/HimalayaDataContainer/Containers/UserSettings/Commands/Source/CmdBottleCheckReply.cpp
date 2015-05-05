@@ -24,8 +24,10 @@ namespace MsgClasses {
 
 QString CmdBottleCheckReply::NAME = "MsgClasses::CmdBottleCheckReply";
 
-CmdBottleCheckReply::CmdBottleCheckReply(int TimeOut)
-    : Command(TimeOut)
+CmdBottleCheckReply::CmdBottleCheckReply(int TimeOut,
+                                         const QString& stationID,
+                                         DataManager::BottleCheckStatusType_t bottleCheckStatusType)
+    : Command(TimeOut), m_StationID(stationID), m_BottleCheckStatusType(bottleCheckStatusType)
 {
 }
 

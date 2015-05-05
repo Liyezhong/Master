@@ -23,7 +23,7 @@ class CBottleCheckStatusDlg : public MainMenu::CDialogFrame
 public:
     explicit CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector*);
     ~CBottleCheckStatusDlg();
-
+    void UpdateCurrentStationStatus(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 protected:
     void changeEvent(QEvent *p_Event);
 private slots:
@@ -33,6 +33,16 @@ private:
     Ui::CBottleCheckStatusDlg *ui;
     MainMenu::CBaseTable *mp_TableWidget;
     Settings::CBottleCheckStatusModel m_BottleCheckStatusModel;
+    QString m_Started;
+    QString m_Waiting;
+    QString m_Empty;
+    QString m_Passed;
+    QString m_Blockage;
+    QString m_Checking;
+    QString m_WillNotProcess;
+    QMap<DataManager::BottleCheckStatusType_t, QString> m_BottleCheckStatusMap;
+    QMap<QString, int> m_StationIDRowMap;
+    QMap<QString, QString> m_StationStatusMap;
 
 };
 }
