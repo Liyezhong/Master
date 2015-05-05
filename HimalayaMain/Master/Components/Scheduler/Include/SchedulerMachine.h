@@ -25,6 +25,7 @@
 #include <QStateMachine>
 #include <QFinalState>
 #include <QSharedPointer>
+#include <QVector>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Include/SchedulerStateMachineStates.h"
 
@@ -85,6 +86,7 @@ private:
     QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: step finish state
     QSharedPointer<QState> mp_PssmCleaningDryStep;                                      ///<  Busy State's sub state: cleaning dry step
     QSharedPointer<QFinalState> mp_PssmProgramFinish;                                   ///<  Busy State's sub state: Program Finished state
+    QSharedPointer<QState> mp_PssmBottleCheckState;                                     ///<  Busy State's sub state: Bottle Check state
 
 	// Layer two states (for Error State)
     QSharedPointer<QState> mp_ErrorWaitState;                                           ///<  Error State's sub state: error wait state
@@ -203,6 +205,8 @@ private:
     qint64  m_PssmMVTubePressureTime;                                           ///< Start time to setup or release time in PSSM_MoveTube
     quint8  m_ErrorRcRestartSeq;                                                ///< Sequence of Error_RC_Restart
     qint64  m_TimeReEnterFilling;                                               ///< Start time to re-enter filling
+    quint8  m_BottleCheckSeq;                                                   ///< Sequence of Bottle check
+    QVector< QPair<QString, QString> >::iterator m_BottleCheckStationIter; ///< Iterator of Bottle check station list
 
 private:
     /****************************************************************************/
@@ -261,6 +265,13 @@ public:
     */
    /****************************************************************************/
    void SendRunPreTest();
+
+   /****************************************************************************/
+   /*!
+    *  \brief  Send signal "RunBottleCheck" to Scheduler
+    */
+   /****************************************************************************/
+   void SendRunBottleCheck();
 
     /****************************************************************************/
     /*!
@@ -939,8 +950,6 @@ public:
     /****************************************************************************/
     void HandleRsMoveToPSeal(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
 
-
-
     /****************************************************************************/
     /*!
      *  \brief  Handle PSSM Aborting work flow
@@ -950,6 +959,16 @@ public:
      */
     /****************************************************************************/
     void HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Handle PSSM Bottle Check work flow
+     *  \param  cmdName - command name
+     *  \param  retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandlePssmBottleCheckWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1146,7 +1165,19 @@ private slots:
      *  \return void
      */
     /****************************************************************************/
-    void OnEnteErrorRcRestartState();
+    void OnEnterErrorRcRestartState();
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot to enter Bottle check
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnEnterBottleCheckState();
 signals:
     /****************************************************************************/
     /*!
@@ -1173,6 +1204,13 @@ signals:
     */
    /****************************************************************************/
    void RunPreTest();
+
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal RunBottleCheck
+    */
+   /****************************************************************************/
+   void SigRunBottleCheck();
 
    /****************************************************************************/
    /*!

@@ -365,6 +365,7 @@ typedef struct
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
         bool    m_IsErrorStateForHM;                          ///< enter the error state
         bool    m_IsProcessing;                               ///< in processing
+        QVector< QPair<QString, QString> >  m_DashboardStationList;     ///< The whole station List of dash board
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -646,6 +647,7 @@ typedef struct
           */
          /****************************************************************************/
          void SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType);
+
 signals:
          /****************************************************************************/
          /*!
@@ -1196,7 +1198,7 @@ protected:
          *  \return from GetRVTubePositionByStationID
          */
         /****************************************************************************/
-        RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
+        static RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
 
         /****************************************************************************/
         /*!
@@ -1207,7 +1209,7 @@ protected:
          *  \return from GetRVSealPositionByStationID
          */
         /****************************************************************************/
-        RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
+        static RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
 
         /****************************************************************************/
         /**
@@ -1482,6 +1484,13 @@ protected:
          */
         /****************************************************************************/
         void StartTimer() { m_TickTimer.start(); }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetDashboardStationList
+         */
+        /****************************************************************************/
+        QVector< QPair<QString, QString> >&  GetDashboardStationList()  { return m_DashboardStationList; }
 
         /****************************************************************************/
         /*!

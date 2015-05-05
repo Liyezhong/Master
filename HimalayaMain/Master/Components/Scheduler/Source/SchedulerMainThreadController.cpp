@@ -78,6 +78,7 @@
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include <unistd.h>
+#include <QtAlgorithms>
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/Utils.h"
 #include "Global/Include/Commands/CmdShutDown.h"
@@ -90,6 +91,13 @@ using namespace DataManager;
 /*lint -e613 */
 
 namespace Scheduler {
+
+static bool QPairComp(const QPair<QString, QString>& va1, const QPair<QString, QString>& va2)
+{
+    RVPosition_t tube1 = SchedulerMainThreadController::GetRVTubePositionByStationID(va1.first);
+    RVPosition_t tube2 = SchedulerMainThreadController::GetRVTubePositionByStationID(va2.first);
+    return tube1 < tube2;
+}
 
 SchedulerMainThreadController::SchedulerMainThreadController(
         Global::gSourceType TheHeartBeatSource)
@@ -652,6 +660,11 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_SchedulerMachine->SendRunSignal();
         }
         break;
+    case CTRL_CMD_BOTTLE_CHECK:
+        // Set current step to Init
+        m_CurrentStepState = PSSM_BOTTLE_CHECK;
+        m_SchedulerMachine->SendRunSignal();
+        break;
     default:
         break;
     }
@@ -791,6 +804,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
                 m_SchedulerMachine->SendRunComplete();
+                break;
+            case PSSM_BOTTLE_CHECK:
+                m_SchedulerMachine->SendRunBottleCheck();
                 break;
             default:
                 break;
@@ -1329,6 +1345,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
 
     }
+    else if (PSSM_BOTTLE_CHECK == stepState)
+    {
+        m_CurrentStepState = PSSM_BOTTLE_CHECK;
+        m_SchedulerMachine->HandlePssmBottleCheckWorkFlow(cmdName, retCode);
+    }
 }
 
 void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState)
@@ -1614,6 +1635,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 		return CTRL_CMD_SHUTDOWN;
     }
 
+    MsgClasses::CmdBottleCheck* pCmdBottleCheck = dynamic_cast<MsgClasses::CmdBottleCheck*>(pt.GetPointerToUserData());
+    if(pCmdBottleCheck)
+    {
+        return CTRL_CMD_BOTTLE_CHECK;
+    }
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
     if(pCmdProgramAction)
     {
@@ -2796,6 +2822,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
 void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown & Cmd)
 {
+    this->SendAcknowledgeOK(Ref);
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Cmd.GetTimeout(), Cmd.QuitAppShutdownActionType())));
     m_Mutex.unlock();
@@ -2961,6 +2988,10 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         break;
     case PSSM_CLEANING_DRY_STEP:
         scenario = 203;
+        break;
+    case PSSM_BOTTLE_CHECK:
+        scenario = 007;
+        break;
     default:
         break;
     }
@@ -3182,6 +3213,22 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_DataManager)
 {
     mp_DataManager = p_DataManager;
+
+    // Get the whole station list
+    ListOfDashboardStation_t stationList = mp_DataManager->GetStationList()->GetDashboardStationList();
+    ListOfDashboardStation_t::iterator iter = stationList.begin();
+    while (iter != stationList.end())
+    {
+        QString stationId = iter.value()->GetDashboardStationID();
+        QString reagentId = iter.value()->GetDashboardReagentID();
+        QString reagentGroupId = mp_DataManager->GetReagentList()->GetReagent(reagentId)->GetGroupID();
+        QPair<QString, QString> pair(stationId, reagentGroupId);
+        m_DashboardStationList.push_back(pair);
+        iter++;
+    }
+
+    //sort the vector
+    qSort(m_DashboardStationList.begin(), m_DashboardStationList.end(), QPairComp);
 }
 
 bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd)
@@ -4110,7 +4157,6 @@ bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemp
     // get target temperature here
     return (m_TempALLevelSensor > targetTemperature);
 }
-
 RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString& stationID)
 {
     RVPosition_t ret = RV_UNDEF;
@@ -4130,7 +4176,6 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 
@@ -4153,7 +4198,6 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
             }
         }
     }
-    m_CurrentBottlePosition.StationID = stationID;
     return ret;
 }
 

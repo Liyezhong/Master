@@ -25,6 +25,7 @@ namespace Scheduler{
 #define L2_PRO_PAUSE                          (0xD)
 #define L2_PRO_CLEANING_DRY_STEP              (0xE)
 #define L2_PRO_POWERFAILURE_FINISH            (0xF)
+#define L2_PRO_BOTTLE_CHECK                   (0x10)
 
 #define L2_ERR_WAIT                                 (0x1)
 #define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
@@ -80,6 +81,7 @@ typedef enum
     PSSM_PAUSE = ((L2_PRO_PAUSE << 8) | L1_BUSY),
     PSSM_CLEANING_DRY_STEP = ((L2_PRO_CLEANING_DRY_STEP << 8) | L1_BUSY),
     PSSM_POWERFAILURE_FINISH = ((L2_PRO_POWERFAILURE_FINISH << 8) | L1_BUSY),
+    PSSM_BOTTLE_CHECK = ((L2_PRO_BOTTLE_CHECK << 8) | L1_BUSY),
      // Layer two states (for SM_ERROR)
     SM_ERR_WAIT = ((L2_ERR_WAIT << 8) | L1_ERROR),
     SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN = ((L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN << 8) | L1_ERROR),
@@ -124,6 +126,7 @@ typedef enum
     CTRL_CMD_OVEN_COVER_OPEN,
     CTRL_CMD_RETORT_COVER_OPEN,
     CTRL_CMD_POWER_FAILURE_MEG,
+    CTRL_CMD_BOTTLE_CHECK,
     CTRL_CMD_QUITAPP,
     CTRL_CMD_SHUTDOWN,
     CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN,

@@ -31,6 +31,7 @@
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
+#include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/RsPressureOverRange3SRetry.h"
@@ -94,6 +95,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmCleaningDryStep = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProgramFinish = QSharedPointer<QFinalState>(new QFinalState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmBottleCheckState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    CONNECTSIGNALSLOT(mp_PssmBottleCheckState.data(), entered(), this, OnEnterBottleCheckState());
 
     // Layer two states (for Error state)
     mp_ErrorWaitState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -160,6 +163,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(ResumeDryStep()), mp_PssmCleaningDryStep.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(SigRunBottleCheck()), mp_PssmBottleCheckState.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramPreTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
 
@@ -197,7 +201,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
     mp_PssmPause->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
 
-    //for safe reagent
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVMoveToNextTube());
@@ -346,7 +349,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RC_Restart
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_ErrorRcRestartState.data());
-    CONNECTSIGNALSLOT(mp_ErrorRcRestartState.data(), entered(), this, OnEnteErrorRcRestartState());
+    CONNECTSIGNALSLOT(mp_ErrorRcRestartState.data(), entered(), this, OnEnterErrorRcRestartState());
 
     //RS_Abort
     mp_ErrorWaitState->addTransition(this, SIGNAL(sigAbort()), mp_ErrorRsAbortState.data());
@@ -373,6 +376,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
     m_ErrorRcRestartSeq = 0;
     m_TimeReEnterFilling = 0;
+    m_BottleCheckSeq = 0;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -425,10 +429,17 @@ void CSchedulerStateMachine::InitRVMoveToTubeState()
     mp_SchedulerThreadController->StartTimer();
 }
 
-void CSchedulerStateMachine::OnEnteErrorRcRestartState()
+void CSchedulerStateMachine::OnEnterErrorRcRestartState()
 {
     m_ErrorRcRestartSeq = 0;
     m_TimeReEnterFilling = 0;
+    mp_SchedulerThreadController->StartTimer();
+}
+
+void CSchedulerStateMachine::OnEnterBottleCheckState()
+{
+    m_BottleCheckSeq = 0;
+    m_BottleCheckStationIter = mp_SchedulerThreadController->GetDashboardStationList().begin();
     mp_SchedulerThreadController->StartTimer();
 }
 
@@ -730,6 +741,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmPause.data()))
         {
             return PSSM_PAUSE;
+        }
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmBottleCheckState.data()))
+        {
+            return PSSM_BOTTLE_CHECK;
         }
     }
 
@@ -1771,6 +1786,81 @@ void CSchedulerStateMachine::HandleRsMoveToPSeal(const QString& cmdName,  Device
     }
 }
 
+void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
+{
+    switch (m_BottleCheckSeq)
+    {
+    case 0:
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+        m_BottleCheckSeq++;
+        break;
+    case 1:
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_BottleCheckSeq++;
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        break;
+    case 2:
+        if (m_BottleCheckStationIter != mp_SchedulerThreadController->GetDashboardStationList().end())
+        {
+            RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_BottleCheckStationIter->first);
+            if (tubePos != RV_UNDEF)
+            {
+                QString reagentGroupId = m_BottleCheckStationIter->second;
+                mp_SchedulerThreadController->LogDebug(QString("Bottle check for tube %1").arg(m_BottleCheckStationIter->first));
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_SchedulerThreadController);
+                cmd->SetReagentGrpID(reagentGroupId);
+                cmd->SetTubePos(tubePos);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                m_BottleCheckSeq++;
+            }
+            m_BottleCheckStationIter++;
+        }
+        else
+        {
+            m_BottleCheckSeq = 4;
+        }
+        break;
+    case 3:
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            // add later
+            m_BottleCheckSeq = 2;
+        }
+        break;
+    case 4:
+    {
+        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
+        cmd->SetRVPosition(DeviceControl::RV_TUBE_2);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+        m_BottleCheckSeq++;
+    }
+        break;
+    case 5:
+        if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                this->SendRunComplete();
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
 {
     SchedulerStateMachine_t stateAtAbort = mp_SchedulerThreadController->GetCurrentStepState();
@@ -2054,6 +2144,12 @@ void CSchedulerStateMachine::SendRunPreTest()
     mp_SchedulerThreadController->StopTimer();
     mp_ProgramPreTest->ResetVarList(true);
     emit RunPreTest();
+}
+
+void CSchedulerStateMachine::SendRunBottleCheck()
+{
+    mp_SchedulerThreadController->StopTimer();
+    emit SigRunBottleCheck();
 }
 
 QString CSchedulerStateMachine::GetDeviceName()

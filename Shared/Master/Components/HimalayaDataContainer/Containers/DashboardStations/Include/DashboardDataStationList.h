@@ -64,17 +64,6 @@ private:
      */
     /****************************************************************************/
     void Swap(const CDashboardDataStationList &Other);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetDashboardStationList
-     *
-     *  \return from GetDashboardStationList
-     */
-    /****************************************************************************/
-    ListOfDashboardStation_t & GetDashboardStationList()
-    {
-        return m_DashboardStationList;
-    }
 
     /****************************************************************************/
     /*!
@@ -346,6 +335,18 @@ public:
     const ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
     {
         return m_OrderedListOfDashboardStationIDs;
+    }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDashboardStationList
+     *
+     *  \return from GetDashboardStationList
+     */
+    /****************************************************************************/
+    ListOfDashboardStation_t & GetDashboardStationList()
+    {
+        return m_DashboardStationList;
     }
 };
 
