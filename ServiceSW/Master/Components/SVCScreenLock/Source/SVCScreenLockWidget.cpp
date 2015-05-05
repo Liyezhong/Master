@@ -111,7 +111,7 @@ void CSVCScreenLockWidget::OnOkClicked(QString EnteredString)
 {
     m_EnteredPin = EnteredString;
 
-    PasswordManager::CServicePassword m_ServicePassword(m_EnteredPin, "HISTOCORE PRIMARIS");
+    PasswordManager::CServicePassword m_ServicePassword(m_EnteredPin, "HISTOCORE PEARL");
 
     if(EnteredString.startsWith("1406"))
     {

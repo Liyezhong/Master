@@ -471,7 +471,7 @@ void CStartup::GuiInit()
     qDebug()<<"CStartup::GuiInit ---- m_DeviceName="<<m_DeviceName;
 
     RemoveFiles();
-    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
+    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PEARL");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                        this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
@@ -507,7 +507,7 @@ void CStartup::GuiInit(QString debugMode)
             delete mp_USBKeyValidator;
             mp_USBKeyValidator = NULL;
         }
-        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PRIMARIS");
+        mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("HISTOCORE PEARL");
         CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                            this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
         CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
@@ -867,8 +867,6 @@ void CStartup::UpdateParameters()
         m_DeviceName = mp_ServiceConnector->GetDeviceConfigInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
 
         qDebug()<<"CStartup::UpdateParameters-------- get device name:"<< m_DeviceName;
-
-        //m_DeviceName = "HISTOCORE PRIMARIS";  // only for test to verify usb key added by Sunny.
     }
     emit SetDeviceName(m_DeviceName);
 }
