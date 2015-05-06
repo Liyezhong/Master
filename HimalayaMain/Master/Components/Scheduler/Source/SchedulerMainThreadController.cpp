@@ -4984,5 +4984,13 @@ void SchedulerMainThreadController::DismissPausingMsgDlg()
      SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
 }
 
+void SchedulerMainThreadController::SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type)
+{
+    MsgClasses::CmdBottleCheckReply* commandPtr(new MsgClasses::CmdBottleCheckReply(5000, stationId, type));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref2 = GetNewCommandRef();
+    SendCommand(Ref2, Global::CommandShPtr_t(commandPtr));
+}
+
 
 }

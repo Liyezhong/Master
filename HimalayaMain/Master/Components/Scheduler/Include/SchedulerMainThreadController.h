@@ -1501,6 +1501,14 @@ protected:
         /****************************************************************************/
         QString GetLastReagentGroup() { return m_ProgramStatusInfor.GetLastReagentGroup(); }
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Send Bottle Check Reply command to GUI
+         *  \return None
+         */
+        /****************************************************************************/
+        void SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type);
+
     public slots:
 
         /****************************************************************************/

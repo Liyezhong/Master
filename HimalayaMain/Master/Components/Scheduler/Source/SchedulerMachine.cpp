@@ -1791,6 +1791,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
     switch (m_BottleCheckSeq)
     {
     case 0:
+        mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
         m_BottleCheckSeq++;
         break;
@@ -1813,6 +1814,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_BottleCheckStationIter->first);
             if (tubePos != RV_UNDEF)
             {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_CHECKING);
                 QString reagentGroupId = m_BottleCheckStationIter->second;
                 mp_SchedulerThreadController->LogDebug(QString("Bottle check for tube %1").arg(m_BottleCheckStationIter->first));
                 CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_SchedulerThreadController);
@@ -1821,7 +1823,6 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
                 m_BottleCheckSeq++;
             }
-            m_BottleCheckStationIter++;
         }
         else
         {
@@ -1831,8 +1832,27 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
     case 3:
         if ("Scheduler::IDBottleCheck" == cmdName)
         {
-            // add later
             m_BottleCheckSeq = 2;
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_PASSED);
+                m_BottleCheckStationIter++;
+            }
+            else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
+            {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_EMPTY);
+                m_BottleCheckStationIter++;
+            }
+            else if (DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == retCode)
+            {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_BLOCKAGE);
+                m_BottleCheckStationIter++;
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+            }
+
         }
         break;
     case 4:
