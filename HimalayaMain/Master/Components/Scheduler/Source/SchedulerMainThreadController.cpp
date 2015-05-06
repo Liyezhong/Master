@@ -1371,131 +1371,106 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             m_ProgramStatusInfor.SetErrorFlag(0);
-            LogDebug("Go to RC_Restart");
             m_SchedulerMachine->EnterRcRestart();
         }
         if (CTRL_CMD_RC_REPORT == ctrlCmd)
         {
-            LogDebug("Go to RC_Report");
+            //LogDebug("Go to RC_Report");
         }
         else if(CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
-            LogDebug("Go to RS_RV_GetOriginalPositionAgain");
             m_SchedulerMachine->EnterRsRVGetOriginalPositionAgain();
         }
         else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
         {
-            LogDebug("Go to RS_STANDBY!");
             m_SchedulerMachine->EnterRsStandBy();
         }
         else if(CTRL_CMD_RS_STANDBY_WITHTISSUE == ctrlCmd)
         {
-            LogDebug("Go to RS_STandby_withTissue");
             m_SchedulerMachine->EnterRsStandByWithTissue();
         }
         else if (CTRL_CMD_RS_HEATINGERR30SRETRY == ctrlCmd)
         {
-            LogDebug("Go to RS_HeatingErr30Retry");
             m_SchedulerMachine->EnterRsHeatingErr30SRetry();
         }
         else if (CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY == ctrlCmd)
         {
-            LogDebug("Go to RS_PressureOverRange_3SRetry");
             m_SchedulerMachine->EnterRsPressureOverRange3SRetry();
         }
         else if(CTRL_CMD_RS_TSENSORERR3MINRETRY == ctrlCmd)
         {
-            LogDebug(QString("Go to RS_TSensorErr_3MinRetry"));
             m_SchedulerMachine->EnterRsTSensorErr3MinRetry();
         }
         else if(CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME == ctrlCmd)
         {
-            LogDebug("Go to RC_Levelsensor_Heating_Overtime");
             m_SchedulerMachine->EnterRcLevelsensorHeatingOvertime();
         }
         else if(CTRL_CMD_RC_PRESSURE == ctrlCmd)
         {
-            LogDebug("Go to RC_Pressure");
             m_SchedulerMachine->EnterRcPressure();
         }
         else if(CTRL_CMD_RC_VACUUM == ctrlCmd)
         {
-            LogDebug("Go to RC_Vacuum");
             m_SchedulerMachine->EnterRcVacuum();
         }
         else if(CTRL_CMD_RC_FILLING == ctrlCmd)
         {
-            LogDebug("Go to RC_Filling");
             m_SchedulerMachine->EnterRcFilling();
         }
         else if(CTRL_CMD_RC_DRAINING == ctrlCmd)
         {
-            LogDebug("Go to RC_Draining");
             m_SchedulerMachine->EnterRcDraining();
         }
         else if(CTRL_CMD_RS_DRAINATONCE == ctrlCmd)
         {
-            LogDebug("Go to RS_DrainAtOnce");
             m_SchedulerMachine->EnterRsDrainAtOnce();
         }
         else if(CTRL_CMD_RC_BOTTLECHECK_I == ctrlCmd)
         {
-            LogDebug("Go to RC_BottleCheck_I");
             m_SchedulerMachine->EnterRcBottleCheckI();
         }
         else if(CTRL_CMD_RS_FILLINGAFTERFLUSH == ctrlCmd)
         {
-            LogDebug("Go to RS_FillingAfterFlush");
             m_SchedulerMachine->EnterRsFillingAfterFlush();
         }
         else if(CTRL_CMD_RS_CHECK_BLOCKAGE == ctrlCmd)
         {
-            LogDebug("Go to RS_Check_Blockage");
             m_SchedulerMachine->EnterRsCheckBlockage();
         }
         else if(CTRL_CMD_RS_PAUSE == ctrlCmd)
         {
-            LogDebug("Go to RS_Pause");
             m_SchedulerMachine->EnterRsPause();
         }
         else if(CTRL_CMD_RS_RV_WAITINGTEMPUP == ctrlCmd)
         {
-            LogDebug("Go to RS_RV_WaitingTempUp");
             m_SchedulerMachine->EnterRsRVWaitingTempUp();
         }
         else if (CTRL_CMD_RS_TISSUE_PROTECT == ctrlCmd)
         {
-            LogDebug("Go to RS_Tissue_Protect");
             m_SchedulerMachine->EnterRsTissueProtect();
         }
         else if (CTRL_CMD_RC_CHECK_RTLOCK == ctrlCmd)
         {
-            LogDebug("Go to RC_Check_RTLock");
             m_SchedulerMachine->EnterRcCheckRTLock();
         }
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
-            LogDebug("Go to RcReHeating");
             m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), false);
         }
         else if (CTRL_CMD_RC_REHEATING_CLEANING == ctrlCmd)
         {
-            LogDebug("Go to RcReHeating_Clean");
             m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), true);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {
-            LogDebug("Go to Rs_ReagentCheck");
             m_SchedulerMachine->EnterRsReagentCheck();
         }
         else if (CTRL_CMD_RS_RV_MOVETOSEALPOSITION == ctrlCmd)
         {
-            LogDebug("Go to Rs_RV_MoveToPosition3.5");
             m_SchedulerMachine->EnterRsRVMoveToSealPosition();
         }
         else if (CTRL_CMD_RS_ABORT == ctrlCmd)
         {
-            LogDebug("Go to Rs_Abort");
             m_ProgramStatusInfor.SetErrorFlag(0);
             m_SchedulerMachine->EnterRsAbort();
         }
@@ -1505,98 +1480,79 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_STANDBY == currentState)
     {
-        LogDebug("In RS_STandBy state");
         m_SchedulerMachine->HandleRsStandByWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
-        LogDebug("In RS_HeatingErr_30SRetry state");
         m_SchedulerMachine->HandleRsHeatingErr30SRetry(cmdName, retCode);
     }
     else if (SM_ERR_RS_PRESSUREOVERRANGE3SRETRY == currentState)
     {
-        LogDebug("In RS_PressureOverRange_3SRetry");
         m_SchedulerMachine->HandleRsPressureOverRange3SRetry(cmdName, retCode);
     }
     else if(SM_ERR_RS_TSENSORERR_3MINRETRY == currentState)
     {
-        LogDebug("In Rs_TSensorErr_3MinRetry State");
         m_SchedulerMachine->HandleRsTSensorErr3MinRetry(cmdName, retCode);
     }
     else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
     {
-        LogDebug("In RS_STandBy_WithTissue state");
         m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
-        LogDebug("In RC_Levelsensor_Heating_Overtime State");
         m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     }
     else if(SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN == currentState)
     {
-        LogDebug("In RS_RV_GET_ORIGINAL_POSITION_AGAIN state");
         m_SchedulerMachine->HandleRsRVGetOriginalPositionAgainWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_PRESSURE == currentState)
     {
-        LogDebug("In RC_Pressure state");
          m_SchedulerMachine->HandleRcPressureWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_VACUUM == currentState)
     {
-        LogDebug("In RC_Vacuum state");
          m_SchedulerMachine->HandleRcVacuumWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_FILLING == currentState)
     {
-        LogDebug("In RC_Filling state");
          m_SchedulerMachine->HandleRcFillingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_DRAINING == currentState)
     {
-        LogDebug("In RC_Draining state");
          m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_DRAINATONCE == currentState)
     {
-        LogDebug("In RS_DrainAtOnce state");
         m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_BOTTLECHECK_I == currentState)
     {
-        LogDebug("In RC_BottleCheck_I state");
         m_SchedulerMachine->HandleRcBottleCheckIWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_FILLINGAFTERFFLUSH == currentState)
     {
-        LogDebug("In RS_FillingAfterFlush State");
         m_SchedulerMachine->HandleRsFillingAfterFlushWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_CHECK_BLOCKAGE == currentState)
     {
-        LogDebug("In RS_CHECK_BLOCKAGE state");
         m_SchedulerMachine->HandleRsCheckBlockageWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_PS_PAUSE == currentState)
     {
-        LogDebug("In RS_Pause state");
         m_SchedulerMachine->HandleRsPauseWorkFlow(ctrlCmd);
     }
     else if(SM_ERR_RS_RV_WAITINGTEMPUP == currentState)
     {
-        LogDebug("In RS_RV_WaitingTempUp");
         m_SchedulerMachine->HandleRsRVWaitingTempUpWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RS_TISSUE_PROTECT == currentState)
     {
-        LogDebug("In RS_Tissue_Protect");
         m_SchedulerMachine->HandleRsTissueProtectWorkFlow(cmdName, retCode, ctrlCmd);
     }
     else if (SM_ERR_RC_CHECK_RTLOCK == currentState)
     {
-        LogDebug("In Rc_Check_RTLock");
         m_SchedulerMachine->HandleRcCheckRTLockWorkFlow();
     }
     else if (SM_ERR_RC_REHEATING == currentState)
@@ -1605,17 +1561,14 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if(SM_ERR_RS_RV_MOVETOPOSITIONSEAL == currentState)
     {
-        LogDebug("In Rs_Rv_MoveToPosition3.5");
         m_SchedulerMachine->HandleRsMoveToPSeal(cmdName, retCode);
     }
     else if (SM_ERR_RC_RESTART == currentState)
     {
-        LogDebug("In RC_Restart");
         m_SchedulerMachine->HandleRcRestart(cmdName);
     }
     else if (SM_ERR_RS_ABORT == currentState)
     {
-        LogDebug("In Rs_Abort");
         m_SchedulerMachine->HandleRsAbortWorkFlow(cmdName, retCode);
     }
 }
@@ -4906,6 +4859,10 @@ void SchedulerMainThreadController::CompleteRsAbort()
     //program finished
     AllStop();
 
+    if(!m_ProgramStatusInfor.IsRetortContaminted())
+    {
+        m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
+    }
     m_SchedulerMachine->SendRunComplete();
     // tell the main controller the program has been aborted
     MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));

@@ -1507,6 +1507,7 @@ protected:
          *  \return None
          */
         /****************************************************************************/
+        bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
         void SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type);
 
     public slots:

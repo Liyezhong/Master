@@ -29,7 +29,7 @@
       <item>
        <widget class="QRadioButton" name="radioButtonAuto">
         <property name="text">
-         <string>Auot test</string>
+         <string>Auto test</string>
         </property>
        </widget>
       </item>
@@ -49,7 +49,7 @@
       <item>
        <widget class="QRadioButton" name="radioButtonManual">
         <property name="text">
-         <string>Maunal test</string>
+         <string>Manual test</string>
         </property>
        </widget>
       </item>
