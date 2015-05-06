@@ -232,14 +232,6 @@ signals:
     /****************************************************************************/
     void NewCmdAdded();
 
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of signal NewCmdAddedNoResponse
-     */
-    /****************************************************************************/
-    void NewCmdAddedNoResponse();
-
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal SigShutDownDevice
@@ -391,16 +383,6 @@ public slots:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot OnNewCmdAddedNoResponse
-     */
-    /****************************************************************************/
-    virtual void OnNewCmdAddedNoResponse()
-    {
-        this->OnNewCmdAddedNoResponse4Slot();
-    }
-
-    /****************************************************************************/
-    /*!
      *  \brief  Definition/Declaration of slot OnShutDownDevice
      */
     /****************************************************************************/
@@ -514,7 +496,6 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot() = 0;
-    virtual void OnNewCmdAddedNoResponse4Slot() = 0;
     virtual void OnShutDownDevice4Slot()= 0 ;
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
     virtual void OnResetActiveCarbonFilterLifetime4Slot() = 0;
@@ -709,7 +690,6 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot();
-    virtual void OnNewCmdAddedNoResponse4Slot();
     virtual void OnShutDownDevice4Slot();
     virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
     virtual void OnResetActiveCarbonFilterLifetime4Slot();

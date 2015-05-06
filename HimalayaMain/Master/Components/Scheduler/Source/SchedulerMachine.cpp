@@ -1829,7 +1829,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         }
         break;
     case 3:
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        if ("Scheduler::IDBottleCheck" == cmdName)
         {
             // add later
             m_BottleCheckSeq = 2;

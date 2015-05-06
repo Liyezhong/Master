@@ -143,10 +143,29 @@ public:
     /****************************************************************************/
     virtual QString GetStrResult() const{return "";}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResponse
+     *
+     *  \return from GetResponse
+     */
+    /****************************************************************************/
+    bool GetResponse() const{return m_Response;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetResponse
+     *
+     *  \return none
+     */
+    /****************************************************************************/
+    void SetResponse(bool response) {m_Response = response;}
+
 private:
     CmdSchedulerCommandBase();                                                    ///< Not implemented.
     CmdSchedulerCommandBase(const CmdSchedulerCommandBase &);                     ///< Not implemented.
     const CmdSchedulerCommandBase & operator = (const CmdSchedulerCommandBase &); ///< Not implemented.
+    bool    m_Response;                                                           ///< flag for response
 protected:
     SchedulerMainThreadController *mp_SchedulerThreadController;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
 }; // end class CmdSchedulerCommandBase

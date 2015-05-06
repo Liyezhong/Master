@@ -1488,6 +1488,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetDashboardStationList
+         *  \return QVector list of Dashboard station
          */
         /****************************************************************************/
         QVector< QPair<QString, QString> >&  GetDashboardStationList()  { return m_DashboardStationList; }

@@ -2853,8 +2853,9 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
 void SchedulerMainThreadController::OnBottleCheck(Global::tRefType Ref, const MsgClasses::CmdBottleCheck & Cmd)
 {
     this->SendAcknowledgeOK(Ref);
-
-
+    m_Mutex.lock();
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdBottleCheck(Cmd.GetTimeout())));
+    m_Mutex.unlock();
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)

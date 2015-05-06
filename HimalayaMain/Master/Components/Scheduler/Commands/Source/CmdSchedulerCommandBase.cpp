@@ -34,7 +34,8 @@ namespace Scheduler{
 /****************************************************************************/
 CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, SchedulerMainThreadController *controller):
     Command(Timeout),
-    mp_SchedulerThreadController(controller)
+    mp_SchedulerThreadController(controller),
+    m_Response(true)
 {
 }
 
