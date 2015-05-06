@@ -275,13 +275,15 @@ void CFirmwareUpdate::SetUpdateResult(int Index, bool Result)
 void CFirmwareUpdate::UpdateSlaveVersion()
 {
     if (mp_Module) {
+        QString HWFile = Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "Slave_HW_Version.txt";
         DataManager::CSWVersionList SWVersionList;
         SWVersionList.SetDataVerificationMode(false);
         if (!SWVersionList.Read(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "SW_Version.xml")) {
             qDebug()<<"CFirmwareUpdate: update slave version read SW_Version.xml failed.";
             return;
         }
-        QFile HWVersionList(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "Slave_HW_Version.txt");
+
+        QFile HWVersionList(HWFile);
         if (!HWVersionList.open(QIODevice::WriteOnly)) {
             qDebug()<<"CFirmwareUpdate: open Slave_HW_Version file failed.";
             return;
@@ -308,6 +310,9 @@ void CFirmwareUpdate::UpdateSlaveVersion()
         (void)SWVersionList.Write();
         (void)HWVersionList.flush();
         HWVersionList.close();
+        const QString MD5sumGenerator = QString("%1%2 %3").arg(Global::SystemPaths::Instance().GetScriptsPath()).
+                arg(QString("/EBox-Utils.sh update_md5sum_for_file_in_settings")).arg(HWFile);
+        (void)system(MD5sumGenerator.toStdString().c_str());
     }
 }
 
