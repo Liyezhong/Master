@@ -145,9 +145,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case DRAIN_CUR_REAGENT:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
         if (0 == m_DrainCurReagentSeq)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Drain_cur_Reagent state");
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerController);
             QString stationID = mp_SchedulerController->GetCurrentStationID();
             mp_SchedulerController->LogDebug(QString("current station ID is: %1").arg(stationID));
@@ -180,9 +180,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case MOVE_TO_TUBE:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
         if (0 == m_MoveToTubeSeq)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_to_Tube state");
             OnMoveToTube();
             m_MoveToTubeSeq++;
         }
@@ -240,9 +240,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case LEVELSENSOR_HEATING:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in LevelSensor Heating state");
         if (0 == m_LevelSensorSeq)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in LevelSensor Heating state");
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
             {
                 m_MoveToTubeSeq = 0;
@@ -280,9 +280,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case FILLING:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Filling state");
         if (0 == m_FillSeq)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Filling state");
             if (true == m_IsLevelSensorRelated)
             {
                 mp_SchedulerController->FillRsTissueProtect(m_StationID, false);
@@ -346,9 +346,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case MOVE_TO_SEALING:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
         if (0 == m_MoveToSealSeq)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state");
             OnMoveToSeal();
             m_MoveToSealSeq++;
         }
@@ -377,9 +377,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case RELEASE_PRESSURE:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, in state RELEASE_PRESSURE");
         if (0 == m_ReleasePressure)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, in state RELEASE_PRESSURE");
             OnReleasePressure();
             m_ReleasePressure++;
         }
@@ -442,9 +442,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     case DRAIN_SAFE_REAGENT:
-        mp_SchedulerController->LogDebug("RS_Safe_Reagent, drain safe reagent.");
         if (0 == m_DrainSafeReagent)
         {
+            mp_SchedulerController->LogDebug("RS_Safe_Reagent, drain safe reagent.");
             OnMoveToTube();
             m_DrainSafeReagent++;
         }

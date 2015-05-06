@@ -371,6 +371,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = 0;
+    m_PssmAborted = false;
     m_PssmAbortingInMoveToTube = false;
     m_PssmMVTubeSeq = 0;
     m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
@@ -1863,128 +1864,193 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
 
 void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
 {
-    SchedulerStateMachine_t stateAtAbort = mp_SchedulerThreadController->GetCurrentStepState();
-    switch (stateAtAbort)
+    if(!m_PssmAborted)
     {
-    case PSSM_PRETEST:
-        if (0 == m_PssmAbortingSeq)
+        SchedulerStateMachine_t stateAtAbort = mp_SchedulerThreadController->GetCurrentStepState();
+        switch (stateAtAbort)
         {
-            mp_ProgramPreTest->RecvAbort();
-            m_PssmAbortingSeq++;
-        }
-        else
-        {
-            HandlePssmPreTestWorkFlow(cmdName, retCode);
-            if (mp_ProgramPreTest->TasksAborted())
+        case PSSM_PRETEST:
+            if (0 == m_PssmAbortingSeq)
             {
-                mp_SchedulerThreadController->CompleteRsAbort();
+                mp_ProgramPreTest->RecvAbort();
+                m_PssmAbortingSeq++;
             }
-
-        }
-        break;
-    case PSSM_FILLING:
-    case PSSM_DRAINING:
-    case PSSM_PROCESSING:
-    case PSSM_PAUSE:
-        if (0 == m_PssmAbortingSeq)
-        {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-            m_PssmAbortingSeq++;
-        }
-        else if (1 == m_PssmAbortingSeq)
-        {
-            if ("Scheduler::ALReleasePressure" == cmdName)
+            else
             {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                HandlePssmPreTestWorkFlow(cmdName, retCode);
+                if (mp_ProgramPreTest->TasksAborted())
                 {
-                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DRAINING);
-                    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
-                    QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
-                    RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
-                    cmd->SetRVPosition((quint32)(tubePos));
-                    if (m_EnableLowerPressure)
+                    m_PssmAbortingSeq = 0;
+                    m_PssmAborted = true;
+                }
+
+            }
+            break;
+        case PSSM_FILLING:
+        case PSSM_DRAINING:
+        case PSSM_PROCESSING:
+        case PSSM_PAUSE:
+            if (0 == m_PssmAbortingSeq)
+            {
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+                m_PssmAbortingSeq++;
+            }
+            else if (1 == m_PssmAbortingSeq)
+            {
+                if ("Scheduler::ALReleasePressure" == cmdName)
+                {
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
-                        cmd->SetDrainPressure(20.0);
+                        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_DRAINING);
+                        CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
+                        QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
+                        RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
+                        cmd->SetRVPosition((quint32)(tubePos));
+                        if (m_EnableLowerPressure)
+                        {
+                            cmd->SetDrainPressure(20.0);
+                        }
+                        else
+                        {
+                            cmd->SetDrainPressure(30.0);
+                        }
+                        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+
+                        //Notify GUI
+                        emit sigOnForceDrain();
+                        m_PssmAbortingSeq++;
                     }
                     else
                     {
-                        cmd->SetDrainPressure(30.0);
+                        OnTasksDone(false);
                     }
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-
+                }
+            }
+            else if (2 == m_PssmAbortingSeq)
+            {
+                if ("Scheduler::IDForceDraining" == cmdName)
+                {
                     //Notify GUI
-                    emit sigOnForceDrain();
+                    emit sigOnStopForceDrain();
+
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_PssmAbortingSeq = 0;
+                         m_PssmAborted = true;
+                    }
+                    else
+                    {
+                        OnTasksDone(false);
+                    }
+                }
+            }
+            break;
+        case PSSM_RV_MOVE_TO_SEAL:
+            if (mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
+            }
+            else
+            {
+                // do nothing
+            }
+            break;
+        case PSSM_RV_MOVE_TO_TUBE:
+            if (0 == m_PssmAbortingSeq)
+            {
+                this->HandlePssmMoveTubeWorkflow(cmdName, retCode, true);
+                if (m_PssmAbortingInMoveToTube)
+                {
                     m_PssmAbortingSeq++;
                 }
-                else
-                {
-                    OnTasksDone(false);
-                }
             }
-        }
-        else if (2 == m_PssmAbortingSeq)
-        {
-            if ("Scheduler::IDForceDraining" == cmdName)
+            else
             {
-                //Notify GUI
-                emit sigOnStopForceDrain();
+                m_PssmAbortingSeq = 0;
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
+            }
+        break;
+        case PSSM_RV_POS_CHANGE:
+            if (mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS))
+            {
+                m_PssmAborted = true;
+            }
+            else
+            {
+                // do nothing
+            }
+            break;
+        case PSSM_FILLING_RVROD_HEATING:
+        case PSSM_CLEANING_DRY_STEP:
+        case PSSM_STEP_PROGRAM_FINISH:
+        case PSSM_PROGRAM_FINISH:
+        case PSSM_INIT:
+             m_PssmAborted = true;
+             m_PssmAbortingSeq = 0;
+            break;
+        default:
+            m_PssmAborted = true;
+            m_PssmAbortingSeq = 0;
+            break;
+        }
+    }
+    if(m_PssmAborted)
+    {
+        if(!mp_SchedulerThreadController->IsRetortContaminted())
+        {
+            if(PSSM_PRETEST == mp_SchedulerThreadController->GetCurrentStepState() )
+            {
+                if (0 == m_PssmAbortingSeq)
+                {
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+                    m_PssmAbortingSeq++;
+                }
+                else if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+                {
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_PssmAbortingSeq++;
+                    }
+                    else
+                    {
+                        OnTasksDone(false);
+                        m_PssmAbortingSeq = 0;
+                        return;
 
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                     mp_SchedulerThreadController->CompleteRsAbort();
-                }
-                else
-                {
-                    OnTasksDone(false);
+                    }
                 }
             }
-        }
-        break;
-    case PSSM_RV_MOVE_TO_SEAL:
-        if (mp_SchedulerThreadController->IsRVRightPosition(SEAL_POS))
-        {
-            mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
-        }
-        else
-        {
-            // do nothing
-        }
-        break;
-    case PSSM_RV_MOVE_TO_TUBE:
-        if (0 == m_PssmAbortingSeq)
-        {
-            this->HandlePssmMoveTubeWorkflow(cmdName, retCode, true);
-            if (m_PssmAbortingInMoveToTube)
+            else
             {
+                m_PssmAbortingSeq = 2;
+            }
+
+            if(2 == m_PssmAbortingSeq)
+            {
+                CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
+                CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
                 m_PssmAbortingSeq++;
             }
+            else if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    mp_SchedulerThreadController->CompleteRsAbort();
+                }
+                else
+                {
+                    OnTasksDone(false);
+                }
+                m_PssmAbortingSeq = 0;
+                m_PssmAborted = false;
+            }
         }
         else
-        {
-            m_PssmAbortingSeq = 0;
-            mp_SchedulerThreadController->SetCurrentStepState(PSSM_FILLING);
-        }
-    break;
-    case PSSM_RV_POS_CHANGE:
-        if (mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS))
         {
             mp_SchedulerThreadController->CompleteRsAbort();
+            m_PssmAborted = false;
         }
-        else
-        {
-            // do nothing
-        }
-        break;
-    case PSSM_FILLING_RVROD_HEATING:
-    case PSSM_CLEANING_DRY_STEP:
-    case PSSM_STEP_PROGRAM_FINISH:
-    case PSSM_PROGRAM_FINISH:
-    case PSSM_INIT:
-         mp_SchedulerThreadController->CompleteRsAbort();
-        break;
-    default:
-        mp_SchedulerThreadController->CompleteRsAbort();
-        break;
     }
 }
 

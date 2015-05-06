@@ -1501,6 +1501,14 @@ protected:
         /****************************************************************************/
         QString GetLastReagentGroup() { return m_ProgramStatusInfor.GetLastReagentGroup(); }
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Is retort contaminted
+         *  \return bool from IsRetortContaminted
+         */
+        /****************************************************************************/
+        bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
+
     public slots:
 
         /****************************************************************************/
