@@ -687,9 +687,10 @@ signals:
     /*!
      *  \brief  Definition/Declaration of signal ProgramCompleted
      *  \param  isDueToSafeReagent = safe reagent is due
+     *  \param  IsRetortContaminated =  whether Retort is contaminated or not
      */
     /****************************************************************************/
-    void ProgramCompleted(bool isDueToSafeReagent = false);
+    void ProgramCompleted(bool isDueToSafeReagent = false, bool IsRetortContaminated = true);
     /****************************************************************************/
     /*!
      *  \brief  Declaration of signal ProgramCompleted

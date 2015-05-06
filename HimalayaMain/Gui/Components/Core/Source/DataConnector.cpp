@@ -1763,7 +1763,12 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
-
+        case DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED:
+        {
+            emit ProgramCompleted(false, false);
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
         case DataManager::PROGRAM_RUN_BEGIN:
         {
              emit ProgramRunBegin();

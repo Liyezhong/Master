@@ -145,8 +145,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramBeginAbort(),
                               this, OnProgramBeginAbort());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(bool),
-                              this, OnProgramCompleted(bool));
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(bool, bool),
+                              this, OnProgramCompleted(bool, bool));
     CONNECTSIGNALSLOT(mp_DataConnector, CleanPrgmCompleteAsSafeReagent(),
                               this, OnCleanPrgmCompleteAsSafeReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
@@ -642,12 +642,12 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     Core::CGlobalHelper::SetProgramPaused(false);
 }
 
-void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent)
+void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
 {
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
     m_IsDrainingWhenPrgrmCompleted = false;
-    if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
+    if ((!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C') || !IsRetortContaminated)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->SetTitle(CommonString::strInforMsg);
@@ -658,6 +658,15 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent)
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
+            if (!IsRetortContaminated)
+            {
+                mp_MessageDlg->SetIcon(QMessageBox::Information);
+                mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+                mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->exec();
+            }
             ui->programPanelWidget->EnablePauseButton(false);
             emit AddItemsToFavoritePanel();
             ui->programPanelWidget->ChangeStartButtonToStartState();

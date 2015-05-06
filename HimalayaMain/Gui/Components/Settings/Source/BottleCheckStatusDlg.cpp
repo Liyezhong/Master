@@ -71,7 +71,7 @@ namespace Settings {
 
         m_BottleCheckStatusModel.SetBottleCheckStatusMap(m_StationStatusMap);
 
-        ui->btnClose->setEnabled(false);
+        ui->btnClose->setEnabled(true);
 
     }
 

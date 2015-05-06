@@ -248,6 +248,13 @@ void CSystemSetupSettingsWidget::OnProcessStateChanged()
 void CSystemSetupSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+
+    bool isError = Core::CGlobalHelper::GetSystemErrorStatus();
+    if (!isError && !m_ProcessRunning)
+        mp_Ui->btnBottleCheck->setEnabled(true);
+    else
+        mp_Ui->btnBottleCheck->setEnabled(false);
 
     if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Service) {
@@ -259,7 +266,7 @@ void CSystemSetupSettingsWidget::ResetButtons()
         return ;
     }
 
-    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
          (!m_ProcessRunning)) {

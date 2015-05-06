@@ -354,7 +354,7 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/
-    void OnProgramCompleted(bool isDueToSafeReagent = false);
+    void OnProgramCompleted(bool isDueToSafeReagent = false, bool IsRetortContaminated = true);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramRunBegin
