@@ -41,7 +41,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
-    mp_WaitRotaryValveHeatingPrompt(NULL),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinHeatingDuration(0),
@@ -56,7 +55,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_ProgramStageStatus(Undefined),
     m_ProgramStatus(Undefined_ProgramStatus),
     m_IsProgramAbortedOrCompleted(false),
-    m_IsInAppendCasseteStatus(false)
+    m_IsInAppendCasseteStatus(false),
+    m_bWaitRotaryValveHeatingPrompt(false)
+
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -291,8 +292,7 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     m_ProgramStartReady = true;
     ui->programPanelWidget->ProgramStartReady(true);
-    if (mp_WaitRotaryValveHeatingPrompt)
-        mp_WaitRotaryValveHeatingPrompt->accept();
+	m_bWaitRotaryValveHeatingPrompt = false;
 }
 
 void CDashboardWidget::CancelProgramWillCompletePrompt()
@@ -439,19 +439,12 @@ void CDashboardWidget::OnDismissPauseMsgDialog()
 
 void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
 {
-    mp_WaitRotaryValveHeatingPrompt = new MainMenu::CMessageDlg(this);
-    mp_WaitRotaryValveHeatingPrompt->SetIcon(QMessageBox::Information);
-    mp_WaitRotaryValveHeatingPrompt->SetText(m_strWaitRotaryValveHeatingPrompt);
-    mp_WaitRotaryValveHeatingPrompt->HideAllButtons();
-    (void)mp_WaitRotaryValveHeatingPrompt->exec();
-    delete mp_WaitRotaryValveHeatingPrompt;
-    mp_WaitRotaryValveHeatingPrompt = NULL;
+    m_bWaitRotaryValveHeatingPrompt = true;
 }
 
 void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
 {
-    if (mp_WaitRotaryValveHeatingPrompt)
-        mp_WaitRotaryValveHeatingPrompt->accept();
+    m_bWaitRotaryValveHeatingPrompt = false;
 }
 
 void CDashboardWidget::OnCoolingDown()
@@ -880,6 +873,17 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 
     if ("" == m_SelectedProgramId)
         return false;
+
+    if (m_bWaitRotaryValveHeatingPrompt)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetText(m_strWaitRotaryValveHeatingPrompt);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        return false;
+    }
 
     if (!m_bRetortLocked){
         mp_MessageDlg->SetIcon(QMessageBox::Warning);

@@ -162,8 +162,6 @@ private:
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
     MainMenu::CMessageDlg* mp_PausingMsgDlg;                    //!< message dialog "It is pausing..."
-    MainMenu::CMessageDlg* mp_WaitRotaryValveHeatingPrompt;     //!< waiting for rotary valve heating to be completed message dialog
-
 
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
@@ -217,6 +215,8 @@ private:
     bool m_IsProgramAbortedOrCompleted;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
     bool m_IsInAppendCasseteStatus;
+    bool m_bWaitRotaryValveHeatingPrompt;                       //!< waiting for rotary valve heating to be completed message dialog
+
 
 public slots:
     /****************************************************************************/

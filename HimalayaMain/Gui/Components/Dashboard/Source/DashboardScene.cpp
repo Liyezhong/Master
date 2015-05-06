@@ -708,12 +708,13 @@ void CDashboardScene::EnableBlink(bool bEnable)
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
-             if (item->IsReagentExpired() && item->isVisible())
+             if (item->isVisible())
              {
                  if (bEnable != item->IsBlinkEnable())
                  {
                     item->EnableBlink(bEnable);
-                    item->DrawStationItemImage();
+                    if (item->IsReagentExpired())
+                        item->DrawStationItemImage();
                  }
              }
          }
