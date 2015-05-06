@@ -37,7 +37,8 @@ namespace Settings {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CBottleCheckStatusModel::CBottleCheckStatusModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CBottleCheckStatusModel::CBottleCheckStatusModel(QObject *p_Parent) :
+    QAbstractTableModel(p_Parent), m_CurrentRow(0)
 {
     mp_ReagentList = NULL;
     mp_StationList = NULL;
@@ -111,10 +112,11 @@ void CBottleCheckStatusModel::LoadStationData()
  *  changed.
  */
 /****************************************************************************/
-void CBottleCheckStatusModel::UpdateStatusData(const QString& stationID, const QString& status)
+void CBottleCheckStatusModel::UpdateStatusData(const QString& stationID, const QString& status, int currentRow)
 {
     beginResetModel();
     m_StatusIdentifiers[stationID] = status;
+    m_CurrentRow = currentRow;
     endResetModel();
 }
 
@@ -207,6 +209,15 @@ QVariant CBottleCheckStatusModel::data(const QModelIndex &Index, int Role) const
 
             }
         }
+        else if (Role == (int)Qt::BackgroundRole) {
+            if (m_CurrentRow == Index.row())
+            {
+                QColor Color;
+                Color.setNamedColor("#DA201D");
+                QPalette Palette(Color);
+                return QVariant(Palette.color(QPalette::Window));
+            }
+        }
 
     }
     return QVariant();
@@ -264,7 +275,7 @@ QString CBottleCheckStatusModel::GetReagentID(const QString ReagentName)
 /****************************************************************************/
 Qt::ItemFlags CBottleCheckStatusModel::flags(const QModelIndex &Index) const
 {
-    return QAbstractItemModel::flags(Index);
+    return Qt::ItemIsEnabled;
 }
 
 /****************************************************************************/

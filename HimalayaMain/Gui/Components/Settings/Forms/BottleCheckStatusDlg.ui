@@ -28,7 +28,11 @@
     </widget>
    </item>
    <item>
-    <widget class="MainMenu::CScrollTable" name="bottleCheckStatusTable" native="true"/>
+    <widget class="MainMenu::CScrollTable" name="bottleCheckStatusTable" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

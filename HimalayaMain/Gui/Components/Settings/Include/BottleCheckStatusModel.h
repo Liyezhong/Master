@@ -85,9 +85,10 @@ public slots:
      *  \brief  Definition/Declaration of UpdateStatusData
      *  \iparam stationID = station ID
      *  \iparam status = bottle check status
+     *  \iparam currentRow = the current processed row
      */
     /****************************************************************************/
-    void UpdateStatusData(const QString& stationID, const QString& status);
+    void UpdateStatusData(const QString& stationID, const QString& status, int currentRow);
 
 private:
 
@@ -102,6 +103,7 @@ private:
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
+    int m_CurrentRow;
 };
 
 } // end namespace Settings

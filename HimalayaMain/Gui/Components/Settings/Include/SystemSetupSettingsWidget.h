@@ -62,10 +62,8 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     QString m_strChangeMeltPointConfirm12Hrs;
     QString m_strConfirmChangeMeltingPoint;
-    CPrecheckProgramModel m_PrecheckProgramModel;
-    MainMenu::CBaseTable *mp_TableWidget;           //!< Language table
     Core::CDataConnector *mp_DataConnector;
-
+    bool m_bClickedBtnBottleCheck;
 
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
@@ -73,7 +71,7 @@ public:
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     void SetDataConnector(Core::CDataConnector *p_DataConnector);
-
+    void ResetClickedBtnBottleCheck();
 private:
     void InitTemperatureWidget();
     void RetranslateUI();

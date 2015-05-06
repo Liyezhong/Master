@@ -76,8 +76,8 @@ static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of v
 CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
-    mp_TableWidget(NULL),
-    mp_DataConnector(NULL)
+    mp_DataConnector(NULL),
+    m_bClickedBtnBottleCheck(false)
 {
     mp_Ui->setupUi(GetContentFrame());
 
@@ -99,7 +99,6 @@ CSystemSetupSettingsWidget::~CSystemSetupSettingsWidget()
 {
     try {
         delete mp_ScrollWheel;
-        delete mp_TableWidget;
         delete mp_Ui;
     }
     catch (...) {
@@ -140,16 +139,6 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
     if (p_DataConnector)
     {
         mp_DataConnector = p_DataConnector;
-        m_PrecheckProgramModel.SetProgramList(p_DataConnector->ProgramList);
-
-        mp_TableWidget = new MainMenu::CBaseTable;
-        mp_TableWidget->setModel(&m_PrecheckProgramModel);
-        mp_Ui->programTable->SetContent(mp_TableWidget);
-        m_PrecheckProgramModel.SetVisibleRowCount(6);
-        mp_TableWidget->horizontalHeader()->show();
-        mp_TableWidget->SetVisibleRows(6);
-        mp_TableWidget->horizontalHeader()->resizeSection(0, 90);
-        mp_TableWidget->horizontalHeader()->resizeSection(1, 120);
     }
 }
 
@@ -225,7 +214,6 @@ void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
         int Temp = mp_UserSettings->GetTemperatureParaffinBath();
         mp_ScrollWheel->SetCurrentData(Temp);
 
-        m_PrecheckProgramModel.SetProgramList(mp_DataConnector->ProgramList);
         ResetButtons();
     }
 }
@@ -238,7 +226,6 @@ void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
 void CSystemSetupSettingsWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    m_PrecheckProgramModel.SetUserRole(m_CurrentUserRole);
     ResetButtons();
 }
 
@@ -297,12 +284,6 @@ void CSystemSetupSettingsWidget::RetranslateUI()
    m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
    "You changed the Paraffin melting temperature. If you confirm by \"Yes\" the Paraffin melting time will be %1 hours until you can start another program run. By pressing \"No\" the current Paraffin bath temperature will be accepted and you can immediately start a protocol run.",
                                                               0, QApplication::UnicodeUTF8);
-   (void) m_PrecheckProgramModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Settings::CPrecheckProgramModel",
-                                                                                "Apply", 0, QApplication::UnicodeUTF8),0);
-
-   (void) m_PrecheckProgramModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Settings::CPrecheckProgramModel",
-                                                                                "Program", 0, QApplication::UnicodeUTF8),0);
-
 }
 
 /****************************************************************************/
@@ -327,33 +308,6 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 
 void CSystemSetupSettingsWidget::OnApply()
 {
-    QStringList checkflags = m_PrecheckProgramModel.GetBottleCheckFlags();
-    for (int i = 0; i < checkflags.count(); i++)
-    {
-        DataManager::CProgram* pProgram = mp_DataConnector->ProgramList->GetProgram(i);
-        QString strTemp = checkflags[i];
-        if ((strTemp == "1") && (pProgram->GetBottleCheck()))
-            continue;
-        if ((strTemp == "0") && !(pProgram->GetBottleCheck()))
-            continue;
-
-        bool bRevertSelectedProgram = false;
-        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, pProgram->GetID()))
-            return;//cancel
-
-        if (bRevertSelectedProgram)
-        {
-            emit UnselectProgram();
-        }
-
-        if (strTemp == "1")
-            pProgram->SetBottleCheck(true);
-        else
-            pProgram->SetBottleCheck(false);
-
-        emit UpdateProgram(*pProgram);
-    }
-
     int temp = mp_ScrollWheel->GetCurrentData().toInt();
     int lastMeltPoint = mp_UserSettings->GetTemperatureParaffinBath();
     if (temp == lastMeltPoint)
@@ -393,7 +347,16 @@ void CSystemSetupSettingsWidget::OnApply()
 
 void CSystemSetupSettingsWidget::OnBottleCheck()
 {
+    if (m_bClickedBtnBottleCheck)
+        return;
+
+    m_bClickedBtnBottleCheck = true;
     emit BottleCheck();
+}
+
+void CSystemSetupSettingsWidget::ResetClickedBtnBottleCheck()
+{
+    m_bClickedBtnBottleCheck = false;
 }
 
 } // end namespace Settings

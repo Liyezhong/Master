@@ -271,6 +271,7 @@ void CSettingsWidget::BottleCheckReply(const QString& stationID, DataManager::Bo
     {
         m_BottleCheckStatusDlg = new CBottleCheckStatusDlg(mp_MainWindow, mp_Data);
         m_BottleCheckStatusDlg->exec();
+        mp_Ui->pageSystemSetup->ResetClickedBtnBottleCheck();
     }
     else
     {

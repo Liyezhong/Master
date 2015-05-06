@@ -177,7 +177,9 @@ typedef enum {
     BOTTLECHECK_PASSED,
     BOTTLECHECK_BLOCKAGE,
     BOTTLECHECK_CHECKING,
-    BOTTLECHECK_WILLNOTPROCESS
+    BOTTLECHECK_WILLNOTPROCESS,
+    BOTTLECHECK_FAILED,
+    BOTTLECHECK_ALLCOMPLETE
 } BottleCheckStatusType_t;
 
 /****************************************************************************/

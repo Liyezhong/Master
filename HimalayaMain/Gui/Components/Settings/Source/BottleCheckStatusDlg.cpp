@@ -71,6 +71,8 @@ namespace Settings {
 
         m_BottleCheckStatusModel.SetBottleCheckStatusMap(m_StationStatusMap);
 
+        ui->btnClose->setEnabled(false);
+
     }
 
     CBottleCheckStatusDlg::~CBottleCheckStatusDlg()
@@ -165,7 +167,13 @@ namespace Settings {
     /****************************************************************************/
     void CBottleCheckStatusDlg::UpdateCurrentStationStatus(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType)
     {
-        m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType]);
-        mp_TableWidget->selectRow(m_StationIDRowMap[stationID]);
+        m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType],
+                                                      m_StationIDRowMap[stationID]);
+        if (DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType || DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
+        {
+            ui->btnClose->setEnabled(true);
+        }
     }
+
+
 }
