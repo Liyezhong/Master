@@ -290,7 +290,6 @@ typedef struct
         QMutex m_MutexDeviceControlCmdQueue;                      ///< mutex for accessing m_DeviceControlCmdQueue
         QWaitCondition m_WaitCondition;                           ///< condition variable for DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
-        QQueue<ProgramStationInfo_t> m_ProgramStationList;       ///<  Definition/Declaration of variable m_ProgramStationList
 
         QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
         SchedulerCommandProcessorBase*  m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
@@ -1253,23 +1252,6 @@ protected:
         void SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg = true);
 
         /****************************************************************************/
-        /**
-         *  \brief  whether need bottle check
-         *  \return bool, true - continue; false - done;
-         */
-        /****************************************************************************/
-        bool IsNeedBottleCheck(){return (!m_ProgramStationList.empty());}
-
-        /****************************************************************************/
-        /**
-         *  \brief  Bottle check for each station
-         *  \param  bottleSeq sequence of the bottle
-         *  \return bool, true - continue; false - done;
-         */
-        /****************************************************************************/
-        bool BottleCheck(quint32 bottleSeq);
-
-        /****************************************************************************/
         /*!
          *  \brief  Move Rotary Valve tube to the target position
          *  \param  type - type of RV moving (tubue position or sealing position)
@@ -1349,15 +1331,6 @@ protected:
          */
         /****************************************************************************/
         inline bool IsCleaningProgram() const { return m_IsCleaningProgram; }
-
-        /****************************************************************************/
-        /*!
-         *  \brief  Get the program station list
-         *  \return Program station list queue
-         *
-         */
-        /****************************************************************************/
-        QQueue<ProgramStationInfo_t> GetProgramStationList() const { return m_ProgramStationList; }
 
         /****************************************************************************/
         /*!

@@ -40,8 +40,6 @@ namespace Scheduler{
 CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
 {
-    // Start up state machine
-    //mp_StateMachine->start();
     m_CurrentState = PRETEST_UNDEF;
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
@@ -52,8 +50,6 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_PressureCalibrationCounter = 0;
 	m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
-    m_BottleChkFlag = true;
-    m_BottleSeq = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
     m_IsAbortRecv = false;
@@ -342,67 +338,12 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_SEALING_TEST_SUCCESS);
                     m_PressureSealingChkSeq = 0;
-                    if(mp_SchedulerThreadController->IsNeedBottleCheck())
-                    {
-                        m_CurrentState = BOTTLES_CHECKING;
-                    }
-                    else
-                    {
-                        m_CurrentState = MOVE_TO_TUBE;
-                    }
+                    m_CurrentState = MOVE_TO_TUBE;
                 }
                 else
                 {
                     m_PressureSealingChkSeq = 0;
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-            }
-        }
-        break;
-    case BOTTLES_CHECKING:
-        if(0 == m_IsLoged)
-        {
-            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK);
-            m_IsLoged++;
-        }
-        if (true == m_BottleChkFlag)  // Send out IDBottleCheck command
-        {
-            if (m_IsAbortRecv)
-            {
-                m_TasksAborted = true;
-                break;
-            }
-            if (mp_SchedulerThreadController->BottleCheck(m_BottleSeq))
-            {
-                m_BottleChkFlag = false;
-            }
-            else // all the bottle check (for 16 bottles) has been done
-            {
-                m_IsLoged = 0;
-                m_BottleSeq = 0; //reset
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
-                m_CurrentState = MOVE_TO_TUBE;
-            }
-        }
-        else // Wait for command response
-        {
-            if ( "Scheduler::IDBottleCheck" == cmdName)
-            {
-                //dequeue the current bottle
-                m_BottleChkFlag = true;
-                if (m_IsAbortRecv)
-                {
-                    m_TasksAborted = true;
-                    break;
-                }
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    m_BottleSeq = 0;
-                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-                else
-                {
-                    m_BottleSeq++;
                 }
             }
         }
@@ -461,10 +402,8 @@ void CProgramPreTest::ResetVarList(bool resume)
     m_PressureCalibrationCounter = 0;
     m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
-    m_BottleChkFlag = true;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
-    m_BottleSeq = 0;
     m_IsAbortRecv = false;
     m_TasksAborted = false;
     m_PressureForCleaningSeq = 0;

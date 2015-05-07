@@ -122,7 +122,6 @@ private:
         RV_POSITION_CHECKING,
 		PRESSURE_CALIBRATION,
         PRESSURE_SEALING_CHECKING,
-        BOTTLES_CHECKING,
         MOVE_TO_TUBE
     } StateList_t;
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
@@ -137,8 +136,6 @@ private:
     quint8  m_PressureCalibrationCounter;                           //!< Counter of Pressure Calibratoin
     qint64  m_ReleasePressureTime;                                  //!< Time of releasing pressure
     quint32 m_PressureSealingChkSeq;                                //!< Sequence of Sealing checking
-    bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
-    quint32 m_BottleSeq;                                            //!< Sequence of the bottle
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
     quint8  m_IsLoged;                                              //!< Whether loged
     bool    m_IsAbortRecv;                                          //!< Flag to indicate if CTRL_CMD_ABORT was received

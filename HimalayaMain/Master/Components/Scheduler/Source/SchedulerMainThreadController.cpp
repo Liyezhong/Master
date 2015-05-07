@@ -2044,41 +2044,10 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     bool isLastStep = false;
 
-    m_ProgramStationList.clear();
     m_StationList.clear();
     m_StationAndReagentList.clear();
-    QMap<int, ProgramStationInfo_t> StationForNoParrffinMap;
-    QMap<QString, ProgramStationInfo_t> StationForParrffinMap;
 
-    bool normalProgramFlag = false;
-    bool cleaningProgramFlag = false;
-    bool cleaningProgram = false;
     ProgramStationInfo_t stationInfo;
-
-    if (ProgramID.at(0) == 'C')
-    {
-        cleaningProgram = true;
-        if(mp_DataManager->GetProgramList()->GetProgram("C01"))
-        {
-            cleaningProgramFlag =  mp_DataManager->GetProgramList()->GetProgram("C01")->GetBottleCheck();
-            if(cleaningProgramFlag)
-            {
-                if("RG6" == m_ProgramStatusInfor.GetLastReagentGroup())
-                {
-                    stationInfo.ReagentGroupID = "RG7";
-                    stationInfo.StationID = "S12";
-                    StationForNoParrffinMap.insert(12, stationInfo);
-                }
-                stationInfo.ReagentGroupID = "RG8";
-                stationInfo.StationID = "S13";
-                StationForNoParrffinMap.insert(13, stationInfo);
-            }
-        }
-    }
-    else if (pProgram)
-    {
-        normalProgramFlag = pProgram->GetBottleCheck();
-    }
 
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
@@ -2091,47 +2060,9 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
-        if(!cleaningProgram)
-        {
-            QString stationName = stationInfo.StationID;
-            if(normalProgramFlag)
-            {
-                if("RG6" == stationInfo.ReagentGroupID)
-                {
-                    StationForParrffinMap.insert(stationInfo.StationID, stationInfo);
-                }
-                else
-                {
-                    StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
-                }
-            }
-            else
-            {
-                if(i == beginStep)
-                {
-                    if("RG1" == stationInfo.ReagentGroupID)
-                    {
-                        StationForNoParrffinMap.insert(stationName.remove(0, 1).toInt(), stationInfo);
-                    }
-                }
-            }
-        }
         m_StationList.push_back(stationInfo.StationID);
         m_StationAndReagentList.push_back(stationInfo);
     }
-
-    QMap<int, ProgramStationInfo_t>::iterator iter = StationForNoParrffinMap.begin();
-    for(; iter != StationForNoParrffinMap.end(); iter++)
-    {
-        m_ProgramStationList.enqueue(iter.value());
-    }
-    QMap<QString, ProgramStationInfo_t>::iterator iterParraffin = StationForParrffinMap.begin();
-    for(; iterParraffin!= StationForParrffinMap.end(); iterParraffin++)
-    {
-        m_ProgramStationList.enqueue(iterParraffin.value());
-    }
-    StationForNoParrffinMap.clear();
-    StationForParrffinMap.clear();
     return true;
 }
 
@@ -2400,31 +2331,8 @@ quint32 SchedulerMainThreadController::GetMoveSteps(qint32 firstPos, qint32 endP
 
 quint32 SchedulerMainThreadController::GetPreTestTime()
 {
-    //level heating + RV move initialize  + pressure calibration + sealing check
-    qint64 preTesttTime = 20 + 30 + 50 + 60;
-
-    //bottle check time
-    qint64 bottleTime = 0;
-    qint32 firstPosition = 2;
-    qreal  tmpTime = 0.0;
-
-    for(int i = 0; i < m_ProgramStationList.size(); i++)
-    {
-        ProgramStationInfo_t stationInfo = m_ProgramStationList.at(i);
-        RVPosition_t targetPos = GetRVTubePositionByStationID(stationInfo.StationID);
-        tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos) + 18;
-        firstPosition = (qint32)targetPos;
-    }
-
-    //move first tube position
-    if(!m_StationList.isEmpty())
-    {
-        QString StationID = m_StationList.at(0);
-        RVPosition_t targetPos = GetRVTubePositionByStationID(StationID);
-        tmpTime += 2.5 * GetMoveSteps(firstPosition, (qint32)targetPos);
-    }
-    bottleTime = tmpTime;
-    preTesttTime += bottleTime;
+    //level heating + RV move initialize  + pressure calibration + sealing check + move first tube
+    qint64 preTesttTime = 20 + 30 + 50 + 60 + 10;
 
     if(m_IsCleaningProgram)
     {
@@ -3249,30 +3157,6 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
     }
     m_WaitCondition.wakeAll();
     m_MutexDeviceControlCmdQueue.unlock();
-}
-
-bool SchedulerMainThreadController::BottleCheck(quint32 bottleSeq)
-{
-    /*lint -e574 */
-    if (bottleSeq >= (quint32)m_ProgramStationList.size())
-    {
-        return false;
-    }
-
-    ProgramStationInfo_t stationInfo = m_ProgramStationList.at(bottleSeq);
-    RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
-    QString reagentGrpId = stationInfo.ReagentGroupID;
-
-    m_CurrentBottlePosition.ReagentGrpId = reagentGrpId;
-    m_CurrentBottlePosition.RvPos = tubePos;
-    m_CurrentBottlePosition.StationID = stationInfo.StationID;
-
-    LogDebug(QString("Bottle check for tube %1").arg(tubePos));
-    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
-    cmd->SetReagentGrpID(reagentGrpId);
-    cmd->SetTubePos(tubePos);
-    m_SchedulerCommandProcessor->pushCmd(cmd);
-    return true;
 }
 
 void SchedulerMainThreadController::RcBottleCheckI()
