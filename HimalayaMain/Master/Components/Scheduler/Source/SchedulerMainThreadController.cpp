@@ -1281,11 +1281,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
-        //send command to main controller to tell program finished
-        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-        Q_ASSERT(commandPtrFinish);
-        Ref = GetNewCommandRef();
-        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        if(m_ProgramStatusInfor.IsRetortContaminted())
+        {
+            //send command to main controller to tell program finished
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        }
+        else
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+            m_ProgramStatusInfor.SetProgramFinished();
+        }
 
         if(m_IsCleaningProgram)
         {
@@ -3356,7 +3367,15 @@ bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
     }
     else if(NEXT_TUBE_POS == type)
     {
-        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+        if( m_CurProgramID.at(0) != 'C' && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) &&
+                 "RG5" != m_CurProgramStepInfo.reagentGroup && "RG6" != m_CurProgramStepInfo.reagentGroup)
+         {
+             targetPos = RV_TUBE_2;
+         }
+         else
+         {
+             targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+         }
     }
 
     if (m_PositionRV == targetPos)
@@ -3542,8 +3561,17 @@ bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
     else if(NEXT_TUBE_POS == type)
     {
         //get target position here
-        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-        RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
+        if( m_CurProgramID.at(0) != 'C' && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) &&
+                "RG5" != m_CurProgramStepInfo.reagentGroup && "RG6" != m_CurProgramStepInfo.reagentGroup)
+        {
+            targetPos = RV_TUBE_2;
+            RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<"S2");
+        }
+        else
+        {
+            targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+            RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
+        }
     }
 
     if(RV_UNDEF != targetPos)

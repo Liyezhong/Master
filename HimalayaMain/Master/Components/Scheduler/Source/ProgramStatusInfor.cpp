@@ -524,8 +524,13 @@ qint64 CProgramStatusInfor::GetShutdownTime()
 
 bool CProgramStatusInfor::IsRetortContaminted()
 {
+    bool ret = false;
     QString ReagentGroup = GetLastReagentGroup();
-    return !ReagentGroup.isEmpty();
+    if("RG5" == ReagentGroup || "RG6" == ReagentGroup)
+    {
+        ret = true;
+    }
+    return ret;
 }
 void CProgramStatusInfor::SetStatus(const QString& key, const QString& value)
 {
