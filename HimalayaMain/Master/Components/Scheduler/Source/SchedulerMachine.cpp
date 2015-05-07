@@ -1805,7 +1805,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             }
             else
             {
-                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
             }
         }
         break;
@@ -1839,6 +1839,11 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_PASSED);
                 m_BottleCheckStationIter++;
             }
+            else if (DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED)
+            {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_BUILDPRESSUREFAILED);
+                m_BottleCheckStationIter++;
+            }
             else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_EMPTY);
@@ -1851,29 +1856,30 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             }
             else
             {
-                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
             }
 
         }
         break;
     case 4:
-    {
-        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
-        cmd->SetRVPosition(DeviceControl::RV_TUBE_2);
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-        m_BottleCheckSeq++;
-    }
+        {
+            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
+            cmd->SetRVPosition(DeviceControl::RV_TUBE_2);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            m_BottleCheckSeq++;
+        }
         break;
     case 5:
         if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_ALLCOMPLETE);
                 this->SendRunComplete();
             }
             else
             {
-                mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
             }
         }
         break;
