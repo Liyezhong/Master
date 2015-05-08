@@ -89,7 +89,7 @@ QString CMessageString::MSG_DIAGNOSTICS_EXTERNAL_SENSOR_VALVE_WRONG_AGAIN; //!< 
 QString CMessageString::MSG_DIAGNOSTICS_RIGHT_SENSOR_VALVE_WRONG;          //!< The value of Right sensor is wrong
 QString CMessageString::MSG_DIAGNOSTICS_USER_INPUT_PRESSURE;               //!< The value of Original Pressure should be in
 QString CMessageString::MSG_DIAGNOSTICS_POSITION;                          //!< Position
-QString CMessageString::MSG_DIAGNOSTICS_POSITION_READY;                    //!< Positon %1# is ready.
+QString CMessageString::MSG_DIAGNOSTICS_POSITION_READY;                    //!< Positon #%1 is ready.
 QString CMessageString::MSG_DIAGNOSTICS_IF_TEST_PASS;                      //!< Is the test pass?
 QString CMessageString::MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS;            //!< Do you see the retort lid '%1' ?
 QString CMessageString::MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS;          //!< Do you see the cover sensor status shows '%1'
@@ -234,7 +234,7 @@ void CMessageString::RetranslateUI()
 	MSG_DIAGNOSTICS_RIGHT_SENSOR_VALVE_WRONG          = (QApplication::translate("Service", "The value of Right sensor is wrong", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_USER_INPUT_PRESSURE               = (QApplication::translate("Service", "The value of Original Pressure should be in", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_POSITION                          = (QApplication::translate("Service", "Position", 0, QApplication::UnicodeUTF8));
-	MSG_DIAGNOSTICS_POSITION_READY                    = (QApplication::translate("Service", "Positon %1# is ready.", 0, QApplication::UnicodeUTF8));
+    MSG_DIAGNOSTICS_POSITION_READY                    = (QApplication::translate("Service", "Positon #%1 is ready.", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_IF_TEST_PASS                      = (QApplication::translate("Service", "Is the test pass?", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS            = (QApplication::translate("Service", "Do you see the retort lid '%1' ?", 0, QApplication::UnicodeUTF8));
 	MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS          = (QApplication::translate("Service", "Do you see the cover sensor status shows '%1'", 0, QApplication::UnicodeUTF8));

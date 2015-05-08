@@ -191,6 +191,7 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
             mp_Ui->lineEdit->setFocus();
 
             mp_Ui->lineEdit->selectAll();
+            m_Timer->stop();
         }
         else {
             QTime DurationTime = QTime::fromString(mp_TestCase->GetParameter("DurationTime"), "hh:mm:ss");

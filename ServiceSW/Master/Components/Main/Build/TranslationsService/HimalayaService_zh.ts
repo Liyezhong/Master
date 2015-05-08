@@ -4116,11 +4116,6 @@ for verification</source>
         <translation type="unfinished">位置 </translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/CMessageString.cpp" line="237"/>
-        <source>Positon %1# is ready.</source>
-        <translation type="unfinished">位置%1已准备</translation>
-    </message>
-    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="238"/>
         <source>Is the test pass?</source>
         <translation type="unfinished">测试通过了吗？</translation>
@@ -4416,6 +4411,11 @@ for verification</source>
         <translation type="unfinished">液体/气体系统</translation>
     </message>
     <message>
+        <location filename="../../../Core/Source/CMessageString.cpp" line="237"/>
+        <source>Positon #%1 is ready.</source>
+        <translation type="unfinished">位置%1已准备</translation>
+    </message>
+    <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="239"/>
         <source>Do you see the retort lid &apos;%1&apos; ?</source>
         <translation type="unfinished">你是否看到反应罐（Retort）盖子显示为&apos;%1&apos;</translation>
@@ -4645,17 +4645,17 @@ for verification</source>
         <translation type="unfinished">当前固件版本已经是最新的</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="333"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="338"/>
         <source>Slave</source>
         <translation type="unfinished">从属设备</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="335"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="340"/>
         <source>Current Version</source>
         <translation type="unfinished">当前版本</translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="337"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="342"/>
         <source>Latest Version</source>
         <translation type="unfinished">最新版本</translation>
     </message>

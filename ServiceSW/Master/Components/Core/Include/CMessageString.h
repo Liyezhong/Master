@@ -101,7 +101,7 @@ public :
     static QString MSG_DIAGNOSTICS_RIGHT_SENSOR_VALVE_WRONG;          //!< The value of Right sensor is wrong
     static QString MSG_DIAGNOSTICS_USER_INPUT_PRESSURE;               //!< The value of Original Pressure should be in
     static QString MSG_DIAGNOSTICS_POSITION;                          //!< Position
-    static QString MSG_DIAGNOSTICS_POSITION_READY;                    //!< Positon %1# is ready.
+    static QString MSG_DIAGNOSTICS_POSITION_READY;                    //!< Positon #%1 is ready.
     static QString MSG_DIAGNOSTICS_IF_TEST_PASS;                      //!< Is the test pass?
     static QString MSG_DIAGNOSTICS_CHECK_RETORTLID_STATUS;            //!< Do you see the retort lid '%1' ?
     static QString MSG_DIAGNOSTICS_CHECK_COVERSENSOR_STATUS;          //!< Do you see the cover sensor status shows '%1'

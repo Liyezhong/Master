@@ -4142,7 +4142,7 @@ for verification</source>
     </message>
     <message>
         <location filename="../../../Core/Source/CMessageString.cpp" line="237"/>
-        <source>Positon %1# is ready.</source>
+        <source>Positon #%1 is ready.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4645,17 +4645,17 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="333"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="338"/>
         <source>Slave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="335"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="340"/>
         <source>Current Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="337"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="342"/>
         <source>Latest Version</source>
         <translation type="unfinished"></translation>
     </message>
