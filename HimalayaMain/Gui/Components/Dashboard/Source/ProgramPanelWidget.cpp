@@ -27,7 +27,8 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     mp_ProgramList(NULL),
     m_startButtonDisabledAsSysError(false),
     m_pauseButtonDisabledAsSysError(false),
-    m_ProgramStartReady(false)
+    m_ProgramStartReady(false),
+    m_bWaitRotaryValveHeatingPrompt(false)
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
@@ -42,11 +43,11 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
 
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, UpdateFavProgram(), this, OnUpdatePanelProgram());
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
-                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&, int),
+                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, QList<QString>&, int));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
-                      this, OnProgramSelected(QString&, int, bool, bool, QList<QString>&));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&, int),
+                      this, OnProgramSelected(QString&, int, bool, QList<QString>&));
 
     CONNECTSIGNALSLOT(this, UndoProgramSelection(),
                       ui->favoriteProgramsPanel, UndoProgramSelection());
@@ -78,8 +79,6 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, UpdateProgram(DataManager::CProgram&), ui->favoriteProgramsPanel, UpdateProgram(DataManager::CProgram&));
-    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, ProgramStartReadyUpdated(),
-                      this, OnProgramStartReadyUpdated());
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -171,13 +170,13 @@ void CProgramPanelWidget::UpdateProgramTimerStatus(bool enable)
     }
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation,
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bIsFirstStepFixation,
                                             QList<QString>& selectedStationList)
 {
     Q_UNUSED(bIsFirstStepFixation);
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    if (bProgramStartReady && !Core::CGlobalHelper::GetSystemErrorStatus())
+    if ((m_bWaitRotaryValveHeatingPrompt || m_ProgramStartReady) && !Core::CGlobalHelper::GetSystemErrorStatus())
         OnProgramStartReadyUpdated();
     m_StationList.clear();
     m_StationList = selectedStationList;
@@ -304,11 +303,20 @@ bool CProgramPanelWidget::IsAbortEnabled()
 
 void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
-    if (m_ProgramStartReady && !Core::CGlobalHelper::GetSystemErrorStatus())
+    if ((m_ProgramStartReady || m_bWaitRotaryValveHeatingPrompt) && !Core::CGlobalHelper::GetSystemErrorStatus())
 	{
     	if (!m_SelectedProgramId.isEmpty())
         	this->ui->startButton->setEnabled(true);
 	}
+}
+
+void CProgramPanelWidget::OnWaitRotaryValveHeatingPrompt()
+{
+    if (m_bWaitRotaryValveHeatingPrompt && !Core::CGlobalHelper::GetSystemErrorStatus())
+    {
+        if (!m_SelectedProgramId.isEmpty())
+            this->ui->startButton->setEnabled(true);
+    }
 }
 
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
@@ -355,6 +363,11 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
 void CProgramPanelWidget::ProgramStartReady(bool bSet)
 {
     m_ProgramStartReady = bSet;
+}
+
+void CProgramPanelWidget::WaitRotaryValveHeatingPrompt(bool bSet)
+{
+    m_bWaitRotaryValveHeatingPrompt = bSet;
 }
 
 void CProgramPanelWidget::OnPreTestDone()

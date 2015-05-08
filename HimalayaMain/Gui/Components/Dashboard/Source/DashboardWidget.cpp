@@ -89,8 +89,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, RecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure &),
                       this, OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryFromPowerFailure&));
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int),
-                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, bool, QList<QString>&, int));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, QList<QString>&, int),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, QList<QString>&, int));
 
     CONNECTSIGNALSIGNAL(this, UndoProgramSelection(),
                        ui->programPanelWidget, UndoProgramSelection());
@@ -185,6 +185,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, OnWaitRotaryValveHeatingPrompt());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
+                      ui->programPanelWidget, OnWaitRotaryValveHeatingPrompt());
 
     CONNECTSIGNALSLOT(mp_DataConnector, DismissRotaryValveHeatingPrompt(),
                       this, OnDismissRotaryValveHeatingPrompt());
@@ -440,11 +443,13 @@ void CDashboardWidget::OnDismissPauseMsgDialog()
 void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
 {
     m_bWaitRotaryValveHeatingPrompt = true;
+    ui->programPanelWidget->WaitRotaryValveHeatingPrompt(true);
 }
 
 void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
 {
     m_bWaitRotaryValveHeatingPrompt = false;
+    ui->programPanelWidget->WaitRotaryValveHeatingPrompt(false);
 }
 
 void CDashboardWidget::OnCoolingDown()
@@ -779,7 +784,7 @@ void CDashboardWidget::OnUnselectProgram()
         int asapEndTime = 0;
 
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList, 0);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
         emit UpdateSelectedStationList(m_StationList);
         emit UndoProgramSelection();
     }
@@ -1243,7 +1248,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_AsapEndDateTime = m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
     m_bIsFirstStepFixation = IsFixationInFirstStep();
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList, cmd.GetFirstProgramStepIndex());
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, cmd.GetFirstProgramStepIndex());
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
     emit UpdateSelectedStationList(m_StationList);

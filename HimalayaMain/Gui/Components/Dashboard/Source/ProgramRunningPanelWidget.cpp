@@ -271,13 +271,12 @@ void CProgramRunningPanelWidget::UpdateDateTime()
 }
 
 void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime,
-                                                 bool bProgramStartReady, bool bIsFirstStepFixation,
+                                                 bool bIsFirstStepFixation,
                                                  QList<QString>& selectedStationList, int firstProgramStepIndex)
 {
     m_selectedProgramId = programId;
     m_selectedStationList = selectedStationList;
     m_firstProgramStepIndex = firstProgramStepIndex;
-    Q_UNUSED(bProgramStartReady);
     Q_UNUSED(bIsFirstStepFixation);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     UpdateDateTime();

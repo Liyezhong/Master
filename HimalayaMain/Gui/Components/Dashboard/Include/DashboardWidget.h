@@ -465,13 +465,12 @@ private slots:
      *  \brief  when selete a program, emit signal ProgramSelected
      *  \param  programId = the seleted program ID
      *  \param asapEndTime = as soon as possible end time
-     *  \param bProgramStartReady = whether program start is ready or not
      *  \param bIsFirstStepFixation = the first program step is fixation reagent
      *  \param selectedStationList = the selected stations
      *  \param firstProgramStepIndex = the first program step index
      */
     /****************************************************************************/
-    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady,
+    void ProgramSelected(QString & programId, int asapEndTime,
                          bool bIsFirstStepFixation, QList<QString>& selectedStationList,
                          int firstProgramStepIndex);
     /****************************************************************************/

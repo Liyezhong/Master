@@ -170,6 +170,15 @@ public:
      */
     /****************************************************************************/
     void ProgramStartReady(bool bSet);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of function WaitRotaryValveHeatingPrompt
+     *  \param  bSet = the set value
+     *
+     *  \return from WaitRotaryValveHeatingPrompt
+     */
+    /****************************************************************************/
+    void WaitRotaryValveHeatingPrompt(bool bSet);
 signals:
     /****************************************************************************/
     /*!
@@ -213,13 +222,12 @@ signals:
      *  \brief when Program select, send this signal
      *  \param ProgramId = the curent selected program id.
      *  \param asapEndTime = the as soon as possible end time in seconds
-     *  \param bProgramStartReady = ProgramStart is ready
      *  \param bIsFirstStepFixation = whether the first step is fixation or not
      *  \param selectedStationList = store the used station IDs for the current selected program
      *  \param firstProgramStepIndex = the first program step index
      */
     /****************************************************************************/
-    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady,
+    void ProgramSelected(QString& ProgramId, int asapEndTime,
                          bool bIsFirstStepFixation, QList<QString>& selectedStationList,
                          int firstProgramStepIndex);
     /****************************************************************************/
@@ -291,7 +299,12 @@ public slots:
      */
     /****************************************************************************/
      void OnProgramStartReadyUpdated();
-
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of OnWaitRotaryValveHeatingPrompt
+      */
+     /****************************************************************************/
+     void OnWaitRotaryValveHeatingPrompt();
 private slots:
      /****************************************************************************/
      /*!
@@ -304,7 +317,7 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramSelected
      */
     /****************************************************************************/
-    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady,
+    void OnProgramSelected(QString& ProgramId, int asapEndTime,
                            bool bIsFirstStepFixation, QList<QString>& selectedStationList);
 
     /****************************************************************************/
@@ -398,6 +411,7 @@ private:
     bool m_startButtonDisabledAsSysError;
     bool m_pauseButtonDisabledAsSysError;
     bool m_ProgramStartReady;
+    bool m_bWaitRotaryValveHeatingPrompt;
 };
 
 }// end namespace Dashboard
