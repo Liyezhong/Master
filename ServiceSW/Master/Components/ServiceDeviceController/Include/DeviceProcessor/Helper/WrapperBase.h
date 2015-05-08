@@ -105,6 +105,7 @@ public:
     /****************************************************************************/
     /*!
      *   \brief  set time out for event loop
+     *   \param  p_Timer = timer to quit
      *   \param  p_EventLoop = a pointer to event loop
      *   \param  MilliSeconds = time to quit (milliseconds )
      */

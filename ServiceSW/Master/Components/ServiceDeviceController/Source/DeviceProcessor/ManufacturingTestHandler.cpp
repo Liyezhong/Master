@@ -115,7 +115,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_SpeakProc  = NULL;
 
     m_Continue = false;
-
+    m_BootFirmwareFinishd = false;
 }
 
 
@@ -1935,7 +1935,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 2);
-        mp_MotorRV->MoveToTubePosition(2);
+        (void)mp_MotorRV->MoveToTubePosition(2);
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
     }
 CLEANING_EXIT:
