@@ -1874,7 +1874,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_ALLCOMPLETE);
+                mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_ALLCOMPLETE);
                 this->SendRunComplete();
             }
             else
