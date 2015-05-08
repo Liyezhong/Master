@@ -2793,7 +2793,7 @@ RV_HEATING_END_EXIT:
 
 void ManufacturingTestHandler::EmitFailMsgTimeout()
 {
-    if (m_BootFirmwareFinishd == false) {
+    if (m_BootFirmwareFinished == false) {
 
         Service::ModuleTestStatus Status;
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::FIRMWARE_UPDATE);
@@ -2804,7 +2804,7 @@ void ManufacturingTestHandler::EmitFailMsgTimeout()
         (void)Status.insert("Result", "false");
         (void)Status.insert("Index", Index);
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        m_BootFirmwareFinishd = true;
+        m_BootFirmwareFinished = true;
     }
 }
 
@@ -2868,7 +2868,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
     RetValue &= p_WrapperBootLoader->UpdateFirmware(BinPath);
 
-    m_BootFirmwareFinishd = false;
+    m_BootFirmwareFinished = false;
     if (RetValue == true) {
         mp_Utils->Pause(2000);
 
@@ -2915,7 +2915,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         emit RefreshTestStatustoMain(TestCaseName, Status);
         delete p_WrapperBootLoader;
 
-        m_BootFirmwareFinishd = true;
+        m_BootFirmwareFinished = true;
 
         return 0;
     }
@@ -2939,7 +2939,7 @@ ERROR_EXIT:
     (void)Status.insert("Result", "false");
     (void)Status.insert("Index", Index);
     emit RefreshTestStatustoMain(TestCaseName, Status);
-    m_BootFirmwareFinishd = true;
+    m_BootFirmwareFinished = true;
     return -1;
 }
 

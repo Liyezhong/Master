@@ -518,7 +518,7 @@ private:
 
     bool        m_Continue;
 
-    bool m_BootFirmwareFinishd;
+    bool m_BootFirmwareFinished;
 
 };
 
