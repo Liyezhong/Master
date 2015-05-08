@@ -113,11 +113,14 @@ void CSVCScreenLockWidget::OnOkClicked(QString EnteredString)
 
     PasswordManager::CServicePassword m_ServicePassword(m_EnteredPin, "HISTOCORE PEARL");
 
+#if 0
+    /* Code for debug purposes only. This section needs to be removed for release*/
     if(EnteredString.startsWith("1406"))
     {
         HideKeyBoard();
         return;
     }
+#endif
 
     QString MessageTitle, MessageInfo;
     /* Service Key authentication */
