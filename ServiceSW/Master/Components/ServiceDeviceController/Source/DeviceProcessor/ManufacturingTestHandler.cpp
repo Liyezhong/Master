@@ -1776,6 +1776,9 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 
             emit RefreshTestStatustoMain(TestCaseName, Status);
         }
+
+        mp_Utils->Pause(1000);
+
         LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;
         Status.clear();
         (void)Status.insert("Label", LabelStr);
@@ -2878,13 +2881,22 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
             mp_Utils->Pause(6000);
         }
 
-        QTimer timer;
-        timer.setSingleShot(true);
-        timer.setInterval(10000);
-        (void) connect(&timer, SIGNAL(timeout()), this, SLOT(EmitFailMsgTimeout()));
-        timer.start();
-
         if (SlaveType == Slave_15) {
+            QTimer timer;
+            timer.setSingleShot(true);
+            timer.setInterval(15000);
+            (void) connect(&timer, SIGNAL(timeout()), this, SLOT(EmitFailMsgTimeout()));
+            timer.start();
+
+            RetValue = p_WrapperBaseModule->ReqFormatMemory();
+
+            if (RetValue == false) {
+                goto ERROR_EXIT;
+            }
+            else {
+                mp_Utils->Pause(7000);
+            }
+
             if ((mp_DORemoteAlarm && mp_DORemoteAlarm->SetHigh()) &&
                    mp_DOLocalAlarm && mp_DOLocalAlarm->SetHigh()) {
                 if (AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST) == -1) {
@@ -2904,6 +2916,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         delete p_WrapperBootLoader;
 
         m_BootFirmwareFinishd = true;
+
         return 0;
     }
     else {
@@ -2916,17 +2929,6 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         else {
             mp_Utils->Pause(5000);
         }
-
-//        if (SlaveType == Slave_15) {
-//            if (mp_DORemoteAlarm) {
-//                (void)mp_DORemoteAlarm->SetHigh();
-//            }
-
-//            if (mp_DOLocalAlarm) {
-//                (void)mp_DOLocalAlarm->SetHigh();
-//            }
-//            //(void) AutoSetASB3HeaterSwitchType(Service::SYSTEM_SELF_TEST);
-//        }
     }
 ERROR_EXIT:
     if (p_WrapperBootLoader) {
