@@ -98,7 +98,6 @@
               <height>300</height>
              </size>
             </property>
-            <zorder>scrollPanelWidget</zorder>
            </widget>
           </item>
           <item>
@@ -139,6 +138,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="btnBottleCheck">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Bottle check</string>
          </property>

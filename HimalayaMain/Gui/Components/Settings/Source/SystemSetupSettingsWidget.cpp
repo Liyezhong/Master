@@ -77,7 +77,8 @@ CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : Main
     mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_DataConnector(NULL),
-    m_bClickedBtnBottleCheck(false)
+    m_bClickedBtnBottleCheck(false),
+    m_bEnableBottleCheck(false)
 {
     mp_Ui->setupUi(GetContentFrame());
 
@@ -139,6 +140,9 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
     if (p_DataConnector)
     {
         mp_DataConnector = p_DataConnector;
+        CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
+                          this, EnableBottleCheckFlag());
+
     }
 }
 
@@ -251,7 +255,7 @@ void CSystemSetupSettingsWidget::ResetButtons()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 
     bool isError = Core::CGlobalHelper::GetSystemErrorStatus();
-    if (!isError && !m_ProcessRunning)
+    if (!isError && !m_ProcessRunning && m_bEnableBottleCheck)
         mp_Ui->btnBottleCheck->setEnabled(true);
     else
         mp_Ui->btnBottleCheck->setEnabled(false);
@@ -359,6 +363,12 @@ void CSystemSetupSettingsWidget::OnBottleCheck()
 
     m_bClickedBtnBottleCheck = true;
     emit BottleCheck();
+}
+
+void CSystemSetupSettingsWidget::EnableBottleCheckFlag()
+{
+    m_bEnableBottleCheck = true;
+    ResetButtons();
 }
 
 void CSystemSetupSettingsWidget::ResetClickedBtnBottleCheck()

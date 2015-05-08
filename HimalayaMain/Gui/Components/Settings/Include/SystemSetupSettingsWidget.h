@@ -64,6 +64,7 @@ private:
     QString m_strConfirmChangeMeltingPoint;
     Core::CDataConnector *mp_DataConnector;
     bool m_bClickedBtnBottleCheck;
+    bool m_bEnableBottleCheck;
 
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
@@ -106,6 +107,13 @@ private slots:
      */
     /****************************************************************************/
     void OnBottleCheck();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of EnableBottleCheckFlag
+     */
+    /****************************************************************************/
+    void EnableBottleCheckFlag();
 
 signals:
     /****************************************************************************/

@@ -64,6 +64,7 @@ private:
     QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
     QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
+    bool m_EnableBottleCheck;
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);
@@ -146,7 +147,12 @@ private slots:
      */
     /****************************************************************************/
     void StationReagentUpdated(const QString&);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of EnableBottleCheckFlag
+     */
+    /****************************************************************************/
+    void EnableBottleCheckFlag();
 public slots:
     /****************************************************************************/
     /*!

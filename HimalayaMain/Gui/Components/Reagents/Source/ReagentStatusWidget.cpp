@@ -28,7 +28,8 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
                                            mp_Reagent(NULL),
                                            mp_DashStation(NULL),
                                            m_RMSOptions(Global::RMS_UNDEFINED),
-                                           m_RMSCleaningOptions(Global::RMS_UNDEFINED)
+                                           m_RMSCleaningOptions(Global::RMS_UNDEFINED),
+                                           m_EnableBottleCheck(false)
 
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -161,15 +162,17 @@ void CReagentStatusWidget::OnResetData()
             emit UnselectProgram();
 
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
-
-        ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
-        ConfirmationMessageDlg.SetButtonText(3, m_strNo);
-        ConfirmationMessageDlg.HideCenterButton();
-        if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+        if (m_EnableBottleCheck && !Core::CGlobalHelper::GetSystemErrorStatus())
         {
-            emit BottleCheck();
+            ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
+            ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+            ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+            ConfirmationMessageDlg.SetButtonText(3, m_strNo);
+            ConfirmationMessageDlg.HideCenterButton();
+            if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+            {
+                emit BottleCheck();
+            }
         }
     }
 
@@ -197,15 +200,17 @@ void CReagentStatusWidget::OnSetAsFull()
         ResetButtons();
         mp_Ui->btnEmpty->setEnabled(true);
         mp_Ui->btnReset->setEnabled(true);
-
-        ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
-        ConfirmationMessageDlg.SetButtonText(3, m_strNo);
-        ConfirmationMessageDlg.HideCenterButton();
-        if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+        if (m_EnableBottleCheck && !Core::CGlobalHelper::GetSystemErrorStatus())
         {
-            emit BottleCheck();
+            ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
+            ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+            ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+            ConfirmationMessageDlg.SetButtonText(3, m_strNo);
+            ConfirmationMessageDlg.HideCenterButton();
+            if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+            {
+                emit BottleCheck();
+            }
         }
     }
 }
@@ -590,6 +595,8 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
 {
     Q_UNUSED(p_KeyBoard);
     mp_DataConnector = p_DataConnector;
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
+                      this, EnableBottleCheckFlag());
     mp_ReagentList = p_ReagentList;
     // set the reagent ist to the model
     m_ReagentStatusModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
@@ -626,6 +633,11 @@ void CReagentStatusWidget::StationReagentUpdated(const QString& StationId)
 void CReagentStatusWidget::UpdateSelectedStationList(QList<QString>& stationList)
 {
     m_StationList = stationList;
+}
+
+void CReagentStatusWidget::EnableBottleCheckFlag()
+{
+    m_EnableBottleCheck = true;
 }
 
 }
