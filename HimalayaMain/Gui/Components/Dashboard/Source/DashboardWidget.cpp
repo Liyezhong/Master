@@ -656,7 +656,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
-            if (!IsRetortContaminated)
+            if (!IsRetortContaminated && (m_SelectedProgramId.at(0) != 'C'))
             {
                 mp_MessageDlg->SetIcon(QMessageBox::Information);
                 mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
