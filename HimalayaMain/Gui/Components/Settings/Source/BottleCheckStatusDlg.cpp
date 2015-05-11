@@ -7,7 +7,8 @@ namespace Settings {
         MainMenu::CDialogFrame(parent),
         ui(new Ui::CBottleCheckStatusDlg),
         m_Waiting(tr("Waiting")),m_Empty(tr("Empty")),m_Passed(tr("Passed")),
-        m_Blockage(tr("Blockage")),m_Checking(tr("Checking"))
+        m_Blockage(tr("Blockage")),m_Checking(tr("Checking")),
+        m_BuildPressureFailed(tr("Build pressure failed"))
 
     {
         ui->setupUi(GetContentFrame());
@@ -22,7 +23,7 @@ namespace Settings {
         m_BottleCheckStatusModel.SetVisibleRowCount(7);
         mp_TableWidget->horizontalHeader()->resizeSection(0, 80);
         mp_TableWidget->horizontalHeader()->resizeSection(1, 160);
-        mp_TableWidget->horizontalHeader()->resizeSection(2, 80);
+        mp_TableWidget->horizontalHeader()->resizeSection(2, 120);
         mp_TableWidget->selectRow(0);
         CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
 
@@ -43,35 +44,8 @@ namespace Settings {
         m_StationIDRowMap.insert("P2", 14);
         m_StationIDRowMap.insert("P3", 15);
 
-
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WAITING, m_Waiting);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_EMPTY, m_Empty);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_PASSED, m_Passed);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BLOCKAGE, m_Blockage);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_CHECKING, m_Checking);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WILLNOTPROCESS, " --- ");
-
-        m_StationStatusMap.insert("S1", m_Waiting);
-        m_StationStatusMap.insert("S2", m_Waiting);
-        m_StationStatusMap.insert("S3", m_Waiting);
-        m_StationStatusMap.insert("S4", m_Waiting);
-        m_StationStatusMap.insert("S5", m_Waiting);
-        m_StationStatusMap.insert("S6", m_Waiting);
-        m_StationStatusMap.insert("S7", m_Waiting);
-        m_StationStatusMap.insert("S8", m_Waiting);
-
-        m_StationStatusMap.insert("S9", m_Waiting);
-        m_StationStatusMap.insert("S10", m_Waiting);
-        m_StationStatusMap.insert("S11", m_Waiting);
-        m_StationStatusMap.insert("S12", m_Waiting);
-        m_StationStatusMap.insert("S13", m_Waiting);
-        m_StationStatusMap.insert("P1", m_Waiting);
-        m_StationStatusMap.insert("P2", m_Waiting);
-        m_StationStatusMap.insert("P3", m_Waiting);
-
-        m_BottleCheckStatusModel.SetBottleCheckStatusMap(m_StationStatusMap);
-
-        ui->btnClose->setEnabled(true);
+        Inilialize();
+        ui->btnClose->setEnabled(false);
 
     }
 
@@ -122,13 +96,25 @@ namespace Settings {
         m_Passed = QApplication::translate("Settings::CBottleCheckStatusModel", "Passed", 0, QApplication::UnicodeUTF8);
         m_Blockage = QApplication::translate("Settings::CBottleCheckStatusModel", "Blockage", 0, QApplication::UnicodeUTF8);
         m_Checking = QApplication::translate("Settings::CBottleCheckStatusModel", "Checking", 0, QApplication::UnicodeUTF8);
+        m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusModel", "Build pressure failed", 0, QApplication::UnicodeUTF8);
 
+        Inilialize();
+    }
+
+    void CBottleCheckStatusDlg::OnClose()
+    {
+        this->close();
+    }
+
+    void CBottleCheckStatusDlg::Inilialize()
+    {
         m_BottleCheckStatusMap.clear();
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WAITING, m_Waiting);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_EMPTY, m_Empty);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_PASSED, m_Passed);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BLOCKAGE, m_Blockage);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_CHECKING, m_Checking);
+        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BUILDPRESSUREFAILED, m_BuildPressureFailed);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WILLNOTPROCESS, " --- ");
 
         m_StationStatusMap.clear();
@@ -151,11 +137,6 @@ namespace Settings {
         m_StationStatusMap.insert("P3", m_Waiting);
 
         m_BottleCheckStatusModel.SetBottleCheckStatusMap(m_StationStatusMap);
-    }
-
-    void CBottleCheckStatusDlg::OnClose()
-    {
-        this->close();
     }
 
     /****************************************************************************/

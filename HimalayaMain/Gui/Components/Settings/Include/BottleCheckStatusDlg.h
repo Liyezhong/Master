@@ -30,6 +30,7 @@ private slots:
     void OnClose();
 private:
     void RetranslateUI();
+    void Inilialize();
     Ui::CBottleCheckStatusDlg *ui;
     MainMenu::CBaseTable *mp_TableWidget;
     Settings::CBottleCheckStatusModel m_BottleCheckStatusModel;
@@ -40,6 +41,7 @@ private:
     QString m_Blockage;
     QString m_Checking;
     QString m_WillNotProcess;
+    QString m_BuildPressureFailed;
     QMap<DataManager::BottleCheckStatusType_t, QString> m_BottleCheckStatusMap;
     QMap<QString, int> m_StationIDRowMap;
     QMap<QString, QString> m_StationStatusMap;
