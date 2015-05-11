@@ -115,7 +115,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_SpeakProc  = NULL;
 
     m_Continue = false;
-    m_BootFirmwareFinishd = false;
+    m_BootFirmwareFinished = false;
 }
 
 
