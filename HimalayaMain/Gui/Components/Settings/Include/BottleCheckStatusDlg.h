@@ -31,6 +31,7 @@ private slots:
 private:
     void RetranslateUI();
     void Inilialize();
+    void UpdateStationNotProcess(const QString& stationID);
     Ui::CBottleCheckStatusDlg *ui;
     MainMenu::CBaseTable *mp_TableWidget;
     Settings::CBottleCheckStatusModel m_BottleCheckStatusModel;
@@ -42,6 +43,7 @@ private:
     QString m_Checking;
     QString m_WillNotProcess;
     QString m_BuildPressureFailed;
+    QString m_Failed;
     QMap<DataManager::BottleCheckStatusType_t, QString> m_BottleCheckStatusMap;
     QMap<QString, int> m_StationIDRowMap;
     QMap<QString, QString> m_StationStatusMap;

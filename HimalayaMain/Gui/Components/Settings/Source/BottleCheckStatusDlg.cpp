@@ -8,7 +8,8 @@ namespace Settings {
         ui(new Ui::CBottleCheckStatusDlg),
         m_Waiting(tr("Waiting")),m_Empty(tr("Empty")),m_Passed(tr("Passed")),
         m_Blockage(tr("Blockage")),m_Checking(tr("Checking")),
-        m_BuildPressureFailed(tr("Build pressure failed"))
+        m_BuildPressureFailed(tr("Build pressure failed")),
+        m_Failed(tr("Failed"))
 
     {
         ui->setupUi(GetContentFrame());
@@ -97,6 +98,8 @@ namespace Settings {
         m_Blockage = QApplication::translate("Settings::CBottleCheckStatusModel", "Blockage", 0, QApplication::UnicodeUTF8);
         m_Checking = QApplication::translate("Settings::CBottleCheckStatusModel", "Checking", 0, QApplication::UnicodeUTF8);
         m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusModel", "Build pressure failed", 0, QApplication::UnicodeUTF8);
+        m_Failed = QApplication::translate("Settings::CBottleCheckStatusModel", "Failed", 0, QApplication::UnicodeUTF8);
+
 
         Inilialize();
     }
@@ -115,6 +118,7 @@ namespace Settings {
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BLOCKAGE, m_Blockage);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_CHECKING, m_Checking);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BUILDPRESSUREFAILED, m_BuildPressureFailed);
+        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_FAILED, m_Failed);
         m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WILLNOTPROCESS, " --- ");
 
         m_StationStatusMap.clear();
@@ -156,8 +160,23 @@ namespace Settings {
         if (DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType || DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
         {
             ui->btnClose->setEnabled(true);
+            if (DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
+            {
+                UpdateStationNotProcess(stationID);
+            }
         }
     }
+
+    void CBottleCheckStatusDlg::UpdateStationNotProcess(const QString& stationID)
+    {
+        int curRow = m_StationIDRowMap[stationID];
+        curRow++;
+        for (int r = curRow; r < 16; r++)
+        {
+            m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[DataManager::BOTTLECHECK_WILLNOTPROCESS], r);
+        }
+    }
+
 
 
 }
