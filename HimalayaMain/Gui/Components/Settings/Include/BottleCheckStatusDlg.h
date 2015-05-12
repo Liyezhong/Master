@@ -46,7 +46,7 @@ private:
     QString m_Failed;
     QMap<DataManager::BottleCheckStatusType_t, QString> m_BottleCheckStatusMap;
     QMap<QString, int> m_StationIDRowMap;
-    QMap<QString, int> m_RowStationIDMap;
+    QMap<int, QString> m_RowStationIDMap;
     QMap<QString, QString> m_StationStatusMap;
 
 };
