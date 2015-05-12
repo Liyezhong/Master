@@ -207,7 +207,8 @@ private:
     quint8  m_ErrorRcRestartSeq;                                                ///< Sequence of Error_RC_Restart
     qint64  m_TimeReEnterFilling;                                               ///< Start time to re-enter filling
     quint8  m_BottleCheckSeq;                                                   ///< Sequence of Bottle check
-    QVector< QPair<QString, QString> >::iterator m_BottleCheckStationIter; ///< Iterator of Bottle check station list
+    bool    m_NonRVErrorOccured;                                                ///< Non RV related error occured
+    QVector< QPair<QString, QString> >::iterator m_BottleCheckStationIter;      ///< Iterator of Bottle check station list
 
 private:
     /****************************************************************************/
@@ -984,6 +985,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Check Non RV related error during bottle check
+     *  \param  retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void CheckNonRVErr4BottleCheck(DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetCurrentState
      *  \return SchedulerStateMachine_t from GetCurrentState
      */
@@ -1602,6 +1612,7 @@ signals:
      */
     /****************************************************************************/
     void sigAbort();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigRsRvMoveToInitPosition

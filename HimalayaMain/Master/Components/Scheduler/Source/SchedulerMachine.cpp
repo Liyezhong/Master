@@ -378,6 +378,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_ErrorRcRestartSeq = 0;
     m_TimeReEnterFilling = 0;
     m_BottleCheckSeq = 0;
+    m_NonRVErrorOccured = false;
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)
@@ -440,7 +441,9 @@ void CSchedulerStateMachine::OnEnterErrorRcRestartState()
 void CSchedulerStateMachine::OnEnterBottleCheckState()
 {
     m_BottleCheckSeq = 0;
+    m_NonRVErrorOccured = false;
     m_BottleCheckStationIter = mp_SchedulerThreadController->GetDashboardStationList().begin();
+    mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
     mp_SchedulerThreadController->StartTimer();
 }
 
@@ -1792,24 +1795,6 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
     switch (m_BottleCheckSeq)
     {
     case 0:
-        mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
-        m_BottleCheckSeq++;
-        break;
-    case 1:
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
-        {
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_BottleCheckSeq++;
-            }
-            else
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
-            }
-        }
-        break;
-    case 2:
         if (m_BottleCheckStationIter != mp_SchedulerThreadController->GetDashboardStationList().end())
         {
             RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_BottleCheckStationIter->first);
@@ -1827,19 +1812,26 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         }
         else
         {
-            m_BottleCheckSeq = 4;
+            mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_ALLCOMPLETE);
+            this->SendRunComplete();
         }
         break;
-    case 3:
+    case 1:
         if ("Scheduler::IDBottleCheck" == cmdName)
         {
-            m_BottleCheckSeq = 2;
+            if (m_NonRVErrorOccured)
+            {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_FAILED);
+                this->SendRunComplete();
+                return;
+            }
+            m_BottleCheckSeq = 0;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_PASSED);
                 m_BottleCheckStationIter++;
             }
-            else if (DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED)
+            else if (DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_BUILDPRESSUREFAILED);
                 m_BottleCheckStationIter++;
@@ -1856,31 +1848,10 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             }
             else
             {
+                mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_FAILED);
                 mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
             }
 
-        }
-        break;
-    case 4:
-        {
-            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
-            cmd->SetRVPosition(DeviceControl::RV_TUBE_2);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-            m_BottleCheckSeq++;
-        }
-        break;
-    case 5:
-        if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
-        {
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_ALLCOMPLETE);
-                this->SendRunComplete();
-            }
-            else
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED);
-            }
         }
         break;
     default:
@@ -2080,7 +2051,6 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
     }
 }
 
-
 void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState)
 {
     if (0 == m_PssmMVTubeSeq)
@@ -2205,6 +2175,45 @@ void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, 
             }
 
         }
+    }
+}
+
+void CSchedulerStateMachine::CheckNonRVErr4BottleCheck(DeviceControl::ReturnCode_t retCode)
+{
+    if (DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_RV_FAILED == retCode)
+    {
+        return;
+    }
+    mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 007, true);
+
+    if( DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == retCode ||
+        DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == retCode ||
+        DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED == retCode ||
+        DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED == retCode ||
+        DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == retCode ||
+        DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == retCode ||
+        DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE == retCode ||
+        DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE == retCode ||
+        DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE == retCode ||
+        DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE == retCode ||
+        DCL_ERR_DEV_LA_RELEASING_TIMEOUT == retCode ||
+        DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN == retCode)
+    {
+        m_NonRVErrorOccured = true;
     }
 }
 

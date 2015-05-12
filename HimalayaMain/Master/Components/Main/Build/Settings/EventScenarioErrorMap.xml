@@ -5,6 +5,7 @@
     <scenario id="002"    MachineState=""    ReagentGroup=""    name="Self-test"/>
     <scenario id="003"    MachineState=""    ReagentGroup=""    name="Delay-Paraffin-melting"/>
     <scenario id="004"    MachineState=""    ReagentGroup=""    name="Standby"/>
+    <scenario id="007"    MachineState=""    ReagentGroup=""    name="BottleCheck"/>
     <scenario id="200"    MachineState=""    ReagentGroup=""    name="Pre-test"/>
     <scenario id="203"    MachineState=""    ReagentGroup=""    name="Dry-function"/>
     <scenario id="206"    MachineState=""    ReagentGroup=""    name="Pause_or_Abort"/>
@@ -150,8 +151,7 @@
        <event id="500070300"    name="EVENT_INTER_SW_ERROR"/>
        <event id="500070400"    name="EVENT_INTER_ABORT"/>
        <event id="500070500"    name="EVENT_INTER_BOTTLECHECK_RV_FAILED"/>
-       <event id="500070600"    name="EVENT_INTER_BOTTLECHECK_NONRV_FAILED"/>
-       <event id="500070700"    name="EVENT_INTER_BOTTLECHECK_NONRV_FAILED_WARNING"/>
+       <event id="500070600"    name="EVENT_INTER_BOTTLECHECK_NONRV_FAILED_WARNING"/>
   </group>
 </eventlist>
 
@@ -1599,11 +1599,6 @@
     </event>
     <event eventid="500070600">
         <error errorid="517000600">
-            <scenario type="single" id="007"/>
-        </error>
-    </event>
-    <event eventid="500070700">
-        <error errorid="517000700">
             <scenario type="single" id="007"/>
         </error>
     </event>

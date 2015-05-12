@@ -659,16 +659,12 @@
 		<Event Code="" ErrorID="511040251" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176021" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176222" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="517000500" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176022" EventSource="SCHEDULER">
+		<Event Code="" ErrorID="517000500" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176025" EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="67176224" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="1" Type="MSG" StringID="67176225" ButtonType="OK" StatusBar="YES"/>
 		</Event>
-		<Event Code="" ErrorID="517000600" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176023" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_BottleCheck_Cleanup" NextStepOnFail="1" NextStepOnSuccess="1"/>
-			<Step ID="1" Type="MSG" StringID="67176226" ButtonType="OK" StatusBar="YES"/>
-		</Event>
-		<Event Code="" ErrorID="517000700" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176024" EventSource="SCHEDULER">
-			<Step ID="1" Type="MSG" StringID="67176228" ButtonType="OK" StatusBar="YES"/>
+		<Event Code="" ErrorID="517000600" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="FALSE" ServiceString="67176026" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67176226" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="33619990" ErrorType="WARNING" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS" LogLevel="Medium" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" StatusBar=""/>

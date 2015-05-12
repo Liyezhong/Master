@@ -389,7 +389,6 @@ void SchedulerMainThreadController::OnTickTimer()
         Q_ASSERT(commandPtrAbortBegin);
         Global::tRefType fRef = GetNewCommandRef();
         SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
-
         m_TransitionPeriod = true;
         SendOutErrMsg(DCL_ERR_DEV_INTER_ABORT);
         return;
@@ -3107,7 +3106,6 @@ void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_Dat
 bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd)
 {
     bool ret = false;
-
     if (m_TransitionPeriod)
     {
         return ret;
@@ -4789,6 +4787,11 @@ void SchedulerMainThreadController::CompleteRsAbort()
 
 void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
 {
+    //First of all, we added one workaround for scenario 007 (bottle check)
+    if (007 == m_CurrentScenario)
+    {
+        m_SchedulerMachine->CheckNonRVErr4BottleCheck(EventId);
+    }
     bool ret = false;
     ret = RaiseError(0, EventId, m_CurrentScenario, true);
     if(!ret)
