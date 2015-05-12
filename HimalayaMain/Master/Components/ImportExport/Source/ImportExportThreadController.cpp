@@ -885,6 +885,9 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     QString TypeOfImport;
     bool ErrorFlag = false;
 
+    if (FileList.count() == 0)
+        return ;
+
     ImportTypeList.clear();
 
     // multiple files can be imported. At max three files can be imported.
