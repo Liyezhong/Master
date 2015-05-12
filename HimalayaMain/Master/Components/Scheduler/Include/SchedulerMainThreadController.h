@@ -50,6 +50,7 @@ namespace MsgClasses
     class CmdSavedServiceInfor;
     class CmdParaffinMeltPointChanged;
     class CmdBottleCheck;
+    class CmdTakeOutSpecimenFinished;
 }
 
 namespace DataManager
@@ -936,6 +937,18 @@ protected:
          */
         /****************************************************************************/
         void OnBottleCheck(Global::tRefType Ref, const MsgClasses::CmdBottleCheck & Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Declaration of function OnTakeOutSpecimenFinished
+         *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param Cmd =  MsgClasses::CmdTakeOutSpecimenFinished type parameter
+         *
+         *  \return from OnTakeOutSpecimenFinished
+         */
+        /****************************************************************************/
+        void OnTakeOutSpecimenFinished(Global::tRefType Ref, const MsgClasses::CmdTakeOutSpecimenFinished & Cmd);
+
     public:
         /****************************************************************************/
         /**

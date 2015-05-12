@@ -28,6 +28,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdTakeOutSpecimenFinished.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h"
@@ -1582,6 +1583,12 @@ void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinS
 void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 {
     MsgClasses::CmdKeepCassetteCount Command(COMMAND_TIME_OUT, CassetteCount);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
+
+void CDataConnector::SendTakeOutSpecimenFinishedCMD()
+{
+    MsgClasses::CmdTakeOutSpecimenFinished Command(COMMAND_TIME_OUT);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 

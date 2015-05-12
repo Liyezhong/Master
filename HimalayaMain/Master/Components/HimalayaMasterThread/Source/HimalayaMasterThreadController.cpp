@@ -75,6 +75,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdTakeOutSpecimenFinished.h"
 #include "Scheduler/Commands/Include/CmdSystemState.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdEnterCleaningProgram.h"
@@ -371,6 +372,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramAborted>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdTakeOutSpecimenFinished>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdParaffinMeltPointChanged>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdBottleCheck>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdUpdateProgramEndTime>(&m_CommandChannelGui);

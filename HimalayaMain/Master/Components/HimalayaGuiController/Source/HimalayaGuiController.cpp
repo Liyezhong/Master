@@ -78,6 +78,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRecoveryFromPowerFailure.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdUpdateProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdTakeOutSpecimenFinished.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdParaffinMeltPointChanged.h>
@@ -230,6 +231,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterExternalMessage<MsgClasses::CmdKeepCassetteCount, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdKeepCassetteCount>, this);
+    RegisterExternalMessage<MsgClasses::CmdTakeOutSpecimenFinished, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdTakeOutSpecimenFinished>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdLockStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdLockStatus>, this);

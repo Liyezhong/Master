@@ -539,6 +539,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
+                mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
                 //represent the retort as contaminated status
                 ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
 
@@ -618,6 +619,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
+                mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
                 ui->programPanelWidget->ChangeStartButtonToStartState();
                 ui->programPanelWidget->EnableStartButton(true);
                 ui->programPanelWidget->EnablePauseButton(false);
@@ -664,6 +666,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
                 mp_MessageDlg->SetButtonText(1, CommonString::strOK);
                 mp_MessageDlg->HideButtons();
                 mp_MessageDlg->exec();
+                mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
             }
             ui->programPanelWidget->EnablePauseButton(false);
             emit AddItemsToFavoritePanel();

@@ -57,6 +57,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAborted.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdTakeOutSpecimenFinished.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
@@ -2726,6 +2727,14 @@ void SchedulerMainThreadController::OnBottleCheck(Global::tRefType Ref, const Ms
     this->SendAcknowledgeOK(Ref);
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdBottleCheck(Cmd.GetTimeout())));
+    m_Mutex.unlock();
+}
+
+void SchedulerMainThreadController::OnTakeOutSpecimenFinished(Global::tRefType Ref, const MsgClasses::CmdTakeOutSpecimenFinished & Cmd)
+{
+    this->SendAcknowledgeOK(Ref);
+    m_Mutex.lock();
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdTakeOutSpecimenFinished(Cmd.GetTimeout())));
     m_Mutex.unlock();
 }
 

@@ -145,6 +145,15 @@ public:
     void RequestDayRunLogFileNames();
     /****************************************************************************/
     /*!
+     *  \brief  Declaration of function SendTakeOutSpecimenFinishedCMD
+     *
+     *
+     *  \return from SendTakeOutSpecimenFinishedCMD
+     */
+    /****************************************************************************/
+    void SendTakeOutSpecimenFinishedCMD();
+    /****************************************************************************/
+    /*!
      *  \brief  Declaration of function OnUserSettingsAck
      *
      *  \param Ref = Ref will not be used
@@ -304,6 +313,7 @@ public slots:
      */
     /****************************************************************************/
     void SendKeepCassetteCount(int CassetteCount);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramSelected
