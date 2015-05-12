@@ -63,8 +63,8 @@ private:
     QString m_strChangeMeltPointConfirm12Hrs;
     QString m_strConfirmChangeMeltingPoint;
     Core::CDataConnector *mp_DataConnector;
-    bool m_bClickedBtnBottleCheck;
     bool m_bEnableBottleCheck;
+    QString m_strBottleCheckConfirm;    ///<  Declaration of variable m_strBottleCheckConfirm
 
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
@@ -72,7 +72,6 @@ public:
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     void SetDataConnector(Core::CDataConnector *p_DataConnector);
-    void ResetClickedBtnBottleCheck();
 private:
     void InitTemperatureWidget();
     void RetranslateUI();

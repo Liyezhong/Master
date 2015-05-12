@@ -77,7 +77,6 @@ CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : Main
     mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_DataConnector(NULL),
-    m_bClickedBtnBottleCheck(false),
     m_bEnableBottleCheck(false)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -295,6 +294,10 @@ void CSystemSetupSettingsWidget::RetranslateUI()
    m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
    "You changed the Paraffin melting temperature. If you confirm by \"Yes\" the Paraffin melting time will be %1 hours until you can start another program run. By pressing \"No\" the current Paraffin bath temperature will be accepted and you can immediately start a protocol run.",
                                                               0, QApplication::UnicodeUTF8);
+
+   m_strBottleCheckConfirm = QApplication::translate("Reagent::CSystemSetupSettingsWidget",
+                                            "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate XX minutes.", 0, QApplication::UnicodeUTF8);
+
 }
 
 /****************************************************************************/
@@ -358,22 +361,22 @@ void CSystemSetupSettingsWidget::OnApply()
 
 void CSystemSetupSettingsWidget::OnBottleCheck()
 {
-    if (m_bClickedBtnBottleCheck)
-        return;
-
-    m_bClickedBtnBottleCheck = true;
-    emit BottleCheck();
+    MainMenu::CMessageDlg ConfirmationMessageDlg(this);
+    ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
+    ConfirmationMessageDlg.HideCenterButton();
+    if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+    {
+        emit BottleCheck();
+    }
 }
 
 void CSystemSetupSettingsWidget::EnableBottleCheckFlag()
 {
     m_bEnableBottleCheck = true;
     ResetButtons();
-}
-
-void CSystemSetupSettingsWidget::ResetClickedBtnBottleCheck()
-{
-    m_bClickedBtnBottleCheck = false;
 }
 
 } // end namespace Settings
