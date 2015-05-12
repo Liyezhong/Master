@@ -170,11 +170,7 @@ namespace Settings {
     /****************************************************************************/
     void CBottleCheckStatusDlg::UpdateCurrentStationStatus(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType)
     {
-        m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType],
-                                                      m_StationIDRowMap[stationID]);
 
-        QModelIndex index = m_BottleCheckStatusModel.index(m_StationIDRowMap[stationID], 0);
-        mp_TableWidget->scrollTo(index);
         if (DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType || DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
         {
             ui->btnClose->setEnabled(true);
@@ -183,6 +179,12 @@ namespace Settings {
                 UpdateStationNotProcess(stationID);
             }
         }
+
+        m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType],
+                                                      m_StationIDRowMap[stationID]);
+
+        QModelIndex index = m_BottleCheckStatusModel.index(m_StationIDRowMap[stationID], 0);
+        mp_TableWidget->scrollTo(index);
     }
 
     void CBottleCheckStatusDlg::UpdateStationNotProcess(const QString& stationID)
