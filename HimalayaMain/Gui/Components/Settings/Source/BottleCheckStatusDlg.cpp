@@ -45,6 +45,24 @@ namespace Settings {
         m_StationIDRowMap.insert("P2", 14);
         m_StationIDRowMap.insert("P3", 15);
 
+
+        m_RowStationIDMap.insert(0, "S1");
+        m_RowStationIDMap.insert(1, "S2");
+        m_RowStationIDMap.insert(2, "S3");
+        m_RowStationIDMap.insert(3, "S4");
+        m_RowStationIDMap.insert(4, "S5");
+        m_RowStationIDMap.insert(5, "S6");
+        m_RowStationIDMap.insert(6, "S7");
+        m_RowStationIDMap.insert(7, "S8");
+        m_RowStationIDMap.insert(8, "S9");
+        m_RowStationIDMap.insert(9, "S10");
+        m_RowStationIDMap.insert(10, "S11");
+        m_RowStationIDMap.insert(11, "S12");
+        m_RowStationIDMap.insert(12, "S13");
+        m_RowStationIDMap.insert(13, "P1");
+        m_RowStationIDMap.insert(14, "P2");
+        m_RowStationIDMap.insert(15, "P3");
+
         Inilialize();
         ui->btnClose->setEnabled(false);
 
@@ -173,7 +191,7 @@ namespace Settings {
         curRow++;
         for (int r = curRow; r < 16; r++)
         {
-            m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[DataManager::BOTTLECHECK_WILLNOTPROCESS], r);
+            m_BottleCheckStatusModel.UpdateStatusData(m_RowStationIDMap[r], m_BottleCheckStatusMap[DataManager::BOTTLECHECK_WILLNOTPROCESS], r);
         }
     }
 
