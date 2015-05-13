@@ -2661,10 +2661,12 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         m_CurProgramStepIndex = -1;
 
         paraffinMeltCostedtime = this->GetOvenHeatingTime();
-        if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
+        int paraffinStepIndex = Cmd.ParaffinStepIndex();
+        if (-1 != paraffinStepIndex)//has Paraffin
         {
             m_hasParaffin = true;
-            costedTimeBeforeParaffin = timeProposed - m_EndTimeAndStepTime.ParaffinStepsCostTime;
+            int timeParaffinSteps = GetLeftProgramStepsNeededTime(curProgramID, paraffinStepIndex);
+            costedTimeBeforeParaffin = timeProposed - timeParaffinSteps;
         }
 
         //cheack safe reagent
