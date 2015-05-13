@@ -134,10 +134,6 @@ void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool R
     {
         m_MaxMeltTime = TIME_12_HOURS;
     }
-    if(Reset)
-    {
-        SetStatus("HeatingOvenSlice","");
-    }
 
     if(QFile::exists("TEST_ISSAC")) // only for testing time of paraffin
     {
@@ -158,7 +154,16 @@ void CProgramStatusInfor::ResetOvenHeatingTime(quint32 ParaffinMeltPoint, bool R
             Test.close();
         }
     }
-    m_RemainTime = m_MaxMeltTime;
+    if(Reset)
+    {
+        SetStatus("HeatingOvenSlice","");
+        m_RemainTime = m_MaxMeltTime;
+    }
+    else
+    {
+        m_RemainTime = 0;
+    }
+
 }
 
 void CProgramStatusInfor::SetLastRVPosition(const DeviceControl::RVPosition_t& rvpos)

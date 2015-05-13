@@ -127,9 +127,10 @@ signals:
      *  \brief  Definition/Declaration of signal ParaffinMeltPointchanged
      *  \param lastMeltPoint = the paraffin melt point in last time
      *  \param currentMeltPoint = the new set paraffin melt point
+     *  \param reheat - true - reheat the paraffin
      */
     /****************************************************************************/
-    void ParaffinMeltPointchanged(int lastMeltPoint, int currentMeltPoint);
+    void ParaffinMeltPointchanged(int lastMeltPoint, int currentMeltPoint, bool reheat);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateProgram

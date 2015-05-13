@@ -2869,7 +2869,7 @@ void SchedulerMainThreadController::OnParaffinMeltPointChanged(Global::tRefType 
     {
         ParaffinMeltPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
     }
-    m_ProgramStatusInfor.ResetOvenHeatingTime(ParaffinMeltPoint,true);;
+    m_ProgramStatusInfor.ResetOvenHeatingTime(ParaffinMeltPoint,Cmd.IsReheating());;
     mp_HeatingStrategy->ResetTheOvenHeating();
 }
 

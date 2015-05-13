@@ -355,7 +355,11 @@ void CSystemSetupSettingsWidget::OnApply()
     ConfirmationMessageDlg.HideCenterButton();
     if (ConfirmationMessageDlg.exec())
     {
-        emit ParaffinMeltPointchanged(lastMeltPoint, temp);
+        emit ParaffinMeltPointchanged(lastMeltPoint, temp, true);
+    }
+    else
+    {
+        emit ParaffinMeltPointchanged(lastMeltPoint, temp, false);
     }
 }
 

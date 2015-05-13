@@ -52,7 +52,7 @@ public:
       * \param lastMeltPoint last melt point
       * \param currentMeltPoint current melt point
     */
-    CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint);
+    CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint, bool isreheating = true);
     /*!
       * \brief constructor
     */
@@ -83,6 +83,13 @@ public:
      */
     /****************************************************************************/
     inline int GetCurrentMeltPoint() const {return m_CurrentMeltPoint;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of IsReheating
+     *  \return  true - reheating, false -  do not reheating
+     */
+    /****************************************************************************/
+    inline bool IsReheating() const {return m_IsReheating;}
 private:
     /*!
       * \brief copy constructor
@@ -97,6 +104,7 @@ private:
     int m_LastMeltPoint; ///< last melt point
 
     int m_CurrentMeltPoint; ///< current melt point
+    bool m_IsReheating; ///< true - reheating, false -  do not reheating
 
  }; // end class CmdParaffinMeltPointChanged
 
@@ -114,6 +122,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinMeltPoin
     Cmd.CopyToStream(Stream);
     Stream << Cmd.GetLastMeltPoint();
     Stream << Cmd.GetCurrentMeltPoint();
+    Stream << Cmd.IsReheating();
     return Stream;
 }
 
@@ -131,6 +140,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdParaffinMeltPointChang
     Cmd.CopyFromStream(Stream);
     Stream >> Cmd.m_LastMeltPoint;
     Stream >> Cmd.m_CurrentMeltPoint;
+    Stream >> Cmd.m_IsReheating;
     return Stream;
 }
 

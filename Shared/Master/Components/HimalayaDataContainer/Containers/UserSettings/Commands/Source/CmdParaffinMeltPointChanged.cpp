@@ -24,13 +24,13 @@ namespace MsgClasses {
 
 QString CmdParaffinMeltPointChanged::NAME = "MsgClasses::CmdParaffinMeltPointChanged";
 
-CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut, int lastMeltPoint, int currentMeltPoint)
-    : Command(timeOut), m_LastMeltPoint(lastMeltPoint), m_CurrentMeltPoint(currentMeltPoint)
+CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(int timeOut, int lastMeltPoint, int currentMeltPoint, bool isreheating)
+    : Command(timeOut), m_LastMeltPoint(lastMeltPoint), m_CurrentMeltPoint(currentMeltPoint), m_IsReheating(isreheating)
 {
 }
 
 CmdParaffinMeltPointChanged::CmdParaffinMeltPointChanged(void)
-    : Command(0), m_LastMeltPoint(0), m_CurrentMeltPoint(0)
+    : Command(0), m_LastMeltPoint(0), m_CurrentMeltPoint(0), m_IsReheating(true)
 {
 }
 

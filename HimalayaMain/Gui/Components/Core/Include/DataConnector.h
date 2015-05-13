@@ -371,9 +371,10 @@ public slots:
      *  \brief  Definition/Declaration of SendResetOperationDays
      *  \param lastMeltPoint = the paraffin bath temprature in last set
      *  \param currentMeltPoint = the set paraffin bath temprature currently.
+     *  \parm reheat = true - reheat paraffin
      */
     /****************************************************************************/
-    void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint);
+    void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint, bool reheat);
     /****************************************************************************/
     /*!
      *  \brief  Declaration of SendBotttleCheck

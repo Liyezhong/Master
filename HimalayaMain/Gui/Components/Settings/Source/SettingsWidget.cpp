@@ -88,8 +88,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, TemperatureChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
 
-    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, ParaffinMeltPointchanged(int, int),
-                      mp_Data, SendParaffinTemperatureChanged(int, int));
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, ParaffinMeltPointchanged(int, int, bool),
+                      mp_Data, SendParaffinTemperatureChanged(int, int, bool));
 
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup, UpdateProgram(DataManager::CProgram &),
                       mp_Data, SendProgramUpdate(DataManager::CProgram &));
