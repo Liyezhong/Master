@@ -371,7 +371,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcRestart_AtDrain = STOP_DRAINING;
     m_RsMoveToPSeal = BUILD_VACUUM;
     m_PssmAbortingSeq = 0;
-    m_PssmAborted = false;
     m_PssmAbortingInMoveToTube = false;
     m_PssmMVTubeSeq = 0;
     m_EnableLowerPressure = Global::Workaroundchecking("LOWER_PRESSURE");
@@ -1861,8 +1860,6 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
 
 void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  DeviceControl::ReturnCode_t retCode)
 {
-    if(!m_PssmAborted)
-    {
         SchedulerStateMachine_t stateAtAbort = mp_SchedulerThreadController->GetCurrentStepState();
         switch (stateAtAbort)
         {
@@ -1878,7 +1875,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                 if (mp_ProgramPreTest->TasksAborted())
                 {
                     m_PssmAbortingSeq = 0;
-                    m_PssmAborted = true;
+                    mp_SchedulerThreadController->CompleteRsAbort();
                 }
 
             }
@@ -1933,7 +1930,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
                     if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
                         m_PssmAbortingSeq = 0;
-                         m_PssmAborted = true;
+                        mp_SchedulerThreadController->CompleteRsAbort();
                     }
                     else
                     {
@@ -1970,7 +1967,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
         case PSSM_RV_POS_CHANGE:
             if (mp_SchedulerThreadController->IsRVRightPosition(NEXT_TUBE_POS))
             {
-                m_PssmAborted = true;
+                mp_SchedulerThreadController->CompleteRsAbort();
             }
             else
             {
@@ -1982,73 +1979,14 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
         case PSSM_STEP_PROGRAM_FINISH:
         case PSSM_PROGRAM_FINISH:
         case PSSM_INIT:
-             m_PssmAborted = true;
+             mp_SchedulerThreadController->CompleteRsAbort();
              m_PssmAbortingSeq = 0;
             break;
         default:
-            m_PssmAborted = true;
+            mp_SchedulerThreadController->CompleteRsAbort();
             m_PssmAbortingSeq = 0;
             break;
         }
-    }
-    if(m_PssmAborted)
-    {
-        if(!mp_SchedulerThreadController->IsRetortContaminted())
-        {
-            if(PSSM_PRETEST == mp_SchedulerThreadController->GetCurrentStepState() )
-            {
-                if (0 == m_PssmAbortingSeq)
-                {
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
-                    m_PssmAbortingSeq++;
-                }
-                else if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
-                {
-                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                    {
-                        m_PssmAbortingSeq++;
-                    }
-                    else
-                    {
-                        OnTasksDone(false);
-                        m_PssmAbortingSeq = 0;
-                        return;
-
-                    }
-                }
-            }
-            else
-            {
-                m_PssmAbortingSeq = 2;
-            }
-
-            if(2 == m_PssmAbortingSeq)
-            {
-                CmdRVReqMoveToRVPosition* CmdMvRV = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
-                CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdMvRV);
-                m_PssmAbortingSeq++;
-            }
-            else if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-            {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    mp_SchedulerThreadController->CompleteRsAbort();
-                }
-                else
-                {
-                    OnTasksDone(false);
-                }
-                m_PssmAbortingSeq = 0;
-                m_PssmAborted = false;
-            }
-        }
-        else
-        {
-            mp_SchedulerThreadController->CompleteRsAbort();
-            m_PssmAborted = false;
-        }
-    }
 }
 
 void CSchedulerStateMachine::HandlePssmMoveTubeWorkflow(const QString& cmdName, DeviceControl::ReturnCode_t retCode, bool isAbortState)
@@ -2353,6 +2291,7 @@ void CSchedulerStateMachine::OnEnterIdleState()
     EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     EventHandler::StateHandler::Instance().setAvailability(false, EVENT_SCHEDULER_IN_ERROR_STATE);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
+    mp_SchedulerThreadController->OnEnterIdleState();
     mp_SchedulerThreadController->StartTimer();
 }
 

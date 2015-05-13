@@ -197,8 +197,7 @@ private:
         REALSE_PRESSRE
     }RS_MOVESEAL_t;
     RS_MOVESEAL_t   m_RsMoveToPSeal;                                            ///< the RsMoveToPSealp3.5 state step
-
-    bool    m_PssmAborted;                                                      ///< the program aborted
+                                                  ///< the program aborted
     quint8  m_PssmAbortingSeq;                                                  ///< Sequence of Rs_Abort
     bool    m_PssmAbortingInMoveToTube;                                         ///< Flag to indicate if Aborting is in Move_To_Tube
     bool    m_EnableLowerPressure;                                              ///< Enable lower pressure

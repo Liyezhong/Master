@@ -159,6 +159,10 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsSendMsgForWaitHeatRV = false;
     m_IsErrorStateForHM = false;
     m_IsProcessing = false;
+    m_IdleState = IDLE_HEATING_RV;
+    m_RVPositioinChSeqForIdle = 0;
+    m_PressureStartTime = 0;
+    m_IsTakeSpecimen = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -201,6 +205,9 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdBottleCheck,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnBottleCheck, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdTakeOutSpecimenFinished,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnTakeOutSpecimenFinished, this);
 
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, SchedulerMainThreadController>
             (&SchedulerMainThreadController::OnAcknowledge, this);
@@ -351,6 +358,11 @@ void SchedulerMainThreadController::OnTickTimer()
         return;
     }
 
+    if (CTRL_CMD_TAKEOUT_SPECIMEN_FINISH == newControllerCmd)
+    {
+        m_IsTakeSpecimen = true;
+    }
+
     // For remote alarm and local alarm checking
     if (CTRL_CMD_RS_CHECKREMOTEALARMSTATUS == newControllerCmd)
     {
@@ -475,7 +487,8 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             {
                 m_ProgramStatusInfor.SetErrorFlag(0);
             }
-            m_IsWaitHeatingRV = true;
+            OnEnterIdleState();
+            m_IsTakeSpecimen = true;
             m_SchedulerMachine->SendSchedulerInitComplete();
             MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_PASSED));
             Q_ASSERT(commandPtr);
@@ -493,6 +506,20 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         m_SchedulerMachine->SendErrorSignal();
     }
+}
+
+void SchedulerMainThreadController::OnEnterIdleState()
+{
+    //for bottle check and Error restart in idle state , the cmd take out specimen is OK
+    if((4 == m_CurrentScenario && SM_IDLE == m_CurrentStepState) || 7 == m_CurrentScenario)
+    {
+        m_IsTakeSpecimen = true;
+    }
+    m_IsWaitHeatingRV = true;
+    m_IsSendMsgForWaitHeatRV = false;
+    m_IdleState = IDLE_HEATING_RV;
+    m_RVPositioinChSeqForIdle = 0;
+    m_PressureStartTime = 0;
 }
 
 void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -574,32 +601,145 @@ void SchedulerMainThreadController::HandleInitState(ControlCommandType_t ctrlCmd
     }
 }
 
+void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
+{
+    Q_UNUSED(ctrlCmd);
+    if(m_ProgramStatusInfor.IsRetortContaminted())
+    {
+       if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
+       {
+           MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+           Q_ASSERT(commandPtr);
+           Global::tRefType Ref = GetNewCommandRef();
+           SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+           m_IsWaitHeatingRV = false;
+           m_IsSendMsgForWaitHeatRV = false;
+       }
+       else
+       {
+           if(!m_IsSendMsgForWaitHeatRV)
+           {
+               MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
+               Q_ASSERT(commandPtr);
+               Global::tRefType Ref = GetNewCommandRef();
+               SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+               m_IsSendMsgForWaitHeatRV = true;
+           }
+       }
+    }
+    else
+    {
+        if(!m_IsSendMsgForWaitHeatRV)
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+            m_IsSendMsgForWaitHeatRV = true;
+        }
+        if(!m_IsTakeSpecimen)
+            return;
+        ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+        QString cmdName = "";
+
+        if(cmd != NULL)
+        {
+            if(!(cmd->GetResult(retCode)))
+            {
+                retCode = DCL_ERR_UNDEFINED;
+            }
+            cmdName = cmd->GetName();
+        }
+
+        switch(m_IdleState)
+        {
+            case IDLE_HEATING_RV:
+                if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
+                {
+                    m_IdleState = IDLE_DRAIN_10S;
+                }
+                break;
+            case IDLE_DRAIN_10S:
+                if(0 == m_RVPositioinChSeqForIdle)
+                {
+                    CmdALDraining* cmd  = new CmdALDraining(500, this);
+                    cmd->SetDelayTime(10 * 1000);
+                    cmd->SetIgnorePressure(true);
+                    m_SchedulerCommandProcessor->pushCmd(cmd);
+                    m_RVPositioinChSeqForIdle++;
+                }
+                else if ("Scheduler::ALDraining" == cmdName)
+                {
+                    m_RVPositioinChSeqForIdle = 0;
+                    m_IdleState = IDLE_MOVE_RV_INITIALIZE;
+                }
+                break;
+            case IDLE_MOVE_RV_INITIALIZE:
+                if(0 == m_RVPositioinChSeqForIdle)
+                {
+                    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+                    m_RVPositioinChSeqForIdle++;
+                }
+                else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+                {
+                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_IdleState = IDLE_MOVE_TUBE_2;
+                        RaiseEvent(EVENT_SCHEDULER_MOVETO_INITIALIZE_POSITION_SUCCESS);
+                    }
+                    else
+                    {
+                        SendOutErrMsg(retCode);
+                    }
+                    m_RVPositioinChSeqForIdle = 0;
+                }
+                break;
+            case IDLE_MOVE_TUBE_2:
+                if(0 == m_RVPositioinChSeqForIdle)
+                {
+                   CmdRVReqMoveToRVPosition *CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
+                    CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
+                    m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
+                    m_RVPositioinChSeqForIdle++;
+                }
+                else if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    {
+                        m_IdleState = IDLE_READY_OK;
+                        m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
+                    }
+                    else
+                    {
+                        SendOutErrMsg(retCode);
+                    }
+                    m_RVPositioinChSeqForIdle = 0;
+                }
+                break;
+            case IDLE_READY_OK:
+                {
+                    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+                    Q_ASSERT(commandPtr);
+                    Global::tRefType Ref = GetNewCommandRef();
+                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                    m_IsWaitHeatingRV = false;
+                    m_IsSendMsgForWaitHeatRV = false;
+                    m_IsTakeSpecimen = false;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
     m_CurrentStepState = SM_IDLE;
     Q_UNUSED(cmd)
     if(m_IsWaitHeatingRV)
     {
-        if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
-        {
-            MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            m_IsWaitHeatingRV = false;
-            m_IsSendMsgForWaitHeatRV = false;
-        }
-        else
-        {
-            if(!m_IsSendMsgForWaitHeatRV)
-            {
-                MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-                m_IsSendMsgForWaitHeatRV = true;
-            }
-        }
+        PrepareForIdle(ctrlCmd, cmd);
         return;
     }
     if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
@@ -801,6 +941,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         Q_ASSERT(commandPtrFinish);
                         Global::tRefType Ref = GetNewCommandRef();
                         SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                        m_IsTakeSpecimen = true;
                     }
                 }
                 m_SchedulerMachine->SendRunComplete();
@@ -1300,6 +1441,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
         if(m_IsCleaningProgram)
         {
+            m_IsTakeSpecimen = true;
             m_IsCleaningProgram = false;
             m_ProgramStatusInfor.SetProgramFinished();
         }
@@ -1604,6 +1746,13 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     {
         return CTRL_CMD_BOTTLE_CHECK;
     }
+
+    MsgClasses::CmdTakeOutSpecimenFinished* pCmdTakeOutSpecimenFinished = dynamic_cast<MsgClasses::CmdTakeOutSpecimenFinished*>(pt.GetPointerToUserData());
+    if(pCmdTakeOutSpecimenFinished)
+    {
+        return CTRL_CMD_TAKEOUT_SPECIMEN_FINISH;
+    }
+
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
     if(pCmdProgramAction)
     {
@@ -3260,15 +3409,7 @@ bool SchedulerMainThreadController::IsRVRightPosition(RVPosition_type type)
     }
     else if(NEXT_TUBE_POS == type)
     {
-        if( m_CurProgramID.at(0) != 'C' && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) &&
-                 "RG5" != m_CurProgramStepInfo.reagentGroup && "RG6" != m_CurProgramStepInfo.reagentGroup)
-         {
-             targetPos = RV_TUBE_2;
-         }
-         else
-         {
-             targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-         }
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
     }
 
     if (m_PositionRV == targetPos)
@@ -3385,7 +3526,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
     case CDS_WAIT_COOLDWON:
         if(m_TempRTBottom < 40 && m_TempRTSide < 40)
         {
-            m_CleaningDry.CurrentState = CDS_MOVE_TO_RV_TUBE_2;
+            m_CleaningDry.CurrentState = CDS_SUCCESS;
             break;
         }
 
@@ -3395,30 +3536,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
             Q_ASSERT(CmdCoolingDownFaild);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(CmdCoolingDownFaild));
-            m_CleaningDry.CurrentState = CDS_MOVE_TO_RV_TUBE_2;
-        }
-        break;
-    case CDS_MOVE_TO_RV_TUBE_2:
-        CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
-        CmdMvRV->SetRVPosition(DeviceControl::RV_TUBE_2);
-        m_SchedulerCommandProcessor->pushCmd(CmdMvRV);
-        m_CleaningDry.CurrentState = CDS_WAIT_HIT_RV_TUBE_2;
-        break;
-    case CDS_WAIT_HIT_RV_TUBE_2:
-        if(cmd != NULL && ("Scheduler::RVReqMoveToRVPosition" == cmd->GetName()))
-        {
-            (void)cmd->GetResult(retCode);
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_CleaningDry.CurrentState = CDS_SUCCESS;
-                m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
-            }
-            else
-            {
-                m_CleaningDry.CurrentState = CDS_READY;
-                m_CleaningDry.StepStartTime = 0;
-                SendOutErrMsg(retCode);
-            }
+            m_CleaningDry.CurrentState = CDS_SUCCESS;
         }
         break;
     case CDS_SUCCESS:
@@ -3454,17 +3572,8 @@ bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
     else if(NEXT_TUBE_POS == type)
     {
         //get target position here
-        if( m_CurProgramID.at(0) != 'C' && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) &&
-                "RG5" != m_CurProgramStepInfo.reagentGroup && "RG6" != m_CurProgramStepInfo.reagentGroup)
-        {
-            targetPos = RV_TUBE_2;
-            RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<"S2");
-        }
-        else
-        {
-            targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-            RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
-        }
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+        RaiseEvent(EVENT_SCHEDULER_MOVE_RV_TUBE_POSITION,QStringList()<<m_CurProgramStepInfo.nextStationID);
     }
 
     if(RV_UNDEF != targetPos)
@@ -4767,10 +4876,20 @@ void SchedulerMainThreadController::SendSafeReagentFinishedCmd()
     }
     else
     {
-        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT));
-        Q_ASSERT(commandPtrFinish);
-        Ref = GetNewCommandRef();
-        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        if(m_ProgramStatusInfor.IsRetortContaminted())
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        }
+        else
+        {
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+        }
     }
     m_ProgramStatusInfor.SetErrorFlag(0);
 }
@@ -4780,10 +4899,6 @@ void SchedulerMainThreadController::CompleteRsAbort()
     //program finished
     AllStop();
 
-    if(!m_ProgramStatusInfor.IsRetortContaminted())
-    {
-        m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
-    }
     m_SchedulerMachine->SendRunComplete();
     // tell the main controller the program has been aborted
     MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));

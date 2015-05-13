@@ -252,8 +252,6 @@ typedef enum
     CDS_STOP_VACUUM,
     CDS_STOP_HEATING,
     CDS_WAIT_COOLDWON,
-    CDS_MOVE_TO_RV_TUBE_2,
-    CDS_WAIT_HIT_RV_TUBE_2,
     CDS_SUCCESS,
     CDS_ERROR
 }DryStepsStateMachine;
@@ -269,6 +267,20 @@ typedef struct
     quint64 StepStartTime;
     bool warningReport;
 } CleaningDry_t;
+
+/****************************************************************************/
+/*!
+ *  \brief enum for Cleaning Dry step
+ */
+/****************************************************************************/
+typedef enum
+{
+    IDLE_HEATING_RV,
+    IDLE_DRAIN_10S,
+    IDLE_MOVE_RV_INITIALIZE,
+    IDLE_MOVE_TUBE_2,
+    IDLE_READY_OK
+}IdleStepState_t;
 
     /****************************************************************************/
     /**
@@ -366,6 +378,10 @@ typedef struct
         bool    m_IsErrorStateForHM;                          ///< enter the error state
         bool    m_IsProcessing;                               ///< in processing
         QVector< QPair<QString, QString> >  m_DashboardStationList;     ///< The whole station List of dash board
+        IdleStepState_t m_IdleState;                          ///< prepare for idle step state
+        qint8   m_RVPositioinChSeqForIdle;                    ///< RVPositioin sequence for idle
+        qint64  m_PressureStartTime;                          ///< pressure start time for idle
+        bool    m_IsTakeSpecimen;                             ///< wether take of specimen
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -647,6 +663,16 @@ typedef struct
           */
          /****************************************************************************/
          void SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType);
+
+         /****************************************************************************/
+         /*!
+          *  \brief prepare for idle
+          *  \param ctrlCmd command from GUI
+          *  \param cmd command from DC
+          *
+          */
+         /****************************************************************************/
+         void PrepareForIdle(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
 
 signals:
          /****************************************************************************/
@@ -1494,7 +1520,22 @@ protected:
          */
         /****************************************************************************/
         bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Send bottleCheck reply
+         *  \param stationId - QString
+         *  \param type - DataManager::BottleCheckStatusType_t
+         */
+        /****************************************************************************/
         void SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type);
+
+        /****************************************************************************/
+        /*!
+         *  \brief  On enter idle state
+         */
+        /****************************************************************************/
+        void OnEnterIdleState();
 
     public slots:
 

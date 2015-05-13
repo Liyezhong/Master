@@ -117,11 +117,11 @@
             </Function>
             <Function Key="Heating" name="RTTop" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="0"/>
+                <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="92"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
-                <Parameter Key="ResetTime" Value="30000"/>
+                <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="254,274,284"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
