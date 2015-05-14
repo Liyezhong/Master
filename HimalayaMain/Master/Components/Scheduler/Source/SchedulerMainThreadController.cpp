@@ -662,13 +662,22 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
             case IDLE_DRAIN_10S:
                 if(0 == m_RVPositioinChSeqForIdle)
                 {
-                    CmdALDraining* cmd  = new CmdALDraining(500, this);
-                    cmd->SetDelayTime(10 * 1000);
-                    cmd->SetIgnorePressure(true);
-                    m_SchedulerCommandProcessor->pushCmd(cmd);
+                    CmdALPressure* CmdPressure = new CmdALPressure(500, this);
+                    CmdPressure->SetTargetPressure(40.0);
+                    m_SchedulerCommandProcessor->pushCmd(CmdPressure);
+                    m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
                     m_RVPositioinChSeqForIdle++;
+                    LogDebug("Drain for 10 seconds.");
                 }
-                else if ("Scheduler::ALDraining" == cmdName)
+                else if(1 == m_RVPositioinChSeqForIdle)
+                {
+                    if(QDateTime::currentMSecsSinceEpoch() - m_PressureStartTime > 10*1000)
+                    {
+                        ReleasePressure();
+                        m_RVPositioinChSeqForIdle++;
+                    }
+                }
+                else if ("Scheduler::ALReleasePressure" == cmdName)
                 {
                     m_RVPositioinChSeqForIdle = 0;
                     m_IdleState = IDLE_MOVE_RV_INITIALIZE;
