@@ -498,8 +498,11 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
         ui->programPanelWidget->EnablePauseButton(false);
         //show all Stations and pipes
         m_StationList.clear();
-        QString programID("");
-        emit ProgramSelected(programID, m_StationList);
+        m_SelectedProgramId = "";
+        int asapEndTime = 0;
+        emit ProgramSelected(m_SelectedProgramId, m_StationList);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
+
         //switch to the dashboard page
         mp_MainWindow->SetTabWidgetIndex();
         emit SwitchToFavoritePanel();
@@ -561,8 +564,10 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 ui->programPanelWidget->EnablePauseButton(false);
                 //show all Stations and pipes
                 m_StationList.clear();
-                QString programID("");
-                emit ProgramSelected(programID, m_StationList);
+                m_SelectedProgramId = "";
+                int asapEndTime = 0;
+                emit ProgramSelected(m_SelectedProgramId, m_StationList);
+                emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
                 //switch to the dashboard page
                 mp_MainWindow->SetTabWidgetIndex();
                 emit SwitchToFavoritePanel();
@@ -675,8 +680,11 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
             ui->programPanelWidget->EnableStartButton(false);
 
             m_StationList.clear();
-            QString programID("");
-            emit ProgramSelected(programID, m_StationList);
+            m_SelectedProgramId = "";
+            int asapEndTime = 0;
+            emit ProgramSelected(m_SelectedProgramId, m_StationList);
+            emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
+
         }
     }
 
