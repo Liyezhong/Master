@@ -377,6 +377,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_ErrorRcRestartSeq = 0;
     m_TimeReEnterFilling = 0;
     m_BottleCheckSeq = 0;
+    m_PressureCalibrationSeq = 0;
+    m_ReleasePressureTime = 0;
+    m_PressureCalibrationCounter = 0;
+    m_PressureDriftOffset = 0.0;
     m_NonRVErrorOccured = false;
 }
 
@@ -440,6 +444,10 @@ void CSchedulerStateMachine::OnEnterErrorRcRestartState()
 void CSchedulerStateMachine::OnEnterBottleCheckState()
 {
     m_BottleCheckSeq = 0;
+    m_PressureCalibrationSeq = 0;
+    m_ReleasePressureTime = 0;
+    m_PressureCalibrationCounter = 0;
+    m_PressureDriftOffset = 0.0;
     m_NonRVErrorOccured = false;
     m_BottleCheckStationIter = mp_SchedulerThreadController->GetDashboardStationList().begin();
     mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
@@ -1794,6 +1802,55 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
     switch (m_BottleCheckSeq)
     {
     case 0:
+        if (0 == m_PressureCalibrationSeq)
+        {
+            mp_SchedulerThreadController->LogDebug("Begin pressure calibration for Bottle check");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            m_PressureCalibrationSeq++;
+        }
+        else if (1 == m_PressureCalibrationSeq)
+        {
+            if ("Scheduler::ALReleasePressure" == cmdName)
+            {
+                m_PressureCalibrationSeq++;
+                m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
+            }
+        }
+        else if (2 == m_PressureCalibrationSeq)
+        {
+            if ((QDateTime::currentMSecsSinceEpoch() - m_ReleasePressureTime) >= 20*1000)
+            {
+                m_PressureCalibrationSeq++;
+            }
+        }
+        else if (3 == m_PressureCalibrationSeq)
+        {
+            // Firstly, check if calibration has been 3 times
+            if (3 == m_PressureCalibrationCounter)
+            {
+                mp_SchedulerThreadController->LogDebug("Pressure calibration for Bottle check failed");
+                mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 007, true);
+                this->SendRunComplete();
+            }
+
+            m_PressureCalibrationCounter++;
+            qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
+
+            if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
+            {
+                mp_SchedulerThreadController->LogDebug("Pressure calibration for Bottle check completes");
+                m_BottleCheckSeq++;
+            }
+            else if (qAbs(currentPressure) <= 2.0) //offset the calibration
+            {
+                m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
+                mp_SchedulerThreadController->SetLastPressureOffset(m_PressureDriftOffset);
+                m_PressureCalibrationSeq = 0;
+            }
+        }
+        break;
+    case 1:
         if (m_BottleCheckStationIter != mp_SchedulerThreadController->GetDashboardStationList().end())
         {
             RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_BottleCheckStationIter->first);
@@ -1815,7 +1872,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             this->SendRunComplete();
         }
         break;
-    case 1:
+    case 2:
         if ("Scheduler::IDBottleCheck" == cmdName)
         {
             if (m_NonRVErrorOccured)
@@ -1824,7 +1881,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 this->SendRunComplete();
                 return;
             }
-            m_BottleCheckSeq = 0;
+            m_BottleCheckSeq = 1;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_PASSED);
@@ -2125,31 +2182,13 @@ void CSchedulerStateMachine::CheckNonRVErr4BottleCheck(DeviceControl::ReturnCode
     mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 007, true);
 
     if( DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == retCode ||
-        DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == retCode ||
-        DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED == retCode ||
-        DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED == retCode ||
-        DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == retCode ||
-        DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL == retCode ||
-        DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE == retCode ||
-        DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE == retCode ||
-        DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE == retCode ||
-        DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE == retCode ||
-        DCL_ERR_DEV_LA_RELEASING_TIMEOUT == retCode ||
-        DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN == retCode)
+            DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == retCode ||
+            DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == retCode ||
+            DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == retCode ||
+            DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE == retCode ||
+            DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE == retCode ||
+            DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE == retCode ||
+            DCL_ERR_DEV_LA_RELEASING_TIMEOUT == retCode)
     {
         m_NonRVErrorOccured = true;
     }
