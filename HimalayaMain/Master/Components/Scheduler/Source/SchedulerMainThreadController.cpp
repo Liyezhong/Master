@@ -663,7 +663,7 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                 if(0 == m_RVPositioinChSeqForIdle)
                 {
                     CmdALPressure* CmdPressure = new CmdALPressure(500, this);
-                    CmdPressure->SetTargetPressure(40.0);
+                    CmdPressure->SetTargetPressure(30.0);
                     m_SchedulerCommandProcessor->pushCmd(CmdPressure);
                     m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
                     m_RVPositioinChSeqForIdle++;
