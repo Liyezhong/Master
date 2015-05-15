@@ -2242,7 +2242,7 @@ bool SchedulerMainThreadController::GetSafeReagentForSpecial(int index, QString&
  */
 bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList)
 {
-    QList<QString> fixationStationList, dehydratingAbsstationList;
+//    QList<QString> fixationStationList, dehydratingAbsstationList;
     CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
     if (!pReagentList)
         return false;
@@ -2276,36 +2276,16 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
             if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
             {
-                if (reagentGroup->GetGroupID() == "RG1")//Fixation
-                {
-                    fixationStationList.append(pDashboardStation->GetDashboardStationID());
-                }
 
                 if (reagentGroup->GetGroupID() == "RG3")//Dehydrating,diluted
                 {
                     stationList.append(pDashboardStation->GetDashboardStationID());
-                }
-
-                if (reagentGroup->GetGroupID() == "RG4")//Dehydrating absolute
-                {
-                    dehydratingAbsstationList.append(pDashboardStation->GetDashboardStationID());
                 }
                 continue;
             }
 
         }
     }// end of for
-
-    if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
-    {
-        if (stationList.isEmpty())//no Dehydrating,diluted
-        {
-            if (!fixationStationList.isEmpty())
-                stationList = fixationStationList;
-            else
-                stationList = dehydratingAbsstationList;
-        }
-    }
 
     return true;
 }
