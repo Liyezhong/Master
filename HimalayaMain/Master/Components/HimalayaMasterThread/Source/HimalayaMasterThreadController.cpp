@@ -823,6 +823,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         return;
 
     bool SendAckOK = false;
+    if (IsImport && ImportTypeList.count() == 0) {
+        SendAckOK = true;
+    }
     if (IsImport && ImportTypeList.count() > 0) {
         // check the type of Impor
         if ((ImportTypeList.contains("User") == 0) || (ImportTypeList.contains("Service") == 0) || (ImportTypeList.contains("Leica") == 0)) {
