@@ -139,8 +139,11 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
     if (p_DataConnector)
     {
         mp_DataConnector = p_DataConnector;
+
         CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                           this, EnableBottleCheckFlag());
+        CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
+                          this, DisableBottleCheckFlag());
 
     }
 }
@@ -296,7 +299,7 @@ void CSystemSetupSettingsWidget::RetranslateUI()
                                                               0, QApplication::UnicodeUTF8);
 
    m_strBottleCheckConfirm = QApplication::translate("Reagent::CSystemSetupSettingsWidget",
-                                            "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate XX minutes.", 0, QApplication::UnicodeUTF8);
+                                            "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate 7 minutes.", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -382,5 +385,12 @@ void CSystemSetupSettingsWidget::EnableBottleCheckFlag()
     m_bEnableBottleCheck = true;
     ResetButtons();
 }
+
+void CSystemSetupSettingsWidget::DisableBottleCheckFlag()
+{
+    m_bEnableBottleCheck = false;
+    ResetButtons();
+}
+
 
 } // end namespace Settings

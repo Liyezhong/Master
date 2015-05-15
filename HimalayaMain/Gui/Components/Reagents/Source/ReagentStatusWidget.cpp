@@ -515,7 +515,7 @@ void CReagentStatusWidget::RetranslateUI()
                                              "Would you like to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
 
     m_strBottleCheckConfirm = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate XX minutes.", 0, QApplication::UnicodeUTF8);
+                                             "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate 7 minutes.", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);
@@ -597,6 +597,8 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
     mp_DataConnector = p_DataConnector;
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                       this, EnableBottleCheckFlag());
+    CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
+                      this, DisableBottleCheckFlag());
     mp_ReagentList = p_ReagentList;
     // set the reagent ist to the model
     m_ReagentStatusModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
@@ -639,5 +641,11 @@ void CReagentStatusWidget::EnableBottleCheckFlag()
 {
     m_EnableBottleCheck = true;
 }
+
+void CReagentStatusWidget::DisableBottleCheckFlag()
+{
+    m_EnableBottleCheck = false;
+}
+
 
 }

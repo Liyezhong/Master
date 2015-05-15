@@ -363,11 +363,19 @@ void CProgramPanelWidget::SwitchToProgramRunningStatus(const MsgClasses::CmdReco
 void CProgramPanelWidget::ProgramStartReady(bool bSet)
 {
     m_ProgramStartReady = bSet;
+    if (m_ProgramStartReady)
+    {
+        m_bWaitRotaryValveHeatingPrompt = false;
+    }
 }
 
 void CProgramPanelWidget::WaitRotaryValveHeatingPrompt(bool bSet)
 {
     m_bWaitRotaryValveHeatingPrompt = bSet;
+    if (m_bWaitRotaryValveHeatingPrompt)
+    {
+        m_ProgramStartReady = false;
+    }
 }
 
 void CProgramPanelWidget::OnPreTestDone()
