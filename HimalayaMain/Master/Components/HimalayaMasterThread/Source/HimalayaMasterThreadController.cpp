@@ -321,6 +321,7 @@ void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
     m_CommandChannelImportExport.setParent(NULL);
 
     if (m_ExpectedShutDownRef == 0) { //!< In case DCP was not created, the Dev clean up command wont be sent, hence we shutdown here !
+        Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG2, true);
         Shutdown();
     }
 }
@@ -356,6 +357,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 }
 void HimalayaMasterThreadController::ShutdownOnPowerFail()
 {
+    Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG13, true);
     InitiateShutdown();
 }
 /****************************************************************************/
@@ -447,6 +449,7 @@ void HimalayaMasterThreadController::InitializeGUI() {
 /****************************************************************************/
 void HimalayaMasterThreadController::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack) {
     if ((Global::RefManager<Global::tRefType>::INVALID != m_ExpectedShutDownRef) && (m_ExpectedShutDownRef == Ref) && Ack.GetStatus()) {
+        Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG1, true);
         Shutdown();
     }
 }
@@ -493,16 +496,19 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
         // send error message
         Global::EventObject::Instance().RaiseEvent(E);
         // and request exit
+        Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG4, true);
         Shutdown();
     } catch(const std::bad_alloc &) {
         // destroy controllers and threads
         // send error message
             Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_MEMORY_ALLOCATION, FILE_LINE_LIST);
         // and request exit
+            Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG8, true);
         Shutdown();
     } catch(...) {
         // destroy controllers and threads
         // and request exit
+            Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG9, true);
         Shutdown();
     }
         m_ControllerCreationFlag = true;
@@ -1123,6 +1129,7 @@ void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, 
     qDebug() << "In the event handling for CMD system Action for event " << Cmd.GetEventID();
     if(Cmd.GetAction() == Global::ACNTYPE_SHUTDOWN || Cmd.GetActionString().compare("RS_Shutdown") == 0){
         qDebug()<<"Shutting Down system";
+        Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG7, true);
         Shutdown();
     }
 }
@@ -1132,6 +1139,7 @@ void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, 
 void HimalayaMasterThreadController::ShutdownHandler(Global::tRefType Ref, const Global::CmdShutDown &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
     SendAcknowledgeOK(Ref, AckCommandChannel);
+    Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG14, true);
     InitiateShutdown(Cmd.GetReboot());
 }
 
@@ -1150,6 +1158,7 @@ void HimalayaMasterThreadController::PrepareShutdownHandler(Global::tRefType Ref
         m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
     }
     Global::UpdateRebootFile(m_BootConfigFileContent);
+    Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG11, true);
     InitiateShutdown();
 }
 
@@ -1162,6 +1171,7 @@ void HimalayaMasterThreadController::Reboot()
     RebootCountStr = QString::number(RebootCount);
     m_BootConfigFileContent.insert("Reboot_Count", RebootCountStr);
     Global::UpdateRebootFile(m_BootConfigFileContent);
+    Global::EventObject().Instance().RaiseEvent(Global::EVENT_SHUTDOWN_ON_CHECK_FLAG10, true);
     InitiateShutdown(true);
 }
 /****************************************************************************/

@@ -814,6 +814,48 @@
 		<Event Code="" ErrorID="16846864" ErrorType="Info" AlarmType="" Name="EVENT_SHUTDOWN_ON_SYSTEM_ERROR" LogLevel="Low" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="67176218" ButtonType="" StatusBar=""/>
 		</Event>
+         <Event Code="" ErrorID="16846865" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG1" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846865" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846866" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG2" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846866" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846867" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG3" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="168468667" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846868" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG4" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="168468668" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846869" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG5" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="168468669" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846870" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG6" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846870" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846871" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG7" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846871" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846872" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG8" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846872" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846873" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG9" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846873" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846874" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG10" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846874" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846875" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG11" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846875" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846876" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG12" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846876" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846877" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG13" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846877" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="16846878" ErrorType="INFO" AlarmType="No" Name="EVENT_SHUTDOWN_ON_CHECK_FLAG14" LogLevel="Low" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="16846878" ButtonType="" StatusBar=""/>
+	    </Event>
 		<Event Code="" ErrorID="33619971" ErrorType="INFO" AlarmType="" Name="EVENT_HIMALAYA_START" LogLevel="" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="33619971" ButtonType="" StatusBar=""/>
 		</Event>
