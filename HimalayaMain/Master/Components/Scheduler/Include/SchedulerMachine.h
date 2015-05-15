@@ -206,6 +206,10 @@ private:
     quint8  m_ErrorRcRestartSeq;                                                ///< Sequence of Error_RC_Restart
     qint64  m_TimeReEnterFilling;                                               ///< Start time to re-enter filling
     quint8  m_BottleCheckSeq;                                                   ///< Sequence of Bottle check
+    quint8  m_PressureCalibrationSeq;                                           ///< Sequence of pressure calibration in Bottle check
+    qint64  m_ReleasePressureTime;                                              ///< release pressure time in Bottle check
+    quint8  m_PressureCalibrationCounter;                                       ///< counter of pressure calibration in Bottle check
+    qreal   m_PressureDriftOffset;                                              ///< pressure drift offset in Bottle check
     bool    m_NonRVErrorOccured;                                                ///< Non RV related error occured
     QVector< QPair<QString, QString> >::iterator m_BottleCheckStationIter;      ///< Iterator of Bottle check station list
 

@@ -211,6 +211,7 @@
         </error>
         <error errorid="513050502">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
 			<scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -259,6 +260,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513010203">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="203"/>
             <scenario type="single" id="281"/>
             <scenario type="single" id="282"/>
@@ -474,6 +476,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513010223">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="203"/>
             <scenario type="single" id="281"/>
             <scenario type="single" id="282"/>
@@ -548,6 +551,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513010243">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="203"/>
             <scenario type="single" id="281"/>
             <scenario type="single" id="282"/>
@@ -742,6 +746,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513020023">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -790,6 +795,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513020033">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -838,6 +844,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513020043">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -855,6 +862,7 @@
             <scenario type="range" startid="271" endid="277"/>
         </error>
         <error errorid="513020181">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -889,6 +897,7 @@
             <scenario type="range" startid="271" endid="277"/>
         </error>
         <error errorid="513020183">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -911,6 +920,7 @@
     </event>
     <event eventid="500030001">
         <error errorid="513030001">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="200"/>
         </error>
     </event>
@@ -937,6 +947,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513030012">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="283"/>
             <scenario type="single" id="285"/>
             <scenario type="single" id="287"/>
@@ -956,6 +967,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="511030022">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="287"/>
             <scenario type="single" id="297"/>
         </error>
@@ -971,6 +983,7 @@
             <scenario type="range" startid="271" endid="276"/>
         </error>
         <error errorid="513030033">
+            <scenario type="single" id="003"/>
             <scenario type="range" startid="281" endid="286"/>
             <scenario type="range" startid="291" endid="296"/>
         </error>
@@ -1018,6 +1031,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513030043">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1066,6 +1080,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513030053">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1114,6 +1129,7 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513030063">
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1506,6 +1522,7 @@
         </error>
         <error errorid="513050101">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1524,6 +1541,7 @@
         </error>
         <error errorid="513050013">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1541,6 +1559,7 @@
         </error>
         <error errorid="513051301">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1559,6 +1578,7 @@
         </error>
         <error errorid="513050313">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -1577,6 +1597,7 @@
         </error>
         <error errorid="513051321">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
