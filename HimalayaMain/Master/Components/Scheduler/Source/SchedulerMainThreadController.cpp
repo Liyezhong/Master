@@ -3262,7 +3262,11 @@ void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_Dat
     {
         QString stationId = iter.value()->GetDashboardStationID();
         QString reagentId = iter.value()->GetDashboardReagentID();
-        QString reagentGroupId = mp_DataManager->GetReagentList()->GetReagent(reagentId)->GetGroupID();
+        QString reagentGroupId = "";
+        if (!reagentId.isEmpty())
+        {
+            reagentGroupId = mp_DataManager->GetReagentList()->GetReagent(reagentId)->GetGroupID();
+        }
         QPair<QString, QString> pair(stationId, reagentGroupId);
         m_DashboardStationList.push_back(pair);
         iter++;
@@ -4584,7 +4588,7 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     }
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
     {
-        if(1 == strctHWMonitor.RetortLockStatus && Scenario >=200 && Scenario <= 297 && m_CurrentStepState != PSSM_PAUSE)
+        if(1 == strctHWMonitor.RetortLockStatus && (Scenario == 007 || (Scenario >=200 && Scenario <= 297)) && m_CurrentStepState != PSSM_PAUSE)
         {
             // Notify retort lid is opened
             MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);

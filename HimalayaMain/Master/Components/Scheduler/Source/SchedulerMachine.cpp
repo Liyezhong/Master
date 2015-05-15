@@ -1859,11 +1859,19 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_CHECKING);
                 QString reagentGroupId = m_BottleCheckStationIter->second;
                 mp_SchedulerThreadController->LogDebug(QString("Bottle check for tube %1").arg(m_BottleCheckStationIter->first));
-                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_SchedulerThreadController);
-                cmd->SetReagentGrpID(reagentGroupId);
-                cmd->SetTubePos(tubePos);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                m_BottleCheckSeq++;
+                if (!reagentGroupId.isEmpty())
+                {
+                    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_SchedulerThreadController);
+                    cmd->SetReagentGrpID(reagentGroupId);
+                    cmd->SetTubePos(tubePos);
+                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+                    m_BottleCheckSeq++;
+                }
+                else
+                {
+                    mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_EMPTY);
+                    m_BottleCheckStationIter++;
+                }
             }
         }
         else
