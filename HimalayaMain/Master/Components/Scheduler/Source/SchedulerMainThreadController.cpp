@@ -547,6 +547,10 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
             StepID = 0;
         }
 
+        if(curProgramID.at(0) == 'C')
+        {
+            m_IsCleaningProgram = true;
+        }
         m_CurProgramID = curProgramID;
         m_CurrentScenario = scenario;
         m_FirstProgramStepIndex = 0;

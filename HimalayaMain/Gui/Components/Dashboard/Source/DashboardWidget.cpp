@@ -645,6 +645,13 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
     m_ProgramStatus = Completed;
     Core::CGlobalHelper::SetProgramPaused(false);
+
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+    mp_MessageDlg->SetText(m_strRetortContaminated);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->exec();
 }
 
 void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
