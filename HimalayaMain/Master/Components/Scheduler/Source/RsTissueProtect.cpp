@@ -233,7 +233,6 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if( mp_SchedulerController->IsRVRightPosition(INITIALIZE_POS) )
             {
-                this->OnMoveToTube();
                 m_MoveToTubeSeq = 0; //rollback to move to tube
 
             }
