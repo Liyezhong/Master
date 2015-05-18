@@ -2262,6 +2262,9 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
         if (!pReagent)
             continue;
 
+        if (pDashboardStation->GetDashboardReagentStatus() == "Empty")
+            continue;
+
         if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
         {
             //Fixation:RG1, Clearing: RG5, Paraffin:RG6
