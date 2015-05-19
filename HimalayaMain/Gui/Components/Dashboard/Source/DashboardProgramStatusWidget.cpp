@@ -13,7 +13,7 @@ CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *p) :
     MainMenu::CDialogFrame(p),
     ui(new Ui::CDashboardProgramStatusWidget)
 {
-    ui->setupUi(this);
+    ui->setupUi(GetContentFrame());
 
     CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
     CONNECTSIGNALSLOT(ui->btnAbort, clicked(), this, OnAbort());
@@ -72,7 +72,7 @@ void CDashboardProgramStatusWidget::ResizeHorizontalSection()
 {
     mp_TableWidget->horizontalHeader()->resizeSection(0, 45);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 80);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
     mp_TableWidget->horizontalHeader()->resizeSection(4, 55);
     mp_TableWidget->horizontalHeader()->resizeSection(5, 65);
