@@ -4575,15 +4575,31 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     }
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
     {
-        if(1 == strctHWMonitor.RetortLockStatus && (Scenario == 007 || (Scenario >=200 && Scenario <= 297)) && m_CurrentStepState != PSSM_PAUSE)
+        if(1 == strctHWMonitor.RetortLockStatus && m_CurrentStepState != PSSM_PAUSE)
         {
-            // Notify retort lid is opened
-            MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-            Q_ASSERT(CmdRetortCoverOpen);
-            Global::tRefType fRef = GetNewCommandRef();
-            SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+            if (Scenario >=200 && Scenario <= 297)
+            {
+                // Notify retort lid is opened
+                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                Q_ASSERT(CmdRetortCoverOpen);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
 
-            SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
+                SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
+            }
+            else if (007 == Scenario)
+            {
+                if (!m_SchedulerMachine->NonRVErrorOccuredInBottleCheck())
+                {
+                    // Notify retort lid is opened
+                    MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                    Q_ASSERT(CmdRetortCoverOpen);
+                    Global::tRefType fRef = GetNewCommandRef();
+                    SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+
+                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, false);
+                }
+            }
             if(m_IsErrorStateForHM)
                 return ;
         }

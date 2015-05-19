@@ -1830,6 +1830,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             {
                 mp_SchedulerThreadController->LogDebug("Pressure calibration for Bottle check failed");
                 mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 007, true);
+                mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_ALLCOMPLETE);
                 this->SendRunComplete();
             }
 

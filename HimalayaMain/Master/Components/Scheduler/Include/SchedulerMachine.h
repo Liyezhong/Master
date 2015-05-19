@@ -1010,6 +1010,14 @@ public:
     /****************************************************************************/
     SchedulerStateMachine_t GetPreviousState();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NonRVErrorOccuredInBottleCheck
+     *  \return  bool true - error has occured, false - not occured
+     */
+    /****************************************************************************/
+    bool NonRVErrorOccuredInBottleCheck() {return m_NonRVErrorOccured; }
+
 public slots:
     /****************************************************************************/
     /*!
