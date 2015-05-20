@@ -48,6 +48,7 @@ private:
     QMap<QString, int> m_StationIDRowMap;
     QMap<int, QString> m_RowStationIDMap;
     QMap<QString, QString> m_StationStatusMap;
+    bool m_bNoneUpdated;
 
 };
 }

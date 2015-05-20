@@ -9,7 +9,8 @@ namespace Settings {
         m_Waiting(tr("Waiting")),m_Empty(tr("Empty")),m_Passed(tr("Passed")),
         m_Blockage(tr("Blockage")),m_Checking(tr("Checking")),
         m_BuildPressureFailed(tr("Build pressure failed")),
-        m_Failed(tr("Failed"))
+        m_Failed(tr("Failed")),
+        m_bNoneUpdated(true)
 
     {
         ui->setupUi(GetContentFrame());
@@ -177,11 +178,20 @@ namespace Settings {
             if (DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
             {
                 UpdateStationNotProcess(stationID);
+                m_bNoneUpdated = true;
+            }
+            else if ((DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType) && m_bNoneUpdated)
+            {
+                UpdateStationNotProcess(stationID);
+                m_bNoneUpdated = true;
+                return;
             }
         }
 
         m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType],
                                                       m_StationIDRowMap[stationID]);
+        if (!stationID.isEmpty())
+           m_bNoneUpdated = false;
 
         QModelIndex index = m_BottleCheckStatusModel.index(m_StationIDRowMap[stationID], 0);
         mp_TableWidget->scrollTo(index);
