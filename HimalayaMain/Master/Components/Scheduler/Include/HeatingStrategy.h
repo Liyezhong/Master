@@ -282,9 +282,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Initialize parameters when entering scenario 260
+     *  \param IsStartProgram - bool
      */
     /****************************************************************************/
-    void Init260ParamList();
+    void Init260ParamList(bool IsClickStartProgram = false);
 
     /****************************************************************************/
     /*!

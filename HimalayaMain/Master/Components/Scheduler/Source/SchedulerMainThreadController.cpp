@@ -806,6 +806,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             // Set current step to Init
             m_CurrentStepState = PSSM_INIT;
+            mp_HeatingStrategy->Init260ParamList(true);
 
             // Start up PssmPrecheck state machine
             m_SchedulerMachine->StartPreCheck();
@@ -2435,7 +2436,7 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
         {
             m_EndTimeAndStepTime.GapTime = 0;
         }
-        LogDebug(QString("The step:%1 gap time:%2").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
+        LogDebug(QString("The step:%1 gap time:%2 millisecond.").arg(m_CurProgramStepIndex + 1).arg( m_EndTimeAndStepTime.GapTime));
 
         if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
         {
@@ -2443,16 +2444,16 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
             if(m_EndTimeAndStepTime.BufferTime < 0)
             {
                 m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
-                LogDebug(QString("The program will be completed %1 minutes later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
+                LogDebug(QString("The program will be completed %1 millisecond later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
                 m_EndTimeAndStepTime.BufferTime = 0;
             }
             else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
             {
                 m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
-                LogDebug(QString("The program will be completed %1 minutes later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
+                LogDebug(QString("The program will be completed %1 millisecond later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
                 m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
             }
-            LogDebug(QString("The last program step:%1 buffer is:%2").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
+            LogDebug(QString("The last program step:%1 buffer is:%2 millisecond.").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
         }
     }
 }

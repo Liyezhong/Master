@@ -1934,9 +1934,9 @@ bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal
     return true;
 }
 
-void HeatingStrategy::Init260ParamList()
+void HeatingStrategy::Init260ParamList(bool IsClickStartProgram)
 {
-    if(m_SensorsChecking.firstBottle = true)
+    if(m_SensorsChecking.firstBottle)
     {
         m_SensorsChecking.startTime = QDateTime::currentMSecsSinceEpoch();
         m_SensorsChecking.meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
@@ -1949,9 +1949,13 @@ void HeatingStrategy::Init260ParamList()
         {
             m_SensorsChecking.minTime = 8*60*1000;
         }
+        m_SensorsChecking.ovenTopPass = false;
+        m_SensorsChecking.LATube1Pass = false;
     }
-    m_SensorsChecking.ovenTopPass = false;
-    m_SensorsChecking.LATube1Pass = false;
+    if(IsClickStartProgram)
+    {
+        m_SensorsChecking.firstBottle = true;
+    }
 }
 
 bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
