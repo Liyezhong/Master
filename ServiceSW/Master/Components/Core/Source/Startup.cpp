@@ -200,6 +200,8 @@ CStartup::CStartup() : QObject(),
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
     mp_UpdateSystem = new ServiceUpdates::CSystem(mp_MainWindow);
 
+    CONNECTSIGNALSLOT(mp_FirmwareUpdate, SetGUITabEnable(bool), this, OnSetGUITabEnable4FU(bool));
+
     (void)connect(mp_Setting,
                   SIGNAL(SetLanguage(PlatformService::Languages_t)),
                   mp_ServiceConnector,
@@ -836,6 +838,17 @@ void CStartup::OnSetGUITabEnable(bool Enable)
     mp_MainWindow->SetTabEnabled(5, Enable);
 
     mp_DiagnosticsGroup->setEnabled(Enable);
+}
+
+void CStartup::OnSetGUITabEnable4FU(bool Enable)
+{
+    mp_MainWindow->SetTabEnabled(0, Enable);
+    mp_MainWindow->SetTabEnabled(1, Enable);
+    mp_MainWindow->SetTabEnabled(2, Enable);
+    mp_MainWindow->SetTabEnabled(3, Enable);
+    mp_MainWindow->SetTabEnabled(5, Enable);
+
+    mp_ServiceUpdateGroup->setEnabled(Enable);
 }
 
 /****************************************************************************/

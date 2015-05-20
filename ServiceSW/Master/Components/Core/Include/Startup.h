@@ -287,6 +287,7 @@ private slots:
     int FileExistanceCheck();
     void RemoveFiles();
     void OnSetGUITabEnable(bool Enable);
+    void OnSetGUITabEnable4FU(bool Enable);
 
     void OnCurrentTabChanged(int TabIndex);
 private:

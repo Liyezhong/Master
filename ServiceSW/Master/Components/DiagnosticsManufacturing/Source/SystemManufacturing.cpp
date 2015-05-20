@@ -303,6 +303,7 @@ void CSystem::BeginTest()
         mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_ERROR);
         mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->HideButtons();
+        mp_MessageDlg->setModal(true);
         mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SELECT_TEST_CASE);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         mp_MessageDlg->show();

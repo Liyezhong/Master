@@ -65,6 +65,7 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     mp_Ui->serviceHelpTextBtn->setEnabled(false);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->setModal(true);
 
     (void)connect(mp_Ui->allBtn, SIGNAL(clicked()), this, SLOT(CompleteLogInfo()));
     (void)connect(mp_Ui->errorBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorLog()));

@@ -45,6 +45,7 @@ CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
     }
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->setModal(true);
     mp_DayWheel = new MainMenu::CScrollWheel();
     mp_MonthWheel = new MainMenu::CScrollWheel();
     mp_YearWheel = new MainMenu::CScrollWheel();

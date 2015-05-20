@@ -173,6 +173,7 @@ void CFirmwareUpdate::RefreshLatestVersion()
 
 void CFirmwareUpdate::UpdateFirmware(void)
 {
+    emit SetGUITabEnable(false);
     mp_Ui->updateBtn->setEnabled(false);
 
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE);
@@ -238,6 +239,8 @@ void CFirmwareUpdate::UpdateFirmware(void)
     }
 
     mp_Ui->updateBtn->setEnabled(true);
+
+    emit SetGUITabEnable(true);
 }
 
 /****************************************************************************/

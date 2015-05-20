@@ -170,6 +170,7 @@ void CViewHistory::ExecDialog(void)
 {
     if (m_SelectedRowValues.count() == 0)
     {
+        mp_MessageDialog->setModal(true);
         mp_MessageDialog->SetTitle(tr("Select Module List"));
         mp_MessageDialog->SetButtonText(1, tr("OK"));
         mp_MessageDialog->HideButtons();
@@ -206,6 +207,7 @@ void CViewHistory::ExecDiffDialog()
             delete mp_MessageDialog;
         }
         mp_MessageDialog = new MainMenu::CMessageDlg();
+        mp_MessageDialog->setModal(true);
         mp_MessageDialog->SetTitle(QApplication::translate("SystemTracking::CViewHistory",
                                                            "Select Rows", 0, QApplication::UnicodeUTF8));
         mp_MessageDialog->SetButtonText(1, QApplication::translate("SystemTracking::CViewHistory",
