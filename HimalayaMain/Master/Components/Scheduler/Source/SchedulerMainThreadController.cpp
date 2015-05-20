@@ -1757,6 +1757,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     MsgClasses::CmdBottleCheck* pCmdBottleCheck = dynamic_cast<MsgClasses::CmdBottleCheck*>(pt.GetPointerToUserData());
     if(pCmdBottleCheck)
     {
+        m_CheckOvenCover = true;
         return CTRL_CMD_BOTTLE_CHECK;
     }
 
@@ -2943,19 +2944,19 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case SM_UNDEF:
         break;
     case SM_INIT:
-        scenario = 002;
+        scenario = 2;
         break;
     case SM_INIT_SELFTEST:
-        scenario = 002;
+        scenario = 2;
         break;
     case SM_IDLE:
         if(m_IsWaitHeatingRV)
         {
-            scenario = 003;
+            scenario = 3;
         }
         else
         {
-            scenario = 004;
+            scenario = 4;
         }
         break;
     case SM_BUSY:
@@ -3018,7 +3019,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         scenario = 203;
         break;
     case PSSM_BOTTLE_CHECK:
-        scenario = 007;
+        scenario = 7;
         break;
     default:
         break;
@@ -4929,8 +4930,8 @@ void SchedulerMainThreadController::CompleteRsAbort()
 
 void SchedulerMainThreadController::SendOutErrMsg(ReturnCode_t EventId, bool IsErrorMsg)
 {
-    //First of all, we added one workaround for scenario 007 (bottle check)
-    if (007 == m_CurrentScenario)
+    //First of all, we added one workaround for scenario 7 (bottle check)
+    if (7 == m_CurrentScenario)
     {
         m_SchedulerMachine->CheckNonRVErr4BottleCheck(EventId);
     }

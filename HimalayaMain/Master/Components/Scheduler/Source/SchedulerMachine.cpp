@@ -2188,9 +2188,11 @@ void CSchedulerStateMachine::CheckNonRVErr4BottleCheck(DeviceControl::ReturnCode
     {
         return;
     }
-    mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 007, true);
+
+    mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_INTER_INTER_BOTTLECHECK_FAILED_WARNING, 7, true);
 
     if( DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR == retCode ||
+            DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN == retCode ||
             DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE == retCode ||
             DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE == retCode ||
             DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE == retCode ||
