@@ -91,17 +91,35 @@ typedef struct
      *  \return from toLogString
      */
     /****************************************************************************/
+//    QString toLogString(){
+//        return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)")
+//                .arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
+//                QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)CurrentHeatRTOV(%5)")
+//                .arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus).arg(CurrentHeatRetortOven) +
+//                QString("RV1(%1)RV2(%2)RVp(%3)CurrentHeatRV(%4)")
+//                .arg(TempRV1).arg(TempRV2).arg(PositionRV).arg(CurrentRVTemp) +
+//                QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)CurrentHeatLSTB(%5)")
+//                .arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2).arg(CurrentHeatLevelSensorTubes) +
+//                QString("ASB3Current(%1)ASB5Curent(%2)ASB15Current(%3)")
+//                .arg(Slave3Current).arg(Slave5Current).arg(Slave15Current);
+//    }
+
     QString toLogString(){
-        return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)")
-                .arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
-                QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)CurrentHeatRTOV(%5)")
-                .arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus).arg(CurrentHeatRetortOven) +
-                QString("RV1(%1)RV2(%2)RVp(%3)CurrentHeatRV(%4)")
-                .arg(TempRV1).arg(TempRV2).arg(PositionRV).arg(CurrentRVTemp) +
-                QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)CurrentHeatLSTB(%5)")
-                .arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2).arg(CurrentHeatLevelSensorTubes) +
-                QString("ASB3Current(%1)ASB5Curent(%2)ASB15Current(%3)")
-                .arg(Slave3Current).arg(Slave5Current).arg(Slave15Current);
+
+    // TempRV1 TempRV2 TempOvTp TempOvB1 TempOvB2 TempRtB1 TempRtB2 TempRtSd TempLS TempTb1 TempTb2 Pressure CurRV CurRtOv CurLT Cur3 Cur5 Cur15 RvPos RtLock OvLid
+
+        return  QString("%1%2")          // TempRV1 TempRV2
+                .arg(TempRV1,9,'g',5).arg(TempRV2,9,'g',5) +
+                QString("%1%2%3%4%5%6")  // TempOvTp TempOvB1 TempOvB2 TempRtB1 TempRtB2 TempRtSd
+                .arg(TempOvenTop,9,'g',5).arg(TempOvenBottom1,9,'g',5).arg(TempOvenBottom2,9,'g',5).arg(TempRTBottom1,9,'g',5).arg(TempRTBottom2,9,'g',5).arg(TempRTSide,9,'g',5) +
+                QString("%1%2%3")        // TempLS TempTb1 TempTb2
+                .arg(TempALLevelSensor,9,'g',5).arg(TempALTube1,9,'g',5).arg(TempALTube2,9,'g',5) +
+                QString("%1")            // Pressure
+                .arg(PressureAL,9,'g',5) +
+                QString("%1%2%3%4%5%6")  // CurRV CurRtOv CurLT Cur3 Cur5 Cur15
+                .arg(CurrentRVTemp,6).arg(CurrentHeatRetortOven,6).arg(CurrentHeatLevelSensorTubes,6).arg(Slave3Current,6).arg(Slave5Current,6).arg(Slave15Current,6) +
+                QString("%1%2%3")        // RvPos RtLock OvLid
+                .arg(PositionRV,6).arg(RetortLockStatus,2).arg(OvenLidStatus,2);
     }
 
 } HardwareMonitor_t;
