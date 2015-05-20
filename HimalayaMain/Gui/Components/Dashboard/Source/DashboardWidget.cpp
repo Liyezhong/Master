@@ -305,17 +305,18 @@ void CDashboardWidget::CancelProgramWillCompletePrompt()
 
 void CDashboardWidget::OnProgramWillComplete()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
+    MainMenu::CMessageDlg messageDlg(this);
+    messageDlg.SetIcon(QMessageBox::Information);
+    messageDlg.SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strProgramWillComplete);
     strTemp = strTemp.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-    mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->HideButtons();
+    messageDlg.SetText(strTemp);
+    messageDlg.SetButtonText(1, CommonString::strOK);
+    messageDlg.HideButtons();
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
 
-    if (mp_MessageDlg->exec())
+    if (messageDlg.exec())
     {
         m_IsDrainingWhenPrgrmCompleted = true;
 
