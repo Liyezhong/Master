@@ -545,12 +545,12 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 //represent the retort as contaminated status
                 ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
 
-                mp_MessageDlg->SetText(m_strRetortContaminated);
+                messageDlg.SetText(m_strRetortContaminated);
                 //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
-                mp_MessageDlg->EnableButton(1, true);//6.6 for test
+                messageDlg.EnableButton(1, true);//6.6 for test
 
                 m_IsWaitingCleaningProgram = true;
-                if (mp_MessageDlg->exec())
+                if (messageDlg.exec())
                 {
                     //only show Cleaning program in the favorite panel
                     emit AddItemsToFavoritePanel(true);
