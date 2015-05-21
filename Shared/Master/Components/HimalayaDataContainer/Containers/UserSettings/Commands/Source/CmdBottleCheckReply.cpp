@@ -20,6 +20,8 @@
 
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdBottleCheckReply.h"
 
+/*lint -e1401 */
+
 namespace MsgClasses {
 
 QString CmdBottleCheckReply::NAME = "MsgClasses::CmdBottleCheckReply";

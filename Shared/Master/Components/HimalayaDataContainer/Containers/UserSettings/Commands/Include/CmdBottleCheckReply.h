@@ -67,7 +67,13 @@ public:
     */
     virtual QString GetName(void) const;
     static QString NAME; ///< Command name.
+    /*!
+      * \brief get station id
+    */
     inline QString StationID() const { return m_StationID; }
+    /*!
+      * \brief get bottle check status type
+    */
     inline DataManager::BottleCheckStatusType_t BottleCheckStatusType() const { return m_BottleCheckStatusType; }
 private:
     /*!
@@ -79,8 +85,8 @@ private:
       * \return from CmdBottleCheckReply
     */
     const CmdBottleCheckReply &operator = (const CmdBottleCheckReply &); ///< Not implemented.
-    QString m_StationID;
-    DataManager::BottleCheckStatusType_t m_BottleCheckStatusType;
+    QString m_StationID; ///< station id
+    DataManager::BottleCheckStatusType_t m_BottleCheckStatusType; ///< bottle check status type
 
  }; // end class CmdBottleCheckReply
 

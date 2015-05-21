@@ -27,6 +27,8 @@
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "Global/Include/GlobalDefines.h"
 
+/*lint -e1536*/
+
 namespace DataManager {
 
 class CReagent;

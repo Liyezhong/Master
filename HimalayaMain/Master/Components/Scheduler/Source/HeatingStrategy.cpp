@@ -38,6 +38,7 @@
 /*lint -e429 */
 /*lint -e423 */
 /*lint -e613 */
+/*lint -e506 */
 
 namespace Scheduler{
 

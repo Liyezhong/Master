@@ -202,7 +202,7 @@ void CRcReHeating::CheckTheTemperature()
     {
         // for parrafin program
         qint64 CurrentTime = QDateTime::currentMSecsSinceEpoch();
-        if( CurrentTime - m_StartHeatingTime > mp_SchedulerThreadController->GetOvenHeatingRemainingTime() )
+        if( (quint64)(CurrentTime - m_StartHeatingTime) > mp_SchedulerThreadController->GetOvenHeatingRemainingTime() )
         {
             if(mp_SchedulerThreadController->GetHeatingStrategy()->Check260SensorsTemp(true))
             {

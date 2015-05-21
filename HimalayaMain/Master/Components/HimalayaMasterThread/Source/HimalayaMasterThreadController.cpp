@@ -1008,13 +1008,11 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     // send ack to GUI
     SendAcknowledgeOK(Ref, AckCommandChannel);
     QString DeviceName;
-    bool bPassed = false;
     quint32 LogEvent = 0;
     switch(Cmd.GetUserLevel()) {
         case Global::ADMIN:
             if (m_PasswordManager.CheckPassword("Administrator", Cmd.GetPassword())) {
                 m_AuthenticatedLevel = Global::ADMIN;
-                bPassed = true;
                 LogEvent = EVENT_DM_CHANGE_TO_SUPERVISOR;
             }
             break;
@@ -1032,14 +1030,12 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
 
             if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
                 m_AuthenticatedLevel = Global::SERVICE;
-                bPassed = true;
                 LogEvent = EVENT_DM_CHANGE_TO_SERVICE;
             }
             break;
         case Global::OPERATOR:
             // there is no password for the operator
             m_AuthenticatedLevel = Global::OPERATOR;
-            bPassed = true;
             m_PasswordManager.SetFallbackPasswordFlag(false);
             LogEvent = EVENT_DM_CHANGE_TO_STANDARD_USER;
             break;
