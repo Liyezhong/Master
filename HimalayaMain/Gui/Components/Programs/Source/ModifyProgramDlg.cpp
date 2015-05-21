@@ -985,7 +985,7 @@ void CModifyProgramDlg::OnIconClicked()
     m_bIconSelected = false;
     mp_ModifyProgramIconDlg->SetDialogTitle(m_strSelectIcon);
     mp_ModifyProgramIconDlg->EnableAvailableIcon(&m_ProgramListClone);
-    mp_ModifyProgramIconDlg->exec();
+    (void)mp_ModifyProgramIconDlg->exec();
 }
 
 /****************************************************************************/

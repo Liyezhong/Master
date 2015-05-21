@@ -55,7 +55,9 @@ private:
     QString m_PwdType;                              //!< Type of the password is stored i.e. Old, New and Confirm
     MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level
     void RetranslateUI();
-	QTimer* m_Timer;       ///<  Definition/Declaration of variable m_Timer
+    QTimer* m_Timer, *m_ScrollTimer, *m_PressTimer;
+    int m_yScroll;
+    bool m_bIsPressed;
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
     /****************************************************************************/
@@ -73,7 +75,8 @@ public:
 
 protected:
     void changeEvent(QEvent *p_Event);
-
+    void mousePressEvent (QMouseEvent * p_Event);
+    void mouseReleaseEvent (QMouseEvent* p_Event);
 private slots:
     /****************************************************************************/
     /*!
@@ -117,6 +120,20 @@ private slots:
      */
     /****************************************************************************/
 	void AppIdleForLongTime();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of ScrollScreen
+     */
+    /****************************************************************************/
+    void ScrollScreen();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnTimeOutPress()
+     */
+    /****************************************************************************/
+    void OnTimeOutPress();
+
 public slots:
     /****************************************************************************/
     /*!

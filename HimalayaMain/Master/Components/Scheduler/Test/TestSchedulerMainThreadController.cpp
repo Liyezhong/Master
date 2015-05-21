@@ -205,7 +205,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->GetReagentGroupID("RG3");
 
-    QCOMPARE(m_pSchedulerMainController->BottleCheck(100), false);
+    //QCOMPARE(m_pSchedulerMainController->BottleCheck(100), false);
 
     m_pSchedulerMainController->RcBottleCheckI();
 

@@ -649,7 +649,7 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     messageDlg.SetText(m_strRetortContaminated);
     messageDlg.SetButtonText(1, CommonString::strOK);
     messageDlg.HideButtons();
-    messageDlg.exec();
+    (void)messageDlg.exec();
 }
 
 void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
@@ -673,7 +673,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
             {
                 messageDlg.SetTitle(CommonString::strConfirmMsg);
                 messageDlg.SetText(m_strTakeOutSpecimen);
-                messageDlg.exec();
+                (void)messageDlg.exec();
                 mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
             }
             ui->programPanelWidget->EnablePauseButton(false);

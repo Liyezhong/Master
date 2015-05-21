@@ -270,7 +270,8 @@ void CSettingsWidget::BottleCheckReply(const QString& stationID, DataManager::Bo
     if (bottleCheckStatusType == DataManager::BOTTLECHECK_STARTED)
     {
         m_BottleCheckStatusDlg = new CBottleCheckStatusDlg(mp_MainWindow, mp_Data);
-        m_BottleCheckStatusDlg->exec();
+        (void)m_BottleCheckStatusDlg->exec();
+        delete m_BottleCheckStatusDlg;
     }
     else
     {

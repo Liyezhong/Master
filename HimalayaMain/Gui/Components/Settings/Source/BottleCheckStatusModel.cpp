@@ -275,6 +275,7 @@ QString CBottleCheckStatusModel::GetReagentID(const QString ReagentName)
 /****************************************************************************/
 Qt::ItemFlags CBottleCheckStatusModel::flags(const QModelIndex &Index) const
 {
+    Q_UNUSED(Index);
     return Qt::ItemIsEnabled;
 }
 

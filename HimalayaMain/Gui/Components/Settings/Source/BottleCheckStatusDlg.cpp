@@ -29,40 +29,40 @@ namespace Settings {
         mp_TableWidget->selectRow(0);
         CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
 
-        m_StationIDRowMap.insert("S1", 0);
-        m_StationIDRowMap.insert("S2", 1);
-        m_StationIDRowMap.insert("S3", 2);
-        m_StationIDRowMap.insert("S4", 3);
-        m_StationIDRowMap.insert("S5", 4);
-        m_StationIDRowMap.insert("S6", 5);
-        m_StationIDRowMap.insert("S7", 6);
-        m_StationIDRowMap.insert("S8", 7);
-        m_StationIDRowMap.insert("S9", 8);
-        m_StationIDRowMap.insert("S10", 9);
-        m_StationIDRowMap.insert("S11", 10);
-        m_StationIDRowMap.insert("S12", 11);
-        m_StationIDRowMap.insert("S13", 12);
-        m_StationIDRowMap.insert("P1", 13);
-        m_StationIDRowMap.insert("P2", 14);
-        m_StationIDRowMap.insert("P3", 15);
+        (void)m_StationIDRowMap.insert("S1", 0);
+        (void)m_StationIDRowMap.insert("S2", 1);
+        (void)m_StationIDRowMap.insert("S3", 2);
+        (void)m_StationIDRowMap.insert("S4", 3);
+        (void)m_StationIDRowMap.insert("S5", 4);
+        (void)m_StationIDRowMap.insert("S6", 5);
+        (void)m_StationIDRowMap.insert("S7", 6);
+        (void)m_StationIDRowMap.insert("S8", 7);
+        (void)m_StationIDRowMap.insert("S9", 8);
+        (void)m_StationIDRowMap.insert("S10", 9);
+        (void)m_StationIDRowMap.insert("S11", 10);
+        (void)m_StationIDRowMap.insert("S12", 11);
+        (void)m_StationIDRowMap.insert("S13", 12);
+        (void)m_StationIDRowMap.insert("P1", 13);
+        (void)m_StationIDRowMap.insert("P2", 14);
+        (void)m_StationIDRowMap.insert("P3", 15);
 
 
-        m_RowStationIDMap.insert(0, "S1");
-        m_RowStationIDMap.insert(1, "S2");
-        m_RowStationIDMap.insert(2, "S3");
-        m_RowStationIDMap.insert(3, "S4");
-        m_RowStationIDMap.insert(4, "S5");
-        m_RowStationIDMap.insert(5, "S6");
-        m_RowStationIDMap.insert(6, "S7");
-        m_RowStationIDMap.insert(7, "S8");
-        m_RowStationIDMap.insert(8, "S9");
-        m_RowStationIDMap.insert(9, "S10");
-        m_RowStationIDMap.insert(10, "S11");
-        m_RowStationIDMap.insert(11, "S12");
-        m_RowStationIDMap.insert(12, "S13");
-        m_RowStationIDMap.insert(13, "P1");
-        m_RowStationIDMap.insert(14, "P2");
-        m_RowStationIDMap.insert(15, "P3");
+        (void)m_RowStationIDMap.insert(0, "S1");
+        (void)m_RowStationIDMap.insert(1, "S2");
+        (void)m_RowStationIDMap.insert(2, "S3");
+        (void)m_RowStationIDMap.insert(3, "S4");
+        (void)m_RowStationIDMap.insert(4, "S5");
+        (void)m_RowStationIDMap.insert(5, "S6");
+        (void)m_RowStationIDMap.insert(6, "S7");
+        (void)m_RowStationIDMap.insert(7, "S8");
+        (void)m_RowStationIDMap.insert(8, "S9");
+        (void)m_RowStationIDMap.insert(9, "S10");
+        (void)m_RowStationIDMap.insert(10, "S11");
+        (void)m_RowStationIDMap.insert(11, "S12");
+        (void)m_RowStationIDMap.insert(12, "S13");
+        (void)m_RowStationIDMap.insert(13, "P1");
+        (void)m_RowStationIDMap.insert(14, "P2");
+        (void)m_RowStationIDMap.insert(15, "P3");
 
         Inilialize();
         ui->btnClose->setEnabled(false);
@@ -71,8 +71,13 @@ namespace Settings {
 
     CBottleCheckStatusDlg::~CBottleCheckStatusDlg()
     {
-        delete ui;
-        delete mp_TableWidget;
+        try {
+            delete ui;
+            delete mp_TableWidget;
+        }
+        catch (...) {
+            // to please Lint.
+        }
     }
 
     /****************************************************************************/

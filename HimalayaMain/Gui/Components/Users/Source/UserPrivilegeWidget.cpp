@@ -80,6 +80,17 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     m_Timer->setInterval(8*60*1000);//8 minutes, enter idle;
     (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_Timer->start();
+
+    m_ScrollTimer = new QTimer(this);
+    m_ScrollTimer->setInterval(200);
+    (void)connect(m_ScrollTimer, SIGNAL(timeout()), this, SLOT(ScrollScreen()));
+    mp_Ui->label->setVisible(false);
+
+    m_PressTimer = new QTimer(this);
+    m_PressTimer->setInterval(5000);
+    m_PressTimer->setSingleShot(true);
+    (void)connect(m_PressTimer, SIGNAL(timeout()), this, SLOT(OnTimeOutPress()));
+
 }
 
 /****************************************************************************/
@@ -93,6 +104,8 @@ CUserPrivilegeWidget::~CUserPrivilegeWidget()
     {
         delete mp_Ui;
         delete m_Timer;
+        delete m_ScrollTimer;
+        delete m_PressTimer;
     }
     catch(...)
     {}
@@ -117,6 +130,46 @@ void CUserPrivilegeWidget::changeEvent(QEvent *p_Event)
     default:
         break;
     }
+}
+
+void CUserPrivilegeWidget::mousePressEvent (QMouseEvent * p_Event)
+{
+    if (m_ScrollTimer->isActive())
+        return;
+
+    //LeftBottom
+   // QPoint p = p_Event->pos();
+    QRect  rectLeftBottom(0, 490, 100, 100);
+    if (!rectLeftBottom.contains(p_Event->pos()))
+        return;
+
+    m_bIsPressed = true;
+    m_yScroll = 280;
+    m_PressTimer->start();
+
+}
+
+void CUserPrivilegeWidget::mouseReleaseEvent (QMouseEvent* p_Event)
+{
+    m_bIsPressed = false;
+}
+
+void CUserPrivilegeWidget::OnTimeOutPress()
+{
+    if (m_bIsPressed)
+    {
+        mp_Ui->label->setVisible(true);
+        mp_Ui->label->move(30, m_yScroll);
+        m_ScrollTimer->start();
+    }
+}
+
+void CUserPrivilegeWidget::ScrollScreen()
+{
+    m_yScroll = m_yScroll - 4;
+    mp_Ui->label->move(30, m_yScroll);
+    if (m_yScroll < -250)
+        m_ScrollTimer->stop();
 }
 
 void CUserPrivilegeWidget::AppIdleForLongTime()

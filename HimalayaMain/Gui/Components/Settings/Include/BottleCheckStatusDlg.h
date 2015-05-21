@@ -1,3 +1,23 @@
+/****************************************************************************/
+/*! \file BottleCheckStatusDlg.h
+ *
+ *  \brief BottleCheckStatusDlg definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2015-05-20
+ *   $Author:  $ Abe Yang
+ *
+ *  \b Company:
+ *
+ *       Leica Microsystems Ltd. Shanghai.
+ *
+ *  (C) Copyright 2015 by Leica Microsystems Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
+
 #ifndef BOTTLECHECKSTATUSDLG_H
 #define BOTTLECHECKSTATUSDLG_H
 
@@ -15,7 +35,11 @@ namespace Settings {
 namespace Ui {
     class CBottleCheckStatusDlg;
 }
-
+/****************************************************************************/
+/**
+ * \brief This is the dialog for bottle check status
+ */
+/****************************************************************************/
 class CBottleCheckStatusDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
