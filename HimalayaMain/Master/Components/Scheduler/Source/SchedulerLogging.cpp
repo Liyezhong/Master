@@ -44,12 +44,40 @@ void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVer
     QString operatingMode = "production";
     int fileCount = 5;
     QString baseFileName = "SensorData_";
+    QString Path = Global::SystemPaths::Instance().GetLogfilesPath();
+
+    QString FileName = baseFileName + m_serialNumber + "_" +
+            Global::AdjustedTime::Instance().GetCurrentDateTime().toString("yyyyMMdd") + ".log";
+    QDir Dir(Path);
+    QString CompleteFileName(QDir::cleanPath(Dir.absoluteFilePath(FileName)));
+    bool DateLogExist = false;
+    if(QFile::exists(CompleteFileName))
+    {
+        DateLogExist = true;
+    }
+
     mp_DayEventLogger->Configure(DataLogging::DayEventLoggerConfig(operatingMode,
                                                         m_serialNumber,
                                                         m_SWVersion,
-                                                        Global::SystemPaths::Instance().GetLogfilesPath(),
+                                                        Path,
                                                         fileCount,
                                                         baseFileName));
+
+
+
+    if(!DateLogExist)
+    {
+        QString HeaderString;
+        HeaderString += QString("                            T_RV1    T_RV2    T_OvT   T_OvB1   T_OvB2");
+        HeaderString += QString("   T_RtB1   T_RtB2   T_RtSd     T_LS    T_Tb1    T_Tb2");
+        HeaderString += QString("    Press CurRV CurRt CurLT  Cur3  Cur5 Cur15");
+        HeaderString += QString("   RvP RtLk OvLid");
+        if(mp_DayEventLogger)
+        {
+            mp_DayEventLogger->CheckNewFile();
+            mp_DayEventLogger->AppendLine(HeaderString, true);
+        }
+    }
 }
 
 
