@@ -4601,13 +4601,13 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
             {
                 if (!m_SchedulerMachine->NonRVErrorOccuredInBottleCheck())
                 {
+
+                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, false);
                     // Notify retort lid is opened
                     MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
                     Q_ASSERT(CmdRetortCoverOpen);
                     Global::tRefType fRef = GetNewCommandRef();
                     SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
-
-                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, false);
                 }
             }
             if(m_IsErrorStateForHM)

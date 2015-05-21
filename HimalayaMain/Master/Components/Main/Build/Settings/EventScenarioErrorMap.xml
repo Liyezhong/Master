@@ -905,6 +905,7 @@
     </event>
     <event eventid="500020090">
         <error errorid="512020090">
+            <scenario type="single" id="007"/>
             <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="257"/>
         </error>
