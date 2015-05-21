@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file BottleCheckStatusDlg.cpp
+ *
+ *  \brief BottleCheckStatusDlg definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2015-05-20
+ *   $Author:  $ Abe Yang
+ *
+ *  \b Company:
+ *
+ *       Leica Microsystems Ltd. Shanghai.
+ *
+ *  (C) Copyright 2015 by Leica Microsystems Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #include "Settings/Include/BottleCheckStatusDlg.h"
 #include "ui_BottleCheckStatusDlg.h"
 #include "Core/Include/DataConnector.h"
@@ -130,39 +149,39 @@ namespace Settings {
 
     void CBottleCheckStatusDlg::OnClose()
     {
-        this->close();
+        (void)this->close();
     }
 
     void CBottleCheckStatusDlg::Inilialize()
     {
         m_BottleCheckStatusMap.clear();
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WAITING, m_Waiting);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_EMPTY, m_Empty);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_PASSED, m_Passed);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BLOCKAGE, m_Blockage);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_CHECKING, m_Checking);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BUILDPRESSUREFAILED, m_BuildPressureFailed);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_FAILED, m_Failed);
-        m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WILLNOTPROCESS, " --- ");
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WAITING, m_Waiting);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_EMPTY, m_Empty);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_PASSED, m_Passed);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BLOCKAGE, m_Blockage);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_CHECKING, m_Checking);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_BUILDPRESSUREFAILED, m_BuildPressureFailed);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_FAILED, m_Failed);
+        (void)m_BottleCheckStatusMap.insert(DataManager::BOTTLECHECK_WILLNOTPROCESS, " --- ");
 
         m_StationStatusMap.clear();
-        m_StationStatusMap.insert("S1", m_Waiting);
-        m_StationStatusMap.insert("S2", m_Waiting);
-        m_StationStatusMap.insert("S3", m_Waiting);
-        m_StationStatusMap.insert("S4", m_Waiting);
-        m_StationStatusMap.insert("S5", m_Waiting);
-        m_StationStatusMap.insert("S6", m_Waiting);
-        m_StationStatusMap.insert("S7", m_Waiting);
-        m_StationStatusMap.insert("S8", m_Waiting);
+        (void)m_StationStatusMap.insert("S1", m_Waiting);
+        (void)m_StationStatusMap.insert("S2", m_Waiting);
+        (void)m_StationStatusMap.insert("S3", m_Waiting);
+        (void)m_StationStatusMap.insert("S4", m_Waiting);
+        (void)m_StationStatusMap.insert("S5", m_Waiting);
+        (void)m_StationStatusMap.insert("S6", m_Waiting);
+        (void)m_StationStatusMap.insert("S7", m_Waiting);
+        (void)m_StationStatusMap.insert("S8", m_Waiting);
 
-        m_StationStatusMap.insert("S9", m_Waiting);
-        m_StationStatusMap.insert("S10", m_Waiting);
-        m_StationStatusMap.insert("S11", m_Waiting);
-        m_StationStatusMap.insert("S12", m_Waiting);
-        m_StationStatusMap.insert("S13", m_Waiting);
-        m_StationStatusMap.insert("P1", m_Waiting);
-        m_StationStatusMap.insert("P2", m_Waiting);
-        m_StationStatusMap.insert("P3", m_Waiting);
+        (void)m_StationStatusMap.insert("S9", m_Waiting);
+        (void)m_StationStatusMap.insert("S10", m_Waiting);
+        (void)m_StationStatusMap.insert("S11", m_Waiting);
+        (void)m_StationStatusMap.insert("S12", m_Waiting);
+        (void)m_StationStatusMap.insert("S13", m_Waiting);
+        (void)m_StationStatusMap.insert("P1", m_Waiting);
+        (void)m_StationStatusMap.insert("P2", m_Waiting);
+        (void)m_StationStatusMap.insert("P3", m_Waiting);
 
         m_BottleCheckStatusModel.SetBottleCheckStatusMap(m_StationStatusMap);
     }

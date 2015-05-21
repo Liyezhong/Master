@@ -45,7 +45,15 @@ class CBottleCheckStatusDlg : public MainMenu::CDialogFrame
     Q_OBJECT
     
 public:
-    explicit CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector*);
+    /****************************************************************************/
+    /*!
+     *  \brief constructor
+     *
+     *  \param parent = pointers to the parent window
+     *  \param pDataCon = Data Connector
+     */
+    /****************************************************************************/
+    explicit CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector* pDataCon);
     ~CBottleCheckStatusDlg();
     void UpdateCurrentStationStatus(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 protected:

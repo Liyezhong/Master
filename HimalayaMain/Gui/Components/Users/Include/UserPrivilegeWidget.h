@@ -74,8 +74,26 @@ public:
     ~CUserPrivilegeWidget();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of changeEvent
+     *  \param p_Event = all events
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of mousePressEvent
+     *  \param p_Event = Mouse Event
+     */
+    /****************************************************************************/
     void mousePressEvent (QMouseEvent * p_Event);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of mouseReleaseEvent
+     *  \param p_Event = Mouse Event
+     */
+    /****************************************************************************/
     void mouseReleaseEvent (QMouseEvent* p_Event);
 private slots:
     /****************************************************************************/

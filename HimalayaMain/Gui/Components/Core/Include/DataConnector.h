@@ -368,10 +368,10 @@ public slots:
     void SendRequestedFilesToImport(QStringList FileList);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SendResetOperationDays
+     *  \brief  Definition/Declaration of SendParaffinTemperatureChanged
      *  \param lastMeltPoint = the paraffin bath temprature in last set
      *  \param currentMeltPoint = the set paraffin bath temprature currently.
-     *  \parm reheat = true - reheat paraffin
+     *  \param reheat = true - reheat paraffin
      */
     /****************************************************************************/
     void SendParaffinTemperatureChanged(int lastMeltPoint, int currentMeltPoint, bool reheat);
@@ -864,6 +864,8 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Declaration of signal BottleCheckReply
+     *  \param  stationID = station ID
+     *  \param  bottleCheckStatusType = bottle Check status type
      */
     /****************************************************************************/
     void BottleCheckReply(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);

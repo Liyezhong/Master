@@ -151,6 +151,7 @@ void CUserPrivilegeWidget::mousePressEvent (QMouseEvent * p_Event)
 
 void CUserPrivilegeWidget::mouseReleaseEvent (QMouseEvent* p_Event)
 {
+    Q_UNUSED(p_Event);
     m_bIsPressed = false;
 }
 
