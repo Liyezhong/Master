@@ -38,9 +38,9 @@ namespace Scheduler{
 CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedController, CSchedulerStateMachine* StateMachhine)
     :mp_SchedulerController(SchedController)
     ,mp_StateMachine(StateMachhine)
+    ,m_IsLevelSensorRelated(false)
     ,m_StationID("")
 {
-    m_IsLevelSensorRelated = false;
     m_DrainCurReagentSeq = 0;
     m_MoveToTubeSeq = 0;
     m_FillSeq = 0;

@@ -93,6 +93,14 @@ using namespace DataManager;
 
 namespace Scheduler {
 
+/****************************************************************************/
+/**
+ *  \brief  Declaration of function QPairComp
+ *  \param  va1 - const QPair<QString, QString>
+ *  \param  va2 - QPair<QString, QString>
+ *  \return bool from QPairComp
+ */
+ /****************************************************************************/
 static bool QPairComp(const QPair<QString, QString>& va1, const QPair<QString, QString>& va2)
 {
     RVPosition_t tube1 = SchedulerMainThreadController::GetRVTubePositionByStationID(va1.first);
@@ -4229,7 +4237,7 @@ quint64 SchedulerMainThreadController::GetOvenHeatingTime()
     return m_ProgramStatusInfor.GetOvenHeatingTime() / 1000;
 }
 
-quint64 SchedulerMainThreadController::GetOvenHeatingRemainingTime()
+qint64 SchedulerMainThreadController::GetOvenHeatingRemainingTime()
 {
     return m_ProgramStatusInfor.GetRemaingTimeForMeltingParffin();
 }

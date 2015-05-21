@@ -23,6 +23,9 @@
 #include <QFile>
 
 namespace Scheduler {
+/*lint -e525 */
+/*lint -e534 */
+/*lint -e539 */
 
 /****************************************************************************/
 EventScenarioErrXMLInfo::EventScenarioErrXMLInfo(const QString& XMLFile, bool genRetCode)

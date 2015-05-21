@@ -263,9 +263,9 @@ typedef enum
 /****************************************************************************/
 typedef struct
 {
-    DryStepsStateMachine CurrentState;
-    quint64 StepStartTime;
-    bool warningReport;
+    DryStepsStateMachine CurrentState;      //!< the current state
+    quint64 StepStartTime;                  //!< the step start time
+    bool warningReport;                     //!< the warning report
 } CleaningDry_t;
 
 /****************************************************************************/
@@ -1004,7 +1004,7 @@ protected:
         /**
          * @brief   return current Event key
          *
-         * @return  void
+         * @return  quint32
          */
         /****************************************************************************/
         quint32 GetEventKey(){ return m_EventKey; }
@@ -1013,7 +1013,7 @@ protected:
         /**
          * @brief   return current Event ID when an error occurs
          *
-         * @return  void
+         * @return  ReturnCode_t
          */
         /****************************************************************************/
         ReturnCode_t GetCurErrEventID(){ return m_CurErrEventID; }
@@ -1054,8 +1054,8 @@ protected:
 
         /****************************************************************************/
         /**
-         * @brief   Set transition period
-         *
+         * \brief   Set transition period
+         *  \param  flag - flag
          *  \return void
          */
          /****************************************************************************/
@@ -1140,10 +1140,10 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) that Oven has been heated
-         *  \return from GetOvenHeatingRemainingTime of quint64
+         *  \return from GetOvenHeatingRemainingTime of qint64
          */
         /****************************************************************************/
-        quint64 GetOvenHeatingRemainingTime();
+        qint64 GetOvenHeatingRemainingTime();
 
         /****************************************************************************/
         /**
@@ -1516,7 +1516,7 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send Bottle Check Reply command to GUI
-         *  \return None
+         *  \return bool from IsRetortContaminted
          */
         /****************************************************************************/
         bool IsRetortContaminted() {return m_ProgramStatusInfor.IsRetortContaminted(); }
@@ -1526,6 +1526,7 @@ protected:
          *  \brief  Send bottleCheck reply
          *  \param stationId - QString
          *  \param type - DataManager::BottleCheckStatusType_t
+         *  \return void
          */
         /****************************************************************************/
         void SendBottleCheckReply(const QString& stationId, DataManager::BottleCheckStatusType_t type);

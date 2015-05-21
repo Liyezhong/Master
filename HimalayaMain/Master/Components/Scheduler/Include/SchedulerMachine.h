@@ -469,7 +469,7 @@ public:
      */
     /****************************************************************************/
     void NotifyFillFinished();
-;
+
     /****************************************************************************/
     /*!
      *  \brief  Notify processing finished
@@ -1022,7 +1022,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
-     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \param	flag  - bool to indicate if the whole execution succeeds or not
      *  \return	void
      */
     /****************************************************************************/
@@ -1031,7 +1031,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief	Slot to handle the actions when RS_Tissue_Protect is done.
-     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \param	flag - bool to indicate if the whole execution succeeds or not
      *  \return	void
      */
     /****************************************************************************/
@@ -1040,7 +1040,7 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
-     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \param	flag  - bool to indicate if the whole execution succeeds or not
      *  \return	void
      */
     /****************************************************************************/

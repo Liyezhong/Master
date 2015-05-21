@@ -47,16 +47,17 @@ CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     m_PressureChkSeq = 0;
     m_SetPrressureTime = 0;
     m_PressureCalibrationSeq = 0;
+    m_PressureDriftOffset = 0.0;
     m_PressureCalibrationCounter = 0;
-	m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
     m_MoveToTubeSeq = 0;
     m_IsLoged = 0;
     m_IsAbortRecv = false;
     m_TasksAborted = false;
-    CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
     m_PressureForCleaningSeq = 0;
     m_PressureStartTime = 0;
+
+    CONNECTSIGNALSLOT(this, TasksDone(), mp_SchedulerThreadController, OnPreTestDone());
 }
 
 CProgramPreTest::~CProgramPreTest()
