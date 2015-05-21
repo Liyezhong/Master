@@ -186,6 +186,9 @@ int CHeatingTestEmpty::Run(void)
             status.UsedTime++;
             RefreshWaitingDialog(&status);
             int MSec = QTime().currentTime().msecsTo(EndTime);
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
             dev->Pause(MSec);
         }
 
@@ -298,7 +301,11 @@ int CHeatingTestEmpty::Run(void)
         status.UsedTime++;
         RefreshWaitingDialog(&status);
 
-        dev->Pause(QTime().currentTime().msecsTo(EndTime));
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
+        dev->Pause(MSec);
     }
 
     if (!timingDialog->isVisible()) {

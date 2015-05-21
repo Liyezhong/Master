@@ -448,6 +448,9 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
             offset = 8;
         }
         int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
     }
 
@@ -618,6 +621,9 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         }
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
         WaitSec--;
     }
@@ -859,6 +865,9 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         emit RefreshTestStatustoMain(testCaseName, testStat);
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
 
         -- waitSec;
@@ -993,6 +1002,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
             }
 
             int MSec = QTime().currentTime().msecsTo(EndTime);
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
             mp_Utils->Pause(MSec);
 
             -- waitSeconds;
@@ -1296,6 +1308,9 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
                 offset = 8;
             }
             int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
             mp_Utils->Pause(MSec);
         }
 
@@ -2474,17 +2489,17 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 //            p_TestCase->AddResult("TargetTemp", TargetTempStr);
 //        }
 
-//        emit RefreshTestStatustoMain(TestCaseName, Status);
-//        WaitSec--;
+    //        emit RefreshTestStatustoMain(TestCaseName, Status);
+    //        WaitSec--;
 
-//        int offset = 0;
-//        if (WaitSec%10 == 0) {
-//            //offset = 8;
-//            offset = 4; //added by jack
-//        }
-//        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
-//        mp_Utils->Pause(MSec);
-//    }
+    //        int offset = 0;
+    //        if (WaitSec%10 == 0) {
+    //            //offset = 8;
+    //            offset = 4; //added by jack
+    //        }
+    //        int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+    //        mp_Utils->Pause(MSec);
+    //    }
 
     (void)mp_TempRV->StopTemperatureControl();
     (void)mp_DigitalOutputMainRelay->SetLow();
@@ -2674,6 +2689,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
             offset = 8;
         }
         int MSec = QTime().currentTime().msecsTo(EndTime)-offset;
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
     }
 
@@ -2752,6 +2770,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
 
          int MSec = QTime().currentTime().msecsTo(EndTime);
+         if (MSec <= 0) {
+             MSec = 1000;
+         }
          mp_Utils->Pause(MSec);
 
         WaitSec--;

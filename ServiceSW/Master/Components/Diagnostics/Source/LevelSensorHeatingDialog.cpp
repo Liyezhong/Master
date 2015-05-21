@@ -89,7 +89,11 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
         WaitSeconds--;
         UpdateUI(TimeOut-WaitSeconds, TimeOut, TargetTemp, CurrentTemp);
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+           MSec = 1000;
+        }
         p_DevProc->Pause(MSec);
+
     }
 
     (void)p_DevProc->LSStopHeating();
@@ -111,6 +115,9 @@ bool CLevelSensorHeatingDialog::StartHeating(bool XyleneFlag)
         UpdateUI(TimeOut-WaitSeconds, TimeOut, TargetTemp, CurrentTemp);
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+           MSec = 1000;
+        }
         p_DevProc->Pause(MSec);
     }
 

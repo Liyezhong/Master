@@ -213,6 +213,10 @@ bool CLiquidHoseTestDlg::CreatePressure(float TargetPressure, int TimeOut)
 
             TimeOut--;
             int MSec = QTime().currentTime().msecsTo(EndTime);
+
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
             p_DevProc->Pause(MSec);
         }
     }
@@ -236,6 +240,10 @@ float CLiquidHoseTestDlg::GetRecordPressure(int RecordTime)
         PressureSum += Pressure;
         WaitSec--;
         int MSec = QTime().currentTime().msecsTo(EndTime);
+
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         ServiceDeviceProcess::Instance()->Pause(MSec);
     }
 

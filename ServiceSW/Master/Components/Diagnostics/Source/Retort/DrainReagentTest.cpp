@@ -342,6 +342,9 @@ bool CDrainReagentTest::BuildVacuum()
 
         WaitTime--;
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         p_Dev->Pause(MSec);
     }
 

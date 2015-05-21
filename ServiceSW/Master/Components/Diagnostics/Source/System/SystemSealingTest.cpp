@@ -161,6 +161,9 @@ bool CSystemSealingTest::TestCreatePressure(float TargetPressure, float Offset, 
 
             WaitSec--;
             int MSec = QTime().currentTime().msecsTo(EndTime);
+            if (MSec <= 0) {
+                MSec = 1000;
+            }
             p_DevProc->Pause(MSec);
         }
     }
