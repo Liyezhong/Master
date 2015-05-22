@@ -171,6 +171,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_RVPositioinChSeqForIdle = 0;
     m_PressureStartTime = 0;
     m_IsTakeSpecimen = false;
+    m_CountTheLogSenserData = 0;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -3148,7 +3149,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 
     HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     // log to Sensor data file
-    SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString());
+    m_CountTheLogSenserData++;
+    if(m_CountTheLogSenserData >= 2)
+    {
+        SchedulerLogging::getInstance().logSensorData(strctHWMonitor.toLogString());
+        m_CountTheLogSenserData = 0;
+    }
     if(StepID.compare("INIT") != 0)
     {
         m_ProgramStatusInfor.UpdateOvenHeatingTime(QDateTime::currentMSecsSinceEpoch(),strctHWMonitor.OvenHeatingStatus);

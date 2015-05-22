@@ -382,6 +382,7 @@ typedef enum
         qint8   m_RVPositioinChSeqForIdle;                    ///< RVPositioin sequence for idle
         qint64  m_PressureStartTime;                          ///< pressure start time for idle
         bool    m_IsTakeSpecimen;                             ///< wether take of specimen
+        qint8   m_CountTheLogSenserData;                      ///< control the sensor data log
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
