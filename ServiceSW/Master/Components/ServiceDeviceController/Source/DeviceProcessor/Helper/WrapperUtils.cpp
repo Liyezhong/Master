@@ -46,6 +46,9 @@ void WrapperUtils::Pause(quint32 MilliSeconds)
 #else
     Log(tr("Pausing for %1 ms...").arg(MilliSeconds));
 #endif
+    if (MilliSeconds <= 0) {
+        MilliSeconds = 1000;
+    }
 
     QTimer timer;
     timer.setSingleShot(true);

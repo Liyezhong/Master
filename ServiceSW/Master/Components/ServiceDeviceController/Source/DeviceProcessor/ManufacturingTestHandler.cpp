@@ -2020,6 +2020,9 @@ bool ManufacturingTestHandler:: CreatePressure(int waitSecond, float targetPress
         --waitSecond;
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
     }
     if (result == true) {
@@ -2204,6 +2207,9 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         }
 
         int MSec = QTime().currentTime().msecsTo(EndTime);
+        if (MSec <= 0) {
+            MSec = 1000;
+        }
         mp_Utils->Pause(MSec);
 
         WaitSec--;
