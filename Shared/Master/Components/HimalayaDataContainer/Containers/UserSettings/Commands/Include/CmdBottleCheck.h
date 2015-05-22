@@ -48,6 +48,8 @@ class CmdBottleCheck : public Global::Command
 public:
     /*!
       * \brief constructor
+      * \param TimeOut timeout
+      *
     */
     CmdBottleCheck(int TimeOut);
 

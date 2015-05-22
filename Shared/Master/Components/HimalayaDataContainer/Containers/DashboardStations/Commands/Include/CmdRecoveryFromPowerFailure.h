@@ -53,6 +53,7 @@ public:
      *  \param RemainingTime = remain time
      *  \param ReagentGroupID    =   color id
      *  \param StationList = station list
+     *  \param IsErrorHandlingFailed = ErrorHandlingFailed flag
      *  \param StationID = station id
      *
      *  \return from CmdCurrentProgramStepInfor

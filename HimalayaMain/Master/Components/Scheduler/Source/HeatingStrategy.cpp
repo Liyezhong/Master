@@ -1698,7 +1698,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     }
     if(3 == m_CurScenario)
     {
-        if(isEffectiveTemp(HWTemp) && (HWTemp >40.0 || qFuzzyCompare(HWTemp,40.0)))
+        if(isEffectiveTemp(HWTemp) && ((HWTemp >40.0) || qFuzzyCompare(HWTemp, 40.0)))
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
@@ -1727,7 +1727,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         }
         else
         {
-            if ((HWTemp > 68.0 || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
+            if (((HWTemp > 68.0) || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
             {
                 m_RV_2_Outlet.OTCheckPassed = true;
             }
@@ -2001,7 +2001,7 @@ bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
             }
             else
             {
-                if ((HWTemp > 68.0 || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
+                if (((HWTemp > 68.0) || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
                     m_RV_2_Outlet.OTCheckPassed = true;
             }
         }

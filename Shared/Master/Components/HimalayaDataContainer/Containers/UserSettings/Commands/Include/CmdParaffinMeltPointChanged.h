@@ -51,6 +51,7 @@ public:
       * \param TimeOut timeout
       * \param lastMeltPoint last melt point
       * \param currentMeltPoint current melt point
+      * \param isreheating = reheating flag
     */
     CmdParaffinMeltPointChanged(int TimeOut, int lastMeltPoint, int currentMeltPoint, bool isreheating = true);
     /*!

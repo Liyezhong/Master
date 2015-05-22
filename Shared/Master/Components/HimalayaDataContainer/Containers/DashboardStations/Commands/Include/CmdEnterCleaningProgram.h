@@ -46,7 +46,7 @@ public:
      *  \brief  Definition/Declaration of function CmdEnterCleaningProgram
      *
      *  \param Timeout = int type parameter
-     *  \param acknownedgeType =  DataManager::ProgramAcknownedgeType_t type parameter
+     *  \param lastReagentGroupID =  last reagent group ID
      *
      *  \return from CmdEnterCleaningProgram
      */
@@ -66,7 +66,7 @@ public:
     CmdEnterCleaningProgram(const CmdEnterCleaningProgram &);                     ///< Not implemented.
     const CmdEnterCleaningProgram & operator = (const CmdEnterCleaningProgram &); ///< Not implemented.
 private:
-    QString m_LastReagentGroupID;       ///<  Definition/Declaration of variable m_LastReagentGroupID
+    QString m_LastReagentGroupID;       ///<  Definition/Declaration of variable m_LastReagentGroupID
     
 }; // end class CmdEnterCleaningProgram
 
