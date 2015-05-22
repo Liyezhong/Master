@@ -157,9 +157,9 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->ResetActiveCarbonFilterLifetime();
 
-    m_pSchedulerMainController->OnReportFillingTimeOut2Min();
+    //m_pSchedulerMainController->OnReportFillingTimeOut2Min();
 
-    m_pSchedulerMainController->OnReportDrainingTimeOut2Min();
+    //m_pSchedulerMainController->OnReportDrainingTimeOut2Min();
 
     QDateTime curTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     m_pSchedulerMainController->OnReportError(200, 0x01, 0x01, 0x01, curTime);
@@ -179,7 +179,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     ctrlCmd = m_pSchedulerMainController->PeekNonDeviceCommand();
     m_pSchedulerMainController->PopDeviceControlCmdQueue(cmd);
-    m_pSchedulerMainController->HandleRunState(ctrlCmd, cmd);
+    //m_pSchedulerMainController->HandleRunState(ctrlCmd, cmd);
 
     ProgramStepInfor stepInfo;
     m_pSchedulerMainController->GetNextProgramStepInformation("", stepInfo);
@@ -219,7 +219,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->MoveRV(TUBE_POS), false;
 
-    m_pSchedulerMainController->Fill();
+    //m_pSchedulerMainController->Fill();
 
     m_pSchedulerMainController->ShutdownFailedHeaters();
 
@@ -253,7 +253,7 @@ void TestSchedulerMainThreadController::TestSlots()
 
     m_pSchedulerMainController->AllStop();
 
-    m_pSchedulerMainController->Pause();
+    //m_pSchedulerMainController->Pause();
 
     m_pSchedulerMainController->m_TempALLevelSensor = 100.0;
 
