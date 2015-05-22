@@ -116,7 +116,9 @@ typedef enum  {
         DISMISS_PAUSING_MSG_DLG,
         WAIT_ROTARY_VALVE_HEATING_PROMPT,
         DISMISS_ROTARY_VALVE_HEATING_PROMPT,
-        PROGRAM_COOLING_DWON
+        PROGRAM_COOLING_DWON,
+        DISABLE_BOTTLE_CHECK,
+        ENABLE_BOTTLE_CHECK
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
