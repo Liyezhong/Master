@@ -519,6 +519,12 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
 
 void SchedulerMainThreadController::OnEnterIdleState()
 {
+    // Disable Bottle Check button
+    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::DISABLE_BOTTLE_CHECK));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
     //for bottle check and Error restart in idle state , the cmd take out specimen is OK
     if((4 == m_CurrentScenario && SM_IDLE == m_CurrentStepState) || 7 == m_CurrentScenario)
     {
@@ -529,6 +535,15 @@ void SchedulerMainThreadController::OnEnterIdleState()
     m_IdleState = IDLE_HEATING_RV;
     m_RVPositioinChSeqForIdle = 0;
     m_PressureStartTime = 0;
+}
+
+void SchedulerMainThreadController::OnExitIdleState()
+{
+    // Disable Bottle Check button
+    MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::DISABLE_BOTTLE_CHECK));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -730,6 +745,11 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                     {
                         m_IdleState = IDLE_READY_OK;
                         m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_TUBE_2);
+                        // Enable Bottle Check button
+                        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::ENABLE_BOTTLE_CHECK));
+                        Q_ASSERT(commandPtr);
+                        Global::tRefType Ref = GetNewCommandRef();
+                        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                     }
                     else
                     {

@@ -67,6 +67,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PowerFailureState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     mp_IdleState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     CONNECTSIGNALSLOT(mp_IdleState.data(), entered(), this, OnEnterIdleState());
+    CONNECTSIGNALSLOT(mp_IdleState.data(), exited(), mp_SchedulerThreadController, OnExitIdleState());
     mp_BusyState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
     CONNECTSIGNALSLOT(mp_BusyState.data(), entered(), this, OnEnterBusyState());
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
