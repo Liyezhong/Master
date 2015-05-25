@@ -39,14 +39,13 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
     ui(new Ui::CDashboardWidget),
     mp_DataConnector(p_DataConnector),
-    mp_MessageDlg(NULL),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
+    mp_ProgramWillCompleteMsgDlg(NULL),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinHeatingDuration(0),
     m_ProgramStartReady(false),
-    m_IsWaitingCleaningProgram(false),
     m_CurProgramStepIndex(-1),
     m_ProcessRunning(false),
     m_IsDrainingWhenPrgrmCompleted(false),
@@ -108,7 +107,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
                        ui->containerPanelWidget, ProgramSelected(QString&, QList<QString>&));
-    mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
     CONNECTSIGNALSIGNAL(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                         ui->programPanelWidget, ProgramActionStarted(DataManager::ProgramActionType_t, int,
@@ -213,7 +211,6 @@ CDashboardWidget::~CDashboardWidget()
 {
     try {
             delete ui;
-            delete mp_MessageDlg;
         }
         catch (...) {
             // to please Lint.
@@ -269,21 +266,16 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
 
     if (cmd.IsLocked())
     {
-        //enable the "OK"
-        if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
-        {
-            mp_MessageDlg->EnableButton(1, true);
-        }
-
         if ((m_CurProgramStepIndex < 3) && (m_ProgramStatus == Paused) && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(CommonString::strInforMsg);
-            mp_MessageDlg->SetText(m_strAddCassete);
-            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-            mp_MessageDlg->HideCenterButton();
-            if (mp_MessageDlg->exec())
+            MainMenu::CMessageDlg messageDlg(this);
+            messageDlg.SetIcon(QMessageBox::Information);
+            messageDlg.SetTitle(CommonString::strInforMsg);
+            messageDlg.SetText(m_strAddCassete);
+            messageDlg.SetButtonText(1, CommonString::strYes);
+            messageDlg.SetButtonText(3, CommonString::strNo);
+            messageDlg.HideCenterButton();
+            if (messageDlg.exec())
             {
                 SetCassetteNumber();
             }
@@ -301,23 +293,24 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 
 void CDashboardWidget::CancelProgramWillCompletePrompt()
 {
-    mp_MessageDlg->reject();
+    if (mp_ProgramWillCompleteMsgDlg)
+        mp_ProgramWillCompleteMsgDlg->reject();
 }
 
 void CDashboardWidget::OnProgramWillComplete()
 {
-    MainMenu::CMessageDlg messageDlg(this);
-    messageDlg.SetIcon(QMessageBox::Information);
-    messageDlg.SetTitle(CommonString::strConfirmMsg);
+    mp_ProgramWillCompleteMsgDlg = new MainMenu::CMessageDlg(this);
+    mp_ProgramWillCompleteMsgDlg->SetIcon(QMessageBox::Information);
+    mp_ProgramWillCompleteMsgDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strProgramWillComplete);
     strTemp = strTemp.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-    messageDlg.SetText(strTemp);
-    messageDlg.SetButtonText(1, CommonString::strOK);
-    messageDlg.HideButtons();
+    mp_ProgramWillCompleteMsgDlg->SetText(strTemp);
+    mp_ProgramWillCompleteMsgDlg->SetButtonText(1, CommonString::strOK);
+    mp_ProgramWillCompleteMsgDlg->HideButtons();
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
 
-    if (messageDlg.exec())
+    if (mp_ProgramWillCompleteMsgDlg->exec())
     {
         m_IsDrainingWhenPrgrmCompleted = true;
 
@@ -328,8 +321,12 @@ void CDashboardWidget::OnProgramWillComplete()
         //disable pause and abort
         ui->programPanelWidget->EnableStartButton(false);
         ui->programPanelWidget->EnablePauseButton(false);
+        delete mp_ProgramWillCompleteMsgDlg;
+        mp_ProgramWillCompleteMsgDlg = NULL;
         return;
     }
+    delete mp_ProgramWillCompleteMsgDlg;
+    mp_ProgramWillCompleteMsgDlg = NULL;
 }
 
 void CDashboardWidget::CancelTissueProtectPassedPrompt()
@@ -362,19 +359,17 @@ void CDashboardWidget::OnTissueProtectPassed()
 
 void CDashboardWidget::OnOvenCoverOpen()
 {
-    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
-    pMessageDlg->SetIcon(QMessageBox::Information);
-    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
-    pMessageDlg->SetText(m_strOvenCoverOpen);
-    pMessageDlg->SetButtonText(1, CommonString::strOK);
-    pMessageDlg->HideButtons();
-    if (pMessageDlg->exec())
+    MainMenu::CMessageDlg messageDlg(this);
+    messageDlg.SetIcon(QMessageBox::Information);
+    messageDlg.SetTitle(CommonString::strConfirmMsg);
+    messageDlg.SetText(m_strOvenCoverOpen);
+    messageDlg.SetButtonText(1, CommonString::strOK);
+    messageDlg.HideButtons();
+    if (messageDlg.exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_OVEN_COVER_OPEN);
-        delete pMessageDlg;
         return;
     }
-    delete pMessageDlg;
 }
 
 void CDashboardWidget::CancelRetortCoverOpenMessage()
@@ -405,21 +400,19 @@ void CDashboardWidget::OnRetortCoverOpen()
 
 void CDashboardWidget::OnPowerFailureMsg()
 {
-    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
-    pMessageDlg->SetIcon(QMessageBox::Critical);
-    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
+    MainMenu::CMessageDlg messageDlg(this);
+    messageDlg.SetIcon(QMessageBox::Critical);
+    messageDlg.SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_PowerFailureBoxTitle);
-    pMessageDlg->SetText(strTemp);
-    pMessageDlg->SetButtonText(1, CommonString::strOK);
-    pMessageDlg->HideButtons();
+    messageDlg.SetText(strTemp);
+    messageDlg.SetButtonText(1, CommonString::strOK);
+    messageDlg.HideButtons();
 
-    if (pMessageDlg->exec())
+    if (messageDlg.exec())
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_POWER_FAILURE_MSG);
-        delete pMessageDlg;
         return;
     }
-    delete pMessageDlg;
 }
 
 
@@ -456,18 +449,16 @@ void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
 
 void CDashboardWidget::OnCoolingDown()
 {
-    MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg(this);
-    pMessageDlg->SetIcon(QMessageBox::Information);
-    pMessageDlg->SetTitle(CommonString::strConfirmMsg);
-    pMessageDlg->SetText(m_strCoolingDown);
-    pMessageDlg->SetButtonText(1, CommonString::strOK);
-    pMessageDlg->HideButtons();
-    if (pMessageDlg->exec())
+    MainMenu::CMessageDlg messageDlg(this);
+    messageDlg.SetIcon(QMessageBox::Information);
+    messageDlg.SetTitle(CommonString::strConfirmMsg);
+    messageDlg.SetText(m_strCoolingDown);
+    messageDlg.SetButtonText(1, CommonString::strOK);
+    messageDlg.HideButtons();
+    if (messageDlg.exec())
     {
-        delete pMessageDlg;
         return;
     }
-    delete pMessageDlg;
 }
 
 void CDashboardWidget::OnProgramBeginAbort()
@@ -491,7 +482,6 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
         Core::CGlobalHelper::SetProgramPaused(false);
         //represent the retort as contaminated status
         ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
-        m_IsWaitingCleaningProgram = true;
         //only show Cleaning program in the favorite panel
         emit AddItemsToFavoritePanel(true);
 
@@ -547,10 +537,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
 
                 messageDlg.SetText(m_strRetortContaminated);
-                //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
-                messageDlg.EnableButton(1, true);//6.6 for test
-
-                m_IsWaitingCleaningProgram = true;
+                messageDlg.EnableButton(1, true);
                 if (messageDlg.exec())
                 {
                     //only show Cleaning program in the favorite panel
@@ -607,20 +594,21 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
     Core::CGlobalHelper::SetProgramPaused(false);
     if (!IsRetortContaminated)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+        MainMenu::CMessageDlg messageDlg(this);
+        messageDlg.SetIcon(QMessageBox::Information);
+        messageDlg.SetTitle(CommonString::strInforMsg);
         QString strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        mp_MessageDlg->SetText(strTemp);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
+        messageDlg.SetText(strTemp);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        if (messageDlg.exec())
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-            mp_MessageDlg->SetText(m_strTakeOutSpecimen);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
+            messageDlg.SetIcon(QMessageBox::Information);
+            messageDlg.SetTitle(CommonString::strConfirmMsg);
+            messageDlg.SetText(m_strTakeOutSpecimen);
+            messageDlg.SetButtonText(1, CommonString::strOK);
+            messageDlg.HideButtons();
+            if (messageDlg.exec())
             {
                 mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
                 ui->programPanelWidget->ChangeStartButtonToStartState();
@@ -894,24 +882,25 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     if ("" == m_SelectedProgramId)
         return false;
 
+    MainMenu::CMessageDlg messageDlg(this);
     if (m_bWaitRotaryValveHeatingPrompt)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        mp_MessageDlg->SetText(m_strWaitRotaryValveHeatingPrompt);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
+        messageDlg.SetText(m_strWaitRotaryValveHeatingPrompt);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        if (messageDlg.exec())
         return false;
     }
 
     if (!m_bRetortLocked){
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        mp_MessageDlg->SetText(m_strRetortNotLock);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
+        messageDlg.SetText(m_strRetortNotLock);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        if (messageDlg.exec())
         return false;
     }
 
@@ -931,12 +920,12 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 
     if (bShowRMSOffWarning)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        mp_MessageDlg->SetText(m_strNotStartRMSOFF);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
+        messageDlg.SetText(m_strNotStartRMSOFF);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        if (messageDlg.exec())
         return false;
     }
 
@@ -967,18 +956,17 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
         if (userRole == MainMenu::CMainWindow::Operator)
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
+            messageDlg.SetIcon(QMessageBox::Warning);
+            messageDlg.SetTitle(CommonString::strWarning);
+            messageDlg.SetText(m_strNotStartExpiredReagent);
+            messageDlg.SetButtonText(1, CommonString::strOK);
+            messageDlg.HideButtons();
+            if (messageDlg.exec())
                 return false;
         }
         else if(userRole == MainMenu::CMainWindow::Admin ||
             userRole == MainMenu::CMainWindow::Service)
         {
-            MainMenu::CMessageDlg messageDlg(this);
             messageDlg.SetIcon(QMessageBox::Warning);
             messageDlg.SetTitle(CommonString::strWarning);
             messageDlg.SetText(m_strStartExpiredReagent);
@@ -1005,12 +993,12 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 
                  if (diffSetting > 2.0)
                  {
-                    mp_MessageDlg->SetIcon(QMessageBox::Warning);
-                    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
-                    mp_MessageDlg->SetText(m_strDiffTemp);
-                    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-                    mp_MessageDlg->HideButtons();
-                    if (mp_MessageDlg->exec())
+                    messageDlg.SetIcon(QMessageBox::Warning);
+                    messageDlg.SetTitle(CommonString::strInforMsg);
+                    messageDlg.SetText(m_strDiffTemp);
+                    messageDlg.SetButtonText(1, CommonString::strOK);
+                    messageDlg.HideButtons();
+                    if (messageDlg.exec())
                         return false;
                  }
             }
@@ -1020,14 +1008,14 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     //Check safe reagent
     if ((m_SelectedProgramId.at(0) != 'C') && (m_iWhichStepHasNoSafeReagent  != -1))
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
         QString strTemp = m_strCheckSafeReagent.arg(QString::number(m_iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        mp_MessageDlg->SetText(strTemp);
-        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-        mp_MessageDlg->HideCenterButton();
-        if (!mp_MessageDlg->exec())
+        messageDlg.SetText(strTemp);
+        messageDlg.SetButtonText(1, CommonString::strYes);
+        messageDlg.SetButtonText(3, CommonString::strNo);
+        messageDlg.HideCenterButton();
+        if (!messageDlg.exec())
         {
             return false;
         }
@@ -1048,28 +1036,28 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 
     if (!m_bIsFirstStepFixation && bCanNotRun)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
         QTime time(0,0,0);
         time = time.addSecs(timeDelta);
         QString waitTime = m_strWaitTimeforParaffinMelt.arg(QString::number(time.hour())).arg(QString::number(time.minute())).arg(QString::number(time.second()));
-        mp_MessageDlg->SetText(m_strCannotStartParaffinMelt + '\n' + waitTime);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
+        messageDlg.SetText(m_strCannotStartParaffinMelt + '\n' + waitTime);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        if (messageDlg.exec())
         {
             return false;
         }
     }
     else if (m_bIsFirstStepFixation && bCanNotRun)
     {
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
-        mp_MessageDlg->SetText(m_strPromptProgramDelay);
-        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-        mp_MessageDlg->HideCenterButton();
-        if (!mp_MessageDlg->exec())
+        messageDlg.SetIcon(QMessageBox::Information);
+        messageDlg.SetTitle(CommonString::strConfirmMsg);
+        messageDlg.SetText(m_strPromptProgramDelay);
+        messageDlg.SetButtonText(1, CommonString::strYes);
+        messageDlg.SetButtonText(3, CommonString::strNo);
+        messageDlg.HideCenterButton();
+        if (!messageDlg.exec())
         {
             return false;
         }
@@ -1118,12 +1106,13 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if (ui->programPanelWidget->IsResumeRun())
     {
         if (!m_bRetortLocked){
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText(m_strRetortNotLock);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
+            MainMenu::CMessageDlg messageDlg(this);
+            messageDlg.SetIcon(QMessageBox::Warning);
+            messageDlg.SetTitle(CommonString::strWarning);
+            messageDlg.SetText(m_strRetortNotLock);
+            messageDlg.SetButtonText(1, CommonString::strOK);
+            messageDlg.HideButtons();
+            if (messageDlg.exec())
             {
                 ui->programPanelWidget->EnableStartButton(true);
                 return;
@@ -1176,17 +1165,18 @@ void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryF
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
+    MainMenu::CMessageDlg messageDlg(this);
     const QList<QString>& stationList = cmd.StationList();
     if (stationList.count() == 0)
     {
         if (m_NewSelectedProgramId.at(0) == 'C')
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText("CleaningProgram does not need to be run as the reagent compatibility");
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
+            messageDlg.SetIcon(QMessageBox::Warning);
+            messageDlg.SetTitle(CommonString::strWarning);
+            messageDlg.SetText("CleaningProgram does not need to be run as the reagent compatibility");
+            messageDlg.SetButtonText(1, CommonString::strOK);
+            messageDlg.HideButtons();
+            if (messageDlg.exec())
             {
                 emit AddItemsToFavoritePanel();
                 ui->programPanelWidget->ChangeStartButtonToStartState();
@@ -1211,16 +1201,16 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     {
         if ("" == stationList.at(i))
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            messageDlg.SetIcon(QMessageBox::Warning);
+            messageDlg.SetTitle(CommonString::strWarning);
             QString strTemp = m_strNotFoundStation.arg(QString::number(i+1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-            mp_MessageDlg->SetText(strTemp);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
+            messageDlg.SetText(strTemp);
+            messageDlg.SetButtonText(1, CommonString::strOK);
+            messageDlg.HideButtons();
 
             ui->programPanelWidget->EnableStartButton(false);
 
-            if (mp_MessageDlg->exec())
+            if (messageDlg.exec())
             {
                 emit ResetFocus(true);
                 return;
@@ -1237,14 +1227,14 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
             if ("Empty" == pStation->GetDashboardReagentStatus())
             {
-                mp_MessageDlg->SetIcon(QMessageBox::Warning);
-                mp_MessageDlg->SetTitle(CommonString::strWarning);
+                messageDlg.SetIcon(QMessageBox::Warning);
+                messageDlg.SetTitle(CommonString::strWarning);
                 QString strTemp = m_strCheckEmptyStation.arg(pStation->GetDashboardStationName()).arg(QString::number(i+1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-                mp_MessageDlg->SetText(strTemp);
-                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-                mp_MessageDlg->HideButtons();
+                messageDlg.SetText(strTemp);
+                messageDlg.SetButtonText(1, CommonString::strOK);
+                messageDlg.HideButtons();
 
-                if (mp_MessageDlg->exec())
+                if (messageDlg.exec())
                 {
                     emit ResetFocus(true);
                     return;

@@ -158,7 +158,7 @@ private:
     QString m_NewSelectedProgramId;       ///<  Definition/Declaration of variable m_NewSelectedProgramId
     int m_ParaffinStepIndex;       ///<  Definition/Declaration of variable m_ParaffinStepIndex
     DataManager::CHimalayaUserSettings* m_pUserSetting;       ///<  Definition/Declaration of variable m_pUserSetting
-    MainMenu::CMessageDlg* mp_MessageDlg;                      //!< Message Dialogue
+    MainMenu::CMessageDlg* mp_ProgramWillCompleteMsgDlg;                      //!< Message Dialogue
     MainMenu::CMessageDlg* mp_TissueProtectPassedMsgDlg;
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
     MainMenu::CMessageDlg* mp_PausingMsgDlg;                    //!< message dialog "It is pausing..."
@@ -195,7 +195,6 @@ private:
     QString m_strCoolingDown;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
-    bool m_IsWaitingCleaningProgram;
     int m_CurProgramStepIndex;
     bool m_ProcessRunning;                      //!< Process running state
     bool m_IsDrainingWhenPrgrmCompleted;
