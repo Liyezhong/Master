@@ -1884,7 +1884,16 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit CoolingDown();
         }
         break;
-
+        case DataManager::ENABLE_BOTTLE_CHECK:
+        {
+            emit EnableBottleCheck(true);
+        }
+        break;
+        case DataManager::DISABLE_BOTTLE_CHECK:
+        {
+            emit EnableBottleCheck(false);
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";

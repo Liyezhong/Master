@@ -144,6 +144,9 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
                           this, EnableBottleCheckFlag());
         CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                           this, DisableBottleCheckFlag());
+        CONNECTSIGNALSLOT(mp_DataConnector, EnableBottleCheck(bool),
+                          this, EnableBottleCheck(bool));
+
 
     }
 }
@@ -392,5 +395,10 @@ void CSystemSetupSettingsWidget::DisableBottleCheckFlag()
     ResetButtons();
 }
 
+void CSystemSetupSettingsWidget::EnableBottleCheck(bool bEnabled)
+{
+    m_bEnableBottleCheck = bEnabled;
+    ResetButtons();
+}
 
 } // end namespace Settings

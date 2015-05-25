@@ -39,6 +39,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
     ui(new Ui::CDashboardWidget),
     mp_DataConnector(p_DataConnector),
+    mp_MessageDlg(NULL),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
     m_TimeProposedForProgram(0),

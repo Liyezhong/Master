@@ -869,6 +869,14 @@ signals:
      */
     /****************************************************************************/
     void BottleCheckReply(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal EnableBottleCheck
+     *  \param  bEnabled = true is enabled, false is disabled.
+     *
+     */
+    /****************************************************************************/
+    void EnableBottleCheck(bool bEnabled);
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 
