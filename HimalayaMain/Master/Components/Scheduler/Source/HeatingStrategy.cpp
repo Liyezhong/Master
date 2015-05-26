@@ -1696,9 +1696,11 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         return true;
     }
+    qreal LimitTemp = 0.0;
     if(3 == m_CurScenario)
     {
-        if(isEffectiveTemp(HWTemp) && ((HWTemp >40.0) || qFuzzyCompare(HWTemp, 40.0)))
+        LimitTemp = 40.0;
+        if(isEffectiveTemp(HWTemp) && ((HWTemp > LimitTemp) || qFuzzyCompare(HWTemp, LimitTemp)))
         {
             m_RV_2_Outlet.OTCheckPassed = true;
         }
@@ -1717,8 +1719,9 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     }
     else if(260 == m_CurScenario)
     {
+        LimitTemp = 68.0;
         qreal meltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if (meltingPoint < 68.0)
+        if (meltingPoint < LimitTemp)
         {
             if ((HWTemp > meltingPoint || qFuzzyCompare(HWTemp, meltingPoint))&& isEffectiveTemp(HWTemp))
             {
@@ -1727,7 +1730,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         }
         else
         {
-            if (((HWTemp > 68.0) || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
+            if (((HWTemp > LimitTemp) || qFuzzyCompare(HWTemp, LimitTemp)) && isEffectiveTemp(HWTemp))
             {
                 m_RV_2_Outlet.OTCheckPassed = true;
             }
@@ -1740,7 +1743,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
             if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.curModuleId].ScenarioList.indexOf(m_CurScenario))
             {
 
-                if (meltingPoint < 68.0)
+                if (meltingPoint < LimitTemp)
                 {
                     if (HWTemp < meltingPoint)
                     {
@@ -1749,7 +1752,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
                 }
                 else
                 {
-                    if (HWTemp < 68.0)
+                    if (HWTemp < LimitTemp)
                     {
                         return false;
                     }
@@ -1991,17 +1994,18 @@ bool HeatingStrategy::Check260SensorsTemp(bool IsPowerFailure)
     if(IsPowerFailure)
     {
         qreal HWTemp = 0.0;
+        qreal LimitTemp = 68.0;
         if(!m_RV_2_Outlet.OTCheckPassed)
         {
             HWTemp = strctHWMonitor.TempRV2;
-            if (m_SensorsChecking.meltingPoint < 68.0)
+            if (m_SensorsChecking.meltingPoint < LimitTemp)
             {
                 if ((HWTemp > m_SensorsChecking.meltingPoint || qFuzzyCompare(HWTemp, m_SensorsChecking.meltingPoint)) && isEffectiveTemp(HWTemp))
                     m_RV_2_Outlet.OTCheckPassed = true;
             }
             else
             {
-                if (((HWTemp > 68.0) || qFuzzyCompare(HWTemp,68.0)) && isEffectiveTemp(HWTemp))
+                if (((HWTemp > LimitTemp) || qFuzzyCompare(HWTemp, LimitTemp)) && isEffectiveTemp(HWTemp))
                     m_RV_2_Outlet.OTCheckPassed = true;
             }
         }
