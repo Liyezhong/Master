@@ -599,6 +599,10 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
                       this, EnableBottleCheckFlag());
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, DisableBottleCheckFlag());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, EnableBottleCheck(bool),
+                              this, EnableBottleCheck(bool));
+
     mp_ReagentList = p_ReagentList;
     // set the reagent ist to the model
     m_ReagentStatusModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
@@ -647,5 +651,9 @@ void CReagentStatusWidget::DisableBottleCheckFlag()
     m_EnableBottleCheck = false;
 }
 
+void CReagentStatusWidget::EnableBottleCheck(bool bSet)
+{
+    m_EnableBottleCheck = bSet;
+}
 
 }
