@@ -74,7 +74,6 @@ void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVer
         HeaderString += QString("   RvP RtLk OvLid");
         if(mp_DayEventLogger)
         {
-            mp_DayEventLogger->CheckNewFile();
             mp_DayEventLogger->AppendLine(HeaderString, true);
         }
     }
@@ -84,7 +83,15 @@ void SchedulerLogging::InitLog(const QString& serialNumber, const QString& SWVer
 void SchedulerLogging::logSensorData(const QString& message)
 {
     if (mp_DayEventLogger) {
-        mp_DayEventLogger->CheckNewFile();
+        if(mp_DayEventLogger->CheckNewFile())
+        {
+            QString HeaderString;
+            HeaderString += QString("                            T_RV1    T_RV2    T_OvT   T_OvB1   T_OvB2");
+            HeaderString += QString("   T_RtB1   T_RtB2   T_RtSd     T_LS    T_Tb1    T_Tb2");
+            HeaderString += QString("    Press CurRV CurRt CurLT  Cur3  Cur5 Cur15");
+            HeaderString += QString("   RvP RtLk OvLid");
+            mp_DayEventLogger->AppendLine(HeaderString, true);
+        }
         QString timeStamp = mp_DayEventLogger->GetTimeStampHeader();
         mp_DayEventLogger->AppendLine(timeStamp + ";" + message, true);
     }
