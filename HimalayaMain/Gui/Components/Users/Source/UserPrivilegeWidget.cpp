@@ -46,7 +46,11 @@ const qint32 MIN_CHAR_LENGTH = 4; ///< Minimum character length
 CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
                                            KeyBoard::CKeyBoard *p_KeyBoardWidget) :
     MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CUserPrivilegeWidget)
+    mp_Ui(new Ui::CUserPrivilegeWidget),
+    m_bIsRightTopPressed(false),
+    m_bIsRightBottomPressed(false),
+    m_bValidRightTopPressed(false),
+    m_bValidIntervalPressed(false)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_MainWindow = static_cast<MainMenu::CMainWindow *>(p_Parent);
@@ -91,6 +95,11 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     m_PressTimer->setSingleShot(true);
     (void)connect(m_PressTimer, SIGNAL(timeout()), this, SLOT(OnTimeOutPress()));
 
+    m_IntervalPressedTimer = new QTimer(this);
+    m_IntervalPressedTimer->setInterval(5000);
+    m_IntervalPressedTimer->setSingleShot(true);
+    (void)connect(m_IntervalPressedTimer, SIGNAL(timeout()), this, SLOT(OnTimeOutIntervalPressedTimer()));
+
 }
 
 /****************************************************************************/
@@ -106,6 +115,7 @@ CUserPrivilegeWidget::~CUserPrivilegeWidget()
         delete m_Timer;
         delete m_ScrollTimer;
         delete m_PressTimer;
+        delete m_IntervalPressedTimer;
     }
     catch(...)
     {}
@@ -138,31 +148,57 @@ void CUserPrivilegeWidget::mousePressEvent (QMouseEvent * p_Event)
         return;
 
     //LeftBottom
-   // QPoint p = p_Event->pos();
-    QRect  rectLeftBottom(0, 490, 100, 100);
-    if (!rectLeftBottom.contains(p_Event->pos()))
+    //QPoint p = p_Event->pos();
+    QRect  rectRightTop(643, 34, 100, 100);
+    QRect  rectRightBottom(643, 490, 100, 100);
+
+    if (rectRightTop.contains(p_Event->pos()))
+    {
+        m_bIsRightTopPressed = true;
+    }
+    else if (rectRightBottom.contains(p_Event->pos()))
+    {
+        m_bIsRightBottomPressed = true;
+    }
+    else
         return;
 
-    m_bIsPressed = true;
     m_yScroll = 280;
     m_PressTimer->start();
-
 }
 
 void CUserPrivilegeWidget::mouseReleaseEvent (QMouseEvent* p_Event)
 {
     Q_UNUSED(p_Event);
-    m_bIsPressed = false;
+    if (m_bIsRightTopPressed && m_bValidRightTopPressed)
+    {
+        m_IntervalPressedTimer->start();
+    }
+    m_bIsRightTopPressed = false;
+    m_bIsRightBottomPressed = false;
+    m_bValidIntervalPressed = false;
+    m_bValidRightTopPressed = false;
+
 }
 
 void CUserPrivilegeWidget::OnTimeOutPress()
 {
-    if (m_bIsPressed)
+    if (m_bIsRightTopPressed)
+    {
+        m_bValidRightTopPressed = true;
+    }
+    else if (m_bValidIntervalPressed)
     {
         mp_Ui->label->setVisible(true);
         mp_Ui->label->move(30, m_yScroll);
         m_ScrollTimer->start();
     }
+}
+
+void CUserPrivilegeWidget::OnTimeOutIntervalPressedTimer()
+{
+    m_bIsRightTopPressed = false;
+    m_bValidIntervalPressed = true;
 }
 
 void CUserPrivilegeWidget::ScrollScreen()

@@ -55,9 +55,10 @@ private:
     QString m_PwdType;                              //!< Type of the password is stored i.e. Old, New and Confirm
     MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level
     void RetranslateUI();
-    QTimer* m_Timer, *m_ScrollTimer, *m_PressTimer;
+    QTimer* m_Timer, *m_ScrollTimer, *m_PressTimer, *m_IntervalPressedTimer;
     int m_yScroll;
-    bool m_bIsPressed;
+    bool m_bIsRightTopPressed, m_bIsRightBottomPressed;
+    bool m_bValidRightTopPressed, m_bValidIntervalPressed;
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
     /****************************************************************************/
@@ -151,6 +152,12 @@ private slots:
      */
     /****************************************************************************/
     void OnTimeOutPress();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnTimeOutIntervalPressedTimer()
+     */
+    /****************************************************************************/
+    void OnTimeOutIntervalPressedTimer();
 
 public slots:
     /****************************************************************************/
