@@ -931,7 +931,7 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     if(!ErrorFlag){
         ErrorFlag = ! WriteFilesInSettingsFolder();
     }
-    if (ErrorFlag  && ImportTypeList.count() > 0) {
+    if (ErrorFlag) {
         if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             (void)UpdateSettingsWithRollbackFolder();
             ImportTypeList.clear();
