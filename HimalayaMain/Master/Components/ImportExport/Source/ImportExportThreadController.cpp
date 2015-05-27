@@ -272,7 +272,9 @@ void ImportExportThreadController::OnGoReceived() {
                 QStringList DirFileNames;
                 QDir Dir(Global::DIRECTORY_MNT_STORAGE);
                 // get the lpkg files from the directory
-                DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG), QDir::Files, QDir::Name | QDir::Time);
+                QStringList NameFilter;
+                NameFilter <<"HISTOCOREPEARL_User_*_*.lpkg"<<"HISTOCOREPEARL_Service_*_*.lpkg";
+                DirFileNames = Dir.entryList(NameFilter, QDir::Files, QDir::Name | QDir::Time);
                 switch(DirFileNames.count()) {
                     case 0:
                         m_EventRaised = true;
@@ -885,6 +887,11 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     QString TypeOfImport;
     bool ErrorFlag = false;
 
+    if(FileList.empty())
+    {
+        emit ThreadFinished(true, ImportTypeList, 0, false, false);
+        return;
+    }
     ImportTypeList.clear();
 
     // multiple files can be imported. At max three files can be imported.

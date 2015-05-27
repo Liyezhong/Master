@@ -313,7 +313,7 @@ const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING	= 50331719;	///< Th
 
 const quint32 EVENT_IMPORT_TAMPERED_ARCHIVE_FILE	= 50331759;	///< Import failed. Archive file is tampered
 
-const quint32 EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING	= 50331760;	///< Import failed. SW versions are not matching to Import the files
+const quint32 EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING	= 50331760;	///< Import failed. The device name does not match to imported file
 
 const quint32 EVENT_IMPORT_TYPEOFIMPORTNOTVALID	= 50331761;	///< Type of import is not valid
 

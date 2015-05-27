@@ -829,9 +829,6 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         return;
 
     bool SendAckOK = false;
-    if (IsImport && ImportTypeList.count() == 0) {
-        SendAckOK = true;
-    }
     if (IsImport && ImportTypeList.count() > 0) {
         // check the type of Impor
         if ((ImportTypeList.contains("User") == 0) || (ImportTypeList.contains("Service") == 0) || (ImportTypeList.contains("Leica") == 0)) {
@@ -895,18 +892,36 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     }
     else {        
         // send ack is NOK
-        if(IsImport && EventCode != 0){
-            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+        if(IsImport)
+        {
+            if(EventCode != 0){
+                Global::EventObject::Instance().RaiseEvent(EventCode,true);
+            }
+            else if (ImportTypeList.count() > 0){
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
+            }
         }
-        else if(IsImport && EventCode == 0){
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
+        else
+        {
+            if(EventCode != 0){
+                Global::EventObject::Instance().RaiseEvent(EventCode,true);
+            }
+            else{
+                Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
+            }
         }
-        else if(!IsImport && EventCode != 0){
-            Global::EventObject::Instance().RaiseEvent(EventCode,true);
-        }
-        else{
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
-        }
+//        if(IsImport && EventCode != 0){
+//            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+//        }
+//        else if(IsImport && EventCode == 0){
+//            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED,true);
+//        }
+//        else if(!IsImport && EventCode != 0){
+//            Global::EventObject::Instance().RaiseEvent(EventCode,true);
+//        }
+//        else{
+//            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED,true);
+//        }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
 
