@@ -62,7 +62,8 @@ const int RC_REQUEST_COMMAND_TIME_OUT = 30000;        //!< Remote Care Command T
  */
 /****************************************************************************/
 CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::CDataContainer(),
-    mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
+    mp_MainWindow(p_Parent), mp_WaitDialog(NULL),mp_UserSettingWaitDialog(NULL),
+    mp_LanguageFile(NULL), mp_OldFile(NULL),
     m_LanguageChangeCount(0), m_ConsumableType(KIT), m_BottleCount(0), m_GuiInit(true),
     m_strCommunicationErrorTitle(tr("Communication Error")),
     m_strChangeNotSave(tr("The changes can not be saved.")),
@@ -167,12 +168,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_MessageDlg->setModal(true);
     mp_MessageDlg->HideButtons();
 
-    mp_BlgScanWaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
-    mp_WaitDialog->SetDialogTitle(m_strStartup);
-    mp_WaitDialog->SetText(m_strInitDevCom);
     mp_WaitDialog->HideAbort();
-    //mp_WaitDialog->show();
     CONNECTSIGNALSLOT(mp_WaitDialog, Timeout(), mp_MessageDlg, Show());
 
     // MsgBox Manager
@@ -194,7 +191,6 @@ CDataConnector::~CDataConnector()
     try {
         delete mp_MesgBoxManager;
         delete mp_WaitDialog;
-        delete mp_BlgScanWaitDialog;
         delete mp_MessageDlg;
         delete mp_LanguageFile;
         delete m_pServiceProcess;
@@ -1057,26 +1053,28 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
 /****************************************************************************/
 void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
 {
-    if (mp_WaitDialog == NULL) {
-        //If wait dialog object is NULL return immediately
-        return;
-    }
-
     QByteArray ByteArray;
     QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
     SettingsDataStream << settings;
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-//    if (!m_IsWaitDlgOpen) {
-        mp_WaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Device Communication",
-                                                              0, QApplication::UnicodeUTF8));
-        mp_WaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Saving settings ...",
-                                                       0, QApplication::UnicodeUTF8));
-        mp_WaitDialog->SetTimeout(100000);
-        mp_WaitDialog->show();
-//    }
-//    m_IsWaitDlgOpen = false;
+    if (mp_UserSettingWaitDialog)
+    {
+        delete mp_UserSettingWaitDialog;
+        mp_UserSettingWaitDialog = NULL;
+    }
+    mp_UserSettingWaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_UserSettingWaitDialog->HideAbort();
+    CONNECTSIGNALSLOT(mp_UserSettingWaitDialog, Timeout(), mp_MessageDlg, Show());
+
+    mp_UserSettingWaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Device Communication",
+                                                          0, QApplication::UnicodeUTF8));
+    mp_UserSettingWaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Saving settings ...",
+                                                   0, QApplication::UnicodeUTF8));
+    mp_UserSettingWaitDialog->SetTimeout(100000);
+    mp_UserSettingWaitDialog->show();
+
 }
 /****************************************************************************/
 /*!
@@ -1620,7 +1618,12 @@ void CDataConnector::OnUserSettingsAck(Global::tRefType Ref, const Global::AckOK
     Q_UNUSED(Ref);
     qDebug()<<"\n\n Ack.GetStatus() = "<< Ack.GetStatus();
     // just accept the wait dialog
-    mp_WaitDialog->accept();
+    if (mp_UserSettingWaitDialog)
+    {
+        mp_UserSettingWaitDialog->accept();
+        delete mp_UserSettingWaitDialog;
+        mp_UserSettingWaitDialog = NULL;
+    }
     if (Ack.GetStatus() == false) {
         ShowMessageDialog(Ack.GetType(), Ack.GetText());
         if (mp_MessageDlg->exec() == (int)QDialog::Accepted ) {

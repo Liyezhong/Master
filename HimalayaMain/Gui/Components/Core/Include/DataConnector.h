@@ -1037,7 +1037,7 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Main window of the GUI
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Error message box
     MainMenu::CWaitDialog *mp_WaitDialog;           //!< Displayed when busy
-    MainMenu::CWaitDialog *mp_BlgScanWaitDialog;    //!< Displayed when busy
+    MainMenu::CWaitDialog *mp_UserSettingWaitDialog;           //!< Displayed when busy
 
     QFile *mp_LanguageFile;                         //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
