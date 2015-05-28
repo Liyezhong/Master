@@ -488,8 +488,8 @@ bool CDataReagentList::Read(QString Filename)
     bool Result = true;
 
     if (m_DataVerificationMode) {
-        ErrorMap_t ErrorHash;
-        QWriteLocker locker(mp_ReadWriteLock);
+//        ErrorMap_t ErrorHash;
+//        QWriteLocker locker(mp_ReadWriteLock);
 
         // create instance of CDataReagentList for verification
         CDataReagentList* p_DRL_Verification = new CDataReagentList();
