@@ -383,6 +383,7 @@ typedef enum
         qint64  m_PressureStartTime;                          ///< pressure start time for idle
         bool    m_IsTakeSpecimen;                             ///< wether take of specimen
         qint8   m_CountTheLogSenserData;                      ///< control the sensor data log
+        quint8  m_CheckTheHardwareStatus;                     ///< Check the hardware status
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

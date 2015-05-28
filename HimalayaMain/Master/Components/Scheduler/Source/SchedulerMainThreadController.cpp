@@ -172,6 +172,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_PressureStartTime = 0;
     m_IsTakeSpecimen = false;
     m_CountTheLogSenserData = 0;
+    m_CheckTheHardwareStatus = 0;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -3163,6 +3164,11 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
+    if(m_CheckTheHardwareStatus <= 2)  // Wait for about 500ms*3 = 1500ms to start hardware monitor
+    {
+        m_CheckTheHardwareStatus++;
+        return;
+    }
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     m_IsErrorStateForHM = false;
