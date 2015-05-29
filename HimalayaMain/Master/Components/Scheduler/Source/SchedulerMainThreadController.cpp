@@ -3743,6 +3743,9 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
 
 bool SchedulerMainThreadController::RestartFailedHeaters()
 {
+    // Reopen Main Relay before restarting heaters
+    m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this), false);
+
     HeaterType_t heaterType = this->GetFailerHeaterType();
     switch (heaterType)
     {
