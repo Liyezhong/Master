@@ -192,14 +192,6 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
     if(newCmdComing(scmd))
     {
         this->ExecuteCmd(scmd);
-        if ("Scheduler::ALDraining" == scmd->GetName())
-        {
-            mp_SchedulerThreadController->LogDebug("ALDraining will be added to PushDeviceControlCmdQueue");
-        }
-        if ("Scheduler::ALFilling" == scmd->GetName())
-        {
-            mp_SchedulerThreadController->LogDebug("ALFilling will be added to PushDeviceControlCmdQueue");
-        }
         if (scmd->GetResponse())
         {
             mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
@@ -330,56 +322,75 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult(mp_IDeviceProcessing->StartAdjustmentService());
 	}
-	else if  ("Scheduler::ALSetPressureCtrlON" == cmdName)
-	{
+    else if  ("Scheduler::ALSetPressureCtrlON" == cmdName)
+    {
         scmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlON());
+        mp_SchedulerThreadController->LogDebug("==CMD==:Set pressure ctrl ON.");
 	}
-	else if  ("Scheduler::ALSetPressureCtrlOFF" == cmdName)
+    else if  ("Scheduler::ALSetPressureCtrlOFF" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlOFF());
+        mp_SchedulerThreadController->LogDebug("==CMD==:Set pressure ctrl OFF.");
 	}
-	else if  ("Scheduler::ALReleasePressure" == cmdName)
+    else if  ("Scheduler::ALReleasePressure" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALReleasePressure());
+        mp_SchedulerThreadController->LogDebug("==CMD==:Release pressure.");
 	}
-	else if  ("Scheduler::ALPressure" == cmdName)
+    else if  ("Scheduler::ALPressure" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALPressure(qSharedPointerDynamicCast<CmdALPressure>(scmd)->GetTargetPressure()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Set pressure [%1]").arg(qSharedPointerDynamicCast<CmdALPressure>(scmd)->GetTargetPressure()));
 	}
-	else if  ("Scheduler::ALVaccum" == cmdName)
+    else if  ("Scheduler::ALVaccum" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALVaccum(qSharedPointerDynamicCast<CmdALVaccum>(scmd)->GetTargetPressure()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Set vacuum [%1]").arg(qSharedPointerDynamicCast<CmdALVaccum>(scmd)->GetTargetPressure()));
     }
     else if  ("Scheduler::ALDraining" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetIgnorePressure()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Draining, delay time:%1, target pressure:%2, ingnore pressure:%3")
+                                               .arg(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime())
+                                               .arg(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDrainPressure())
+                                               .arg(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetIgnorePressure()));
     }
     else if  ("Scheduler::IDForceDraining" == cmdName)
     {
         scmd->SetResult(mp_IDeviceProcessing->IDForceDraining(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure(), qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetReagentGrpID() ));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Force drainging, RV pos:%1, target pressure:%2, reagent ID:%3")
+                                               .arg(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetRVPosition())
+                                               .arg(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetDrainPressure())
+                                               .arg(qSharedPointerDynamicCast<CmdIDForceDraining>(scmd)->GetReagentGrpID()) );
     }
-	else if  ("Scheduler::ALFilling" == cmdName)
+    else if  ("Scheduler::ALFilling" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),
                                                                 qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Filling, delay time:%1, insufficient check:%2")
+                                               .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime())
+                                               .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()) );
     }
     else if ("Scheduler::ALStopCmdExec" == cmdName)
     {
         scmd->SetResult(mp_IDeviceProcessing->ALStopCmdExec(qSharedPointerDynamicCast<CmdALStopCmdExec>(scmd)->GetCmdType()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Stop cmd execute type:%1").arg(qSharedPointerDynamicCast<CmdALStopCmdExec>(scmd)->GetCmdType()) );
     }
 	else if  ("Scheduler::ALGetRecentPressure" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALGetRecentPressure());
 	}
-	else if  ("Scheduler::ALSetTempCtrlON" == cmdName)
+    else if  ("Scheduler::ALSetTempCtrlON" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlON(qSharedPointerDynamicCast<CmdALSetTempCtrlON>(scmd)->GetType()));
+        mp_SchedulerThreadController->LogDebug("==CMD==:AL Set temp ctrl ON.");
 	}
-	else if  ("Scheduler::ALSetTempCtrlOFF" == cmdName)
+    else if  ("Scheduler::ALSetTempCtrlOFF" == cmdName)
 	{
         scmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlOFF(qSharedPointerDynamicCast<CmdALSetTempCtrlOFF>(scmd)->Gettype()));
+        mp_SchedulerThreadController->LogDebug("==CMD==:AL Set temp ctrl OFF.");
 	}
-	else if  ("Scheduler::ALSetTemperaturePid" == cmdName)
+    else if  ("Scheduler::ALSetTemperaturePid" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALSetTemperaturePid( qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetType(),
                                                                             qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetMaxTemperature(),
@@ -387,13 +398,23 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                             qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetResetTime(),
                                                                             qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		   ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:AL set temp pid, type:%1, MaxTemp:%2, P:%3, I:%4, D:%5.")
+                                               .arg(qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::ALStartTemperatureControl" == cmdName)
+    else if  ("Scheduler::ALStartTemperatureControl" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControl( qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetType(),
                                                                                   qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetNominalTemperature(),
                                                                                   qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:AL StartTempCtrl, type:%1, temp:%2, slope:%3.")
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetSlopeTempChange()) );
 	}
 	else if  ("Scheduler::ALGetRecentTemperature" == cmdName)
 	{
@@ -405,35 +426,47 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALGetTemperatureControlState( qSharedPointerDynamicCast<CmdALGetTemperatureControlState>(scmd)->GetType() ) );
 	}
-	else if  ("Scheduler::ALTurnOnFan" == cmdName)
+    else if  ("Scheduler::ALTurnOnFan" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALTurnOnFan() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:AL turn on fan.");
 	}
-	else if  ("Scheduler::ALTurnOffFan" == cmdName)
+    else if  ("Scheduler::ALTurnOffFan" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALTurnOffFan() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:AL turn off fan.");
 	}
-	else if  ("Scheduler::RVSetTempCtrlON" == cmdName)
+    else if  ("Scheduler::RVSetTempCtrlON" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlON() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:RV set temp ctrl ON.");
 	}
-	else if  ("Scheduler::RVSetTempCtrlOFF" == cmdName)
+    else if  ("Scheduler::RVSetTempCtrlOFF" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlOFF() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:RV set temp ctrl OFF.");
 	}
-	else if  ("Scheduler::RVSetTemperaturePid" == cmdName)
+    else if  ("Scheduler::RVSetTemperaturePid" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVSetTemperaturePid( qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetMaxTemperature(),
                                                                             qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetControllerGain(),
                                                                             qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetResetTime(),
                                                                             qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		  ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RV set temp, MaxTemp:%1, P:%2, I:%3, D:%4.")
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::RVStartTemperatureControl" == cmdName)
+    else if  ("Scheduler::RVStartTemperatureControl" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControl( qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetNominalTemperature(),
                                                                                   qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RV StartTempCtrl, temp:%1, slope:%2")
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetSlopeTempChange()) );
 	}
 	else if  ("Scheduler::RVGetRecentTemperature" == cmdName)
 	{
@@ -443,27 +476,32 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVGetTemperatureControlState() );
 	}
-	else if  ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+    else if  ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToInitialPosition( qSharedPointerDynamicCast<CmdRVReqMoveToInitialPosition>(scmd)->GetRVPosition() ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to init pos, target pos:%1")
+                                               .arg(qSharedPointerDynamicCast<CmdRVReqMoveToInitialPosition>(scmd)->GetRVPosition()) );
 	}
-	else if  ("Scheduler::RVReqMoveToRVPosition" == cmdName)
+    else if  ("Scheduler::RVReqMoveToRVPosition" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition() ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to pos:%1").arg(qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition()));
 	}
 	else if  ("Scheduler::RVReqActRVPosition" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVReqActRVPosition() );
 	}
-	else if  ("Scheduler::OvenSetTempCtrlON" == cmdName)
+    else if  ("Scheduler::OvenSetTempCtrlON" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlON(qSharedPointerDynamicCast<CmdOvenSetTempCtrlON>(scmd)->GetType() ) );
+        mp_SchedulerThreadController->LogDebug("==CMD==:Oven set temp ctrl ON.");
     }
     else if  ("Scheduler::OvenSetTempCtrlOFF" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(qSharedPointerDynamicCast<CmdOvenSetTempCtrlOFF>(scmd)->Gettype() ) );
+        mp_SchedulerThreadController->LogDebug("==CMD==:Oven set temp ctrl OFF.");
 	}
-	else if  ("Scheduler::OvenSetTemperaturePid" == cmdName)
+    else if  ("Scheduler::OvenSetTemperaturePid" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenSetTemperaturePid( qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetType(),
                                                                               qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetMaxTemperature(),
@@ -471,13 +509,23 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                               qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetResetTime(),
                                                                               qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetDerivativeTime()
 																			) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Oven set temp, type:%1, MaxTemp:%2, P:%3, I:%4, D:%5.")
+                                               .arg(qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::OvenStartTemperatureControl" == cmdName)
+    else if  ("Scheduler::OvenStartTemperatureControl" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControl( qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetType(),
                                                                                     qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetNominalTemperature(),
                                                                                     qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetSlopeTempChange()
                                                                                   ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Oven StartTempCtrl, type:%1, temp:%2, slope:%3")
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetSlopeTempChange()) );
 	}
 	else if  ("Scheduler::OvenGetRecentTemperature" == cmdName)
 	{
@@ -488,15 +536,17 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenGetTemperatureControlState( qSharedPointerDynamicCast<CmdOvenGetTemperatureControlState>(scmd)->GetType() ) );
 	}
-	else if  ("Scheduler::RTSetTempCtrlON" == cmdName)
+    else if  ("Scheduler::RTSetTempCtrlON" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlON( qSharedPointerDynamicCast<CmdRTSetTempCtrlON>(scmd)->GetType() ) );
+        mp_SchedulerThreadController->LogDebug("==CMD==:RT set temp ctrl ON.");
 	}
-	else if  ("Scheduler::RTSetTempCtrlOFF" == cmdName)
+    else if  ("Scheduler::RTSetTempCtrlOFF" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlOFF( qSharedPointerDynamicCast<CmdRTSetTempCtrlOFF>(scmd)->GetType() ) );
+        mp_SchedulerThreadController->LogDebug("==CMD==:RT set temp ctrl OFF.");
 	}
-	else if  ("Scheduler::RTSetTemperaturePid" == cmdName)
+    else if  ("Scheduler::RTSetTemperaturePid" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTSetTemperaturePid( qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetType(),
                                                                             qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetMaxTemperature(),
@@ -504,15 +554,25 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                             qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetResetTime(),
                                                                             qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		  ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RT set temp, type:%1, MaxTemp:%2, P:%3, I:%4, D:%5.")
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::RTStartTemperatureControl" == cmdName)
+    else if  ("Scheduler::RTStartTemperatureControl" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControl( qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetType(),
                                                                                   qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetNominalTemperature(),
                                                                                   qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RT StartTempCtrl, type:%1, temp:%2, slope:%3.")
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetSlopeTempChange()) );
 	}
-	else if  ("Scheduler::RTGetRecentTemperature" == cmdName)
+    else if  ("Scheduler::RTGetRecentTemperature" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTGetRecentTemperature( qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(scmd)->GetType(),
                                                                                qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(scmd)->GetIndex()
@@ -530,15 +590,17 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTLock() );
 	}
-	else if  ("Scheduler::PerTurnOffMainRelay" == cmdName)
+    else if  ("Scheduler::PerTurnOffMainRelay" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->PerTurnOffMainRelay() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:Turn off main relay.");
 	}
-	else if  ("Scheduler::PerTurnOnMainRelay" == cmdName)
+    else if  ("Scheduler::PerTurnOnMainRelay" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->PerTurnOnMainRelay() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:Turn on main relay.");
 	}
-	else if  ("Scheduler::RVStartTemperatureControlWithPID" == cmdName)
+    else if  ("Scheduler::RVStartTemperatureControlWithPID" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
                                                                                          qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange(),
@@ -547,8 +609,15 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                                          qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetResetTime(),
                                                                                          qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																					   ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RV StartTempCtrl, temp:%1, slope:%2, MaxTemp:%3, P:%4, I:%5, D:%6.")
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::OvenStartTemperatureControlWithPID" == cmdName)
+    else if  ("Scheduler::OvenStartTemperatureControlWithPID" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetType(),
                                                                                            qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
@@ -558,8 +627,16 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                                            qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetResetTime(),
                                                                                            qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																						) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Oven StartTempCtrl, type:%1, temp:%2, slope:%3, Max:%4, P:%5, I:%6, D:%7.")
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::RTStartTemperatureControlWithPID" == cmdName)
+    else if  ("Scheduler::RTStartTemperatureControlWithPID" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetType(),
                                                                                          qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
@@ -569,8 +646,16 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                                          qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetResetTime(),
                                                                                          qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																						) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:RT StartTempCtrl, type:%1, temp:%2, slope:%3, MaxTemp:%4, P:%5, I:%6, D:%7.")
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::ALStartTemperatureControlWithPID" == cmdName)
+    else if  ("Scheduler::ALStartTemperatureControlWithPID" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetType(),
                                                                                          qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
@@ -580,40 +665,65 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
                                                                                          qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetResetTime(),
                                                                                          qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																					   ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:AL StartTempCtrl, type:%1, temp:%2, slope:%3, MaxTemp:%4, P:%5, I:%6, D:%7.")
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetType())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetNominalTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetMaxTemperature())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetControllerGain())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetResetTime())
+                                               .arg(qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()) );
 	}
-	else if  ("Scheduler::IDBottleCheck" == cmdName)
+    else if  ("Scheduler::IDBottleCheck" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetReagentGrpID(),
                                                                       qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetTubePos() ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:Bottle check, reagent group id:%1, tube pos:%2.")
+                                               .arg(qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetReagentGrpID())
+                                               .arg(qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetTubePos()) );
     }
     else if  ("Scheduler::ALAllStop" == cmdName)
 	{
         scmd->SetResult( mp_IDeviceProcessing->ALAllStop() );
+        mp_SchedulerThreadController->LogDebug("==CMD==:All stop.");
     }
     else if ("Scheduler::IDSealingCheck" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure(),
                                                               qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetSealPosition() ) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:sealing check, threshold pressure:%1, seal pos:%2.")
+                                               .arg(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure())
+                                               .arg(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetSealPosition()) );
     }
     else if ("Scheduler::RmtLocAlarm" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->IDSetAlarm(qSharedPointerDynamicCast<CmdRmtLocAlarm>(scmd)->GetRmtLocOpcode()));
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:set alarm type:%1.").arg(qSharedPointerDynamicCast<CmdRmtLocAlarm>(scmd)->GetRmtLocOpcode()) );
     }
     else if ("Scheduler::ALControlValve" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->ALControlValve(qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveIndex(),
                          qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveState()) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:AL control valve, index:%1, state:%2")
+                                               .arg(qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveIndex())
+                                               .arg(qSharedPointerDynamicCast<CmdALControlValve>(scmd)->GetValveState()) );
     }
     else if ("Scheduler::RVSetTemperatureSwitchState" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->RVSetTemperatureSwitchState(qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetHeaterVoltage(),
                                                                            qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetAutoType()) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:ASB3 set temp switch state, voltage:%1, auto type:%2.")
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetHeaterVoltage())
+                                               .arg(qSharedPointerDynamicCast<CmdRVSetTemperatureSwitchState>(scmd)->GetAutoType()) );
     }
     else if ("Scheduler::RTSetTemperatureSwitchState" == cmdName)
     {
         scmd->SetResult( mp_IDeviceProcessing->RTSetTemperatureSwitchState( qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetType(),
                                                                             qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetHeaterVoltage(),
                                                                             qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetAutoType()) );
+        mp_SchedulerThreadController->LogDebug(QString("==CMD==:ASB5 set temp switch state, voltage:%1, auto type:%2.")
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetHeaterVoltage())
+                                               .arg(qSharedPointerDynamicCast<CmdRTSetTemperatureSwitchState>(scmd)->GetAutoType()) );
     }
 }
 
