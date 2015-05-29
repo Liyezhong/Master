@@ -2792,7 +2792,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 //response or recovery
 void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction & Cmd)
 {
-    Q_UNUSED(Ref)
+    this->SendAcknowledgeOK(Ref);
     NetCommands::CmdSystemAction *p_CmdSystemAction = new NetCommands::CmdSystemAction();
     p_CmdSystemAction->SetActionString(Cmd.GetActionString());
     p_CmdSystemAction->SetEventKey(Cmd.GetEventKey());
@@ -3660,7 +3660,7 @@ void SchedulerMainThreadController::Fill()
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, true, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, true, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3933,7 +3933,7 @@ void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID
         m_ProgramStatusInfor.SetLastReagentGroup(m_CurProgramStepInfo.reagentGroup);
     }
     // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, StationID, true, true, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000, StationID, true, true, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -3942,7 +3942,7 @@ void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID
 void SchedulerMainThreadController::StopFillRsTissueProtect(const QString& StationID)
 {
     // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,StationID, false, true, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,StationID, false, true, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4042,7 +4042,7 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
 void SchedulerMainThreadController::OnStopFill()
 {
     // acknowledge to gui
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , false, true, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , false, true, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4058,7 +4058,7 @@ void SchedulerMainThreadController::RCDrain()
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     LogDebug("Notice GUI Draining started");
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4080,7 +4080,7 @@ void SchedulerMainThreadController::Drain()
     }
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4098,7 +4098,7 @@ void SchedulerMainThreadController::RcDrainAtOnce()
 
     // acknowledge to gui
     LogDebug("Notice GUI Draining started");
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4109,7 +4109,7 @@ void SchedulerMainThreadController::OnBeginDrain()
 {
     // acknowledge to gui
     LogDebug("Notice GUI Draining started");
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -4119,7 +4119,7 @@ void SchedulerMainThreadController::OnStopDrain()
 {
     // acknowledge to gui
     LogDebug("Notice GUI Draining stopped");
-    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , false, false, false));
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , false, false, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

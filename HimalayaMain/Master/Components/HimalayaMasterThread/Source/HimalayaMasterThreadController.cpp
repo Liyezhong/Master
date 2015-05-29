@@ -1135,8 +1135,7 @@ void HimalayaMasterThreadController::ChangeAdminPasswordHandler(Global::tRefType
 void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, const NetCommands::CmdSystemAction &Cmd,
                         Threads::CommandChannel &AckCommandChannel)
 {
-    Q_UNUSED(Ref);
-    Q_UNUSED(AckCommandChannel);
+    SendAcknowledgeOK(Ref, AckCommandChannel);
     qDebug() << "In the event handling for CMD system Action for event " << Cmd.GetEventID();
     if(Cmd.GetAction() == Global::ACNTYPE_SHUTDOWN || Cmd.GetActionString().compare("RS_Shutdown") == 0){
         qDebug()<<"Shutting Down system";
