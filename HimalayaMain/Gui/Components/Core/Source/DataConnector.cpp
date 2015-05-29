@@ -1059,7 +1059,7 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-    if (mp_UserSettingWaitDialog)
+    /*if (mp_UserSettingWaitDialog)
     {
         delete mp_UserSettingWaitDialog;
         mp_UserSettingWaitDialog = NULL;
@@ -1074,7 +1074,7 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
                                                    0, QApplication::UnicodeUTF8));
     mp_UserSettingWaitDialog->SetTimeout(100000);
     mp_UserSettingWaitDialog->show();
-
+  */
 }
 /****************************************************************************/
 /*!

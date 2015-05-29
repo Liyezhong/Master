@@ -164,12 +164,13 @@ void CReagentStatusWidget::OnResetData()
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         if (m_EnableBottleCheck && !Core::CGlobalHelper::GetSystemErrorStatus())
         {
-            ConfirmationMessageDlg.SetText(m_strBottleCheckConfirm);
-            ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-            ConfirmationMessageDlg.SetButtonText(1, m_strYes);
-            ConfirmationMessageDlg.SetButtonText(3, m_strNo);
-            ConfirmationMessageDlg.HideCenterButton();
-            if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+            MainMenu::CMessageDlg ConfirmationMsgDlg;
+            ConfirmationMsgDlg.SetText(m_strBottleCheckConfirm);
+            ConfirmationMsgDlg.SetIcon(QMessageBox::Warning);
+            ConfirmationMsgDlg.SetButtonText(1, m_strYes);
+            ConfirmationMsgDlg.SetButtonText(3, m_strNo);
+            ConfirmationMsgDlg.HideCenterButton();
+            if(ConfirmationMsgDlg.exec() == (int)QDialog::Accepted)
             {
                 emit BottleCheck();
             }
