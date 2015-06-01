@@ -1246,6 +1246,7 @@ void  CDataConnector::SendBottleCheck()
 /****************************************************************************/
 void CDataConnector::EventStringHandler(Global::tRefType Ref, const NetCommands::CmdEventStrings &Command)
 {
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     QByteArray EventsStringsData = Command.GetEventsStringsData();
     QDataStream DataStream(&EventsStringsData, QIODevice::ReadWrite);
     Global::tTranslations Translations;
@@ -1288,7 +1289,6 @@ void CDataConnector::EventStringHandler(Global::tRefType Ref, const NetCommands:
     Global::UITranslator::TranslatorInstance().SetDefaultLanguage(SettingsInterface->GetUserSettings()->GetLanguage());
     // set fallback language
     Global::UITranslator::TranslatorInstance().SetFallbackLanguage(QLocale::English);
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 }
 
 /****************************************************************************/
