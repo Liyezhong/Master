@@ -1371,6 +1371,9 @@ void CDashboardWidget::OnUserRoleChanged()
         return;
     }
 
+    if (Core::CGlobalHelper::GetSystemErrorStatus())
+        return;
+
     if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
     {
         if (m_ProgramStatus == ProgramRunning)
