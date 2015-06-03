@@ -253,7 +253,7 @@ void CLanguageWidget::InitDialog()
     }
     (void) CurrentLanguage.remove(2, 4);
     for (int i = 0; i < m_LanguageList.count();i++) {
-        if (QLocale::languageToString(QLocale(CurrentLanguage).language()) == m_LanguageList.at(i)) {
+        if ( CurrentLanguage == m_LanguageList.at(i)) {
             mp_TableWidget->selectRow(i);
         }
     }
