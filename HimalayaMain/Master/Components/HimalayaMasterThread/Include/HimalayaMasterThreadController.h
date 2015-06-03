@@ -607,7 +607,7 @@ public:
         /// \todo please add if any  logevent is required or not
         // send the command to the required channel
 
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, FileType, XmlStream)), m_CommandChannelGui);
+        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(30000, FileType, XmlStream)), m_CommandChannelGui);
 
         // delete the byte array
         delete p_ByteArray;

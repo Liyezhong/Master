@@ -950,7 +950,7 @@ void CDataConnector::ServiceStart()
 /****************************************************************************/
 void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command)
 {
-    bool Result = true;
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 
     QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
     (void)DataStream.device()->reset();
@@ -994,10 +994,9 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
             emit DeviceConfigurationUpdated();
             break;
         default:
-            Result = false;
             break;
     }
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
+
     mp_WaitDialog->accept();
 
 
@@ -1401,6 +1400,7 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
 /****************************************************************************/
 void CDataConnector::SettingsUpdateHandler(Global::tRefType Ref, const MsgClasses::CmdChangeUserSettings &Command)
 {
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     QByteArray SettingsData(const_cast<QByteArray &>(Command.GetUserSettings()));
     QDataStream SettingsDataStream(&SettingsData, QIODevice::ReadWrite);
     SettingsDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
@@ -1413,7 +1413,6 @@ void CDataConnector::SettingsUpdateHandler(Global::tRefType Ref, const MsgClasse
             emit UserSettingsUpdated();
         }
     }
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
 
 /****************************************************************************/
@@ -2119,8 +2118,8 @@ void CDataConnector::RemoteCareStateHandler(Global::tRefType Ref, const NetComma
 /****************************************************************************/
 void CDataConnector::BottleCheckReplyHandler(Global::tRefType Ref, const MsgClasses::CmdBottleCheckReply &Command)
 {
-    emit BottleCheckReply(Command.StationID(), Command.BottleCheckStatusType());
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit BottleCheckReply(Command.StationID(), Command.BottleCheckStatusType());
     return;
 }
 
