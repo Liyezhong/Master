@@ -2450,8 +2450,11 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
         }
         if(m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime > 4000 * 60)
         {
-            m_EndTimeAndStepTime.WarningFlagForStepTime = true;
-            RaiseEvent(EVENT_SCHEDULER_FOR_WARNING_FLAG, QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)<<QString("[%1]").arg(m_CurProgramStepIndex+1));
+            if(m_CurProgramStepInfo.reagentGroup != "RG6")
+            {
+                m_EndTimeAndStepTime.WarningFlagForStepTime = true;
+                RaiseEvent(EVENT_SCHEDULER_FOR_WARNING_FLAG, QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)<<QString("[%1]").arg(m_CurProgramStepIndex+1));
+            }
         }
         qint64 LeftTime = m_EndTimeAndStepTime.EndTime - m_EndTimeAndStepTime.StartTime - m_EndTimeAndStepTime.GapTime;
         if(0 < LeftTime && LeftTime < (TIME_FOR_FIX_TIME * 1000))
