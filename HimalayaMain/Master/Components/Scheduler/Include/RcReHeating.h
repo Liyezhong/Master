@@ -217,6 +217,7 @@ private:
     bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
     QString                         m_LastReagentID;                    //!< last reagent ID
+    quint8                          m_CountTheEffectiveTemp;            //!< cout the effecitive temperature
 };
 
 }

@@ -258,8 +258,7 @@ void CProgramSelfTest::HandleStateACVoltage(const QString& cmdName, DeviceContro
                 else
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_UNKNOW_ASB5_SWITCHTYPE);
-                    if(mp_SchedulerThreadController->RaiseError(0, DCL_ERR_DEV_ASB5_VOLTAGE_VALUE_UNKNOW, 2, true))
-                        SendSignalSelfTestDone(false);
+                    m_StateACVoltageStep = VOLTAGE_TEST_DONE;
                     m_StateACVoltageStepCount = 0;
                 }
             }
@@ -607,7 +606,7 @@ void CProgramSelfTest::HandlePressureMode(const QString& cmdName, DeviceControl:
                     {
                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                         {
-                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2);
+                            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_VALVE2_SUCCESS);
                             m_StatePressureStep = START_EXHAUSTFAN;
                         }
                         else
@@ -855,10 +854,10 @@ void CProgramSelfTest::HandleStateACHeating()
             break;
         case STARTHEATING_RV:
             ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForSelfTest("RV");
-            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP);
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_ROTARYVALVE_TEMP);
             if(DCL_ERR_FCT_CALL_SUCCESS == ret)
             {
-                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP_SUCCESS);
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_ROTARYVALVE_TEMP_SUCCESS);
                 m_StateACHeatingStep = STOPHEATING_RV;
                 m_DelayBeginTime = QDateTime::currentMSecsSinceEpoch();
             }

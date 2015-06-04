@@ -41,6 +41,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_StartPressureTime(0)
     ,m_IsNeedRunCleaning(false)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
+    ,m_CountTheEffectiveTemp(0)
 {
 }
 
@@ -183,9 +184,15 @@ void CRcReHeating::CheckTheTemperature()
         tmperature = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempRV2;
         if(!mp_SchedulerThreadController->GetHeatingStrategy()->isEffectiveTemp(tmperature))
         {
-            mp_StateMachine->OnTasksDone(false);
+            m_CountTheEffectiveTemp++;
+            if(m_CountTheEffectiveTemp > 3)
+            {
+                m_CountTheEffectiveTemp = 0;
+                mp_StateMachine->OnTasksDone(false);
+            }
             return;
         }
+        m_CountTheEffectiveTemp = 0;
         if(tmperature > RV_SENSOR2_TEMP)
         {
             m_CurrentStep = GET_RV_POSOTION;
