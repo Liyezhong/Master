@@ -190,6 +190,7 @@ CDataConnector::~CDataConnector()
 {
     try {
         delete mp_MesgBoxManager;
+
         delete mp_WaitDialog;
         delete mp_MessageDlg;
         delete mp_LanguageFile;
@@ -1052,13 +1053,7 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
 /****************************************************************************/
 void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
 {
-    QByteArray ByteArray;
-    QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
-    SettingsDataStream << settings;
-    (void)SettingsDataStream.device()->reset();
-    MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
-    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-    /*if (mp_UserSettingWaitDialog)
+    if (mp_UserSettingWaitDialog)
     {
         delete mp_UserSettingWaitDialog;
         mp_UserSettingWaitDialog = NULL;
@@ -1073,7 +1068,13 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
                                                    0, QApplication::UnicodeUTF8));
     mp_UserSettingWaitDialog->SetTimeout(100000);
     mp_UserSettingWaitDialog->show();
-  */
+
+    QByteArray ByteArray;
+    QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
+    SettingsDataStream << settings;
+    (void)SettingsDataStream.device()->reset();
+    MsgClasses::CmdChangeUserSettings Command(COMMAND_TIME_OUT, SettingsDataStream);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
 }
 /****************************************************************************/
 /*!
