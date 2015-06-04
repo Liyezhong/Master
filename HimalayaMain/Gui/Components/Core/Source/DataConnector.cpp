@@ -1624,10 +1624,11 @@ void CDataConnector::OnUserSettingsAck(Global::tRefType Ref, const Global::AckOK
         mp_UserSettingWaitDialog = NULL;
     }
     if (Ack.GetStatus() == false) {
-        ShowMessageDialog(Ack.GetType(), Ack.GetText());
-        if (mp_MessageDlg->exec() == (int)QDialog::Accepted ) {
-            emit RevertChangedUserSettings();
+        if (Ack.GetText().length() > 0) {
+            ShowMessageDialog(Ack.GetType(), Ack.GetText());
+            mp_MessageDlg->exec();
         }
+        emit RevertChangedUserSettings();
     }
 }
 
