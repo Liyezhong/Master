@@ -45,7 +45,6 @@ private:
     Core::CReagentStatusModel m_ReagentStatusModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
-    DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog

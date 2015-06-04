@@ -477,16 +477,18 @@ void CReagentStatusWidget::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (!m_ProcessRunning) {
         //Edit Mode
-        bool m_IsLeicaReagent = m_SelectedReagent.IsLeicaReagent();
-        if(m_IsLeicaReagent) {
-            mp_Ui->btnFull->setEnabled(false);
-            mp_Ui->btnEmpty->setEnabled(false);
-            mp_Ui->btnReset->setEnabled(false);
-        }
-        else {
-            mp_Ui->btnFull->setEnabled(true);
-            mp_Ui->btnEmpty->setEnabled(true);
-            mp_Ui->btnReset->setEnabled(true);
+        if(mp_DashStation) {
+            ResetButtons();
+            if ("Full" == mp_DashStation->GetDashboardReagentStatus())
+            {
+                mp_Ui->btnEmpty->setEnabled(true);
+                mp_Ui->btnReset->setEnabled(true);
+            }
+            else if ("Empty" == mp_DashStation->GetDashboardReagentStatus())
+            {
+                mp_Ui->btnFull->setEnabled(true);
+                mp_Ui->btnReset->setEnabled(true);
+            }
         }
     }
     else {
