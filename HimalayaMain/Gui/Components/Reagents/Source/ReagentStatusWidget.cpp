@@ -299,67 +299,31 @@ void CReagentStatusWidget::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(5, 50);
 }
 
-bool CReagentStatusWidget::IsProcessReagentExpired()
+bool CReagentStatusWidget::IsReagentExpired()
 {
     if (!mp_DataConnector)
         return false;
 
     if (!mp_Reagent)
         return false;
-
-    QDate Expiry_Date;
-    bool bExpireReagent = false;
-    bool isCleaningReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup();
-    if (!isCleaningReagentGroup)
-    {
-        switch (m_RMSOptions) {
-        default:
-            break;
-        case Global::RMS_CASSETTES:
-            if(mp_Reagent->GetMaxCassettes() < mp_DashStation->GetDashboardReagentActualCassettes())
-                bExpireReagent = true;
-            break;
-        case Global::RMS_CYCLES:
-            if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
-                bExpireReagent = true;
-            break;
-        case Global::RMS_DAYS:
-             Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
-            if( QDate::currentDate() > Expiry_Date)
-                bExpireReagent = true;
-            break;
-         case Global::RMS_OFF:
-            bExpireReagent = false;
-            break;
-        }
-    }
-    return bExpireReagent;
-}
-
-bool CReagentStatusWidget::IsCleaningReagentExpired()
-{
-    QDate Expiry_Date;
+    Global::RMSOptions_t rmsMode;
     bool bExpireReagent = false;
     bool isCleaningReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup();
     if (isCleaningReagentGroup)
     {
-        switch (m_RMSCleaningOptions) {
-        default:
-            break;
-        case Global::RMS_CYCLES:
-            if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
-                bExpireReagent = true;
-            break;
-        case Global::RMS_DAYS:
-             Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
-            if( Expiry_Date < QDate::currentDate())
-                bExpireReagent = true;
-            break;
-         case Global::RMS_OFF:
-            bExpireReagent = false;
-            break;
-        }
+       rmsMode = m_RMSCleaningOptions;
     }
+    else
+    {
+        rmsMode = m_RMSOptions;
+    }
+
+    DataManager::ReagentStatusType_t ReagentStatus = mp_DashStation->GetReagentStatus(*mp_Reagent, rmsMode);
+    if ( ReagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
+        bExpireReagent = true;
+    else
+        bExpireReagent = false;
+
     return bExpireReagent;
 }
 
@@ -375,7 +339,6 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
-    bool bExpireReagent = false;
 
     if (Core::CGlobalHelper::CheckIfCanEdit(Id, 4)==false) {
         mp_Ui->btnFull->setEnabled(false);
@@ -393,35 +356,13 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
             mp_TableWidget->setColumnHidden(2, true);
             mp_TableWidget->setColumnHidden(3, true);
         }
-        else if (m_RMSOptions == m_RMSCleaningOptions)
-        {
-            bExpireReagent = IsProcessReagentExpired();
-            if (!bExpireReagent)
-            {
-                bExpireReagent = IsCleaningReagentExpired();
-            }
-        }
-        else if (Global::RMS_OFF == m_RMSCleaningOptions)
-        {
-            bExpireReagent = IsProcessReagentExpired();
-        }
-        else if (Global::RMS_OFF == m_RMSOptions)
-        {
-            bExpireReagent = IsCleaningReagentExpired();
-        }
-        else if (m_RMSOptions != m_RMSCleaningOptions)
-        {
-            bExpireReagent = IsProcessReagentExpired();
-            if (!bExpireReagent)
-            {
-               bExpireReagent = IsCleaningReagentExpired();
-            }
-        }
-
-        if(bExpireReagent)
-            mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
         else
-            mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
+       {
+            if(IsReagentExpired())
+                mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
+            else
+                mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
+        }
 
         if (!m_ProcessRunning) {
             mp_Ui->btnFull->setEnabled(true);

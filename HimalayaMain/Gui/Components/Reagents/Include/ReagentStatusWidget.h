@@ -82,20 +82,13 @@ private:
     void ControlColumnShow();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function IsProcessReagentExpired
+     *  \brief  Definition/Declaration of function IsReagentExpired
      *
-     *  \return from IsProcessReagentExpired
+     *  \return from IsReagentExpired
      */
     /****************************************************************************/
-    bool IsProcessReagentExpired();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function IsCleaningReagentExpired
-     *
-     *  \return from IsCleaningReagentExpired
-     */
-    /****************************************************************************/
-    bool IsCleaningReagentExpired();
+    bool IsReagentExpired();
+
 public:
     explicit CReagentStatusWidget(QWidget *p_Parent = 0);
     ~CReagentStatusWidget();
