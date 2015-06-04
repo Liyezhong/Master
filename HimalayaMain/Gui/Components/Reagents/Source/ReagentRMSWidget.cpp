@@ -457,6 +457,8 @@ void CReagentRMSWidget::OnDelete()
     m_MessageDlg.SetText(m_strConfirmDelReagent);
 
     if (m_MessageDlg.exec() == (int)QDialog::Accepted) {
+        mp_Ui->btnDelete->setEnabled(false);
+        mp_Ui->btnEdit->setEnabled(false);
         emit RemoveReagent(mp_Reagent->GetReagentID());
 		mp_Reagent = NULL;
     }
