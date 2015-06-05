@@ -92,9 +92,13 @@ public slots:
     QString ReqBoardName();
     bool ConfigureVoltageMonitor(bool Enable, quint8 Filter, quint8 SamplingPeriod,
                                  quint16 GoodThreshold, quint16 FailThreshold);
+
+    quint16 GetVoltage() { return m_ModuleVoltage; }
     bool ReqVoltageState();
     bool ConfigureCurrentMonitor(bool Enable, quint8 Filter, quint8 SamplingPeriod,
                                  quint16 GoodThreshold, quint16 FailThreshold);
+
+    quint16 GetCurrent() {return m_ModuleCurrent; }
     bool ReqCurrentState();
     QString ReqUniqueNumber();
     QString ReqModuleSerialNumber();
@@ -174,6 +178,9 @@ private:
     CResetData  *mp_ResetData;          //!< Support for the reset data command
     BootLoaderInfo_t    m_BootloaderInfo; //!< Bootloader information
     EndTestResultInfo_t       m_EndTestResultInfo;     //!< End test information
+
+    quint16      m_ModuleVoltage;
+    quint16      m_ModuleCurrent;
 
 };
 

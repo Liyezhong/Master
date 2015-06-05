@@ -80,6 +80,9 @@ WrapperFmBaseModule::WrapperFmBaseModule(QString Name, CBaseModule *pBaseModule,
             this, OnModuleSerialNumber(quint32, ReturnCode_t, quint64));
     CONNECTSIGNALSLOT(m_pBaseModule->GetBootLoader(), ReportUpdateBootLoader(quint32, ReturnCode_t),
             this, OnUpdateBootLoader(quint32, ReturnCode_t));
+
+    m_ModuleCurrent = 0 ;
+    m_ModuleVoltage = 0;
 }
 
 /****************************************************************************/
@@ -1058,6 +1061,10 @@ void WrapperFmBaseModule::OnVoltageState(quint32 InstanceID, ReturnCode_t Return
         ret = -1;
     }
     else {
+        m_ModuleVoltage = Value;
+
+        qDebug()<<"InstanceID:"<<InstanceID<<"  Voltage State:"<<PowerStateToString(State)<<" Voltage:"<<Value;
+
         Log(tr("Voltage State: %1; Voltage: %2 mV; Failures: %3")
             .arg(PowerStateToString(State)).arg(Value).arg(Failures));
     }
@@ -1135,6 +1142,9 @@ void WrapperFmBaseModule::OnCurrentState(quint32 InstanceID, ReturnCode_t Return
         ret = -1;
     }
     else {
+
+        m_ModuleCurrent = Value;
+
         Log(tr("Current State: %1; Current: %2 mA; Failures: %3")
             .arg(PowerStateToString(State)).arg(Value).arg(Failures));
     }

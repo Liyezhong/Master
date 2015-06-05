@@ -373,7 +373,18 @@ void ServiceTestHandler::MainControlGetCurrent(QString& ReqName, QStringList& Pa
 
     HimSlaveType_t SlaveType = (HimSlaveType_t)Params.at(0).toInt();
 
-    quint16 Current = m_rIdevProc.IDGetSlaveCurrent(SlaveType);
+    WrapperFmBaseModule* p_BaseModule = NULL;
+    if (SlaveType == Slave_3) {
+       p_BaseModule = mp_BaseModule3;
+    }
+    else if (SlaveType == Slave_5) {
+       p_BaseModule = mp_BaseModule5;
+    }
+    else {
+       p_BaseModule = mp_BaseModule15;
+    }
+
+    quint16 Current = p_BaseModule->GetCurrent();
 
     Results.append(QString("%1").arg(Current));
 
@@ -387,7 +398,18 @@ void ServiceTestHandler::MainControlGetVoltage(QString& ReqName, QStringList& Pa
 
     HimSlaveType_t SlaveType = (HimSlaveType_t)Params.at(0).toInt();
 
-    quint16 Voltage = m_rIdevProc.IDGetSlaveVoltage(SlaveType);
+    WrapperFmBaseModule* p_BaseModule = NULL;
+    if (SlaveType == Slave_3) {
+       p_BaseModule = mp_BaseModule3;
+    }
+    else if (SlaveType == Slave_5) {
+       p_BaseModule = mp_BaseModule5;
+    }
+    else {
+       p_BaseModule = mp_BaseModule15;
+    }
+
+    quint16 Voltage = p_BaseModule->GetVoltage();
 
     Results.append(QString("%1").arg(Voltage));
 

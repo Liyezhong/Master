@@ -2036,23 +2036,23 @@ bool ManufacturingTestHandler:: CreatePressure(int waitSecond, float targetPress
 
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
 {
-    DeviceControl::HimSlaveType_t Slave ;
+    WrapperFmBaseModule *p_BaseModule = NULL;
 
     if (Id == Service::MAINCONTROL_ASB3) {
-       Slave = DeviceControl::Slave_3;
+       p_BaseModule = mp_BaseModule3;
     }
     else if (Id == Service::MAINCONTROL_ASB5) {
-       Slave = DeviceControl::Slave_5;
+       p_BaseModule = mp_BaseModule5;
     }
     else if (Id == Service::MAINCONTROL_ASB15) {
-       Slave = DeviceControl::Slave_15;
+       p_BaseModule = mp_BaseModule15;
     }
     else {
        return -1;
     }
 
-    qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave)/1000.0;
-    quint16 ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
+    qreal ActualVoltage = p_BaseModule->GetVoltage()/1000.0;
+    quint16 ActualCurrent = p_BaseModule->GetCurrent();
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
