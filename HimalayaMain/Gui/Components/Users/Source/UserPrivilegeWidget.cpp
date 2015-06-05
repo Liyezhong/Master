@@ -91,12 +91,12 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     mp_Ui->label->setVisible(false);
 
     m_PressTimer = new QTimer(this);
-    m_PressTimer->setInterval(5000);
+    m_PressTimer->setInterval(3000);
     m_PressTimer->setSingleShot(true);
     (void)connect(m_PressTimer, SIGNAL(timeout()), this, SLOT(OnTimeOutPress()));
 
     m_IntervalPressedTimer = new QTimer(this);
-    m_IntervalPressedTimer->setInterval(5000);
+    m_IntervalPressedTimer->setInterval(0);
     m_IntervalPressedTimer->setSingleShot(true);
     (void)connect(m_IntervalPressedTimer, SIGNAL(timeout()), this, SLOT(OnTimeOutIntervalPressedTimer()));
 
@@ -205,7 +205,7 @@ void CUserPrivilegeWidget::ScrollScreen()
 {
     m_yScroll = m_yScroll - 4;
     mp_Ui->label->move(30, m_yScroll);
-    if (m_yScroll < -250)
+    if (m_yScroll < -1700)
         m_ScrollTimer->stop();
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>403</height>
+    <height>804</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -224,10 +224,10 @@
        <widget class="QLabel" name="label">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>60</y>
-          <width>111</width>
-          <height>191</height>
+          <x>10</x>
+          <y>0</y>
+          <width>140</width>
+          <height>1491</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -244,15 +244,77 @@
          </font>
         </property>
         <property name="text">
-         <string>AAA:  
-        abc1  
-        abc2
-        abc3
-        abc4
-        abc5
+         <string> Andreas Knaack
+ Jun Xie
+ Diana Chen
 
-BBB:
-       cde1
+ Abe Yang
+ Arthur Li
+ Bean liu
+ Brandon Shao
+ Carey Sun
+ David Li
+ Dixiong Li
+ Ella Xu
+ Feby Chen
+ Frank Wu
+ Freddy Wang
+ George Jiang
+ George Yuan
+ Gina Zhu
+ Guorong Gao
+ Henry Sun
+ Henry Yang
+ Isaac Zhang
+ Jack Fang
+ Jacky Cheng
+ Jacob Zhou
+ Janet Lin
+ Jeff Chen
+ Jeffrey Chen
+ Jerry Cheng
+ Jessie Chen
+ Jian Chen
+ Jie Zou
+ Joanna Sun
+ John Ma
+ Jonas Xie
+ Ken Liu
+ Kevin Wu
+ Kevin Zhang
+ Leon Xie
+ Logan Yang
+ Lynn Li
+ Mark Fan
+ Mike Li
+ Miles Min
+ Morgan Zhang
+ Neo Zhou
+ Paul Zhang
+ Quan Zhang
+ Ray Gao
+ Ray Wu
+ Raymond Zhang
+ Roy Zheng
+ Ryan Chu
+ Sam Gu
+ Selina Wang
+ Shufa Li
+ Songtao Yu
+ Sophia Pei
+ Sophie Dong
+ Sunny Qu
+ Sylvia Guo
+ Tanya Yang
+ Thomas Wang
+ Tim Zhang
+ Tina Gao
+ Titan Tian
+ Vivien Li
+ Wayne Wang
+ Zach Yao
+ Zhi Wang
+ Zom Zhao
 </string>
         </property>
         <property name="scaledContents">
