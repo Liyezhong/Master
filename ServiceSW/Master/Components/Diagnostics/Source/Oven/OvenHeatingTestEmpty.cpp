@@ -315,7 +315,7 @@ int CHeatingTestEmpty::Run(void)
 
     timingDialog->accept();
 
-    if (ret != RETURN_OK && isAbove==false) {
+    if (ret != RETURN_OK && isAbove==false && i<=t1+1) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. Temperature did "
                   "not reach %1\260C within %2 mins. "
                   "Root cause might be damaged ASB5 or Paraffin Oven Module. "
