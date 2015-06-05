@@ -636,8 +636,6 @@ void CReagentRMSWidget::OnProcessStateChanged()
         }
         else {
             mp_Ui->btnNew->setEnabled(true);
-            mp_Ui->btnEdit->setEnabled(true);
-            mp_Ui->btnDelete->setEnabled(true);
             mp_Ui->groupRMS->setEnabled(true);
             mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
         }
