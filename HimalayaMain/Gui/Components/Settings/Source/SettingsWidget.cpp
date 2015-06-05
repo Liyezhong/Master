@@ -274,6 +274,7 @@ void CSettingsWidget::BottleCheckReply(const QString& stationID, DataManager::Bo
         m_BottleCheckStatusDlg->CenterPosition();
         (void)m_BottleCheckStatusDlg->exec();
         delete m_BottleCheckStatusDlg;
+        m_BottleCheckStatusDlg = NULL;
     }
     else
     {

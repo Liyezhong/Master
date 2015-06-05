@@ -58,6 +58,7 @@ public:
     void UpdateCurrentStationStatus(const QString& stationID, DataManager::BottleCheckStatusType_t bottleCheckStatusType);
 protected:
     void changeEvent(QEvent *p_Event);
+    virtual void keyPressEvent ( QKeyEvent * e );
 private slots:
     void OnClose();
 private:

@@ -119,7 +119,17 @@ namespace Settings {
                 break;
         }
     }
+    /****************************************************************************/
+    /*!
+     *  \brief Event handler for key press events
+     *
+     *  \iparam e = keyboard event
+     */
+    /****************************************************************************/
+    void CBottleCheckStatusDlg::keyPressEvent ( QKeyEvent * e )
+    {
 
+    }
     /****************************************************************************/
     /*!
      *  \brief Translates the strings in UI to the selected language
