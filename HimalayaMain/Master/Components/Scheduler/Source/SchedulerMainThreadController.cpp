@@ -1763,6 +1763,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RC_RESTART == currentState)
     {
         m_SchedulerMachine->HandleRcRestart(cmdName);
+        //error restart should reheating the scenario, so the heating strategy scenario should reset
+        mp_HeatingStrategy->SetHeatingStrategyScenario(0);
     }
     else if (SM_ERR_RS_ABORT == currentState)
     {
@@ -3226,7 +3228,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     if("ERROR" == StepID)
     {
         m_IsErrorStateForHM = true;
-        mp_HeatingStrategy->SetHeatingStrategyScenario(0);
     }
 
     // Monitor the sensors' current

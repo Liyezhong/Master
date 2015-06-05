@@ -2333,6 +2333,7 @@ void CSchedulerStateMachine::OnEnterInitState()
 void CSchedulerStateMachine::OnEnterSelfTest()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_START_SELFTEST);
+    mp_SchedulerThreadController->GetHeatingStrategy()->InitSelfTest();
     mp_SchedulerThreadController->StartTimer();
 }
 

@@ -373,6 +373,13 @@ public:
     /****************************************************************************/
     bool CheckRV2TemperatureSenseorsStatus() const {   return m_RV_2_Outlet.OTCheckPassed; }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  initialize the self test
+     */
+    /****************************************************************************/
+    void InitSelfTest();
+
 private slots:
     /****************************************************************************/
     /*!
@@ -398,6 +405,9 @@ private:
     bool                                m_CmdResult;                    //!< flag to indicate command result
     bool                                m_DiasbleOvenHeatingError;      //!< disable heating strategy error
     SensorsChecking                     m_SensorsChecking;              //!< Checking list of sensors in scenario 260
+    qreal                               m_RTBottomCurrentTemp;          //!< Retort bottom current temperature just for self test
+    qreal                               m_RTSideCurrentTemp;            //!< Retort side current temperature just for self test
+    qreal                               m_RVHeatingRodCurrentTemp;      //!< RV heating rod current temperature just for self test
 
     /****************************************************************************/
     /*!

@@ -59,6 +59,9 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     }
     memset(&m_SensorsChecking, 0, sizeof(m_SensorsChecking));
     m_SensorsChecking.firstBottle = true;
+    m_RTBottomCurrentTemp = 1.0;
+    m_RTSideCurrentTemp = 1.0;
+    m_RVHeatingRodCurrentTemp = 1.0;
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
@@ -367,6 +370,20 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForPreTest(const QString& H
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
+void HeatingStrategy::InitSelfTest()
+{
+    m_RTLevelSensor.curModuleId = "21";
+    m_RTTop.curModuleId = "1";
+    m_RTBottom.curModuleId = "1";
+    m_OvenTop.curModuleId = "1";
+    m_OvenBottom.curModuleId = "1";
+    m_RV_1_HeatingRod.curModuleId = "3";
+    m_RV_2_Outlet.curModuleId = "3";
+    m_LARVTube.curModuleId = "1";
+    m_LAWaxTrap.curModuleId = "1";
+    m_CurScenario = 2;
+}
+
 ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature)
 {
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
@@ -385,6 +402,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
     if ("RTSide" == HeaterName)
     {
         m_RTTop.curModuleId = "1";
+        m_RTSideCurrentTemp = 80.0 - 7;  // Offset: 7 degree C, from programsettings file
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(80);
@@ -413,6 +431,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
                 }
             }
         }
+        m_RTBottomCurrentTemp = TempRTBottom - 2;  // Offset: 2 degree C, from programsettings file
         pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
         dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRTBottom);
@@ -466,6 +485,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& 
                 }
             }
         }
+        m_RVHeatingRodCurrentTemp = TempRV1;
         pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(TempRV1);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(0);
@@ -592,6 +612,19 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
         }
+        else if(2 == m_CurScenario)    // Self test
+        {
+            userInputTemp = m_RTSideCurrentTemp;
+        }
+        else if(203 == m_CurScenario)  // Dry step
+        {
+            userInputTemp = 80;
+        }
+        else if(4 == m_CurScenario && "RG6" == mp_SchedulerController->GetLastReagentGroup())  // Idle and last reagent was paraffin
+        {
+            userInputTemp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        }
+
         if(userInputTemp < 0)
         {
             (void)this->StopTemperatureControl("RTSide");
@@ -616,6 +649,18 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         {
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }
+        else if(2 == m_CurScenario)    // Self test
+        {
+            userInputTemp = m_RTBottomCurrentTemp;
+        }
+        else if(203 == m_CurScenario)  // Dry step
+        {
+            userInputTemp = 80;
+        }
+        else if(4 == m_CurScenario && "RG6" == mp_SchedulerController->GetLastReagentGroup())  // Idle and last reagent was paraffin
+        {
+            userInputTemp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         }
         if(userInputTemp < 0)
         {
@@ -688,20 +733,27 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     }
     if ("RV" == HeaterName)
     {
-        //Firstly, get the Parrifin melting point (user input)
-        qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        if(userInputMeltingPoint < 0)
+        if(2 == m_CurScenario)
         {
-            userInputMeltingPoint = 0.0;
-        }
-        pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-        if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
-        {
-            dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
+            dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RVHeatingRodCurrentTemp);
         }
         else
         {
-            dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset);
+            //Firstly, get the Parrifin melting point (user input)
+            qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            if(userInputMeltingPoint < 0)
+            {
+                userInputMeltingPoint = 0.0;
+            }
+            pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
+            if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
+            {
+                dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
+            }
+            else
+            {
+                dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset);
+            }
         }
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].SlopTempChange);
         dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature);
