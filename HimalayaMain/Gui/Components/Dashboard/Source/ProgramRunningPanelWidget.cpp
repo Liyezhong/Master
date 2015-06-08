@@ -350,8 +350,7 @@ void CProgramRunningPanelWidget::OnProgramDetail()
     if (m_selectedProgramId.isEmpty())
         return;
 
-    m_pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
-    m_pProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
+    m_pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget(this);
 
     Core::CStartup* pStartup = Core::CStartup::instance();
     MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
