@@ -213,8 +213,10 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
 {
     if (rst) {
-        m_ButtonGroup.setExclusive(false);
         int checkedID = m_ButtonGroup.checkedId();
+        if (checkedID == m_LastCanBeSelectedButtonId)
+        return;
+        m_ButtonGroup.setExclusive(false);
         if (checkedID != -1)
         {
             m_ButtonGroup.button(checkedID)->setChecked(false);
