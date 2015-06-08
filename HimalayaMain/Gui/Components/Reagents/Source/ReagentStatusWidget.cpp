@@ -539,8 +539,6 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
 {
     Q_UNUSED(p_KeyBoard);
     mp_DataConnector = p_DataConnector;
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
-                      this, EnableBottleCheckFlag());
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, DisableBottleCheckFlag());
 

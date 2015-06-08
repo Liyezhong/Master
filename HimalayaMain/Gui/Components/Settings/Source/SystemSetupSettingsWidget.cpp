@@ -139,9 +139,6 @@ void CSystemSetupSettingsWidget::SetDataConnector(Core::CDataConnector *p_DataCo
     if (p_DataConnector)
     {
         mp_DataConnector = p_DataConnector;
-
-        CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
-                          this, EnableBottleCheckFlag());
         CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                           this, DisableBottleCheckFlag());
         CONNECTSIGNALSLOT(mp_DataConnector, EnableBottleCheck(bool),
