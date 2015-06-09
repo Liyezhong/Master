@@ -65,7 +65,6 @@ private:
     DataManager::CProgram const *mp_Program;    //!< Currently selected program
     CProgramModel m_ProgramModel;               //!< Model of the program table
     CModifyProgramDlg *mp_ModifyProgramDlg;     //!< Modify program dialog
-    MainMenu::CMessageDlg ConfirmationMessageDlg;       ///<  Definition/Declaration of variable ConfirmationMessageDlg
     MainMenu::CMainWindow *mp_MainWindow;       //!< Reference to main window
     MainMenu::CMessageDlg m_MessageDlg;         //!< Information Message Dialog
     bool m_UserRoleChanged;                     //!< True if user Role changed else false

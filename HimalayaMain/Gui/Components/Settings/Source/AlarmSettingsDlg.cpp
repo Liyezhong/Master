@@ -235,6 +235,14 @@ void CAlarmSettingsDlg::OnProcessStateChanged()
     ResetButtons();
 }
 
+void CAlarmSettingsDlg::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->saveButton->setEnabled(false);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the apply button based on the user role/process
@@ -284,6 +292,7 @@ void CAlarmSettingsDlg::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     CDialogFrame::SetMainWindow(p_MainWindow);
 }
 

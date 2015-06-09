@@ -224,8 +224,6 @@ void CProgramWidget::OnNew()
 /****************************************************************************/
 void CProgramWidget::OnCopy()
 {
-    /*m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog."));*/
     mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);

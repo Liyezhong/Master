@@ -85,6 +85,8 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     m_RMSOption = Global::RMS_OFF;
+
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 }
 
 /****************************************************************************/
@@ -595,6 +597,16 @@ void CModifyReagentRMSDlg::RetranslateUI()
 
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                               "Enter Reagent Name", 0, QApplication::UnicodeUTF8));
+}
+
+void CModifyReagentRMSDlg::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnOk->setEnabled(false);
+    }
+    else
+        mp_Ui->btnOk->setEnabled(true);
 }
 
 } // end namespace Reagents

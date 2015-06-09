@@ -197,6 +197,13 @@ private slots:
     /****************************************************************************/
     QString HandleEscapedChar(QString& str);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnUserRoleChanged
+     */
+    /****************************************************************************/
+    void OnUserRoleChanged();
+
 protected:
     void changeEvent(QEvent *p_Event);
 

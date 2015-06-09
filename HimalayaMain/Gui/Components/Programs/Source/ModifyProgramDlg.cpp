@@ -101,6 +101,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     CONNECTSIGNALSLOT(mp_Ui->btnPrgName, clicked(), this, OnEditName());
     CONNECTSIGNALSLOT(mp_Ui->btnPrgIcon, clicked(), this, OnIconClicked());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     CONNECTSIGNALSLOT(mp_ModifyProgStepDlg, AddProgramStep(DataManager::CProgramStep*,bool),
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
     CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgramIcon(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));
@@ -639,6 +640,15 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
                     ResetButtons(m_Program, true);
             }
         }
+    }
+}
+
+void CModifyProgramDlg::OnUserRoleChanged()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnSave->setEnabled(false);
     }
 }
 

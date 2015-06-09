@@ -235,6 +235,16 @@ void CAlarmSettingsWidget::OnProcessStateChanged()
     ResetButtons();
 }
 
+void CAlarmSettingsWidget::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->informationButton->setEnabled(false);
+        mp_Ui->warningButton->setEnabled(false);
+        mp_Ui->errorButton->setEnabled(false);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Alarm Setting changes
@@ -306,6 +316,8 @@ void CAlarmSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindo
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+
     mp_Information->SetPtrToMainWindow(mp_MainWindow);
     mp_Error->SetPtrToMainWindow(mp_MainWindow);
     mp_Warning->SetPtrToMainWindow(mp_MainWindow);

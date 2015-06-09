@@ -140,6 +140,12 @@ private slots:
      void OnProcessStateChanged();
      /****************************************************************************/
      /*!
+      *  \brief  Definition/Declaration of OnUserRoleChanged
+      */
+     /****************************************************************************/
+     void OnUserRoleChanged();
+     /****************************************************************************/
+     /*!
       *  \brief  Definition/Declaration of OnDirectConnectionStateChanged
       */
      /****************************************************************************/

@@ -40,7 +40,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
     m_strCancel(tr("Cancel")),
     m_strClose(tr("Close"))
 {
-    Q_UNUSED(p_MainWindow)
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
     SetButtonGroup();
@@ -193,7 +193,10 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 
 void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
 {
-    mp_Ui->btnOk->setEnabled(true);
+    if (MainMenu::CMainWindow::GetCurrentUserRole() != MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnOk->setEnabled(true);
+    }
     m_ReagentGroup.SetGroupColor(m_ColorNames.value(Id));
 }
 
@@ -221,6 +224,14 @@ void CModifyReagentGroupColorDlg:: UpdateReagentGroupColor()
         p_Button->setIcon(QIcon(pixmap));
 
         idx++;
+    }
+}
+
+void CModifyReagentGroupColorDlg::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnOk->setEnabled(false);
     }
 }
 

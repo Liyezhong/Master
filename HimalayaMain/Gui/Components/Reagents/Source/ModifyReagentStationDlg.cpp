@@ -55,6 +55,7 @@ CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(p_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     // Init Message dialog
     m_MessageDlg.SetTitle(m_strInforMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
@@ -118,6 +119,13 @@ void CModifyReagentStationDlg::changeEvent(QEvent *p_Event)
         break;
     }
 }
+
+void CModifyReagentStationDlg::showEvent(QShowEvent * p_Event)
+{
+    Q_UNUSED(p_Event);
+    mp_Ui->btnOk->setEnabled(true);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Resizes the columns in the reagents table
@@ -174,6 +182,14 @@ void CModifyReagentStationDlg::OnOk()
     //emit UpdateStationSetAsEmpty(m_EditedStation.GetDashboardStationID());
 }
 
+void CModifyReagentStationDlg::OnUserRoleChanged()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnOk->setEnabled(false);
+    }
+}
 
 /****************************************************************************/
 /*!

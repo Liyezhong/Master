@@ -177,6 +177,14 @@ void CRegionalSettingsWidget::OnProcessStateChanged()
     ResetButtons();
 }
 
+void CRegionalSettingsWidget::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnApply->setEnabled(false);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the apply button based on the user role/process
@@ -216,6 +224,7 @@ void CRegionalSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWi
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 }
 
 } // end namespace Settings

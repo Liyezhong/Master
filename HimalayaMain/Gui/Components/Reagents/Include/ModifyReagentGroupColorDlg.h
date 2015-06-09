@@ -124,6 +124,12 @@ public slots:
      */
     /****************************************************************************/
     void UpdateReagentGroupColor();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnUserRoleChanged
+     */
+    /****************************************************************************/
+    void OnUserRoleChanged();
 protected:
     void changeEvent(QEvent *p_Event);
 

@@ -188,8 +188,11 @@ void CReagentStationWidget::SelectionChanged(QModelIndex Index)
 void CReagentStationWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     m_UserRoleChanged = true;
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnEdit->setEnabled(false);
+    }
 }
 
 /****************************************************************************/
@@ -256,7 +259,7 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
                                          MainMenu::CMainWindow *p_MainWindow,
                                          KeyBoard::CKeyBoard *p_KeyBoard)
 {
-    Q_UNUSED(p_MainWindow);
+    CONNECTSIGNALSLOT(p_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     Q_UNUSED(p_KeyBoard);
     mp_DataConnector = p_DataConnector;
     mp_ReagentList = p_ReagentList;

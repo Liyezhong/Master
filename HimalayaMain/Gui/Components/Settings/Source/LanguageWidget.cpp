@@ -186,6 +186,13 @@ void CLanguageWidget::OnProcessStateChanged()
     ResetButtons();
 }
 
+void CLanguageWidget::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->btnApply->setEnabled(false);
+    }
+}
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the apply button based on the user role/process
@@ -272,6 +279,7 @@ void CLanguageWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Co
     mp_MainWindow = p_MainWindow;
     mp_DataConnector = p_DataConnector;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 }
 
 } // end namespace Settings

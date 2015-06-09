@@ -132,6 +132,13 @@ void CNetworkSettingsWidget::OnProcessStateChanged()
     ResetButtons();
 }
 
+void CNetworkSettingsWidget::OnUserRoleChanged()
+{
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+    {
+        mp_Ui->saveButton->setEnabled(false);
+    }
+}
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the apply button based on the user role/process
@@ -257,6 +264,7 @@ void CNetworkSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWin
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 }
 
 /****************************************************************************/
