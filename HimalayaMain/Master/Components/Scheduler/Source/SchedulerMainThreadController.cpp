@@ -4607,8 +4607,7 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
         //oven is open
         if(m_CheckOvenCover)
         {
-            if ( (Scenario >= 2 && Scenario <= 205) || (Scenario >= 211 && Scenario <= 257)
-                 || (Scenario >= 281 && Scenario <= 297) )
+            if ( (Scenario >= 2 && Scenario <= 260) || (Scenario >= 281 && Scenario <= 297) )
             {
                 SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
                 m_CheckOvenCover = false;

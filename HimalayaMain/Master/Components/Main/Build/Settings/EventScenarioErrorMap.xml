@@ -907,6 +907,8 @@
         <error errorid="512020090">
             <scenario type="single" id="007"/>
             <scenario type="single" id="200"/>
+            <scenario type="single" id="206"/>
+            <scenario type="single" id="260"/>
             <scenario type="range" startid="211" endid="257"/>
         </error>
         <error errorid="513020091">
@@ -914,6 +916,7 @@
         </error>
         <error errorid="512020092">
             <scenario type="single" id="002"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
