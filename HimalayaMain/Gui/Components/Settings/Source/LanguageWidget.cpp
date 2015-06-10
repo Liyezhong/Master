@@ -48,7 +48,7 @@ CLanguageWidget::CLanguageWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Pa
     mp_TableWidget->setModel(&m_LanguageModel);
     mp_Ui->tableWidget->SetContent(mp_TableWidget);
     PopulateLanguageList();
-    CONNECTSIGNALSLOT(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnApply, clicked(), this, OnBtnApplyClicked());
 }
 

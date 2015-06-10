@@ -79,7 +79,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
     CONNECTSIGNALSLOT(mp_Ui->btnDelete, clicked(), this, OnDelete());
-    CONNECTSIGNALSLOT(mp_TableWidget, clicked(QModelIndex), this,
+    CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this,
                       SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());

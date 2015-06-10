@@ -101,7 +101,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
-    CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOT(mp_TableWidget,pressed(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(),this,UpdateUserSetting());
 }
