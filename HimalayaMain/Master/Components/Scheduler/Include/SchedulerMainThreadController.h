@@ -361,6 +361,8 @@ typedef enum
         bool    m_CheckRemoteAlarmStatus;                     ///< flag to check m_CheckRemoteAlarmStatus
         bool    m_CheckLocalAlarmStatus;                      ///< flag to check m_CheckLocalAlarmStatus
         bool    m_DisableAlarm;                               ///< disable alarm or not
+        qint8    m_LocalAlarmPreviousStatus;                   /// -1 - unknow status, 0 - connected, 1 - not connected
+        qint8    m_RemoteAlarmPreviousStatus;                  /// -1 - unknow status, 0 - connected, 1 - not connected
         qint8   m_PssmStepFinSeq;                             ///< sequence of PSSM_STEP_FIN stage
         QSharedPointer<EventScenarioErrXMLInfo> m_pESEXMLInfo;///< Event-Scenario-Error parser
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer

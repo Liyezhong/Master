@@ -157,6 +157,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_TimeReEnterFilling = 0;
     m_CheckRemoteAlarmStatus = true;
     m_CheckLocalAlarmStatus = true;
+    m_LocalAlarmPreviousStatus = -1;
+    m_RemoteAlarmPreviousStatus = -1;
     m_PssmStepFinSeq = 0;
     m_IsDrainDelay = false;
     m_DrainDelayBeginTime = 0;
@@ -3192,6 +3194,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     }
 
     // Monitor local and remote alarm
+#if 0
     if (false == m_DisableAlarm)
     {
         if (1 == strctHWMonitor.RemoteAlarmStatus && m_CheckRemoteAlarmStatus)
@@ -3205,6 +3208,28 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             m_CheckLocalAlarmStatus = false;
         }
     }
+#else
+    if (1 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus < 1) //alarm was unplugged
+    {
+        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, m_CurrentScenario, true);
+        m_RemoteAlarmPreviousStatus = 1;
+    }
+    else if(0 == strctHWMonitor.RemoteAlarmStatus && m_RemoteAlarmPreviousStatus == 1)// alarm was plugged
+    {
+        m_RemoteAlarmPreviousStatus = 0;
+        RaiseError(0, DCL_ERR_DEV_MC_REMOTEALARM_UNCONNECTED, 0,true, false);
+    }
+    if (1 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus < 1) //alarm was unplugged
+    {
+        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, m_CurrentScenario, true);
+        m_LocalAlarmPreviousStatus = 1;
+    }
+    else if(0 == strctHWMonitor.LocalAlarmStatus && m_LocalAlarmPreviousStatus == 1) //alarm was unplugged
+    {
+        RaiseError(0, DCL_ERR_DEV_MC_LOCALALARM_UNCONNECTED, 0,true, false);
+        m_LocalAlarmPreviousStatus = 0;
+    }
+#endif
 
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
     {
