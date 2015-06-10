@@ -416,10 +416,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
     case PROCESSING_SAFE_REAGENT:
         if (0 == m_ProcessingSafeReagent)
         {
-            quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
-            if(272 <= Scenario && Scenario <= 277)
+            if("RG6" == m_ReagentGroup)
             {
-                //do nothing
+                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTBottom");
+                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTSide");
             }
             else
             {
