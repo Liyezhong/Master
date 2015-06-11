@@ -452,6 +452,7 @@ void CSchedulerStateMachine::OnEnterBottleCheckState()
     m_NonRVErrorOccured = false;
     m_BottleCheckStationIter = mp_SchedulerThreadController->GetDashboardStationList().begin();
     mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
+    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_START);
     mp_SchedulerThreadController->StartTimer();
 }
 
@@ -1872,6 +1873,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 else
                 {
                     mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_EMPTY);
+                    mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_EMPTY, QStringList() << m_BottleCheckStationIter->first);
                     m_BottleCheckStationIter++;
                 }
             }
@@ -1879,6 +1881,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         else
         {
             mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_ALLCOMPLETE);
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS);
             this->SendRunComplete();
         }
         break;
@@ -1888,6 +1891,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             if (m_NonRVErrorOccured)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_FAILED);
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_FAILED, QStringList() << m_BottleCheckStationIter->first);
                 this->SendRunComplete();
                 return;
             }
@@ -1900,16 +1904,20 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
             else if (DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_BUILDPRESSUREFAILED);
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_BUILD_PRESSURE_FAILED, QStringList() << m_BottleCheckStationIter->first);
                 m_BottleCheckStationIter++;
             }
             else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_EMPTY);
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_EMPTY, QStringList() << m_BottleCheckStationIter->first);
+
                 m_BottleCheckStationIter++;
             }
             else if (DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == retCode)
             {
                 mp_SchedulerThreadController->SendBottleCheckReply(m_BottleCheckStationIter->first, DataManager::BOTTLECHECK_BLOCKAGE);
+                mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_BLOCKAGE, QStringList() << m_BottleCheckStationIter->first);
                 m_BottleCheckStationIter++;
             }
             else

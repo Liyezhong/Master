@@ -569,9 +569,13 @@
    		<string id="67174924" text1="Offset the pressure calibration." text2="" />
    		<string id="67174925" text1="Sealing test." text2="" />
    		<string id="67174926" text1="Sealing test successfully." text2="" />
-   		<string id="67174927" text1="Bottle test." text2="" />
-   		<string id="67174928" text1="Bottle test successfully." text2="" />
+   		<string id="67174927" text1="Bottle check Started." text2="" />
+   		<string id="67174928" text1="Bottle check successfully." text2="" />
    		<string id="67174929" text1="PreTest success." text2="" />
+        <string id="67174930" text1="Bottle check failed.Station:%1." text2="" />
+        <string id="67174931" text1="Bottle check:Blockage.Station:%1." text2="" />
+        <string id="67174932" text1="Bottle check:Build pressure failed.Station:%1." text2="" />
+        <string id="67174933" text1="Bottle check:Empty.Station:%1." text2="" />
    		<string id="67174992" text1="Initialize the heatingStrategy failed." text2="" />
    		<string id="67174993" text1="Start heating retort side in pretest,the target temperature:%1." text2="" />
    		<string id="67174994" text1="Start heating retort bottom in pretest,the target temperature:%1." text2="" />

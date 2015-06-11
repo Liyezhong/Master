@@ -124,9 +124,15 @@ const quint32 EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS = SCHEDULER_BASE_ID +
 const quint32 EVENT_SCHEDULER_OFFSET_CALIBRATION = SCHEDULER_BASE_ID +  0x20C; ///< Offset the pressure calibration.
 const quint32 EVENT_SCHEDULER_SEALING_TEST = SCHEDULER_BASE_ID + 0x20D; ///< Sealing test.
 const quint32 EVENT_SCHEDULER_SEALING_TEST_SUCCESS = SCHEDULER_BASE_ID + 0x20E; ///< Sealing test successfully.
-const quint32 EVENT_SCHEDULER_BOTTLE_CHECK = SCHEDULER_BASE_ID + 0x20F; ///< Bottle test.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_START = SCHEDULER_BASE_ID + 0x20F; ///< Bottle test.
 const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS = SCHEDULER_BASE_ID + 0x210; ///< Bottle test successfully.
 const quint32 EVENT_SCHEDULER_PRETEST_SUCCESS = SCHEDULER_BASE_ID + 0x211; ///< PreTest success.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_FAILED = SCHEDULER_BASE_ID + 0x212; ///< Bottle check failed.Station:%1.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_BLOCKAGE = SCHEDULER_BASE_ID + 0x213; ///< Bottle check blockage.Station:%1.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_BUILD_PRESSURE_FAILED = SCHEDULER_BASE_ID + 0x214; ///< Bottle check:Build pressure failed.Station:%1.
+const quint32 EVENT_SCHEDULER_BOTTLE_CHECK_EMPTY = SCHEDULER_BASE_ID + 0x215; ///< Bottle check:Empty.Station:%1.
+
+
 
 //heating strategy
 const quint32 EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED = SCHEDULER_BASE_ID + 0x250; ///< Initialize the heatingStrategy failed.

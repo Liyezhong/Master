@@ -1242,12 +1242,25 @@
 	    <Event Code="" ErrorID="67174926" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_SEALING_TEST_SUCCESS" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174926" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174927" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174927" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174927" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174928" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174928" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_SUCCESS" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174928" ButtonType="" StatusBar=""/>
 	    </Event>
+        <Event Code="" ErrorID="67174930" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_FAILED" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67174930" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="67174931" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_BLOCKAGE" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67174931" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="67174932" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_BUILD_PRESSURE_FAILED" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67174932" ButtonType="" StatusBar=""/>
+	    </Event>
+        <Event Code="" ErrorID="67174933" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_BOTTLE_CHECK_EMPTY" LogLevel="High" UserLog="FALSE">
+	     <Step ID="0" Type="MSG" StringID="67174933" ButtonType="" StatusBar=""/>
+	    </Event>
+        
 	    <Event Code="" ErrorID="67174929" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_PRETEST_SUCCESS" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174929" ButtonType="" StatusBar=""/>
 	    </Event>
