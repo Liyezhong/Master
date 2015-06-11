@@ -1511,7 +1511,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
             m_Is5MinPause = false;
             m_Is10MinPause = false;
-            m_Is15MinPause = false;
         }
         else
         {
@@ -4223,7 +4222,9 @@ void SchedulerMainThreadController::Pause()
     }
     LogDebug("SchedulerMainThreadController Paused");
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
-
+    m_Is5MinPause = false;
+    m_Is10MinPause = false;
+    m_Is15MinPause = false;
     //send command to main controller to tell program is actually pasued
     MsgClasses::CmdProgramAcknowledge* commandPtrPauseFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_FINISHED));
     Q_ASSERT(commandPtrPauseFinish);
