@@ -292,7 +292,7 @@ protected:
     /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
-public slots:
+public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramStartReadyUpdated

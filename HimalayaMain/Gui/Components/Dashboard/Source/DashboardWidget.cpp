@@ -96,9 +96,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                        ui->programPanelWidget, UndoProgramSelection());
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
-                      ui->programPanelWidget, OnProgramStartReadyUpdated());
-
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                       this, OnProgramStartReadyUpdated());
 
     CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdLockStatus &),
@@ -184,9 +181,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, OnWaitRotaryValveHeatingPrompt());
-
-    CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
-                      ui->programPanelWidget, OnWaitRotaryValveHeatingPrompt());
 
     CONNECTSIGNALSLOT(mp_DataConnector, DismissRotaryValveHeatingPrompt(),
                       this, OnDismissRotaryValveHeatingPrompt());
@@ -289,6 +283,10 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
     m_ProgramStartReady = true;
     ui->programPanelWidget->ProgramStartReady(true);
 	m_bWaitRotaryValveHeatingPrompt = false;
+    if (m_ProgramStatus != Aborting)
+    {
+        ui->programPanelWidget->OnProgramStartReadyUpdated();
+    }
 }
 
 void CDashboardWidget::CancelProgramWillCompletePrompt()
@@ -439,6 +437,10 @@ void CDashboardWidget::OnWaitRotaryValveHeatingPrompt()
 {
     m_bWaitRotaryValveHeatingPrompt = true;
     ui->programPanelWidget->WaitRotaryValveHeatingPrompt(true);
+    if (m_ProgramStatus != Aborting)
+    {
+        ui->programPanelWidget->OnWaitRotaryValveHeatingPrompt();
+    }
 }
 
 void CDashboardWidget::OnDismissRotaryValveHeatingPrompt()
@@ -506,14 +508,14 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             messageDlg.SetButtonText(1, CommonString::strOK);
             messageDlg.HideButtons();
             if (m_ProgramStatus == Completed ||
-            m_ProgramStatus == Aborted || m_ProgramStatus == CompletedAsSafeReagent)
+            m_ProgramStatus == Aborting || m_ProgramStatus == CompletedAsSafeReagent)
             {
                 QString strTemp;
                 if (m_ProgramStatus == Completed)
                 {
                     strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
                 }
-                else if (m_ProgramStatus == Aborted)
+                else if (m_ProgramStatus == Aborting)
                 {
                     strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
                 }
@@ -523,6 +525,10 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                     messageDlg.SetTitle(CommonString::strInforMsg);
                     messageDlg.SetText(strTemp);
                     (void)messageDlg.exec();
+                    if (m_ProgramStatus == Aborting)
+                    {
+                        m_ProgramStatus = Aborted;
+                    }
                 }
                 m_ProgramStatus = Undefined_ProgramStatus;
                 Core::CGlobalHelper::SetProgramPaused(false);
@@ -590,7 +596,6 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
     m_CurProgramStepIndex = -1;
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-    m_ProgramStatus = Aborted;
     Core::CGlobalHelper::SetProgramPaused(false);
     if (!IsRetortContaminated)
     {
@@ -620,6 +625,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
                 OnUnselectProgram();
             }
         }
+		m_ProgramStatus = Aborted;
     }
 }
 
