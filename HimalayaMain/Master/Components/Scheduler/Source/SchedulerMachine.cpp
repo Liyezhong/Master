@@ -1665,6 +1665,7 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
         {
         case 0:
         {
+            mp_SchedulerThreadController->OnBeginDrain();
             CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
             QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
             cmd->SetRVPosition(mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID));
@@ -1676,6 +1677,7 @@ void CSchedulerStateMachine::HandleRcRestart(const QString& cmdName)
         case 1:
             if ("Scheduler::IDForceDraining" == cmdName)
             {
+                mp_SchedulerThreadController->OnStopDrain();
                 m_ErrorRcRestartSeq = 0;
                 mp_SchedulerThreadController->StopTimer();
                 emit SigBackToBusy();
