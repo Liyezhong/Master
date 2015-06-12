@@ -307,10 +307,6 @@ void CServiceSettingsWidget::ResetButtons()
         {
             mp_Ui->btnStartServiceApp->setEnabled(true);
         }
-        else if ((isError && (m_CurrentUserRole == MainMenu::CMainWindow::Admin)) || Core::CGlobalHelper::IsErrorHandlingFailed())
-        {
-             mp_Ui->btnShutdown->setEnabled(true);
-        }
     }
 }
 
