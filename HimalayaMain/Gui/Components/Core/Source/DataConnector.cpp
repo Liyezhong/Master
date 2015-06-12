@@ -1028,8 +1028,12 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
     bool Result = false;
     NetCommands::ProcessStateType processStateType = Command.GetProcessState();
     if (NetCommands::ProcessStateType::InitState == processStateType ||
-            NetCommands::ProcessStateType::IdleState == processStateType) {
+            NetCommands::ProcessStateType::IdleState == processStateType ||
+            NetCommands::ProcessStateType::BusyState == processStateType ) {
         Core::CGlobalHelper::SetSystemErrorStatus(false);
+
+        if (NetCommands::ProcessStateType::InitState == processStateType ||
+                NetCommands::ProcessStateType::IdleState == processStateType)
         Result = mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);//not show running icon
     }
     else
