@@ -1009,10 +1009,11 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
                                                             Threads::CommandChannel &AckCommandChannel) {
     Q_ASSERT(mp_DataManager);
     if (!mp_DataManager)
+    {
+        SendAcknowledgeNOK(Ref, AckCommandChannel);
         return;
+    }
 
-    // send ack to GUI
-    SendAcknowledgeOK(Ref, AckCommandChannel);
     QString DeviceName;
     quint32 LogEvent = 0;
     switch(Cmd.GetUserLevel()) {
@@ -1056,6 +1057,8 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
 
     // send the authenticated command to GUI
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
+
+
     // check the whether fallback password is validated for the successful login
     if (m_PasswordManager.GetFallbackPasswordFlag()) {
         // User entered the fallback password so ask him to change the password
@@ -1065,6 +1068,7 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     if(LogEvent != 0){
         Global::EventObject::Instance().RaiseEvent(LogEvent);
     }
+    SendAcknowledgeOK(Ref, AckCommandChannel);
 }
 
 void HimalayaMasterThreadController::ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,

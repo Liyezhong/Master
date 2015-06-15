@@ -74,6 +74,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_strError(tr("Error")),
     m_strInformation(tr("Information")),
     m_strWarning(tr("Warning")),
+    m_strOK(tr("OK")),
     m_strDeviceCommunication(tr("Operation ongoing")),
     m_strSavingSettings(tr("Saving Settings ...")),
     m_strUserExport(tr("User Export")),
@@ -328,7 +329,7 @@ void CDataConnector::OnAckTwoPhase(Global::tRefType Ref, const Global::AckOKNOK 
     qDebug()<<"\n\n Ack.GetStatus() = "<< Ack.GetStatus();
     // just accept the wait dialog
     mp_WaitDialog->accept();
-    if (Ack.GetStatus() == false) {
+    if (Ack.GetStatus() == false && Ack.GetText().length() > 0) {
         ShowMessageDialog(Ack.GetType(), Ack.GetText());
     }    
 }
@@ -1460,6 +1461,11 @@ void CDataConnector::OnEventReportAck(NetCommands::ClickedButton_t ClickedButton
 /****************************************************************************/
 void CDataConnector::SendUserLevel(QDataStream &DataStream)
 {
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
+    mp_WaitDialog->SetTimeout(30000);
+    mp_WaitDialog->show();
+
     qint32 UserLevel;
     QString Password;
     (void)DataStream.device()->reset();
@@ -1708,7 +1714,7 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
             break;
         }
         mp_MessageDlg->SetText(MessageText);
-	mp_MessageDlg->SetButtonText(1, m_strOK);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->show();
     }
 }
