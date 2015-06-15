@@ -108,6 +108,11 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 //SendTasksDoneSig(false);
                 // Based on comments from team members, we ignore the error
             }
+            if("RG6" == m_ReagentGroup)
+            {
+                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTBottom");
+                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTSide");
+            }
 
             quint32 Scenario = mp_SchedulerController->GetCurrentScenario();
             bool ok = false;
@@ -418,8 +423,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         {
             if("RG6" == m_ReagentGroup)
             {
-                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTBottom");
-                mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("RTSide");
+
             }
             else
             {
