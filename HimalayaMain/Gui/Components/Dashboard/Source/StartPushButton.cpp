@@ -25,6 +25,7 @@
 #include "Dashboard/Include/StartPushButton.h"
 #include <QPainter>
 #include <QPaintEvent>
+#include "Core/Include/GlobalHelper.h"
 
 namespace Dashboard {
 
@@ -73,11 +74,22 @@ void CStartPushButton::paintEvent(QPaintEvent * e)
     QRect r = e->rect();
     int XCenter = r.width() / 2;
     int top = 13;
-
+    int left = 15;
+    int width = 73;
     //draw the caption at the left side
     const QFont& ft = painter.font();
     QFontMetrics fm(ft);
-    painter.drawText(XCenter - 7, top + fm.height() -5 - fm.descent(), m_Text);
+    int stringWidth = fm.width(m_Text);
+
+    QString tempString(m_Text);
+    if (stringWidth > width)
+    {
+        width = 80;
+        tempString = Core::CGlobalHelper::TrimText(fm, m_Text, width);
+    }
+
+    QRect rectText(left, 3, width, 26);
+    painter.drawText(rectText, Qt::AlignRight|Qt::AlignHCenter|Qt::AlignBottom, tempString);
 
     //draw the virtical line
     int lineLeft = XCenter + 33;

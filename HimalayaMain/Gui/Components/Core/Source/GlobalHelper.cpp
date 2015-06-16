@@ -245,4 +245,17 @@ bool CGlobalHelper::GetSystemErrorStatus()
 {
     return m_IsSystemError;
 }
+
+QString CGlobalHelper::TrimText(const QFontMetrics& fontMetrics, const QString& processString, int expectedWidth)
+{
+    QString tempString(processString);
+    int stringWidth = fontMetrics.width(tempString);
+    while (stringWidth > expectedWidth)
+    {
+        tempString = tempString.left(tempString.length() - 1);
+        stringWidth = fontMetrics.width(tempString + "...");
+    }
+    return tempString + "...";
+}
+
 }

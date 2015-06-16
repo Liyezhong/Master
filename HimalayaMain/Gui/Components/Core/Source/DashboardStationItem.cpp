@@ -22,6 +22,7 @@
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 namespace Core {
@@ -407,7 +408,7 @@ void CDashboardStationItem::PrepareReagentName()
         {
             Painter.rotate(270.0);
             m_ReagentName = p_Reagent->GetReagentName();
-            QRect rect(-130, 23, 75, 60 );
+            QRect rect(-130, 23, 90, 60 );
             DrawGlowBoundaryText(textFont, m_ReagentName, rect, Painter);
             Painter.rotate(-270.0);
         }
@@ -428,9 +429,16 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
 
 void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter)
 {
-    QPainterPath textPath;
     QFontMetrics fm(textFont);
-    textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), textFont, text);
+    int stringWidth = fm.width(text);
+    QString tempString(text);
+    if (stringWidth > rect.width())
+    {
+        tempString = CGlobalHelper::TrimText(fm, text, rect.width());
+    }
+
+    QPainterPath textPath;
+    textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), textFont, tempString);
     QPainterPathStroker pps;
     pps.setWidth(3);
     pps.setDashPattern(Qt::NoPen);
@@ -440,7 +448,7 @@ void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text,
     QPainterPath strokePath = pps.createStroke(textPath);
     painter.fillPath(strokePath, QBrush(QColor(Qt::white)));
     painter.setPen(Qt::black);
-    painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), text);
+    painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), tempString);
 }
 
 void CDashboardStationItem::PrepareStationItemLabel()

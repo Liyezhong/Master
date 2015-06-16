@@ -21,6 +21,7 @@
 #define CORE_GLOBALHELPER_H
 
 #include <QObject>
+#include <QFontMetrics>
 
 namespace Core {
 class CDataConnector;
@@ -140,6 +141,17 @@ public:
      */
     /****************************************************************************/
     static bool GetSystemErrorStatus();
+    /****************************************************************************/
+    /*!
+     *  \brief  by global helper to trim a string to the expected length
+     *  \param  fontMetrics = QFontMetrics
+     *  \param  processString = string to be processed
+     *  \param  expectedWidth = the expected Width
+     *  \return the trimmed string.
+     */
+    /****************************************************************************/
+    static QString TrimText(const QFontMetrics& fontMetrics, const QString& processString, int expectedWidth);
+
 public slots:
     /****************************************************************************/
     /*!
