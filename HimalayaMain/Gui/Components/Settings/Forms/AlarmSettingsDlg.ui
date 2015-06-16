@@ -85,6 +85,12 @@
             <height>280</height>
            </size>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>16777215</height>
+           </size>
+          </property>
          </widget>
         </item>
        </layout>
@@ -222,15 +228,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MainMenu::CSliderControl</class>
-   <extends>QSlider</extends>
-   <header>MainMenu/Include/SliderControl.h</header>
-  </customwidget>
-  <customwidget>
    <class>MainMenu::CWheelPanel</class>
    <extends>QWidget</extends>
    <header>MainMenu/Include/WheelPanel.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MainMenu::CSliderControl</class>
+   <extends>QSlider</extends>
+   <header>MainMenu/Include/SliderControl.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

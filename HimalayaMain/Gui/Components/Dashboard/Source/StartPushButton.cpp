@@ -85,7 +85,7 @@ void CStartPushButton::paintEvent(QPaintEvent * e)
     if (stringWidth > width)
     {
         width = 80;
-        tempString = Core::CGlobalHelper::TrimText(fm, m_Text, width);
+        tempString = Core::CGlobalHelper::TrimText(fm, m_Text, width, true);
     }
 
     QRect rectText(left, 3, width, 26);

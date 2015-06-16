@@ -434,7 +434,7 @@ void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text,
     QString tempString(text);
     if (stringWidth > rect.width())
     {
-        tempString = CGlobalHelper::TrimText(fm, text, rect.width());
+        tempString = CGlobalHelper::TrimText(fm, text, rect.width(), true);
     }
 
     QPainterPath textPath;

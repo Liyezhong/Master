@@ -147,10 +147,12 @@ public:
      *  \param  fontMetrics = QFontMetrics
      *  \param  processString = string to be processed
      *  \param  expectedWidth = the expected Width
+     *  \param  bNeedEllips = whether need "..." or not
      *  \return the trimmed string.
      */
     /****************************************************************************/
-    static QString TrimText(const QFontMetrics& fontMetrics, const QString& processString, int expectedWidth);
+    static QString TrimText(const QFontMetrics& fontMetrics, const QString& processString,
+                            int expectedWidth, bool bNeedEllips = false);
 
 public slots:
     /****************************************************************************/

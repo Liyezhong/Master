@@ -22,6 +22,8 @@
 #include "Global/Include/Exception.h"
 #include "Settings/Include/AlarmSettingsDlg.h"
 #include "ui_AlarmSettingsDlg.h"
+#include "Core/Include/GlobalHelper.h"
+
 namespace Settings {
 
 /****************************************************************************/
@@ -272,8 +274,13 @@ void CAlarmSettingsDlg::RetranslateUI()
 {
    mp_Ui->sound_scrollpanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Sound", 0, QApplication::UnicodeUTF8));
    mp_Ui->scrollPanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Volume", 0, QApplication::UnicodeUTF8));
-   mp_Ui->periodictime_scrolltable->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", 0, QApplication::UnicodeUTF8));
-   mp_Ui->periodictime_scrolltable->SetSubtitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", 0, QApplication::UnicodeUTF8), 0);
+   QString trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", 0, QApplication::UnicodeUTF8),
+                                                   90);
+   mp_Ui->periodictime_scrolltable->SetTitle(trimmedString);
+
+   trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", 0, QApplication::UnicodeUTF8),
+                                                   90);
+   mp_Ui->periodictime_scrolltable->SetSubtitle(trimmedString, 0);
 
    SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Information", 0, QApplication::UnicodeUTF8));
    SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Error", 0, QApplication::UnicodeUTF8));
