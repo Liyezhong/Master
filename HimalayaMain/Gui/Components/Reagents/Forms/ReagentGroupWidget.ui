@@ -34,6 +34,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnEdit">
+       <property name="maximumSize">
+        <size>
+         <width>113</width>
+         <height>36</height>
+        </size>
+       </property>
        <property name="text">
         <string>Edit</string>
        </property>
