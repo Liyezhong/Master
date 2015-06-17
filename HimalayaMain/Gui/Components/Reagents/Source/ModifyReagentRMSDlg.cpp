@@ -217,7 +217,7 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
         m_Reagent = *p_Reagent;
         // Check if Edit button was clicked in ReagentWidget
         if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
-            //mp_Ui->buttonReagentName->setText(m_Reagent.GetReagentName());
+            mp_Ui->buttonReagentName->setEnabled(m_Reagent.GetReagentID().at(0) != 'L');
             m_strLastReagentName = m_Reagent.GetReagentName();
             mp_Ui->buttonReagentName->setText(HandleEscapedChar(m_strLastReagentName));
             mp_Ui->buttonValue->setEnabled(true);
@@ -239,6 +239,7 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
 
     }
     else {//new reagent
+        mp_Ui->buttonReagentName->setEnabled(true);
         UpdateRmsLabel(Option);
         mp_Ui->buttonValue->setEnabled(false);
         if(Option == Global::RMS_OFF){
