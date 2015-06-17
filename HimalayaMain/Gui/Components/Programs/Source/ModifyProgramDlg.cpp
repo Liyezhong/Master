@@ -502,6 +502,7 @@ void CModifyProgramDlg::DeleteSelectedStep(DataManager::CProgram* p_CurrentProgr
     // Added void to please lint
     (void) p_Program->DeleteProgramStep(Index);
     ResetButtons(*p_Program, false);
+    mp_TableWidget->clearSelection();
 }
 
 /****************************************************************************/
@@ -876,6 +877,8 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->btnCancel->setText(m_strClose);
     }
+    mp_Ui->scrollTable->Reset();
+
 }
 
 /****************************************************************************/
