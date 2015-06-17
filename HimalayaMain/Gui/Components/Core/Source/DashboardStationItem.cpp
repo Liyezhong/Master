@@ -646,29 +646,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Slot for handling StationChangeReagent(Station Set As Empty,
- *  Set As Full, Reset Data , Change Reagent) Commands
- *
- *  \iparam StationID = Station ID
- */
-/****************************************************************************/
-void CDashboardStationItem::UpdateDashboardScene(QString StationID)
-{
-    mp_DashboardStation = mp_DataConnector->DashboardStationList->GetDashboardStation(m_DashboardStationID);
-
-    if (!mp_DashboardStation) {
-        return;
-    }
-    else {
-        if (mp_DashboardStation->GetDashboardStationID() == StationID) {
-            qDebug() << "Reagent Status : " << mp_DashboardStation->GetDashboardReagentStatus();
-        }
-
-        UpdateDashboardStationItemReagent();
-    }
-}
 
 void CDashboardStationItem::UpdateUserSettings()
 {

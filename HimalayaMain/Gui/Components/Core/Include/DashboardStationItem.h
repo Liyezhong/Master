@@ -314,12 +314,7 @@ public slots:
      */
     /****************************************************************************/
     void UpdateImage();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of UpdateDashboardScene
-     */
-    /****************************************************************************/
-    void UpdateDashboardScene(QString StationID);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of UpdateDashboardStationItemReagent

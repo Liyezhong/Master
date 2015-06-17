@@ -1017,6 +1017,7 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
             {
                 pListItem->StationSelected(true);
                 pListItem->setVisible(true);
+                pListItem->UpdateDashboardStationItemReagent(false);
                 if (DataManager::CONTAINER_STATUS_FULL != pListItem->GetContainerStatus())
                 {
                     pListItem->SetContainerStatus(DataManager::CONTAINER_STATUS_FULL);
