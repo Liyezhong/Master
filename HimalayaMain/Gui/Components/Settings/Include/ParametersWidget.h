@@ -44,13 +44,23 @@ class CParametersWidget : public MainMenu::CPanelFrame
 private:
     Ui::CParametersWidget *mp_Ui;   //!< User interface
     void RetranslateUI();
-
+    bool m_bFirstShow;
 public:
     explicit CParametersWidget(QWidget *p_Parent = NULL);
     virtual ~CParametersWidget();
 
 protected:
     void changeEvent(QEvent *p_Event);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function showEvent
+     *
+     *  \param p_Event = QShowEvent type parameter
+     *
+     *  \return from showEvent
+     */
+    /****************************************************************************/
+    void showEvent(QShowEvent *p_Event);
 
 signals:
     /****************************************************************************/

@@ -33,7 +33,8 @@ namespace Settings {
  */
 /****************************************************************************/
 CParametersWidget::CParametersWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CParametersWidget)
+    mp_Ui(new Ui::CParametersWidget),
+    m_bFirstShow(true)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Parameter"));
@@ -44,7 +45,7 @@ CParametersWidget::CParametersWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(
     Palette.setColor(QPalette::HighlightedText, Qt::black);
     mp_Ui->parameterList->setPalette(Palette);
     mp_Ui->parameterList->setCurrentRow(0);
-    CONNECTSIGNALSIGNAL(mp_Ui->parameterList, currentRowChanged(int), this, CurrentRowChanged(int))
+    CONNECTSIGNALSIGNAL(mp_Ui->parameterList, currentRowChanged(int), this, CurrentRowChanged(int));
 }
 
 /****************************************************************************/
@@ -57,6 +58,16 @@ CParametersWidget::~CParametersWidget()
     delete mp_Ui;
 }
 
+void CParametersWidget::showEvent(QShowEvent *p_Event)
+{
+    Q_UNUSED(p_Event);
+    if (m_bFirstShow)
+    {
+        mp_Ui->retranslateUi(this);
+        m_bFirstShow = false;
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Event handler for change events
@@ -66,15 +77,17 @@ CParametersWidget::~CParametersWidget()
 /****************************************************************************/
 void CParametersWidget::changeEvent(QEvent *p_Event)
 {
+    QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
+        if (this->isVisible())
             mp_Ui->retranslateUi(this);
             RetranslateUI();
             break;
         default:
             break;
     }
-    QWidget::changeEvent(p_Event);
+
 }
 
 
