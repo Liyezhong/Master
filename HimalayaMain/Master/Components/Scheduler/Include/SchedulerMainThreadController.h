@@ -73,7 +73,7 @@ class HeatingStrategy;
 typedef struct {
     QString stationID;       ///<  Definition/Declaration of variable stationID
     QString nextStationID;   ///< Definition/Declaration of variable stationID
-    int durationInSeconds;       ///<  Definition/Declaration of variable durationInSeconds
+    qint64 durationInSeconds;       ///<  Definition/Declaration of variable durationInSeconds
     int temperature;       ///<  Definition/Declaration of variable temperature
     bool isPressure;       ///<  Definition/Declaration of variable isPressure
     bool isVacuum;       ///<  Definition/Declaration of variable isVacuum

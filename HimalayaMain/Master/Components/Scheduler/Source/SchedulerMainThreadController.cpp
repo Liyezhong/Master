@@ -1499,6 +1499,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             // resume the program
             emit NotifyResume();
+            LogDebug("The program is resume from pasue.");
 
             // tell the main controller the program is resuming
             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -3431,7 +3432,7 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         }
         m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-
+        LogDebug(QString("The duration time:%1 seconds.").arg(m_CurProgramStepInfo.durationInSeconds));
         m_lastPVTime = 0;
         m_completionNotifierSent = false;
         m_IsReleasePressureOfSoakFinish = false;
@@ -4216,8 +4217,9 @@ void SchedulerMainThreadController::Pause()
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
     //update the remaining time for the current step
-    if (PSSM_PROCESSING == m_SchedulerMachine->GetPreviousState())
+    if (PSSM_PROCESSING == m_CurrentStepState)// m_SchedulerMachine->GetPreviousState())
     {
+        m_IsProcessing = false;
         m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
     }
     LogDebug("SchedulerMainThreadController Paused");

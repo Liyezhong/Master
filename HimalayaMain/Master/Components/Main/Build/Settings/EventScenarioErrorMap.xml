@@ -1533,6 +1533,7 @@
     </event>
     <event eventid="500050301">
         <error errorid="513050301">
+            <scenario type="single" id="200"/>
             <scenario type="range" startid="211" endid="217"/>
             <scenario type="range" startid="221" endid="227"/>
             <scenario type="range" startid="231" endid="237"/>
