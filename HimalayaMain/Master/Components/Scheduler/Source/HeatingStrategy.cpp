@@ -42,6 +42,16 @@
 
 namespace Scheduler{
 
+static void DelaySomeTime(int DelayTime)
+{
+    if(DelayTime > 0)
+    {
+        QEventLoop event;
+        QTimer::singleShot(DelayTime, &event, SLOT(quit()));
+        event.exec();
+    }
+}
+
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
                                 DataManager::CDataManager* DataManager)
@@ -593,6 +603,43 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
     {
+        // For Level sensor has two types of PIDs, we need check current temperature at first to decide which PID we need use
+        QString highSeq, lowSeq;
+        if (m_RTLevelSensor.curModuleId.right(1) == "1")
+        {
+            highSeq = m_RTLevelSensor.curModuleId;
+            lowSeq = m_RTLevelSensor.curModuleId.left(1)+"2";
+        }
+        else
+        {
+            highSeq = m_RTLevelSensor.curModuleId.left(1)+"1";
+            lowSeq = m_RTLevelSensor.curModuleId;
+        }
+        m_RTLevelSensor.SetTemp4High = false;
+        m_RTLevelSensor.SetTemp4Low = false;
+        qreal tmpLevelSensor = mp_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
+        quint8 counter = 0; // At most 10 times;
+        while (!isEffectiveTemp(tmpLevelSensor))
+        {
+            if (counter>=10)
+            {
+                return DCL_ERR_FCT_CALL_FAILED;
+            }
+            DelaySomeTime(500);
+            tmpLevelSensor = mp_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
+            counter++;
+        }
+
+        if (m_RTLevelSensor.ExchangePIDTempList[m_RTLevelSensor.curModuleId] > tmpLevelSensor) // High seppd
+        {
+            m_RTLevelSensor.SetTemp4High = true;
+            m_RTLevelSensor.curModuleId = highSeq;
+        }
+        else // low speed
+        {
+            m_RTLevelSensor.SetTemp4Low = true;
+            m_RTLevelSensor.curModuleId = lowSeq;
+        }
         pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
@@ -603,6 +650,7 @@ ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
         dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
         m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
         m_RTLevelSensor.OTCheckPassed = false;
+        m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature = m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset -1;
     }
     if ("RTSide" == HeaterName)
     {
@@ -867,6 +915,18 @@ bool HeatingStrategy:: CheckRTBottomsDifference(qreal temp1, qreal temp2)
 quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qreal HWTemp)
 {
     qint64 now = QDateTime::currentMSecsSinceEpoch();
+    if (!isEffectiveTemp(HWTemp))
+    {
+        // we only check the invalid temperature in OT time range
+        if ((now-m_RTLevelSensor.heatingStartTime) < m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+    }
     if ("LevelSensor" == HeaterName)
     {
         if(HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
@@ -883,6 +943,26 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
         {
             return 2; //pass
         }
+    }
+
+    if (m_RTLevelSensor.CurrentSpeedList[m_RTLevelSensor.curModuleId] == "High" && false == m_RTLevelSensor.SetTemp4Low &&
+           HWTemp >= m_RTLevelSensor.ExchangePIDTempList[m_RTLevelSensor.curModuleId])
+    {
+        m_RTLevelSensor.SetTemp4Low = true;
+        m_RTLevelSensor.curModuleId = m_RTLevelSensor.curModuleId.left(1)+"2";
+        CmdSchedulerCommandBase* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ControllerGain);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ResetTime);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
+        m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTLevelSensor.OTCheckPassed = false;
+        m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature = m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset -1;
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd, false);
+
     }
     return 0; // Have not got the time out
 }
