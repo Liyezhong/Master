@@ -1809,6 +1809,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             m_NewProgramID = pCmdProgramAction->GetProgramID();
             m_delayTime = pCmdProgramAction->DelayTime();
+            LogDebug(QString("Get the delay time: %1 seconds.").arg(m_delayTime));
             return CTRL_CMD_START;
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
@@ -3430,7 +3431,15 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
             RaiseEvent(EVENT_SCHEDULER_RELEASE_PREASURE);
             m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         }
-        m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+        if(0 == m_CurProgramStepIndex)
+        {
+            //the first reagent should need delay time
+            m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+        }
+        else
+        {
+            m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        }
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
         LogDebug(QString("The duration time:%1 seconds.").arg(m_CurProgramStepInfo.durationInSeconds));
         m_lastPVTime = 0;
