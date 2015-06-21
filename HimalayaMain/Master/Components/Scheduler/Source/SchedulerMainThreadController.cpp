@@ -274,7 +274,8 @@ void SchedulerMainThreadController::DevProcDestroyed()
 
 void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& DeviceType)
 {
-    Q_UNUSED(ReturnCode)
+    //Q_UNUSED(ReturnCode)
+    LogDebug(QString("LifeCycle:ReportGetServiceInfo:%1,%2").arg(ReturnCode).arg(DeviceType));
     //send command
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(30000, ModuleInfo, DeviceType, false)));
 }
