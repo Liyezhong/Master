@@ -658,6 +658,9 @@ void HimalayaMasterThreadController::SendStateChange(QString state) {
     } else if (state == "ErrorState")
     {
         stateType = NetCommands::ErrorState;
+    }else if (state == "NormalState")
+    {
+        stateType = NetCommands::NormalState;
     }
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(5000,
                                                      stateType)), m_CommandChannelGui);

@@ -1030,8 +1030,9 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
     NetCommands::ProcessStateType processStateType = Command.GetProcessState();
     if (NetCommands::ProcessStateType::InitState == processStateType ||
             NetCommands::ProcessStateType::IdleState == processStateType ||
-            NetCommands::ProcessStateType::BusyState == processStateType ) {
-        Core::CGlobalHelper::SetSystemErrorStatus(false);
+            NetCommands::ProcessStateType::BusyState == processStateType ||
+            NetCommands::ProcessStateType::NormalState == processStateType ) {
+            Core::CGlobalHelper::SetSystemErrorStatus(false);
 
         if (NetCommands::ProcessStateType::InitState == processStateType ||
                 NetCommands::ProcessStateType::IdleState == processStateType)
