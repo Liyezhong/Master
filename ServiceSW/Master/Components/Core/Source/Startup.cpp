@@ -401,6 +401,8 @@ void CStartup::LoadCommonComponenetsOne(bool bReInit)
         CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_ServiceLogViewer, UpdateLogFileTableEntries());
         CONNECTSIGNALSLOT(mp_LogViewerGroup, PanelChanged(), mp_SoftwareUpdateLogViewer, UpdateLogFileTableEntries());
 
+        CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_ServiceLogViewer, UpdateLogFileTableEntries());
+
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "System Log Viewer", 0, QApplication::UnicodeUTF8)
                                     , mp_SystemLogViewer);
         mp_LogViewerGroup->AddPanel(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8)
