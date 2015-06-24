@@ -571,8 +571,7 @@ void CDashboardWidget::SetCassetteNumber()
     if (mp_DataConnector)
     {
         //input cassette number
-        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
-        pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(this, mp_MainWindow);
         pCassetteInput->SetCurrentCassette(m_TotalCassette);
         pCassetteInput->ShowLabel();
         pCassetteInput->SetDialogTitle(m_strChangeCassetteBoxTitle);
@@ -1074,10 +1073,9 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         //input cassette number
         if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
         {
-            CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
+            CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(this, mp_MainWindow);
 
             pCassetteInput->ShowLabel(false);
-            pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
             pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
             (void)pCassetteInput->exec();
 
