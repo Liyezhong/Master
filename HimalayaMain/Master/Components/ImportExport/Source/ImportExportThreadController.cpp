@@ -235,7 +235,7 @@ void ImportExportThreadController::CleanupAndDestroyObjects() {
 
 /****************************************************************************/
 void ImportExportThreadController::OnGoReceived() {  
-
+    Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<"export:ImportExportThreadController::OnGoReceived");
     if (!m_ThreadInitialized) {
         m_ThreadInitialized = true;
         CreateRequiredDirectories();
@@ -246,13 +246,15 @@ void ImportExportThreadController::OnGoReceived() {
             (void)WriteFilesInSettingsFolder();
 
             if (MountDevice()) {
+                Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<"export::MountDevice OK");
                 // do pre-tasks before emitting the Export process signal
                 if (DoPretasks()) {
 
                     // for user export we need to know the daily run log files
                     if (!m_UserExport) {
                         // clear the objects
-                        DoCleanUpObjects();                        
+                        DoCleanUpObjects();
+                        Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<"export::DoPretasks OK");
                         // emit the export process signal
                         emit StartExportProcess(m_TargetFileName);
                     }
@@ -1546,6 +1548,8 @@ bool ImportExportThreadController::MountDevice(bool IsImport, QString FileExtens
 
     // check for the file existence in the mounted device.
     qint32 MountedValue = Global::MountStorageDevice(FileName);
+    Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,
+                                               Global::tTranslatableStringList()<<(QString("export::MountStorageDevice:") + QString::number(MountedValue)));
 
     switch (MountedValue) {
         default:
