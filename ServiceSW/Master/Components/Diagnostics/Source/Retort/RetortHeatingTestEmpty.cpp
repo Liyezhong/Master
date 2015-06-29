@@ -73,7 +73,7 @@ int CHeatingTestEmpty::Run(void)
 
     text = tr("Please confirm the retort is empty and dry. "
               "(If not, use the \" Diagnostic_Retort_Drain "
-              "Reagen\" function first). Close retort lid and "
+              "Reagent\" function first). Close retort lid and "
               "rotate lock to closed position.");
     ret = dlg->ShowConfirmMessage(title, text, CDiagnosticMessageDlg::OK_ABORT);
     if (ret == CDiagnosticMessageDlg::ABORT)
