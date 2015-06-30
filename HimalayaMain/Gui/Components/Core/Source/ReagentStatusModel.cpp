@@ -353,7 +353,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
     if (Role == (int)Qt::SizeHintRole && Orientation == Qt::Horizontal) {
-        QSize size(100, 64);
+        QSize size(100, 70);
         return size;
     }
 
