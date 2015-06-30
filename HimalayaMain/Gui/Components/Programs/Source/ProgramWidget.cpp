@@ -210,7 +210,6 @@ void CProgramWidget::OnEdit()
 /****************************************************************************/
 void CProgramWidget::OnNew()
 {
-    ResetButtons();
     mp_ModifyProgramDlg->SetDialogTitle(m_strNewProgram);
     mp_ModifyProgramDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(NULL);
