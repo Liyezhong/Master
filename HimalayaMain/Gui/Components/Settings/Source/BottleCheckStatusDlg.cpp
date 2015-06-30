@@ -20,6 +20,7 @@
 #include "Settings/Include/BottleCheckStatusDlg.h"
 #include "ui_BottleCheckStatusDlg.h"
 #include "Core/Include/DataConnector.h"
+#include "MainMenu/Include/MessageDlg.h"
 
 namespace Settings {
     CBottleCheckStatusDlg::CBottleCheckStatusDlg(QWidget *parent, Core::CDataConnector* pDataConnect) :
@@ -29,8 +30,11 @@ namespace Settings {
         m_Blockage(tr("Blockage")),m_Checking(tr("Checking")),
         m_BuildPressureFailed(tr("Build pressure failed")),
         m_Failed(tr("Failed")),
-        m_bNoneUpdated(true)
-
+        m_bNoneUpdated(true),
+        m_bShouldReportError(false),
+        m_strReportMsg("The Bottle check failed! Please check the details in the Bottle check status list."),
+        m_strWarning("Warning"),
+        m_strOK("OK")
     {
         ui->setupUi(GetContentFrame());
         SetDialogTitle(tr("Bottle check"));
@@ -128,7 +132,7 @@ namespace Settings {
     /****************************************************************************/
     void CBottleCheckStatusDlg::keyPressEvent ( QKeyEvent * e )
     {
-
+        Q_UNUSED(e);
     }
     /****************************************************************************/
     /*!
@@ -145,14 +149,16 @@ namespace Settings {
 
         (void) m_BottleCheckStatusModel.setHeaderData(2, Qt::Horizontal,QApplication::translate("Settings::CBottleCheckStatusModel",
                                                                                      "Status", 0, QApplication::UnicodeUTF8),0);
-        m_Waiting = QApplication::translate("Settings::CBottleCheckStatusModel", "Waiting", 0, QApplication::UnicodeUTF8);
-        m_Empty = QApplication::translate("Settings::CBottleCheckStatusModel", "Empty", 0, QApplication::UnicodeUTF8);
-        m_Passed = QApplication::translate("Settings::CBottleCheckStatusModel", "Passed", 0, QApplication::UnicodeUTF8);
-        m_Blockage = QApplication::translate("Settings::CBottleCheckStatusModel", "Blockage", 0, QApplication::UnicodeUTF8);
-        m_Checking = QApplication::translate("Settings::CBottleCheckStatusModel", "Checking", 0, QApplication::UnicodeUTF8);
-        m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusModel", "Build pressure failed", 0, QApplication::UnicodeUTF8);
-        m_Failed = QApplication::translate("Settings::CBottleCheckStatusModel", "Failed", 0, QApplication::UnicodeUTF8);
-
+        m_Waiting = QApplication::translate("Settings::CBottleCheckStatusDlg", "Waiting", 0, QApplication::UnicodeUTF8);
+        m_Empty = QApplication::translate("Settings::CBottleCheckStatusDlg", "Empty", 0, QApplication::UnicodeUTF8);
+        m_Passed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Passed", 0, QApplication::UnicodeUTF8);
+        m_Blockage = QApplication::translate("Settings::CBottleCheckStatusDlg", "Blockage", 0, QApplication::UnicodeUTF8);
+        m_Checking = QApplication::translate("Settings::CBottleCheckStatusDlg", "Checking", 0, QApplication::UnicodeUTF8);
+        m_BuildPressureFailed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Build pressure failed", 0, QApplication::UnicodeUTF8);
+        m_Failed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Failed", 0, QApplication::UnicodeUTF8);
+        m_strWarning = QApplication::translate("Settings::CBottleCheckStatusDlg", "Warning", 0, QApplication::UnicodeUTF8);
+        m_strOK = QApplication::translate("Settings::CBottleCheckStatusDlg", "OK", 0, QApplication::UnicodeUTF8);
+        m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "The Bottle check failed! Please check the details in the Bottle check status list.", 0, QApplication::UnicodeUTF8);
 
         Inilialize();
     }
@@ -209,17 +215,35 @@ namespace Settings {
         if (DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType || DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
         {
             ui->btnClose->setEnabled(true);
-            if (DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)
+            if (DataManager::BOTTLECHECK_FAILED == bottleCheckStatusType)//failed
             {
                 UpdateStationNotProcess(stationID);
                 m_bNoneUpdated = true;
             }
-            else if ((DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType) && m_bNoneUpdated)
+            else if ((DataManager::BOTTLECHECK_ALLCOMPLETE == bottleCheckStatusType) && m_bNoneUpdated)//completed
             {
                 UpdateStationNotProcess(stationID);
                 m_bNoneUpdated = true;
                 return;
             }
+            else if (m_bShouldReportError)
+            {
+                MainMenu::CMessageDlg messageDlg(this);
+                messageDlg.SetIcon(QMessageBox::Warning);
+                messageDlg.SetTitle(m_strWarning);
+                messageDlg.SetText(m_strReportMsg);
+                messageDlg.SetButtonText(1, m_strOK);
+                messageDlg.HideButtons();
+                messageDlg.exec();
+                return;
+            }
+        }
+
+        if (DataManager::BOTTLECHECK_BUILDPRESSUREFAILED == bottleCheckStatusType ||
+            DataManager::BOTTLECHECK_EMPTY == bottleCheckStatusType ||
+            DataManager::BOTTLECHECK_BLOCKAGE == bottleCheckStatusType )
+        {
+            m_bShouldReportError = true;
         }
 
         m_BottleCheckStatusModel.UpdateStatusData(stationID, m_BottleCheckStatusMap[bottleCheckStatusType],
@@ -240,7 +264,5 @@ namespace Settings {
             m_BottleCheckStatusModel.UpdateStatusData(m_RowStationIDMap[r], m_BottleCheckStatusMap[DataManager::BOTTLECHECK_WILLNOTPROCESS], r);
         }
     }
-
-
 
 }

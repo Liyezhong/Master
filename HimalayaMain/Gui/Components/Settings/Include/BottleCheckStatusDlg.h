@@ -82,7 +82,10 @@ private:
     QMap<int, QString> m_RowStationIDMap;
     QMap<QString, QString> m_StationStatusMap;
     bool m_bNoneUpdated;
-
+    bool m_bShouldReportError;
+    QString m_strReportMsg;
+    QString m_strWarning;
+    QString m_strOK;
 };
 }
 #endif // BOTTLECHECKSTATUSDLG_H
