@@ -253,6 +253,7 @@ namespace Settings {
 
         QModelIndex index = m_BottleCheckStatusModel.index(m_StationIDRowMap[stationID], 0);
         mp_TableWidget->scrollTo(index);
+        emit ui->bottleCheckStatusTable->ScrollRangeChanged();
     }
 
     void CBottleCheckStatusDlg::UpdateStationNotProcess(const QString& stationID)
