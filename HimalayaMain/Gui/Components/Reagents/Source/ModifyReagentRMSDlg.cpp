@@ -69,6 +69,7 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     mp_TableWidget->SetVisibleRows(8);
     m_ReagentGroupModel.SetVisibleRowCount(8);
     mp_TableWidget->horizontalHeader()->show();
+    mp_TableWidget->setFocusPolicy(Qt::ClickFocus);
     ResizeHorizontalSection();
 
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
@@ -116,6 +117,8 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
      QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
      if (Id.isEmpty())
          return;
+
+     mp_TableWidget->selectRow(Index.row());
 
      if (m_ButtonType == Reagents::NEW_BTN_CLICKED)
         m_SelectionFlag = true;
