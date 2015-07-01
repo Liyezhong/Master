@@ -860,8 +860,13 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
                     mp_Ui->btnCopy->setEnabled(false);
                     mp_Ui->btnEdit->setEnabled(false);
                     mp_Ui->btnPrgName->setEnabled(true);
+                    mp_Ui->btnCancel->setText(m_strCancel);
                     ButtonPrgIconEnable(true);
                 }
+            }
+            else
+            {
+                mp_Ui->btnCancel->setText(m_strClose);
             }
         }
     }
