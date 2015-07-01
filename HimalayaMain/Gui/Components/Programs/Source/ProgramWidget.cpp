@@ -380,11 +380,17 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
         int SelectedIndex = Index.row();
         m_ProgramModel.SelectedRowIndex(SelectedIndex);
         mp_Program = mp_DataConnector->ProgramList->GetProgram(m_ProgramID);
+        if (mp_Program->GetID().at(0) == 'C')//Cleaning program
+        {
+            mp_Ui->btnCopy->setEnabled(false);
+        }
+        else
+        {
+            mp_Ui->btnCopy->setEnabled(true);
+        }
 
-
-        mp_Ui->btnEdit->setEnabled(true);
-        mp_Ui->btnNew->setEnabled(false);
-        mp_Ui->btnCopy->setEnabled(false);
+        mp_Ui->btnEdit->setEnabled(true);//view
+        mp_Ui->btnNew->setEnabled(true);
         mp_Ui->btnDelete->setEnabled(false);
         return ;
     }

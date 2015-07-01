@@ -473,6 +473,7 @@ void CReagentRMSWidget::OnCancelPressed()
 {
     mp_TableWidget->clearSelection();
     mp_TableWidgetCleaning->clearSelection();
+    mp_Ui->btnEdit->setEnabled(false);
     m_IsCleaningReagentSelected = false;
     ResetButtons();
 }
@@ -864,7 +865,7 @@ void CReagentRMSWidget::showEvent(QShowEvent *)
     {
         mp_TableWidgetCleaning->clearSelection();
     }
-
+    mp_Ui->btnEdit->setEnabled(false);
     m_ReagentCleaningModel.UpdateReagentList();
     m_IsCleaningReagentSelected = false;
     ResetButtons();
