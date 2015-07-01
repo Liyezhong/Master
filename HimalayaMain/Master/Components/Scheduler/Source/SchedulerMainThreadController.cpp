@@ -1847,7 +1847,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     if(pCmdSystemAction)
     {
         QString cmd = pCmdSystemAction->GetActionString();
-        //m_EventKey = pCmdSystemAction->GetEventKey();
 
         LogDebug(QString("Get action: %1").arg(cmd));
         cmd = cmd.toLower();
@@ -1954,7 +1953,8 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (cmd == "user_response_pause_alarm")
         {
-            m_EventKey = pCmdSystemAction->GetEventKey();
+            //warning action not need eventkey
+            //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_USER_RESPONSE_PAUSE_ALARM;
         }
         if (cmd == "rc_check_rtlock")
@@ -1984,12 +1984,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (cmd == "rs_checkremotealarmstatus")
         {
-            m_EventKey = pCmdSystemAction->GetEventKey();
+            //warning action not need eventkey
+            //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKREMOTEALARMSTATUS;
         }
         if (cmd == "rs_checklocalalarmstatus")
         {
-            m_EventKey = pCmdSystemAction->GetEventKey();
+            //warning action not need eventkey
+            //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RS_CHECKLOCALALARMSTATUS;
         }
         if (cmd == "rs_abort")
@@ -1999,12 +2001,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (cmd == "checkovencover")
         {
-            m_EventKey = pCmdSystemAction->GetEventKey();
+            //warning action not need eventkey
+            //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_CHECK_OVEN_COVER;
         }
         if (cmd == "open_oven_change_heating_paraffin")
         {
-            m_EventKey = pCmdSystemAction->GetEventKey();
+            //warning action not need eventkey
+            //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN;
         }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
@@ -4652,6 +4656,8 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
             return ;
     }
 
+#if 0
+    // remove the pressure out of range error
     if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
     {
         if(qAbs(strctHWMonitor.PressureAL) > 40.0 )
@@ -4662,6 +4668,7 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
                 return ;
         }
     }
+#endif
 
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE && 1 == strctHWMonitor.OvenLidStatus)
     {
