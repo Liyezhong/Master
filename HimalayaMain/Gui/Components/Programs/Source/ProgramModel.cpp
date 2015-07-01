@@ -214,7 +214,7 @@ Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
                     return Qt::ItemIsSelectable;
                 }
             }
-            return QAbstractItemModel::flags(Index) | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+            return QAbstractItemModel::flags(Index) | Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
         }
         else {         
             return Qt::ItemIsSelectable;

@@ -106,7 +106,7 @@
    <item row="4" column="3">
     <widget class="QLabel" name="labelDateIntern">
      <property name="text">
-      <string>24h</string>
+      <string notr="true">24h</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -116,7 +116,7 @@
    <item row="4" column="4">
     <widget class="QLabel" name="labelTime12h">
      <property name="text">
-      <string>12h</string>
+      <string notr="true">12h</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
