@@ -729,6 +729,7 @@ private:
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
+    bool   m_IsRunning;      ///< Flag to indicate if the function ExecuteCmd is running
 
 };
 

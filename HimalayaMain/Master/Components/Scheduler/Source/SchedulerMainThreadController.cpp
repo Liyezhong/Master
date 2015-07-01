@@ -3351,6 +3351,7 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
     if(!m_DeviceControlCmdQueue.isEmpty())
     {
         PtrCmd = m_DeviceControlCmdQueue.dequeue();
+        LogDebug(QString("CMD has been poped up,name is: %1 and current status is: %2").arg(PtrCmd->GetName()).arg(m_SchedulerMachine->GetCurrentState()));
         ret = true;
     }
     m_MutexDeviceControlCmdQueue.unlock();
@@ -3382,15 +3383,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
-    if ("Scheduler::ALDraining" == CmdPtr->GetName())
-    {
-        LogDebug("ALDraing has been added to m_DeviceControlCmdQueue");
-    }
-    if ("Scheduler::ALFilling" == CmdPtr->GetName())
-    {
-        LogDebug("ALFilling has been added to m_DeviceControlCmdQueue");
-    }
-    m_WaitCondition.wakeAll();
+    LogDebug(QString("CMD %1 has been pushed").arg(CmdPtr->GetName()));
     m_MutexDeviceControlCmdQueue.unlock();
 }
 

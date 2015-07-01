@@ -97,7 +97,7 @@ SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadCont
     mp_SchedulerThreadController(controller),
     mp_IDeviceProcessing(NULL)
 {
-
+    m_IsRunning = false;
 }
 template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
@@ -188,8 +188,12 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 template <class DP>
 void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
 {
+    if (m_IsRunning)
+    {
+       return;
+    }
     Scheduler::SchedulerCommandShPtr_t scmd;
-    if(newCmdComing(scmd))
+    while (newCmdComing(scmd))
     {
         this->ExecuteCmd(scmd);
         if (scmd->GetResponse())
@@ -197,6 +201,7 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
             mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
         }
     }
+    m_IsRunning = false;
 }
 
 template <class DP>
@@ -300,6 +305,7 @@ void SchedulerCommandProcessor<DP>::ThrowError4Slot(quint32 instanceID, quint16 
 template <class DP>
 void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd)
 {
+    m_IsRunning = true;
     QString cmdName = scmd->GetName();
 
         if ("Scheduler::StartConfigurationService" == cmdName)
