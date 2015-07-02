@@ -398,6 +398,9 @@ void CReagentRMSWidget::OnCleaningRMSDays()
 /****************************************************************************/
 void CReagentRMSWidget::OnEdit()
 {
+    if (NULL == mp_Reagent)
+        return;
+
     if (mp_ModifiyReagentRMSDlg)
     {
         mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strEditReagent);

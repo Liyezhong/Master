@@ -32,9 +32,9 @@ namespace Settings {
         m_Failed(tr("Failed")),
         m_bNoneUpdated(true),
         m_bShouldReportError(false),
-        m_strReportMsg("The Bottle check failed! Please check the details in the Bottle check status list."),
-        m_strWarning("Warning"),
-        m_strOK("OK")
+        m_strReportMsg(tr("The Bottle check failed! Please check the details in the Bottle check status list.")),
+        m_strWarning(tr("Warning")),
+        m_strOK(tr("OK"))
     {
         ui->setupUi(GetContentFrame());
         SetDialogTitle(tr("Bottle check"));
