@@ -22,6 +22,7 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/LanguageWidget.h"
 #include "ui_LanguageWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 namespace Settings {
@@ -208,8 +209,9 @@ void CLanguageWidget::ResetButtons()
 
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    bool bCanEdit = Core::CGlobalHelper::CheckIfCanEdit();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning) && bCanEdit) {
             //Edit Mode
             mp_Ui->btnApply->setEnabled(true);
     }
