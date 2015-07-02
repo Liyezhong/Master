@@ -426,6 +426,9 @@ void CReagentRMSWidget::OnEdit()
 /****************************************************************************/
 void CReagentRMSWidget::OnNew()
 {
+    if (NULL == mp_Reagent)
+        return;
+
     if (mp_ModifiyReagentRMSDlg)
     {
         mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strNewReagent);
@@ -452,6 +455,9 @@ void CReagentRMSWidget::OnNew()
 /****************************************************************************/
 void CReagentRMSWidget::OnDelete()
 {
+    if (NULL == mp_Reagent)
+        return;
+
     m_MessageDlg.SetTitle(m_strConfirmMsg);
     m_MessageDlg.SetIcon(QMessageBox::Warning);
     m_MessageDlg.SetButtonText(1, m_strYes);
