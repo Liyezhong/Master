@@ -398,7 +398,8 @@ void CProgramPanelWidget::SwitchToFavoritePanel()
 
 void CProgramPanelWidget::OnUpdatePanelProgram()
 {
-    EnableStartButton(false);
+    if (!m_IsResumeRun)
+        EnableStartButton(false);
 }
 
 }

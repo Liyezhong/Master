@@ -137,9 +137,12 @@ QString CGlobalHelper::GetSelectedProgramId()
 
 void CGlobalHelper::UnselectProgram()
 {
-    m_selectedProgramId = "";
-    SELECTED_PROGRAM_NAME = "";
-    m_StationList.clear();
+    if (!m_programIsPaused)
+    {
+        m_selectedProgramId = "";
+        SELECTED_PROGRAM_NAME = "";
+        m_StationList.clear();
+    }
 }
 
 bool CGlobalHelper::CheckIfCanEdit(const QString& id, int checkType)
