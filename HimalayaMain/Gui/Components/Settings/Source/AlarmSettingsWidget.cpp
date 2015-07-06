@@ -22,6 +22,7 @@
 #include "Global/Include/Exception.h"
 #include "Settings/Include/AlarmSettingsWidget.h"
 #include "ui_AlarmSettingsWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Settings {
 
@@ -266,8 +267,9 @@ void CAlarmSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    bool bCanEdit = Core::CGlobalHelper::CheckIfCanEdit();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning) && bCanEdit) {
         //Edit Mode
         mp_Ui->informationButton->setEnabled(true);
         mp_Ui->warningButton->setEnabled(true);

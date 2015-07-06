@@ -23,6 +23,7 @@
 #include "Global/Include/Utils.h"
 #include "Dashboard/Include/CommonString.h"
 #include "ui_NetworkSettingsWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Settings {
 //const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]*$"; //!< Reg expression for the validator
@@ -149,9 +150,10 @@ void CNetworkSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    bool bCanEdit = Core::CGlobalHelper::CheckIfCanEdit();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
+            (!m_ProcessRunning) && bCanEdit) {
         //Edit Mode
         mp_Ui->saveButton->setEnabled(true);
     }

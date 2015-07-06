@@ -373,10 +373,9 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
             return ;
     }
 
-    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+    m_ProgramID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
+    if (Core::CGlobalHelper::CheckIfCanEdit(m_ProgramID, 1) == false) {
         mp_Ui->btnEdit->setText(m_strView);
-
-        m_ProgramID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
         int SelectedIndex = Index.row();
         m_ProgramModel.SelectedRowIndex(SelectedIndex);
         mp_Program = mp_DataConnector->ProgramList->GetProgram(m_ProgramID);
