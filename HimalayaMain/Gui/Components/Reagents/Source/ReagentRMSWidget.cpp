@@ -426,9 +426,6 @@ void CReagentRMSWidget::OnEdit()
 /****************************************************************************/
 void CReagentRMSWidget::OnNew()
 {
-    if (NULL == mp_Reagent)
-        return;
-
     if (mp_ModifiyReagentRMSDlg)
     {
         mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strNewReagent);
