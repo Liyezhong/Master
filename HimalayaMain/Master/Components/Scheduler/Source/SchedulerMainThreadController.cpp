@@ -175,6 +175,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_IsTakeSpecimen = false;
     m_CountTheLogSenserData = 0;
     m_CheckTheHardwareStatus = 0;
+    m_IsFirstProcessingForDelay = true;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -800,6 +801,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     {
     case CTRL_CMD_START:
         m_IsProcessing = false;
+        m_IsFirstProcessingForDelay = true;
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
@@ -3432,7 +3434,11 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         if(0 == m_CurProgramStepIndex)
         {
             //the first reagent should need delay time
-            m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+            if(m_IsFirstProcessingForDelay)
+            {
+                m_IsFirstProcessingForDelay = false;
+                m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
+            }
         }
         else
         {
@@ -4224,10 +4230,14 @@ void SchedulerMainThreadController::Pause()
     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,this), false);
 
     //update the remaining time for the current step
-    if (PSSM_PROCESSING == m_CurrentStepState)// m_SchedulerMachine->GetPreviousState())
+    if (PSSM_PROCESSING == m_CurrentStepState)
     {
         m_IsProcessing = false;
         m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
+        if(0 == m_CurProgramStepIndex)
+        {
+            m_TimeStamps.ProposeSoakStartTime -= (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000;
+        }
     }
     LogDebug("SchedulerMainThreadController Paused");
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
