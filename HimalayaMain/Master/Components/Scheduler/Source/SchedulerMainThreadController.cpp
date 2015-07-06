@@ -4234,10 +4234,6 @@ void SchedulerMainThreadController::Pause()
     {
         m_IsProcessing = false;
         m_CurProgramStepInfo.durationInSeconds = m_CurProgramStepInfo.durationInSeconds - ((QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000);
-        if(0 == m_CurProgramStepIndex)
-        {
-            m_TimeStamps.ProposeSoakStartTime -= (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.CurStepSoakStartTime) / 1000;
-        }
     }
     LogDebug("SchedulerMainThreadController Paused");
     m_TimeStamps.PauseStartTime = QDateTime::currentMSecsSinceEpoch();
