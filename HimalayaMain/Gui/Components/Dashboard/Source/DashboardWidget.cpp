@@ -1261,6 +1261,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
     emit UpdateSelectedStationList(m_StationList);
+    m_ProgramStageStatus = Undefined;
 }
 
 bool CDashboardWidget::IsFixationInFirstStep()
