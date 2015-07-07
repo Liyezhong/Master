@@ -1809,6 +1809,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         if (0 == m_PressureCalibrationSeq)
         {
             mp_SchedulerThreadController->LogDebug("Begin pressure calibration for Bottle check");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(0.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_PressureCalibrationSeq++;
         }
