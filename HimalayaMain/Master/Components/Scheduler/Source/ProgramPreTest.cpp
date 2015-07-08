@@ -209,6 +209,8 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             {
                 mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_RETORTBOTTOM_TEMP_SUCCESS);
                 m_RTTempOffSeq = 0;
+                // Set pressure drift to zero and then enter pressure calibartion
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(0.0);
                 m_CurrentState = PRESSURE_CALIBRATION;
             }
             else
@@ -222,7 +224,6 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
         if (0 == m_PressureCalibrationSeq)
         {
             mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(0.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_PressureCalibrationSeq++;
         }

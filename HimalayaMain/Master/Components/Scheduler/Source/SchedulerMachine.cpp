@@ -450,6 +450,8 @@ void CSchedulerStateMachine::OnEnterBottleCheckState()
     m_PressureCalibrationCounter = 0;
     m_PressureDriftOffset = 0.0;
     m_NonRVErrorOccured = false;
+    //Set pressure dirft to zero before pressure calibration
+    mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(0.0);
     m_BottleCheckStationIter = mp_SchedulerThreadController->GetDashboardStationList().begin();
     mp_SchedulerThreadController->SendBottleCheckReply("", DataManager::BOTTLECHECK_STARTED);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_BOTTLE_CHECK_START);
@@ -1809,7 +1811,6 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
         if (0 == m_PressureCalibrationSeq)
         {
             mp_SchedulerThreadController->LogDebug("Begin pressure calibration for Bottle check");
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(0.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
             m_PressureCalibrationSeq++;
         }
