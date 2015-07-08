@@ -104,7 +104,7 @@ int CFillingNDrainingTest::Run(void)
     CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(mp_Parent);
     p_HeatingDlg->SetTitle(FILLINGNDRAINING_TITLE);
 
-    bool HeatingRet = p_HeatingDlg->StartHeating(!ReagentGroup);
+    bool HeatingRet = p_HeatingDlg->StartHeating(ReagentGroup);
 
     if (p_HeatingDlg->result() == 0) {
         delete p_HeatingDlg;
