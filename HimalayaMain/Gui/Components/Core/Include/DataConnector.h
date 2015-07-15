@@ -305,7 +305,7 @@ public slots:
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
-                           int delayTime = 0, int runDuration = 0);
+                           int delayTime = 0, int runDuration = 0, const QString& reagentExpiredFlag = "");
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendKeepCassetteCount

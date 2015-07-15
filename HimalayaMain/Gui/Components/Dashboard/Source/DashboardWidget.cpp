@@ -881,7 +881,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     return (TimeActual + TimeDelta);//seconds
 }
 
-bool CDashboardWidget::IsOKPreConditionsToRunProgram()
+bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag)
 {
 
     if ("" == m_SelectedProgramId)
@@ -954,7 +954,10 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
 
         if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
+        {
+            reagentExpiredFlag = " " + m_strReagentExpiredLog + ": " + p_Reagent->GetReagentName()+ "," + stationID + ".";
             break;
+        }
     }
 
     if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED ) {
@@ -1129,12 +1132,13 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         return;
     }
 
-    if (IsOKPreConditionsToRunProgram())
+    QString reagentExpiredFlag;
+    if (IsOKPreConditionsToRunProgram(reagentExpiredFlag))
     {
         int EndTimeDelta = m_AsapEndDateTime.secsTo(m_EndDateTime);
         int delayTime = EndTimeDelta + m_TimeDelta;
         int runDuration = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_EndDateTime);
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, delayTime, runDuration);
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, delayTime, runDuration, reagentExpiredFlag);
         ui->programPanelWidget->ChangeStartButtonToStopState();
     }
     else
@@ -1330,6 +1334,7 @@ void CDashboardWidget::RetranslateUI()
     char* ch =ba.data();
     m_strDiffTemp = QApplication::translate("Dashboard::CDashboardWidget", ch,
                                             0, QApplication::UnicodeUTF8);
+    m_strReagentExpiredLog  = QApplication::translate("Dashboard::CDashboardWidget", "Supervisor acknowledged by pressing button \"Yes\" to start the Program with Expired Reagent", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)

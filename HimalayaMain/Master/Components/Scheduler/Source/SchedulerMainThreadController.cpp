@@ -139,6 +139,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_Is15MinPause(false)
         ,m_InternalErrorRecv(false)
         ,m_bWaitToPause(false)
+        ,m_ReagentExpiredFlag("")
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -829,7 +830,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,QStringList()<<ProgramName);
+            RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, QStringList() << ProgramName << "" + m_ReagentExpiredFlag);
 
             //send command to main controller to tell the left time
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
@@ -1812,6 +1813,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             m_NewProgramID = pCmdProgramAction->GetProgramID();
             m_delayTime = pCmdProgramAction->DelayTime();
+            m_ReagentExpiredFlag = pCmdProgramAction->GetReagentExpiredFlag();
             LogDebug(QString("Get the delay time: %1 seconds.").arg(m_delayTime));
             return CTRL_CMD_START;
         }
@@ -2763,7 +2765,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 {
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration())));
+                                                                                        Cmd.DelayTime(), Cmd.ProgramRunDuration(), Cmd.GetReagentExpiredFlag())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
@@ -2780,7 +2782,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         {
             QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
             m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
-            RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,QStringList()<<ProgramName
+            RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM, QStringList()<<ProgramName
                        <<EndDateTime.toString()); //log
         }
         else

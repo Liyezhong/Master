@@ -389,7 +389,7 @@ typedef enum
         qint8   m_CountTheLogSenserData;                      ///< control the sensor data log
         quint8  m_CheckTheHardwareStatus;                     ///< Check the hardware status
         bool    m_IsFirstProcessingForDelay;                  ///< is first enter processing for delay time
-
+        QString m_ReagentExpiredFlag;                         ///< Reagent expired flag
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.

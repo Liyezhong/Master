@@ -102,7 +102,11 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentAdd(10000, ReagentDataStream)));
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ADD_REAGENT,
-                                                   Global::tTranslatableStringList() << Reagent.GetReagentName());
+                                                   Global::tTranslatableStringList() << Reagent.GetReagentName()
+                                                   <<QString::number(Reagent.GetMaxCassettes())
+                                                   <<QString::number(Reagent.GetMaxCycles())
+                                                   <<QString::number(Reagent.GetMaxDays())
+                                                   <<Reagent.GetGroupID());
         qDebug()<<"\n\n\n Adding New Reagent Success";
         /*lint -e429 */
     }
@@ -184,7 +188,11 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentUpdate(10000, ReagentDataStream)));
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_UPDATE_REAGENT,
-                                                   Global::tTranslatableStringList() << Reagent.GetReagentName());
+                                                   Global::tTranslatableStringList() << Reagent.GetReagentName()
+                                                   <<QString::number(Reagent.GetMaxCassettes())
+                                                   <<QString::number(Reagent.GetMaxCycles())
+                                                   <<QString::number(Reagent.GetMaxDays())
+                                                   <<Reagent.GetGroupID());
         qDebug()<<"\n\n Update Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();

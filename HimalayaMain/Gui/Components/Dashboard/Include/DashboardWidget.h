@@ -150,7 +150,7 @@ private:
     /****************************************************************************/
     void RetranslateUI();
     void SetCassetteNumber();
-    bool IsOKPreConditionsToRunProgram();
+    bool IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag);
     Ui::CDashboardWidget *ui;       ///<  Definition/Declaration of variable ui
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -215,6 +215,7 @@ private:
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;       ///<  Definition/Declaration of variable mp_wdgtDateTime
     bool m_IsInAppendCasseteStatus;
     bool m_bWaitRotaryValveHeatingPrompt;                       //!< waiting for rotary valve heating to be completed message dialog
+    QString m_strReagentExpiredLog;
 
 
 public slots:

@@ -54,11 +54,12 @@ public:
      *  \param actionType =  DataManager::ProgramActionType_t type parameter
      *  \param delayTime =  delay time
      *  \param runDuration = the time duration from "start" to end datetime
+     *  \param reagentExpiredFlag = reagentExpiredFlag for log file
      *  \return from CmdProgramAction
      */
     /****************************************************************************/
     CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
-                     int delayTime, int runDuration);
+                     int delayTime, int runDuration, const QString& reagentExpiredFlag);
 	/**
 	* \brief destructor
 	*/
@@ -100,6 +101,14 @@ public:
      */
     /****************************************************************************/
     inline int ProgramRunDuration()const {return m_ProgramRunDuration;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetReagentExpiredFlag
+     *
+     *  \return from GetReagentExpiredFlag
+     */
+    /****************************************************************************/
+    inline const QString& GetReagentExpiredFlag()const {return m_ReagentExpiredFlag;}
 private:
 	/**
 	* \brief constructor
@@ -115,6 +124,7 @@ private:
     DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
     int m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
     int m_ProgramRunDuration;   ///<  Definition/Declaration of variable m_DelayTime
+    QString      m_ReagentExpiredFlag;
 }; // end class CmdProgramAction
 
 /****************************************************************************/
@@ -135,6 +145,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAction &C
     Stream << (int)Cmd.m_ActionType;
     Stream << Cmd.m_DelayTime;
     Stream << Cmd.m_ProgramRunDuration;
+    Stream << Cmd.m_ReagentExpiredFlag;
     return Stream;
 }
 
@@ -158,6 +169,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAction &Cmd)
     Cmd.m_ActionType = (DataManager::ProgramActionType_t)temp;
     Stream >> Cmd.m_DelayTime;
     Stream >> Cmd.m_ProgramRunDuration;
+    Stream >> Cmd.m_ReagentExpiredFlag;
     return Stream;
 }
 } // end namespace MsgClasses
