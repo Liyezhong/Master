@@ -353,7 +353,7 @@ void TestDashboardStationList::utTestCmdProgramAcknowledge()
 
 void TestDashboardStationList::utTestCmdProgramAction()
 {
-    MsgClasses::CmdProgramAction *p_CmdProgramAction = new MsgClasses::CmdProgramAction(0, "L02", PROGRAM_START, 300, 6000);
+    MsgClasses::CmdProgramAction *p_CmdProgramAction = new MsgClasses::CmdProgramAction(0, "L02", PROGRAM_START, 300, 6000, "");
     p_CmdProgramAction->NAME = "CmdProgramAction";
 
     QCOMPARE(p_CmdProgramAction->GetName(), QString("CmdProgramAction"));
