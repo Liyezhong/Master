@@ -370,8 +370,6 @@ typedef enum
         ProgramEndTime_t m_EndTimeAndStepTime;                ///< the end tiem and step time buffer
         QVector<QString> m_UnknownErrorLogVector;             ///< the unknow error log vector
         bool    m_InternalErrorRecv;                          ///< Internal error was received
-        bool    m_IsDrainDelay;                               ///< wether drain delay
-        qint64  m_DrainDelayBeginTime;                        ///< drain delay begin time
         CleaningDry_t   m_CleaningDry;                        ///< Structure for cleaning dry
         bool    m_CheckOvenCover;                             ///< check the oven cover
         bool    m_bWaitToPause;                               ///< Wait to be Paused

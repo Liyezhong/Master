@@ -161,8 +161,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_LocalAlarmPreviousStatus = -1;
     m_RemoteAlarmPreviousStatus = -1;
     m_PssmStepFinSeq = 0;
-    m_IsDrainDelay = false;
-    m_DrainDelayBeginTime = 0;
     m_CheckOvenCover = true;
     m_TransitionPeriod = false;
     m_PowerFailureStep = POWERFAILURE_INIT;
@@ -1337,51 +1335,23 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             LogDebug("ALDraining has been got in Scheduler");
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                if(m_EndTimeAndStepTime.GapTime > 0)
+                RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
+                if (m_bWaitToPause)
                 {
-                    m_IsDrainDelay = true;
-                    m_DrainDelayBeginTime = QDateTime::currentMSecsSinceEpoch();
+                     //dismiss the prompt of waiting for pause
+                    SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
+                    m_bWaitToPause = false;
+                    LogDebug(QString("Program Step Beginning Pause"));
+                    m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                    return;
                 }
-                else
-                {
-                    RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
-
-                    if (m_bWaitToPause)
-                    {
-                         //dismiss the prompt of waiting for pause
-                        SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                        m_bWaitToPause = false;
-                        LogDebug(QString("Program Step Beginning Pause"));
-                        m_SchedulerMachine->NotifyPause(SM_UNDEF);
-                        return;
-                    }
-                    m_SchedulerMachine->NotifyDrainFinished();
-                }
+                m_SchedulerMachine->NotifyDrainFinished();
             }
             else
             {
                 LogDebug(QString("Program Step Draining Build Pressure timeout"));
                 SendOutErrMsg(retCode);
             }
-        }
-        if(m_IsDrainDelay)
-        {
-             if(QDateTime::currentMSecsSinceEpoch() - m_DrainDelayBeginTime > m_EndTimeAndStepTime.GapTime)
-             {
-                LogDebug(QString("Program Step Draining succeed!"));
-                if (m_bWaitToPause)
-                {
-                      //dismiss the prompt of waiting for pause
-                     SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                     m_bWaitToPause = false;
-                     LogDebug(QString("Program Step Beginning Pause"));
-                     m_SchedulerMachine->NotifyPause(SM_UNDEF);
-                     m_IsDrainDelay = false;
-                     return;
-                }
-                m_SchedulerMachine->NotifyDrainFinished();
-                m_IsDrainDelay = false;
-             }
         }
     }
     else if(PSSM_RV_POS_CHANGE == stepState)
@@ -4137,13 +4107,14 @@ void SchedulerMainThreadController::Drain()
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
 
+    quint32 gapTime = m_EndTimeAndStepTime.GapTime;
     if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
     {
-        cmd->SetDelayTime(25000);
+        cmd->SetDelayTime(25000+gapTime);
     }
     else
     {
-        cmd->SetDelayTime(5000);
+        cmd->SetDelayTime(5000+gapTime);
     }
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
