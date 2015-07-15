@@ -831,6 +831,7 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
+            mp_Ui->btnCancel->setText(m_strCancel);
         }
         else {
             if(!m_Program.IsLeicaProgram())
