@@ -100,7 +100,7 @@ void CSpeakerTest::PlaySound(QString& Volume)
 int CSpeakerTest::ShowConfirmDlg(int StepNum)
 {
     int Ret(0);
-    QString Title = "Speaker test";
+    QString Title = "Speaker Test";
     QString Text;
     if (StepNum == 1) {
         Text = "Do you hear the test sound?";
@@ -117,14 +117,14 @@ int CSpeakerTest::ShowConfirmDlg(int StepNum)
 
 void CSpeakerTest::ShowFinishDlg(int RetNum)
 {
-    QString Title = "Speaker test";
+    QString Title = "Speaker Test";
     QString Text;
     ErrorCode_t Ret = RETURN_ERR_FAIL;
     if (RetNum == 1) {
-        Text = "Speaker test failed.Please change the E-box.";
+        Text = "Speaker Test failed.Please change the E-box.";
     }
     else if (RetNum == 2) {
-        Text = "Speaker test successful.";
+        Text = "Speaker Test successful.";
         Ret = RETURN_OK;
     }
     mp_MessageDlg->ShowMessage(Title, Text, Ret);
