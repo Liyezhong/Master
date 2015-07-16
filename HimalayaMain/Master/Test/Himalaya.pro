@@ -43,7 +43,10 @@ SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaData
 SUBDIRS += $${PLATFORM}/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Test/TestHimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Test/TestHimalayaDataManager.pro
+
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Test/TestHimalayaMasterThread.pro
+SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/SWUpdateTest/Test/TestSWUpdate.pro
+
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Test/TestDataManager.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentGroupColor/Test/TestReagentGroupColor.pro
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Containers/ReagentGroups/Test/TestDataReagentGroupList.pro
