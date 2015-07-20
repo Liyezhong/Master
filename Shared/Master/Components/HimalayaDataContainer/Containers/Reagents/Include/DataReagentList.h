@@ -70,7 +70,7 @@ private:
 
     void SetDefaultAttributes();
     bool DeleteAllReagents();    
-    bool CheckForUniquePropeties(const CReagent* p_Reagent);
+    bool CheckForUniquePropeties(const CReagent* p_Reagent, bool excludeSeft = false);
 
     /******************** INLINE FuNCTIONS **************************************/
     /****************************************************************************/

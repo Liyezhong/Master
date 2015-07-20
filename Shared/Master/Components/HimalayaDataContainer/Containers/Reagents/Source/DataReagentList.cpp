@@ -817,6 +817,12 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
         SetErrorList(&m_ErrorHash);
         return false;
     }
+
+    // check for the unique Reagent Name existence
+    if (!CheckForUniquePropeties(p_Reagent, true)) {
+        return false;
+    }
+
     QString ID = p_Reagent->GetReagentID();
     CReagent const *p_UpdatedReagent = GetReagent(ID);
     if (!p_UpdatedReagent)
@@ -991,36 +997,61 @@ bool CDataReagentList::DeleteAllReagents()
  *  \brief Verifies the Data with respect to Verifiers
  *
  *  \iparam p_Reagent = the reagent to be checked
+ *  \iparam excludeSeft excludeSeft
  *
  *  \return On Successful (True) or not (False)
  */
 /****************************************************************************/
-bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent)
+bool CDataReagentList::CheckForUniquePropeties(const CReagent* p_Reagent, bool excludeSeft)
 {
     bool Result = true;
     QString ID = const_cast<CReagent*>(p_Reagent)->GetReagentID();
-    if (m_ReagentList.contains(ID)) {
-        // there is already a reagent with the given ReagentID
-        // => use UpdateReagent instead
-        //    or call DeleteReagent before AddReagent
-        m_ErrorHash.insert(EVENT_DM_REAGENT_ID_NOT_UNIQUE, Global::tTranslatableStringList() << ID);
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_NOT_UNIQUE,
-                                                   Global::tTranslatableStringList() << ID, true);
-        SetErrorList(&m_ErrorHash);
-        Result = false;;
+    CReagent* oldReagent = m_ReagentList.value(ID);
+    bool isHave = false;
+    if (excludeSeft)
+    {
+        ListOfReagents_t tempReagentList = m_ReagentList;
+        tempReagentList.remove(ID);
+        isHave = tempReagentList.contains(ID);
+    }
+    else
+    {
+        isHave = m_ReagentList.contains(ID);
     }
 
-    // check for the Long name existence in the Program list
-    QString ReagentName = p_Reagent->GetReagentName();
-    if (m_ReagentListNames.contains(p_Reagent->GetReagentName(), Qt::CaseInsensitive)) {
-        qDebug() << "CDataReagentList::CheckForUniqueName() - Reagent Name already exists :";
-        m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << "");
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_NOT_UNIQUE,
-                                                   Global::tTranslatableStringList() << ReagentName, true);
+     if (isHave) {
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_NOT_UNIQUE,
+                                                   Global::tTranslatableStringList() << p_Reagent->GetReagentID()
+                                                   << p_Reagent->GetReagentName(),
+                                                   true,
+                                                   Global::GUI_MSG_BOX);
+        (void)m_ErrorHash.insert(EVENT_DM_REAGENT_ID_NOT_UNIQUE,
+                           Global::tTranslatableStringList() << p_Reagent->GetReagentID()
+                           << p_Reagent->GetReagentName());
         SetErrorList(&m_ErrorHash);
         Result = false;
     }
 
+    // check for the Short name existence in the reagent list
+    if (excludeSeft)
+    {
+        QStringList nameList = m_ReagentListNames;
+        (void)nameList.removeOne(oldReagent->GetReagentName());
+        isHave = nameList.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
+    }
+    else
+    {
+        isHave = m_ReagentListNames.contains(p_Reagent->GetReagentName().simplified(), Qt::CaseInsensitive);
+    }
+    if (isHave) {
+        (void)m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << p_Reagent->GetReagentName().simplified());
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_NOT_UNIQUE,
+                                                   Global::tTranslatableStringList() << p_Reagent->GetReagentName().simplified(),
+                                                   true,
+                                                   Global::GUI_MSG_BOX);
+        SetErrorList(&m_ErrorHash);
+         Result = false;
+    }
     return Result;
 }
 
