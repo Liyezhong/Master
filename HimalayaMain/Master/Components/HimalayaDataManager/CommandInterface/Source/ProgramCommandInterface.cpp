@@ -76,7 +76,10 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
     bool Result = true;
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->ResetLastErrors();
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->AddProgram(&Program);
-
+    if (Result)
+    {
+        Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
+    }
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetErrorList();
@@ -108,7 +111,6 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
          }
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_ADD_NEW_PROGRAM,Global::tTranslatableStringList()<<Program.GetName());
     }
-    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
 
 /****************************************************************************/
@@ -180,8 +182,10 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     bool Result = true;
     (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList)->ResetLastErrors();
     Result = (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList)->UpdateProgram(&Program);
-    // Update program
-    //Result = TempProgramList.UpdateProgram(&Program);
+    if (Result)
+    {
+        Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
+    }
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetErrorList();
@@ -214,7 +218,6 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
             Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_UPDATE_PROGRAM,Global::tTranslatableStringList()<<Program.GetName());
         }
     }
-    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
 
 }// End of namespace DataManager
