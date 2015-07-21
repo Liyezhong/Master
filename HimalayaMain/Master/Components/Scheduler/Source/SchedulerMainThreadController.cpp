@@ -150,7 +150,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_ProcessingPV = 3; // 0 for Pressure and 1 for Vacuum, 3 for avoiding message to pop up too many times
     m_completionNotifierSent = false;
     m_IsReleasePressureOfSoakFinish = false;
-    m_ReleasePressureSucessOfSoakFinish = false;
     m_IsCleaningProgram = false;
     m_CleanAckSentGui = false;
     m_CurrentStepState = PSSM_INIT;
@@ -1179,71 +1178,62 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
                     m_IsReleasePressureOfSoakFinish = true;
-                    m_ReleasePressureSucessOfSoakFinish = false;
                 }
                 else if("Scheduler::ALReleasePressure" == cmdName)
                 {
                     if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
-                        m_ReleasePressureSucessOfSoakFinish = true;
+                        //if it is Cleaning program, need not notify user
+                        if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+                        {
+                            if("RG6" == m_CurProgramStepInfo.reagentGroup)
+                            {
+                                if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
+                                {
+                                    //this is last step, need to notice user
+                                    if(!m_completionNotifierSent)
+                                    {
+                                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_WILL_COMPLETE));
+                                        Q_ASSERT(commandPtrFinish);
+                                        Global::tRefType fRef = GetNewCommandRef();
+                                        SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                        m_completionNotifierSent = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //this is last step, need to notice user
+                                if(!m_completionNotifierSent)
+                                {
+                                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                    Q_ASSERT(commandPtrFinish);
+                                    Global::tRefType fRef = GetNewCommandRef();
+                                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                    m_completionNotifierSent = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            LogDebug(QString("Program Processing(Soak) Process finished"));
+                            m_SchedulerMachine->NotifyProcessingFinished();
+                            m_TimeStamps.CurStepSoakStartTime = 0;
+                            m_IsProcessing = false;
+                        }
                     }
                     else
                     {
                         SendOutErrMsg(retCode);
                     }
                 }
-                //if it is Cleaning program, need not notify user
-                if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) && m_ReleasePressureSucessOfSoakFinish)
+                if(CTRL_CMD_DRAIN == ctrlCmd && m_completionNotifierSent)
                 {
-                    if("RG6" == m_CurProgramStepInfo.reagentGroup)
-                    {
-                        if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
-                        {
-                            //this is last step, need to notice user
-                            if(!m_completionNotifierSent)
-                            {
-                                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_WILL_COMPLETE));
-                                Q_ASSERT(commandPtrFinish);
-                                Global::tRefType fRef = GetNewCommandRef();
-                                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                                m_completionNotifierSent = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //this is last step, need to notice user
-                        if(!m_completionNotifierSent)
-                        {
-                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                            Q_ASSERT(commandPtrFinish);
-                            Global::tRefType fRef = GetNewCommandRef();
-                            SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                            m_completionNotifierSent = true;
-                        }
-                    }
-                    if(CTRL_CMD_DRAIN == ctrlCmd)
-                    {
-                        LogDebug(QString("last Program Processing(Soak) Process finished"));
-                        m_SchedulerMachine->NotifyProcessingFinished();
-                        m_TimeStamps.CurStepSoakStartTime = 0;
-                        m_completionNotifierSent = false;
-                        m_IsReleasePressureOfSoakFinish = false;
-                        m_ReleasePressureSucessOfSoakFinish = false;
-                        m_IsProcessing = false;
-                    }
-                }
-                else
-                {
-                    if(m_ReleasePressureSucessOfSoakFinish)
-                    {
-                        LogDebug(QString("Program Processing(Soak) Process finished"));
-                        m_SchedulerMachine->NotifyProcessingFinished();
-                        m_TimeStamps.CurStepSoakStartTime = 0;
-                        m_IsReleasePressureOfSoakFinish = false;
-                        m_ReleasePressureSucessOfSoakFinish = false;
-                        m_IsProcessing = false;
-                    }
+                    LogDebug(QString("last Program Processing(Soak) Process finished"));
+                    m_SchedulerMachine->NotifyProcessingFinished();
+                    m_TimeStamps.CurStepSoakStartTime = 0;
+                    m_completionNotifierSent = false;
+                    m_IsProcessing = false;
                 }
             }
             else // Begin to Soak
@@ -3393,6 +3383,8 @@ void SchedulerMainThreadController::ReleasePressure()
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
+
+    m_IsReleasePressureOfSoakFinish = false;
     // We only release pressure if neither P or V exists.
     if(!m_IsProcessing)
     {
@@ -3420,7 +3412,6 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
         LogDebug(QString("The duration time:%1 seconds.").arg(m_CurProgramStepInfo.durationInSeconds));
         m_lastPVTime = 0;
         m_completionNotifierSent = false;
-        m_IsReleasePressureOfSoakFinish = false;
 
         if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
         {

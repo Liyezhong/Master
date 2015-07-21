@@ -353,7 +353,6 @@ typedef enum
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
         bool m_hasParaffin;                                   ///< the program has paraffin
         bool m_IsReleasePressureOfSoakFinish;                 ///< wether release pressure when soak finish
-        bool m_ReleasePressureSucessOfSoakFinish;             ///< release pressure sucess
         bool m_Is5MinPause;                                   ///< Instrument alarm when pausing exceed 5 minutes
         bool m_Is10MinPause;                                  ///< Local alarm when pausing exceed 10 minutes
         bool m_Is15MinPause;                                  ///< Remote alarm when pausing exceed 15 minutes
