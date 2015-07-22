@@ -296,8 +296,9 @@ bool CDrainReagentTest::SelectPosition(int StepNum, bool& TubeFlag, int& Positio
                 "Read the rotary valve position and enter it by using the scroll wheel.<br>"
                 "Then press OK to continue.";
 
-        p_SelectDlg->SetRadioButtonVisible(false);
-        p_SelectDlg->HideAbort();
+        QString Button1 = "Sealing";
+        QString Button2 = "Tube";
+        p_SelectDlg->SetRadioButtonText(Button1, Button2);
     }
 
     p_SelectDlg->SetLableText(Text);
