@@ -2593,11 +2593,11 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
                     }
                     if(50 <= userInputMeltingPoint && userInputMeltingPoint <= 64)
                     {
-                        m_EndTimeAndStepTime.Scenario260CostTime = 7 * 60;
+                        m_EndTimeAndStepTime.Scenario260CostTime = 5 * 60;
                     }
                     else if(65 <= userInputMeltingPoint && userInputMeltingPoint <= 70)
                     {
-                        m_EndTimeAndStepTime.Scenario260CostTime = 10 * 60;
+                        m_EndTimeAndStepTime.Scenario260CostTime = 8 * 60;
                     }
                     leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
                     m_EndTimeAndStepTime.ParaffinStepsCostTime += m_EndTimeAndStepTime.Scenario260CostTime;
