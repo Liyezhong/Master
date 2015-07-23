@@ -1172,7 +1172,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
             qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-            if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))//Will finish Soaking
+            if ("RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+            {
+                period += m_EndTimeAndStepTime.BufferTime;
+            }
+            if((now - m_TimeStamps.CurStepSoakStartTime ) > period)//Will finish Soaking
             {
                 if(!m_IsReleasePressureOfSoakFinish)
                 {
@@ -1186,32 +1190,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         //if it is Cleaning program, need not notify user
                         if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
                         {
-                            if("RG6" == m_CurProgramStepInfo.reagentGroup)
+                            //this is last step, need to notice user
+                            if(!m_completionNotifierSent)
                             {
-                                if(now - m_TimeStamps.CurStepSoakStartTime > period + m_EndTimeAndStepTime.BufferTime)
-                                {
-                                    //this is last step, need to notice user
-                                    if(!m_completionNotifierSent)
-                                    {
-                                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_WILL_COMPLETE));
-                                        Q_ASSERT(commandPtrFinish);
-                                        Global::tRefType fRef = GetNewCommandRef();
-                                        SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                                        m_completionNotifierSent = true;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //this is last step, need to notice user
-                                if(!m_completionNotifierSent)
-                                {
-                                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                                    Q_ASSERT(commandPtrFinish);
-                                    Global::tRefType fRef = GetNewCommandRef();
-                                    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                                    m_completionNotifierSent = true;
-                                }
+                                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                                Q_ASSERT(commandPtrFinish);
+                                Global::tRefType fRef = GetNewCommandRef();
+                                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                                m_completionNotifierSent = true;
                             }
                         }
                         else
