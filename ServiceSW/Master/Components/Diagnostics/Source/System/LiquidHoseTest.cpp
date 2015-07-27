@@ -68,6 +68,7 @@ int CLiquidHoseTest::Run(void)
     if (Option == 0) { //Particular single bottle test
         delete p_SelectDlg;
         p_SelectDlg = NULL;
+
         p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
         p_SelectDlg->SetRadioButtonVisible(false);
         p_SelectDlg->SetTitle(m_MessageTitle);
@@ -75,6 +76,7 @@ int CLiquidHoseTest::Run(void)
 
         if (p_SelectDlg->exec() == 0) {
             delete p_SelectDlg;
+            delete p_TestDlg;
             return RETURN_ABORT;
         }
 
