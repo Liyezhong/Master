@@ -2,7 +2,7 @@ Version: 0.1
 
 FileName: ServiceHelpText
 
-System: HISTOCORE PRIMARIS
+System: HISTOCORE PEARL
 
 513010300;ERR_Retort_Levelsensor_Heating_Overtime;Retort: Level sensor did not reach target temperature in time. Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor.
 513010312;ERR_Retort_Levelsensor_Heating_Overtime_NoTissue;Retort: Level sensor did not reach target temperature in time. This occured during self test at process start or during cleaning steps. Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor.
