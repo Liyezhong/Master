@@ -1144,6 +1144,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     else
     {
         ui->programPanelWidget->EnableStartButton(true);
+        ui->programPanelWidget->ResetInFavProgramButtonClicked();
     }
 }
 
@@ -1173,6 +1174,7 @@ void CDashboardWidget::OnRecoveryFromPowerFailure(const MsgClasses::CmdRecoveryF
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
+    ui->programPanelWidget->ResetInFavProgramButtonClicked();
     MainMenu::CMessageDlg messageDlg(this);
     const QList<QString>& stationList = cmd.StationList();
     if (stationList.count() == 0)

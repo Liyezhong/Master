@@ -305,6 +305,12 @@ public:
       */
      /****************************************************************************/
      void OnWaitRotaryValveHeatingPrompt();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of ResetInFavProgramButtonClicked
+      */
+     /****************************************************************************/
+     void ResetInFavProgramButtonClicked();
 private slots:
      /****************************************************************************/
      /*!
@@ -358,6 +364,13 @@ private slots:
      */
     /****************************************************************************/
     void UpdateProgramTimerStatus(bool enable);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnPrepareSelectedProgramChecking
+     */
+    /****************************************************************************/
+    void OnPrepareSelectedProgramChecking(const QString&);
+
 private:
     /****************************************************************************/
     /*!

@@ -37,6 +37,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *p) :
     CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(), ui->favoriteProgramsPanel, AddItemsToFavoritePanel());
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
+    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, OnPrepareSelectedProgramChecking(const QString&));
 
     CONNECTSIGNALSLOT(this, OnSelectEndDateTime(const QDateTime&),
                       ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
@@ -203,6 +204,8 @@ bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 {
+    ui->favoriteProgramsPanel->SetInFavProgramButtonClicked();
+
     if ( whichBtn == Dashboard::firstButton ) {
         ui->startButton->setEnabled(false);//protect to click twice in a short time
 
@@ -394,12 +397,23 @@ void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_
 void CProgramPanelWidget::SwitchToFavoritePanel()
 {
     ui->stackedWidget->setCurrentIndex(0);
+    ui->favoriteProgramsPanel->ResetInFavProgramButtonClicked();
 }
 
 void CProgramPanelWidget::OnUpdatePanelProgram()
 {
     if (!m_IsResumeRun)
         EnableStartButton(false);
+}
+
+void CProgramPanelWidget::OnPrepareSelectedProgramChecking(const QString&)
+{
+    ui->startButton->setEnabled(false);
+}
+
+void CProgramPanelWidget::ResetInFavProgramButtonClicked()
+{
+    ui->favoriteProgramsPanel->ResetInFavProgramButtonClicked();
 }
 
 }

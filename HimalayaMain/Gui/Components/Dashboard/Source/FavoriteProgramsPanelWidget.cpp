@@ -21,15 +21,16 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *p) :
     m_LastCanBeSelectedButtonId(-1),
     m_ProcessRunning(false),
     m_LastSelectedButtonId(-1),
-    m_OnlyAddCleaningProgram(false)
+    m_OnlyAddCleaningProgram(false),
+    m_IsInFavProgramButtonClicked(false)
 {
     ui->setupUi(this);
     SetButtonGroup();
-    CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnEndTimeButtonClicked());
-    CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnEndTimeButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnFavProgramButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnFavProgramButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnFavProgramButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnFavProgramButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnFavProgramButtonClicked());
     AddItemsToFavoritePanel(false);
 }
 
@@ -200,9 +201,12 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     emit UpdateFavProgram();
 }
 
-void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
+void CFavoriteProgramsPanelWidget::OnFavProgramButtonClicked()
 {
-  
+    if (m_IsInFavProgramButtonClicked)
+        return;
+    m_IsInFavProgramButtonClicked = true;
+
 	m_LastSelectedButtonId = m_ButtonGroup.checkedId();
 	m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
 	SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
@@ -227,7 +231,7 @@ void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
             m_ButtonGroup.setExclusive(false);
             m_ButtonGroup.button(m_LastCanBeSelectedButtonId)->setChecked(true);
             m_ButtonGroup.setExclusive(true);
-            OnEndTimeButtonClicked();
+            OnFavProgramButtonClicked();
         }
         else {
             m_LastSelectedButtonId = -1;
@@ -239,3 +243,13 @@ void CFavoriteProgramsPanelWidget::OnResetFocus(bool rst)
     }
 }
 
+
+void CFavoriteProgramsPanelWidget::ResetInFavProgramButtonClicked()
+{
+    m_IsInFavProgramButtonClicked = false;
+}
+
+void CFavoriteProgramsPanelWidget::SetInFavProgramButtonClicked()
+{
+    m_IsInFavProgramButtonClicked = true;
+}

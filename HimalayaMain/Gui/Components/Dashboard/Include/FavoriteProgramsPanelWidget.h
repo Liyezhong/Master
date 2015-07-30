@@ -64,6 +64,22 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function ResetInFavProgramButtonClicked
+         *
+         *  \return from ResetInFavProgramButtonClicked
+         */
+        /****************************************************************************/
+        void ResetInFavProgramButtonClicked();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function SetInFavProgramButtonClicked
+         *
+         *  \return from SetInFavProgramButtonClicked
+         */
+        /****************************************************************************/
+        void SetInFavProgramButtonClicked();
         static QString SELECTED_PROGRAM_NAME;       ///<  Definition/Declaration of variable SELECTED_PROGRAM_NAME
 
     public slots:
@@ -85,10 +101,10 @@ namespace Dashboard {
         void OnResetFocus(bool reset);
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of OnEndTimeButtonClicked
+         *  \brief  Definition/Declaration of OnFavProgramButtonClicked
          */
         /****************************************************************************/
-        void OnEndTimeButtonClicked();
+        void OnFavProgramButtonClicked();
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of OnProcessStateChanged
@@ -161,6 +177,7 @@ namespace Dashboard {
         QString m_NewSelectedProgramId;       ///<  Definition/Declaration of variable m_NewSelectedProgramId
         QDateTime m_EndDateTime;       ///<  Definition/Declaration of variable m_EndDateTime
         bool m_OnlyAddCleaningProgram;
+        bool m_IsInFavProgramButtonClicked;
 
     };
 }
