@@ -43,7 +43,7 @@
         <enum>QFrame::Panel</enum>
        </property>
        <property name="text">
-        <string>Selected Time</string>
+        <string notr="true">Selected Time</string>
        </property>
       </widget>
      </item>

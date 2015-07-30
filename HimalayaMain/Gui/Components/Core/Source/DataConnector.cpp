@@ -2000,7 +2000,7 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
     }
     else if(RemoteCare::SWUpdate_NotAvailable == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "New software is not available",
+                        "New software is not available.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = false;
     }
