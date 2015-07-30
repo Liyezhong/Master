@@ -272,6 +272,10 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
     mp_ModifiyReagentStationDlg->setModal(true);
     CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UpdateStationChangeReagent(QString,QString),
                         this, UpdateStationChangeReagent(QString,QString));
+
+    CONNECTSIGNALSLOT(mp_ModifiyReagentStationDlg, UpdateStationChangeReagent(QString,QString),
+                        this, HandleStationChangeReagent(QString,QString));
+
     CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UpdateStationSetAsEmpty(QString),
                         this, UpdateStationSetAsEmpty(QString));
 
@@ -305,6 +309,13 @@ void CReagentStationWidget:: StationReagentUpdated(const QString& StationId)
 void CReagentStationWidget::UpdateSelectedStationList(QList<QString>& stationList)
 {
     m_StationList = stationList;
+}
+
+void CReagentStationWidget::HandleStationChangeReagent(const QString& stationid, const QString& reagentid)
+{
+    Q_UNUSED(stationid);
+    Q_UNUSED(reagentid);
+    this->ResetButtons();
 }
 
 }

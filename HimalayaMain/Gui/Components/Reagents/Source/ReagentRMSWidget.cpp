@@ -926,6 +926,7 @@ void CReagentRMSWidget::OnReagentUpdated()
 {
     if (mp_ModifiyReagentRMSDlg) {
         mp_ModifiyReagentRMSDlg->accept();
+        this->ResetButtons();
     }
 }
 
