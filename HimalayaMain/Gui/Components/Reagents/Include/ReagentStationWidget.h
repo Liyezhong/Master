@@ -142,6 +142,13 @@ public slots:
     /****************************************************************************/
     void UpdateSelectedStationList(QList<QString>&);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal HandleStationChangeReagent
+     */
+    /****************************************************************************/
+    void HandleStationChangeReagent(const QString&, const QString&);
+
 
 };
 
