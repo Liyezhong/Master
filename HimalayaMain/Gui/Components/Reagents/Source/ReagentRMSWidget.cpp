@@ -477,8 +477,8 @@ void CReagentRMSWidget::OnDelete()
 /****************************************************************************/
 void CReagentRMSWidget::OnCancelPressed()
 {
-    mp_TableWidget->clearSelection();
-    mp_TableWidgetCleaning->clearSelection();
+    //mp_TableWidget->clearSelection();
+    //mp_TableWidgetCleaning->clearSelection();
     mp_Ui->btnEdit->setEnabled(false);
     m_IsCleaningReagentSelected = false;
     ResetButtons();
