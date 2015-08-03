@@ -264,9 +264,9 @@ void CProgramPanelWidget::ChangeStartButtonToStartState()
     m_ProgramNextAction = DataManager::PROGRAM_START;
 }
 
-void CProgramPanelWidget::EnableStartButton(bool bEnable)
+void CProgramPanelWidget::EnableStartButton(bool bEnable, bool bProgramNotStart)
 {
-    if (bEnable && (m_SelectedProgramId.at(0) == 'C'))
+    if (bEnable && (m_SelectedProgramId.at(0) == 'C') && !bProgramNotStart)
     {
         return;
     }

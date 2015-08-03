@@ -92,11 +92,12 @@ public:
      *  \brief  Definition/Declaration of function EnableStartButton
      *
      *  \param bEnable = bool type parameter
+     *  \param bProgramNotStart = bool type parameter
      *
      *  \return from EnableStartButton
      */
     /****************************************************************************/
-    void EnableStartButton(bool bEnable);
+    void EnableStartButton(bool bEnable, bool bProgramNotStart = false);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ResumePauseRunningStatus

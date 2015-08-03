@@ -1143,7 +1143,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     }
     else
     {
-        ui->programPanelWidget->EnableStartButton(true);
+        ui->programPanelWidget->EnableStartButton(true, true);
         ui->programPanelWidget->ResetInFavProgramButtonClicked();
     }
 }
