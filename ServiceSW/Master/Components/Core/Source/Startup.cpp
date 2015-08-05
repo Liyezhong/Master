@@ -362,7 +362,7 @@ qint32 CStartup::NetworkInit()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsOne(bool bReInit)
 {
-    mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "Himalaya Service Software", 0, QApplication::UnicodeUTF8));
+    mp_MainWindow->setWindowTitle(QApplication::translate("Core::CStartup", "PEARL Service Software", 0, QApplication::UnicodeUTF8));
 
     if (!bReInit) {
         // Clear All items
