@@ -1109,7 +1109,7 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
 /****************************************************************************/
 void CDataConnector::RetranslateUI()
 {
-   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error, please try it again or contact your local service", 0, QApplication::UnicodeUTF8);
+   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", 0, QApplication::UnicodeUTF8);
    m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
    m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes could not be saved.", 0, QApplication::UnicodeUTF8);
    m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
@@ -1994,7 +1994,7 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
 
     if(RemoteCare::SWUpdate_Available == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                                                       "New software is available. Click on 'Remote SW Update' to start the update.",
+                                                       "New software is available. Click on \"Remote SW Update\" to start the update.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = true;
     }
@@ -2006,12 +2006,12 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
     }
     else if(RemoteCare::SWUpdate_DownloadFailed == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Fail to download the new software from RCServer. Please contact your service.",
+                        "Failed to download the new software from RCServer. Please contact service.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = false;
     } else if (RemoteCare::SWUpdate_DownloadSuccess == Command.GetUpdateType()) {
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                        "Downloading the new software from remote server is successful. Now start to update.",
+                        "Downloading of the new software from remote server is complete.  Press \"Ok\" to start thesoftware update.",
                                                        0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         (void)mp_MessageDlg->exec();

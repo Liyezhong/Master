@@ -717,9 +717,9 @@ void CReagentRMSWidget::RetranslateUI()
     m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strConfirmChangeRMSMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                                       "Do you really want to change RMS mode? If fresh reagents are replaced, please reset data for them in the ‘Status’ page!", 0, QApplication::UnicodeUTF8);
+                                                                       "Do you really want to switch to RMS mode?  If reagents are being replaced, please reset data for those reagents on the Status page.", 0, QApplication::UnicodeUTF8);
     m_strConfirmRMSOffMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-        "Do you really want to change RMS mode? When the RMS of cleaning reagent is turned off, the cleaning program can be run as usual. However, the quality of cleaning reagent shall be controlled by the user.", 0, QApplication::UnicodeUTF8);
+        "Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.", 0, QApplication::UnicodeUTF8);
 
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);

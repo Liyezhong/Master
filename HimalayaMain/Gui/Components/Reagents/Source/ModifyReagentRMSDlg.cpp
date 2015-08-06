@@ -49,7 +49,7 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     m_strSelectReagentGroup(tr("Please Select reagent group")),
     m_strReagentAddFailed(tr("")),
     m_strReagentCopyFailed(tr("")),
-    m_strEnterCassetteValue(tr("Enter Cassette Value")),
+    m_strEnterCassetteValue(tr("Please enter cassette number")),
     m_strEnterCycleValue(tr("Enter Cycle Value")),
     m_strEnterDayValue(tr("Enter Day Value")),
     m_strLastReagentName(tr(""))
@@ -585,13 +585,13 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                "Please select reagent group", 0, QApplication::UnicodeUTF8);
 
     m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Fail to add the reagent. Please contact your service.", 0, QApplication::UnicodeUTF8);
+                                               "Failed to add the reagent. Please contact service.", 0, QApplication::UnicodeUTF8);
 
     m_strReagentCopyFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Fail to copy the reagent. Please contact your service.", 0, QApplication::UnicodeUTF8);
+                                               "Failed to copy the reagent. Please contact service.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                       "Enter Cassette Value", 0, QApplication::UnicodeUTF8);
+                                                       "Please enter cassette number", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCycleValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                                "Enter Cycle Value", 0, QApplication::UnicodeUTF8);

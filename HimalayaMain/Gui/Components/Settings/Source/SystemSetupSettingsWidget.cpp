@@ -295,11 +295,11 @@ void CSystemSetupSettingsWidget::RetranslateUI()
    m_strConfirmChangeMeltingPoint =  QApplication::translate("Settings::CSystemSetupSettingsWidget",
                                                              "Do you really want to change the paraffin bath temperature?", 0, QApplication::UnicodeUTF8);
    m_strChangeMeltPointConfirm12Hrs = QApplication::translate("Settings::CSystemSetupSettingsWidget",
-   "You changed the Paraffin melting temperature. If you confirm by \"Yes\" the Paraffin melting time will be %1 hours until you can start another program run. By pressing \"No\" the current Paraffin bath temperature will be accepted and you can immediately start a protocol run.",
+                                                              "You changed the Paraffin melting temperature. If you confirm by \"Yes\" the Paraffin melting time will be at least %1 hours until another program may be started. Selecting \"No\" will allow the current Paraffin bath temperature to be accepted and you can immediately start a protocol run.",
                                                               0, QApplication::UnicodeUTF8);
 
    m_strBottleCheckConfirm = QApplication::translate("Reagent::CSystemSetupSettingsWidget",
-                                            "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate 7 minutes.", 0, QApplication::UnicodeUTF8);
+                                            "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", 0, QApplication::UnicodeUTF8);
 
 }
 

@@ -459,7 +459,7 @@ void CReagentStatusWidget::RetranslateUI()
                                              "Would you like to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
 
     m_strBottleCheckConfirm = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Please check that the retort is empty and clean prior starting bottle check and then press \'yes\'. Bottle check function will require approximate 7 minutes.", 0, QApplication::UnicodeUTF8);
+                                             "Please check that the retort is empty and clean prior starting bottle check and then press \"yes\". Bottle check function will require approximately 7 minutes.", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);
