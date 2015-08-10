@@ -75,19 +75,19 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
                                "Touch the screen to reenter the service software or switch the instrument off.");
     }
 
+    this->setWindowModality(Qt::ApplicationModal);
     this->show();
 }
 
 void CSVCScreenLockWidget::OnInteractStart()
 {
-    if (m_LockStatus) {
-        return;
-    }
-
     m_timer->stop();
     m_timer->start();
 
     if (this->isVisible()) {
+        if (m_LockStatus) {
+            return;
+        }
         this->hide();
         DisplayKeyBoard();
     }
