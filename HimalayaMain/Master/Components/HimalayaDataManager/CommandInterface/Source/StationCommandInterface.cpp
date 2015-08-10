@@ -20,7 +20,8 @@
 #include "HimalayaDataManager/CommandInterface/Include/StationCommandInterface.h"
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
-
+#include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 namespace DataManager {
 /****************************************************************************/
@@ -123,7 +124,34 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      bool Result = true;
      CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(cmd.StationID());
      if (pDashboardStation)
-         pDashboardStation->ResetData();
+     {
+         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+         CReagent* pReagent = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+         CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+
+         CHimalayaUserSettings* pUserSetting = static_cast<CDataManager*>(mp_DataManager)->GetUserSettings();
+         Global::RMSOptions_t rmsOption;
+         if (pReagentGroup->IsCleaningReagentGroup())
+         {
+             rmsOption = pUserSetting->GetModeRMSCleaning();
+         }
+         else
+         {
+             rmsOption = pUserSetting->GetModeRMSProcessing();
+         }
+
+         switch (rmsOption) {
+             default:
+                  QString("");
+                 break;
+             case Global::RMS_CASSETTES:
+                 pDashboardStation->SetDashboardReagentActualCassettes(0);
+                 break;
+             case Global::RMS_CYCLES:
+                  pDashboardStation->SetDashboardReagentActualCycles(0);
+                 break;
+          }
+     }
      else
        Result = false;
      if (!Result) {
@@ -155,7 +183,32 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      if (pDashboardStation)
      {
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->ResetData();
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate());
+        CReagent* pReagent = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+        CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+
+        CHimalayaUserSettings* pUserSetting = static_cast<CDataManager*>(mp_DataManager)->GetUserSettings();
+        Global::RMSOptions_t rmsOption;
+        if (pReagentGroup->IsCleaningReagentGroup())
+        {
+            rmsOption = pUserSetting->GetModeRMSCleaning();
+        }
+        else
+        {
+            rmsOption = pUserSetting->GetModeRMSProcessing();
+        }
+
+        switch (rmsOption) {
+            default:
+                 QString("");
+                break;
+            case Global::RMS_CASSETTES:
+                pDashboardStation->SetDashboardReagentActualCassettes(0);
+                break;
+            case Global::RMS_CYCLES:
+                 pDashboardStation->SetDashboardReagentActualCycles(0);
+                break;
+         }
      }
      else
        Result = false;
