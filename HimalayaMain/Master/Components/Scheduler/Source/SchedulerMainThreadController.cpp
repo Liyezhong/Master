@@ -637,24 +637,24 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
     Q_UNUSED(ctrlCmd);
     if(m_ProgramStatusInfor.IsRetortContaminted())
     {
-       if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
+       if(!m_IsSendMsgForWaitHeatRV)
        {
-           MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
+           MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
            Q_ASSERT(commandPtr);
            Global::tRefType Ref = GetNewCommandRef();
            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-           m_IsWaitHeatingRV = false;
-           m_IsSendMsgForWaitHeatRV = false;
+           m_IsSendMsgForWaitHeatRV = true;
        }
        else
        {
-           if(!m_IsSendMsgForWaitHeatRV)
+           if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
            {
-               MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT));
+               MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
                Q_ASSERT(commandPtr);
                Global::tRefType Ref = GetNewCommandRef();
                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-               m_IsSendMsgForWaitHeatRV = true;
+               m_IsWaitHeatingRV = false;
+               m_IsSendMsgForWaitHeatRV = false;
            }
        }
     }
@@ -959,10 +959,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             case PSSM_RV_MOVE_TO_SEAL:
                 m_SchedulerMachine->SendResumeRVMoveToSeal();
                 break;
-           case PSSM_PROCESSING:
+            case PSSM_PROCESSING:
                 m_SchedulerMachine->SendResumeProcessing();
                 break;
-           case PSSM_RV_MOVE_TO_TUBE:
+            case PSSM_RV_MOVE_TO_TUBE:
                 m_SchedulerMachine->SendResumeRVMoveTube();
                 break;
             case PSSM_DRAINING:
