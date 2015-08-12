@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE TestCaseGuide>
 <TestCaseGuide Version="1">
-    <OvenCoverSensor Description="壳盖传感器测试">
+    <OvenCoverSensor Description="蜡箱门传感器测试">
 		<Guide>
-			<Step>请手动打开壳盖传感器</Step>
+			<Step>请手动打开蜡箱门</Step>
 		</Guide>
 		<Guide>
-			<Step>请手动关闭壳盖传感器</Step>
+			<Step>请手动关闭蜡箱门</Step>
 		</Guide>
 	</OvenCoverSensor>
     <OvenHeatingEmpty Description="加热测试（空）">
 		<Guide>
-			<Step>请取出三个蜡缸，关闭石蜡烤箱前盖。确保石蜡烤箱正确地连接到测试工装上！</Step>
+			<Step>请取出三个蜡缸，关闭蜡箱门。确保蜡箱正确地连接到测试工装上！</Step>
 		</Guide>
 	</OvenHeatingEmpty>
 	<OvenHeatingWater Description="加热测试（加水）">
 		<Guide>
-			<Step>请在石蜡缸中加水至最大限度</Step>
+			<Step>请在蜡缸中加水至最大限度</Step>
 		</Guide>
 	</OvenHeatingWater>
 	<MCASB3 Description="ASB3测试">
@@ -31,11 +31,11 @@
 		<Guide>
 		</Guide>
 	</MCASB15>
-	<LAHeatingBeltLiquid Description="（液路）加热管测试">
+	<LAHeatingBeltLiquid Description="液路加热管测试">
 		<Guide>
 		</Guide>
 	</LAHeatingBeltLiquid>
-	<LAHeatingBeltAir Description="（气路）加热管测试">
+	<LAHeatingBeltAir Description="气路加热管测试">
 		<Guide>
 		</Guide>
 	</LAHeatingBeltAir>
@@ -47,7 +47,7 @@
 
 	<RVInitialize Description="得到初始位置">
 		<Guide>
-			<Step>确保旋转阀正确连接到主控测试具上</Step>
+			<Step>确保旋转阀正确连接到测试工装上</Step>
 		</Guide>
 	</RVInitialize>
 	<RVSelectingTest Description="选择功能">
@@ -70,25 +70,25 @@
 	</RVHeatingStationTest>
 	<RVHeatingEndTest Description="加热功能测试">
 		<Guide>
-			<Step>请将填充块放入到反应罐（Retort）中,关上反应罐（Retort）盖子,然后将装满水的瓶子放到位置11,并确保石蜡缸里没有水</Step>
+			<Step>请将填充块放入到脱水缸中,关上脱水缸盖子,然后将装满水的瓶子放到位置11,并确保蜡缸里没有水</Step>
 		</Guide>
 	</RVHeatingEndTest>
 
-	<System110v220vSwitch Description="110V/220V转换">
+	<System110v220vSwitch Description="交流电压自动切换测试">
 		<Guide>
-			<Step>系统110V/220V测试</Step>
+			<Step>交流电压自动切换测试</Step>
 		</Guide>
 	</System110v220vSwitch>
 	<SystemSealing Description="密封功能测试">
 		<Guide>
 			<Step>开始密封功能测试</Step>
-			<Step>请在石蜡盆和试剂瓶位置插入密封装置</Step>
+			<Step>请在蜡缸和试剂瓶位置插入密封装置</Step>
 		</Guide>
 	</SystemSealing>
 	<SystemOverflow Description="溢出测试">
 		<Guide>
 			<Step>开始溢出测试</Step>
-			<Step>请将填充快放入反应罐（Retort）中然后关上反应罐（Retort）盖</Step>
+			<Step>请将填充快放入脱水缸中然后关上脱水缸盖</Step>
 			<Step>然后将装满水的瓶子放到位置1</Step>
 		</Guide>
 	</SystemOverflow>
@@ -107,18 +107,18 @@
 			<Step>开始通风扇测试</Step>
 		</Guide>
 	</SystemVentilationFan>
-	<SystemRemoteLocalAlarm Description="远程/本地报警测试">
+	<SystemRemoteLocalAlarm Description="远程/本地警报测试">
 		<Guide>
-			<Step>请连接报警装置(远程)</Step>
+			<Step>请连接远程警报装置</Step>
 		</Guide>
 		<Guide>
-			<Step>请断开报警装置(远程)</Step>
+			<Step>请断开远程警报装置</Step>
 		</Guide>
 		<Guide>
-			<Step>请连接报警装置(本地)</Step>
+			<Step>请连接本地警报装置</Step>
 		</Guide>
 		<Guide>
-			<Step>请断开报警装置(本地)</Step>
+			<Step>请断开本地警报装置</Step>
 		</Guide>
 	</SystemRemoteLocalAlarm>
 	<SystemMainsRelay Description="主继电器测试">
@@ -131,54 +131,54 @@
 	</SystemMainsRelay>
 	<CleaningSystem Description="清洗系统">
 		<Guide>
-			<Step>请确认反应罐（Retort）是空的并且盖子是盖上且锁紧的.取装载了3.5L 100%酒精的试剂瓶放置在1号位,把13个空的试剂瓶放置在其他13个位置上,把3个空的石蜡缸放进石蜡烤箱中.</Step>
+			<Step>请确认脱水缸是空的并且盖子是盖上且锁紧的.取装载了3.5L 100%酒精的试剂瓶放置在1号位,把13个空的试剂瓶放置在其他13个位置上,把3个空的蜡缸放进蜡箱中.</Step>
 		</Guide>
 		<Guide>
-			<Step>1.请取出所有的试剂瓶和石蜡缸.</Step>
+			<Step>1.请取出所有的试剂瓶和蜡缸.</Step>
 			<Step>2.请处理酒精.</Step>
 		</Guide>
 		<Guide>
-			<Step>请确认反应罐（Retort）是空的并且盖子是盖上且锁紧的，确认机器里面是没有试剂瓶及石蜡缸</Step>
+			<Step>请确认脱水缸是空的并且盖子是盖上且锁紧的，确认机器里面是没有试剂瓶及蜡缸</Step>
 		</Guide>
 		<Guide>
-			<Step>1.请清洁机器上承载试剂瓶的两层金属板，并清理下面的废液盘</Step>
-			<Step>2.请清洁石蜡烤箱并清理下面的废液盘</Step>
-			<Step>3.请清洁反应罐（Retort）及其盖子,清洁反应罐（Retort）里的过滤网,所有的关于反应罐（Retort）的部件清理完毕后,请关上盖子并锁紧</Step>
+			<Step>1.请清洁机器上承载试剂瓶的两层金属板，并清理下面的废液收集盘</Step>
+			<Step>2.请清洁蜡箱并清理下面的废液收集盘</Step>
+			<Step>3.请清洁脱水缸及其盖子,清洁脱水缸里的过滤网,所有的关于脱水缸的部件清理完毕后,请关上盖子并锁紧</Step>
 			<Step>4.请检查机器外观表面是否完好，擦拭清洁</Step>
 		</Guide>
 	</CleaningSystem>
-	<RetortLidLock Description="反应罐（Retort）盖锁测试">
+	<RetortLidLock Description="脱水缸盖锁测试">
 		<Guide>
-			<Step>请开启反应罐（Retort）盖</Step>
+			<Step>请开启脱水缸盖</Step>
 		</Guide>
 		<Guide>
-			<Step>请锁上反应罐（Retort）盖</Step>
+			<Step>请锁上脱水缸盖</Step>
 		</Guide>
 	</RetortLidLock>
 	<RetortLevelSensorHeating Description="液位传感器加热测试">
 		<Guide>
-			<Step>反应罐（Retort）液位传感器加热测试</Step>
+			<Step>脱水缸液位传感器加热测试</Step>
 		</Guide>
 	</RetortLevelSensorHeating>
 	<RetortLevelSensorDetecting Description="液位传感器检测测试">
 		<Guide>
-			<Step>请在位置1放入充满水的试剂瓶,然后关上反应罐（Retort）盖</Step>
+			<Step>请在位置1放入充满水的试剂瓶,然后关上脱水缸盖</Step>
 		</Guide>
 	</RetortLevelSensorDetecting>
-	<RetortHeatingEmpty Description="加热测试(空的)">
+	<RetortHeatingEmpty Description="加热测试(空)">
 		<Guide>
-			<Step>反应罐（Retort）空加热测试</Step>
+			<Step>脱水缸加热测试（空）</Step>
 		</Guide>
 	</RetortHeatingEmpty>
 	<RetortHeatingWater Description="加热测试(加水)">
 		<Guide>
-			<Step>请清理液位传感器,关上反应罐（Retort）盖的锁,然后将装满水的瓶子放到位置1</Step>
+			<Step>请清理液位传感器,关上脱水缸盖锁,然后将装满水的瓶子放到位置1</Step>
 		</Guide>
 		<Guide>
-			<Step>请将外部的传感器放到反应罐（Retort）中,然后关上反应罐（Retort）盖的锁</Step>
+			<Step>请将外部的传感器放到脱水缸中,然后关上脱水缸盖锁</Step>
 		</Guide>
 		<Guide>
-			<Step>请从反应罐（Retort）中取出外部传感器</Step>
+			<Step>请从脱水缸中取出外部传感器</Step>
 		</Guide>
 	</RetortHeatingWater>
 	<FirmwareUpdate></FirmwareUpdate>

@@ -24,13 +24,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="173"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="178"/>
         <source>Air Heating Tube Test successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="105"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="168"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/AirHeatingTubeTest.cpp" line="173"/>
         <source>Air Heating Tube Test failed.&lt;br/&gt;Please check Air heating tube, cables and connections and ASB15 board. Replace the defective part accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,60 +177,60 @@
 <context>
     <name>CDlgModifyModule</name>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="67"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="68"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="70"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="71"/>
         <source>Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="73"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="74"/>
         <source>Month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="76"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="77"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="115"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="116"/>
         <source>ENTER SERIAL NUMBER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="172"/>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="186"/>
-        <source>Date of Exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="173"/>
         <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="187"/>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="201"/>
+        <source>Date of Exchange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="174"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="188"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="202"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="175"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="176"/>
         <source>Date is invalid.Please select a valid date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="189"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="190"/>
         <source>Date of Exchange shall not be later than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="200"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="201"/>
         <source>Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="203"/>
+        <location filename="../../../SystemTracking/Source/DlgModifyModule.cpp" line="204"/>
         <source>SerialNumber is Empty.Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,65 +238,65 @@
 <context>
     <name>CDlgModifySubModule</name>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="67"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="68"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="70"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="71"/>
         <source>Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="73"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="74"/>
         <source>Month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="76"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="77"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="123"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="124"/>
         <source>ENTER SERIAL NUMBER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="166"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="167"/>
         <source>Valve 1&amp;2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="204"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="218"/>
-        <source>Date of Production</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="205"/>
         <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="219"/>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="233"/>
+        <source>Date of Production</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="206"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="220"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="234"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="207"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="208"/>
         <source>Date is invalid.Please select a valid date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="221"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="222"/>
         <source>Date of Production shall not be later than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="232"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="233"/>
         <source>Serial Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="235"/>
+        <location filename="../../../SystemTracking/Source/DlgModifySubModule.cpp" line="236"/>
         <source>SerialNumber is Empty.Please enter the serial number.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -327,7 +327,7 @@
     <name>CFileView</name>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="52"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="209"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="211"/>
         <source>File Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -367,37 +367,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="199"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="202"/>
         <source>Paraffin Oven Heating Test (Empty) failed. ASB5 is damaged.Exchange it and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="205"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="208"/>
         <source>Please close oven cover.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="212"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="215"/>
         <source>Please make sure there are no paraffin baths present in the paraffin oven.&lt;br/&gt;Verify the oven surfaces are dry and clean, and the oven cover is closed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="225"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="228"/>
         <source>Oven Get Temp error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="312"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="319"/>
         <source>Paraffin Oven Heating Test (Empty) failed. Temperature did not reach %1°C within %2 mins. Root cause might be damaged ASB5 or Paraffin Oven Module. Sequentially check resistance of heaters and function of ASB5. Exchange defective part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="320"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="327"/>
         <source>Paraffin Oven Heating Test (Empty) failed. &lt;br/&gt;ASB5 is damaged. Exchange it and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="326"/>
+        <location filename="../../../Diagnostics/Source/Oven/OvenHeatingTestEmpty.cpp" line="333"/>
         <source>Paraffin Oven Heating Test (Empty) successful. Please re-insert the paraffin baths and close the oven cover.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -408,7 +408,7 @@
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="74"/>
-        <source>Please confirm the retort is empty and dry. (If not, use the &quot; Diagnostic_Retort_Drain Reagen&quot; function first). Close retort lid and rotate lock to closed position.</source>
+        <source>Please confirm the retort is empty and dry. (If not, use the &quot; Diagnostic_Retort_Drain Reagent&quot; function first). Close retort lid and rotate lock to closed position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -432,12 +432,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="181"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="185"/>
         <source>Retort Heating Test (Empty) failed.&lt;br/&gt;Sequentially check resistance of temperature sensor, function of ASB5 and retort. Exchange part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="190"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestEmpty.cpp" line="194"/>
         <source>Retort Heating Test (Empty) successful.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -493,9 +493,9 @@
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="145"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="236"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="267"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="295"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="240"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="271"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="299"/>
         <source>Rotating Rotary Valve to tube position 13</source>
         <translation type="unfinished"></translation>
     </message>
@@ -520,12 +520,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="307"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="311"/>
         <source>Retort Heating Test (with Water) failed.&lt;br/&gt;Sequentially check resistance of temperature sensor, function of ASB5 and retort. Exchange part accordingly and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="282"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="286"/>
         <source>Retort Heating Test (with Water) failed.&lt;br/&gt;Exchange the retort module and repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -535,14 +535,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="244"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="275"/>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="303"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="248"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="279"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="307"/>
         <source>Start draining</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="286"/>
+        <location filename="../../../Diagnostics/Source/Retort/RetortHeatingTestWithWater.cpp" line="290"/>
         <source>Retort Heating Test (with Water) successfully completed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -767,13 +767,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="189"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="193"/>
         <source>Liquid Heating Tube Test successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="117"/>
-        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="184"/>
+        <location filename="../../../Diagnostics/Source/LaSystem/LiquidHeatingTubeTest.cpp" line="188"/>
         <source>Liquid Heating Tube Test failed.&lt;br/&gt;Please check liquid heating tube, cables and connections and ASB15 board. Replace the defective part accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -906,7 +906,7 @@
 <context>
     <name>CRotaryValve</name>
     <message>
-        <location filename="../../../DiagnosticsManufacturing/Source/RotaryValveManufacturing.cpp" line="339"/>
+        <location filename="../../../DiagnosticsManufacturing/Source/RotaryValveManufacturing.cpp" line="341"/>
         <source>You can&apos;t do these tests until &apos;Get the initial position&apos; test is passed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -914,12 +914,12 @@
 <context>
     <name>CRotaryValveDevice</name>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1557"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1558"/>
         <source>Seal %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1561"/>
+        <location filename="../../../../../../../Platform/Master/Components/DeviceControl/Source/Devices/RotaryValveDevice.cpp" line="1562"/>
         <source>Tube %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -978,12 +978,12 @@
 <context>
     <name>CSVCScreenLock::CSVCScreenLockWidget</name>
     <message>
-        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="170"/>
+        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="173"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="181"/>
+        <location filename="../../../SVCScreenLock/Source/SVCScreenLockWidget.cpp" line="184"/>
         <source>Enter Pin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1048,22 +1048,22 @@
 <context>
     <name>CViewHistory</name>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="173"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="174"/>
         <source>Select Module List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="174"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="175"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="176"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="177"/>
         <source>Please select a Module List..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="185"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="186"/>
         <source>Module History</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1306,131 +1306,131 @@
 <context>
     <name>Core::CStartup</name>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="363"/>
-        <source>Himalaya Service Software</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="375"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="377"/>
         <source>Current Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="385"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="387"/>
         <source>Add/Modify Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="388"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="390"/>
         <source>View History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="426"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
         <source>System Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="414"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="416"/>
         <source>System Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="418"/>
-        <source>Service Log Viewer</source>
+        <location filename="../../../Core/Source/Startup.cpp" line="365"/>
+        <source>PEARL Service Software</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Core/Source/Startup.cpp" line="420"/>
+        <source>Service Log Viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Core/Source/Startup.cpp" line="422"/>
         <source>Software Update Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="428"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="430"/>
         <source>Log Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="443"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="445"/>
         <source>Firmware Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="447"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="449"/>
         <source>Data Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="449"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="451"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="453"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="453"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="455"/>
         <source>Service Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="717"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="719"/>
         <source>System is initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="791"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="793"/>
         <source>Missing Xml files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="794"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="796"/>
         <source>The following XML files are not present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1300"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1313"/>
         <source>Alarm Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1736"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1753"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1749"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1766"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1737"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1754"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1750"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1767"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1738"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1745"/>
-        <location filename="../../../Core/Source/Startup.cpp" line="1756"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1751"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1758"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1769"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1744"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1757"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1746"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1759"/>
         <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Core/Source/Startup.cpp" line="1755"/>
+        <location filename="../../../Core/Source/Startup.cpp" line="1768"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1444,7 +1444,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/ServiceKeyValidator/Source/USBKeyValidator.cpp" line="188"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/ServiceKeyValidator/Source/USBKeyValidator.cpp" line="190"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2535,19 +2535,19 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
 <context>
     <name>LogViewer::CSystemLogViewer</name>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="152"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="206"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="153"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="208"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="154"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="155"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="157"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="209"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="158"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/LogViewer/Source/LogViewer.cpp" line="211"/>
         <source>Please Select a log file to continue.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2566,7 +2566,7 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="54"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="229"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="230"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2606,70 +2606,70 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="228"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="229"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="230"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="231"/>
         <source>Please Select a row to continue..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="237"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="238"/>
         <source>Error Code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="238"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="239"/>
         <source>Description: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../LogViewerDialog/Forms/SystemLogViewerDlg.ui" line="203"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="232"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="244"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="233"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="245"/>
         <source>Service Help Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="234"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="235"/>
         <source>Service Help Text is not applicable for the type </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="240"/>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="242"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="241"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="243"/>
         <source>Service Help Text Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="246"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="247"/>
         <source>Service Help Text Text is not available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="249"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="250"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="250"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="251"/>
         <source>TimeStamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="251"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="252"/>
         <source>Event ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="252"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="253"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="253"/>
+        <location filename="../../../LogViewerDialog/Source/SystemLogViewerDlg.cpp" line="254"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3178,12 +3178,12 @@ connectors of bottles or paraffin baths. Then repeat this test.</source>
     </message>
     <message>
         <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="165"/>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="287"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="289"/>
         <source>Event Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="285"/>
+        <location filename="../../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="287"/>
         <source>File Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4504,31 +4504,31 @@ for verification</source>
 <context>
     <name>ServiceUpdates::CDataManagement</name>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="107"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="320"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="115"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="331"/>
         <source>Service Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="109"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="323"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="117"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="334"/>
         <source>Exporting service data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="133"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="326"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="141"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="337"/>
         <source>Service Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="135"/>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="329"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="143"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="340"/>
         <source>Importing service data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="285"/>
+        <location filename="../../../../../../../Platform/ServiceSW/Components/Settings/Source/DataManagement.cpp" line="297"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4630,32 +4630,32 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="220"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="221"/>
         <source>Information Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="223"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="224"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="226"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="227"/>
         <source>The current firmware version has been latest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="338"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="341"/>
         <source>Slave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="340"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="343"/>
         <source>Current Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="342"/>
+        <location filename="../../../ServiceUpdates/Source/FirmwareUpdate.cpp" line="345"/>
         <source>Latest Version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5670,17 +5670,17 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="209"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="211"/>
         <source>Select Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="211"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="213"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="214"/>
+        <location filename="../../../SystemTracking/Source/ViewHistory.cpp" line="216"/>
         <source>Please select two ModuleList timestamp.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5930,69 +5930,69 @@ for verification</source>
 <context>
     <name>WrapperFmBaseModule</name>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="263"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="266"/>
         <source>Emergency Stop Reason: %1; Voltage State: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="378"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="381"/>
         <source>NOTICE: Unexpected action acknowledgement for GetHWInfo (version major: %1, version minor: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="443"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="446"/>
         <source>NOTICE: Unexpected action acknowledgement for GetSWInfo (version major: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="583"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="633"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="708"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="768"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="890"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="941"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="991"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1068"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1145"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1205"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1256"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1327"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="586"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="636"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="711"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="771"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="893"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="944"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="994"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1075"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1155"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1215"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1266"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1337"/>
         <source>NOTICE: Unexpected action acknowledgement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="696"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1375"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="699"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1385"/>
         <source> (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="704"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="707"/>
         <source>End Test Result: %1; End Test Date: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="763"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="766"/>
         <source>Boot Loader Version: %1.%2; Boot Loader Release Date: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="886"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="889"/>
         <source>Operation Time: %1 minutes; Startup cycles: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="938"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="941"/>
         <source>Launch State: %1; Launch Date: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1061"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1068"/>
         <source>Voltage State: %1; Voltage: %2 mV; Failures: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1138"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperFmBaseModule.cpp" line="1148"/>
         <source>Current State: %1; Current: %2 mA; Failures: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6805,18 +6805,18 @@ for verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="83"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="86"/>
         <source>Sending value %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="150"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="153"/>
         <source>You input empty folder name, please re-enter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="183"/>
-        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="212"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="186"/>
+        <location filename="../../../ServiceDeviceController/Source/DeviceProcessor/Helper/WrapperUtils.cpp" line="215"/>
         <source>%1;%2;
 </source>
         <translation type="unfinished"></translation>
