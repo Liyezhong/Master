@@ -307,7 +307,7 @@
                 <Parameter Key="ControllerGain" Value="1212"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="HeatingOverTime" Value="1800"/>
+                <Parameter Key="HeatingOverTime" Value="3000"/>
                 <Parameter Key="MaxTemperature" Value="130"/>
                 <Parameter Key="ScenarioList" Value="003"/>
             </Function>
