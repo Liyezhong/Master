@@ -310,7 +310,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
         if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qFuzzyCompare(strctHWMonitor.TempALTube2,299))
         {
-            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
+            //Based on discussion on Auguest 13rd, 2015, we will report error only when temperature doesn't reach target AND heater status is off
+            if (false == strctHWMonitor.LATube2HeatingStatus)
+            {
+                return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
+            }
         }
     }
 

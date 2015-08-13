@@ -1376,8 +1376,7 @@
     </event>
     <event eventid="500040501">
         <error errorid="513040501">
-            <scenario type="range" startid="271" endid="275"/>
-            <scenario type="single" id="277"/>
+            <scenario type="range" startid="271" endid="277"/>
         </error>
     </event>
     <event eventid="500040511">
