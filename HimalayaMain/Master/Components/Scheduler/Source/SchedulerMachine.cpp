@@ -1943,6 +1943,7 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
         switch (stateAtAbort)
         {
         case PSSM_PRETEST:
+            HandlePssmPreTestWorkFlow(cmdName, retCode);
             if (0 == m_PssmAbortingSeq)
             {
                 mp_ProgramPreTest->RecvAbort();
@@ -1950,7 +1951,6 @@ void CSchedulerStateMachine::HandleRsAbortWorkFlow(const QString& cmdName,  Devi
             }
             else
             {
-                HandlePssmPreTestWorkFlow(cmdName, retCode);
                 if (mp_ProgramPreTest->TasksAborted())
                 {
                     m_PssmAbortingSeq = 0;

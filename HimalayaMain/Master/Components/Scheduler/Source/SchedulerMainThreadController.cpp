@@ -538,6 +538,15 @@ void SchedulerMainThreadController::OnEnterIdleState()
     m_IdleState = IDLE_HEATING_RV;
     m_RVPositioinChSeqForIdle = 0;
     m_PressureStartTime = 0;
+
+    if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
+    {
+        m_CleanAckSentGui = true;
+        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
+        Q_ASSERT(commandEnterCleaning);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
+    }
 }
 
 void SchedulerMainThreadController::OnExitIdleState()
@@ -786,14 +795,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     {
         PrepareForIdle(ctrlCmd, cmd);
         return;
-    }
-    if (m_ProgramStatusInfor.IsRetortContaminted() && !m_CleanAckSentGui)
-    {
-        m_CleanAckSentGui = true;
-        MsgClasses::CmdEnterCleaningProgram* commandEnterCleaning(new MsgClasses::CmdEnterCleaningProgram(5000, m_ProgramStatusInfor.GetLastReagentGroup()));
-        Q_ASSERT(commandEnterCleaning);
-        Global::tRefType fRef = GetNewCommandRef();
-        SendCommand(fRef, Global::CommandShPtr_t(commandEnterCleaning));
     }
     switch (ctrlCmd)
     {
@@ -4981,6 +4982,7 @@ void SchedulerMainThreadController::CompleteRsAbort()
     AllStop();
 
     m_SchedulerMachine->SendRunComplete();
+
     // tell the main controller the program has been aborted
     MsgClasses::CmdProgramAborted* commandPtrAbortFinish(new MsgClasses::CmdProgramAborted(5000, m_ProgramStatusInfor.IsRetortContaminted()));
     Q_ASSERT(commandPtrAbortFinish);
