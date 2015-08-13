@@ -123,7 +123,7 @@ void CCassetteNumberInputWidget::RetranslateUI()
     m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The total number of cassettes should be between 1 and 200.", 0, QApplication::UnicodeUTF8);
     m_strWarning = QApplication::translate("CCassetteNumberInputWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("CCassetteNumberInputWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strTotalCassette = QApplication::translate("CCassetteNumberInputWidget", "Original cassettle number: ", 0, QApplication::UnicodeUTF8);
+    m_strTotalCassette = QApplication::translate("CCassetteNumberInputWidget", "Original cassette number: ", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteHint = QApplication::translate("CCassetteNumberInputWidget", "Add more cassette:", 0, QApplication::UnicodeUTF8);
 }
 
