@@ -173,7 +173,7 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
 
     Text = QString("Start draining to the bottle %1").arg(Positon);
     if (Positon == 13) {
-        Text += " clean alcohol.";
+        Text += " cleaning alcohol.";
     }
     mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
     (void)ServiceDeviceProcess::Instance()->PumpDraining();
