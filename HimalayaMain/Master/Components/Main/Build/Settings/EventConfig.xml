@@ -926,10 +926,10 @@
 			<Step ID="0" Type="MSG" StringID="33619975" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331719" ErrorType="Warning" AlarmType="" Name="EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331719" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331719" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="50331771" ErrorType="Warning" AlarmType="AL_LOCAL" Name="EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331771" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331771" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="50331772" ErrorType="INFO" Name="EVENT_DM_PROG_ADD_NEW_PROGRAM" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331772" ButtonType="" StatusBar=""/>
@@ -950,7 +950,7 @@
 			<Step ID="0" Type="MSG" StringID="50331777" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331718" ErrorType="Warning" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_OVERDUE" LogLevel="High" UserLog="TRUE">
-			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="50331764" ErrorType="INFO" AlarmType="" Name="EVENT_SERVICE_OPERATIONTIME_RESET" LogLevel="High" UserLog="TRUE">
 			<Step ID="0" Type="MSG" StringID="50331764" ButtonType="" StatusBar=""/>
