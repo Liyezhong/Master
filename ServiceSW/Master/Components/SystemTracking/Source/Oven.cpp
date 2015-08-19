@@ -143,6 +143,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
 void COven::ModifyOven(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_MODULE);
     if (!mp_ModuleList) {
         mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();

@@ -17,7 +17,7 @@
  *
  */
 /****************************************************************************/
-
+#include <QHeaderView>
 #include "SystemTracking/Include/ViewHistoryDlg.h"
 #include "ui_ViewHistoryDlg.h"
 
@@ -52,6 +52,10 @@ CViewHistoryDlg::CViewHistoryDlg(QWidget *p_Parent)
     (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
     (void)connect(mp_Ui->expandBtn, SIGNAL(clicked()), mp_TreeView, SLOT(expandAll()));
     (void)connect(mp_Ui->collapseBtn, SIGNAL(clicked()), mp_TreeView, SLOT(collapseAll()));
+
+    mp_TreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    mp_TreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+
 }
 
 void CViewHistoryDlg::SetModuleList(ServiceDataManager::CModuleDataList *ModuleList)

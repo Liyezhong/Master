@@ -33,25 +33,25 @@
 		<string id="100728862" text1="Export of data is requested" text2=""/>
 		<string id="100728863" text1="Current configuration module info requested:%1" text2=""/>
 		<string id="100728864" text1="Current configuration submodule info requested:%1" text2=""/>
-		<string id="100728865" text1="Modify retort info" text2=""/>
-		<string id="100728866" text1="Modify retort heater module info" text2=""/>
-		<string id="100728867" text1="Modify retort lid lock module info" text2=""/>
-		<string id="100728868" text1="Modify retort level sensor module info" text2=""/>
-		<string id="100728869" text1="Modify main control submodule info:%1" text2=""/>
-		<string id="100728870" text1="Modify oven info" text2=""/>
-		<string id="100728871" text1="Modify oven heater module info" text2=""/>
-		<string id="100728872" text1="Modify oven cover sensor module info" text2=""/>
-		<string id="100728873" text1="Modify retary valve module info" text2=""/>
-		<string id="100728874" text1="Modify retary valve heater module info" text2=""/>
-		<string id="100728875" text1="Modify retary valve motor module info" text2=""/>
-		<string id="100728876" text1="Modify L&amp;A system pump module info" text2=""/>
-		<string id="100728877" text1="Modify L&amp;A system valve 1 module info" text2=""/>
-		<string id="100728878" text1="Modify L&amp;A system valve 2 module info" text2=""/>
-		<string id="100728879" text1="Modify L&amp;A system heating liquid module info" text2=""/>
-		<string id="100728880" text1="Modify L&amp;A system heating air module info" text2=""/>
-		<string id="100728881" text1="Modify L&amp;A system pressure sensor module info" text2=""/>
-		<string id="100728882" text1="Modify L&amp;A system carbon filter module info" text2=""/>
-		<string id="100728883" text1="Modify L&amp;A system fan module info" text2=""/>
+		<string id="100728865" text1="Modify Retort" text2=""/>
+		<string id="100728866" text1="Modify Retort - Heater" text2=""/>
+		<string id="100728867" text1="Modify Retort - Lid Lock" text2=""/>
+		<string id="100728868" text1="Modify Retort - Level Sensor" text2=""/>
+		<string id="100728869" text1="Modify Main Control - %1" text2=""/>
+		<string id="100728870" text1="Modify Oven" text2=""/>
+		<string id="100728871" text1="Modify Oven - Heater" text2=""/>
+		<string id="100728872" text1="Modify Oven - Cover Sensor" text2=""/>
+		<string id="100728873" text1="Modify Rotary Valve" text2=""/>
+		<string id="100728874" text1="Modify Rotary Valve - Heater" text2=""/>
+		<string id="100728875" text1="Modify Rotary Valve - Motor" text2=""/>
+		<string id="100728876" text1="Modify L&amp;A System - Pump" text2=""/>
+		<string id="100728877" text1="Modify L&amp;A System - Valve 1&amp;2" text2=""/>
+		<string id="100728878" text1="Modify L&amp;A System - Valve 2" text2=""/>
+		<string id="100728879" text1="Modify L&amp;A System - Liquid Heating Tube" text2=""/>
+		<string id="100728880" text1="Modify L&amp;A System - Air Heating Tube" text2=""/>
+		<string id="100728881" text1="Modify L&amp;A System - Pressure Sensor" text2=""/>
+		<string id="100728882" text1="Modify L&amp;A System - Carbon Filter" text2=""/>
+		<string id="100728883" text1="Modify L&amp;A System - Exhaust Fan" text2=""/>
 		<string id="100728884" text1="Timestamp %1 and %2 is selected for module list show difference" text2=""/>
 		<string id="100728885" text1="View history Module TimeStamp %1 is selected for module details" text2=""/>
 		<string id="100728886" text1="%1 test is abort" text2=""/>
