@@ -1080,9 +1080,16 @@ void HimalayaMasterThreadController::ResetOperationHoursHandler(Global::tRefType
     SendAcknowledgeOK(Ref, AckCommandChannel);
     DataManager::ResetOperationHoursType_t resetOperationHoursType = Cmd.ResetOperationHoursType();
     if (resetOperationHoursType == DataManager::RESETOPERATIONHOURS_WHOLEMACHINEOPERATION)
+    {
         Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_RESET, true);
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE, false);
+    }
     else
+    {
         Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_RESET, true);
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_WARNING, false);
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE_ALARM, false);
+    }
 }
 
 /****************************************************************************/
