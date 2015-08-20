@@ -77,6 +77,11 @@ CViewHistoryDiffDlg::CViewHistoryDiffDlg(QWidget *p_Parent)
     CONNECTSIGNALSLOTGUI(mp_Ui->collapseAllBtn, clicked(), mp_TreeView, collapseAll());
     CONNECTSIGNALSLOTGUI(mp_Ui->expandAllBtn, clicked(), mp_TreeViewRight, expandAll());
     CONNECTSIGNALSLOTGUI(mp_Ui->collapseAllBtn, clicked(), mp_TreeViewRight, collapseAll());
+
+    mp_TreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    mp_TreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    mp_TreeViewRight->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    mp_TreeViewRight->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
 /****************************************************************************/

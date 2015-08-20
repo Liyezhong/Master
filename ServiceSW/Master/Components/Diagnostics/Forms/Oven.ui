@@ -76,7 +76,7 @@
    <item row="3" column="1">
     <widget class="QPushButton" name="testCoverSensor">
      <property name="text">
-      <string>Cover Sensor Test  </string>
+      <string>Cover Sensor Test</string>
      </property>
     </widget>
    </item>
