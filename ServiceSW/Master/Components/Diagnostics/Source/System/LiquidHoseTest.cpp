@@ -69,6 +69,7 @@ int CLiquidHoseTest::Run(void)
         delete p_SelectDlg;
         p_SelectDlg = NULL;
 
+        Text = "Please select the desired station number.";
         p_SelectDlg = new CSelectBottleNReagentDialog(16, mp_Parent);
         p_SelectDlg->SetRadioButtonVisible(false);
         p_SelectDlg->SetTitle(m_MessageTitle);

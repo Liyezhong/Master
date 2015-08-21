@@ -106,6 +106,7 @@ int CLiquidHoseTestDlg::RunTest()
     for (int i = 0; i < m_BottleNumberList.count(); ++i) {
         if (!CreatePressure(TargetPressure, TimeOut)) {
             CreatePressureRet = false;
+            (void)p_DevProc->PumpStopCompressor();
             break;
         }
         (void)p_DevProc->PumpStopCompressor();

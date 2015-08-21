@@ -41,7 +41,7 @@ CMainsRelayTest::~CMainsRelayTest(void)
 
 int CMainsRelayTest::Run(void)
 {
-    QString TestName = "Mains Relay Self-test";
+    QString TestName = "Mains Relay Selftest";
 
     Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("Start %1.").arg(TestName));
 
@@ -157,7 +157,7 @@ int CMainsRelayTest::Run(void)
 void CMainsRelayTest::ShowWaitingMessage(bool ShowFlag)
 {
     if (ShowFlag) {
-        QString Title = "Mains Relay Self-test";
+        QString Title = "Mains Relay Selftest";
         QString Text = Title + QString(" is running...");
         ShowWaitingDialog(Title, Text);
     }
@@ -168,7 +168,7 @@ void CMainsRelayTest::ShowWaitingMessage(bool ShowFlag)
 
 void CMainsRelayTest::ShowFailMessage(int Error)
 {
-    QString Title = "Mains Relay Self-test";
+    QString Title = "Mains Relay Selftest";
     QString Text;
     if (Error == 1) {
         Text = "Mains Relay Selftest Failed.<br>Please exchange " \
