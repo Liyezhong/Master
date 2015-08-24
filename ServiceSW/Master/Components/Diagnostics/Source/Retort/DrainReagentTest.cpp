@@ -109,13 +109,16 @@ int CDrainReagentTest::Run(void)
             return RETURN_ERR_FAIL;
         }
     }
+    ServiceDeviceProcess* p_Dev = ServiceDeviceProcess::Instance();
 
     if (!BuildVacuum()) {
+        p_Dev->PumpStopCompressor();
+        p_Dev->PumpSetValve(0, 0);
+        p_Dev->PumpSetValve(1, 0);
         ShowFinishDlg(5);
         return RETURN_ERR_FAIL;
     }
 
-    ServiceDeviceProcess* p_Dev = ServiceDeviceProcess::Instance();
 
     int Ret;
     for (int i = 0; i < 2; ++i) {
@@ -218,7 +221,7 @@ void CDrainReagentTest::ShowFinishDlg(int RetNum)
         Text = "Draining of retort failed. Rotary Valve cannot rotate, due to the "
                 "minimum temperature has not been reached. "
                 "It might work in some minutes when solidified paraffin in the rotary valve "
-                "is molten. Retry draining in about 15mins.";
+                "is molten. Repeat this test again in about 15mins.";
         break;
     case 5:
         Text = "Building Vacuum failed.<br>"
