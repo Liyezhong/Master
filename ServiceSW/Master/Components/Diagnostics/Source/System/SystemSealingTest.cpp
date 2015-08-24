@@ -106,9 +106,17 @@ Create_Pressure_Test:
     }
 
     p_DevProc->Pause(1000);
+    Text = "Stop pump and wait for 3 seconds...";
+    mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
     (void)p_DevProc->PumpStopCompressor();
+    p_DevProc->Pause(3000);
 
-    if (TestKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
+    float CurrentPressure(0);
+    p_DevProc->PumpGetPressure(&CurrentPressure);
+
+    if (qAbs(CurrentPressure) < 30 ||
+            TestKeepPressure(CurrentPressure, PressureDiff, KeepDuration)) {
+        TestReleasePressure();
         ShowFinishDlg(3);
         if (!TestCreatePressure(TargetPressure, Offset, WaitTime)) {
             TestReleasePressure();
@@ -118,11 +126,20 @@ Create_Pressure_Test:
         }
 
         p_DevProc->Pause(1000);
+        Text = "Stop pump and wait for 3 seconds...";
+        mp_MessageDlg->ShowWaitingDialog(m_MessageTitle, Text);
+
         (void)p_DevProc->PumpStopCompressor();
-        if (TestKeepPressure(TargetPressure, PressureDiff, KeepDuration)) {
+        p_DevProc->Pause(3000);
+        p_DevProc->PumpGetPressure(&CurrentPressure);
+
+        if (qAbs(CurrentPressure) < 30 ||
+                TestKeepPressure(CurrentPressure, PressureDiff, KeepDuration)) {
+            TestReleasePressure();
             ShowFinishDlg(5);
         }
         else {
+            TestReleasePressure();
             ShowFinishDlg(4);
         }
 
@@ -130,10 +147,12 @@ Create_Pressure_Test:
     }
 
     if (TargetPressure > 0) {
+        TestReleasePressure();
         TargetPressure = p_TestCase->GetParameter("TargetVacuum").toFloat();
         goto Create_Pressure_Test;
     }
 
+    TestReleasePressure();
     Text = "System Sealing Test successful.";
     mp_MessageDlg->ShowMessage(m_MessageTitle, Text, RETURN_OK);
 
