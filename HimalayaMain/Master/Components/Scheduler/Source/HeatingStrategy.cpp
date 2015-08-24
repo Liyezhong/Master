@@ -398,6 +398,41 @@ void HeatingStrategy::InitSelfTest()
     m_CurScenario = 2;
 }
 
+void HeatingStrategy::UpdateOvenParamAt110V(quint8 switchType)
+{
+    // Only current volage is 110V, we may start the logic
+    if (switchType != 2)
+    {
+        return;
+    }
+
+    HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
+    qreal curTemp = strctHWMonitor.TempOvenBottom1;
+    for (int i=0; i<2; i++)
+    {
+        DelaySomeTime(500);
+        HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
+        curTemp += strctHWMonitor.TempOvenBottom1;
+    }
+    curTemp = curTemp/3;
+    if (curTemp >= 25.0)
+    {
+        return;
+    }
+
+    // When current voltage is 110V AND the former 9 hours AND melting point is less than 64
+    m_OvenTop.functionModuleList["1"].TemperatureOffset +=5;
+    m_OvenTop.functionModuleList["1"].TemperatureOffsetWithParaffin +=5;
+    m_OvenTop.TimeRangeList["1"].second+=3600;
+    m_OvenTop.TimeRangeList["2"].first+=3600;
+
+    m_OvenBottom.functionModuleList["1"].TemperatureOffset +=5;
+    m_OvenBottom.functionModuleList["1"].TemperatureOffsetWithParaffin +=5;
+    m_OvenBottom.TimeRangeList["1"].second+=3600;
+    m_OvenBottom.TimeRangeList["2"].first+=3600;
+
+}
+
 ReturnCode_t HeatingStrategy::StartTemperatureControlForSelfTest(const QString& HeaterName, bool NotSureTemperature)
 {
     CmdSchedulerCommandBase* pHeatingCmd = NULL;
