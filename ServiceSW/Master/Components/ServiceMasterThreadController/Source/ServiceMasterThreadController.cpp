@@ -1120,7 +1120,7 @@ void ServiceMasterThreadController::ExportProcessExited(const QString &Name, int
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS)
     {
         // raise the event code
-        Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
+        //Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
         emit ImportExportCompleted(/*ExitCode*/Global::EVENT_EXPORT_SUCCESS, false);
     }
     else
@@ -1211,7 +1211,7 @@ void ServiceMasterThreadController::ExportProcessExited(const QString &Name, int
             break;
         }
         // this raise event code will be informed to GUI, that Export is failed
-        Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        //Global::EventObject::Instance().RaiseEvent(EventCode, true);
         emit ImportExportCompleted(EventCode, false);
     }
     QTimer::singleShot(500, this, SLOT(RemoveAndDestroyObjects()));
@@ -1231,7 +1231,7 @@ void ServiceMasterThreadController::RemoveAndDestroyObjects()
 void ServiceMasterThreadController::ImportExportThreadFinished(quint32 EventCode, bool TypeOfOperation,bool IsAborted)
 {
     if (!IsAborted) {
-        Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        //Global::EventObject::Instance().RaiseEvent(EventCode, true);
         emit ImportExportCompleted(EventCode, TypeOfOperation);
     }
     emit CleanUpObjects();

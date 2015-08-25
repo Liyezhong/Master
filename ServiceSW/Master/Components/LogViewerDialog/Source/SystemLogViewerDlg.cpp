@@ -179,11 +179,14 @@ void CSystemLogViewerDlg::ServiceHelpTextDialog()
             QStringList List = Line.split(";");
             if (List.size()>0) {
                 QString InputText = m_strErrorCode;
+                InputText.append(List.at(0));
+                InputText.append("\n");
                 InputText.append(m_strDescription);
                 if (List.count() > 1)
                     InputText.append(List.at(1));
                 InputText.append("\n\n");
                 InputText.append(m_strServiceHelpText);
+                InputText.append(":");
                 if (List.count() > 2)
                     InputText.append(List.at(2));
                 mp_ServiceHelpTextDlg->SetDialogTitle(m_strServiceHelpTextTitle);
@@ -239,7 +242,7 @@ void CSystemLogViewerDlg::RetranslateUI()
     m_strDescription = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Description: ",
                                                0, QApplication::UnicodeUTF8);
     m_strServiceHelpText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                      "Service Help Text Text", 0, QApplication::UnicodeUTF8);
+                                                      "Service Help Text", 0, QApplication::UnicodeUTF8);
     m_strServiceHelpTextTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
                                                        "Service Help Text Text", 0, QApplication::UnicodeUTF8);
     m_strMsgServerHelpTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
