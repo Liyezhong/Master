@@ -398,14 +398,8 @@ void HeatingStrategy::InitSelfTest()
     m_CurScenario = 2;
 }
 
-void HeatingStrategy::UpdateOvenParamAt110V(quint8 switchType)
+void HeatingStrategy::UpdateOvenParamAt110V()
 {
-    // Only current volage is 110V, we may start the logic
-    if (switchType != 2)
-    {
-        return;
-    }
-
     HardwareMonitor_t strctHWMonitor = mp_SchedulerCommandProcessor->HardwareMonitor();
     qreal curTemp = strctHWMonitor.TempOvenBottom1;
     for (int i=0; i<2; i++)
@@ -420,7 +414,7 @@ void HeatingStrategy::UpdateOvenParamAt110V(quint8 switchType)
         return;
     }
 
-    // When current voltage is 110V AND the former 9 hours AND melting point is less than 64
+    // At the former 9 hours AND melting point is less than 64
     m_OvenTop.functionModuleList["1"].TemperatureOffset +=5;
     m_OvenTop.functionModuleList["1"].TemperatureOffsetWithParaffin +=5;
     m_OvenTop.TimeRangeList["1"].second+=3600;

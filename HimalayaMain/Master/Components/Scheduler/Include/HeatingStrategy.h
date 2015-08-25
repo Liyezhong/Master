@@ -383,11 +383,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Update Oven parameters when voltage is 110V
-     *  \param  switchType = Voltage switch type, 0-unknown, 1-220V, 2-110V
-     *  \return void
      */
     /****************************************************************************/
-    void UpdateOvenParamAt110V(quint8 switchType);
+    void UpdateOvenParamAt110V();
 
 private slots:
     /****************************************************************************/

@@ -882,9 +882,9 @@ void CProgramSelfTest::HandleStateACHeating()
                 if(DCL_ERR_FCT_CALL_SUCCESS == ret)
                 {
                     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_STOP_ROTARYVALVE_TEMP_SUCCESS);
-                    // When voltage is 110V and temperature of RV Bottom is less than 25 degress, we need
+                    // When temperature of RV Bottom is less than 25 degress, we need
                     // make higher target temperature and more heating time
-                    mp_SchedulerThreadController->GetHeatingStrategy()->UpdateOvenParamAt110V(m_ASB5SwitchType);
+                    mp_SchedulerThreadController->GetHeatingStrategy()->UpdateOvenParamAt110V();
                     SendSignalSelfTestDone(true);
                 }
                 else
