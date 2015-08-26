@@ -198,7 +198,7 @@
 		<string id="1090584586" text1="Import failed. Required files are not complete." text2=""/>
 		<string id="1090584587" text1="Import failed. Unable to write files to flash." text2=""/>
 		<string id="1090584588" text1="Import failed. Rollback failed." text2=""/>
-		<string id="1090584589" text1="Import Succesful." text2=""/>
+		<string id="1090584589" text1="Import Successful." text2=""/>
 		<string id="1090584590" text1="Export Suceessful." text2=""/>
 		<string id="1090584591" text1="Export Failed." text2=""/>
 		<string id="1090584592" text1="Export failed. Directory creation failed." text2=""/>
