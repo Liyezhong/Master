@@ -643,5 +643,8 @@
 		<Event AlarmType="No" Code="" ErrorID="1090584605" Name="EVENT_SERVICE_DATETIME_UPDATED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="1090584605" Type="MSG" UserLog="TRUE"/>
 		</Event>
+		<Event AlarmType="No" Code="" ErrorID="1090584606" Name="EVENT_SERVICE_IMPORT_CANCEL">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="1090584606" Type="MSG" UserLog="TRUE"/>
+		</Event>
 	</Source>
 </EventConfigure>

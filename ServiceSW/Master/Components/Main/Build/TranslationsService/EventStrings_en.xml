@@ -188,12 +188,12 @@
 		<string id="100729017" text1="Manufacturing: Cleaning system send test report" text2=""/>
 		<string id="1090584577" text1="Service: Import failed. There are no files to import." text2=""/>
 		<string id="1090584578" text1="Import Failed." text2=""/>
-		<string id="1090584579" text1="No USB devices found in the system to import files." text2=""/>
-		<string id="1090584580" text1="No USB device for export found." text2=""/>
+		<string id="1090584579" text1="No USB devices found to import files." text2=""/>
+		<string id="1090584580" text1="No USB devices found to export files." text2=""/>
 		<string id="1090584581" text1="Import failed. Updating Rollback failed." text2=""/>
 		<string id="1090584582" text1="Import failed. Original import file was manipulated." text2=""/>
 		<string id="1090584583" text1="Import failed. Files which are in package does not support by this device." text2=""/>
-		<string id="1090584584" text1="mport failed. Format of import file is not correct." text2=""/>
+		<string id="1090584584" text1="Import failed. Format of import file is not correct." text2=""/>
 		<string id="1090584585" text1="Import failed. Type of import is not supported." text2=""/>
 		<string id="1090584586" text1="Import failed. Required files are not complete." text2=""/>
 		<string id="1090584587" text1="Import failed. Unable to write files to flash." text2=""/>
@@ -215,5 +215,6 @@
 		<string id="1090584603" text1="Service: Invalid pin entered." text2=""/>
 		<string id="1090584604" text1="IP address has been changed" text2=""/>
 		<string id="1090584605" text1="Date and time has been changed" text2=""/>
+		<string id="1090584606" text1="Import of files is cancelled." text2=""/>
 	</language>
 </strings>
