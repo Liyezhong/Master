@@ -1756,7 +1756,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             EventId = EVENT_GUI_LOGVIEWER_SERVICESERVICEHELPTEXT_DISPLAY_INFO;
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Service Help Text Text", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Service Help Text", 0, QApplication::UnicodeUTF8));
             Columns.append(0);
             Columns.append(1);
             Columns.append(2);

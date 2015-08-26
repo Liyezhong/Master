@@ -27,6 +27,7 @@
 #include <QStandardItemModel>
 #include <QFile>
 #include <QTextStream>
+#include <QItemDelegate>
 #include "LogViewerDialog/Include/LogFilter.h"
 
 namespace LogViewer {
@@ -34,6 +35,15 @@ namespace LogViewer {
 namespace Ui {
     class CLogContentDlg;
 }
+
+class MyItemDelegate:public QItemDelegate
+{
+public:
+    MyItemDelegate(QObject *parent=0);
+    void paint(QPainter * painter,
+           const QStyleOptionViewItem & option,
+           const QModelIndex & index) const;
+};
 
 /****************************************************************************/
 /**
@@ -79,7 +89,10 @@ private:
     CLogFilter *mp_LogFilter;          //!< Log Filter to get the models for table widget.
     QStringList m_HeaderLabels;         //!< Header tables for the table widget
     QList<int> m_Columns;              //!< Columns for the table widget
+
+    MyItemDelegate *mp_MyDelegate;
 };
+
 
 }   // end namespace LogViewer
 

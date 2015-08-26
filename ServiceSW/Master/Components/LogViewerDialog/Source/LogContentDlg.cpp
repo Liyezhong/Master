@@ -26,6 +26,8 @@
 #include "ui_LogContentDlg.h"
 #include <QTextStream>
 #include <QDebug>
+#include <QPainter>
+#include <QRect>
 
 namespace LogViewer {
 
@@ -35,7 +37,8 @@ CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Colu
     mp_Model(NULL),
     mp_LogFilter(NULL),
     m_HeaderLabels(HeaderLabels),
-    m_Columns(Columns)
+    m_Columns(Columns),
+    mp_MyDelegate(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -52,7 +55,6 @@ CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Colu
     mp_Ui->widget->SetContent(mp_TableWidget);
 
     (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
-
 }
 
 CLogContentDlg::~CLogContentDlg()
@@ -60,6 +62,9 @@ CLogContentDlg::~CLogContentDlg()
     try {
         delete mp_Ui;
         delete mp_TableWidget;
+        if (mp_MyDelegate) {
+            delete mp_MyDelegate;
+        }
     }
     catch (...) {
         // to please Lint
@@ -80,6 +85,10 @@ int CLogContentDlg::InitDialog(QString FilePath)
     mp_TableWidget->setModel(mp_Model);
 
     if (FilePath.contains("ServiceHelpText")) {
+        mp_MyDelegate = new MyItemDelegate;
+        mp_TableWidget->setItemDelegate(mp_MyDelegate);
+
+
         QMap<QString, QString> FileInfo = mp_LogFilter->GetFileInfo();
         QString Title ;
         qDebug()<<"FileInfo:"<<FileInfo;
@@ -99,5 +108,29 @@ int CLogContentDlg::InitDialog(QString FilePath)
 
     return true;
 }
+
+MyItemDelegate::MyItemDelegate(QObject * parent)
+:QItemDelegate(parent)
+{
+
+}
+void MyItemDelegate::paint(QPainter * painter,
+                           const QStyleOptionViewItem & option,
+                           const QModelIndex & index) const
+{
+    QString text = index.model()->data(index, Qt::DisplayRole).toString();
+
+
+    int x1, y1, x2, y2;
+    option.rect.getCoords(&x1, &y1, &x2, &y2);
+    QRect rect(x1+2, y1, x2-x1-4, y2-y1);
+    if (index.column()==1) {
+        painter->drawText( rect, Qt::TextWrapAnywhere , text );
+    }
+    else {
+        painter->drawText( rect, Qt::TextWordWrap , text );
+    }
+}
+
 }   // end of namespace LogViewer
 

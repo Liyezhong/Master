@@ -244,11 +244,11 @@ void CSystemLogViewerDlg::RetranslateUI()
     m_strServiceHelpText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
                                                       "Service Help Text", 0, QApplication::UnicodeUTF8);
     m_strServiceHelpTextTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                       "Service Help Text Text", 0, QApplication::UnicodeUTF8);
+                                                       "Service Help Text", 0, QApplication::UnicodeUTF8);
     m_strMsgServerHelpTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg",
                                                       "Service Help Text", 0, QApplication::UnicodeUTF8);
     m_strMsgServerHelpText = QApplication::translate("LogViewer::CSystemLogViewerDlg",
-                                                     "Service Help Text Text is not available.",
+                                                     "Service Help Text is not available.",
                                                      0, QApplication::UnicodeUTF8);
     m_strDate = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Date", 0, QApplication::UnicodeUTF8);
     m_strTimeStamp = QApplication::translate("LogViewer::CSystemLogViewerDlg", "TimeStamp", 0, QApplication::UnicodeUTF8);
