@@ -625,14 +625,14 @@ void CSVCDashboardWidget::PumpSelected()
         int Ret = (int)Diagnostics::RETURN_OK;
         if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 2 is Open
             qDebug()<<"To create pressure";
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
+            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
         }
         else if (mp_GV1->Status() == CGraphicsItemPart::Working) { //valve 1 is open
             qDebug()<<"To create vaccum";
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -30);//vaccum
+            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -40);//vaccum
         }
         else {
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 30);//pressure
+            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
         }
 
         if (Ret != (int)Diagnostics::RETURN_OK) {

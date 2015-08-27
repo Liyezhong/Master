@@ -103,7 +103,7 @@ int CAirHeatingTubeTest::Run(void)
     qreal AirCurrentTempMax = p_TestCase->GetParameter("AirCurrentTempMax").toFloat();
     if (AirCurrentTemp < AirCurrentTempMin || AirCurrentTemp > AirCurrentTempMax) {
         text = tr("Air Heating Tube Test failed.<br/>"
-                  "Please check Air heating tube, cables "
+                  "Please check air heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
         ret = RETURN_ERR_FAIL;
@@ -171,7 +171,7 @@ int CAirHeatingTubeTest::Run(void)
     timingDialog->accept();
     if (ret != RETURN_OK)
         text = tr("Air Heating Tube Test failed.<br/>"
-                  "Please check Air heating tube, cables "
+                  "Please check air heating tube, cables "
                   "and connections and ASB15 board. "
                   "Replace the defective part accordingly.");
     else
