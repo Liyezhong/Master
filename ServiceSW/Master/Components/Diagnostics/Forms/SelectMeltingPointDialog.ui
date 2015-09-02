@@ -35,7 +35,7 @@
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="labelPrompt">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select the correct paraffin&lt;br/&gt;melting point:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select the correct paraffin melting point:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>

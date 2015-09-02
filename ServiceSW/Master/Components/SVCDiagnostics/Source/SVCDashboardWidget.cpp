@@ -854,9 +854,7 @@ void CSVCDashboardWidget::UpdatePartStatus()
             DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
             m_RVTargetTempValue = p_TestCase->GetParameter("PreHeatingTargetTemp").toInt();
         }
-        else {
-            mp_RotaryValveTargetTemp->setText(QString("Target: %1\260C").arg(m_RVTargetTempValue));
-        }
+        mp_RotaryValveTargetTemp->setText(QString("Target: %1\260C").arg(m_RVTargetTempValue));
     }
     else {
         mp_RotaryValveTargetTemp->setText("Target: N/A");
