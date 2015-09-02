@@ -70,7 +70,7 @@ public:
      *  \param Status = status of lock
      */
     /****************************************************************************/
-    void SetLockStatus(bool Status) {
+    void SetLockStatus(int Status) {
         m_LockStatus = Status;
     }
 
@@ -94,7 +94,7 @@ private:
     QString m_EnteredPin;               //!< Service Pin
     QTimer* m_timer;       ///<  Definition/Declaration of variable m_timer
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;             //!< KeyBoard widget
-    bool m_LockStatus;      //!< flag of lock status
+    int m_LockStatus;      //!< flag of lock status 0-unlock, 1-lock for SVC Diagnostics of SSW. 2-lock for other part of SSW.
 private slots:
     /****************************************************************************/
     /*!

@@ -671,7 +671,7 @@ void CStartup::ServiceGuiInit()
     mp_MainWindow->show();
 #endif
 
-    mp_SVCSceenLockWidget->SetLockStatus(false);
+    mp_SVCSceenLockWidget->SetLockStatus(2);
     mp_SVCSceenLockWidget->StartTimer();
 }
 
@@ -1890,11 +1890,11 @@ void CStartup::OnCurrentTabChanged(int TabIndex)
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SVCDIAGNOSTICS_ACCEPT_RISK);
             mp_SVCDashboardWidget->TimerStart(true);
             mp_SVCDashboardWidget->UpdatePartStatus();
-            mp_SVCSceenLockWidget->SetLockStatus(true);
+            mp_SVCSceenLockWidget->SetLockStatus(1);
         }
         else {
             mp_SVCDashboardWidget->TimerStart(false);
-            mp_SVCSceenLockWidget->SetLockStatus(false);
+            mp_SVCSceenLockWidget->SetLockStatus(2);
         }
     }
     m_CurrentTabIndex = TabIndex;

@@ -14,7 +14,7 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     //QWidget(p_Parent),
     ui(new Ui::CSVCScreenLockWidget),
     mp_KeyBoardWidget(NULL),
-    m_LockStatus(true)
+    m_LockStatus(0)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -30,7 +30,7 @@ CSVCScreenLockWidget::CSVCScreenLockWidget(QWidget *p_Parent) :
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD, NULL, this);
     m_timer = new QTimer(this);
     m_timer->setInterval(1200000);//20 mintues
-    //m_timer->setInterval(30000);//0.5 mins for test
+    //m_timer->setInterval(60000);//1 mins for test
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     //m_timer->start();
 }
@@ -50,11 +50,17 @@ CSVCScreenLockWidget::~CSVCScreenLockWidget()
 
 void CSVCScreenLockWidget::StartTimer()
 {
+    if (m_LockStatus == 0) {
+        return ;
+    }
     m_timer->start();
 }
 
 void CSVCScreenLockWidget::AppIdleForLongTime()
 {
+    if (m_LockStatus == 0) {
+        return ;
+    }
     m_timer->stop();
     qDebug()<<"test case flag :"<<Diagnostics::CTestBase::IsTestRuning;
     if (Diagnostics::CTestBase::IsTestRuning) {
@@ -62,7 +68,7 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
         return;
     }
 
-    if (m_LockStatus) {        
+    if (m_LockStatus == 1) {
         ui->labelText->setText(QString("<font color='Red'>%1</font>").arg("Instrument was left in a critical state and must be switched off immediately.<br>"
                                                                           "Do not open the retort and do not remove any reagent bottle or wax bath <br>"
                                                                           "before switching off. Non-compliance might harm your health!<br>"
@@ -70,7 +76,7 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
                                                                           "wait for reboot. Then carefully open the retort. If necessary call Service <br>"
                                                                           "to resolve a potential issue."));
     }
-    else {
+    else if (m_LockStatus == 2){
         ui->labelText->setText("Instrument was left in service software.<br>"
                                "Touch the screen to reenter the service software or switch the instrument off.");
     }
@@ -81,11 +87,14 @@ void CSVCScreenLockWidget::AppIdleForLongTime()
 
 void CSVCScreenLockWidget::OnInteractStart()
 {
+    if (m_LockStatus == 0) {
+        return;
+    }
     m_timer->stop();
     m_timer->start();
 
     if (this->isVisible()) {
-        if (m_LockStatus) {
+        if (m_LockStatus == 1) {
             return;
         }
         this->hide();
