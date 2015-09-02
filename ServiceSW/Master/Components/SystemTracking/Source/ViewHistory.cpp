@@ -159,6 +159,8 @@ void CViewHistory::UpdateGUI(void)
     if (mp_ModuleList != NULL) {
         AddItem(mp_ModuleList->GetModuleTimeStamp());
     }
+
+    m_SelectedRowValues.clear();
 }
 
 /****************************************************************************/

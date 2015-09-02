@@ -126,7 +126,7 @@ void CViewHistoryDlg::AddItem(ServiceDataManager::CModuleDataList *p_ModuleList)
                                             ("SystemTracking::CViewHistoryDlg", "Operating Hours",
                                              0, QApplication::UnicodeUTF8));
         QStandardItem *DateOfProduction = new QStandardItem(QApplication::translate
-                                            ("SystemTracking::CViewHistoryDlg", "Date Of Production",
+                                            ("SystemTracking::CViewHistoryDlg", "Date Of Exchange",
                                              0, QApplication::UnicodeUTF8));
 
 

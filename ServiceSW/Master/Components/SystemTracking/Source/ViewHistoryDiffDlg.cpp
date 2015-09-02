@@ -217,7 +217,7 @@ QStandardItem* CViewHistoryDiffDlg::AddModuleInfo(ServiceDataManager::CModuleDat
                                                           ("SystemTracking::CViewHistoryDiffDlg", "Operating Hours",
                                                            0, QApplication::UnicodeUTF8));
         QStandardItem *DateOfProduction = new QStandardItem(QApplication::translate
-                                                      ("SystemTracking::CViewHistoryDiffDlg", "Date Of Production",
+                                                      ("SystemTracking::CViewHistoryDiffDlg", "Date Of Exchange",
                                                        0, QApplication::UnicodeUTF8));
 
         QStandardItem *SN = new QStandardItem(Module.GetSerialNumber());
