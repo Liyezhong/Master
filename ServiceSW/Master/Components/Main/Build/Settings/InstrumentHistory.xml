@@ -70,7 +70,7 @@
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
                 <parameter name="DateOfExchange" unit="QString">DATE</parameter>
             </SubModule>
-            <SubModule name="Ventilation Fan" type="Monitor" description="Touch screen">
+            <SubModule name="Ventilation Fan" type="Monitor" description="Ventilation Fan">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
                 <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="EndTestDate" unit="QDate">DATE</parameter>
