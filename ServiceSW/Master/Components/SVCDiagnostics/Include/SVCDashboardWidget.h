@@ -354,6 +354,12 @@ private:
     SVCLabel* mp_RotaryValveTargetTemp; //!< Rotary valve target temperature label
 
     SVCLabel* mp_PressureLabel;         //!< Pressure label
+
+    int m_OvenTargetTempValue;
+    int m_RetortTargetTempValue;
+    int m_RVTargetTempValue;
+    int m_LiquidTubeTempValue;
+    int m_AirTubeTempValue;
 };
 
 }//end of namespace

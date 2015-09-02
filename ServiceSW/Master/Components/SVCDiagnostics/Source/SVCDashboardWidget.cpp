@@ -40,7 +40,12 @@ using namespace SVCDiagnostics;
 
 CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     QWidget(p_Parent),
-    mp_Ui(new Ui::CSVCDashboardWidget)
+    mp_Ui(new Ui::CSVCDashboardWidget),
+    m_OvenTargetTempValue(-1),
+    m_RetortTargetTempValue(-1),
+    m_RVTargetTempValue(-1),
+    m_LiquidTubeTempValue(-1),
+    m_AirTubeTempValue(-1)
 {
     mp_Ui->setupUi(this);
     mp_Ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
@@ -271,6 +276,7 @@ void CSVCDashboardWidget::RetortSelected()
         }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        m_RetortTargetTempValue = TargetTemp;
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RetortStartHeating(TargetTemp+7, TargetTemp+2);
         delete p_TempSelectionDlg;
 
@@ -317,6 +323,7 @@ void CSVCDashboardWidget::OvenSelected()
         }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        m_OvenTargetTempValue = TargetTemp;
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->OvenStartHeating(TargetTemp, TargetTemp);
         delete p_TempSelectionDlg;
         if (Ret != (int)Diagnostics::RETURN_OK) {
@@ -361,6 +368,7 @@ void CSVCDashboardWidget::RotaryValveSelected()
         }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        m_RVTargetTempValue = TargetTemp;
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
         if (Ret != (int)Diagnostics::RETURN_OK) {
@@ -406,6 +414,7 @@ void CSVCDashboardWidget::AirTubeSelected()
         }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        m_AirTubeTempValue = TargetTemp;
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->AirTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
 
@@ -452,6 +461,7 @@ void CSVCDashboardWidget::LiquidTubeSelected()
         }
 
         int TargetTemp = p_TempSelectionDlg->GetTargetTemp();
+        m_LiquidTubeTempValue = TargetTemp;
         int Ret = Diagnostics::ServiceDeviceProcess::Instance()->LiquidTubeStartHeating(TargetTemp);
         delete p_TempSelectionDlg;
         qDebug()<<"Liquid tube heating result:"<<Ret;
@@ -812,36 +822,70 @@ void CSVCDashboardWidget::UpdatePartStatus()
     qDebug()<<"retort temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_Retort->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
     if (StatusIsOn) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
-        mp_RetortTargetTemp->setText(QString("Target: %1\260C").arg(p_TestCase->GetParameter("TargetTemp")));;
+        if (m_RetortTargetTempValue == -1) {
+           DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRetortPreTest");
+           m_RetortTargetTempValue = p_TestCase->GetParameter("TargetTemp").toInt();
+        }
+        mp_RetortTargetTemp->setText(QString("Target: %1\260C").arg(m_RetortTargetTempValue));
+    }
+    else {
+        mp_RetortTargetTemp->setText("Target: N/A");
     }
 
     Ret = p_DevProc->OvenTempControlIsOn(&StatusIsOn);
     qDebug()<<"Oven temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_Oven->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
     if (StatusIsOn) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
-        mp_OvenTargetTemp->setText(QString("Target: %1\260C").arg(p_TestCase->GetParameter("TargetTemp")));;
+        if (m_OvenTargetTempValue == -1) {
+            DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SOvenPreTest");
+            m_OvenTargetTempValue = p_TestCase->GetParameter("TargetTemp").toInt();
+        }
+        mp_OvenTargetTemp->setText(QString("Target: %1\260C").arg(m_OvenTargetTempValue));
+    }
+    else {
+        mp_OvenTargetTemp->setText("Target: N/A");
     }
 
     Ret = p_DevProc->RVTempControlIsOn(&StatusIsOn);
     qDebug()<<"rotary valve temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_RotaryValve->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
     if (StatusIsOn) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
-        mp_RotaryValveTargetTemp->setText(QString("Target: %1\260C").arg(p_TestCase->GetParameter("PreHeatingTargetTemp")));;
+        if (m_RVTargetTempValue == -1) {
+            DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SRVPreTest");
+            m_RVTargetTempValue = p_TestCase->GetParameter("PreHeatingTargetTemp").toInt();
+        }
+        else {
+            mp_RotaryValveTargetTemp->setText(QString("Target: %1\260C").arg(m_RVTargetTempValue));
+        }
+    }
+    else {
+        mp_RotaryValveTargetTemp->setText("Target: N/A");
     }
 
     Ret = p_DevProc->AirTubeTempControlIsOn(&StatusIsOn);
     qDebug()<<"air tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_AirHeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
+    if (StatusIsOn) {
+        if (m_AirTubeTempValue != -1) {
+            mp_AirHeatingTubeTemp->setText(QString("Target: %1\260C").arg(m_AirTubeTempValue));
+        }
+    }
+    else {
+        mp_AirHeatingTubeTemp->setText("Target: N/A");
+    }
 
     Ret = p_DevProc->LiquidTubeTempControlIsOn(&StatusIsOn);
     qDebug()<<"liquid tube temp control state:"<<StatusIsOn<<" ret = "<<Ret;
     mp_HeatingTube->SetStatus(StatusIsOn ? (CGraphicsItemPart::Working) : (CGraphicsItemPart::Normal));
     if (StatusIsOn) {
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
-        mp_HeatingTargetTemp->setText(QString("Target: %1\260C").arg(p_TestCase->GetParameter("PreHeatingTargetTemp")));;
+        if (m_LiquidTubeTempValue == -1) {
+            DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::ServiceInstance().GetTestCase("SLTubePreTest");
+            m_LiquidTubeTempValue = p_TestCase->GetParameter("PreHeatingTargetTemp").toInt();
+        }
+        mp_HeatingTargetTemp->setText(QString("Target: %1\260C").arg(m_LiquidTubeTempValue));
+    }
+    else {
+        mp_HeatingTargetTemp->setText("Target: N/A");
     }
 
     mp_Fan->SetStatus(p_DevProc->PumpGetFan() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
