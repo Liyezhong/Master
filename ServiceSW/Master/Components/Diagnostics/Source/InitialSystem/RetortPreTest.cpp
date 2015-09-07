@@ -130,7 +130,7 @@ void CRetortPreTest::ShowFailMessage(int ErrorCode)
         Text = "Pre-test Retort failed .<br>" \
                 "Detection of Retort temperature failed. Sequentially check " \
                 "resistance of temperature sensor, function of ASB5 and retort heating elements." \
-                "exchange ASB5 or retort accordingly and repeat this test.";
+                "Exchange ASB5 or retort accordingly and repeat this test.";
     }
     else if (ErrorCode == 2) {
         Text = "Pre-test Retort failed .<br>" \

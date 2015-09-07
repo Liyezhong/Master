@@ -135,7 +135,7 @@ void CSystem::StartSealingTest(void)
 
 void CSystem::StartFillingNDrainingTest(void)
 {
-    QString TestName = mp_Ui->testFillingDraining->text();
+    QString TestName = "Filling&Draining Test";
     Global::EventObject::Instance().RaiseEvent(EVENT_COMMON_ID, Global::tTranslatableStringList() << QString("%1 is requested.").arg(TestName));
 
     emit SetGUITabEnable(false);

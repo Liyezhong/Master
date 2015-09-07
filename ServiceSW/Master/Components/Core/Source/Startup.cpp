@@ -492,13 +492,13 @@ void CStartup::GuiInit(QString debugMode)
     RemoveFiles();
     if (debugMode.startsWith("Service") || debugMode.startsWith("ts_Service"))
     {
-        CServiceUtils::delay(1000);
+        CServiceUtils::delay(2500);
         ServiceGuiInit();
         (void) FileExistanceCheck();
     }
     else if (debugMode.startsWith("ts_Manufacturing") || debugMode.startsWith("Manufacturing"))
     {
-        CServiceUtils::delay(1000);
+        CServiceUtils::delay(2500);
         InitManufacturingDiagnostic();
         (void) FileExistanceCheck();
     }

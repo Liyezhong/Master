@@ -212,6 +212,7 @@ void CSVCScreenLockWidget::HideKeyBoard()
 
 void CSVCScreenLockWidget::OnESCClicked()
 {
+    HideKeyBoard();
     DisplayKeyBoard();
 }
 

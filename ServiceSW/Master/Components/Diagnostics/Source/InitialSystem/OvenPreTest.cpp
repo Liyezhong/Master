@@ -138,7 +138,7 @@ void COvenPreTest::ShowFailMessage(int ErrorCode)
         Text = "Pre-test Oven failed .<br>" \
                 "Detection of Oven temperature failed. Sequentially check " \
                 "resistance of temperature sensors, function of ASB5 and oven heating elements." \
-                "exchange ASB5 or oven accordingly and repeat this test.";
+                "Exchange ASB5 or oven accordingly and repeat this test.";
     }
     else if (ErrorCode == 2) {
         Text = "Pre-test Oven failed .<br>" \

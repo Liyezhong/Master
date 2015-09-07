@@ -119,7 +119,7 @@ int main(int Argc, char *p_Argv[])
     thrMasterThread.start();
 
     QString param;
-    if (Argc==2) {
+    if (Argc>=2) {
         param = QString("%1").arg(p_Argv[1]);
     }
 
