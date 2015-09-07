@@ -182,7 +182,7 @@ int CDrainReagentTest::ShowConfirmDlg(int StepNum)
     switch (StepNum) {
     case 1:
         Text = "Please visually observe the paraffin melting status in retort. As "
-                "soon the sides of paraffin block are molten, remove remaining "
+                "soon as the sides of paraffin block are molten, remove remaining "
                 "paraffin manually and ensure that existing specimen are provided to "
                 "the customer.";
         break;
