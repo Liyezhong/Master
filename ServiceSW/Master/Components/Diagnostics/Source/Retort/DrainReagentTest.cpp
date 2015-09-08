@@ -221,7 +221,7 @@ void CDrainReagentTest::ShowFinishDlg(int RetNum)
         Text = "Draining of retort failed. Rotary Valve cannot rotate, due to the "
                 "minimum temperature has not been reached. "
                 "It might work in some minutes when solidified paraffin in the rotary valve "
-                "is molten. Repeat this test again in about 15mins.";
+                "is molten. Retry draining in about 15mins.";
         break;
     case 5:
         Text = "Building Vacuum failed.<br>"

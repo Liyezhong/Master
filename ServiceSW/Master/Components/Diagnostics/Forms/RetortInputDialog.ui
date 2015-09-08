@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
-    <height>323</height>
+    <width>363</width>
+    <height>354</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>156</y>
+     <y>170</y>
      <width>321</width>
      <height>27</height>
     </rect>
@@ -29,8 +29,14 @@
      <x>20</x>
      <y>40</y>
      <width>331</width>
-     <height>111</height>
+     <height>121</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>331</width>
+     <height>121</height>
+    </size>
    </property>
    <property name="text">
     <string>Please open the retort lid and use a calibrated 
@@ -45,7 +51,7 @@ measured by calibrated external thermometer</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>240</y>
+     <y>250</y>
      <width>321</width>
      <height>27</height>
     </rect>
@@ -55,7 +61,7 @@ measured by calibrated external thermometer</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>186</y>
+     <y>190</y>
      <width>331</width>
      <height>61</height>
     </rect>
@@ -69,7 +75,7 @@ for verification</string>
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>270</y>
+     <y>290</y>
      <width>87</width>
      <height>63</height>
     </rect>
@@ -97,13 +103,6 @@ for verification</string>
     </item>
    </layout>
   </widget>
-  <zorder>lineEdit</zorder>
-  <zorder>label</zorder>
-  <zorder>lineEdit_2</zorder>
-  <zorder>label_2</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>ok</zorder>
  </widget>
  <resources/>
  <connections/>
