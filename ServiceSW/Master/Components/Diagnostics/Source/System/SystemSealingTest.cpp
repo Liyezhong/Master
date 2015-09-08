@@ -220,7 +220,7 @@ bool CSystemSealingTest::TestKeepPressure(float TargetPressure, float DiffPressu
         Ret = true;
     }
     mp_MessageDlg->HideWaitingDialog();
-    TestReleasePressure(false);
+
     return Ret;
 }
 
