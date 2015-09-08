@@ -93,11 +93,25 @@ public slots:
     bool ConfigureVoltageMonitor(bool Enable, quint8 Filter, quint8 SamplingPeriod,
                                  quint16 GoodThreshold, quint16 FailThreshold);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get Voltage for module
+     *
+     *  \return Voltage of a module
+     */
+    /****************************************************************************/
     quint16 GetVoltage() { return m_ModuleVoltage; }
     bool ReqVoltageState();
     bool ConfigureCurrentMonitor(bool Enable, quint8 Filter, quint8 SamplingPeriod,
                                  quint16 GoodThreshold, quint16 FailThreshold);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Get Current for module
+     *
+     *  \return Current of a module
+     */
+    /****************************************************************************/
     quint16 GetCurrent() {return m_ModuleCurrent; }
     bool ReqCurrentState();
     QString ReqUniqueNumber();

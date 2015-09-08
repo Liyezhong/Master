@@ -36,10 +36,30 @@ namespace Ui {
     class CLogContentDlg;
 }
 
+/****************************************************************************/
+/**
+ * \brief This implements the class MyItemDelegate
+ */
+/****************************************************************************/
 class MyItemDelegate:public QItemDelegate
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam parent = Parent object
+     */
+    /****************************************************************************/
     MyItemDelegate(QObject *parent=0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To overload paint function
+     *  \iparam painter = Pointer to a painter
+     *  \iparam option = Style option for an item.
+     *  \iparam index = An item to paint
+     */
+    /****************************************************************************/
     void paint(QPainter * painter,
            const QStyleOptionViewItem & option,
            const QModelIndex & index) const;
