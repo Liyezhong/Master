@@ -749,7 +749,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>A conexão de rede não está ligada.</translation>
     </message>
     <message>
@@ -986,7 +986,9 @@
         <source>Cassettes
 since
 change</source>
-        <translation>Cassetes desde a troca</translation>
+        <translation>Cassetes 
+desde a 
+troca</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -994,14 +996,17 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>Ciclos desde a mudança</translation>
+        <translation>Ciclos 
+desde a 
+mudança</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="384"/>
         <source>Expiry
 Date</source>
-        <translation>Data de validade</translation>
+        <translation>Data de
+validade</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
@@ -1130,6 +1135,11 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Saving settings ...</source>
         <translation>Salvar configurações...</translation>
@@ -1175,7 +1185,6 @@ Date</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
         <source>Information</source>
@@ -1305,7 +1314,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <source>Remote Session has been requested by a remote user</source>
+        <source>Remote Session has been requested by a remote user.</source>
         <translation>Uma sessão remota foi solicitada por um usuário remoto.</translation>
     </message>
     <message>
@@ -1434,7 +1443,9 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation>Cassetes desde a troca</translation>
+        <translation>Cassetes
+desde a 
+troca</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1442,14 +1453,17 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>Ciclos desde a mudança</translation>
+        <translation>Ciclos
+desde a 
+mudança</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="499"/>
         <source>Expiry
 Date</source>
-        <translation>Data de validade</translation>
+        <translation>Data de
+validade</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
@@ -2940,13 +2954,13 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Cassettes</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
@@ -3336,6 +3350,11 @@ Date</source>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
         <translation>Falha na verificação do frasco! Verifique os detalhes no status da verificação de frasco.</translation>
     </message>
+    <message>
+        <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
+        <source>Bottle check</source>
+        <translation>Verificação do frasco</translation>
+    </message>
 </context>
 <context>
     <name>Settings::CBottleCheckStatusModel</name>
@@ -3591,8 +3610,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
-        <source>Network port is not correct</source>
-        <translation>A conexão de rede não está ligada</translation>
+        <source>Network port is not correct.</source>
+        <translation>A conexão de rede não está ligada.</translation>
     </message>
 </context>
 <context>
@@ -3848,7 +3867,7 @@ Date</source>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
         <source>System is performing self-testing
 Please wait...</source>
-        <translation>O sistema está executando um autoteste...
+        <translation>O sistema está executando um autoteste
 Aguarde...</translation>
     </message>
 </context>

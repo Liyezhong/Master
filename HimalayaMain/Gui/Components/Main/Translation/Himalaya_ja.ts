@@ -749,7 +749,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>ネットワークポートが不正です。</translation>
     </message>
     <message>
@@ -1130,6 +1130,11 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Saving settings ...</source>
         <translation>設定を保存しています...</translation>
@@ -1175,7 +1180,6 @@ Date</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
         <source>Information</source>
@@ -1305,7 +1309,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <source>Remote Session has been requested by a remote user</source>
+        <source>Remote Session has been requested by a remote user.</source>
         <translation>リモートユーザーによってリモートセッションが要求されています。</translation>
     </message>
     <message>
@@ -2940,13 +2944,13 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation type="unfinished"></translation>
+        <translation>カセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation type="unfinished"></translation>
+        <translation>サイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
@@ -3336,6 +3340,11 @@ Date</source>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
         <translation>ボトルチェックに失敗しました! ボトルチェックステータスリストで詳細をチェックしてください。</translation>
     </message>
+    <message>
+        <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
+        <source>Bottle check</source>
+        <translation>ボトルチェック</translation>
+    </message>
 </context>
 <context>
     <name>Settings::CBottleCheckStatusModel</name>
@@ -3591,7 +3600,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>ネットワークポートが不正です。</translation>
     </message>
 </context>

@@ -749,7 +749,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>Falscher Netzwerk-Port.</translation>
     </message>
     <message>
@@ -986,7 +986,9 @@
         <source>Cassettes
 since
 change</source>
-        <translation>Kassetten seit Wechsel</translation>
+        <translation>Kassetten
+seit
+Wechsel</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -994,7 +996,9 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>Zyklen seit Wechsel</translation>
+        <translation>Zyklen
+seit
+Wechsel</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
@@ -1130,6 +1134,11 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Saving settings ...</source>
         <translation>Einstellungen speichern ...</translation>
@@ -1175,7 +1184,6 @@ Date</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
         <source>Information</source>
@@ -1305,7 +1313,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <source>Remote Session has been requested by a remote user</source>
+        <source>Remote Session has been requested by a remote user.</source>
         <translation>Fernsession wurde von fernem Benutzer angefordert.</translation>
     </message>
     <message>
@@ -1434,7 +1442,9 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation>Kassetten seit Wechsel</translation>
+        <translation>Kassetten
+seit
+Wechsel</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1442,7 +1452,9 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>Zyklen seit Wechsel</translation>
+        <translation>Zyklen
+seit
+Wechsel</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
@@ -2940,13 +2952,13 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Kassetten</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation type="unfinished"></translation>
+        <translation>Zyklen</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
@@ -3336,6 +3348,11 @@ Date</source>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
         <translation>Flaschenprüfung fehlgeschlagen! Bitte Details in der Flaschenprüfungsstatusliste prüfen.</translation>
     </message>
+    <message>
+        <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
+        <source>Bottle check</source>
+        <translation>Flaschenprüfung</translation>
+    </message>
 </context>
 <context>
     <name>Settings::CBottleCheckStatusModel</name>
@@ -3591,7 +3608,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>Falscher Netzwerk-Port.</translation>
     </message>
 </context>
@@ -3610,7 +3627,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="109"/>
         <source>Regional Settings</source>
-        <translation>Regionaleinstellungen</translation>
+        <translation>Regionale Einstellungen</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="120"/>
@@ -3630,7 +3647,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
         <source>System Setup</source>
-        <translation>Systemeinstellungen</translation>
+        <translation>System Einstellungen</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>
@@ -3645,7 +3662,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="187"/>
         <source>Event View</source>
-        <translation>Ereignisanzeige</translation>
+        <translation>Ereignis- ansicht</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="198"/>
@@ -3848,7 +3865,7 @@ Date</source>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
         <source>System is performing self-testing
 Please wait...</source>
-        <translation>System führt einen Selbsttest durch...
+        <translation>System führt einen Selbsttest durch
 Bitte warten...</translation>
     </message>
 </context>

@@ -159,7 +159,9 @@ namespace Settings {
         m_strWarning = QApplication::translate("Settings::CBottleCheckStatusDlg", "Warning", 0, QApplication::UnicodeUTF8);
         m_strOK = QApplication::translate("Settings::CBottleCheckStatusDlg", "OK", 0, QApplication::UnicodeUTF8);
         m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check failed! Please check the details in the Bottle check status list.", 0, QApplication::UnicodeUTF8);
+        QString dlgTitle = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check", 0, QApplication::UnicodeUTF8);
 
+        SetDialogTitle(dlgTitle);
         Inilialize();
     }
 

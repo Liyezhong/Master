@@ -180,7 +180,7 @@ void CModifyProgramDlg::CloseDialogs()
 /****************************************************************************/
 void CModifyProgramDlg::ResizeHorizontalSection()
 {
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 45);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 100);

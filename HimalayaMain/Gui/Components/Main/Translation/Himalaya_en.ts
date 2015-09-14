@@ -749,7 +749,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1130,6 +1130,11 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Saving settings ...</source>
         <translation type="unfinished"></translation>
@@ -1175,7 +1180,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
         <source>Information</source>
@@ -1305,7 +1309,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <source>Remote Session has been requested by a remote user</source>
+        <source>Remote Session has been requested by a remote user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3336,6 +3340,11 @@ Date</source>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
+        <source>Bottle check</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Settings::CBottleCheckStatusModel</name>
@@ -3591,7 +3600,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -749,7 +749,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>网络端口不正确。</translation>
     </message>
     <message>
@@ -1130,6 +1130,11 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Saving settings ...</source>
         <translation>正在保存设置...</translation>
@@ -1175,7 +1180,6 @@ Date</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
         <source>Information</source>
@@ -1305,7 +1309,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <source>Remote Session has been requested by a remote user</source>
+        <source>Remote Session has been requested by a remote user.</source>
         <translation>远程用户已请求了远程会话。</translation>
     </message>
     <message>
@@ -2942,13 +2946,13 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation type="unfinished"></translation>
+        <translation>包埋盒数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation type="unfinished"></translation>
+        <translation>循环数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
@@ -3338,6 +3342,11 @@ Date</source>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
         <translation>瓶检查失败！请查看瓶检查状态列表中的详细信息。</translation>
     </message>
+    <message>
+        <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
+        <source>Bottle check</source>
+        <translation>瓶检查</translation>
+    </message>
 </context>
 <context>
     <name>Settings::CBottleCheckStatusModel</name>
@@ -3593,7 +3602,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
-        <source>Network port is not correct</source>
+        <source>Network port is not correct.</source>
         <translation>网络端口不正确。</translation>
     </message>
 </context>
@@ -3850,7 +3859,7 @@ Date</source>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
         <source>System is performing self-testing
 Please wait...</source>
-        <translation>系统正在执行自检…
+        <translation>系统正在执行自检
 请等待...</translation>
     </message>
 </context>
