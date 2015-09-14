@@ -24,6 +24,7 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
@@ -1571,6 +1572,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         {
             m_SchedulerMachine->EnterRcDraining();
         }
+        else if(CTRL_CMD_RC_FORCEDRAINING == ctrlCmd)
+        {
+            m_SchedulerMachine->EnterRcForceDraining();
+        }
         else if(CTRL_CMD_RS_DRAINATONCE == ctrlCmd)
         {
             m_SchedulerMachine->EnterRsDrainAtOnce();
@@ -1672,6 +1677,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RC_DRAINING == currentState)
     {
          m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_FORCEDRAINING == currentState)
+    {
+         m_SchedulerMachine->HandleForceDrainingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_DRAINATONCE == currentState)
     {
@@ -1867,6 +1876,12 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_DRAINING;
         }
+        if (cmd == "rc_forcedraining")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RC_FORCEDRAINING;
+        }
+
         if (cmd == "rs_drainatonce")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -4070,6 +4085,22 @@ void SchedulerMainThreadController::RCDrain()
     cmd->SetDelayTime(5000);
     cmd->SetDrainPressure(40.0);
     cmd->SetIgnorePressure(true);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    LogDebug("Notice GUI Draining started");
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_TickTimer.start();
+}
+
+void SchedulerMainThreadController::RCForceDrain()
+{
+    LogDebug("Send cmd to DCL to RcForceDrain");
+    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, this);
+    cmd->SetRVPosition(this->GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID));
+    cmd->SetDrainPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     LogDebug("Notice GUI Draining started");

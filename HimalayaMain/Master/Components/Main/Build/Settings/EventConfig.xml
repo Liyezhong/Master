@@ -93,8 +93,8 @@
 			<Step ID="6" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040161" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" ServiceString="67175941" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="67176204" ButtonType="OK" NextStepOnTimeOut="6" TimeOut="15m" StatusBar="YES"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="5" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="ACT" Action="RC_ForceDraining" NextStepOnFail="5" NextStepOnSuccess="2"/>
 			<Step ID="2" Type="MSG" StringID="67176212" ButtonType="RETRY" NextStepOnClickRetry="3" NextStepOnTimeOut="6" TimeOut="15m" StatusBar="YES"/>
 			<Step ID="3" Type="ACT" Action="RC_Filling" NextStepOnFail="5" NextStepOnSuccess="4"/>
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>
@@ -102,8 +102,8 @@
 			<Step ID="6" Type="ACT" Action="RS_Tissue_Protect"/>
 		</Event>
 		<Event Code="" ErrorID="513040163" ErrorType="ERROR" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175942" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="2"/>
-			<Step ID="1" Type="MSG" StringID="67176203" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="5" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="ACT" Action="RC_ForceDraining" NextStepOnFail="5" NextStepOnSuccess="2"/>
 			<Step ID="2" Type="MSG" StringID="67176212" ButtonType="RETRY" NextStepOnClickRetry="3" StatusBar="YES"/>
 			<Step ID="3" Type="ACT" Action="RC_Filling" NextStepOnFail="5" NextStepOnSuccess="4"/>
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>

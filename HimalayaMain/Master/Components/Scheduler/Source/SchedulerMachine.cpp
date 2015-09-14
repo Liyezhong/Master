@@ -114,6 +114,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RcVacuum = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcFilling = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcForceDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RsDrainAtOnce = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -296,6 +297,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_RcDraining.data(), entered(), mp_SchedulerThreadController, RCDrain());
     CONNECTSIGNALSLOT(mp_RcDraining.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_RcDraining->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RC_ForceDraining
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcForceDraining()), mp_RcForceDraining.data());
+    CONNECTSIGNALSLOT(mp_RcForceDraining.data(), entered(), mp_SchedulerThreadController, RCForceDrain());
+    CONNECTSIGNALSLOT(mp_RcForceDraining.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
+    mp_RcForceDraining->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_DrainAtOnce
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsDrainAtOnce()), mp_RsDrainAtOnce.data());
@@ -654,6 +661,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return SM_ERR_RC_DRAINING;
         }
+        else if (mp_SchedulerMachine->configuration().contains(mp_RcForceDraining.data()))
+        {
+            return SM_ERR_RC_FORCEDRAINING;
+        }
         else if (mp_SchedulerMachine->configuration().contains(mp_RsDrainAtOnce.data()))
         {
             return SM_ERR_RS_DRAINATONCE;
@@ -1002,6 +1013,12 @@ void CSchedulerStateMachine::EnterRcDraining()
 {
     mp_SchedulerThreadController->StopTimer();
     emit SigRcDraining();
+}
+
+void CSchedulerStateMachine::EnterRcForceDraining()
+{
+    mp_SchedulerThreadController->StopTimer();
+    emit SigRcForceDraining();
 }
 
 void CSchedulerStateMachine::EnterRsDrainAtOnce()
@@ -1387,6 +1404,21 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
 void CSchedulerStateMachine::HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     if( "Scheduler::ALDraining" == cmdName)
+    {
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            OnTasksDone(false);
+        }
+        else
+        {
+            OnTasksDone(true);
+        }
+    }
+}
+
+void CSchedulerStateMachine::HandleForceDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+{
+    if("Scheduler::IDForceDraining" == cmdName)
     {
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
