@@ -97,11 +97,18 @@ int CLiquidHoseTestDlg::RunTest()
     }
 
     this->show();
-    mp_Ui->labelStatus->setText("Rotary Valve is moving to sealing position 1");
-    if (p_DevProc->RVMovePosition(false, 1) != RETURN_OK) {
+    if (m_BottleNumberList.count() > 1) {
+        BottleNumber = 1;
+    }
+    else if(m_BottleNumberList.count() == 1) {
+        BottleNumber = m_BottleNumberList.at(0);
+    }
+    mp_Ui->labelStatus->setText(QString("Rotary Valve is moving to sealing position %1").arg(BottleNumber));
+    if (p_DevProc->RVMovePosition(false, BottleNumber) != RETURN_OK) {
         mp_MessageDlg->ShowRVMoveFailedDlg(m_MessageTitle);
         return RETURN_ERR_FAIL;
     }
+
     (void)p_DevProc->PumpSetFan(1);
     for (int i = 0; i < m_BottleNumberList.count(); ++i) {
         if (!CreatePressure(TargetPressure, TimeOut)) {

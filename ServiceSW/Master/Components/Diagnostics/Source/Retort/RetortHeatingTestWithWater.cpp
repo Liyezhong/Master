@@ -169,8 +169,22 @@ int CHeatingTestWithWater::Run(void)
     }
     text = tr("Start filling");
     dlg->ShowWaitingDialog(title, text);
-    (void)dev->PumpSucking();
+    int RetCode = dev->PumpSucking();
     (void)dev->LSStopHeating();
+
+    if (RetCode != 1) {
+        text = tr("Start draining");
+        dlg->ShowWaitingDialog(title, text);
+        (void)dev->PumpDraining();
+        dlg->HideWaitingDialog();
+
+        text = tr("Retort Heating Test (with Water) failed.<br/>"
+                  "Level sensor did not detect any liquid within 2mins. "
+                  "Clean level sensor, perform Retort_Level Sensor Dection test.");
+        dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
+        return RETURN_ERR_FAIL;
+    }
+
     text = tr("Rotating Rotary Valve to sealing position 13");
     dlg->ShowWaitingDialog(title, text);
     ret = dev->RVMovePosition(false, 13);
