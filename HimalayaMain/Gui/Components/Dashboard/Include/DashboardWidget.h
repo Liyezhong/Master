@@ -186,7 +186,6 @@ private:
     QString m_strTissueProtectPassed;
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
-    QString m_strWaitingForFillingCompleted;
     QString m_strItIsPausing;
     QString m_PowerFailureBoxTitle;
     QString m_strTakeOutSpecimen;

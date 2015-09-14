@@ -1111,7 +1111,7 @@ void CDataConnector::RetranslateUI()
 {
    m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", 0, QApplication::UnicodeUTF8);
    m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
-   m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes could not be saved.", 0, QApplication::UnicodeUTF8);
+   m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes can not be saved.", 0, QApplication::UnicodeUTF8);
    m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
    m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8);
    m_strDisconnect = QApplication::translate("Core::CDataConnector", "Disconnect", 0, QApplication::UnicodeUTF8);
@@ -1135,7 +1135,7 @@ void CDataConnector::RetranslateUI()
    m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
    m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting the daily run log file ...", 0, QApplication::UnicodeUTF8);
 
-   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back on the insturment to shutdown the insturment.", 0, QApplication::UnicodeUTF8);
+   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back of the instrument to shutdown the instrument.", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -2083,7 +2083,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg->SetButtonText(3, QApplication::translate("Core::CDataConnector", "Cancel",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideCenterButton();
-        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by the remote user",
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by a remote user.",
                                                         0, QApplication::UnicodeUTF8));
         if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
             // Send command CmdRCRequestRemoteSession on "ok" pressed.
@@ -2104,7 +2104,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session is ended by the remote user",
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session has been ended by the remote user.",
                                                         0, QApplication::UnicodeUTF8));
         (void)mp_MessageDlg->exec();
     }

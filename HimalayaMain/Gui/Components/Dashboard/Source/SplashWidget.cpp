@@ -33,3 +33,22 @@ void SplashWidget::ShowModel()
     }
     (void)this->exec();
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Event handler for change events
+ *
+ *  \iparam p_Event = Change event
+ */
+/****************************************************************************/
+void SplashWidget::changeEvent(QEvent *p_Event)
+{
+    QDialog::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

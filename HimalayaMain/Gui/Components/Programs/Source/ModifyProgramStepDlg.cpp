@@ -654,7 +654,7 @@ void CModifyProgramStepDlg::RetranslateUI()
                                       "OK", 0, QApplication::UnicodeUTF8);
 
     m_strDiffTemp = QApplication::translate("Programs::CModifyProgramStepDlg",
-                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue?",
+                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?",
                                             0, QApplication::UnicodeUTF8);
     m_strInforMsg = QApplication::translate("Programs::CModifyProgramStepDlg", "Information Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Programs::CModifyProgramStepDlg", "Yes", 0, QApplication::UnicodeUTF8);

@@ -244,7 +244,7 @@
          </font>
         </property>
         <property name="text">
-         <string> Andreas Knaack
+         <string notr="true"> Andreas Knaack
  Jun Xie
  Diana Chen
 

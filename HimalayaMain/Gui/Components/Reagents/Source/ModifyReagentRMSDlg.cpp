@@ -49,7 +49,7 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     m_strSelectReagentGroup(tr("Please Select reagent group")),
     m_strReagentAddFailed(tr("")),
     m_strReagentCopyFailed(tr("")),
-    m_strEnterCassetteValue(tr("Please enter cassette number")),
+    m_strEnterCassetteValue(tr("Please enter the number of cassettes")),
     m_strEnterCycleValue(tr("Enter Cycle Value")),
     m_strEnterDayValue(tr("Enter Day Value")),
     m_strLastReagentName(tr(""))
@@ -576,7 +576,7 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                    "Reagent name shall not contain 'leica'.", 0, QApplication::UnicodeUTF8);
 
     m_strInputReagentSameName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                         "The same reagent name is in use. Please change the reagent name.", 0, QApplication::UnicodeUTF8);
+                                                         "The same reagent name is in use already. Please change the reagent name.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                "Please enter valid data", 0, QApplication::UnicodeUTF8);
@@ -591,7 +591,7 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                "Failed to copy the reagent. Please contact service.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                       "Please enter cassette number", 0, QApplication::UnicodeUTF8);
+                                                       "Please enter the number of cassettes", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCycleValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                                "Enter Cycle Value", 0, QApplication::UnicodeUTF8);

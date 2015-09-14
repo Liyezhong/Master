@@ -711,13 +711,13 @@ void CReagentRMSWidget::RetranslateUI()
                                            "New Reagent", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmDelReagent = QApplication::translate("Reagents::CReagentRMSWidget",
-                                           "Do you really want to delete the selected reagent", 0, QApplication::UnicodeUTF8);
+                                           "Do you really want to delete the selected reagent?", 0, QApplication::UnicodeUTF8);
 
     m_strConfirmMsg = QApplication::translate("Reagents::CReagentRMSWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strConfirmChangeRMSMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                                       "Do you really want to switch to RMS mode?  If reagents are being replaced, please reset data for those reagents on the Status page.", 0, QApplication::UnicodeUTF8);
+                                                                       "Do you really want to change the RMS controlling mode?  If reagents are being replaced, please reset data for those reagents on the Status page.", 0, QApplication::UnicodeUTF8);
     m_strConfirmRMSOffMode =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
         "Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.", 0, QApplication::UnicodeUTF8);
 

@@ -16,7 +16,7 @@
                 <Step ID="9" ReagentID="L11" Duration="1m" Temperature="62" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
-        <Program ID="L02" Name="Leica Overnight" NameID="50331650" Icon="Leica_Overnight" LeicaProgram="true" Favorite="true">
+        <Program ID="L02" Name="Overnight" NameID="50331650" Icon="Leica_Overnight" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="1h" Temperature="37" Pressure="On" Vacuum="On"/>
                 <Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>
@@ -34,7 +34,7 @@
                 <Step ID="13" ReagentID="L8" Duration="1h 30m" Temperature="65" Pressure="Off" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="L03" Name="Leica Biopsy" NameID="50331651" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
+        <Program ID="L03" Name="Biopsy" NameID="50331651" Icon="Leica_Biopsie" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="15m" Temperature="37" Pressure="On" Vacuum="On"/>
                 <Step ID="1" ReagentID="L9" Duration="2m" Temperature="-1" Pressure="Off" Vacuum="Off"/>

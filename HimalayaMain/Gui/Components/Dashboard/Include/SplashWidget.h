@@ -37,6 +37,18 @@ public slots:
     /****************************************************************************/
     void ShowModel();
 
+protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
+     *
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
+    void changeEvent(QEvent *p_Event);
+
 private:
     Ui::SplashWidget *ui;       ///<  Definition/Declaration of variable ui
 };
