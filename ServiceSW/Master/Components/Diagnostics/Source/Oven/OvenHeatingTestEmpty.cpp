@@ -270,6 +270,9 @@ int CHeatingTestEmpty::Run(void)
             if (OvenTempTopCur <= targetTempRangeMax &&
                    OvenTempSensor1Cur <= targetTempRangeMax &&
                    OvenTempSensor2Cur <= targetTempRangeMax ) {
+                if (!isAbove) {
+                    isAbove = true;
+                }
                 if (isAbove) {
                     count--;
                 }
@@ -280,10 +283,7 @@ int CHeatingTestEmpty::Run(void)
             }
             else {
                 count = t2;
-            }
-
-            if (!isAbove) {
-                isAbove = true;
+                isAbove = false;
             }
         }
         else {
@@ -317,10 +317,10 @@ int CHeatingTestEmpty::Run(void)
 
     if (ret != RETURN_OK && isAbove==false && i<=t1+1) {
         text = tr("Paraffin Oven Heating Test (Empty) failed. Temperature did "
-                  "not reach %1\260C within %2 mins. "
+                  "not reach [%1\260C ~ %2\260] within %3 mins. "
                   "Root cause might be damaged ASB5 or Paraffin Oven Module. "
                   "Sequentially check resistance of heaters and function of ASB5. "
-                  "Exchange defective part accordingly and repeat this test.").arg(targetTempRangeMin).arg(t1/60);
+                  "Exchange defective part accordingly and repeat this test.").arg(targetTempRangeMin).arg(targetTempRangeMax).arg(t1/60);
         goto _fail_;
     }
     if (count > 0) {
