@@ -1063,7 +1063,7 @@ Date</source>
         <location filename="../../Programs/Source/StepModel.cpp" line="325"/>
         <location filename="../../Programs/Source/StepModel.cpp" line="331"/>
         <source>P/V</source>
-        <translation>压力/真空</translation>
+        <translation>P/V</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="326"/>
@@ -2673,7 +2673,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>P/V</source>
-        <translation>压力/真空</translation>
+        <translation>P/V</translation>
     </message>
 </context>
 <context>
