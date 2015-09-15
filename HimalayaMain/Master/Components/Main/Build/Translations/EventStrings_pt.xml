@@ -1,170 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="pt">
-        <string id="16843520" text1="Faltam arquivos de som para o alarme" text2=""/>
-		<string id="19398660" text1="ConnectionManager: Falha na autenticação de cliente %1 com versão." text2=""/>
-		<string id="19398659" text1="ConnectionManager: Cliente %1 com versão %2 conectado." text2=""/>
-		<string id="19398657" text1="ConnectionManager: Cliente %1. mensagem ainda não concluída." text2=""/>
-		<string id="19398658" text1="ConnectionManager: Cliente%1. análise de entrada XMl doc falhou em %2." text2=""/>
-		<string id="19398661" text1="ConnectionManager: Cliente %1. Não é possível converter mensagem QString de saída em QDomDocument! Erro: %2" text2=""/>
-		<string id="19398662" text1="ConnectionManager: Cliente %1. QByteArray de saída está vazia." text2=""/>
-		<string id="19398663" text1="ConnectionManager: Cliente %1. falha na gravação dos dados de saída para suporte!." text2=""/>
-		<string id="17039371" text1="Evento %1 não está configurado corretamente na coluna %2" text2=""/>
-		<string id="17825795" text1="Desligamento não permitido. Espere até que o transporte esteja concluído." text2=""/>
-		<string id="16973834" text1="O registro de dados está desabilitado. Entre em contato com o especialista em assistência técnica." text2=""/>
-		<string id="16973828" text1="Evento Id %1 não existe na string de evento do arquivo xml" text2=""/>
-		<string id="16973829" text1="Não foi possível criar arquivo %1" text2=""/>
-		<string id="16973832" text1="Não foi possível nivelar arquivo %1" text2=""/>
-		<string id="16973825" text1="Não foi possível abrir o arquivo %1" text2=""/>
-		<string id="16973830" text1="Não foi possível remover o arquivo %1" text2=""/>
-		<string id="16973831" text1="Não foi possível gravar o arquivo %1" text2=""/>
-		<string id="19529732" text1="Não é possível alterar a data e a hora abaixo/acima de 24 horas se a hora da data do sistema atual estiver %1." text2=""/>
-		<string id="17235997" text1="Verifique o registro do usuário para maiores informações." text2=""/>
-		<string id="17235986" text1="Falha na verificação de DeviceConfiguration" text2=""/>
-		<string id="17235984" text1="Falha de leitura de arquivo XML de configuração do dispositivo" text2=""/>
-		<string id="17760268" text1="%1 não é um estado DirectConnection ligado/desligado válido" text2=""/>
-		<string id="17760271" text1="%1 não é um endereço Proxy IP válido." text2=""/>
-		<string id="17760272" text1="%1 não é uma porta Proxy IP válida." text2=""/>
-		<string id="17760267" text1="%1 não é um estado RemoteCare ligado/desligado válido" text2=""/>
-		<string id="17235976" text1="Traduções para idiomas %1  não encontradas." text2=""/>
-		<string id="17235973" text1="%1 não é um idioma de apoio." text2=""/>
-		<string id="17235972" text1="%1  não é um número válido." text2=""/>
-		<string id="17235977" text1="A senha não combina com as solicitações. O comprimento necessário é entre 4 e 16 caracteres." text2=""/>
-		<string id="17235969" text1="Erro na leitura do elemento inicial xml  %1  em  %2 ." text2=""/>
-		<string id="17760264" text1="Erro: os valores do nível de som estão fora da faixa" text2=""/>
-		<string id="17760263" text1="Erro: os números do nível de som estão fora da faixa" text2=""/>
-		<string id="17235970" text1="Elemento de início xml inesperado  %1 . Esperado:  %2  em  %3 " text2=""/>
-		<string id="17235975" text1="Versão %1  não compatível em  %2 ." text2=""/>
-		<string id="17235971" text1="atributo xml não encontrado:  %1  em  %2." text2=""/>
-		<string id="17235988" text1="Falha na operação de abertura do arquivo %1" text2=""/>
-		<string id="17235995" text1="Falha na verificação de grupo" text2=""/>
-		<string id="17235987" text1="Erro de inicialização %1" text2=""/>
-		<string id="17235979" text1="%1  não é um formato de data válido." text2=""/>
-		<string id="17760270" text1="%1 não é uma senha Proxy válida." text2=""/>
-		<string id="17760269" text1="%1 não é um nome de usuário Proxy válido." text2=""/>
-		<string id="17235974" text1="%1 não é um estado ligado/desligado válido." text2=""/>
-		<string id="17235981" text1="%1  não é um formato de temperatura válido." text2=""/>
-		<string id="17235980" text1="%1  não é um formato de hora válido." text2=""/>
-		<string id="17235996" text1="Erro de indicador NULL no componente DataManager" text2=""/>
-		<string id="19070983" text1="RCConfig: Comprimento do certificado FileName %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="17236007" text1="Falha na verificação RCConfig.xml." text2=""/>
-		<string id="17236006" text1="Falha na leitura CConfig.xml." text2=""/>
-		<string id="19071009" text1="RCConfig:  item de dados %1  tem qualidade inválida." text2=""/>
-		<string id="19071008" text1="RCConfig:  item de dados %1  tem tipo inválido." text2=""/>
-		<string id="19070991" text1="RCConfig: Id do dispositivo %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070992" text1="RCConfig: Tipo do dispositivo %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070981" text1="RCConfig: Tamanho do nível da criptografia %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070984" text1="RCConfig: Tempo exec está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070982" text1="RCConfig:  %1 não é um estado de autenticação ligado/desligado válido." text2=""/>
-		<string id="19071007" text1="RCConfig:  %1 não é um estado de compressão ligado/desligado válido." text2=""/>
-		<string id="19070979" text1="RCConfig:  %1 não é um estado de depuração ligado/desligado válido." text2=""/>
-		<string id="19070978" text1="RCConfig:  %1 não é um estado de persistência de conexão HTTP ligado/desligado válido." text2=""/>
-		<string id="19070980" text1="RCConfig:  %1 não é um estado de conexão segura HTTP ligado/desligado válido." text2=""/>
-		<string id="19071004" text1="RCConfig:  %1 não é um endereço de sessão remota IP válido." text2=""/>
-		<string id="19071006" text1="RCConfig: MaxChunkSize %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070994" text1="RCConfig: Protocolo Proxy %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070977" text1="RCConfig: Tamanho de fila %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19071002" text1="RCConfig: nome da sessão remota %1 comprimento está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070988" text1="RCConfig: Id do servidor %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070985" text1="RCConfig: Tipo do servidor %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070987" text1="RCConfig: Servidor URL %1 comprimento está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19070986" text1="RCConfig: O comprimento de base de dados alvo %1 está fora da faixa mín %2 máx %3." text2=""/>
-		<string id="19267589" text1="A contagem de reagentes excede o limite. Máx. permitido 100" text2=""/>
-		<string id="19267588" text1="ID de reagente %1 do reagente %2 não existe na lista." text2=""/>
-		<string id="19267587" text1="ID de reagente %1 do reagente %2 já em uso." text2=""/>
-		<string id="19267585" text1="Nome do reagente %1 já em uso. Escolha um nome diferente para o reagente." text2=""/>
-		<string id="19267599" text1="Erro interno do software. Falha em %1." text2=""/>
-		<string id="17236009" text1="Falha na verificação de reagentes.xml." text2=""/>
-		<string id="17236008" text1="Falha na leitura de reagentes.xml." text2=""/>
+	<language name="pt">
+		<string id="﻿17039372" text1="O aparelho encontrou o erro %1 durante a situação %2 e tentou realizar a ação de recuperação %3. O resultado da ação é %4." text2=""/>
+		<string id="16973834" text1="O log de eventos foi desabilitado por algum motivo. Entre em contato com a assistência técnica." text2=""/>
+		<string id="17235997" text1="Verifique o log do usuário para mais informações." text2=""/>
+		<string id="17235976" text1="Tradução para a língua %1 não foi encontrada." text2=""/>
+		<string id="17235977" text1="A senha não atende as solicitações. O comprimento deve ser de 4 a 16 caracteres." text2=""/>
+		<string id="17236006" text1="Falha na configuração do Cuidado remoto." text2=""/>
+		<string id="19267585" text1="Este nome de reagente %1 já está em uso. Use um nome de reagente diferente." text2=""/>
+		<string id="19267599" text1="Falha %1." text2=""/>
+		<string id="17236009" text1="Falha na inicialização do módulo de dados dos reagentes." text2=""/>
 		<string id="17760274" text1="Falha ao salvar as configurações do usuário. Entre em contato com a assistência técnica." text2=""/>
-		<string id="17235985" text1="Falha na verificação UserSettings" text2=""/>
-		<string id="17235983" text1="Falha na leitura de arquivo UserSettings XML" text2=""/>
-		<string id="17235998" text1="Falha ao gravar XML %1 durante o desligamento." text2=""/>
+		<string id="17235998" text1="Falha na inscrição do XML %1 durante o desligamento." text2=""/>
 		<string id="17236013" text1="Falha na leitura de InstrumentHistory.xml." text2=""/>
-		<string id="17236010" text1="Falha na leitura de Stations.xml." text2=""/>
 		<string id="17236011" text1="Falha na verificação de Station.xml." text2=""/>
-		<string id="17235990" text1="Falha na operação de entrada de fluxo %1" text2=""/>
-		<string id="17235991" text1="Falha na operação de saída de fluxo %1" text2=""/>
-		<string id="17760266" text1="Valores do nível de som de alerta estão fora da faixa" text2=""/>
-		<string id="17760265" text1="Valores do número de som de alerta estão fora da faixa" text2=""/>
-		<string id="17235994" text1="Falha na serialização de %1 XML De" text2=""/>
-		<string id="17235992" text1="O arquivo %1 XML não existe" text2=""/>
-		<string id="17235993" text1="Falha na serialização de %1 XML" text2=""/>
-		<string id="17498130" text1="ConfigfileLoader. Processo %1: Erro na abertura do arquivo %2." text2=""/>
-		<string id="17498122" text1="EPC. Processo %1: Não foi possível disparar o evento %2 em %3." text2=""/>
-		<string id="17498131" text1="EPC. Processo %1: Não foi possível eliminar o processo externo %2." text2=""/>
-		<string id="17498124" text1="EPC. Processo %1: Indicador NUll em %2." text2=""/>
-		<string id="17498132" text1="EPC. Processo %1: Não é possível iniciar o dispositivo/processo em %2." text2=""/>
-		<string id="17498126" text1="EPC. Processo %1: Falha ao iniciar a máquina com estado inicial %2 em  %3" text2=""/>
-		<string id="17498133" text1="Processo: %1 saiu com código %2." text2=""/>
-		<string id="17498125" text1="EPC. Processo %1: Falha na inicialização em %2." text2=""/>
-		<string id="17498123" text1="EPC. Processo %1: Erro %2 reportado." text2=""/>
-		<string id="17498129" text1="EPD. Processo %1: Login ExternalProcess expirou." text2=""/>
-		<string id="17498127" text1="EPD. Processo %1: Falta entrada." text2=""/>
-		<string id="17498128" text1="EPD. Processo %1: Não foi possível iniciar NetworkServerDevicewas." text2=""/>
-		<string id="17039361" text1="Colorado mudou para estado de erro" text2=""/>
-		<string id="17039364" text1="Erro interno do software: EventId está faltando %1" text2=""/>
-		<string id="17629209" text1="Falha na exportação. Padrão de criptografia avançada não inicializou" text2=""/>
-		<string id="17629201" text1="Falha na exportação. Não foi possível abrir o arquivo para leitura" text2=""/>
-		<string id="17629202" text1="Falha na exportação. Não foi possível abrir o arquivo para gravação" text2=""/>
-		<string id="18939905" text1="ExportConfig:Nome de arquivo vazio encontrado na lista do arquivo de configuração %1." text2=""/>
-		<string id="18939906" text1="ExportConfig:Nome de arquivo vazio encontrado na lista do arquivo do grupo de configuração %1." text2=""/>
-		<string id="18939908" text1="ExportConfig:Nome do diretório fonte vazio." text2=""/>
-		<string id="18939909" text1="ExportConfig:Nome do arquivo alvo vazio." text2=""/>
-		<string id="18939907" text1="ExportConfig:O tipo do pacote de configuração %1 é inválido. Deve ser nativo ou não-nativo." text2=""/>
-		<string id="17629200" text1="Falha na exportação. Tentando executar mais de um Cryptoservice" text2=""/>
-		<string id="17629185" text1="Falha na exportação. Falha na criação do diretório" text2=""/>
-		<string id="17629203" text1="Falha na exportação. Erro na leitura do arquivo" text2=""/>
-		<string id="17629204" text1="Falha na exportação. Erro na escrita do arquivo" text2=""/>
+		<string id="17629209" text1="Falha na exportação. Padrão de criptografia não inicializado." text2=""/>
+		<string id="17629201" text1="Falha na exportação. Não é possível abrir o arquivo para a leitura." text2=""/>
+		<string id="17629202" text1="Falha na exportação. Não é possível abrir o arquivo para escrita." text2=""/>
+		<string id="17629200" text1="Falha na exportação. Falha na criptografia para envio do pacote." text2=""/>
+		<string id="17629185" text1="Falha na criação do diretório" text2=""/>
+		<string id="17629203" text1="Erro na leitura do arquivo" text2=""/>
+		<string id="17629204" text1="Erro na escrita do arquivo" text2=""/>
 		<string id="17629194" text1="Falha na exportação." text2=""/>
-		<string id="17629186" text1="Falha na exportação. Falha ao copiar arquivo" text2=""/>
-		<string id="17629213" text1="Falha na exportação. Computação de código de autenticação de mensagem baseado em hash já iniciou" text2=""/>
-		<string id="17629208" text1="Falha na exportação. Código de autenticação da mensagem baseado em hash não inicializou" text2=""/>
-		<string id="17629205" text1="Falha na exportação. Índice da cadeia hash e índices de dispositivo USB são correspondentes" text2=""/>
-		<string id="17629190" text1="Falha na exportação. Falha na inicialização do recipiente" text2=""/>
-		<string id="17629210" text1="Falha na exportação. Tamanho da matriz deve ser 4 ou 2 ou 1" text2=""/>
-		<string id="17629199" text1="Falha na exportação. Tipo inválido de exportação solicitado" text2=""/>
-		<string id="17629212" text1="Falha na exportação. Modo de arquivo incorreto é detectado" text2=""/>
-		<string id="17629207" text1="Falha na exportação. Tamanho de arquivo-chave não corresponde ao tamanho de arquivo da chave incorporada" text2=""/>
-		<string id="17629206" text1="Falha na exportação. Tamanho do arquivo-chave é muito grande ao comparar com o tamanho do bloco hash" text2=""/>
-		<string id="17629197" text1="Falha na exportação. O diretório de registro não existe" text2=""/>
-		<string id="17629211" text1="Falha na exportação. Bit mais significativo não energizado para cálculos" text2=""/>
-		<string id="17629195" text1="Falha na exportação. O diretório de fonte não existe" text2=""/>
-		<string id="17629193" text1="Exportação bem-sucedida." text2=""/>
-		<string id="17629196" text1="Falha na exportação. O diretório alvo não existe" text2=""/>
-		<string id="17629198" text1="Falha na exportação. O formato do nome do arquivo alvo está incorreto" text2=""/>
-		<string id="17629192" text1="Falha na exportação. Não é possível arquivar os arquivos" text2=""/>
-		<string id="17629187" text1="Falha na exportação. Não é possível criar o arquivo RMS_Status.csv" text2=""/>
-		<string id="17629188" text1="Falha na exportação. Não é possível criar o arquivo TempConfiguration.xml" text2=""/>
-		<string id="17629189" text1="Falha na exportação. Não é possível ler o arquivo TempConfiguration.xml" text2=""/>
-		<string id="17629191" text1="Falha na exportação. Falha na verificação do recipiente" text2=""/>
-		<string id="17629215" text1="Falha na exportação. Comando zip não encontrado no sistema" text2=""/>
-		<string id="17629214" text1="Falha na exportação. Não é possível zipar os arquivos" text2=""/>
-		<string id="17629216" text1="Falha na exportação. A função zipar está demorando muito tempo para concluir a solicitação" text2=""/>
-		<string id="17498118" text1="O criador functor já está registrado para:  %1 ." text2=""/>
-		<string id="17498114" text1="Erro na inicialização do dispositivo de processo externo." text2=""/>
-		<string id="17498116" text1="Erro na inicialização da máquina de estado completo." text2=""/>
-		<string id="17498117" text1="Erro na inicialização de gerenciador do processo." text2=""/>
-		<string id="17498115" text1="Erro na inicialização da máquina de estado simples." text2=""/>
-		<string id="17498113" text1="Erro no carregamento das configurações." text2=""/>
-		<string id="17498119" text1="Erro: nenhum criador functor registrado para a classe:  %1 ." text2=""/>
-		<string id="17498120" text1="Erro de referência já registrada  %1  para comando %2 ." text2=""/>
-		<string id="17498121" text1="Controlador de processo externo: Referência de comando desconhecida %1. Arquivo %2 Arquivo %3" text2=""/>
-		<string id="16846859" text1="Compensação de tempo atual é de %1  segundos" text2=""/>
-		<string id="16842774" text1="Não é possível computar novas ref. de comando" text2=""/>
-		<string id="16842765" text1="Erro na criação do arquivo %1." text2=""/>
-		<string id="16842766" text1="Erro na abertura do arquivo %1." text2=""/>
-		<string id="16842755" text1="Exceção padrão (erro de alocação de memória) detectado: arquivo: %1 linha: %2." text2=""/>
-		<string id="16842763" text1="Erro na leitura do relógio monotônico." text2=""/>
-		<string id="16842756" text1="NULL_POINTER: %1 arquivo: %2 linha: %3." text2=""/>
-		<string id="16842758" text1="Comando ou reconhecimento não tem receptor (comando  %1  - canal  %2 )" text2=""/>
-		<string id="16842775" text1="Sinal inesperado recebido" text2=""/>
-		<string id="16842759" text1="O sinal não está conectado a nenhuma ranhura" text2=""/>
-		<string id="16842754" text1="Exceção inesperada detectada: arquivo: %1 linha: %2." text2=""/>
-		<string id="16842777" text1="Exceção global (EventCode %1 lançado em %2) detectado em %3 na linha %4" text2=""/>
-		<string id="16842778" text1="Exceção padrão (%1) detectada em %2 na linha %3" text2=""/>
-		<string id="16846862" text1="Usuário reconhecido ao pressionar o botão" text2=""/>
-		<string id="16846848" text1="Mensagem de depuração:  %1 " text2=""/>
+		<string id="17629186" text1="Falha ao copiar arquivo" text2=""/>
+		<string id="17629213" text1="Falha na exportação. Falha na geração de chave para criptografia de envio do pacote." text2=""/>
+		<string id="17629208" text1="Falha na exportação. Código de autenticação de mensagem particionada não inicializado." text2=""/>
+		<string id="17629205" text1="Falha na exportação. Índice de cadeia de particionamento e índices do dispositivo USB são compatíveis." text2=""/>
+		<string id="17629190" text1="Falha na exportação. Falha na inicialização do módulo de dados." text2=""/>
+		<string id="17629199" text1="Falha na exportação. Tipo de exportação requerida inválida." text2=""/>
+		<string id="17629212" text1="Falha na exportação. Tipo errado de arquivo detectado." text2=""/>
+		<string id="17629197" text1="Falha na exportação. Diretório para registro não existe." text2=""/>
+		<string id="17629211" text1="Falha na exportação. As chaves não estão prontas para cálculo." text2=""/>
+		<string id="17629195" text1="Falha na exportação. Diretório fonte não existe." text2=""/>
+		<string id="17629193" text1="Sucesso na exportação" text2=""/>
+		<string id="17629196" text1="Falha na exportação. Diretório de destino não existe." text2=""/>
+		<string id="17629198" text1="Falha na exportação. Formato do nome do arquivo alvo está errado." text2=""/>
+		<string id="17629192" text1="Falha na exportação. Não foi possível arquivar os arquivos." text2=""/>
+		<string id="17629187" text1="Falha na exportação. Não foi possível criar o arquivo RMS_Status.csv." text2=""/>
+		<string id="17629188" text1="Falha na exportação. Não foi possível criar o arquivo TempConfiguration.xml." text2=""/>
+		<string id="17629189" text1="Falha na exportação. Não foi possível ler o arquivo TempConfiguration.xml." text2=""/>
+		<string id="17629191" text1="Falha na exportação. Falha na verificação do módulo de dados." text2=""/>
+		<string id="17629215" text1="Falha na exportação. Comando de compactação não encontrado no sistema." text2=""/>
+		<string id="17629214" text1="Falha na exportação. Não foi possível compactar os arquivos." text2=""/>
+		<string id="17629216" text1="Falha na exportação. A compactação está levando muito tempo para terminar." text2=""/>
+		<string id="16846862" text1="Usuário ciente ao pressionar o botão." text2=""/>
 		<string id="16846854" text1="Depuração" text2=""/>
 		<string id="16846851" text1="Erro" text2=""/>
 		<string id="16846850" text1="Erro fatal" text2=""/>
@@ -172,249 +51,132 @@
 		<string id="16846849" text1="Tipo indefinido" text2=""/>
 		<string id="16846852" text1="Aviso" text2=""/>
 		<string id="16846861" text1="Resolvido:" text2=""/>
-		<string id="16846857" text1="Desligando dispositivo" text2=""/>
-		<string id="16842776" text1="Exceção não tratada detectada" text2=""/>
-		<string id="16842753" text1="ID de string desconhecida" text2=""/>
 		<string id="16843278" text1="Login do usuário" text2=""/>
-		<string id="16843304" text1="Cuba aquecida é %1 para o reagente %2 e a temperatura é %3" text2=""/>
-		<string id="16843302" text1="O modo de início da cuba aquecida é alterado para %1 para o reagente %2" text2=""/>
-		<string id="16843303" text1="A temperatura da cuba aquecida é alterado para %1 para o reagente %2" text2=""/>
 		<string id="16843295" text1="Desligado" text2=""/>
 		<string id="16843294" text1="Ligado" text2=""/>
-		<string id="16843289" text1="Velocidade de agitação alterada para %1" text2=""/>
-		<string id="16843292" text1="Erro de alarme som não alterado" text2=""/>
-		<string id="16843301" text1="Erro de alarme volume não alterado" text2=""/>
-		<string id="16843291" text1="Som de alerta de alarme não alterado" text2=""/>
-		<string id="16843300" text1="Volume de alerta de alarme não alterado" text2=""/>
+		<string id="16843314" text1="Status de limpeza RMS alterado para %1." text2=""/>
+		<string id="16843315" text1="Cassetes" text2=""/>
+		<string id="16843316" text1="Ciclos" text2=""/>
+		<string id="16843317" text1="Dias" text2=""/>
+		<string id="16843292" text1="Som do alarme de erro alterado" text2=""/>
+		<string id="16843301" text1="Volume do tom do alarme de erro alterado" text2=""/>
+		<string id="16843291" text1="Som do alarme de erro alterado" text2=""/>
+		<string id="16843300" text1="Volume do tom do alarme de erro alterado" text2=""/>
 		<string id="16843288" text1="Formato de data alterado para %1" text2=""/>
-		<string id="16843272" text1="Idioma ajustado para %1" text2=""/>
+		<string id="16843272" text1="Língua alterada para %1" text2=""/>
 		<string id="16843275" text1="Configurações de rede alteradas" text2=""/>
-		<string id="16843285" text1="Modo de início do forno alterado para %1" text2=""/>
-		<string id="16843298" text1="Permanente" text2=""/>
-		<string id="16843299" text1="Início do programa" text2=""/>
-		<string id="16843274" text1="Temperatura de forno alterada para %1" text2=""/>
-		<string id="16843293" text1="Estado RMS alterado para %1" text2=""/>
+		<string id="16843274" text1="Temperatura do forno alterada para %1" text2=""/>
+		<string id="16843293" text1="Estado do processamento RMS alterado para %1" text2=""/>
 		<string id="16843286" text1="Formato de temperatura alterado para %1" text2=""/>
 		<string id="16843287" text1="Formato de hora alterado para %1" text2=""/>
-		<string id="16843284" text1="Tipo de água alterado para %1" text2=""/>
-		<string id="16843297" text1="Destilada" text2=""/>
-		<string id="16843296" text1="Da torneira" text2=""/>
-		<string id="17825801" text1="Erro GPIO: %1." text2=""/>
-		<string id="17825802" text1="GPIO:Informação:%1" text2=""/>
-		<string id="17039363" text1="GUI está disponível" text2=""/>
-		<string id="17039365" text1="Falha na inicialização do instrumento" text2=""/>
-		<string id="17039370" text1="Estágio de inicialização %1 concluída com restrições." text2=""/>
-		<string id="17039369" text1="Inicialização do instrumento concluída com restrições. A tintura ainda é possível" text2=""/>
-		<string id="17039368" text1="Falha no estágio de inicialização %1." text2=""/>
-		<string id="17039367" text1="Estágio de inicialização %1 concluído com sucesso" text2=""/>
-		<string id="17039366" text1="A inicialização do instrumento foi bem-sucedida" text2=""/>
-		<string id="19398669" text1="MessageChecker: não é possível carregar mensagens em %1. Erro %2." text2=""/>
-		<string id="19398671" text1="ERRO MessageChecker: documento MSG de entrada é inválido." text2=""/>
-		<string id="19398670" text1="ERRO MessageChecker: o validador é NULO." text2=""/>
-		<string id="19398665" text1="MasterLinkController: IP %1. Sinal de conexão LinkDevice &quot;&quot;%2&quot;&quot; falhou." text2=""/>
-		<string id="19398664" text1="MasterLinkController: IP %1. Não é possível criar/inicializar MasterClient em %2." text2=""/>
-		<string id="19398666" text1="MasterLinkController: IP %1. mensagem de emissão de sinal não está conectada." text2=""/>
-		<string id="19398667" text1="MasterLinkDevice: Sinal de conexão LinkDevice &quot;&quot;%1&quot;&quot; falhou." text2=""/>
-		<string id="19398668" text1="MasterLinkDevice: Não é possível inicializar o objeto de rede." text2=""/>
-		<string id="19398675" text1="MessageLoader::ParseCommands:Sem mensagens válidas." text2=""/>
-		<string id="19398672" text1="MessageLoader: Falha na abertura de arquivo %1." text2=""/>
-		<string id="19398673" text1="MessageLoader: Falha na análise de arquivo %1." text2=""/>
-		<string id="19398674" text1="MessageLoader: Tag do elemento do arquivo %1 não corresponde ao tag %2." text2=""/>
-		<string id="19398686" text1="NetworkClient: Cliente %1. Falha na autenticação." text2=""/>
-		<string id="19398693" text1="NetworkClient: Cliente %1.  Falta configuração de parâmetro(s)." text2=""/>
-		<string id="19398692" text1="NetworkClient: Cliente %1. Falha no ajuste dos parâmetros de configuração." text2=""/>
-		<string id="19398685" text1="NetworkClient: Cliente %1. Falha na conexão de trabalho." text2=""/>
-		<string id="19398694" text1="NetworkClientDevice: IP %1. Falha ao iniciar NetworkDevice/Cliente." text2=""/>
-		<string id="19398699" text1="NetworkClientDevice: IP %1. Falta entrada." text2=""/>
-		<string id="19398695" text1="NetworkClientDevice: IP %1. Falha no registro da manipulação da mensagem." text2=""/>
-		<string id="19398698" text1="NetworkClientDevice: IP %1. Erro de rede %2 ." text2=""/>
-		<string id="19398688" text1="NetworkClient: Cliente %1. Indicador de manipulação de msg nulo em %2." text2=""/>
-		<string id="19398689" text1="NetworkClient: Cliente %1. Não é possível converter mensagem QString de saída em QDomDocument! Erro: %2" text2=""/>
-		<string id="19398690" text1="NetworkClient: Cliente %1. QByteArray de saída está vazia." text2=""/>
-		<string id="19398684" text1="NetworkClient: Cliente %1. Erro de suporte %2." text2=""/>
-		<string id="19398691" text1="NetworkClient: Cliente %1. Falha de gravação de suporte." text2=""/>
-		<string id="19398687" text1="NetworkClient: Cliente %1. Falha de conexão devido a mensagem incorreta do servidor." text2=""/>
-		<string id="19398708" text1="NetworkDevice: elemento de comando %1 não encontrado." text2=""/>
-		<string id="19398709" text1="NetworkDevice: elemento de comando %1 está vazio." text2=""/>
-		<string id="19398703" text1="NetworkDevice: comando com REF %1 já está em hash." text2=""/>
-		<string id="19398704" text1="NetworkDevice: Falha na criação de comando %1 " text2=""/>
-		<string id="19398705" text1="NetworkDevice: Falha na execução de comando %1." text2=""/>
-		<string id="19398710" text1="NetworkDevice: Não é possível inicializar o comando %1." text2=""/>
-		<string id="19398701" text1="NetworkDevice: não é possível carregar mensagens." text2=""/>
-		<string id="19398707" text1="NetworkDevice: não é possível analisar a mensagem! Erro: %1" text2=""/>
-		<string id="19398706" text1="NetworkDevice: tipo de mensagem desconhecida %1." text2=""/>
-		<string id="19398700" text1="NetworkDevice: não é possível inicializar o tipo incorreto de dispositivo %1." text2=""/>
-		<string id="19398720" text1="NetworkLayer: atributo %1 está vazio a em%2." text2=""/>
-		<string id="19398721" text1="NetworkLayer: Falha de envio de mensagem com status %1." text2=""/>
-		<string id="19398724" text1="NetworkLayer: comando %1 corresponde à referência inválida em %2." text2=""/>
-		<string id="19398722" text1="NetworkLayer: comando %1 está vazio em %2." text2=""/>
-		<string id="19398723" text1="NetworkLayer: comando %1 não é um comando de execução em %2." text2=""/>
-		<string id="19398697" text1="NetworkLayer: Ip/cliente %1. Erro de indicador nulo em %2." text2=""/>
-		<string id="17039362" text1="Colorado mudou para estado de erro" text2=""/>
-		<string id="19398719" text1="NetworkServerDevice: Cliente %1: Não é possível iniciar DateTimeSync." text2=""/>
-		<string id="19398717" text1="NetworkServerDevice: Cliente %1: não é possível inicializar o servidor." text2=""/>
-		<string id="19398718" text1="NetworkServerDevice: Cliente %1: não é possível registrar o manipulador de protocolos." text2=""/>
-		<string id="19398712" text1="NETSERVER: IP %1: Falha ao destruir objeto do gerenciador %2." text2=""/>
-		<string id="19398696" text1="NetworkServerDevice: Falha na inicialização NetworkDevice/Servidor." text2=""/>
-		<string id="19398716" text1="NetworkServerDevice: Cliente %1: NetworkServer reportou problema %2." text2=""/>
-		<string id="19398715" text1="NETSERVER: IP %1: PORTA %2: Falha de escuta." text2=""/>
-		<string id="19398714" text1="NETSERVER: IP %1: Falha ao carregar as configurações, motivo: %2." text2=""/>
-		<string id="19398711" text1="NETSERVER: IP %1: PORTA %2: Falha na tentativa de conexão: sem ranhuras livres." text2=""/>
-		<string id="19398713" text1="NETSERVER: IP %1: Desconexão do servidor, motivo %2." text2=""/>
-		<string id="19398678" text1="NetSettings: O tag do elemento %1 não corresponde ao tag %2." text2=""/>
-		<string id="19398677" text1="NetSettings: Análise de arquivo com erro %1." text2=""/>
-		<string id="19398679" text1="NetSettings: Versão não corresponde com %1." text2=""/>
-		<string id="19398681" text1="NetSettings: Configurações de conexão vazias." text2=""/>
-		<string id="19398676" text1="NetSettings: Falha na abertura de arquivo %1." text2=""/>
-		<string id="19398683" text1="NetSettings: Sem valores de autenticação." text2=""/>
-		<string id="19398682" text1="NetSettings: Sem conexões de cliente válidas." text2=""/>
-		<string id="19398680" text1="NetSettings: Indicador NUll em %1." text2=""/>
+		<string id="17039365" text1="Falha na inicialização do aparelho" text2=""/>
 		<string id="19529731" text1="Senha alterada com sucesso." text2=""/>
 		<string id="19529729" text1="Falha no login. Senha incorreta. A senha válida consiste em 4 a 16 caracteres." text2=""/>
-		<string id="17694727" text1="Falha na autenticação de manutenção. Usuário de manutenção não está treinado para esse aparelho." text2=""/>
-		<string id="17694724" text1="Falha na autenticação de manutenção. O arquivo chave de manutenção é inválido." text2=""/>
-		<string id="17694725" text1="Falha na autenticação de manutenção. A data de treinamento expirou." text2=""/>
-		<string id="17694726" text1="Falha na autenticação de manutenção. Aparelho não disponível no arquivo chave de manutenção." text2=""/>
-		<string id="17694723" text1="Falha na autenticação de manutenção. PIN de manutenção inválido." text2=""/>
-		<string id="17694722" text1="Falha na autenticação de manutenção. Não é possível ler o arquivo chave de serviço a partir de USB." text2=""/>
-		<string id="17694728" text1="Login de manutenção bem-sucedido e a ID de manutenção é %1." text2=""/>
-		<string id="17694721" text1="Falha na autenticação de manutenção. Nenhum dispositivo USB encontrado." text2=""/>
-		<string id="19529730" text1="Não é possível alterar a senha. As senhas não correspondem." text2=""/>
+		<string id="19529730" text1="Não é possível alterar a senha. Senhas não conferem." text2=""/>
 		<string id="17825800" text1="Sistema recuperado de uma falha de energia." text2=""/>
-		<string id="17825798" text1="Fase 1 de falha de energia." text2=""/>
-		<string id="17825799" text1="Falha de energia! Desligando o sistema." text2=""/>
-		<string id="17825793" text1="Para desligar, pressione o botão novamente" text2=""/>
-		<string id="17825794" text1="O procedimento de tintura ainda está em andamento. Para desligar, pressione o botão novamente." text2=""/>
-		<string id="19464197" text1="RCManager.RCA parou de funcionar" text2=""/>
-		<string id="19464193" text1="RCManager.Comando recebido %1 com dados %n de RCA." text2=""/>
-		<string id="19464195" text1="RCManager.Solicitação de sessão remota aceita pelo usuário." text2=""/>
-		<string id="19464194" text1="RCManager.Pedido de sessão remota negado. %1." text2=""/>
-		<string id="19464196" text1="RCManager.Comando %1 enviado com dados %n para RCA." text2=""/>
-		<string id="17825803" text1="Desligamento do software principal." text2=""/>
-		<string id="17891329" text1="Monitor SoftSwitch iniciou" text2=""/>
-		<string id="17825796" text1="O desligamento não é possível no momento. O sistema está em fase de inicialização. Espere até que a inicialização esteja concluída" text2=""/>
-		<string id="17825797" text1="O desligamento não é possível no momento. %1 ainda em andamento. Espere até que %1 esteja concluído" text2=""/>
-		<string id="17891330" text1="SoftSwitch pressionado pela primeira vez após inicialização" text2=""/>
-		<string id="17367045" text1="Erro na adição de estado  %1 ." text2=""/>
-		<string id="17367042" text1="Erro na adição da transição entre estados  %1  e  %2  para índice %3." text2=""/>
-		<string id="17367044" text1="Erro na remoção de todas as transições de estado entre estados  %1  e  %2 ." text2=""/>
-		<string id="17367047" text1="Não é possível remover o estado  %1 . É o estado atual." text2=""/>
-		<string id="17367046" text1="Erro na remoção de estado  %1 ." text2=""/>
-		<string id="17367043" text1="Erro na remoção da transição entre estados  %1  e  %2  para índice %3." text2=""/>
-		<string id="17367041" text1="Transição entre estados  %1  e  %2  para índice %3 já existe." text2=""/>
-		<string id="17367048" text1="Estado desconhecido  %1 ." text2=""/>
-		<string id="19595266" text1="Falha na gravação do arquivo para arquivos RMS/Registro de dados/Configuração. Não aceite nenhum rack" text2=""/>
-		<string id="19005441" text1="Não foi possível iniciar a atualização do software devido a erro" text2=""/>
+		<string id="19005441" text1="A atualização do software não foi iniciada por causa de um erro." text2=""/>
 		<string id="19005442" text1="Falha de atualização do software" text2=""/>
 		<string id="19005443" text1="Falha na redução da atualização de software" text2=""/>
-		<string id="19005447" text1="Atualização do software bem-sucedida." text2=""/>
-		<string id="19005448" text1="Sair da atualização de software porque a nova versão do software não está disponível." text2=""/>
-		<string id="18874369" text1="A data de lançamento ou versão está vazia em SW_Version.xml." text2=""/>
-		<string id="18874373" text1="O componente SW %1 já existe em SW_Version.xml." text2=""/>
-		<string id="18874372" text1="O componente SW %1 já existe em SW_Version.xml." text2=""/>
-		<string id="18874370" text1="A data de lançamento ou a versão do componente %1 está vazia em SW_Version.xml." text2=""/>
-		<string id="18874371" text1="Nome de componente SW vazio em SW_Version.xml." text2=""/>
-		<string id="17891331" text1="Inicialização de sistema concluída" text2=""/>
-		<string id="19595268" text1="Mensagem de depuração: Criação e inicialização de linha %1 chamadas" text2=""/>
-		<string id="19595267" text1="Mensagem de depuração: linha %1 em movimento" text2=""/>
-		<string id="16908300" text1="Functor já está registrado para reconhecimento:  %1 ." text2=""/>
-		<string id="16908299" text1="Functor já está registrado para comando:  %1 ." text2=""/>
-		<string id="16908304" text1="Erro: Comando %1 expirou." text2=""/>
-		<string id="16908302" text1="Comando expirou %1  (ref %2)" text2=""/>
-		<string id="16908291" text1="Batimento cardíaco não recebido da linha com ID: %1" text2=""/>
-		<string id="16908305" text1="Falta contagem de batimento cardíaco para %1 cruzado %2: reiniciando a linha." text2=""/>
-		<string id="16908306" text1="Falta contagem de batimento cardíaco para %1 cruzado %2: desligando o sistema." text2=""/>
-		<string id="16908295" text1="Erro ao enviar o reconhecimento %1  com referência %2" text2=""/>
-		<string id="16908290" text1="Linha %1 não parou dentro de %2 de milissegundos" text2=""/>
-		<string id="16908301" text1="Functor já está registrado para expirar:  %1 ." text2=""/>
-		<string id="16908296" text1="Referência de comando %1 desconhecida da ID de linha %2 e o nome do comando %3" text2=""/>
-		<string id="16908293" text1="Batimento cardíaco com ID: %1 foi recebido de fonte desconhecida" text2=""/>
-		<string id="16908298" text1="Reconhecimento sem suporte %1" text2=""/>
-		<string id="16908297" text1="Comando não compatível %1" text2=""/>
-		<string id="16908292" text1="Verificação de batimento cardíaco para controladores de linha desabilitada" text2=""/>
+		<string id="19005447" text1="Sucesso na atualização do software" text2=""/>
+		<string id="19005448" text1="O software atual é mais recente que o pacote de atualização. A atualização foi cancelada." text2=""/>
+		<string id="17891331" text1="Inicialização do sistema completa" text2=""/>
+		<string id="17891335" text1="Desligue o aparelho através do interruptor na parte de trás." text2=""/>
+		<string id="17891336" text1="Instalação finalizada. Remova o drive USB e reinicie o aparelho." text2=""/>
+		<string id="17891337" text1="O aparelho está atualizando as informações da recuperação. Não interrompa este processo." text2=""/>
+		<string id="17891338" text1="Atualização do software em andamento... Não interrompa este processo." text2=""/>
+		<string id="17891339" text1="Erro inesperado. Ligue para a assistência técnica." text2=""/>
 		<string id="16973837" text1="Cancelar" text2=""/>
 		<string id="16973840" text1="Continuar" text2=""/>
 		<string id="16973839" text1="Não" text2=""/>
 		<string id="16973836" text1="OK" text2=""/>
 		<string id="16973841" text1="Parar" text2=""/>
 		<string id="16973838" text1="Sim" text2=""/>
-		<string id="33619990" text1="Não é possível alterar data e hora acima de 24 horas da data e hora do sistema" text2=""/>
-		<string id="33817094" text1="Falha na verificação de grupo. Recipiente de base não foi inicializado." text2=""/>
-		<string id="33817095" text1="Falha na verificação de grupo. Tipo do recipiente não é válido." text2=""/>
-		<string id="33817097" text1="Falha na verificação de grupo. Recipiente de programa não foi inicializado." text2=""/>
-		<string id="33817088" text1="ID do reagente existe na lista de programa, mas não na lista de reagentes: %1" text2=""/>
-		<string id="33817092" text1="ID do reagente existe nas configurações do usuário, mas não na lista de reagentes: %1" text2=""/>
-		<string id="33817096" text1="Falha na verificação de grupo. Recipiente de reagente não foi inicializado." text2=""/>
-		<string id="33817093" text1="ID da estação existe na lista da estação, mas não na matriz da estação: %1" text2=""/>
-		<string id="33817098" text1="Falha na verificação de grupo. Recipiente da estação não foi inicializado." text2=""/>
-		<string id="33817101" text1="Falha na verificação de grupo. Recipiente de configurações do usuário não foi inicializado." text2=""/>
-		<string id="33818114" text1="Programa %1  Reagentes para etapa %2 e etapa %3 não são compatíveis." text2=""/>
-		<string id="33817861" text1="O parâmetro de nível de som está fora da faixa." text2=""/>
-		<string id="33817860" text1="O parâmetro de volume de som está fora da faixa." text2=""/>
-		<string id="33817859" text1="O parâmetro periódico de som está fora da faixa." text2=""/>
-		<string id="33816577" text1="%1  não é uma ID de programa válida." text2=""/>
-		<string id="33816578" text1="Erro ao recuperar informação de manutenção para dispositivo %1" text2=""/>
-		<string id="33816608" text1="ID da etapa %2 em Programa %1 é inválida" text2=""/>
-		<string id="33817862" text1="A temperatura da parafina está fora da faixa" text2=""/>
-		<string id="33816626" text1="Erro interno do software. Adição de programa falhou. Entre em contato com a assistência técnica." text2=""/>
-		<string id="33816597" text1="A lista de programas contém mais do que programas %1. Apenas programas %1 permitidos" text2=""/>
-		<string id="33816624" text1="Falha em apagar o programa devido a ID de programa inválida %1." text2=""/>
-		<string id="33816631" text1="Erro interno do software. Falha ao excluir programa. Entre em contato com a assistência técnica." text2=""/>
-		<string id="33816623" text1="ID de programa %1 associada a programas %2 não é exclusiva." text2=""/>
-		<string id="33816620" text1="Etapa(s) de programas em programa %1 contém formato de duração inválido" text2=""/>
-		<string id="33818117" text1="O comprimento de nome de programa excede a limitação para o programa %1 . Faixa válida caracteres %2  -  %3 ." text2=""/>
-		<string id="33818113" text1="Nome de programa a  %1  já está em uso. Escolha um nome diferente para o programa." text2=""/>
-		<string id="33816596" text1="Índice inválido em tabela hash de programa." text2=""/>
-		<string id="33816592" text1="Falha na verificação de Programs.xml." text2=""/>
-		<string id="33816584" text1="Falha na leitura de Programs.xml." text2=""/>
-		<string id="33816605" text1="O número de etapas em programa a  %1 excede o limite. Máx. de 14 etapas permitidas." text2=""/>
-		<string id="33818116" text1="Os programas %1  devem ter  %2 etapa(s) pelo menos." text2=""/>
-		<string id="33818118" text1="Duração na etapa a  %1  de programa a  %2  excede limite, faixa validada :  %3  -  %4 ." text2=""/>
-		<string id="33818119" text1="Temperatura na etapa %1  de programa %2  excede limite, faixa validada :  %3  -  %4 (Celsius)." text2=""/>
-		<string id="33816606" text1="O verificador de programa encontrou uma ID de reagente %2 inválida no programa %1." text2=""/>
-		<string id="33816846" text1="ReagentList Falha na leitura dos reagentes %1" text2=""/>
-		<string id="33816845" text1="ReagentList Falha na gravação dos reagentes %1" text2=""/>
-		<string id="33816840" text1="Nome de reagente %1  é muito longo (máx. de 32 caracteres)" text2=""/>
-		<string id="33817864" text1="modelo de limpeza RMS desconhecido" text2=""/>
-		<string id="33817863" text1="modelo de processo RMS desconhecido" text2=""/>
-		<string id="33818115" text1="Nome de programa de usuário não pode conter a palavra Leica" text2=""/>
-		<string id="50331649" text1="Falha na exportação. Sem espaço suficiente no cartão SD." text2=""/>
-		<string id="50331672" text1="Falha na exportação. Sem espaço suficiente em armazenamento USB." text2=""/>
-		<string id="16842767" text1="Erro ao apagar arquivo %1." text2=""/>
-		<string id="16842762" text1="Erro na leitura de arquivo de config %1." text2=""/>
-		<string id="16842772" text1="Compensação de tempo é muito grande  %1  segundos. Permitido:  %2  segundos." text2=""/>
-		<string id="16846858" text1="Ajuste de data/tempo para  %1 ." text2=""/>
-		<string id="33619971" text1="Coloração iniciou (número de série é %1 e o tipo é %2)" text2=""/>
-		<string id="33947653" text1="Falha na importação. O formato de arquivo de importação está incorreto" text2=""/>
-		<string id="50331760" text1="Falha na importação. Versões SW não correspondem à importação de arquivos" text2=""/>
-		<string id="50331763" text1="Nenhum dispositivo USB encontrado no sistema para exportar arquivos" text2=""/>
-		<string id="50331762" text1="Nenhum dispositivo USB encontrado no sistema para importar arquivos" text2=""/>
-		<string id="33947665" text1="Linha ImportExport já em execução" text2=""/>
+		<string id="33619990" text1="Não é possível ajustar data e hora para além de 24 horas da data/hora interna atual do sistema." text2=""/>
+		<string id="33619991" text1="Usuário ajustou a hora do sistema para %1" text2=""/>
+		<string id="33817094" text1="Falha na verificação de grupo. Módulo de data base não inicializado." text2=""/>
+		<string id="33817095" text1="Falha na verificação de grupo. O tipo de módulo de dados não é válido." text2=""/>
+		<string id="33817097" text1="Falha na verificação de grupo. O módulo de dados do programa não foi inicializado." text2=""/>
+		<string id="33817088" text1="ID do reagente existe na lista de programa, mas não na lista de reagentes:%1." text2=""/>
+		<string id="33817092" text1="ID do reagente existe na lista de programa, mas não na lista de reagentes:%1." text2=""/>
+		<string id="33817096" text1="Falha na verificação de grupo. O módulo de dados do reagente não foi inicializado." text2=""/>
+		<string id="33817093" text1="O ID da estação existe na lista de estações mas não na matriz: %1." text2=""/>
+		<string id="33817098" text1="Falha na verificação de grupo. O módulo de data da estação não foi inicializado." text2=""/>
+		<string id="33817101" text1="Falha na verificação de grupo. O módulo de dados dos ajustes do usuário não foi inicializado." text2=""/>
+		<string id="33818114" text1="Reagentes do programa %1 para as etapas %2 e %3 não são compatíveis." text2=""/>
+		<string id="33817861" text1="O parâmetro de nível de som está desajustado." text2=""/>
+		<string id="33817860" text1="O parâmetro de volume de som está desajustado." text2=""/>
+		<string id="33817859" text1="O parâmetro periodicidade de som está desajustado." text2=""/>
+		<string id="33816577" text1="%1 não é um ID de programa válido." text2=""/>
+		<string id="33816578" text1="Erro na obtenção de informações para o aparelho %1" text2=""/>
+		<string id="33816608" text1="ID da etapa %2 no programa %1 não é válido." text2=""/>
+		<string id="33817862" text1="A temperatura da parafina está desajustada." text2=""/>
+		<string id="33816626" text1="Falha na adição de programa." text2=""/>
+		<string id="33816597" text1="A lista de programas contém mais do que %1 programas. Apenas %1 programas são permitidos." text2=""/>
+		<string id="33816624" text1="Falha na exclusão de programa devido a ID de programa inválido %1." text2=""/>
+		<string id="33816631" text1="Falha ao excluir programa." text2=""/>
+		<string id="33816623" text1="O ID do programa %1 associado ao programa %2 não é único." text2=""/>
+		<string id="33816620" text1="A(s) etapa(s) no programa %1 contém/contêm formato de duração inválido(s)." text2=""/>
+		<string id="33818117" text1="Comprimento do nome do programa excede o limite para o programa %1 . Intervalo válido %2 - %3 caracteres." text2=""/>
+		<string id="33818113" text1="Nome do programa %1 já está em uso. Escolha um nome diferente para o programa." text2=""/>
+		<string id="33816596" text1="Índice inválido na tabela do programa." text2=""/>
+		<string id="33816592" text1="Falha na verificação de programas.xml." text2=""/>
+		<string id="33816584" text1="Falha na leitura de programas.xml." text2=""/>
+		<string id="33816605" text1="Número de etapas do programa %1 excede o limite. Máx. de 14 etapas permitidas." text2=""/>
+		<string id="33818116" text1="O programa %1 deve ter ao menos %2 etapa(s)." text2=""/>
+		<string id="33818118" text1="A duração da etapa %1 do programa %2 excede o limite. Intervalo válido: %3 - %4 ." text2=""/>
+		<string id="33818119" text1="A temperatura da etapa %1do programa %2 excede o limite. Intervalo válido: %3 - %4 (Celsius)." text2=""/>
+		<string id="33816606" text1="Verificador do programa encontrou ID de reagente inválido %2 no programa %1." text2=""/>
+		<string id="33816846" text1="Falha na leitura do reagente %1 pelo ReagentList." text2=""/>
+		<string id="33816845" text1="O ReagentList não pode registrar os reagentes %1." text2=""/>
+		<string id="33816840" text1="O nome do reagente %1 é muito longo (máx. 32 caracteres)." text2=""/>
+		<string id="33817864" text1="Modelo de limpeza RMS desconhecido" text2=""/>
+		<string id="33817863" text1="Modelo de processamento RMS desconhecido" text2=""/>
+		<string id="33818115" text1="Nome de programa do usuário não pode conter a palavra Leica." text2=""/>
+		<string id="50331649" text1="Falha na exportação. Espaço insuficiente no cartão SD." text2=""/>
+		<string id="50331672" text1="Falha na exportação. Espaço de armazenamento USB insuficiente." text2=""/>
+		<string id="16842767" text1="Erro ao excluir o arquivo %1." text2=""/>
+		<string id="16842762" text1="Ocorreu um erro na leitura do arquivo %1." text2=""/>
+		<string id="16842772" text1="Tempo de compensação de %1 segundos é muito longo. O valor máximo permitido é de %2 segundos." text2=""/>
+		<string id="16846858" text1="Ajustar a data / hora para %1." text2=""/>
+		<string id="33619971" text1="Aparelho inicializado (número de série %1 e tipo %2)." text2=""/>
+		<string id="33947653" text1="Falha na importação. O formato no arquivo de importação está incorreto" text2=""/>
+		<string id="50331760" text1="Falha na importação. O nome do dispositivo não confere." text2=""/>
+		<string id="50331763" text1="Não é possível encontrar dispositivo USB no aparelho para exportar arquivos." text2=""/>
+		<string id="50331762" text1="Não é possível encontrar dispositivo USB no aparelho para importar arquivos." text2=""/>
+		<string id="33947665" text1="Importação-Exportação em andamento..." text2=""/>
 		<string id="33947664" text1="Falha na importação" text2=""/>
-		<string id="33947657" text1="Falha na importação. Falha na inicialização do recipiente" text2=""/>
-		<string id="33947661" text1="Os arquivos para importação de idiomas não estão disponíveis" text2=""/>
-		<string id="33947652" text1="Falha na importação. Não há arquivos para importar os dados" text2=""/>
-		<string id="33947655" text1="Falha na importação. Os arquivos necessários não estão disponíveis para importação" text2=""/>
-		<string id="33947659" text1="Falha na importação. Falha de redução" text2=""/>
-		<string id="33947662" text1="Importação bem-sucedida. Gere novo layout de banho" text2=""/>
-		<string id="33947663" text1="Importação bem-sucedida. Os arquivos de idiomas estão atualizados" text2=""/>
-		<string id="33947656" text1="Falha na importação. Versões SW não correspondem à importação de arquivos" text2=""/>
-		<string id="50331759" text1="Falha na importação. O arquivo está adulterado" text2=""/>
-		<string id="50331761" text1="O tipo de importação não é válido" text2=""/>
-		<string id="33947660" text1="Falha na importação. Falha na redução de atualização" text2=""/>
-		<string id="33947658" text1="Falha na importação. Falha na verificação do recipiente" text2=""/>
+		<string id="33947657" text1="Falha na importação. Falha na inicialização do módulo de dados" text2=""/>
+		<string id="33947652" text1="Falha na importação. Não há arquivos para importar." text2=""/>
+		<string id="33947655" text1="Falha na importação. Os arquivos requeridos não estão disponíveis no pacote de importação." text2=""/>
+		<string id="33947659" text1="Falha na importação. Falha na recuperação." text2=""/>
+		<string id="33947662" text1="Importação bem-sucedida." text2=""/>
+		<string id="33947656" text1="Falha na importação. As versões SW não são compatíveis com os arquivos de importação" text2=""/>
+		<string id="50331759" text1="Falha na importação. O arquivo do pacote está corrompido" text2=""/>
+		<string id="50331761" text1="O tio de importação não é válido." text2=""/>
+		<string id="33947660" text1="Falha na importação. Falha na recuperação de atualização." text2=""/>
+		<string id="33947658" text1="Falha na importação. Falha na verificação do módulo de dados" text2=""/>
 		<string id="33619974" text1="Senha alterada com sucesso." text2=""/>
 		<string id="33619972" text1="Falha no login. Senha incorreta." text2=""/>
-		<string id="33619973" text1="Não é possível alterar a senha. As senhas não correspondem." text2=""/>
-		<string id="33619978" text1="Dispositivo de lamínulas conectado" text2=""/>
-		<string id="33619975" text1="Processo de coloração GUI parou" text2=""/>
-		<string id="50331719" text1="O filtro de carbono ativado está vencido. Substitua por um novo filtro de carbono ativado!" text2=""/>
-		<string id="50331718" text1="Chame o engenheiro para manutenção!" text2=""/>
-		<string id="33619977" text1="As seguintes estação(ões) estão com defeito: %n. Programas que usam estações com defeito não poderão mais ser iniciadas." text2=""/>
-		<string id="50331683" text1="Nome de programa %1 etapa atual %2 reagente atual %3 tempo restante %4s" text2=""/>
-		<string id="50331651" text1="LeicaBiopsie" text2=""/>
-		<string id="50331652" text1="CleaningProgram" text2=""/>
-		<string id="50331650" text1="LeicaOvernight" text2=""/>
+		<string id="33619973" text1="Não é possível alterar a senha. Senhas não conferem." text2=""/>
+		<string id="33619978" text1="GUI conectado" text2=""/>
+		<string id="33619975" text1="GUI parou." text2=""/>
+		<string id="50331719" text1="O filtro de carbono ativo está vencido. Substitua por um novo filtro de carbono ativo." text2=""/>
+		<string id="50331771" text1="O filtro de carbono ativo está vencido. Substitua por um novo filtro de carbono ativo o mais breve possível." text2=""/>
+		<string id="50331772" text1="Usuário adicionou o programa %1." text2=""/>
+		<string id="50331773" text1="Usuário atualizou o programa %1." text2=""/>
+		<string id="50331774" text1="Usuário removeu o programa %1." text2=""/>
+		<string id="50331775" text1="Mude o modo de usuário para usuário padrão." text2=""/>
+		<string id="50331776" text1="Mude o modo de usuário para Supervisor." text2=""/>
+		<string id="50331777" text1="Mude o modo de usuário para Serviço." text2=""/>
+		<string id="50331718" text1="Contacte a assistência para realizar manutenção preventiva anual e manter seu aparelho funcionando apropriadamente." text2=""/>
+		<string id="50331765" text1="O tempo de operação do filtro de carbono ativo foi redefinido." text2=""/>
+		<string id="50331764" text1="O tempo de operação do aparelho foi redefinido." text2=""/>
+		<string id="50331766" text1="A pausa excede 5 minutos. Continue o programa o mais breve possível!" text2=""/>
+		<string id="50331767" text1="A pausa excede 10 minutos. Continue o programa o mais breve possível!" text2=""/>
+		<string id="50331768" text1="Não é possível continuar o programa. A pausa excede 15 minutos." text2=""/>
+		<string id="50331651" text1="Leica Biopsy" text2=""/>
+		<string id="50331652" text1="Programa de limpeza" text2=""/>
+		<string id="50331650" text1="Leica Overnight" text2=""/>
 		<string id="50331671" text1="Álcool de limpeza" text2=""/>
 		<string id="50331670" text1="Xileno de limpeza" text2=""/>
 		<string id="50331666" text1="Etanol 100 %" text2=""/>
@@ -426,81 +188,562 @@
 		<string id="50331660" text1="Álcool de limpeza" text2=""/>
 		<string id="50331659" text1="Solvente de limpeza" text2=""/>
 		<string id="50331657" text1="Limpeza" text2=""/>
-		<string id="50331656" text1="Desidratação, absoluta" text2=""/>
-		<string id="50331655" text1="Desidratação, diluída" text2=""/>
+		<string id="50331656" text1="Desidratação, puro" text2=""/>
+		<string id="50331655" text1="Desidratação, diluído" text2=""/>
 		<string id="50331653" text1="Fixação" text2=""/>
 		<string id="50331658" text1="Parafina" text2=""/>
 		<string id="50331654" text1="Água" text2=""/>
 		<string id="50331668" text1="Parafina" text2=""/>
 		<string id="50331669" text1="Água de processamento" text2=""/>
 		<string id="50331667" text1="Xilol" text2=""/>
-		<string id="50331678" text1="ERRO" text2=""/>
-		<string id="50331720" text1="Comando de execução do programador %1" text2=""/>
-		<string id="50331721" text1="Comando de execução do programador %1 resultado %2" text2=""/>
-		<string id="50331684" text1="Finalizar programa %1" text2=""/>
-		<string id="50331676" text1="INATIVO" text2=""/>
-		<string id="50331675" text1="INIT" text2=""/>
-		<string id="50331716" text1="cancelar programa" text2=""/>
-		<string id="50331717" text1="drenagem" text2=""/>
-		<string id="50331715" text1="pausar programa" text2=""/>
-		<string id="50331714" text1="iniciar programa" text2=""/>
-		<string id="50331705" text1="resultado da verificação do frasco: %1" text2=""/>
-		<string id="50331709" text1="bloqueio" text2=""/>
-		<string id="50331710" text1="vazio" text2=""/>
-		<string id="50331711" text1="erro" text2=""/>
-		<string id="50331708" text1="incompleto" text2=""/>
-		<string id="50331707" text1="OK" text2=""/>
-		<string id="50331712" text1="expirado" text2=""/>
-		<string id="50331713" text1="inesperado" text2=""/>
-		<string id="50331704" text1="verificação do frasco %1" text2=""/>
-		<string id="50331703" text1="verificação de temperatura e pressão" text2=""/>
-		<string id="50331706" text1="autoteste finalizado" text2=""/>
-		<string id="50331702" text1="iniciar autoteste" text2=""/>
-		<string id="50331681" text1="Estado da etapa do programa atual: %1" text2=""/>
-		<string id="50331699" text1="cancelado" text2=""/>
-		<string id="50331700" text1="cancelando" text2=""/>
-		<string id="50331693" text1="drenando" text2=""/>
-		<string id="50331696" text1="Erro" text2=""/>
-		<string id="50331690" text1="enchimento" text2=""/>
-		<string id="50331695" text1="finalizado" text2=""/>
-		<string id="50331686" text1="sensor de nível de aquecimento 1" text2=""/>
-		<string id="50331687" text1="sensor de nível de aquecimento 2" text2=""/>
-		<string id="50331689" text1="movimento do canhão para drenagem" text2=""/>
-		<string id="50331688" text1="movimento do canhão para enchimento" text2=""/>
-		<string id="50331697" text1="pausa" text2=""/>
-		<string id="50331698" text1="pausa durante a drenagem" text2=""/>
-		<string id="50331694" text1="pronto para drenagem" text2=""/>
-		<string id="50331691" text1="vedação" text2=""/>
-		<string id="50331692" text1="encharcamento" text2=""/>
-		<string id="50331685" text1="inicialização de etapa" text2=""/>
-		<string id="50331701" text1="desconhecido" text2=""/>
-		<string id="50331677" text1="EXECUÇÃO" text2=""/>
-		<string id="50331674" text1="Estado de controlador principal do programador: %1" text2=""/>
-		<string id="50331680" text1="Comando de ação de recebimento do programador de GUI: %1" text2=""/>
-		<string id="50331682" text1="Iniciar programa %1" text2=""/>
-		<string id="50331679" text1="estado inesperado" text2=""/>
-		<string id="67176192" text1="[Erro ID %1!  Tempo de drenagem maior do que 2 minutos.]" text2=""/>
-		<string id="67176193" text1="[Erro ID %1!  Tempo de enchimento maior do que 2 minutos.]" text2=""/>
-		<string id="67176194" text1="[Erro ID %1!  Falha na vedação no cenário seco.]" text2=""/>
-		<string id="67176195" text1="[Erro ID %1!  Falha na vedação no cenário de processamento.]" text2=""/>
-		<string id="67176196" text1="[Erro ID %1!  Tampa do forno de banho de cera aberto.]" text2=""/>
-		<string id="67176197" text1="[Erro ID %1!  Tensão CA não está estável.]" text2=""/>
-		<string id="67176198" text1="Falha na verificação de frasco! Limpe o anel de vedação, bem como a parte superior da retorta conforme descrito no manual do usuário. Feche a retorta ao confirmar o botão "Retry"." text2=""/>
-		<string id="67176199" text1="O frasco X parece que não está cheio o suficiente. Verifique o frasco de acordo com o manual do usuário. Após, pressione o botão "Retry". " text2=""/>
-		<string id="67176200" text1="A drenagem da retorta falhou! Limpe o anel de vedação, bem como a parte superior da retorta conforme descrito no manual do usuário. Feche a retorta ao confirmar o botão "Retry"." text2=""/>
-		<string id="67176201" text1="[Erro ID %1! Ligue para a assistência técnica!" text2=""/>
-		<string id="67176202" text1="[Erro ID %1! Falha no sistema de exaustão! Informe a assistência técnica!" text2=""/>
-		<string id="67176203" text1="[Erro ID %1! Ligue para a assistência técnica!" text2=""/>
-		<string id="67176204" text1="[Erro ID %1! Remova e proteja a amostra. Ligue para a assistência técnica!" text2=""/>
-		<string id="67176205" text1="[Erro ID %1! Reinicie o aparelho como primeira opção. Se o problema ocorrer novamente, ligue para a assistência técnica!" text2=""/>
-		<string id="67176206" text1="Falha no sensor de nível, abra a tampa da retorta e limpe o sensor de nível como recomendado no manual do usuário. Depois feche a tampa da retorta e pressione o botão "Retry"." text2=""/>
+		<string id="67174416" text1="Desligamento do aparelho pelo usuário." text2=""/>
+		<string id="67174417" text1="Realizar ação de recuperação %1." text2=""/>
+		<string id="67174418" text1="O usuário iniciou o programa %1 com tempo de término %2." text2=""/>
+		<string id="67174419" text1="O usuário continuou o programa %1." text2=""/>
+		<string id="67174420" text1="O usuário pausou o programa %1." text2=""/>
+		<string id="67174421" text1="O usuário cancelou o programa %1." text2=""/>
+		<string id="67174422" text1="O usuário drenou o último reagente do programa %1." text2=""/>
+		<string id="67174423" text1="O usuário alterou o ponto de fusão da parafina de %1 para %2." text2=""/>
+		<string id="67174656" text1="Iniciar o auto-teste." text2=""/>
+		<string id="67174733" text1="Sucesso do auto-teste." text2=""/>
+		<string id="67174912" text1="Iniciar o pré-teste." text2=""/>
+		<string id="67174927" text1="Iniciar a checagem do frasco." text2=""/>
+		<string id="67174928" text1="Sucesso na checagem do frasco." text2=""/>
+		<string id="67174929" text1="Sucesso no pré-teste." text2=""/>
+		<string id="67175168" text1="Detecção de programa não finalizado %1 na etapa %2." text2=""/>
+		<string id="67175186" text1="O arquivo de sistema com a lista de programa não finalizado não encontrado. Verifique para determinar se o armazenamento está corrompido." text2=""/>
+		<string id="67175200" text1="Iniciar programa %1" text2=""/>
+		<string id="67175202" text1="Necessário %1 aquecer o forno para fusão da parafina." text2=""/>
+		<string id="67175203" text1="Cancelando…" text2=""/>
+		<string id="67175204" text1="Programa cancelado." text2=""/>
+		<string id="67175205" text1="Programa pausado." text2=""/>
+		<string id="67175207" text1="Drenando..." text2=""/>
+		<string id="67175208" text1="Aguardando parafina." text2=""/>
+		<string id="67175209" text1="Aquecendo o sensor de nível para enchimento" text2=""/>
+		<string id="67175210" text1="Enchimento iniciado" text2=""/>
+		<string id="67175213" text1="Processamento iniciado" text2=""/>
+		<string id="67175215" text1="Etapa %1concluída" text2=""/>
+		<string id="67175216" text1="Etapa iniciada %1(Estação %2, %3, %4, %5, %6)." text2=""/>
+		<string id="67175217" text1="Programa finalizado %1" text2=""/>
+		<string id="67175218" text1="Iniciado processo de secagem." text2=""/>
+		<string id="67175219" text1="Finalizado processo de secagem." text2=""/>
+		<string id="67175220" text1="O tempo entre etapas %1 e %2 excede 4 minutos." text2=""/>
+		<string id="67175222" text1="Sucesso no enchimento." text2=""/>
+		<string id="67175223" text1="Sucesso na drenagem." text2=""/>
+		<string id="67175224" text1="Iniciado resfriamento." text2=""/>
+		<string id="67175424" text1="Pré-checagem" text2=""/>
+		<string id="67175425" text1="Processo de secagem" text2=""/>
+		<string id="67176012" text1="Sistema de ar: O vácuo não atingiu o valor alvo. O vácuo atingiu máx. %1 kPa." text2=""/>
+		<string id="67176025" text1="Válvula giratória não está funcionando normalmente. Verifique a válvula giratória." text2=""/>
+		<string id="67176026" text1="O aparelho encontrou problemas técnicos e não é possível terminar o protocolo." text2=""/>
+		<string id="67176194" text1="ID do erro %1! Vedação falhou no seco." text2=""/>
+		<string id="67176196" text1="ID do erro %1! Tampa do forno de banho de parafina aberta. Deseja derreter parafina nova agora?" text2=""/>
+		<string id="67176198" text1="Limpe o anel de vedação e a parte superior da retorta como descrito no manual do usuário." text2=""/>
+		<string id="67176199" text1="Verifique a(s) garrafa(s) de acordo com o manual do usuário." text2=""/>
+		<string id="67176200" text1="A drenagem da retorta falhou! Limpe o anel de vedação e a parte superior da retorta como descrito no manual do usuário." text2=""/>
+		<string id="67176201" text1="ID do erro %1! Ligue para a assistência técnica!" text2=""/>
+		<string id="67176202" text1="ID do erro %1! Falha no sistema de exaustão! Informe a assistência técnica!" text2=""/>
+		<string id="67176203" text1="ID do erro %1! Ligue para a assistência técnica!" text2=""/>
+		<string id="67176204" text1="ID do erro %1! Remova e proteja as amostras. Ligue para a assistência técnica!" text2=""/>
 		<string id="67176207" text1="Sistema de alarme local não conectado! Conecte o dispositivo com sistema de alarme local" text2=""/>
 		<string id="67176208" text1="Feche a tampa do forno de parafina!" text2=""/>
-		<string id="67176209" text1="Feche a tampa da retorta e confirme com o botão "Retry"." text2=""/>
-		<string id="67176210" text1="Falha no teste de pressão! Limpe o anel de vedação, bem como a parte superior da retorta conforme descrito no manual do usuário. Feche a retorta ao confirmar o botão "Retry"." text2=""/>
+		<string id="67176209" text1="Feche a tampa da retorta e confirme no botão Retry." text2=""/>
+		<string id="67176210" text1="Falha no teste de pressão! Limpe o anel de vedação e a parte superior da retorta como descrito no manual do usuário." text2=""/>
 		<string id="67176211" text1="Sistema de alarme remoto não conectado! Conecte o dispositivo com sistema de alarme remoto." text2=""/>
-		<string id="67176212" text1="A estação Nº X não está cheia o suficiente! Verifique o nível de enchimento, corrija-o e pressione o botão "Retry". " text2=""/>
-		<string id="67176213" text1="Falha no teste de vácuo! Limpe o anel de vedação, bem como a parte superior da retorta conforme descrito no manual do usuário. Feche a retorta ao confirmar o botão "Retry"." text2=""/>
-
-    </language>
+		<string id="67176212" text1="Verifique e corrija o nível de enchimento do frasco. Então tente encher novamente." text2=""/>
+		<string id="67176214" text1="O protocolo foi interrompido por falha de energia. Cancele o protocolo e remova as amostras." text2=""/>
+		<string id="67176216" text1="Falha no reaquecimento no processo de recuperação por falha de energia. Ligue para a assistência técnica." text2=""/>
+		<string id="67176217" text1="Falha no processo de recuperação por falha de energia. Ligue para a assistência técnica." text2=""/>
+		<string id="67176218" text1="Erros de sistema. Ligue para a assistência técnica." text2=""/>
+		<string id="67176219" text1="Falha na proteção do tecido com reagente de segurança. Ligue para a assistência técnica." text2=""/>
+		<string id="67176220" text1="Limpe o sensor de nível." text2=""/>
+		<string id="67176223" text1="ID do erro %1! Falha no cancelamento." text2=""/>
+		<string id="67176224" text1="Falha de energia no programa de limpeza. O programa reiniciou automaticamente." text2=""/>
+		<string id="67176225" text1="ID do erro %1! Funcionamento anormal da válvula giratória. Ligue para a assistência técnica!" text2=""/>
+		<string id="67176226" text1="ID do erro %1! O aparelho encontrou problemas técnicos e não é possível terminar o protocolo." text2=""/>
+		<string id="19202061" text1="O usuário reiniciou a estação %1." text2=""/>
+		<string id="19202062" text1="O usuário alterou o reagente na estação %1 para %2." text2=""/>
+		<string id="19202063" text1="O usuário ajustou a estação %1 para cheia." text2=""/>
+		<string id="19202064" text1="O usuário ajustou a estação %1 para vazia." text2=""/>
+		<string id="19267602" text1="O usuário adicionou o reagente %1, Cassetes até a troca %2, Ciclos até a troca %3, Dias até a troca %4, Grupo de reagentes %5." text2=""/>
+		<string id="19267603" text1="O usuário excluiu o reagente %1." text2=""/>
+		<string id="19267604" text1="O usuário atualizou o reagente %1, Cassetes até a troca %2, Ciclos até a troca %3, Dias até a troca %4, Grupo de reagentes %5." text2=""/>
+		<string id="16843520" text1="Os arquivos de som para o alarme não foram encontrados." text2=""/>
+		<string id="19398660" text1="ConnectionManager: Falha na autenticação do cliente %1 pela versão." text2=""/>
+		<string id="19398659" text1="ConnectionManager: Cliente %1 com versão %2 conectado." text2=""/>
+		<string id="19398657" text1="ConnectionManager: Cliente %1. mensagem incompleta." text2=""/>
+		<string id="19398658" text1="ConnectionManager: Cliente %1. Análise do documento XML com falha em %2." text2=""/>
+		<string id="19398661" text1="ConnectionManager: Cliente %1. não é possível converter mensagem de saída QString para QDomDocument! Erro:%2" text2=""/>
+		<string id="19398662" text1="ConnectionManager: Cliente %1. QByteArray de saída vazio." text2=""/>
+		<string id="19398663" text1="ConnectionManager: Cliente %1. dados de saída para Socket com falha!" text2=""/>
+		<string id="16973828" text1="ID do evento %1 não existe no arquivo xml" text2=""/>
+		<string id="16973829" text1="Não foi possível criar o arquivo %1" text2=""/>
+		<string id="16973832" text1="Não foi possível liberar o arquivo %1" text2=""/>
+		<string id="16973825" text1="Não foi possível abrir o arquivo %1" text2=""/>
+		<string id="16973830" text1="Não foi possível remover o arquivo %1" text2=""/>
+		<string id="16973831" text1="Não foi possível gravar o arquivo %1" text2=""/>
+		<string id="17235986" text1="Falha na verificação de DeviceConfiguration" text2=""/>
+		<string id="17235984" text1="Falha de leitura de arquivo XML de configuração do dispositivo" text2=""/>
+		<string id="17760268" text1="%1 não é uma posição válida de DirectConnection ligado/desligado" text2=""/>
+		<string id="17760271" text1="%1 não é um endereço de IP Proxy válido." text2=""/>
+		<string id="17760272" text1="%1 não é uma de IP Proxy válida." text2=""/>
+		<string id="17760267" text1="%1 não é uma posição válida de RemoteCare ligado/desligado." text2=""/>
+		<string id="17235973" text1="%1 não é uma língua suportada." text2=""/>
+		<string id="17235972" text1="%1 não é um número válido." text2=""/>
+		<string id="17235969" text1="Erro na leitura do elemento de inicialização xml %1 em %2 ." text2=""/>
+		<string id="17760264" text1="Erro: os valores do nível de som estão fora da faixa" text2=""/>
+		<string id="17760263" text1="Erro: os números do nível de som estão fora da faixa" text2=""/>
+		<string id="17235970" text1="Elemento de inicialização xml inesperado %1 . Esperado: %2 em %3" text2=""/>
+		<string id="17235975" text1="Versão não suportada %1 em %2 ." text2=""/>
+		<string id="17235971" text1="atributo xml não encontrado:%1 em %2 ." text2=""/>
+		<string id="17235988" text1="%1 falha na operação de abertura do arquivo" text2=""/>
+		<string id="17235995" text1="Falha na verificação de grupo" text2=""/>
+		<string id="17235987" text1="%1 Erro de inicialização" text2=""/>
+		<string id="17235979" text1="%1 não é um formato de data válido." text2=""/>
+		<string id="17760270" text1="%1 não é uma senha de Proxy válida." text2=""/>
+		<string id="17760269" text1="%1 não é um nome de usuário Proxy válido." text2=""/>
+		<string id="17235974" text1="%1 não é uma posição válida de ligado/desligado." text2=""/>
+		<string id="17235981" text1="%1 não é um formato de temperatura válido." text2=""/>
+		<string id="17235980" text1="%1 não é um formato de hora válido." text2=""/>
+		<string id="17235996" text1="Erro de indicador NULL no componente DataManager" text2=""/>
+		<string id="19070983" text1="RCConfig: Nome do arquivo do Certificado %1 comprimento fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="17236007" text1="Falha na verificação RCConfig.xml." text2=""/>
+		<string id="19071008" text1="RCConfig:%1 o item tem um elemento inválido." text2=""/>
+		<string id="19071009" text1="RCConfig:%1 o item tem uma qualidade inválida." text2=""/>
+		<string id="19070981" text1="RCConfig: O tamanho do nível de criptografia %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070982" text1="RCConfig:%1 não é um estado válido de autenticação ligada/desligada." text2=""/>
+		<string id="19070984" text1="RCConfig: O tempo de execução está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070985" text1="RCConfig: O tipo de servidor %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070986" text1="RCConfig: A pasta destino tem %1 comprimento fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070987" text1="RCConfig: O endereço do servidor tem %1 comprimento fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070988" text1="RCConfig: O ID do servidor %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19071007" text1="RCConfig:%1 não é uma posição válida de compressão ligada/desligada." text2=""/>
+		<string id="19070978" text1="RCConfig:%1 não é uma posição válida de persistência de conexão HTTP ligada/desligada." text2=""/>
+		<string id="19070979" text1="RCConfig:%1 não é uma posição válida de Debug ligado/desligado." text2=""/>
+		<string id="19070980" text1="RCConfig:%1 não é uma posição válida de conexão segura HTTP ligada/desligada." text2=""/>
+		<string id="19071004" text1="RCConfig:%1 não é um endereço de IP de sessão remota válido." text2=""/>
+		<string id="19071006" text1="RCConfig: Tamanho máximo do lote %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070991" text1="RCConfig: O ID do dispositivo %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070992" text1="RCConfig: O tipo de dispositivo %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070994" text1="RCConfig: O protocolo proxy %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19070977" text1="RCConfig: O tamanho da fila %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19071002" text1="RCConfig: O comprimento do nome da sessão remota %1 está fora do limite mín. %2 máx. %3." text2=""/>
+		<string id="19267589" text1="A contagem de reagentes excede o limite. Máx. permitido 100." text2=""/>
+		<string id="19267588" text1="O ID do reagente %1 do reagente %2 não existe na lista." text2=""/>
+		<string id="19267587" text1="O ID do reagente %1 do reagente %2 já está em uso." text2=""/>
+		<string id="17236008" text1="Falha na leitura de reagentes.xml." text2=""/>
+		<string id="17235985" text1="Falha na verificação UserSettings" text2=""/>
+		<string id="17235983" text1="Falha na leitura de arquivo UserSettings XML" text2=""/>
+		<string id="17236010" text1="Falha na leitura de Stations.xml." text2=""/>
+		<string id="17235990" text1="%1 Falha na recepção da operação" text2=""/>
+		<string id="17235991" text1="%1 Falha na transmissão da operação" text2=""/>
+		<string id="17760266" text1="Valores do nível de som de alerta estão fora da faixa" text2=""/>
+		<string id="17760265" text1="Valores do número de som de alerta estão fora da faixa" text2=""/>
+		<string id="17235994" text1="%1 Falha na desserialização do XML" text2=""/>
+		<string id="17235992" text1="%1 Arquivo XML não existe" text2=""/>
+		<string id="17235993" text1="%1 Falha na serialização do XML" text2=""/>
+		<string id="17498130" text1="ConfigfileLoader. Processo %1: Erro ao abrir o arquivo %2." text2=""/>
+		<string id="17498122" text1="EPC. Processo %1: Não foi possível realizar o evento %2 em %3." text2=""/>
+		<string id="17498131" text1="EPC. Processo %1: Não é possível interromper processo externo em %2." text2=""/>
+		<string id="17498124" text1="EPC. Processo %1: Diretório inexistente em %2." text2=""/>
+		<string id="17498132" text1="EPC. Processo %1: Não foi possível iniciar dispositivo/processo em %2." text2=""/>
+		<string id="17498126" text1="EPC. Processo %1: Máquina de inicialização com estado inicial %2 com falha em %3" text2=""/>
+		<string id="17498133" text1="Processo: %1 saída com código %2." text2=""/>
+		<string id="17498125" text1="EPC. Processo %1: inicialização falhou em %2." text2=""/>
+		<string id="17498123" text1="EPC. Processo %1: Erro reportado %2." text2=""/>
+		<string id="17498129" text1="EPD. Processo %1: Tempo esgotado para login no ExternalProcess." text2=""/>
+		<string id="17498127" text1="EPD. Processo %1: Falta entrada." text2=""/>
+		<string id="17498128" text1="EPD. Processo %1: Não foi possível iniciar NetworkServerDevicewas." text2=""/>
+		<string id="17039361" text1="Pearl mudou para estado de erro" text2=""/>
+		<string id="17039364" text1="Erro interno do software: ID do evento não encontrado %1" text2=""/>
+		<string id="18939905" text1="ExportConfig: Nome de arquivo vazio encontrado na lista de arquivos %1 de configuração." text2=""/>
+		<string id="18939906" text1="ExportConfig: Nome de arquivo vazio encontrado na lista do grupo de arquivos %1 de configuração." text2=""/>
+		<string id="18939908" text1="ExportConfig: Nome de diretório fonte vazio." text2=""/>
+		<string id="18939909" text1="ExportConfig: Nome de arquivo destino vazio." text2=""/>
+		<string id="18939907" text1="ExportConfig: Tipo de pacote de %1 configuração inválido. Deve ser de tipo nativo ou não-nativo." text2=""/>
+		<string id="17498118" text1="O criador functor já está registrado para:%1 ." text2=""/>
+		<string id="17498114" text1="Erro na inicialização do dispositivo de processo externo." text2=""/>
+		<string id="17498116" text1="Erro na inicialização da máquina de estado completo." text2=""/>
+		<string id="17498117" text1="Erro na inicialização de gerenciador do processo." text2=""/>
+		<string id="17498115" text1="Erro na inicialização da máquina de estado simples." text2=""/>
+		<string id="17498113" text1="Erro no carregamento das configurações." text2=""/>
+		<string id="17498119" text1="Erro. Função de criador não registrada para a classe: %1 ." text2=""/>
+		<string id="17498120" text1="Erro. Referência já registrada %1 para o comando %2 ." text2=""/>
+		<string id="17498121" text1="Controlador de processo externo: Referência de Comando Inválida %1. Arquivo %2 Linha %3" text2=""/>
+		<string id="16846859" text1="O limite de tempo atual é de %1 segundos" text2=""/>
+		<string id="16842774" text1="Não é possível computar novas ref. de comando" text2=""/>
+		<string id="16842765" text1="Erro ao gerar o arquivo %1." text2=""/>
+		<string id="16842766" text1="Erro ao abrir o arquivo %1." text2=""/>
+		<string id="16842755" text1="Exceção padrão (erro de alocação de memória) detectado: arquivo: %1 linha: %2." text2=""/>
+		<string id="16842763" text1="Erro na leitura do relógio monotônico." text2=""/>
+		<string id="16842756" text1="NULL_POINTES:%1 arquivo:%2 linha: %3." text2=""/>
+		<string id="16842758" text1="O comando ou confirmação não tem receptor (comando %1 - canal %2 )" text2=""/>
+		<string id="16842775" text1="Sinal inesperado recebido" text2=""/>
+		<string id="16842760" text1="O sinal não está conectado a nenhuma sinal" text2=""/>
+		<string id="16842759" text1="O sinal não está conectado a nenhum conector" text2=""/>
+		<string id="16842754" text1="Exceção inesperada detectada: arquivo: %1 linha: %2." text2=""/>
+		<string id="16842777" text1="Exceção global (EventCode %1 lançada em %2) pego em %3 na linha %4" text2=""/>
+		<string id="16842778" text1="Exceção padrão (%1) lançada em %2 na linha %3" text2=""/>
+		<string id="16846848" text1="Mensagem de depuração:%1" text2=""/>
+		<string id="16846857" text1="Desligando dispositivo" text2=""/>
+		<string id="16842776" text1="Exceção não tratada detectada" text2=""/>
+		<string id="16842753" text1="ID de string desconhecida" text2=""/>
+		<string id="17825801" text1="Erro GPIO:%1." text2=""/>
+		<string id="17825802" text1="GPIO:Info:%1" text2=""/>
+		<string id="17039363" text1="GU I está disponível" text2=""/>
+		<string id="17039370" text1="Estágio de inicialização %1 concluído com restrições." text2=""/>
+		<string id="17039369" text1="Inicialização do instrumento concluída com restrições. No entanto o processamento é possível." text2=""/>
+		<string id="17039368" text1="Estágio de inicialização %1 com falha" text2=""/>
+		<string id="17039367" text1="Estágio de inicialização %1 concluído com sucesso" text2=""/>
+		<string id="17039366" text1="A inicialização do instrumento foi bem-sucedida" text2=""/>
+		<string id="19398669" text1="MessageChecker: não é possível carregar mensagens em %1. Erro %2." text2=""/>
+		<string id="19398671" text1="ERRO MessageChecker: documento MSG de entrada é inválido." text2=""/>
+		<string id="19398670" text1="ERRO MessageChecker: o validador é NULO." text2=""/>
+		<string id="19398665" text1="MasterLinkController: IP %1. Sinal de conexão do LinkDevice &quot;&quot;%2&quot;&quot; com falha." text2=""/>
+		<string id="19398664" text1="MasterLinkController: IP %1. Não é possível criar/inicializar MasterClient em %2." text2=""/>
+		<string id="19398666" text1="MasterLinkController: Sinal de emissão de mensagem do IP %1não conectado." text2=""/>
+		<string id="19398667" text1="MasterLinkDevice: Sinal de conexão do LinkDevice &quot;&quot;%1&quot;&quot; com falha." text2=""/>
+		<string id="19398668" text1="MasterLinkDevice: Não é possível iniciar o objeto de rede." text2=""/>
+		<string id="19398675" text1="MessageLoader: ParseCommands: Não há mensagens válidas." text2=""/>
+		<string id="19398672" text1="MessageLoader: Abertura do arquivo %1 com falha." text2=""/>
+		<string id="19398673" text1="MessageLoader: Análise do arquivo %1 com falha." text2=""/>
+		<string id="19398674" text1="MessageLoader: Marcador de elemento do arquivo %1 incompatível com o marcador %2." text2=""/>
+		<string id="19398686" text1="NetworkClient: Cliente %1. Falha na autenticação." text2=""/>
+		<string id="19398693" text1="NetworkClient: Cliente %1. Configuração de parâmetro(s) ausente." text2=""/>
+		<string id="19398692" text1="NetworkClient: Cliente %1. Falha na configuração de parâmetro(s)." text2=""/>
+		<string id="19398685" text1="NetworkClient: Cliente %1. Conexão de trabalho perdida." text2=""/>
+		<string id="19398694" text1="NetworkClientDevice: IP %1. Falha na inicialização do NetworkDevice/Client." text2=""/>
+		<string id="19398699" text1="NetworkClientDevice: IP %1. Falta entrada." text2=""/>
+		<string id="19398695" text1="NetworkClientDevice: IP %1. Falha no registro do gestor de mensagens." text2=""/>
+		<string id="19398698" text1="NetworkClientDevice: IP %1. Erro na rede %2 ." text2=""/>
+		<string id="19398688" text1="NetworkClient: Cliente %1. Diretório do gestor de mensagens inexistente em %2." text2=""/>
+		<string id="19398689" text1="NetworkClient: Cliente %1. Não é possível converter mensagem de saída Estringi para QDomDocument! Erro:%2" text2=""/>
+		<string id="19398690" text1="NetworkClient: Cliente %1. QByteArray de saída vazio." text2=""/>
+		<string id="19398684" text1="NetworkClient: Cliente %1. Erro de conexão do plugue %2." text2=""/>
+		<string id="19398691" text1="NetworkClient: Cliente %1. Falha no comando de conexão do plugue." text2=""/>
+		<string id="19398687" text1="NetworkClient: Cliente %1. Falha na conexão devido a mensagem de servidor errada." text2=""/>
+		<string id="19398708" text1="NetworkDevice: elemento de comando %1 não encontrado." text2=""/>
+		<string id="19398709" text1="NetworkDevice: elemento de comando %1 vazio." text2=""/>
+		<string id="19398703" text1="NetworkDevice: comando com REF %1 já acolhido." text2=""/>
+		<string id="19398704" text1="NetworkDevice: criação de %1 comando com falha" text2=""/>
+		<string id="19398705" text1="NetworkDevice:%1 falha na execução do comando." text2=""/>
+		<string id="19398710" text1="NetworkDevice: o comando %1 não pode ser inicializado." text2=""/>
+		<string id="19398701" text1="NetworkDevice: não é possível carregar mensagens." text2=""/>
+		<string id="19398707" text1="NetworkDevice: não é possível analisar a mensagem! Erro .%1" text2=""/>
+		<string id="19398706" text1="NetworkDevice: tipo desconhecido de mensagem %1." text2=""/>
+		<string id="19398700" text1="NetworkDevice: não é possível inicializar o tipo errado de dispositivo %1." text2=""/>
+		<string id="19398720" text1="NetworkLayer: atributo %1 vazio em %2." text2=""/>
+		<string id="19398721" text1="NetworkLayer: Falha no envio da mensagem com status %1." text2=""/>
+		<string id="19398724" text1="NetworkLayer: comando %1 corresponde a uma referência inválida em %2." text2=""/>
+		<string id="19398722" text1="NetworkLayer: comando %1 vazio em %2." text2=""/>
+		<string id="19398723" text1="NetworkLayer: comando %1 não é um comando ativo em %2." text2=""/>
+		<string id="19398697" text1="NetworkLayer: IP/cliente %1. Diretório inexistente em %2." text2=""/>
+		<string id="17039362" text1="O aparelho mudou para status normal" text2=""/>
+		<string id="19398719" text1="NetworkServerDevice: Cliente %1: Não é possível iniciar DateTimeSync." text2=""/>
+		<string id="19398717" text1="NetworkServerDevice: Cliente %1: não é possível inicializar o servidor." text2=""/>
+		<string id="19398718" text1="NetworkServerDevice: Cliente %1: não é possível registrar o manipulador de protocolos." text2=""/>
+		<string id="19398712" text1="NETSERVER: IP %1: Falha na exclusão do objeto de gerenciamento %2." text2=""/>
+		<string id="19398696" text1="NetworkServerDevice: Falha na inicialização NetworkDevice/Servidor." text2=""/>
+		<string id="19398716" text1="NetworkServerDevice: Cliente %1: problema reportado pelo NetworkServer %2." text2=""/>
+		<string id="19398715" text1="NETSERVER: IP %1: PORTA %2: Falha de escuta." text2=""/>
+		<string id="19398714" text1="NETSERVER: IP %1: Falha ao carregar as configurações, motivo:%2." text2=""/>
+		<string id="19398711" text1="NETSERVER: IP %1: PORTA %2: Falha na tentativa de conexão: sem ranhuras livres." text2=""/>
+		<string id="19398713" text1="NETSERVER: IP %1: Motivo da desconexão do servidor %2." text2=""/>
+		<string id="19398678" text1="NetSettings: Marcador de elemento %1 incompatível com o marcador %2." text2=""/>
+		<string id="19398677" text1="NetSettings: Análise do arquivo com erro %1." text2=""/>
+		<string id="19398679" text1="NetSettings: Versão incompatível com %1." text2=""/>
+		<string id="19398681" text1="NetSettings: Configurações de conexão vazias." text2=""/>
+		<string id="19398676" text1="NetSettings: Abertura do arquivo %1 com falha." text2=""/>
+		<string id="19398683" text1="NetSettings: Sem valores de autenticação." text2=""/>
+		<string id="19398682" text1="NetSettings: Sem conexões de cliente válidas." text2=""/>
+		<string id="19398680" text1="NetSettings: Diretório inexistente em %1." text2=""/>
+		<string id="17694727" text1="Falha na autenticação de manutenção. Usuário de manutenção não está treinado para esse aparelho." text2=""/>
+		<string id="17694724" text1="Falha na autenticação de manutenção. O arquivo chave de manutenção é inválido." text2=""/>
+		<string id="17694725" text1="Falha na autenticação de manutenção. A data de treinamento expirou." text2=""/>
+		<string id="17694726" text1="Falha na autenticação de manutenção. Aparelho não disponível no arquivo chave de manutenção." text2=""/>
+		<string id="17694723" text1="Falha na autenticação de manutenção. PIN de manutenção inválido." text2=""/>
+		<string id="17694722" text1="Falha na autenticação de manutenção. Não é possível ler o arquivo chave de serviço a partir de USB." text2=""/>
+		<string id="17694728" text1="Login de serviço realizado com sucesso e o ID de serviço é %1" text2=""/>
+		<string id="17694721" text1="Falha na autenticação de manutenção. Nenhum dispositivo USB encontrado." text2=""/>
+		<string id="17825798" text1="Estágio 1 de falta de energia." text2=""/>
+		<string id="17825799" text1="Falha de energia! Desligando o sistema." text2=""/>
+		<string id="19464193" text1="RCManager.comando recebido %1 com dados %n do RCA." text2=""/>
+		<string id="19464194" text1="RCManager.sessão remota solicitada negada.%1." text2=""/>
+		<string id="19464195" text1="RCManager.sessão remota solicitada aceita pelo usuário." text2=""/>
+		<string id="19464196" text1="RCManager.comando enviado %1 com dados %n do RCA." text2=""/>
+		<string id="19464197" text1="Falha na conexão do cliente ao RemoteCare" text2=""/>
+		<string id="19464198" text1="O nome do item RCManager.dados %1 é inválido." text2=""/>
+		<string id="19464199" text1="RCManager.valor %1 do item de dados %2 é inválido." text2=""/>
+		<string id="19464200" text1="RCManager.tipo %1 do item de dados %2 é inválido." text2=""/>
+		<string id="19464201" text1="RCManager.assinatura RemoteCare não ajustada." text2=""/>
+		<string id="17891329" text1="Monitor SoftSwitch iniciou" text2=""/>
+		<string id="17891330" text1="SoftSwitch pressionado pela primeira vez após inicialização" text2=""/>
+		<string id="17367045" text1="Erro ao adicionar estado %1." text2=""/>
+		<string id="17367042" text1="Erro ao adicionar a transição entre os estados %1 e %2 para o índice %3." text2=""/>
+		<string id="17367044" text1="Erro ao remover todas as transições de estado entre os estados %1 e %2 ." text2=""/>
+		<string id="17367047" text1="Não é possível remover o estado %1. Este é o estado atual." text2=""/>
+		<string id="17367046" text1="Erro ao remover o estado %1." text2=""/>
+		<string id="17367043" text1="Erro ao remover a transição entre os estados %1 e %2 para o índice %3." text2=""/>
+		<string id="17367041" text1="A transição entre os estados %1 e %2 para o índice %3 já existe." text2=""/>
+		<string id="17367048" text1="Estado desconhecido %1." text2=""/>
+		<string id="18874369" text1="A data de lançamento ou versão está vazia em SW_Version.xml." text2=""/>
+		<string id="18874373" text1="O componente SW %1 já existe em SW_Version.xml." text2=""/>
+		<string id="18874372" text1="O componente SW %1 já existe na SW_Version.xml." text2=""/>
+		<string id="18874370" text1="A data de lançamento ou versão do componente %1 está vazia em SW_Version.xml." text2=""/>
+		<string id="18874371" text1="Nome de componente SW vazio em SW_Version.xml." text2=""/>
+		<string id="19595268" text1="Mensagem de depuração:%1 chamada da linha criar e inicializar" text2=""/>
+		<string id="19595267" text1="Mensagem de depuração:%1 linha OnGo recebida" text2=""/>
+		<string id="16908300" text1="Função já registrada para reconhecimento: %1 ." text2=""/>
+		<string id="16908299" text1="Função já registrada para comando: %1 ." text2=""/>
+		<string id="16908304" text1="Erro: Tempo de comando %1 esgotado." text2=""/>
+		<string id="16908302" text1="Tempo de comando esgotado %1 (ref. %2)" text2=""/>
+		<string id="16908291" text1="Batimento cardíaco não recebido da linha com ID:%1" text2=""/>
+		<string id="16908305" text1="Falta de contagem de movimento %1 cruzado %2: reiniciando a linha." text2=""/>
+		<string id="16908306" text1="Falta de contagem de movimento %1 cruzado %2: desligando o sistema." text2=""/>
+		<string id="16908295" text1="Erro enviando reconhecimento %1 com referência %2" text2=""/>
+		<string id="16908290" text1="Linha %1 não parou dentro de %2 milissegundos" text2=""/>
+		<string id="16908301" text1="Função já registrada para tempo esgotado: %1 ." text2=""/>
+		<string id="16908296" text1="Referência de comando desconhecida %1 da linha do ID %2 e o nome do comando %3" text2=""/>
+		<string id="16908293" text1="Batimento cardíaco com ID:%1 recebido de fonte desconhecida" text2=""/>
+		<string id="16908298" text1="Reconhecimento não suportado %1" text2=""/>
+		<string id="16908297" text1="Comando não suportado %1" text2=""/>
+		<string id="16908292" text1="Verificação de batimento cardíaco para controladores de linha desabilitada" text2=""/>
+		<string id="19333713" text1="Dispositivo registrado com sucesso" text2=""/>
+		<string id="19333714" text1="Comando de ajuste de etiqueta recebido" text2=""/>
+		<string id="19333715" text1="Conversão de severidade OK" text2=""/>
+		<string id="19333716" text1="Início da RemoteSession" text2=""/>
+		<string id="19333717" text1="Fim da RemoteSession" text2=""/>
+		<string id="19333718" text1="Início do download" text2=""/>
+		<string id="19333719" text1="Fim do download" text2=""/>
+		<string id="19333889" text1="Falha na leitura dos ajustes do dispositivo" text2=""/>
+		<string id="19333890" text1="Falha na leitura dos ajustes do usuário" text2=""/>
+		<string id="19333891" text1="Falha na leitura dos ajustes do RemoteCare" text2=""/>
+		<string id="19333892" text1="Erro na inicialização do AgentEmbedded" text2=""/>
+		<string id="19333893" text1="Erro: número do modelo está vazio na configuração" text2=""/>
+		<string id="19333894" text1="Erro no registro do dispositivo no servidor Remote Enterprise" text2=""/>
+		<string id="19333895" text1="Erro no ajuste da configuração do servidor" text2=""/>
+		<string id="19333896" text1="Erro no setup do SSL" text2=""/>
+		<string id="19333897" text1="Erro no ajuste da sessão remota" text2=""/>
+		<string id="19333898" text1="Erro no ajuste do servidor proxy" text2=""/>
+		<string id="19333899" text1="Falha na conversão dos dados analógicos do item" text2=""/>
+		<string id="19333900" text1="Falha na conversão dos dados digitais do item" text2=""/>
+		<string id="19333901" text1="Item de dados não encontrado" text2=""/>
+		<string id="19333902" text1="Não é possível postar o item" text2=""/>
+		<string id="19333903" text1="Não é possível ajustar a conexão persistente HTTP" text2=""/>
+		<string id="19333121" text1="Erro na conexão master" text2=""/>
+		<string id="19333377" text1="Conectado ao master com sucesso" text2=""/>
+		<string id="19333633" text1="A configuração não pode ser lida" text2=""/>
+		<string id="19333634" text1="Erro no acesso web" text2=""/>
+		<string id="19333635" text1="Os ajustes não podem ser lidos" text2=""/>
+		<string id="19333636" text1="Os ajustes do AgentEmbedded não puderam ser feitos" text2=""/>
+		<string id="19333637" text1="Falha na postagem de itens de dados" text2=""/>
+		<string id="19333638" text1="Erro de má alocação" text2=""/>
+		<string id="19333639" text1="O RemoteCareAgent não foi iniciado apropriadamente" text2=""/>
+		<string id="19333640" text1="O servidor Remote Enterprise não está disponível" text2=""/>
+		<string id="19333641" text1="Falha no upload do arquivo" text2=""/>
+		<string id="19333642" text1="Falha no ajuste da etiqueta" text2=""/>
+		<string id="19333643" text1="Falha no relatório de evento" text2=""/>
+		<string id="19333720" text1="O RCA está conectado ao servidor web" text2=""/>
+		<string id="67174401" text1="Placas escravas iniciadas com sucesso." text2=""/>
+		<string id="67174402" text1="Erro durante a inicialização de Escravas %1." text2=""/>
+		<string id="67174403" text1="Relé principal aberto com sucesso." text2=""/>
+		<string id="67174404" text1="Erro na abertura no relé principal %1." text2=""/>
+		<string id="67174657" text1="Atraso 3 segundos." text2=""/>
+		<string id="67174658" text1="Atraso 5 segundos." text2=""/>
+		<string id="67174659" text1="Ajustar a tensão ASB3 para auto." text2=""/>
+		<string id="67174660" text1="Ajuste de tensão ASB3 mudado para auto com sucesso." text2=""/>
+		<string id="67174661" text1="Ajustar a tensão ASB5 para auto." text2=""/>
+		<string id="67174662" text1="Ajuste de tensão ASB5 mudado para auto com sucesso." text2=""/>
+		<string id="67174663" text1="Iniciar aquecimento da válvula giratória." text2=""/>
+		<string id="67174664" text1="Iniciar aquecimento do fundo da retorta." text2=""/>
+		<string id="67174665" text1="Aquecimento da válvula giratória iniciado com sucesso." text2=""/>
+		<string id="67174666" text1="Aquecimento do fundo da retorta iniciado com sucesso" text2=""/>
+		<string id="67174667" text1="Parar aquecimento da válvula giratória." text2=""/>
+		<string id="67174668" text1="Parar aquecimento do fundo da retorta." text2=""/>
+		<string id="67174669" text1="Aquecimento da válvula giratória parado com sucesso." text2=""/>
+		<string id="67174670" text1="Aquecimento do fundo da retorta parado com sucesso." text2=""/>
+		<string id="67174671" text1="Obter ASB5 SwitchType:%1, ASB3 SwitchType:%2." text2=""/>
+		<string id="67174672" text1="Realizar teste de tensão CA novamente." text2=""/>
+		<string id="67174673" text1="Tensão ASB5 desconhecida." text2=""/>
+		<string id="67174674" text1="Tipo de tensão do ASB5 é o mesmo do ASB3, verifique." text2=""/>
+		<string id="67174675" text1="Ajustar tensão do ASB3 com tensão do ASB5." text2=""/>
+		<string id="67174676" text1="Ajuste da tensão do ASB3 com tensão do ASB5 realizado com sucesso." text2=""/>
+		<string id="67174677" text1="Iniciar aquecimento do canhão de líquidos." text2=""/>
+		<string id="67174678" text1="Aquecimento do canhão de líquidos iniciado com sucesso." text2=""/>
+		<string id="67174679" text1="Parar aquecimento do canhão de líquidos." text2=""/>
+		<string id="67174680" text1="Aquecimento do canhão de líquidos parado com sucesso." text2=""/>
+		<string id="67174681" text1="Iniciar aquecimento do canhão de ar." text2=""/>
+		<string id="67174682" text1="Aquecimento do canhão de ar iniciado com sucesso." text2=""/>
+		<string id="67174683" text1="Parar aquecimento do canhão de ar." text2=""/>
+		<string id="67174684" text1="Aquecimento do canhão de ar parado com sucesso." text2=""/>
+		<string id="67174685" text1="Iniciar aquecimento do sensor de nível." text2=""/>
+		<string id="67174686" text1="Aquecimento do sensor de nível iniciado com sucesso." text2=""/>
+		<string id="67174687" text1="Parar aquecimento do sensor de nível." text2=""/>
+		<string id="67174688" text1="Aquecimento do sensor de nível parado com sucesso." text2=""/>
+		<string id="67174689" text1="Iniciar bomba." text2=""/>
+		<string id="67174690" text1="Bomba iniciada com sucesso." text2=""/>
+		<string id="67174691" text1="Parar bomba." text2=""/>
+		<string id="67174692" text1="Bomba parada com sucesso." text2=""/>
+		<string id="67174693" text1="Iniciar válvula 1." text2=""/>
+		<string id="67174694" text1="Válvula 1 iniciada com sucesso." text2=""/>
+		<string id="67174695" text1="Parar válvula 1." text2=""/>
+		<string id="67174696" text1="Válvula 1 parada com sucesso." text2=""/>
+		<string id="67174697" text1="Iniciar válvula 2." text2=""/>
+		<string id="67174698" text1="Válvula 2 iniciada com sucesso." text2=""/>
+		<string id="67174699" text1="Parar válvula 2." text2=""/>
+		<string id="67174700" text1="Válvula 2 parada com sucesso." text2=""/>
+		<string id="67174701" text1="Iniciar ventilador de exaustão." text2=""/>
+		<string id="67174702" text1="Ventilador de exaustão iniciado com sucesso." text2=""/>
+		<string id="67174703" text1="Parar ventilador de exaustão." text2=""/>
+		<string id="67174704" text1="Ventilador de exaustão parado com sucesso." text2=""/>
+		<string id="67174705" text1="Iniciar aquecimento da lateral da retorta." text2=""/>
+		<string id="67174706" text1="Aquecimento da lateral da retorta iniciado com sucesso." text2=""/>
+		<string id="67174707" text1="Parar aquecimento da lateral da retorta." text2=""/>
+		<string id="67174708" text1="Aquecimento da lateral da retorta parado com sucesso." text2=""/>
+		<string id="67174709" text1="Iniciar aquecimento do topo do forno." text2=""/>
+		<string id="67174710" text1="Aquecimento do topo do forno iniciado com sucesso." text2=""/>
+		<string id="67174711" text1="Parar aquecimento do topo do forno." text2=""/>
+		<string id="67174712" text1="Aquecimento do topo do forno parado com sucesso." text2=""/>
+		<string id="67174713" text1="Iniciar aquecimento do fundo do forno." text2=""/>
+		<string id="67174714" text1="Aquecimento do fundo do forno iniciado com sucesso." text2=""/>
+		<string id="67174715" text1="Parar aquecimento do fundo do forno." text2=""/>
+		<string id="67174732" text1="Aquecimento do fundo do forno parado com sucesso." text2=""/>
+		<string id="67174913" text1="Checar sensor de temperatura de nível." text2=""/>
+		<string id="67174914" text1="Sensor de temperatura de nível checada." text2=""/>
+		<string id="67174915" text1="Colocar o RV na posição de inicialização." text2=""/>
+		<string id="67174916" text1="RV colocado na posição de inicialização com sucesso." text2=""/>
+		<string id="67174917" text1="Testar a pressão de calibragem." text2=""/>
+		<string id="67174918" text1="Calibrar a pressão da liberação." text2=""/>
+		<string id="67174919" text1="Calibragem da pressão da liberação realizada com sucesso." text2=""/>
+		<string id="67174920" text1="Espere 20 segundos." text2=""/>
+		<string id="67174921" text1="Calibração da pressão: a pressão atual é:%1." text2=""/>
+		<string id="67174922" text1="Refazer calibração da pressão: o valor da pressão é alto demais." text2=""/>
+		<string id="67174923" text1="Calibração do sensor de pressão realizada com sucesso." text2=""/>
+		<string id="67174924" text1="Ajuste da calibração de pressão." text2=""/>
+		<string id="67174925" text1="Teste de vedação." text2=""/>
+		<string id="67174926" text1="Vedação checada." text2=""/>
+		<string id="67174992" text1="Inicialização da estratégia de aquecimento com falha." text2=""/>
+		<string id="67174993" text1="Iniciar lateral da retorta no pré-teste, a temperatura alvo:%1." text2=""/>
+		<string id="67174994" text1="Iniciar fundo da retorta no pré-teste, a temperatura alvo:%1." text2=""/>
+		<string id="67174995" text1="Inciar aquecimento do sensor de nível no cenário:%1, a temperatura alvo:%2." text2=""/>
+		<string id="67174996" text1="Iniciar aquecimento da retorta (%1) no cenário:%2, a temperatura alvo:%3." text2=""/>
+		<string id="67174997" text1="Iniciar aquecimento para banho de parafina (%1) no cenário:%2, a temperatura alvo:%3." text2=""/>
+		<string id="67174998" text1="Inciar aquecimento da válvula giratória no cenário:%1, a temperatura alvo:%2." text2=""/>
+		<string id="67174999" text1="Iniciar aquecimento do sistema LA (%1) no cenário:%2, a temperatura alvo:%3." text2=""/>
+		<string id="67175000" text1="Status de aquecimento do Tubo 2 do LA: desligado." text2=""/>
+		<string id="67175169" text1="Reaquecimento para as etapas 200, 211 e 260." text2=""/>
+		<string id="67175170" text1="Reaquecimento para as etapas dos reagentes." text2=""/>
+		<string id="67175171" text1="Reaquecimento da etapa da parafina." text2=""/>
+		<string id="67175172" text1="Reaquecimento da etapa 203 e 281-297." text2=""/>
+		<string id="67175184" text1="Programador entra com o status de inatividade." text2=""/>
+		<string id="67175185" text1="Programador entra com o status de erro." text2=""/>
+		<string id="67175201" text1="Ajuste da posição da válvula giratória para %1." text2=""/>
+		<string id="67175206" text1="Alívio da pressão." text2=""/>
+		<string id="67175211" text1="Movendo a válvula giratória para a posição do tubo da estação %1." text2=""/>
+		<string id="67175212" text1="Movendo a válvula giratória para a posição de vedação da estação %1." text2=""/>
+		<string id="67175214" text1="Ajuste da pressão para %1." text2=""/>
+		<string id="67175221" text1="Filtrar erro desconhecido, ID do evento %1, cenário %2." text2=""/>
+		<string id="67175936" text1="Retorta: Verifique se há detritos ou resíduos no sensor de nível e limpe se necessário. e nada for encontrado, verifique o O-ring do sensor de nível ou troque o sub módulo do sensor de nível." text2=""/>
+		<string id="67175937" text1="Verificação do frasco: Pressão não aumenta. Possíveis motivos incluem: 1. vedação, como na tampa da retorta; 2. RV mal posicionado no canhão, ao invés da posição de vedação;" text2=""/>
+		<string id="67175938" text1="Verificação do frasco: Estação núm. %1 detectada como vazia. Outros possíveis motivos são vazamento ou ausência de frasco. Verifique a estação, verifique se a tampa da retorta está travada corretamente e corrija o erro!" text2=""/>
+		<string id="67175940" text1="Sistema de ar: A pressão não atingiu o valor alvo durante o pré-teste. A pressão atingiu um máximo de %1 kPa." text2=""/>
+		<string id="67175941" text1="Estação núm. %1 está abastecida com quantidade insuficiente de reagente. Verifique se a estação do reagente ou o banho de parafina está com o nível correto." text2=""/>
+		<string id="67175942" text1="Estação núm. %1 está abastecida com quantidade insuficiente de reagente. Verifique se a estação do reagente ou o banho de parafina está com o nível correto. Estação núm. %1 está sendo abastecida com quantidade insuficiente de reagente (repetindo)." text2=""/>
+		<string id="67175943" text1="Falha na drenagem da retorta da estação %1 durante o processamento! A pressão máxima é de %2 kPa. Falha na drenagem da retorta da estação %1 durante a repetição! A pressão máxima é de %2 kPa." text2=""/>
+		<string id="67175944" text1="Falha na drenagem da retorta da estação durante o processamento! O tempo de enchimento supera 4 minutos. O canhão desta estação pode estar restrito ou bloqueado (possivelmente por parafina). Verifique o conector do frasco procurando o bloqueio e o interior do tubo procurando por dobras. Se nada for encontrado, use o programa de limpeza da estação. O programa irá limpar o canhão da estação usando primeiro o frasco de xileno, depois o frasco de álcool de limpeza." text2=""/>
+		<string id="67175945" text1="O tempo de enchimento supera 4 minutos durante o processamento. O canhão desta estação pode estar restrito ou bloqueado (possivelmente por parafina). Verifique o conector do frasco procurando o bloqueio e o interior do tubo procurando por dobras. Se nada for encontrado, use o programa de limpeza da estação. O programa irá limpar o canhão da estação usando primeiro o frasco de xileno, depois o frasco de álcool de limpeza." text2=""/>
+		<string id="67175946" text1="O usuário abriu o forno de parafina durante uma etapa de uso da parafina. Isso pode ter causado a solidificação da parafina. Se o banho de parafina foi removido, pode ter causado um erro de abastecimento ou drenagem." text2=""/>
+		<string id="67175947" text1="Retorta: Houve transbordamento durante o abastecimento com reagente. Isso ocorreu em uma etapa de não uso da parafina. Verifique o status do sensor de nível e verifique se o sistema de ar (tubos de parafina e de ar) estão em condição de trabalho." text2=""/>
+		<string id="67175948" text1="Feche a tampa da retorta e confirme no botão Retry. Verifique a trava da tampa procurando por bloqueios mecânicos ou quaisquer resíduos. Verifique a trava da tampa também verificando o correto ajuste e funcionamento." text2=""/>
+		<string id="67175949" text1="Verificação do frasco: Estação núm. %1 verificada restrita ou bloqueada durante o pré-teste/checagem do frasco." text2=""/>
+		<string id="67175950" text1="Aquecimento da retorta: Sensor de temperatura 1 fora do limite. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175951" text1="Aquecimento da retorta: Sensor de temperatura 1 fora do limite. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175952" text1="Aquecimento da retorta: Sensor de temperatura 1 fora do limite. Isso ocorreu durante o processamento." text2=""/>
+		<string id="67175951" text1="Aquecimento da retorta: Sensor de temperatura 1 fora do limite. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175953" text1="Aquecimento da retorta: Sensor de temperatura 1 sem sinal. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175954" text1="Aquecimento da retorta: Sensor de temperatura 1 sem sinal. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175955" text1="Aquecimento da retorta: Sensor de temperatura 2 fora do limite. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175956" text1="Aquecimento da retorta: Sensor de temperatura 2 fora do limite. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175957" text1="Aquecimento da retorta: Sensor de temperatura 2 fora do limite. Isso ocorreu durante o processamento." text2=""/>
+		<string id="67175958" text1="Aquecimento da retorta: Sensor de temperatura 2 sem sinal. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175959" text1="Aquecimento da retorta: Sensor de temperatura 2 sem sinal. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175960" text1="Aquecimento da retorta: Sensor de temperatura 3 fora do limite. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175961" text1="Aquecimento da retorta: Sensor de temperatura 3 fora do limite. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175962" text1="Aquecimento da retorta: Sensor de temperatura 3 fora do limite. Isso ocorreu durante o processamento." text2=""/>
+		<string id="67175963" text1="Aquecimento da retorta: Sensor de temperatura 3 sem sinal. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175964" text1="Aquecimento da retorta: Sensor de temperatura 3 sem sinal. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175965" text1="Aquecimento da retorta: Falha na auto calibração dos sensores de temperatura 1 e 2. Isso ocorreu durante o pré-teste." text2=""/>
+		<string id="67175966" text1="Aquecimento da retorta: Falha na auto calibração dos sensores de temperatura 1 e 2. Isso ocorreu durante o auto teste no início do processo ou durante as etapas de limpeza." text2=""/>
+		<string id="67175967" text1="Aquecimento da retorta: Falha na auto calibração dos sensores de temperatura 1 e 2. Isso ocorreu durante o processamento." text2=""/>
+		<string id="67175968" text1="Aquecimento do forno de parafina: Sensor superior fora do limite." text2=""/>
+		<string id="67175969" text1="Aquecimento do forno de parafina: Sensor inferior 1 fora do limite." text2=""/>
+		<string id="67175970" text1="Aquecimento do forno de parafina: Sensor inferior 2 fora do limite." text2=""/>
+		<string id="67175971" text1="Válvula giratória: Não é possível obter a posição original!" text2=""/>
+		<string id="67175972" text1="Válvula giratória: Falha na movimentação da posição do canhão durante o pré-teste ou durante as etapas de fixação, água, desidratação, limpeza, parafina." text2=""/>
+		<string id="67175973" text1="Válvula giratória: Falha na movimentação da posição do canhão antes ou depois do protocolo." text2=""/>
+		<string id="67175974" text1="Válvula giratória: A temperatura do sensor 1 de temperatura da válvula giratória está fora do limite durante o pré-teste." text2=""/>
+		<string id="67175975" text1="Válvula giratória: A temperatura do sensor de temperatura 1 da válvula giratória está fora do limite durante ou após o protocolo." text2=""/>
+		<string id="67175976" text1="Válvula giratória: A temperatura do sensor de temperatura 2 da válvula giratória está fora do limite durante o pré-teste." text2=""/>
+		<string id="67175977" text1="Válvula giratória: Sensor de temperatura 2 fora do limite." text2=""/>
+		<string id="67175978" text1="Válvula giratória: A corrente de aquecimento da válvula giratória está fora do limite durante o pré-teste." text2=""/>
+		<string id="67175979" text1="Válvula giratória: A corrente de aquecimento da válvula giratória está fora do limite antes ou após o protocolo." text2=""/>
+		<string id="67175980" text1="Válvula giratória: O valor da temperatura da válvula giratória é menor que 40 ºC. Verifique função de aquecimento da válvula giratória." text2=""/>
+		<string id="67175983" text1="Sensor de pressão: Valor do zero incorreto durante o pré-teste. Verifique o valor do zero em pressão ambiente. Se for anormal (>1.5 kPa), tente novamente com a tampa da retorta aberta. Se ainda for anormal, substitua o sensor de pressão." text2=""/>
+		<string id="67175984" text1="Sensor de pressão: O valor de pressão durante o processamento está fora do limite [-100, +100] kPa. Verifique a função do sensor de pressão e substitua-o se necessário." text2=""/>
+		<string id="67175985" text1="Sistema de exaustão: O ventilador de exaustão não funciona devido a ausência ou insuficiência de fluxo. Verifique a tensão do conector. Se a tensão está correta, substitua o ventilador de exaustão." text2=""/>
+		<string id="67175986" text1="Canhão do reagente aquecendo: A temperatura está mais baixa que o ponto de fusão a %1 ℃." text2=""/>
+		<string id="67175987" text1="Canhão de ar aquecendo: A temperatura está mais baixa que o ponto de fusão a %1 ℃." text2=""/>
+		<string id="67175988" text1="Canhão do reagente aquecendo: A temperatura está fora do limite a %1 ℃." text2=""/>
+		<string id="67175989" text1="Canhão de ar aquecendo: A temperatura está mais baixa que o ponto de fusão a %1 ℃." text2=""/>
+		<string id="67175990" text1="Retorta ou forno aquecendo: Função do bloco de aquecimento incorreta. Verifique o fio de aquecimento e meça a distância do bloco. Se OK, o ASB5 deve ser verificado!" text2=""/>
+		<string id="67175991" text1="Retorta ou banho de parafina aquecendo: Função do bloco de aquecimento incorreta. Verifique o fio de aquecimento e meça a distância do bloco. Se OK, o ASB5 deve ser verificado!" text2=""/>
+		<string id="67175995" text1="Forno de parafina aquecendo: O sensor superior não pode atingir a temperatura alvo (ponto de fusão) antes do início da etapa da parafina. Verifique função de aquecimento do forno de parafina." text2=""/>
+		<string id="67175996" text1="Forno de parafina aquecendo: O sensor inferior 1 não pode atingir a temperatura alvo (ponto de fusão) antes do início da etapa da parafina. Verifique função de aquecimento do forno de parafina." text2=""/>
+		<string id="67175997" text1="Forno de parafina aquecendo: O sensor inferior 2 não pode atingir a temperatura alvo (ponto de fusão) antes do início da etapa da parafina. Verifique função de aquecimento do forno de parafina." text2=""/>
+		<string id="67175998" text1="Válvula giratória: Movendo a posição do canhão de %1 para %2, limitador inferior %3, etapa interna %4." text2=""/>
+		<string id="67175999" text1="Válvula giratória: Falha na movimentação da posição do canhão %1 para %2 antes ou depois do processamento do tecido. Limitador inferior %3, etapa interna %4." text2=""/>
+		<string id="67176000" text1="Válvula giratória: Temperatura do sensor 2 da válvula giratória não pode atingir a temperatura alvo antes do início da etapa da parafina. Verifique função de aquecimento da válvula giratória." text2=""/>
+		<string id="67176003" text1="Falha na drenagem 1% da retorta para a estação durante o processamento ou limpeza! O tempo de drenagem supera 4 minutos." text2=""/>
+		<string id="67176004" text1="Canhão do reagente aquecendo: O canhão não aquece à temperatura alvo em 15 minutos. Realize um auto-teste e confirme o status do canhão." text2=""/>
+		<string id="67176005" text1="Monitoramento de tensão: Erro DC 5 V." text2=""/>
+		<string id="67176006" text1="Monitoramento de tensão: Erro DC 24 V." text2=""/>
+		<string id="67176007" text1="Sistema de ar: Falha na liberação de pressão durante o processamento. Há pressão residual dentro da retorta e ou no módulo de ar." text2=""/>
+		<string id="67176008" text1="Aquecimento da retorta: Aquecimento da retorna não atinge a temperatura alvo em 15 minutos." text2=""/>
+		<string id="67176009" text1="Forno de parafina: O usuário abriu o forno de parafina durante o processamento. Isso pode ter causado a solidificação da parafina." text2=""/>
+		<string id="67176010" text1="Forno de parafina: O usuário abriu o forno de parafina antes ou depois do processamento e possivelmente o reencheu com parafina." text2=""/>
+		<string id="67176013" text1="Alarme Remoto / Local: Verifique a conexão do sistema de alarme externo remoto." text2=""/>
+		<string id="67176014" text1="Alarme Remoto / Local: Verifique a conexão do sistema de alarme externo local." text2=""/>
+		<string id="67176015" text1="Sistema de ar: A pressão não atingiu o valor alvo durante o processamento. A pressão atingiu um máximo de %1 kPa." text2=""/>
+		<string id="67176016" text1="Sistema de ar: A pressão não atingiu o valor alvo durante o processamento. A pressão atingiu um máximo de %1 kPa." text2=""/>
+		<string id="67176017" text1="Falha no abastecimento 1% da retorta da estação durante o processamento! O tempo de enchimento supera 2 minutos." text2=""/>
+		<string id="67176018" text1="Falha na drenagem 1% da retorta para a estação durante o processamento ou limpeza! O tempo de drenagem supera 2 minutos." text2=""/>
+		<string id="67176019" text1="ID do erro%1! A tensão AC está instável." text2=""/>
+		<string id="67176020" text1="Em banho total, alguns processos têm intervalo de 4 minutos." text2=""/>
+		<string id="67176021" text1="Limite de tempo do fim do processo." text2=""/>
+		<string id="67176022" text1="Limite de tempo do teste de pressão antes que o RV mude para a posição do canhão, para drenagem." text2=""/>
+		<string id="67176023" text1="Válvula giratória: Falha na movimentação da posição %1 para %2 do canhão durante o pré-teste ou durante as etapas de fixação, água, desidratação, limpeza, parafina." text2=""/>
+		<string id="67176024" text1="Válvula giratória: Falha na movimentação da posição do canhão %1 para %2 antes ou depois do processamento do tecido." text2=""/>
+		<string id="67176192" text1="ID do erro %1! O tempo de drenagem supera 2 minutos." text2=""/>
+		<string id="67176193" text1="ID do erro %1! O tempo de drenagem supera 2 minutos." text2=""/>
+		<string id="67176195" text1="ID do erro %1! Falha na vedação no cenário de processamento." text2=""/>
+		<string id="67176221" text1="ID do erro %1! Em banho total, alguns processos têm intervalo de 4 minutos." text2=""/>
+		<string id="67176222" text1="ID do erro %1! Limite de tempo do fim do processo." text2=""/>
+		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
+		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
+		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
+	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+	</language>
 </strings>

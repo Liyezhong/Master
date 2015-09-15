@@ -1,422 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="jp">
-        <string id="16843520" text1="アラーム用音響ファイルがありません" text2=""/>
-		<string id="19398660" text1="ConnectionManager: このバージョンではクライアント %1 が認証できませんでした。" text2=""/>
-		<string id="19398659" text1="ConnectionManager: クライアント %1 にバージョン %2 で接続しました。" text2=""/>
-		<string id="19398657" text1="ConnectionManager: クライアント %1：メッセージが完成していません。" text2=""/>
-		<string id="19398658" text1="ConnectionManager: クライアント %1：入力された XMI doc の解析が %2 で失敗しました。" text2=""/>
-		<string id="19398661" text1="ConnectionManager: クライアント %1：出力する QString メッセージを QDomDocument に変換できません。エラー：%2" text2=""/>
-		<string id="19398662" text1="ConnectionManager: クライアント %1：出力する QByteArray が空です。" text2=""/>
-		<string id="19398663" text1="ConnectionManager: クライアント %1：ソケットへの出力データの書き込みに失敗しました。" text2=""/>
-		<string id="17039371" text1="イベント %1 が欄 %2 に正しく設定されていません。" text2=""/>
-		<string id="17825795" text1="電源を切ることはできません。転送が終わるまでお待ちください。" text2=""/>
-		<string id="16973834" text1="データロギングが無効になっています。サービス担当者へ連絡してください。" text2=""/>
-		<string id="16973828" text1="イベント Id %1 はイベントストリングの xml ファイルに存在しません。" text2=""/>
-		<string id="16973829" text1="ファイル %1 が作成できません。" text2=""/>
-		<string id="16973832" text1="ファイル %1 へのフラッシュができません。" text2=""/>
-		<string id="16973825" text1="ファイル %1 を開けません。" text2=""/>
-		<string id="16973830" text1="ファイル %1 を削除できません。" text2=""/>
-		<string id="16973831" text1="ファイル %1 への書き込みができません。" text2=""/>
-		<string id="19529732" text1="現在のシステム日時が %1 であると、日時を 24 時間以上変化させることができません。" text2=""/>
-		<string id="17235997" text1="詳細はユーザーログで確認してください。" text2=""/>
-		<string id="17235986" text1="デバイス設定の確認に失敗しました。" text2=""/>
-		<string id="17235984" text1="デバイス設定の XML ファイルの読み取りに失敗しました。" text2=""/>
-		<string id="17760268" text1="%1 は DirectConnection の有効なオン/オフ状態ではありません。" text2=""/>
-		<string id="17760271" text1="%1 は有効なプロキシ IP アドレスではありません。" text2=""/>
-		<string id="17760272" text1="%1 は有効なプロキシ IP ポートではありません。" text2=""/>
-		<string id="17760267" text1="%1 は RemoteCare の有効なオン/オフ状態ではありません。" text2=""/>
-		<string id="17235976" text1="言語 %1 への翻訳が見つかりません。" text2=""/>
-		<string id="17235973" text1="言語 %1 はサポートされていません。" text2=""/>
-		<string id="17235972" text1="%1 は有効な番号ではありません。" text2=""/>
-		<string id="17235977" text1="パスワードが条件に適合しません。4～16 文字が必要です。" text2=""/>
-		<string id="17235969" text1="エラー：%2 の XML 開始要素 %1 の読み取り" text2=""/>
-		<string id="17760264" text1="エラー：音量レベルの値が範囲から外れています。" text2=""/>
-		<string id="17760263" text1="エラー：音量番号の値が範囲から外れています。" text2=""/>
-		<string id="17235970" text1="%1 は予想外の xml 開始要素です。予想値：%3 の %2" text2=""/>
-		<string id="17235975" text1="%2 ではバージョン %1 はサポートされていません。" text2=""/>
-		<string id="17235971" text1="xml の属性が見つかりません：%2 の %1" text2=""/>
-		<string id="17235988" text1="%1 ファイルが開けません。" text2=""/>
-		<string id="17235995" text1="グループ検証が失敗しました。" text2=""/>
-		<string id="17235987" text1="%1 の初期化エラー" text2=""/>
-		<string id="17235979" text1="%1 は有効な日付形式ではありません。" text2=""/>
-		<string id="17760270" text1="%1 は有効なプロキシパスワードではありません。" text2=""/>
-		<string id="17760269" text1="%1 は有効なプロキシユーザー名ではありません。" text2=""/>
-		<string id="17235974" text1="%1 は有効なオン/オフ状態ではありません。" text2=""/>
-		<string id="17235981" text1="%1 は有効な温度形式ではありません。" text2=""/>
-		<string id="17235980" text1="%1 は有効な時間形式ではありません。" text2=""/>
-		<string id="17235996" text1="DataManager コンポーネントでの NULL ポインタのエラー" text2=""/>
-		<string id="19070983" text1="RCConfig: 証明書ファイル名 %1 の長さが最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="17236007" text1="RCConfig.xml の確認に失敗しました。" text2=""/>
-		<string id="17236006" text1="RCConfig.xml の読み取りに失敗しました。" text2=""/>
-		<string id="19071009" text1="RCConfig: %1 のデータ項目に無効な品質があります。" text2=""/>
-		<string id="19071008" text1="RCConfig: %1 のデータ項目に無効なタイプがあります。" text2=""/>
-		<string id="19070991" text1="RCConfig: デバイス Id %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070992" text1="RCConfig: デバイスのタイプ %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070981" text1="RCConfig: 暗号化レベルサイズ %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070984" text1="RCConfig: 実行時間が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070982" text1="RCConfig: %1 は有効な認証オン/オフ状態ではありません。" text2=""/>
-		<string id="19071007" text1="RCConfig: %1 は有効な圧縮オン/オフ状態ではありません。" text2=""/>
-		<string id="19070979" text1="RCConfig: %1 は有効なデバッグオン/オフ状態ではありません。" text2=""/>
-		<string id="19070978" text1="RCConfig: %1 は有効な HTTP 接続維持オン/オフ状態ではありません。" text2=""/>
-		<string id="19070980" text1="RCConfig: %1 は有効な HTTP セキュア接続オン/オフ状態ではありません。" text2=""/>
-		<string id="19071004" text1="RCConfig: %1 は有効なリモートセッションの IP アドレスではありません。" text2=""/>
-		<string id="19071006" text1="RCConfig: MaxChunkSize %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070994" text1="RCConfig: プロキシプロトコル %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070977" text1="RCConfig: 行列サイズ %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19071002" text1="RCConfig: リモートセッション名 %1 の長さが最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070988" text1="RCConfig: サーバー Id %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070985" text1="RCConfig: サーバータイプ %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070987" text1="RCConfig: サーバーの URL %1 が最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19070986" text1="RCConfig: 目標データベース %1 の長さが最小 %2、最大 %3 の範囲から外れています。" text2=""/>
-		<string id="19267589" text1="試薬数が上限を超えています。許容最大限は 100 です。" text2=""/>
-		<string id="19267588" text1="試薬 %2 の試薬 ID %1 がリストに存在しません。" text2=""/>
-		<string id="19267587" text1="試薬 %2 の試薬 ID %1 は既に使用されています。" text2=""/>
-		<string id="19267585" text1="試薬名 %1 は既に使用されています。別の試薬名を選択してください。" text2=""/>
-		<string id="19267599" text1="内部ソフトウェアのエラー%1 が失敗しました。" text2=""/>
-		<string id="17236009" text1="Reagents.xml の確認に失敗しました。" text2=""/>
-		<string id="17236008" text1="Reagents.xml の読み込みに失敗しました。" text2=""/>
-		<string id="17760274" text1="ユーザー設定の保存に失敗しました。サービスへ連絡してください。" text2=""/>
-		<string id="17235985" text1="UserSettings 確認に失敗しました。" text2=""/>
-		<string id="17235983" text1="UserSettings XML ファイルの読み取りに失敗しました。" text2=""/>
-		<string id="17235998" text1="シャットダウン中に XML %1 の書き込みに失敗しました。" text2=""/>
+	<language name="jp">
+		<string id="﻿17039372" text1="シナリオ%2で装置にエラー%1が発生し、 復旧動作%3が施行されました。動作結果は%4です。" text2=""/>
+		<string id="16973834" text1="何らかの理由でイベントロギングが無効にされています。お近くのサービス窓口へご連絡ください。" text2=""/>
+		<string id="17235997" text1="詳細情報についてはユーザーログをチェックしてください。" text2=""/>
+		<string id="17235976" text1="言語%1の翻訳が見つかりません。" text2=""/>
+		<string id="17235977" text1="パスワードが条件に適合しません。4文字から16文字の長さが必要です。" text2=""/>
+		<string id="17236006" text1="Remote Careの構成に失敗しました。" text2=""/>
+		<string id="19267585" text1="試薬名%1はすでに使用されています。別の試薬名を使用してください。" text2=""/>
+		<string id="19267599" text1="%1に失敗しました。" text2=""/>
+		<string id="17236009" text1="試薬のデータモジュールの初期化に失敗しました。" text2=""/>
+		<string id="17760274" text1="ユーザー設定の保存に失敗しました。サービス窓口へご連絡ください。" text2=""/>
+		<string id="17235998" text1="シャットダウン中にXML %1の書き込みが失敗しました。" text2=""/>
 		<string id="17236013" text1="InstrumentHistory.xml の読み込みに失敗しました。" text2=""/>
-		<string id="17236010" text1="Stations.xml の読み込みに失敗しました。" text2=""/>
 		<string id="17236011" text1="Station.xml の確認に失敗しました。" text2=""/>
-		<string id="17235990" text1="%1 Stream In 操作に失敗しました。" text2=""/>
-		<string id="17235991" text1="%1 Stream Out 操作に失敗しました。" text2=""/>
-		<string id="17760266" text1="警告音レベルの値が範囲から外れています。" text2=""/>
-		<string id="17760265" text1="警告音番号の値が範囲から外れています。" text2=""/>
-		<string id="17235994" text1="%1 XML のデシリアライズに失敗しました。" text2=""/>
-		<string id="17235992" text1="%1 XML ファイルが存在しません。" text2=""/>
-		<string id="17235993" text1="%1 XML のシリアライズに失敗しました。" text2=""/>
-		<string id="17498130" text1="ConfigfileLoader. プロセス %1：ファイル %2 が開けませんでした。" text2=""/>
-		<string id="17498122" text1="EPC. プロセス %1：%3 でイベント %2 が伝送できませんでした。" text2=""/>
-		<string id="17498131" text1="EPC. プロセス %1：%2 で外部プロセスが無効化できません。" text2=""/>
-		<string id="17498124" text1="EPC. プロセス %1：%2 に Null ポインタがあります。" text2=""/>
-		<string id="17498132" text1="EPC. プロセス %1：%2 でデバイス/プロセスが起動できません。" text2=""/>
-		<string id="17498126" text1="EPC. プロセス %1：起動の状態：初期状態 %2 のマシンが %3 でエラーになりました。" text2=""/>
-		<string id="17498133" text1="プロセス：%1 がコード %2 で終了しました。" text2=""/>
-		<string id="17498125" text1="EPC. プロセス %1：初期化が %2 で失敗しました。" text2=""/>
-		<string id="17498123" text1="EPC. プロセス %1：エラー %2 が報告されました。" text2=""/>
-		<string id="17498129" text1="EPD. プロセス %1：ExternalProcess へのログインがタイムアウトしました。" text2=""/>
-		<string id="17498127" text1="EPD. プロセス %1：入力がありません。" text2=""/>
-		<string id="17498128" text1="EPD. プロセス %1：NetworkServerDevicewas が起動できません。" text2=""/>
-		<string id="17039361" text1="Colorado がエラー状態に切り替わりました。" text2=""/>
-		<string id="17039364" text1="内部ソフトウェアのエラー：%1 にイベントID がありません。" text2=""/>
-		<string id="17629209" text1="エクスポートに失敗しました。Advance Encryption Standard が初期化されていません。" text2=""/>
-		<string id="17629201" text1="エクスポートに失敗しました。読み取りファイルが開けません。" text2=""/>
-		<string id="17629202" text1="エクスポートに失敗しました。書き込みファイルが開けません。" text2=""/>
-		<string id="18939905" text1="ExportConfig：%1 設定のファイルリストに空のファイル名があります。" text2=""/>
-		<string id="18939906" text1="ExportConfig：%1 設定のグループファイルリストに空のファイル名があります。" text2=""/>
-		<string id="18939908" text1="ExportConfig：ソースディレクトリ名が空です。" text2=""/>
-		<string id="18939909" text1="ExportConfig：ターゲットファイル名が空です。" text2=""/>
-		<string id="18939907" text1="ExportConfig：%1 設定のパッケージタイプが無効です。タイプは native と nonnative のいずれかでなければなりません。" text2=""/>
-		<string id="17629200" text1="エクスポートに失敗しました。複数の Cryptoservice を実行しようとしています。" text2=""/>
-		<string id="17629185" text1="エクスポートに失敗しました。ディレクトリが作成できませんでした。" text2=""/>
-		<string id="17629203" text1="エクスポートに失敗しました。読み取りファイルのエラー" text2=""/>
-		<string id="17629204" text1="エクスポートに失敗しました。書き込みファイルのエラー" text2=""/>
+		<string id="17629209" text1="エクスポートに失敗しました。Advanced Encryption Standardが初期化されていません。" text2=""/>
+		<string id="17629201" text1="エクスポートに失敗しました。読み取り用ファイルを開けません。" text2=""/>
+		<string id="17629202" text1="エクスポートに失敗しました。書き込み用ファイルを開けません。" text2=""/>
+		<string id="17629200" text1="エクスポートに失敗しました。エクスポートするパッケージの暗号化に失敗しました。" text2=""/>
+		<string id="17629185" text1="ディレクトリが作成できませんでした。" text2=""/>
+		<string id="17629203" text1="読み取りファイルのエラー" text2=""/>
+		<string id="17629204" text1="書き込みファイルのエラー" text2=""/>
 		<string id="17629194" text1="エクスポートに失敗しました。" text2=""/>
-		<string id="17629186" text1="エクスポートに失敗しました。ファイルのコピーに失敗しました。" text2=""/>
-		<string id="17629213" text1="エクスポートに失敗しました。ハッシュベースのメッセージ認証コードの計算が既に開始されています。" text2=""/>
-		<string id="17629208" text1="エクスポートに失敗しました。ハッシュベースのメッセージ認証コードが初期化されていません。" text2=""/>
-		<string id="17629205" text1="エクスポートに失敗しました。ハッシュのチェーンインデックスと USB デバイスのインデックスの照合中です。" text2=""/>
-		<string id="17629190" text1="エクスポートに失敗しました。コンテナの初期化に失敗しました。" text2=""/>
-		<string id="17629210" text1="エクスポートに失敗しました。アレイのサイズは 4、2、1 のいずれかでなければなりません。" text2=""/>
-		<string id="17629199" text1="エクスポートに失敗しました。要求されたエクスポートのタイプが無効です。" text2=""/>
+		<string id="17629186" text1="ファイルのコピーに失敗しました。" text2=""/>
+		<string id="17629213" text1="エクスポートに失敗しました。エクスポートするパッケージの暗号化に使用する秘密鍵の生成に失敗しました。" text2=""/>
+		<string id="17629208" text1="エクスポートに失敗しました。ハッシュベースメッセージ認証コードが初期化されていません。" text2=""/>
+		<string id="17629205" text1="エクスポートに失敗しました。ハッシュチェインインデックスとUSBデバイスインデックスが一致しています。" text2=""/>
+		<string id="17629190" text1="エクスポートに失敗しました。データモジュールの初期化に失敗しました。" text2=""/>
+		<string id="17629199" text1="エクスポートに失敗しました。無効なタイプのエクスポートが要求されました。" text2=""/>
 		<string id="17629212" text1="エクスポートに失敗しました。不正なファイルモードが検出されました。" text2=""/>
-		<string id="17629207" text1="エクスポートに失敗しました。キーファイルのサイズが内蔵のキーファイルサイズと一致しません。" text2=""/>
-		<string id="17629206" text1="エクスポートに失敗しました。キーファイルのサイズがハッシュブロックのサイズより大きくなっています。" text2=""/>
 		<string id="17629197" text1="エクスポートに失敗しました。ログディレクトリが存在しません。" text2=""/>
-		<string id="17629211" text1="エクスポートに失敗しました。計算のための最上位ビットが設定されていません。" text2=""/>
+		<string id="17629211" text1="エクスポートに失敗しました。計算用のキービットがセットされていません。" text2=""/>
 		<string id="17629195" text1="エクスポートに失敗しました。ソースディレクトリが存在しません。" text2=""/>
-		<string id="17629193" text1="エクスポートに成功しました。" text2=""/>
+		<string id="17629193" text1="正常にエクスポートされました。" text2=""/>
 		<string id="17629196" text1="エクスポートに失敗しました。ターゲットディレクトリが存在しません。" text2=""/>
-		<string id="17629198" text1="エクスポートに失敗しました。ターゲットファイル名の形式が誤っています。" text2=""/>
-		<string id="17629192" text1="エクスポートに失敗しました。ファイルがアーカイブできません。" text2=""/>
-		<string id="17629187" text1="エクスポートに失敗しました。RMS_Status.csv ファイルが作成できません。" text2=""/>
-		<string id="17629188" text1="エクスポートに失敗しました。TempConfiguration.xml ファイルが作成できません。" text2=""/>
-		<string id="17629189" text1="エクスポートに失敗しました。TempConfiguration.xml ファイルが読み取れません。" text2=""/>
-		<string id="17629191" text1="エクスポートに失敗しました。コンテナの確認に失敗しました。" text2=""/>
-		<string id="17629215" text1="エクスポートに失敗しました。システムに Zip コマンドが見つかりません。" text2=""/>
-		<string id="17629214" text1="エクスポートに失敗しました。ファイルが圧縮できません。" text2=""/>
-		<string id="17629216" text1="エクスポートに失敗しました。圧縮に長時間がかかり要求を完了できません。" text2=""/>
-		<string id="17498118" text1="Creator functor が下記に既に登録されています：%1 ." text2=""/>
-		<string id="17498114" text1="外部プロセスデバイスの初期化エラー" text2=""/>
-		<string id="17498116" text1="フル状態のマシンの初期化エラー" text2=""/>
-		<string id="17498117" text1="プロセスマネージャの初期化エラー" text2=""/>
-		<string id="17498115" text1="シンプル状態マシン初期化エラー" text2=""/>
-		<string id="17498113" text1="コピー設定のエラー" text2=""/>
-		<string id="17498119" text1="エラー：下記クラスの creator functor が登録されていません：%1 ." text2=""/>
-		<string id="17498120" text1="エラー：レファレンス %1 は既にコマンド %2 に対して登録されています。" text2=""/>
-		<string id="17498121" text1="外部プロセスコントローラ：ファイル %2 の行 %3 の %1 は不明なコマンドレファレンスです。" text2=""/>
-		<string id="16846859" text1="現在の時間オフセット値は %1 秒です。" text2=""/>
-		<string id="16842774" text1="新しいコマンドレファレンスが計算できません。" text2=""/>
-		<string id="16842765" text1="ファイル %1 の作成エラー" text2=""/>
-		<string id="16842766" text1="ファイル %1 が開けませんでした。" text2=""/>
-		<string id="16842755" text1="Std exception（メモリー割当てエラー）が見つかりました。ファイル：%1 行：%2." text2=""/>
-		<string id="16842763" text1="モノトニッククロックの読み取りエラー" text2=""/>
-		<string id="16842756" text1="NULL_POINTER: %1 ファイル：%2 行：%3." text2=""/>
-		<string id="16842758" text1="コマンドまたは承認の受信先がありません（コマンド %1 - チャンネル %2）" text2=""/>
-		<string id="16842775" text1="想定外の信号が受信されました。" text2=""/>
-		<string id="16842759" text1="信号がスロットに接続されていません。" text2=""/>
-		<string id="16842754" text1="不明な例外が見つかりました：ファイル：%1 行：%2." text2=""/>
-		<string id="16842777" text1="グローバル例外 (イベントコード %1 を %2 に投入) が %3 の行 %4 で見つかりました。" text2=""/>
-		<string id="16842778" text1="標準例外 (%1) が %2 の行 %3 で見つかりました。" text2=""/>
-		<string id="16846862" text1="ユーザーがボタンを押すと承認されます。" text2=""/>
-		<string id="16846848" text1="デバッグメッセージ：%1 " text2=""/>
+		<string id="17629198" text1="エクスポートに失敗しました。ターゲットファイル名のフォーマットが不正です。" text2=""/>
+		<string id="17629192" text1="エクスポートに失敗しました。ファイルをアーカイブできません。" text2=""/>
+		<string id="17629187" text1="エクスポートに失敗しました。RMS_Status.csvファイルを作成できません。" text2=""/>
+		<string id="17629188" text1="エクスポートに失敗しました。TempConfiguration.xmlファイルを作成できません。" text2=""/>
+		<string id="17629189" text1="エクスポートに失敗しました。TempConfiguration.xmlファイルを読み取れません。" text2=""/>
+		<string id="17629191" text1="エクスポートに失敗しました。データモジュールの確認に失敗しました。" text2=""/>
+		<string id="17629215" text1="エクスポートに失敗しました。システム内にZipコマンドが見つかりません。" text2=""/>
+		<string id="17629214" text1="エクスポートに失敗しました。ファイルを圧縮できません。" text2=""/>
+		<string id="17629216" text1="エクスポートに失敗しました。圧縮に時間がかかりすぎ、要求を完了できません。" text2=""/>
+		<string id="16846862" text1="ボタンを押すとユーザーに通知されます。" text2=""/>
 		<string id="16846854" text1="デバッグ" text2=""/>
 		<string id="16846851" text1="エラー" text2=""/>
-		<string id="16846850" text1="重大なエラー" text2=""/>
+		<string id="16846850" text1="致命的なエラー" text2=""/>
 		<string id="16846853" text1="参考" text2=""/>
 		<string id="16846849" text1="未定義のタイプ" text2=""/>
 		<string id="16846852" text1="警告" text2=""/>
 		<string id="16846861" text1="解決：" text2=""/>
-		<string id="16846857" text1="デバイスをシャットダウンしています。" text2=""/>
-		<string id="16842776" text1="未処理の例外が見つかりました。" text2=""/>
-		<string id="16842753" text1="不明なストリング ID です。" text2=""/>
 		<string id="16843278" text1="ユーザーログイン" text2=""/>
-		<string id="16843304" text1="加熱されているキュベットは試薬 %2 用の %1 であり、温度は %3 です。" text2=""/>
-		<string id="16843302" text1="試薬 %2 用の加熱キュベットのスタートモードが %1 に変更されました。" text2=""/>
-		<string id="16843303" text1="試薬 %2 用の加熱キュベットの温度が %1 に変更されました。" text2=""/>
 		<string id="16843295" text1="オフ" text2=""/>
 		<string id="16843294" text1="オン" text2=""/>
-		<string id="16843289" text1="攪拌速度が %1 に変更されました。" text2=""/>
-		<string id="16843292" text1="アラームのエラー：音響が変更されていません。" text2=""/>
-		<string id="16843301" text1="アラームのエラー：音量が変更されていません。" text2=""/>
-		<string id="16843291" text1="アラームの警告は変更できません。" text2=""/>
-		<string id="16843300" text1="アラームの音量が変更されていません。" text2=""/>
-		<string id="16843288" text1="日付の形式が %1 に変更されました。" text2=""/>
-		<string id="16843272" text1="言語が %1 に設定されました。" text2=""/>
+		<string id="16843314" text1="RMS洗浄状態が%1に変更されました。" text2=""/>
+		<string id="16843315" text1="カセット" text2=""/>
+		<string id="16843316" text1="サイクル" text2=""/>
+		<string id="16843317" text1="日" text2=""/>
+		<string id="16843292" text1="アラームエラー音が変更されました。" text2=""/>
+		<string id="16843301" text1="アラームエラーボリュームトーンが変更されました。" text2=""/>
+		<string id="16843291" text1="アラーム警告音が変更されました。" text2=""/>
+		<string id="16843300" text1="アラーム警告ボリュームトーンが変更されました。" text2=""/>
+		<string id="16843288" text1="日付フォーマットが%1に変更されました。" text2=""/>
+		<string id="16843272" text1="言語が%1に設定されました。" text2=""/>
 		<string id="16843275" text1="ネットワーク設定が変更されました。" text2=""/>
-		<string id="16843285" text1="オーブンのスタートモードが %1 に変更されました。" text2=""/>
-		<string id="16843298" text1="恒久" text2=""/>
-		<string id="16843299" text1="プログラム開始" text2=""/>
-		<string id="16843274" text1="オーブン温度が %1 に変更されました。" text2=""/>
-		<string id="16843293" text1="RMS の状態が %1 に変更されました。" text2=""/>
-		<string id="16843286" text1="温度の形式が %1 に変更されました。" text2=""/>
-		<string id="16843287" text1="時間の形式が %1 に変更されました。" text2=""/>
-		<string id="16843284" text1="水のタイプが %1 に変更されました。" text2=""/>
-		<string id="16843297" text1="蒸留水" text2=""/>
-		<string id="16843296" text1="水道水" text2=""/>
-		<string id="17825801" text1="GPIO エラー：%1." text2=""/>
-		<string id="17825802" text1="GPIO：情報：%1" text2=""/>
-		<string id="17039363" text1="GUI が利用できます。" text2=""/>
+		<string id="16843274" text1="オーブン温度が%1に変更されました。" text2=""/>
+		<string id="16843293" text1="RMS処理状態が%1に変更されました。" text2=""/>
+		<string id="16843286" text1="温度フォーマットが%1に変更されました。" text2=""/>
+		<string id="16843287" text1="時刻フォーマットが%1に変更されました。" text2=""/>
 		<string id="17039365" text1="装置の初期化に失敗しました。" text2=""/>
-		<string id="17039370" text1="ステージ %1 の初期化が制限つきで終了しました。" text2=""/>
-		<string id="17039369" text1="装置の初期化が制限つきで終了しました。染色は可能です。" text2=""/>
-		<string id="17039368" text1="ステージ %1 の初期化が失敗しました。" text2=""/>
-		<string id="17039367" text1="ステージ %1 の初期化が正常に終了しました。" text2=""/>
-		<string id="17039366" text1="装置の初期化が正常に終了しました。" text2=""/>
-		<string id="19398669" text1="MessageChecker：メッセージのコピーが %1 で失敗しました。エラー %2。" text2=""/>
-		<string id="19398671" text1="MessageChecker のエラー：読み取ろうとする MSG ドキュメントは無効です。" text2=""/>
-		<string id="19398670" text1="MessageChecker のエラー：バリデーターが NULL です。" text2=""/>
-		<string id="19398665" text1="MasterLinkController: IP %1：LinkDevice 接続信号 ""%2""失敗しました。" text2=""/>
-		<string id="19398664" text1="MasterLinkController: IP %1：MasterClient が %2 で作成/初期化できません。" text2=""/>
-		<string id="19398666" text1="MasterLinkController: IP %1：メッセージ発信信号が接続されていません。" text2=""/>
-		<string id="19398667" text1="MasterLinkDevice: LinkDevice 接続信号 ""%1"" 失敗しました。" text2=""/>
-		<string id="19398668" text1="MasterLinkDevice: ネットワークオブジェクトが初期化できません。" text2=""/>
-		<string id="19398675" text1="MessageLoader::ParseCommands: 有効なメッセージがありません。" text2=""/>
-		<string id="19398672" text1="MessageLoader: ファイル %1 が開けませんでした。" text2=""/>
-		<string id="19398673" text1="MessageLoader: ファイル %1 が解析できませんでした。" text2=""/>
-		<string id="19398674" text1="MessageLoader: ファイル %1 要素タグがタグ %2 と適合しません。" text2=""/>
-		<string id="19398686" text1="NetworkClient: クライアント %1：認証に失敗しました。" text2=""/>
-		<string id="19398693" text1="NetworkClient: クライアント %1：構成パラメータが欠けています。" text2=""/>
-		<string id="19398692" text1="NetworkClient: クライアント %1：構成パラメータの設定に失敗しました。" text2=""/>
-		<string id="19398685" text1="NetworkClient: クライアント %1：作業中の接続が失われました。" text2=""/>
-		<string id="19398694" text1="NetworkClientDevice: IP %1：NetworkDevice/Client の初期化に失敗しました。" text2=""/>
-		<string id="19398699" text1="NetworkClientDevice: IP %1：入力がありません。" text2=""/>
-		<string id="19398695" text1="NetworkClientDevice: IP %1：メッセージハンドラの登録に失敗しました。" text2=""/>
-		<string id="19398698" text1="NetworkClientDevice: IP %1：ネットワークエラー %2。" text2=""/>
-		<string id="19398688" text1="NetworkClient: クライアント %1：メッセージハンドラのポインタが %2 で null です。" text2=""/>
-		<string id="19398689" text1="NetworkClient: クライアント %1：出力する QString メッセージを QDomDocument に変換できません。エラー：%2" text2=""/>
-		<string id="19398690" text1="NetworkClient: クライアント %1：出力する QByteArray が空です。" text2=""/>
-		<string id="19398684" text1="NetworkClient: クライアント %1：ソケットエラー %2." text2=""/>
-		<string id="19398691" text1="NetworkClient: クライアント %1：ソケットへの書き込みに失敗しました。" text2=""/>
-		<string id="19398687" text1="NetworkClient: クライアント %1：サーバーのメッセージが不正のため接続に失敗しました。" text2=""/>
-		<string id="19398708" text1="NetworkDevice: コマンド要素 %1 が見つかりません。" text2=""/>
-		<string id="19398709" text1="NetworkDevice: コマンド要素 %1 が空です。" text2=""/>
-		<string id="19398703" text1="NetworkDevice: REF %1 を持つコマンドは既にハッシュにあります。" text2=""/>
-		<string id="19398704" text1="NetworkDevice: %1 コマンドの生成に失敗しました。" text2=""/>
-		<string id="19398705" text1="NetworkDevice: %1 コマンドの実行に失敗しました。" text2=""/>
-		<string id="19398710" text1="NetworkDevice: コマンド %1 が初期化できません。" text2=""/>
-		<string id="19398701" text1="NetworkDevice: メッセージがコピーできません。" text2=""/>
-		<string id="19398707" text1="NetworkDevice: メッセージが解析できません。エラー %1" text2=""/>
-		<string id="19398706" text1="NetworkDevice: %1 は不明なメッセージタイプです。" text2=""/>
-		<string id="19398700" text1="NetworkDevice: デバイス %1 のタイプが誤っており、初期化できません。" text2=""/>
-		<string id="19398720" text1="NetworkLayer: 属性 %1 が %2 で空です。" text2=""/>
-		<string id="19398721" text1="NetworkLayer: ステータス %1 でのメッセージの送信に失敗しました。" text2=""/>
-		<string id="19398724" text1="NetworkLayer: コマンド %1 が %2 の無効なレファレンスに対応しています。" text2=""/>
-		<string id="19398722" text1="NetworkLayer: コマンド %1 が %2 で空です。" text2=""/>
-		<string id="19398723" text1="NetworkLayer: コマンド %1 は %2 で実行中のコマンドではありません。" text2=""/>
-		<string id="19398697" text1="NetworkLayer: IP/クライアント %1：%2 での null ポインタエラー" text2=""/>
-		<string id="17039362" text1="Colorado が正常状態に切り替わりました。" text2=""/>
-		<string id="19398719" text1="NetworkServerDevice: クライアント %1：DateTimeSync が開始できません。" text2=""/>
-		<string id="19398717" text1="NetworkServerDevice: クライアント %1：サーバが初期化できません。" text2=""/>
-		<string id="19398718" text1="NetworkServerDevice: クライアント %1：プロトコルハンドラが登録できません。" text2=""/>
-		<string id="19398712" text1="NETSERVER: IP %1: 管理者オブジェクト %2 の無効化に失敗しました。" text2=""/>
-		<string id="19398696" text1="NetworkServerDevice: NetworkDevice/Server の初期化に失敗しました。" text2=""/>
-		<string id="19398716" text1="NetworkServerDevice: クライアント %1：NetworkServer から問題 %2 が報告されました。" text2=""/>
-		<string id="19398715" text1="NETSERVER: IP %1: ポート %2：聞き取りに失敗しました。" text2=""/>
-		<string id="19398714" text1="NETSERVER: IP %1: 設定のコピーに失敗しました。理由：%2." text2=""/>
-		<string id="19398711" text1="NETSERVER: IP %1: ポート %2：接続の試行が失敗しました：空きスロットがありません。" text2=""/>
-		<string id="19398713" text1="NETSERVER: IP %1: サーバの接続が遮断されました。理由：%2" text2=""/>
-		<string id="19398678" text1="NetSettings: 要素タグ %1 がタグ %2 と適合しません。" text2=""/>
-		<string id="19398677" text1="NetSettings: ファイルの解析でエラー %1 が発生しました。" text2=""/>
-		<string id="19398679" text1="NetSettings: バージョンが %1 に適合しません。" text2=""/>
-		<string id="19398681" text1="NetSettings: 接続設定が空です。" text2=""/>
-		<string id="19398676" text1="NetSettings: ファイル %1 が開けませんでした。" text2=""/>
-		<string id="19398683" text1="NetSettings: 認証値がありません。" text2=""/>
-		<string id="19398682" text1="NetSettings: 有効なクライアント接続がありません。" text2=""/>
-		<string id="19398680" text1="NetSettings: %1 に Null ポインタがあります。" text2=""/>
 		<string id="19529731" text1="パスワードの変更に成功しました。" text2=""/>
 		<string id="19529729" text1="ログインに失敗しました。パスワードが間違っています。有効なパスワードは 4～16 文字です。" text2=""/>
-		<string id="17694727" text1="サービスの認証に失敗しました。サービスのユーザーは本機についてのトレーニングを受けていません。" text2=""/>
-		<string id="17694724" text1="サービスの認証に失敗しました。サービスキーファイルが無効です。" text2=""/>
-		<string id="17694725" text1="サービスの認証に失敗しました。トレーニングの期限を過ぎています。" text2=""/>
-		<string id="17694726" text1="サービスの認証に失敗しました。サービスキーファイルに装置がありません。" text2=""/>
-		<string id="17694723" text1="サービスの認証に失敗しました。サービス PIN が無効です。" text2=""/>
-		<string id="17694722" text1="サービスの認証に失敗しました。サービスキーファイルが USB から読み込めません。" text2=""/>
-		<string id="17694728" text1="サービスのログインに成功しました。サービス ID は %1 です。" text2=""/>
-		<string id="17694721" text1="サービスの認証に失敗しました。USB デバイスが見つかりません。" text2=""/>
-		<string id="19529730" text1="パスワードが変更できません。パスワードが適合しません。" text2=""/>
+		<string id="19529730" text1="パスワードが変更できません。パスワードが一致していません。" text2=""/>
 		<string id="17825800" text1="システムが停電から復帰しました。" text2=""/>
-		<string id="17825798" text1="停電ステージ 1。" text2=""/>
-		<string id="17825799" text1="停電です。システムをシャットダウンしています。" text2=""/>
-		<string id="17825793" text1="もう一度ボタンを押して電源を切ってください。" text2=""/>
-		<string id="17825794" text1="染色作業の途中です。もう一度ボタンを押して電源を切ってください。" text2=""/>
-		<string id="19464197" text1="RCManager：RCA が作動を停止しました。" text2=""/>
-		<string id="19464193" text1="RCManager：RCA からコマンド %1 とデータ %n を受信しました。" text2=""/>
-		<string id="19464195" text1="RCManager：リモートセッションの要求がユーザーにより承認されました。" text2=""/>
-		<string id="19464194" text1="RCManager：リモートセッションの要求が拒否されました。%1." text2=""/>
-		<string id="19464196" text1="RCManager：RCA へコマンド %1 とデータ %n を送信しました。" text2=""/>
-		<string id="17825803" text1="マスターソフトウェアをシャットダウンしています。" text2=""/>
-		<string id="17891329" text1="SoftSwitch モニターを起動します。" text2=""/>
-		<string id="17825796" text1="現時点ではシャットダウンができません。システムが初期化中です。初期化終了までお待ちください。" text2=""/>
-		<string id="17825797" text1="現時点ではシャットダウンができません。%1 が進行中です。%1 の終了までお待ちください。" text2=""/>
-		<string id="17891330" text1="起動後 SoftSwitch が初めて押されました。" text2=""/>
-		<string id="17367045" text1="エラー：状態 %1 を追加" text2=""/>
-		<string id="17367042" text1="エラー：インデックス %3 に対し状態 %1 と %2 の間の推移を追加" text2=""/>
-		<string id="17367044" text1="エラー：状態 %1 と %2 の間の推移をすべて削除" text2=""/>
-		<string id="17367047" text1="状態 %1 は現在の状態であるため削除できません。" text2=""/>
-		<string id="17367046" text1="エラー：状態 %1 の削除" text2=""/>
-		<string id="17367043" text1="エラー：インデックス %3 に対し状態 %1 と %2 の間の推移を削除" text2=""/>
-		<string id="17367041" text1="インデックス %3 に対し状態 %1 と %2 の間の推移は既に存在します。" text2=""/>
-		<string id="17367048" text1="状態 %1 は未知です。" text2=""/>
-		<string id="19595266" text1="RMS/データログ/構成ファイルの書き込みに失敗しました。ラックを承認しないでください。" text2=""/>
-		<string id="19005441" text1="エラーのためソフトウェアアップデートが開始できませんでした。" text2=""/>
-		<string id="19005442" text1="ソフトウェアのアップデートに失敗しました。" text2=""/>
+		<string id="19005441" text1="エラーのためソフトウェア更新を開始できませんでした。" text2=""/>
+		<string id="19005442" text1="ソフトウェアの更新に失敗しました。" text2=""/>
 		<string id="19005443" text1="ソフトウェアアップデートのロールバックに失敗しました。" text2=""/>
-		<string id="19005447" text1="ソフトウェアのアップデートに成功しました。" text2=""/>
-		<string id="19005448" text1="ソフトウェアの新バージョンが利用できません。アップデートを中止しました。" text2=""/>
-		<string id="18874369" text1="SW_Version.xml のリリース日またはバージョンが空欄です。" text2=""/>
-		<string id="18874373" text1="SW のコンポーネント %1 は SW_Version.xml に既に存在します。" text2=""/>
-		<string id="18874372" text1="SW のコンポーネント %1 は SW_Version.xml に既に存在します。" text2=""/>
-		<string id="18874370" text1="SW_Version.xml のコンポーネント %1 のリリース日またはバージョンが空欄です。" text2=""/>
-		<string id="18874371" text1="SW_Version.xml の SW コンポーネント名が空欄です。" text2=""/>
+		<string id="19005447" text1="ソフトウェアが正常に更新されました。" text2=""/>
+		<string id="19005448" text1="現在のソフトウェアは更新パッケージよりも新しいものです。ソフトウェア更新はキャンセルされ、更新は行われませんでした。" text2=""/>
 		<string id="17891331" text1="システムの初期化が完了しました。" text2=""/>
-		<string id="19595268" text1="デバッグメッセージ：%1 thread create and initialize（%1 の作成、初期化中）を呼び出しました。" text2=""/>
-		<string id="19595267" text1="デバッグメッセージ：%1 thread on go（%1 の実行中）を受信しました。" text2=""/>
-		<string id="16908300" text1="ファンクターが既に承認用に登録されています：%1 ." text2=""/>
-		<string id="16908299" text1="ファンクターが既にコマンド用に登録されています：%1 ." text2=""/>
-		<string id="16908304" text1="エラー：コマンド %1 のタイムアウトです。" text2=""/>
-		<string id="16908302" text1="コマンドタイムアウト %1  (ref %2)" text2=""/>
-		<string id="16908291" text1="下記 ID のスレッドから心拍数が受信されません。%1" text2=""/>
-		<string id="16908305" text1="%1 を交差する %2 に対して心拍数が欠けています。スレッドを再開します。" text2=""/>
-		<string id="16908306" text1="%1 を交差する %2 に対して心拍数が欠けています。システムをシャットダウンしています。" text2=""/>
-		<string id="16908295" text1="エラー：承認 %1 をレファレンス %2 と共に送信時" text2=""/>
-		<string id="16908290" text1="スレッド %1 が %2 ms 以内に停止しませんでした。" text2=""/>
-		<string id="16908301" text1="下記のファンクターが既にタイムアウト用に登録されています：%1 ." text2=""/>
-		<string id="16908296" text1="未知のコマンドレファレンス %1 はスレッド ID %2、コマンド名 %3 です。" text2=""/>
-		<string id="16908293" text1="ID: %1 の心拍数が不明なソースから受信されました。" text2=""/>
-		<string id="16908298" text1="承認 %1 はサポートされていません。" text2=""/>
-		<string id="16908297" text1="コマンド %1 はサポートされていません。" text2=""/>
-		<string id="16908292" text1="スレッドコントローラの心拍数チェックが無効になりました。" text2=""/>
+		<string id="17891335" text1="背面のスイッチをオフにして、装置をシャットダウンしてください。" text2=""/>
+		<string id="17891336" text1="インストールが終了しました。 USBドライブを取り外してから装置を再起動してください。" text2=""/>
+		<string id="17891337" text1="装置がロールバックデータに更新されています。この処理を中断しないでください。" text2=""/>
+		<string id="17891338" text1="ソフトウェア更新を実行中 ... この処理を中断しないでください。" text2=""/>
+		<string id="17891339" text1="予期しないエラーが発生しました。サービス窓口へご連絡ください。" text2=""/>
 		<string id="16973837" text1="キャンセル" text2=""/>
 		<string id="16973840" text1="続行" text2=""/>
 		<string id="16973839" text1="いいえ" text2=""/>
 		<string id="16973836" text1="OK" text2=""/>
 		<string id="16973841" text1="停止" text2=""/>
 		<string id="16973838" text1="はい" text2=""/>
-		<string id="33619990" text1="日付と時間をシステムの日付と時間から 24 時間以上変更することはできません。" text2=""/>
-		<string id="33817094" text1="グループ検証が失敗しました。ベースコンテナが初期化されていません。" text2=""/>
-		<string id="33817095" text1="グループ検証が失敗しました。コンテナのタイプが無効です。" text2=""/>
-		<string id="33817097" text1="グループ検証が失敗しました。プログラムコンテナが初期化されていません。" text2=""/>
-		<string id="33817088" text1="試薬 ID %1 はプログラムリストにはありますが、試薬リストにはありません。" text2=""/>
-		<string id="33817092" text1="試薬 ID %1 はユーザー設定にはありますが、試薬リストにはありません。" text2=""/>
-		<string id="33817096" text1="グループ検証が失敗しました。試薬コンテナが初期化されていません。" text2=""/>
-		<string id="33817093" text1="ステーション ID がステーションリストにはありますがステーションマトリックス：%1 にはありません。" text2=""/>
-		<string id="33817098" text1="グループ検証が失敗しました。ステーションコンテナが初期化されていません。" text2=""/>
-		<string id="33817101" text1="グループ検証が失敗しました。ユーザー設定用データコンテナが初期化されていません。" text2=""/>
-		<string id="33818114" text1="プログラム %1 の試薬がステップ %2 とステップ %3 とで矛盾しています。" text2=""/>
-		<string id="33817861" text1="音響レベルパラメータが範囲から外れています。" text2=""/>
+		<string id="33619990" text1="日付と時刻を現在の内部システム日付/時刻から24時間以上変更することはできません。" text2=""/>
+		<string id="33619991" text1="ユーザーが現在のシステム日付/時刻を%1に設定しました。" text2=""/>
+		<string id="33817094" text1="グループ検証が失敗しました。ベース日付モジュールが初期化されていません。" text2=""/>
+		<string id="33817095" text1="グループ検証が失敗しました。データモジュールタイプが無効です。" text2=""/>
+		<string id="33817097" text1="グループ検証が失敗しました。プログラムデータモジュールが初期化されていません。" text2=""/>
+		<string id="33817088" text1="試薬ID %1はプログラムリストには存在しますが、試薬リストには存在しません。" text2=""/>
+		<string id="33817092" text1="試薬ID %1はユーザー設定には存在しますが、試薬リストには存在しません。" text2=""/>
+		<string id="33817096" text1="グループ検証が失敗しました。試薬データモジュールが初期化されていません。" text2=""/>
+		<string id="33817093" text1="ステーションID %1はステーションリストには存在しますが、ステーションマトリックスには存在しません。" text2=""/>
+		<string id="33817098" text1="グループ検証が失敗しました。ステーションデータモジュールが初期化されていません。" text2=""/>
+		<string id="33817101" text1="グループ検証が失敗しました。ユーザー設定データモジュールが初期化されていません。" text2=""/>
+		<string id="33818114" text1="ステップ%2とステップ%3のプログラム%1試薬に互換性がありません。" text2=""/>
+		<string id="33817861" text1="音レベルパラメータが範囲から外れています。" text2=""/>
 		<string id="33817860" text1="音量パラメータが範囲から外れています。" text2=""/>
-		<string id="33817859" text1="音響周期パラメータが範囲から外れています。" text2=""/>
-		<string id="33816577" text1="%1 は有効なプログラム ID ではありません。" text2=""/>
-		<string id="33816578" text1="デバイス %1 のサービス情報が検索できませんでした。" text2=""/>
-		<string id="33816608" text1="プログラム %1 のステップ ID %2 が無効です。" text2=""/>
+		<string id="33817859" text1="音周期パラメータが範囲から外れています。" text2=""/>
+		<string id="33816577" text1="%1は有効なプログラムIDではありません。" text2=""/>
+		<string id="33816578" text1="デバイス%1のサービス情報取得中にエラーが発生しました。" text2=""/>
+		<string id="33816608" text1="プログラム%1内のステップID %2は無効です。" text2=""/>
 		<string id="33817862" text1="パラフィン温度が範囲から外れています。" text2=""/>
-		<string id="33816626" text1="内部ソフトウェアのエラー。プログラムの追加に失敗しました。サービスへ連絡してください。" text2=""/>
-		<string id="33816597" text1="プログラムリストに %1 個以上のプログラムが含まれています。プログラムの数は %1 を超えることができません。" text2=""/>
-		<string id="33816624" text1="プログラム ID %1 が無効のためプログラムが削除できませんでした。" text2=""/>
-		<string id="33816631" text1="内部ソフトウェアのエラー。プログラムの削除に失敗しました。サービスへ連絡してください。" text2=""/>
-		<string id="33816623" text1="プログラム %2 に対するプログラム ID %1 が重複しています。" text2=""/>
-		<string id="33816620" text1="プログラム %1 のステップに無効な時間形式が含まれています。" text2=""/>
-		<string id="33818117" text1="プログラム %1 のプログラム名の長さが上限を超えています。有効な範囲は %2～%3 文字です。" text2=""/>
-		<string id="33818113" text1="プログラム名 %1 は既に使用されています。別のプログラム名を選択してください。" text2=""/>
+		<string id="33816626" text1="プログラムの追加に失敗しました。" text2=""/>
+		<string id="33816597" text1="プログラムリストに%1以上のプログラムが含まれています。%1のプログラムまでしか許可されていません。" text2=""/>
+		<string id="33816624" text1="プログラムID %1が不正であるためプログラムの削除に失敗しました。" text2=""/>
+		<string id="33816631" text1="プログラムの削除に失敗しました。" text2=""/>
+		<string id="33816623" text1="プログラム%2に関連付けられたプログラムID %1が一意ではありません。" text2=""/>
+		<string id="33816620" text1="プログラム%1内のプログラムステップが不正な経過時間フォーマットを含んでいます。" text2=""/>
+		<string id="33818117" text1="プログラム%1のプログラム名の長さが制限値を超過しています。有効範囲は%2～%3文字です。" text2=""/>
+		<string id="33818113" text1="プログラム名%1はすでに使用されています。別のプログラム名を選択してください。" text2=""/>
 		<string id="33816596" text1="プログラムのハッシュテーブルに無効なインデックスがあります。" text2=""/>
 		<string id="33816592" text1="Programs.xml の確認に失敗しました。" text2=""/>
 		<string id="33816584" text1="Programs.xml の読み取りに失敗しました。" text2=""/>
-		<string id="33816605" text1="プログラム %1 のステップ数が限度を超えています。許容最大限は 14 です。" text2=""/>
-		<string id="33818116" text1="プログラム %1 には最低限 %2 ステップが必要です。" text2=""/>
-		<string id="33818118" text1="プログラム %2 のステップ %1 の持続時間が限度を超えています。有効な範囲は%3～%4 です。" text2=""/>
-		<string id="33818119" text1="プログラム %2 のステップ %1 の温度が限度を超えています。有効な範囲は%3～%4 (°C) です。" text2=""/>
-		<string id="33816606" text1="Program Verifier がプログラム %1 に無効な試薬 ID %2 を発見しました。" text2=""/>
-		<string id="33816846" text1="ReagentList の読み取りに失敗しました。試薬 %1 種" text2=""/>
-		<string id="33816845" text1="ReagentList の書き込みに失敗しました。試薬 %1 種" text2=""/>
-		<string id="33816840" text1="試薬 %1 の名称が長すぎます（最大 32 文字）。" text2=""/>
-		<string id="33817864" text1="不明な RMS クリーニングモデルです。" text2=""/>
-		<string id="33817863" text1="不明な RMS 処理モードです。" text2=""/>
-		<string id="33818115" text1="ユーザープログラム名に Leica が含まれていません。" text2=""/>
-		<string id="50331649" text1="エクスポートに失敗しました。SD カードの空き容量が不足です。" text2=""/>
-		<string id="50331672" text1="エクスポートに失敗しました。USB メモリの空き容量が不足です。" text2=""/>
-		<string id="16842767" text1="ファイル %1 が削除できませんでした。" text2=""/>
-		<string id="16842762" text1="構成ファイル %1 の読み取りに失敗しました。" text2=""/>
-		<string id="16842772" text1="時間オフセット値 %1 秒は長すぎます。許容値は%2 秒です。" text2=""/>
-		<string id="16846858" text1="日付/時間を %1 に設定しています。" text2=""/>
-		<string id="33619971" text1="染色装置を起動しました（シリアル番号 %1、型番 %2）" text2=""/>
-		<string id="33947653" text1="インポートに失敗しました。インポートファイルの形式が間違っています。" text2=""/>
-		<string id="50331760" text1="インポートに失敗しました。SW バージョンが不適合のためファイルがインポートできません。" text2=""/>
-		<string id="50331763" text1="システムにファイルエクスポート用の USB デバイスが見つかりません。" text2=""/>
-		<string id="50331762" text1="システムにファイルインポート用の USB デバイスが見つかりません。" text2=""/>
-		<string id="33947665" text1="ImportExport スレッドは既に実行中です。" text2=""/>
+		<string id="33816605" text1="プログラム%1内のステップ数が制限値を超過しています。許容最大限は 14 です。" text2=""/>
+		<string id="33818116" text1="プログラム%1には%2以上のステップが必要です。" text2=""/>
+		<string id="33818118" text1="プログラム%2のステップ%1内の経過時間が制限値を超過しています。有効範囲： %3 ～%4。" text2=""/>
+		<string id="33818119" text1="プログラム%2のステップ%1内の温度が制限値を超過しています。有効範囲： %3 ～%4 (摂氏)。" text2=""/>
+		<string id="33816606" text1="Program Verifierがプログラム%1内に無効な試薬ID %2を検出しました。" text2=""/>
+		<string id="33816846" text1="ReagentListが%1試薬の読み取りに失敗しました。" text2=""/>
+		<string id="33816845" text1="ReagentListが%1試薬の書き込みに失敗しました。" text2=""/>
+		<string id="33816840" text1="試薬%1の名前が長すぎます(最大32文字)。" text2=""/>
+		<string id="33817864" text1="不明なRMS洗浄モデルです。" text2=""/>
+		<string id="33817863" text1="不明なRMS処理モデルです。" text2=""/>
+		<string id="33818115" text1="ユーザープログラム名に「Leica」という単語を含めることはできません。" text2=""/>
+		<string id="50331649" text1="エクスポートに失敗しました。SDカードに十分なスペースがありません。" text2=""/>
+		<string id="50331672" text1="エクスポートに失敗しました。USBストレージに十分なスペースがありません。" text2=""/>
+		<string id="16842767" text1="ファイル%1の削除時にエラーが発生しました。" text2=""/>
+		<string id="16842762" text1="構成ファイル%1の読み取り時にエラーが発生しました。" text2=""/>
+		<string id="16842772" text1="%1秒の時間オフセットは大きすぎます。最大許容値は%2秒です。" text2=""/>
+		<string id="16846858" text1="日付/時刻を%1に設定しました。" text2=""/>
+		<string id="33619971" text1="装置を開始しました(シリアル番号：%1、タイプ：%2)" text2=""/>
+		<string id="33947653" text1="インポートに失敗しました。インポートファイルのフォーマットが不正です。" text2=""/>
+		<string id="50331760" text1="インポートに失敗しました。デバイス名が一致していません。" text2=""/>
+		<string id="50331763" text1="装置内にファイルをエクスポートするUSBデバイスを検出できません。" text2=""/>
+		<string id="50331762" text1="装置内にファイルをインポートするUSBデバイスを検出できません。" text2=""/>
+		<string id="33947665" text1="ImportExportスレッド実行中…" text2=""/>
 		<string id="33947664" text1="インポートに失敗しました。" text2=""/>
-		<string id="33947657" text1="インポートに失敗しました。コンテナの初期化に失敗しました。" text2=""/>
-		<string id="33947661" text1="言語インポート用ファイルが利用できません。" text2=""/>
-		<string id="33947652" text1="インポートに失敗しました。データをインポートするファイルがありません。" text2=""/>
-		<string id="33947655" text1="インポートに失敗しました。インポートが要求されたファイルが利用できません。" text2=""/>
+		<string id="33947657" text1="インポートに失敗しました。データモジュールの初期化に失敗しました。" text2=""/>
+		<string id="33947652" text1="インポートに失敗しました。インポートするファイルが存在しません。" text2=""/>
+		<string id="33947655" text1="インポートに失敗しました。必要なファイルがインポートパッケージ内に存在しません。" text2=""/>
 		<string id="33947659" text1="インポートに失敗しました。ロールバックに失敗しました。" text2=""/>
-		<string id="33947662" text1="インポートに成功しました。新しいバスのレイアウトを生成してください。" text2=""/>
-		<string id="33947663" text1="インポートに成功しました。言語ファイルをアップデートします。" text2=""/>
-		<string id="33947656" text1="インポートに失敗しました。SW バージョンが不適合のため、ファイルがインポートできません。" text2=""/>
-		<string id="50331759" text1="インポートに失敗しました。アーカイブファイルが改変されています。" text2=""/>
+		<string id="33947662" text1="インポートに成功しました。" text2=""/>
+		<string id="33947656" text1="インポートに失敗しました。SWバージョンがインポートファイルと一致していません。" text2=""/>
+		<string id="50331759" text1="インポートに失敗しました。パッケージファイルが破損しています。" text2=""/>
 		<string id="50331761" text1="インポートのタイプが無効です。" text2=""/>
-		<string id="33947660" text1="インポートに失敗しました。アップデートのロールバックに失敗しました。" text2=""/>
-		<string id="33947658" text1="インポートに失敗しました。コンテナの確認に失敗しました。" text2=""/>
+		<string id="33947660" text1="インポートに失敗しました。ロールバックの更新に失敗しました。" text2=""/>
+		<string id="33947658" text1="インポートに失敗しました。データモジュールの確認に失敗しました。" text2=""/>
 		<string id="33619974" text1="パスワードの変更に成功しました。" text2=""/>
 		<string id="33619972" text1="ログインに失敗しました。パスワードが間違っています。" text2=""/>
-		<string id="33619973" text1="パスワードが変更できません。パスワードが適合しません。" text2=""/>
-		<string id="33619978" text1="カバースリッパー デバイスが接続されました。" text2=""/>
-		<string id="33619975" text1="染色装置の GUI プロセスが停止しました。" text2=""/>
-		<string id="50331719" text1="活性炭フィルターの有効期限が切れています。新しいフィルターに交換してください。" text2=""/>
-		<string id="50331718" text1="メンテナンスのためサービス担当者に連絡してください。" text2=""/>
-		<string id="33619977" text1="下記のステーションに不具合があります。%n不具合のあるステーションを使用するプログラムは起動できません。" text2=""/>
-		<string id="50331683" text1="プログラム名 %1、現在のステップ %2、現在の試薬 %3、残り時間 %4 s" text2=""/>
-		<string id="50331651" text1="LeicaBiopsie" text2=""/>
-		<string id="50331652" text1="クリーニングプログラム" text2=""/>
-		<string id="50331650" text1="LeicaOvernight" text2=""/>
+		<string id="33619973" text1="パスワードが変更できません。パスワードが一致していません。" text2=""/>
+		<string id="33619978" text1="GUIに接続されました。" text2=""/>
+		<string id="33619975" text1="GUIが停止しました。" text2=""/>
+		<string id="50331719" text1="有効な活性炭フィルタの使用期限が切れています。有効な活性炭フィルタを新しいものに交換してください。" text2=""/>
+		<string id="50331771" text1="有効な活性炭フィルタの使用期限が切れています。直ちに有効な活性炭フィルタを新しいものに交換してください。" text2=""/>
+		<string id="50331772" text1="ユーザーがプログラム%1を追加しました。" text2=""/>
+		<string id="50331773" text1="ユーザーがプログラム%1を更新しました。" text2=""/>
+		<string id="50331774" text1="ユーザーがプログラム%1を削除しました。" text2=""/>
+		<string id="50331775" text1="ユーザーモードを標準ユーザーに変更してください。" text2=""/>
+		<string id="50331776" text1="ユーザーモードをスーパーバイザーに変更してください。" text2=""/>
+		<string id="50331777" text1="ユーザーモードをサービスに変更してください。" text2=""/>
+		<string id="50331718" text1="お使いの装置を正しく動作する状態に維持するため、サービスに連絡して年に1度の予防メンテナンスを受けてください。" text2=""/>
+		<string id="50331765" text1="有効な活性炭フィルター操作時間がリセットされました。" text2=""/>
+		<string id="50331764" text1="装置操作時間がリセットされました。" text2=""/>
+		<string id="50331766" text1="一時停止が5分を超過しています。プログラムを直ちに再開してください!" text2=""/>
+		<string id="50331767" text1="一時停止が10分を超過しています。プログラムを直ちに再開してください!" text2=""/>
+		<string id="50331768" text1="プログラムを再開できません。一時停止時間が15分を超過しています。" text2=""/>
+		<string id="50331651" text1="バイオプシー" text2=""/>
+		<string id="50331652" text1="洗浄プログラム" text2=""/>
+		<string id="50331650" text1="オーバーナイト" text2=""/>
 		<string id="50331671" text1="アルコールによるクリーニング" text2=""/>
-		<string id="50331670" text1="キシレンによるクリーニング" text2=""/>
+		<string id="50331670" text1="洗浄キシレン" text2=""/>
 		<string id="50331666" text1="エタノール 100%" text2=""/>
 		<string id="50331662" text1="エタノール 70%" text2=""/>
 		<string id="50331663" text1="エタノール 80%" text2=""/>
@@ -426,7 +188,7 @@
 		<string id="50331660" text1="アルコールによるクリーニング" text2=""/>
 		<string id="50331659" text1="クリーニング用溶媒" text2=""/>
 		<string id="50331657" text1="透徹" text2=""/>
-		<string id="50331656" text1="脱水、絶対" text2=""/>
+		<string id="50331656" text1="脱水、完全" text2=""/>
 		<string id="50331655" text1="脱水、希釈" text2=""/>
 		<string id="50331653" text1="固定" text2=""/>
 		<string id="50331658" text1="パラフィン" text2=""/>
@@ -434,73 +196,554 @@
 		<string id="50331668" text1="パラフィン" text2=""/>
 		<string id="50331669" text1="処理用水" text2=""/>
 		<string id="50331667" text1="キシレン" text2=""/>
-		<string id="50331678" text1="エラー" text2=""/>
-		<string id="50331720" text1="スケジューラがコマンド %1 を実行" text2=""/>
-		<string id="50331721" text1="スケジューラがコマンド %1 を実行、結果 %2" text2=""/>
-		<string id="50331684" text1="プログラム %1 を終了" text2=""/>
-		<string id="50331676" text1="IDLE" text2=""/>
-		<string id="50331675" text1="INIT" text2=""/>
-		<string id="50331716" text1="プログラムを中断" text2=""/>
-		<string id="50331717" text1="排液" text2=""/>
-		<string id="50331715" text1="プログラムを休止" text2=""/>
-		<string id="50331714" text1="プログラムを開始" text2=""/>
-		<string id="50331705" text1="ボトルチェック結果：%1" text2=""/>
-		<string id="50331709" text1="詰まり" text2=""/>
-		<string id="50331710" text1="空" text2=""/>
-		<string id="50331711" text1="エラー" text2=""/>
-		<string id="50331708" text1="満杯でない" text2=""/>
-		<string id="50331707" text1="OK" text2=""/>
-		<string id="50331712" text1="タイムアウト" text2=""/>
-		<string id="50331713" text1="想定外" text2=""/>
-		<string id="50331704" text1="ボトル %1 をチェック中" text2=""/>
-		<string id="50331703" text1="温度と圧力をチェック中" text2=""/>
-		<string id="50331706" text1="セルフテスト終了" text2=""/>
-		<string id="50331702" text1="セルフテスト開始" text2=""/>
-		<string id="50331681" text1="現在のプログラムステップ状態：%1" text2=""/>
-		<string id="50331699" text1="中断済み" text2=""/>
-		<string id="50331700" text1="中断中" text2=""/>
-		<string id="50331693" text1="排液中" text2=""/>
-		<string id="50331696" text1="エラー" text2=""/>
-		<string id="50331690" text1="充填中" text2=""/>
-		<string id="50331695" text1="終了" text2=""/>
-		<string id="50331686" text1="レベルセンサー 1 加熱中" text2=""/>
-		<string id="50331687" text1="レベルセンサー 2 加熱中" text2=""/>
-		<string id="50331689" text1="排液チューブへ移動中" text2=""/>
-		<string id="50331688" text1="充填チューブへ移動中" text2=""/>
-		<string id="50331697" text1="休止" text2=""/>
-		<string id="50331698" text1="排液中休止" text2=""/>
-		<string id="50331694" text1="排液準備完了" text2=""/>
-		<string id="50331691" text1="シール中" text2=""/>
-		<string id="50331692" text1="浸漬中" text2=""/>
-		<string id="50331685" text1="ステップ初期化中" text2=""/>
-		<string id="50331701" text1="不明" text2=""/>
-		<string id="50331677" text1="RUN" text2=""/>
-		<string id="50331674" text1="スケジューラのメインコントローラの状態：%1" text2=""/>
-		<string id="50331680" text1="スケジューラが GUI から下記アクションコマンドを受信しました：%1" text2=""/>
-		<string id="50331682" text1="プログラム %1 を開始" text2=""/>
-		<string id="50331679" text1="想定外の状態" text2=""/>
-		<string id="67176192" text1="［エラー：ID %1!排液時間が 2 分以上］" text2=""/>
-		<string id="67176193" text1="［エラー：ID %1!充填時間が 2 分以上］" text2=""/>
-		<string id="67176194" text1="［エラー：ID %1!乾燥シナリオでシールに失敗］" text2=""/>
-		<string id="67176195" text1="［エラー：ID %1!処理シナリオでシールに失敗］" text2=""/>
-		<string id="67176196" text1="［エラー：ID %1!パラフィン槽のオーブンのカバーが開いています］" text2=""/>
-		<string id="67176197" text1="［エラー：ID %1!AC 電圧が不安定です］" text2=""/>
-		<string id="67176198" text1="ボトルチェックに失敗しました。取扱説明書に従いシールリングとレトルト上部を洗浄してください。"Retry" ボタンを確定してレトルトを閉じてください。" text2=""/>
-		<string id="67176199" text1="ボトル X が充填不足のようです。取扱説明書に従いボトルを点検してください。その後 "Retry" ボタンを押してください。" text2=""/>
-		<string id="67176200" text1="レトルトの排液に失敗しました。取扱説明書に従いシールリングとレトルト上部を洗浄してください。"Retry" ボタンを確定してレトルトを閉じてください。" text2=""/>
-		<string id="67176201" text1="エラー：ID %1! サービスに連絡してください。" text2=""/>
-		<string id="67176202" text1="エラー：ID %1! 排気システムの故障です。サービスに通知してください。" text2=""/>
-		<string id="67176203" text1="エラー：ID %1! サービスに連絡してください。" text2=""/>
-		<string id="67176204" text1="エラー：ID %1! 試料を取り出し、保護してください。サービスに連絡してください。" text2=""/>
-		<string id="67176205" text1="エラー：ID %1! 第一の選択として装置を再起動してください。問題が再度発生したときはサービスに連絡してください。" text2=""/>
-		<string id="67176206" text1="レベルセンサーの故障です。レトルトの蓋を開け、取扱説明書の推奨に従ってレベルセンサーを清掃してから蓋を閉じ、"Retry" ボタンを押してください。" text2=""/>
+		<string id="67174416" text1="ユーザーが装置をシャットダウンしました。" text2=""/>
+		<string id="67174417" text1="回復操作%1を実行してください。" text2=""/>
+		<string id="67174418" text1="ユーザーがプログラム%1を終了時間%2に設定して開始しました。" text2=""/>
+		<string id="67174419" text1="ユーザーがプログラム%1を続行しました。" text2=""/>
+		<string id="67174420" text1="ユーザーがプログラム%1を一時停止しました。" text2=""/>
+		<string id="67174421" text1="ユーザーがプログラム%1を中止しました。" text2=""/>
+		<string id="67174422" text1="ユーザーがプログラム%1の最後の試薬を排出しました。" text2=""/>
+		<string id="67174423" text1="ユーザーがパラフィン溶解点を%1から%2変更しました。" text2=""/>
+		<string id="67174656" text1="セルフテストを開始してください。" text2=""/>
+		<string id="67174733" text1="セルフテストが正常に終了しました。" text2=""/>
+		<string id="67174912" text1="プレテストを開始してください。" text2=""/>
+		<string id="67174927" text1="ボトルチェックを開始してください。" text2=""/>
+		<string id="67174928" text1="ボトルチェックが正常に終了しました。" text2=""/>
+		<string id="67174929" text1="プレテストが正常に終了しました。" text2=""/>
+		<string id="67175168" text1="ステップ%2で終了していないプログラム%1を検出しました。" text2=""/>
+		<string id="67175186" text1="終了していないプログラムリストを含むシステムファイルが見つかりません。ストレージが破損していないかチェックしてください。" text2=""/>
+		<string id="67175200" text1="プログラム%1を開始してください。" text2=""/>
+		<string id="67175202" text1="オーブンを加熱してパラフィンを溶解するためにあと%1必要です。" text2=""/>
+		<string id="67175203" text1="プログラム中止中…" text2=""/>
+		<string id="67175204" text1="プログラムが中止されました。" text2=""/>
+		<string id="67175205" text1="プログラムが一時停止されました。" text2=""/>
+		<string id="67175207" text1="排液中…" text2=""/>
+		<string id="67175208" text1="パラフィン注入の待機中です。" text2=""/>
+		<string id="67175209" text1="注入のためレベルセンサーを加熱しています。" text2=""/>
+		<string id="67175210" text1="注入が開始されました。" text2=""/>
+		<string id="67175213" text1="処理が開始されました。" text2=""/>
+		<string id="67175215" text1="ステップ%1が終了しました。" text2=""/>
+		<string id="67175216" text1="ステップ%1(ステーション%2、%3、%4、%5、%6)が開始しました。" text2=""/>
+		<string id="67175217" text1="プログラム%1が終了しました。" text2=""/>
+		<string id="67175218" text1="乾燥処理を開始してください。" text2=""/>
+		<string id="67175219" text1="乾燥処理を終了してください。" text2=""/>
+		<string id="67175220" text1="ステップ%1から%2までの時間が4分を超過しています。" text2=""/>
+		<string id="67175222" text1="注入が正常に終了しました。" text2=""/>
+		<string id="67175223" text1="排液が正常に終了しました。" text2=""/>
+		<string id="67175224" text1="冷却が開始されました。" text2=""/>
+		<string id="67175424" text1="事前チェック中" text2=""/>
+		<string id="67175425" text1="乾燥プロセス" text2=""/>
+		<string id="67176012" text1="エアシステム：バキュームがターゲット値に到達しませんでした。バキュームは最大%1 kPaに到達しました。" text2=""/>
+		<string id="67176025" text1="回転バルブが正常に機能していません。回転バルブをチェックしてください。" text2=""/>
+		<string id="67176026" text1="装置に技術的な問題が発生しているため、プロトコルを終了できません。" text2=""/>
+		<string id="67176194" text1="エラーID %1! 乾燥シナリオで密閉に失敗しました。" text2=""/>
+		<string id="67176196" text1="エラーID %1! ワックスバスオーブンのカバーが開いています。新しいパラフィンを溶解しますか?" text2=""/>
+		<string id="67176198" text1="ユーザーマニュアルの説明に従って、密閉リングとレトルトの上部を洗浄してください。" text2=""/>
+		<string id="67176199" text1="ユーザーマニュアルに従って、ボトルをチェックしてください。" text2=""/>
+		<string id="67176200" text1="レトルトの排液に失敗しました。ユーザーマニュアルの説明に従って、密閉リングとレトルトの上部を洗浄してください。" text2=""/>
+		<string id="67176201" text1="エラーID %1! サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176202" text1="エラーID %1! 排気システムの故障です。サービスへご連絡ください。" text2=""/>
+		<string id="67176203" text1="エラーID %1! サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176204" text1="エラーID %1! 試料を取り除いて保護してください。 サービス窓口へご連絡ください。" text2=""/>
 		<string id="67176207" text1="ローカルのアラームシステムが接続されていません。装置にローカルのアラームシステムを接続してください。" text2=""/>
 		<string id="67176208" text1="パラフィンオーブンのカバーを閉じてください。" text2=""/>
-		<string id="67176209" text1="レトルトの蓋を閉じ、"Retry" ボタンで確定してください。" text2=""/>
-		<string id="67176210" text1="圧力テストに失敗しました。取扱説明書に従いシールリングとレトルト上部を洗浄してください。"Retry" ボタンを確定してレトルトを閉じてください。" text2=""/>
+		<string id="67176209" text1="レトルトのふたを閉じ、[再試行]ボタンを押して確定してください。" text2=""/>
+		<string id="67176210" text1="圧力テストに失敗しました。ユーザーマニュアルの説明に従って、密閉リングとレトルトの上部を洗浄してください。" text2=""/>
 		<string id="67176211" text1="リモートアラームシステムが接続されていません。装置にリモートアラームシステムを接続してください。" text2=""/>
-		<string id="67176212" text1="ステーション No. X の充填量が不足です。充填レベルを確認し補充してから "Retry" ボタンを押してください。" text2=""/>
-		<string id="67176213" text1="真空テストに失敗しました。取扱説明書に従いシールリングとレトルト上部を洗浄してください。"Retry" ボタンを確定してレトルトを閉じてください。" text2=""/>
-
-    </language>
+		<string id="67176212" text1="ボトルの注入レベルをチェックし、修正してください。その後、注入を再度行ってください。" text2=""/>
+		<string id="67176214" text1="プロトコルが電源障害によって中断されました。プロトコルを中止し、試料を取り除いてください。" text2=""/>
+		<string id="67176216" text1="再加熱中に電源障害回復プロセスに失敗しました。サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176217" text1="電源障害回復プロセスに失敗しました。サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176218" text1="システムエラー。サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176219" text1="安全な試薬での組織の保護に失敗しました。サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176220" text1="レベルセンサーを洗浄してください。" text2=""/>
+		<string id="67176223" text1="エラーID %1! 中止に失敗しました。" text2=""/>
+		<string id="67176224" text1="洗浄プログラムで電源障害が発生しました。プログラムは自動的に再起動しています。" text2=""/>
+		<string id="67176225" text1="エラーID %1! 回転バルブ機能が異常です。サービス窓口へご連絡ください。" text2=""/>
+		<string id="67176226" text1="エラーID %1! 装置に技術的な問題が発生しているため、プロトコルを終了できません。" text2=""/>
+		<string id="19202061" text1="ユーザーがステーション%1をリセットしました。" text2=""/>
+		<string id="19202062" text1="ユーザーがステーション%1内の試薬を%2に変更しました。" text2=""/>
+		<string id="19202063" text1="ユーザーがステーション%1をフルに設定しました。" text2=""/>
+		<string id="19202064" text1="ユーザーがステーション%1を空に設定しました。" text2=""/>
+		<string id="19267602" text1="ユーザーが試薬%1を追加しました，変更までのカセット数：%2，変更までのサイクル数：%3，変更までの日数：%4，試薬グループ：%5." text2=""/>
+		<string id="19267603" text1="ユーザーが試薬%1を削除しました。" text2=""/>
+		<string id="19267604" text1="ユーザーが試薬%1を更新しました，変更までのカセット数：%2，変更までのサイクル数：%3，変更までの日数：%4，試薬グループ：%5." text2=""/>
+		<string id="16843520" text1="アラーム用の音声ファイルが見つかりません。" text2=""/>
+		<string id="19398660" text1="ConnectionManager：クライアント%1のバージョン認証に失敗しました。" text2=""/>
+		<string id="19398659" text1="ConnectionManager：バージョン%2のクライアント%1に接続しました。" text2=""/>
+		<string id="19398657" text1="ConnectionManager：クライアント%1。メッセージが完了していません。" text2=""/>
+		<string id="19398658" text1="ConnectionManager：クライアント%1。入力XML文書の解析に%2で失敗しました。" text2=""/>
+		<string id="19398661" text1="ConnectionManager：クライアント%1。送信するQStringメッセージをQDomDocumentに変換できません! エラー：%2" text2=""/>
+		<string id="19398662" text1="ConnectionManager：クライアント%1。送信するQByteArrayが空です。" text2=""/>
+		<string id="19398663" text1="ConnectionManager：クライアント%1。送信データのソケットへの書き込みに失敗しました!" text2=""/>
+		<string id="16973828" text1="イベントId %1がイベントストリングXMLファイル内に存在しません。" text2=""/>
+		<string id="16973829" text1="ファイル%1を作成できません。" text2=""/>
+		<string id="16973832" text1="ファイル%1にフラッシュできません。" text2=""/>
+		<string id="16973825" text1="ファイル%1を開けません。" text2=""/>
+		<string id="16973830" text1="ファイル%1を削除できません。" text2=""/>
+		<string id="16973831" text1="ファイル%1に書き込めません。" text2=""/>
+		<string id="17235986" text1="デバイス設定の確認に失敗しました。" text2=""/>
+		<string id="17235984" text1="デバイス設定の XML ファイルの読み取りに失敗しました。" text2=""/>
+		<string id="17760268" text1="%1は有効なDirectConnectionオン/オフ状態ではありません。" text2=""/>
+		<string id="17760271" text1="%1は有効なプロキシIPアドレスではありません。" text2=""/>
+		<string id="17760272" text1="%1は有効なプロキシIPポートではありません。" text2=""/>
+		<string id="17760267" text1="%1は有効なRemoteCareオン/オフ状態ではありません。" text2=""/>
+		<string id="17235973" text1="%1はサポートされている言語ではありません。" text2=""/>
+		<string id="17235972" text1="%1は有効な数値ではありません。" text2=""/>
+		<string id="17235969" text1="XML開始エレメント%1の読み取り時に%2 でエラーが発生しました。" text2=""/>
+		<string id="17760264" text1="エラー：音量レベルの値が範囲から外れています。" text2=""/>
+		<string id="17760263" text1="エラー：音量番号の値が範囲から外れています。" text2=""/>
+		<string id="17235970" text1="XML開始エレメント%1は想定されていません。想定： %2 (%3内)" text2=""/>
+		<string id="17235975" text1="%2内にサポートされていないバージョン%1が存在します。" text2=""/>
+		<string id="17235971" text1="xml の属性が見つかりません：%1 (%2内)" text2=""/>
+		<string id="17235988" text1="%1ファイルを開く操作に失敗しました。" text2=""/>
+		<string id="17235995" text1="グループ検証が失敗しました。" text2=""/>
+		<string id="17235987" text1="%1初期化エラー" text2=""/>
+		<string id="17235979" text1="%1は有効な日付フォーマットではありません。" text2=""/>
+		<string id="17760270" text1="%1は有効なプロキシパスワードではありません。" text2=""/>
+		<string id="17760269" text1="%1は有効なプロキシユーザー名ではありません。" text2=""/>
+		<string id="17235974" text1="%1は有効なオン/オフ状態ではありません。" text2=""/>
+		<string id="17235981" text1="%1は有効な温度フォーマットではありません。" text2=""/>
+		<string id="17235980" text1="%1は有効な時刻フォーマットではありません。" text2=""/>
+		<string id="17235996" text1="DataManager コンポーネントでの NULL ポインタのエラー" text2=""/>
+		<string id="19070983" text1="RCConfig：証明書ファイル名%1の長さが最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="17236007" text1="RCConfig.xml の確認に失敗しました。" text2=""/>
+		<string id="19071008" text1="RCCOnfig: %1 データ項目に不正なタイプが存在します。" text2=""/>
+		<string id="19071009" text1="RCCOnfig: %1 データ項目に不正な品質が存在します。" text2=""/>
+		<string id="19070981" text1="RCConfig：暗号化レベルサイズ%1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070982" text1="RCConfig: %1 は有効な認証オン/オフ状態ではありません。" text2=""/>
+		<string id="19070984" text1="RCConfig：実行時間が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070985" text1="RCConfig：サーバタイプ%1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070986" text1="RCConfig：ターゲットデータベース%1の長さが最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070987" text1="RCConfig：サーバURL%1の長さが最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070988" text1="RCConfig：サーバID %1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19071007" text1="RCConfig：%1は有効な圧縮オン/オフ状態ではありません。" text2=""/>
+		<string id="19070978" text1="RCConfig：%1は有効なHTTP接続持続オン/オフ状態ではありません。" text2=""/>
+		<string id="19070979" text1="RCConfig：%1は有効なデバッグオン/オフ状態ではありません。" text2=""/>
+		<string id="19070980" text1="RCConfig：%1は有効なHTTPセキュア接続オン/オフ状態ではありません。" text2=""/>
+		<string id="19071004" text1="RCConfig：%1は有効なリモートセッションIPアドレスではありません。" text2=""/>
+		<string id="19071006" text1="RCConfig：MaxChunkSize %1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070991" text1="RCConfig：デバイスID %1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070992" text1="RCConfig：デバイスタイプ%1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070994" text1="RCConfig：プロキシプロトコル%1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19070977" text1="RCConfig：キューサイズ%1が最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19071002" text1="RCConfig：リモートセッション名%1の長さが最小値%2、最大値%3の範囲から外れています。" text2=""/>
+		<string id="19267589" text1="試薬数が上限を超えています。許容最大限は 100 です。" text2=""/>
+		<string id="19267588" text1="試薬%2の試薬ID %1がリスト内に存在しません。" text2=""/>
+		<string id="19267587" text1="試薬%2の試薬ID %1はすでに使用されています。" text2=""/>
+		<string id="17236008" text1="Reagents.xml の読み込みに失敗しました。" text2=""/>
+		<string id="17235985" text1="UserSettings 確認に失敗しました。" text2=""/>
+		<string id="17235983" text1="UserSettings XML ファイルの読み取りに失敗しました。" text2=""/>
+		<string id="17236010" text1="Stations.xml の読み込みに失敗しました。" text2=""/>
+		<string id="17235990" text1="%1ストリームイン操作に失敗しました。" text2=""/>
+		<string id="17235991" text1="%1ストリームアウト操作に失敗しました。" text2=""/>
+		<string id="17760266" text1="警告音レベルの値が範囲から外れています。" text2=""/>
+		<string id="17760265" text1="警告音番号の値が範囲から外れています。" text2=""/>
+		<string id="17235994" text1="%1 XMLデシリアライゼーションに失敗しました。" text2=""/>
+		<string id="17235992" text1="%1 XMLファイルが存在しません。" text2=""/>
+		<string id="17235993" text1="%1 XMLシリアライゼーションに失敗しました。" text2=""/>
+		<string id="17498130" text1="ConfigfileLoader。プロセス%1：ファイル%2を開く際にエラーが発生しました。" text2=""/>
+		<string id="17498122" text1="EPC。プロセス%1：%3でイベント%2を送信できませんでした。" text2=""/>
+		<string id="17498131" text1="EPC。プロセス%1：%2で外部プロセスをKillできません。" text2=""/>
+		<string id="17498124" text1="EPC。プロセス%1：%2でNullポインターが発生しました。" text2=""/>
+		<string id="17498132" text1="EPC。プロセス%1：%2でデバイス/プロセスを開始できません。" text2=""/>
+		<string id="17498126" text1="EPC。プロセス%1：%3で初期状態%2での状態マシンの開始に失敗しました。" text2=""/>
+		<string id="17498133" text1="プロセス：%1 コード%2で終了しました。" text2=""/>
+		<string id="17498125" text1="EPC。プロセス%1：%2で初期化に失敗しました。" text2=""/>
+		<string id="17498123" text1="EPC。プロセス%1：エラー%2がレポートされました。" text2=""/>
+		<string id="17498129" text1="EPD。プロセス%1：ExternalProcessログインがタイムアウトしました。" text2=""/>
+		<string id="17498127" text1="EPD。プロセス%1：入力がありません。" text2=""/>
+		<string id="17498128" text1="EPD。プロセス%1：NetworkServerDevicewas が起動できません。" text2=""/>
+		<string id="17039361" text1="Pearlがエラー状態に切り替わりました。" text2=""/>
+		<string id="17039364" text1="内部ソフトウェアのエラー：イベントIDに%1が見つかりません。" text2=""/>
+		<string id="18939905" text1="ExportConfig：%1構成のファイルリスト内に空のファイル名が見つかりました。" text2=""/>
+		<string id="18939906" text1="ExportConfig：%1構成のグループファイルリスト内に空のファイル名が見つかりました。" text2=""/>
+		<string id="18939908" text1="ExportConfig：ソースディレクトリ名が空です。" text2=""/>
+		<string id="18939909" text1="ExportConfig：ターゲットファイル名が空です。" text2=""/>
+		<string id="18939907" text1="ExportConfig：%1構成のパッケージタイプが無効です。ネイティブ、またはノンネイティブである必要があります。" text2=""/>
+		<string id="17498118" text1="Creator functor が下記に既に登録されています：%1 ." text2=""/>
+		<string id="17498114" text1="外部プロセスデバイスの初期化エラー" text2=""/>
+		<string id="17498116" text1="フル状態のマシンの初期化エラー" text2=""/>
+		<string id="17498117" text1="プロセスマネージャの初期化エラー" text2=""/>
+		<string id="17498115" text1="シンプル状態マシン初期化エラー" text2=""/>
+		<string id="17498113" text1="コピー設定のエラー" text2=""/>
+		<string id="17498119" text1="エラー。次のクラスに対してクリエーター機能が登録されていません。： %1 。" text2=""/>
+		<string id="17498120" text1="エラー。リファレンスはコマンド%2に対しすでに%1を登録しています。" text2=""/>
+		<string id="17498121" text1="外部プロセスコントローラ：%1は不明なコマンドリファレンスです。ファイル%2、%3行目" text2=""/>
+		<string id="16846859" text1="現在の時間オフセットは%1秒です。" text2=""/>
+		<string id="16842774" text1="新しいコマンドレファレンスが計算できません。" text2=""/>
+		<string id="16842765" text1="ファイル%1の作成時にエラーが発生しました。" text2=""/>
+		<string id="16842766" text1="ファイル%1を開く際にエラーが発生しました。" text2=""/>
+		<string id="16842755" text1="Std exception（メモリー割当てエラー）が見つかりました。ファイル：%1 行：%2" text2=""/>
+		<string id="16842763" text1="モノトニッククロックの読み取りエラー" text2=""/>
+		<string id="16842756" text1="NULL_POINTER：%1ファイル：%2 行：%3" text2=""/>
+		<string id="16842758" text1="コマンドまたは確認の受信者が存在しません(コマンド%1 - チャンネル%2 )" text2=""/>
+		<string id="16842775" text1="想定外の信号が受信されました。" text2=""/>
+		<string id="16842760" text1="信号がどの信号にも接続されていません。" text2=""/>
+		<string id="16842759" text1="信号がどのスロットに接続されていません。" text2=""/>
+		<string id="16842754" text1="不明な例外が見つかりました：ファイル：%1 行：%2." text2=""/>
+		<string id="16842777" text1="グローバル例外(イベントコード%1が%2内でスロー)が%3の%4行目でキャッチされました。" text2=""/>
+		<string id="16842778" text1="標準例外(%1)が%2の%3行目でキャッチされました。" text2=""/>
+		<string id="16846848" text1="デバッグメッセージ：%1" text2=""/>
+		<string id="16846857" text1="デバイスをシャットダウンしています。" text2=""/>
+		<string id="16842776" text1="未処理の例外が見つかりました。" text2=""/>
+		<string id="16842753" text1="不明なストリング ID です。" text2=""/>
+		<string id="17825801" text1="GPIO エラー：%1." text2=""/>
+		<string id="17825802" text1="GPIO：情報：%1" text2=""/>
+		<string id="17039363" text1="GUI が利用できます。" text2=""/>
+		<string id="17039370" text1="初期化ステージ%1が制限付きで終了しました。" text2=""/>
+		<string id="17039369" text1="装置の初期化が制限つきで終了しました。処理は可能です。" text2=""/>
+		<string id="17039368" text1="初期化ステージ%1に失敗しました。" text2=""/>
+		<string id="17039367" text1="初期化ステージ%1が正常に終了しました。" text2=""/>
+		<string id="17039366" text1="装置の初期化が正常に終了しました。" text2=""/>
+		<string id="19398669" text1="MessageChecker：%1でメッセージをロードできません。エラー%2。" text2=""/>
+		<string id="19398671" text1="MessageChecker のエラー：読み取ろうとする MSG ドキュメントは無効です。" text2=""/>
+		<string id="19398670" text1="MessageChecker のエラー：バリデーターが NULL です。" text2=""/>
+		<string id="19398665" text1="MasterLinkController：IP %1。LinkDevice信号&quot;&quot;%2&quot;&quot;の接続に失敗しました。" text2=""/>
+		<string id="19398664" text1="MasterLinkController：IP %1。%2でMasterClientの作成/初期化ができません。" text2=""/>
+		<string id="19398666" text1="MasterLinkController：IP%1。メッセージ送信信号が接続されていません。" text2=""/>
+		<string id="19398667" text1="MasterLinkDevice：LinkDevice信号&quot;&quot;%1&quot;&quot;の接続に失敗しました。" text2=""/>
+		<string id="19398668" text1="MasterLinkDevice：ネットワークオブジェクトが初期化できません。" text2=""/>
+		<string id="19398675" text1="MessageLoader：ParseCommands：有効なメッセージがありません。" text2=""/>
+		<string id="19398672" text1="MessageLoader：ファイル%1を開けませんでした。" text2=""/>
+		<string id="19398673" text1="MessageLoader：ファイル%1の解析に失敗しました。" text2=""/>
+		<string id="19398674" text1="MessageLoader：ファイル%1のエレメントタグがタグ%2と一致していません。" text2=""/>
+		<string id="19398686" text1="NetworkClient：クライアント%1。認証に失敗しました。" text2=""/>
+		<string id="19398693" text1="NetworkClient：クライアント%1。構成パラメータが見つかりません。" text2=""/>
+		<string id="19398692" text1="NetworkClient：クライアント%1。構成パラメータの設定に失敗しました。" text2=""/>
+		<string id="19398685" text1="NetworkClient：クライアント%1。作業中の接続がなくなりました。" text2=""/>
+		<string id="19398694" text1="NetworkClientDevice：IP %1。NetworkDevice/Clientの初期化に失敗しました。" text2=""/>
+		<string id="19398699" text1="NetworkClientDevice：IP %1。入力がありません。" text2=""/>
+		<string id="19398695" text1="NetworkClientDevice：IP %1。メッセージハンドラ登録に失敗しました。" text2=""/>
+		<string id="19398698" text1="NetworkClientDevice：IP %1。ネットワークエラー%2。" text2=""/>
+		<string id="19398688" text1="NetworkClient：クライアント%1。%2でメッセージハンドラーのNullポインターが発生しました。" text2=""/>
+		<string id="19398689" text1="NetworkClient：クライアント%1。送信するQStringメッセージをQDomDocumentに変換できません! エラー：%2" text2=""/>
+		<string id="19398690" text1="NetworkClient：クライアント%1。送信するQByteArrayが空です。" text2=""/>
+		<string id="19398684" text1="NetworkClient：クライアント%1。ソケットエラー%2。" text2=""/>
+		<string id="19398691" text1="NetworkClient：クライアント%1。ソケットへの書き込みに失敗しました。" text2=""/>
+		<string id="19398687" text1="NetworkClient：クライアント%1。不正なサーバーメッセージにより接続に失敗しました。" text2=""/>
+		<string id="19398708" text1="NetworkDevice：コマンドエレメント%1が見つかりません。" text2=""/>
+		<string id="19398709" text1="NetworkDevice：コマンドエレメント%1が空です。" text2=""/>
+		<string id="19398703" text1="NetworkDevice：REF %1のコマンドがすでにハッシュ内に存在します。" text2=""/>
+		<string id="19398704" text1="NetworkDevice：%1コマンドの作成に失敗しました。" text2=""/>
+		<string id="19398705" text1="NetworkDevice：%1コマンドの実行に失敗しました。" text2=""/>
+		<string id="19398710" text1="NetworkDevice：コマンド%1を初期化できません。" text2=""/>
+		<string id="19398701" text1="NetworkDevice：メッセージがコピーできません。" text2=""/>
+		<string id="19398707" text1="NetworkDevice：メッセージが解析できません。エラー%1。" text2=""/>
+		<string id="19398706" text1="NetworkDevice：不明なメッセージタイプ%1です。" text2=""/>
+		<string id="19398700" text1="NetworkDevice：不正なデバイスタイプ%1を初期化できません。" text2=""/>
+		<string id="19398720" text1="NetworkLayer：%2で属性%1が空です。" text2=""/>
+		<string id="19398721" text1="NetworkLayer：メッセージ送信がステータス%1で失敗しました。" text2=""/>
+		<string id="19398724" text1="NetworkLayer：%2でコマンド%1が無効なリファレンスに対応しています。" text2=""/>
+		<string id="19398722" text1="NetworkLayer：%2でコマンド%1が空です。" text2=""/>
+		<string id="19398723" text1="NetworkLayer：%2でコマンド%1が実行中のコマンドではありません。" text2=""/>
+		<string id="19398697" text1="NetworkLayer：IP/クライアント%1。%2でNullポインターエラーが発生しました。" text2=""/>
+		<string id="17039362" text1="装置が通常状態に切り替わりました。" text2=""/>
+		<string id="19398719" text1="NetworkServerDevice：クライアント%1：DateTimeSync が開始できません。" text2=""/>
+		<string id="19398717" text1="NetworkServerDevice：クライアント%1：サーバが初期化できません。" text2=""/>
+		<string id="19398718" text1="NetworkServerDevice：クライアント%1：プロトコルハンドラが登録できません。" text2=""/>
+		<string id="19398712" text1="NETSERVER：IP%1：管理オブジェクト%2の破壊に失敗しました。" text2=""/>
+		<string id="19398696" text1="NetworkServerDevice：NetworkDevice/Server の初期化に失敗しました。" text2=""/>
+		<string id="19398716" text1="NetworkServerDevice：クライアント%1：NetworkServerが問題%2をレポートしました。" text2=""/>
+		<string id="19398715" text1="NETSERVER：IP%1：ポート%2：聞き取りに失敗しました。" text2=""/>
+		<string id="19398714" text1="NETSERVER：IP%1：設定のコピーに失敗しました。理由：%2." text2=""/>
+		<string id="19398711" text1="NETSERVER：IP%1：ポート%2：接続の試行が失敗しました：空きスロットがありません。" text2=""/>
+		<string id="19398713" text1="NETSERVER：IP%1：理由%2でサーバーとの接続が解除されました。" text2=""/>
+		<string id="19398678" text1="NetSettings：エレメントタグ%1がタグ%2と一致していません。" text2=""/>
+		<string id="19398677" text1="NetSettings：ファイルの解析がエラー%1で失敗しました。" text2=""/>
+		<string id="19398679" text1="NetSettings：バージョンが%1と一致していません。" text2=""/>
+		<string id="19398681" text1="NetSettings：接続設定が空です。" text2=""/>
+		<string id="19398676" text1="NetSettings：ファイル%1を開けませんでした。" text2=""/>
+		<string id="19398683" text1="NetSettings：認証値がありません。" text2=""/>
+		<string id="19398682" text1="NetSettings：有効なクライアント接続がありません。" text2=""/>
+		<string id="19398680" text1="NetSettings：%1でNullポインターが発生しました。" text2=""/>
+		<string id="17694727" text1="サービスの認証に失敗しました。サービスのユーザーは本機についてのトレーニングを受けていません。" text2=""/>
+		<string id="17694724" text1="サービスの認証に失敗しました。サービスキーファイルが無効です。" text2=""/>
+		<string id="17694725" text1="サービスの認証に失敗しました。トレーニングの期限を過ぎています。" text2=""/>
+		<string id="17694726" text1="サービスの認証に失敗しました。サービスキーファイルに装置がありません。" text2=""/>
+		<string id="17694723" text1="サービスの認証に失敗しました。サービス PIN が無効です。" text2=""/>
+		<string id="17694722" text1="サービスの認証に失敗しました。サービスキーファイルが USB から読み込めません。" text2=""/>
+		<string id="17694728" text1="サービスログインに成功しました。サービスIDは%1です。" text2=""/>
+		<string id="17694721" text1="サービスの認証に失敗しました。USB デバイスが見つかりません。" text2=""/>
+		<string id="17825798" text1="停電ステージ 1。" text2=""/>
+		<string id="17825799" text1="停電です。システムをシャットダウンしています。" text2=""/>
+		<string id="19464193" text1="RCManager。コマンド%1とデータ%nをRCAから受信しました。" text2=""/>
+		<string id="19464194" text1="RCManager：リモートセッションの要求が拒否されました。%1." text2=""/>
+		<string id="19464195" text1="RCManager：リモートセッションの要求がユーザーにより承認されました。" text2=""/>
+		<string id="19464196" text1="RCManager。コマンド%1とデータ%nをRCAに送信しました。" text2=""/>
+		<string id="19464197" text1="RemoteCareクライアントへの接続に失敗しました。" text2=""/>
+		<string id="19464198" text1="RCManager。データ項目名%1が無効です。" text2=""/>
+		<string id="19464199" text1="RCManager。データ項目%2の値%1が無効です。" text2=""/>
+		<string id="19464200" text1="RCManager。データ項目%2のタイプ%1が無効です。" text2=""/>
+		<string id="19464201" text1="RCManager。RemoteCare購読が設定されていません。" text2=""/>
+		<string id="17891329" text1="SoftSwitch モニターを起動します。" text2=""/>
+		<string id="17891330" text1="起動後 SoftSwitch が初めて押されました。" text2=""/>
+		<string id="17367045" text1="状態%1の追加時にエラーが発生しました。" text2=""/>
+		<string id="17367042" text1="インデックス%3について、状態%1と%2の間の遷移追加時にエラーが発生しました。" text2=""/>
+		<string id="17367044" text1="状態%1と%2の間のすべての状態遷移の削除時にエラーが発生しました。" text2=""/>
+		<string id="17367047" text1="状態%1を削除できません。これは現在の状態です。" text2=""/>
+		<string id="17367046" text1="状態%1の削除時にエラーが発生しました。" text2=""/>
+		<string id="17367043" text1="インデックス%3について、状態%1と%2の間の遷移削除時にエラーが発生しました。" text2=""/>
+		<string id="17367041" text1="インデックス%3について、状態%1と%2の間の遷移はすでに存在しています。" text2=""/>
+		<string id="17367048" text1="不明な状態%1です。" text2=""/>
+		<string id="18874369" text1="SW_Version.xml のリリース日またはバージョンが空欄です。" text2=""/>
+		<string id="18874373" text1="SWコンポーネント%1はすでにSW_Version.xmlに存在しています。" text2=""/>
+		<string id="18874372" text1="SWコンポーネント%1はすでにSW_Version.xmlに存在しています。" text2=""/>
+		<string id="18874370" text1="SW_Version.xml内でコンポーネント%1のリリース日またはバージョンが空欄です。" text2=""/>
+		<string id="18874371" text1="SW_Version.xml の SW コンポーネント名が空欄です。" text2=""/>
+		<string id="19595268" text1="デバッグメッセージ：%1 スレッド作成および初期化が呼び出されます。" text2=""/>
+		<string id="19595267" text1="デバッグメッセージ：%1 スレッド「OnGo」を受信しました。" text2=""/>
+		<string id="16908300" text1="ファンクションがすでに確認用に登録されています：%1 。" text2=""/>
+		<string id="16908299" text1="ファンクションがすでにコマンド用に登録されています：%1。" text2=""/>
+		<string id="16908304" text1="エラー：コマンド%1がタイムアウトしました。" text2=""/>
+		<string id="16908302" text1="コマンドタイムアウト%1 (リファレンス%2)" text2=""/>
+		<string id="16908291" text1="下記 ID のスレッドから心拍数が受信されません。%1" text2=""/>
+		<string id="16908305" text1="%1の鼓動欠落回数が%2を超過しました：スレッドを再開します。" text2=""/>
+		<string id="16908306" text1="%1の鼓動欠落回数が%2を超過しました：システムをシャットダウンしています。" text2=""/>
+		<string id="16908295" text1="リファレンスが%2の確認%1の送信時にエラーが発生しました。" text2=""/>
+		<string id="16908290" text1="スレッド%1は%2ミリ秒以内に停止しませんでした。" text2=""/>
+		<string id="16908301" text1="ファンクションがすでにタイムアウト用に登録されています：%1。" text2=""/>
+		<string id="16908296" text1="スレッドID %2およびコマンド名%3からの不明なコマンドリファレンス%1です。" text2=""/>
+		<string id="16908293" text1="ID：%1不明なソースから受信しました。" text2=""/>
+		<string id="16908298" text1="サポートされていない確認%1です。" text2=""/>
+		<string id="16908297" text1="サポートされていないコマンド%1です。" text2=""/>
+		<string id="16908292" text1="スレッドコントローラの心拍数チェックが無効になりました。" text2=""/>
+		<string id="19333713" text1="デバイスが正常に登録されました。" text2=""/>
+		<string id="19333714" text1="タグ設定用のコマンドを受信しました。" text2=""/>
+		<string id="19333715" text1="重要度の変換に問題はありませんでした。" text2=""/>
+		<string id="19333716" text1="RemoteSessionの開始" text2=""/>
+		<string id="19333717" text1="RemoteSessionの終了" text2=""/>
+		<string id="19333718" text1="ダウンロードの開始" text2=""/>
+		<string id="19333719" text1="ダウンロードの終了" text2=""/>
+		<string id="19333889" text1="デバイス設定の読み取りに失敗しました。" text2=""/>
+		<string id="19333890" text1="ユーザー設定の読み取りに失敗しました。" text2=""/>
+		<string id="19333891" text1="RemoteCare設定の読み取りに失敗しました。" text2=""/>
+		<string id="19333892" text1="AgentEmbeddedの初期化中にエラーが発生しました。" text2=""/>
+		<string id="19333893" text1="エラー：構成内でモデル番号が空です。" text2=""/>
+		<string id="19333894" text1="Remote Enterpriseサーバーへのデバイス登録時にエラーが発生しました。" text2=""/>
+		<string id="19333895" text1="サーバ構成設定時にエラーが発生しました。" text2=""/>
+		<string id="19333896" text1="SSLセットアップ時にエラーが発生しました。" text2=""/>
+		<string id="19333897" text1="リモートセッション設定時にエラーが発生しました。" text2=""/>
+		<string id="19333898" text1="プロキシサーバ設定時にエラーが発生しました。" text2=""/>
+		<string id="19333899" text1="アナログデータ項目の変換に失敗しました。" text2=""/>
+		<string id="19333900" text1="デジタルデータ項目の変換に失敗しました。" text2=""/>
+		<string id="19333901" text1="データ項目が見つかりませんでした。" text2=""/>
+		<string id="19333902" text1="このアイテムは投稿できません。" text2=""/>
+		<string id="19333903" text1="持続型HTTP接続を設定できません。" text2=""/>
+		<string id="19333121" text1="Master接続時にエラーが発生しました。" text2=""/>
+		<string id="19333377" text1="Masterに正常に接続されました。" text2=""/>
+		<string id="19333633" text1="構成を読み取れませんでした。" text2=""/>
+		<string id="19333634" text1="Webアクセスエラー" text2=""/>
+		<string id="19333635" text1="設定を読み取れませんでした。" text2=""/>
+		<string id="19333636" text1="AgentEmbeddedを設定できませんでした。" text2=""/>
+		<string id="19333637" text1="データ項目の投稿に失敗しました。" text2=""/>
+		<string id="19333638" text1="割り当て不正エラー" text2=""/>
+		<string id="19333639" text1="RemoteCareAgentは適切に初期化されませんでした。" text2=""/>
+		<string id="19333640" text1="Remote Enterpriseサーバーは使用できません。" text2=""/>
+		<string id="19333641" text1="ファイルのアップロードに失敗しました。" text2=""/>
+		<string id="19333642" text1="タグの設定に失敗しました。" text2=""/>
+		<string id="19333643" text1="イベントのレポートに失敗しました。" text2=""/>
+		<string id="19333720" text1="RCAはWebサーバーに接続されています。" text2=""/>
+		<string id="67174401" text1="スレーブボードが正常に初期化されました。" text2=""/>
+		<string id="67174402" text1="スレーブの初期化中%1にエラーが発生しました。" text2=""/>
+		<string id="67174403" text1="Main Relayが正常に開きました。" text2=""/>
+		<string id="67174404" text1="Main Relay %1を開けません。" text2=""/>
+		<string id="67174657" text1="遅延3秒。" text2=""/>
+		<string id="67174658" text1="遅延5秒。" text2=""/>
+		<string id="67174659" text1="ASB3電圧スイッチを自動に設定してください。" text2=""/>
+		<string id="67174660" text1="ASB3電圧スイッチを正常に自動に設定しました。" text2=""/>
+		<string id="67174661" text1="ASB5電圧スイッチを自動に設定してください。" text2=""/>
+		<string id="67174662" text1="ASB5電圧スイッチを正常に自動に設定しました。" text2=""/>
+		<string id="67174663" text1="回転バルブの加熱を開始してください。" text2=""/>
+		<string id="67174664" text1="レトルト底面の加熱を開始してください。" text2=""/>
+		<string id="67174665" text1="回転バルブの加熱を正常に開始しました。" text2=""/>
+		<string id="67174666" text1="レトルト底面の加熱を正常に開始しました。" text2=""/>
+		<string id="67174667" text1="回転バルブの加熱を停止してください。" text2=""/>
+		<string id="67174668" text1="レトルト底面の加熱を停止してください。" text2=""/>
+		<string id="67174669" text1="回転バルブの加熱を正常に停止しました。" text2=""/>
+		<string id="67174670" text1="レトルト底面の加熱を正常に停止しました。" text2=""/>
+		<string id="67174671" text1="ASB5 SwitchType：%1、ASB3 SwitchType：%2を取得してください。" text2=""/>
+		<string id="67174672" text1="AC電圧スイッチテストを再試行してください。" text2=""/>
+		<string id="67174673" text1="不明なASB5電圧です。" text2=""/>
+		<string id="67174674" text1="ASB5電圧タイプはASB3ど同じであるため、パスします。" text2=""/>
+		<string id="67174675" text1="ASB3電圧とASB5電圧を設定してください。" text2=""/>
+		<string id="67174676" text1="ASB3電圧とASB5電圧を正常に設定しました。" text2=""/>
+		<string id="67174677" text1="液体管の加熱を開始してください。" text2=""/>
+		<string id="67174678" text1="液体管の加熱を正常に開始しました。" text2=""/>
+		<string id="67174679" text1="液体管の加熱を停止してください。" text2=""/>
+		<string id="67174680" text1="液体管の加熱を正常に停止しました。" text2=""/>
+		<string id="67174681" text1="気体管の加熱を開始してください。" text2=""/>
+		<string id="67174682" text1="気体管の加熱を正常に開始しました。" text2=""/>
+		<string id="67174683" text1="気体管の加熱を停止してください。" text2=""/>
+		<string id="67174684" text1="気体管の加熱を正常に停止しました。" text2=""/>
+		<string id="67174685" text1="レベルセンサーの加熱を開始してください。" text2=""/>
+		<string id="67174686" text1="レベルセンサーの加熱を正常に開始しました。" text2=""/>
+		<string id="67174687" text1="レベルセンサーの加熱を停止してください。" text2=""/>
+		<string id="67174688" text1="レベルセンサーの加熱を正常に停止しました。" text2=""/>
+		<string id="67174689" text1="ポンプを開始してください。" text2=""/>
+		<string id="67174690" text1="ポンプを正常に開始しました。" text2=""/>
+		<string id="67174691" text1="ポンプを停止してください。" text2=""/>
+		<string id="67174692" text1="ポンプを正常に停止しました。" text2=""/>
+		<string id="67174693" text1="バルブ1を開始してください。" text2=""/>
+		<string id="67174694" text1="バルブ1を正常に開始しました。" text2=""/>
+		<string id="67174695" text1="バルブ1を停止してください。" text2=""/>
+		<string id="67174696" text1="バルブ1を正常に停止しました。" text2=""/>
+		<string id="67174697" text1="バルブ2を開始してください。" text2=""/>
+		<string id="67174698" text1="バルブ2を正常に開始しました。" text2=""/>
+		<string id="67174699" text1="バルブ2を停止してください。" text2=""/>
+		<string id="67174700" text1="バルブ2を正常に停止しました。" text2=""/>
+		<string id="67174701" text1="排気ファンを開始してください。" text2=""/>
+		<string id="67174702" text1="排気ファンを正常に開始しました。" text2=""/>
+		<string id="67174703" text1="排気ファンを停止してください。" text2=""/>
+		<string id="67174704" text1="排気ファンを正常に停止しました。" text2=""/>
+		<string id="67174705" text1="レトルト側面の加熱を開始してください。" text2=""/>
+		<string id="67174706" text1="レトルト側面の加熱を正常に開始しました。" text2=""/>
+		<string id="67174707" text1="レトルト側面の加熱を停止してください。" text2=""/>
+		<string id="67174708" text1="レトルト側面の加熱を正常に停止しました。" text2=""/>
+		<string id="67174709" text1="オーブン上面の加熱を開始してください。" text2=""/>
+		<string id="67174710" text1="オーブン上面の加熱を正常に開始しました。" text2=""/>
+		<string id="67174711" text1="オーブン上面の加熱を停止してください。" text2=""/>
+		<string id="67174712" text1="オーブン上面の加熱を正常に停止しました。" text2=""/>
+		<string id="67174713" text1="オーブン底面の加熱を開始してください。" text2=""/>
+		<string id="67174714" text1="オーブン底面の加熱を正常に開始しました。" text2=""/>
+		<string id="67174715" text1="オーブン底面の加熱を停止してください。" text2=""/>
+		<string id="67174732" text1="オーブン底面の加熱を正常に停止しました。" text2=""/>
+		<string id="67174913" text1="レベルセンサー温度をチェックしてください。" text2=""/>
+		<string id="67174914" text1="レベルセンサー温度は正常です。" text2=""/>
+		<string id="67174915" text1="RVを初期化位置に移動してください。" text2=""/>
+		<string id="67174916" text1="RVを初期化位置に正常に移動しました。" text2=""/>
+		<string id="67174917" text1="圧力キャリブレーションをテストしてください。" text2=""/>
+		<string id="67174918" text1="開放圧力をキャリブレーションしてください。" text2=""/>
+		<string id="67174919" text1="開放圧力を正常にキャリブレーションしました。" text2=""/>
+		<string id="67174920" text1="20秒間待機してください。" text2=""/>
+		<string id="67174921" text1="圧力キャリブレーション：現在の圧力：%1。" text2=""/>
+		<string id="67174922" text1="圧力キャリブレーションを再試行してください。圧力値が大きすぎます。" text2=""/>
+		<string id="67174923" text1="圧力センサーを正常にキャリブレーションしました。" text2=""/>
+		<string id="67174924" text1="圧力キャリブレーションをオフセットしてください。" text2=""/>
+		<string id="67174925" text1="密閉テスト。" text2=""/>
+		<string id="67174926" text1="密閉テストが正常に行われました。" text2=""/>
+		<string id="67174992" text1="加熱ストラテジーの初期化に失敗しました。" text2=""/>
+		<string id="67174993" text1="プレテストでレトルト側面の加熱を開始してください。ターゲット温度：%1。" text2=""/>
+		<string id="67174994" text1="プレテストでレトルト底面の加熱を開始してください。ターゲット温度：%1。" text2=""/>
+		<string id="67174995" text1="次のシナリオでレベルセンサーの加熱を開始してください：%1、ターゲット温度：%2。" text2=""/>
+		<string id="67174996" text1="次のシナリオでレトルト(%1)の加熱を開始してください：%2、ターゲット温度：%3。" text2=""/>
+		<string id="67174997" text1="次のシナリオでワックスバス(%1)の加熱を開始してください：%2、ターゲット温度：%3。" text2=""/>
+		<string id="67174998" text1="次のシナリオで回転バルブの加熱を開始してください：%1、ターゲット温度：%2。" text2=""/>
+		<string id="67174999" text1="次のシナリオでLAシステム(%1)の加熱を開始してください：%2、ターゲット温度：%3。" text2=""/>
+		<string id="67175000" text1="LA Tube2の加熱ステータスはオフです。" text2=""/>
+		<string id="67175169" text1="200、211、および260ステップでの再加熱。" text2=""/>
+		<string id="67175170" text1="試薬ステップでの再加熱。" text2=""/>
+		<string id="67175171" text1="パラフィンステップでの再加熱。" text2=""/>
+		<string id="67175172" text1="203、281～297ステップでの再加熱。" text2=""/>
+		<string id="67175184" text1="スケジューラがアイドル状態になります。" text2=""/>
+		<string id="67175185" text1="スケジューラがエラー状態になります。" text2=""/>
+		<string id="67175201" text1="回転バルブ位置を%1にセットしてください。" text2=""/>
+		<string id="67175206" text1="圧力を開放してください。" text2=""/>
+		<string id="67175211" text1="回転バルブをステーション%1のチューブ位置に移動しています。" text2=""/>
+		<string id="67175212" text1="回転バルブをステーション%1のシーリング位置に移動しています。" text2=""/>
+		<string id="67175214" text1="圧力を%1に設定してください。" text2=""/>
+		<string id="67175221" text1="不明なエラー、イベントID %1、シナリオ%2をフィルタリングしてください。" text2=""/>
+		<string id="67175936" text1="レトルト：レベルセンサーにほこりや残留物が付着していないかチェックし、必要に応じて清掃してください。何も付着していない場合は、レベルセンサーのOリングをチェックするか、レベルセンサーサブモジュールを交換してください。" text2=""/>
+		<string id="67175937" text1="ボトルチェック：加圧できません。考えられる理由：1. レトルトのふたなどの密閉に問題がある。2. RVがシーリング位置ではなく、チューブ位置に配置されている。" text2=""/>
+		<string id="67175938" text1="ボトルチェック：ステーション番号%1が空であることが検出されました。ボトルから漏えいしている、またはボトルが見つからないなどの理由が考えられます。ステーションをチェックし、レトルトのふたが正しくロックされているかチェックしてエラーを解消してください!" text2=""/>
+		<string id="67175940" text1="エアシステム：プレテスト中に圧力がターゲット値に到達しませんでした。圧力は最大%1 kPaに到達しました。" text2=""/>
+		<string id="67175941" text1="ステーション番号%1には十分な量の試薬が注入されていません。試薬ステーション、またはワックスバスに適正レベルまで注入されているかチェックしてください。" text2=""/>
+		<string id="67175942" text1="ステーション番号%1には十分な量の試薬が注入されていません。試薬ステーション、またはワックスバスに適正レベルまで注入されているかチェックしてください。ステーション番号%1には十分な量の試薬が注入されていません(再試行)。" text2=""/>
+		<string id="67175943" text1="処理中にステーション%1へのレトルトの排液に失敗しました! 最大圧力は%2 kPaです。再試行中にステーション%1へのレトルトの排液に失敗しました! 最大圧力は%2 kPaです。" text2=""/>
+		<string id="67175944" text1="処理中にステーションからのレトルトの注入に失敗しました! 注入時間が4分を超過しています。このステーションへのチューブがパラフィンによって制限、またはブロックされている可能性があります。ボトルコネクタがブロックされていないか、およびチューブがボトル内で折れ曲がっていないかをチェックしてください。問題が見つからない場合は、ステーション洗浄プログラムを使用してください。このプログラムは最初に洗浄キシレンボトル、次に洗浄アルコールボトルを使用してこのステーションへのチューブをフラッシングします。" text2=""/>
+		<string id="67175945" text1="処理中のステーションの注入時間が4分を超過しています。このステーションへのチューブがパラフィンによって制限、またはブロックされている可能性があります。ボトルコネクタがブロックされていないか、およびチューブがボトル内で折れ曲がっていないかをチェックしてください。問題が見つからない場合は、ステーション洗浄プログラムを使用してください。このプログラムは最初に洗浄キシレンボトル、次に洗浄アルコールボトルを使用してこのステーションへのチューブをフラッシングします。" text2=""/>
+		<string id="67175946" text1="パラフィンステップ中に、ユーザーがパラフィンオーブンのカバーを開けました。これにより、パラフィンが凝固した可能性があります。パラフィンバスが取り除かれた場合、注入または排液エラーを引き起こした可能性があります。" text2=""/>
+		<string id="67175947" text1="レトルト：試薬注入中にあふれが生じました。これはパラフィンステップ以外で発生しました。レベルセンサーステータスをチェックし、エアシステム(ワックストラップ、エアチューブ)が動作状態にあることを確認してください。" text2=""/>
+		<string id="67175948" text1="レトルトのふたを閉じ、[再試行]ボタンをクリックして確定してください。ふたロックが機械的にブロックされていないか、または残留物が付着していないかチェックしてください。ふたロックのセンサーが正しく機能しているか、および正しく調整されているかもチェックしてください。" text2=""/>
+		<string id="67175949" text1="ボトルチェック：プレテスト/ボトルチェック中に、ステーション番号%1で制限、またはブロックが検出されました。" text2=""/>
+		<string id="67175950" text1="レトルト加熱：温度センサー1が範囲を外れました。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175951" text1="レトルト加熱：温度センサー1が範囲を外れました。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175952" text1="レトルト加熱：温度センサー1が範囲を外れました。これは処理中に発生しました。" text2=""/>
+		<string id="67175951" text1="レトルト加熱：温度センサー1が範囲を外れました。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175953" text1="レトルト加熱：温度センサー1が信号を出力していません。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175954" text1="レトルト加熱：温度センサー1が信号を出力していません。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175955" text1="レトルト加熱：温度センサー2が範囲を外れました。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175956" text1="レトルト加熱：温度センサー2が範囲を外れました。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175957" text1="レトルト加熱：温度センサー2が範囲を外れました。これは処理中に発生しました。" text2=""/>
+		<string id="67175958" text1="レトルト加熱：温度センサー2が信号を出力していません。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175959" text1="レトルト加熱：温度センサー2が信号を出力していません。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175960" text1="レトルト加熱：温度センサー3が範囲を外れました。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175961" text1="レトルト加熱：温度センサー3が範囲を外れました。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175962" text1="レトルト加熱：温度センサー3が範囲を外れました。これは処理中に発生しました。" text2=""/>
+		<string id="67175963" text1="レトルト加熱：温度センサー3が信号を出力していません。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175964" text1="レトルト加熱：温度センサー3が信号を出力していません。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175965" text1="レトルト加熱：温度センサー1および2のセルフキャリブレーションに失敗しました。これはプレテスト中に発生しました。" text2=""/>
+		<string id="67175966" text1="レトルト加熱：温度センサー1および2のセルフキャリブレーションに失敗しました。これは、プロセス開始時のセルフテスト中、または洗浄ステップ中に発生しました。" text2=""/>
+		<string id="67175967" text1="レトルト加熱：温度センサー1および2のセルフキャリブレーションに失敗しました。これは処理中に発生しました。" text2=""/>
+		<string id="67175968" text1="パラフィンオーブン加熱：上面センサーが範囲を外れました。" text2=""/>
+		<string id="67175969" text1="パラフィンオーブン加熱： 底面センサー1が範囲を外れました。" text2=""/>
+		<string id="67175970" text1="パラフィンオーブン加熱：底面センサー2が範囲を外れました。" text2=""/>
+		<string id="67175971" text1="回転バルブ：元の位置を取得できません!" text2=""/>
+		<string id="67175972" text1="回転バルブ：プレテスト中、または固定、給水、脱水、洗浄、パラフィンステップ中にチューブ位置の移動に失敗しました。" text2=""/>
+		<string id="67175973" text1="回転バルブ：プロトコルの前、または後でチューブ位置の移動に失敗しました。" text2=""/>
+		<string id="67175974" text1="回転バルブ：プレテスト中に回転バルブセンサー1の温度が範囲を外れました。" text2=""/>
+		<string id="67175975" text1="回転バルブ：プロトコルの前、または後で回転バルブセンサー1の温度が範囲を外れました。" text2=""/>
+		<string id="67175976" text1="回転バルブ：プレテスト中に回転バルブセンサー2の温度が範囲を外れました。" text2=""/>
+		<string id="67175977" text1="回転バルブ：回転バルブセンサー2の温度が範囲を外れました。" text2=""/>
+		<string id="67175978" text1="回転バルブ：プレテスト中に回転バルブの加熱電流が範囲を外れました。" text2=""/>
+		<string id="67175979" text1="回転バルブ：プロトコルの前、または後で回転バルブの加熱電流が範囲を外れました。" text2=""/>
+		<string id="67175980" text1="回転バルブ：回転バルブ温度センサー2の値が40℃を下回っています。回転バルブの加熱機能をチェックしてください。" text2=""/>
+		<string id="67175983" text1="圧力センサー：プレテスト中に不正なゼロ値を検出しました。環境気圧においてゼロ値をチェックしてください。異常である場合(>1.5 kPa)、レトルトのふたを開けた状態で再試行してください。異常が解消されない場合は、圧力センサーを交換してください。" text2=""/>
+		<string id="67175984" text1="圧力センサー：圧力バルブが処理中に範囲[-100、+100] kPaを外れました。圧力センサーの機能をチェックし、必要に応じて交換してください。" text2=""/>
+		<string id="67175985" text1="排気システム：電流が流れていない、または不足しているため、排気ファンが動作しません。 対応するコネクタでの電圧をチェックしてください。適正電圧である場合は、排気ファンを交換してください。" text2=""/>
+		<string id="67175986" text1="加熱された試薬チューブ：温度が溶解点%1 ℃に到達していません。" text2=""/>
+		<string id="67175987" text1="加熱されたエアチューブ：温度が溶解点%1 ℃に到達していません。" text2=""/>
+		<string id="67175988" text1="加熱された試薬チューブ：温度が範囲から外れています(%1℃)。" text2=""/>
+		<string id="67175989" text1="加熱されたエアチューブ：温度が溶解点%1 ℃に到達していません。" text2=""/>
+		<string id="67175990" text1="レトルトまたはオーブン加熱：加熱パッドの機能が不正です。熱線をチェックし、加熱パッドの抵抗値を測定してください。問題がない場合は、ASB5をチェックしてください!" text2=""/>
+		<string id="67175991" text1="レトルトまたはワックスバス加熱：加熱パッドの機能が不正です。熱線をチェックし、加熱パッドの抵抗値を測定してください。問題がない場合は、ASB5をチェックしてください!" text2=""/>
+		<string id="67175995" text1="パラフィンオーブン加熱：パラフィン処理ステップの開始前に、上面センサーがターゲット温度(溶解点)に到達できません。パラフィンオーブンの加熱機能をチェックしてください。" text2=""/>
+		<string id="67175996" text1="パラフィンオーブン加熱：パラフィン処理ステップの開始前に、底面センサー1がターゲット温度(溶解点)に到達できません。パラフィンオーブンの加熱機能をチェックしてください。" text2=""/>
+		<string id="67175997" text1="パラフィンオーブン加熱：パラフィン処理ステップの開始前に、底面センサー2がターゲット温度(溶解点)に到達できません。パラフィンオーブンの加熱機能をチェックしてください。" text2=""/>
+		<string id="67175998" text1="回転バルブ：チューブ位置を%1から%2に移動しています。下限値は%3、内部ステップは%4です。" text2=""/>
+		<string id="67175999" text1="回転バルブ：プロトコルの前、または後でチューブ位置の%1から%2への移動に失敗しました。下限値は%3、内部ステップは%4です。" text2=""/>
+		<string id="67176000" text1="回転バルブ：パラフィン処理ステップの開始前に、回転バルブの温度センサー2がターゲット温度に到達できません。回転バルブの加熱機能をチェックしてください。" text2=""/>
+		<string id="67176003" text1="処理または洗浄中にステーション1%へのレトルトの排液に失敗しました! 排液時間が4分を超過しています。" text2=""/>
+		<string id="67176004" text1="加熱された試薬チューブ：チューブを15分以内にターゲット温度まで加熱できません。セルフテストを実行し、チューブのステータスを確認してください。" text2=""/>
+		<string id="67176005" text1="電圧モニタリング：DC 5Vエラー。" text2=""/>
+		<string id="67176006" text1="電圧モニタリング：DC 24Vエラー。" text2=""/>
+		<string id="67176007" text1="エアシステム：処理中に圧力の解放に失敗しました。レトルト、エアモジュール、またはその両方に気圧が残存しています。" text2=""/>
+		<string id="67176008" text1="レトルト加熱：レトルト加熱は15分以内にターゲット温度に到達できません。" text2=""/>
+		<string id="67176009" text1="パラフィンオーブン：処理中に、ユーザーがパラフィンオーブンのカバーを開けました。これにより、パラフィンが凝固した可能性があります。" text2=""/>
+		<string id="67176010" text1="パラフィンオーブン：処理の前、または後にユーザーがパラフィンオーブンのカバーを開け、パラフィンを再注入した可能性があります。" text2=""/>
+		<string id="67176013" text1="リモート/ローカルアラーム：外部リモートアラームシステムの接続をチェックしてください。" text2=""/>
+		<string id="67176014" text1="リモート/ローカルアラーム：外部ローカルアラームシステムの接続をチェックしてください。" text2=""/>
+		<string id="67176015" text1="エアシステム：処理中に圧力がターゲット値に到達しませんでした。圧力は最大%1 kPaに到達しました。" text2=""/>
+		<string id="67176016" text1="エアシステム：処理中にバキュームがターゲット値に到達しませんでした。バキュームは最大%1 kPaに到達しました。" text2=""/>
+		<string id="67176017" text1="処理中にステーション番号1%からのレトルトの注入に失敗しました! 注入時間が2分を超過しています。" text2=""/>
+		<string id="67176018" text1="処理または洗浄中にステーション1%へのレトルトの排液に失敗しました! 排液時間が2分を超過しています。" text2=""/>
+		<string id="67176019" text1="エラーID %1! AC電圧が不安定です。" text2=""/>
+		<string id="67176020" text1="全体浸漬中、4分を超えるプロセスインターバルが存在します。" text2=""/>
+		<string id="67176021" text1="プロセス終了がタイムアウトしました。" text2=""/>
+		<string id="67176022" text1="排液のためRVがチューブ位置に移動する前に、圧力テストがタイムアウトしました。" text2=""/>
+		<string id="67176023" text1="回転バルブ：プレテスト中、または固定、給水、脱水、洗浄、パラフィンステップ中にチューブ位置の%1から%2の移動に失敗しました。" text2=""/>
+		<string id="67176024" text1="回転バルブ：プロトコルの前、または後でチューブ位置の%1から%2への移動に失敗しました。" text2=""/>
+		<string id="67176192" text1="エラーID %1! 排液時間が2分を超過しています。" text2=""/>
+		<string id="67176193" text1="エラーID %1! 注入時間が2分を超過しています。" text2=""/>
+		<string id="67176195" text1="エラーID %1! 処理シナリオで密閉に失敗しました。" text2=""/>
+		<string id="67176221" text1="エラーID %1! 全体浸漬中、4分を超えるプロセスインターバルが存在します。" text2=""/>
+		<string id="67176222" text1="エラーID %1! プロセス終了がタイムアウトしました。" text2=""/>
+		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
+		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
+		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
+	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+	</language>
 </strings>
