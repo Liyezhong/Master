@@ -1137,7 +1137,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <source>Device Communication</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunicação do dispositivo</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
