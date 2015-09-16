@@ -3,7 +3,7 @@
 <TestCaseConfig Version="1">
 	<Oven>
 		<OvenHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" DurationTime="00:15:00" HeatTargetTemp="85" TargetTemp="55" DepartureLow="-5" DepartureHigh="10" KeepTime="00:01:00"/>
-		<OvenHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" DurationTime1="01:30:00" HeatTargetTemp1="85" DurationTime2="01:30:00" HeatTargetTemp2="54" TargetTemp="50" DepartureLow="0" DepartureHigh="8"/>
+		<OvenHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="35" DurationTime1="01:50:00" HeatTargetTemp1="85" DurationTime2="01:30:00" HeatTargetTemp2="54" TargetTemp="50" DepartureLow="0" DepartureHigh="8"/>
 		<OvenCoverSensor Parameter="N/A"/>
 	</Oven>
 	<RotaryValve>
