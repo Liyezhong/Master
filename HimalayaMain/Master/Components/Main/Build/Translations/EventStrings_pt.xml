@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
 	<language name="pt">
-		<string id="﻿17039372" text1="O aparelho encontrou o erro %1 durante a situação %2 e tentou realizar a ação de recuperação %3. O resultado da ação é %4." text2=""/>
+		<string id="17039372" text1="O aparelho encontrou o erro %1 durante a situação %2 e tentou realizar a ação de recuperação %3. O resultado da ação é %4." text2=""/>
 		<string id="16973834" text1="O log de eventos foi desabilitado por algum motivo. Entre em contato com a assistência técnica." text2=""/>
 		<string id="17235997" text1="Verifique o log do usuário para mais informações." text2=""/>
 		<string id="17235976" text1="Tradução para a língua %1 não foi encontrada." text2=""/>
@@ -174,9 +174,9 @@
 		<string id="50331766" text1="A pausa excede 5 minutos. Continue o programa o mais breve possível!" text2=""/>
 		<string id="50331767" text1="A pausa excede 10 minutos. Continue o programa o mais breve possível!" text2=""/>
 		<string id="50331768" text1="Não é possível continuar o programa. A pausa excede 15 minutos." text2=""/>
-		<string id="50331651" text1="Leica Biopsy" text2=""/>
+		<string id="50331651" text1="Biopsy" text2=""/>
 		<string id="50331652" text1="Programa de limpeza" text2=""/>
-		<string id="50331650" text1="Leica Overnight" text2=""/>
+		<string id="50331650" text1="Overnight" text2=""/>
 		<string id="50331671" text1="Álcool de limpeza" text2=""/>
 		<string id="50331670" text1="Xileno de limpeza" text2=""/>
 		<string id="50331666" text1="Etanol 100 %" text2=""/>

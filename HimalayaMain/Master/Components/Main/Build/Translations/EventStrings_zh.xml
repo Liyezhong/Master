@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
 	<language name="zh">
-		<string id="﻿17039372" text1="在场景 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
+		<string id="17039372" text1="在场景 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
 		<string id="16973834" text1="由于某些原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
 		<string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
 		<string id="17235976" text1="语言“%1”的翻译未找到。" text2=""/>

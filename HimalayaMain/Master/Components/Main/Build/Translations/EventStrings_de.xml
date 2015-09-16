@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
 	<language name="de">
-		<string id="﻿17039372" text1="Gerät erkannte Fehler %1 bei Szenario %2 und versuchte Korrekturmaßnahme %3 auszuführen. Das Ergebnis der Maßnahme ist %4." text2=""/>
+		<string id="17039372" text1="Gerät erkannte Fehler %1 bei Szenario %2 und versuchte Korrekturmaßnahme %3 auszuführen. Das Ergebnis der Maßnahme ist %4." text2=""/>
 		<string id="16973834" text1="Die Ereignisprotokollierung wurde aus irgendeinem Grund deaktiviert. Bitte Kundendienst verständigen." text2=""/>
 		<string id="17235997" text1="Benutzerprotokoll auf weitere Informationen prüfen." text2=""/>
 		<string id="17235976" text1="Übersetzung für Sprache %1 wurde nicht gefunden." text2=""/>

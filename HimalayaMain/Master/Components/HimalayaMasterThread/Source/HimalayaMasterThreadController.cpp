@@ -180,7 +180,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
      *  once EventHandler is intialized, since at this moment , Event Handler is
      *  just created, and would not have read EventConfig.csv.
      */
-
+    ReadEventTranslations(QLocale::English, QLocale::English);
     mp_DataManager = new DataManager::CDataManager(this);
     //initialize the DataManagerBase pointer in MasterThread
     mp_DataManagerBase = mp_DataManager;

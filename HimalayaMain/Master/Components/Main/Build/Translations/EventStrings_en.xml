@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
 	<language name="en">
-		<string id="﻿17039372" text1="The instrument encountered the error %1 during scenario %2; and tried to do the recovery action %3. The action result is %4." text2=""/>
+		<string id="17039372" text1="The instrument encountered the error %1 during scenario %2; and tried to do the recovery action %3. The action result is %4." text2=""/>
 		<string id="16973834" text1="The event logging has been disabled for some reasons. Please contact your local service." text2=""/>
 		<string id="17235997" text1="Check the user log for more information." text2=""/>
 		<string id="17235976" text1="Translations for language %1 is not found." text2=""/>
