@@ -101,8 +101,8 @@ int CLogContentDlg::InitDialog(QString FilePath)
 
         this->SetDialogTitle(Title);
         mp_TableWidget->horizontalHeader()->resizeSection(0, 95);
-        mp_TableWidget->horizontalHeader()->resizeSection(1, 200);
-        mp_TableWidget->horizontalHeader()->resizeSection(2, 200);
+        mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
+        mp_TableWidget->horizontalHeader()->resizeSection(2, 220);
 
     }
 
@@ -110,7 +110,7 @@ int CLogContentDlg::InitDialog(QString FilePath)
 }
 
 MyItemDelegate::MyItemDelegate(QObject * parent)
-:QItemDelegate(parent)
+:QStyledItemDelegate(parent)
 {
 
 }
@@ -124,11 +124,12 @@ void MyItemDelegate::paint(QPainter * painter,
     int x1, y1, x2, y2;
     option.rect.getCoords(&x1, &y1, &x2, &y2);
     QRect rect(x1+2, y1, x2-x1-4, y2-y1);
+
     if (index.column()==1) {
-        painter->drawText( rect, Qt::TextWrapAnywhere , text );
+        painter->drawText( rect, Qt::TextWrapAnywhere|Qt::AlignVCenter , text );
     }
     else {
-        painter->drawText( rect, Qt::TextWordWrap , text );
+        QStyledItemDelegate::paint(painter, option, index);
     }
 }
 

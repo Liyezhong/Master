@@ -27,7 +27,7 @@
 #include <QStandardItemModel>
 #include <QFile>
 #include <QTextStream>
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 #include "LogViewerDialog/Include/LogFilter.h"
 
 namespace LogViewer {
@@ -41,7 +41,7 @@ namespace Ui {
  * \brief This implements the class MyItemDelegate
  */
 /****************************************************************************/
-class MyItemDelegate:public QItemDelegate
+class MyItemDelegate:public QStyledItemDelegate
 {
 public:
     /****************************************************************************/
