@@ -314,7 +314,7 @@ QVariant CStepModel::headerData(int Section, Qt::Orientation Orientation, int Ro
         case 2:
             if (!m_IsShowStation)
                 return tr("Duration");
-            else return tr("Station");
+            else return m_strStation;
         case 3:
             if (!m_IsShowStation)
                 return tr("Temperature");
@@ -323,7 +323,7 @@ QVariant CStepModel::headerData(int Section, Qt::Orientation Orientation, int Ro
         case 4:
             if (!m_IsShowStation)
                 return tr("P/V");
-            else return tr("Temp.");
+            else return m_strTemp;
 
             if (m_IsShowStation)
             {
@@ -335,9 +335,13 @@ QVariant CStepModel::headerData(int Section, Qt::Orientation Orientation, int Ro
     return QVariant();
 }
 
-void CStepModel::ShowStation(bool bSet)
+void CStepModel::ShowStation(bool bSet,
+                             const QString& strStation,
+                             const QString& strTemprature)
 {
     m_IsShowStation = bSet;
+    m_strStation = strStation;
+    m_strTemp = strTemprature;
 }
 
 void CStepModel::SetStationNameList(QList<QString>& stationNameList)

@@ -121,6 +121,8 @@ void CProgramPanelWidget::RetranslateUI()
     m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
+    m_strStart = QApplication::translate("Dashboard::CProgramPanelWidget", "Start", 0, QApplication::UnicodeUTF8);
+    m_strAbort = QApplication::translate("Dashboard::CProgramPanelWidget", "Abort", 0, QApplication::UnicodeUTF8);
 }
 
 void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
@@ -250,7 +252,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 
 void CProgramPanelWidget::ChangeStartButtonToStopState()
 {
-    ui->startButton->setText(tr("Abort"));
+    ui->startButton->setText(m_strAbort);
     ui->startButton->update();
     ui->startButton->IsStartStatus(false);
     m_ProgramNextAction = DataManager::PROGRAM_ABORT;
@@ -258,7 +260,7 @@ void CProgramPanelWidget::ChangeStartButtonToStopState()
 
 void CProgramPanelWidget::ChangeStartButtonToStartState()
 {
-    ui->startButton->setText(tr("Start"));
+    ui->startButton->setText(m_strStart);
     ui->startButton->update();
     ui->startButton->IsStartStatus(true);
     m_ProgramNextAction = DataManager::PROGRAM_START;

@@ -58,12 +58,15 @@ public:
       *  \param ProgramRemainingTime
       *  \param endDateTime
       *  \param bAbortButtonEnabled
-      *
+      *  \param strStation
+      *  \param strTemprature
       *  \return from InitDialog
       */
      /****************************************************************************/
      void InitDialog(DataManager::CProgram*, const Core::CDataConnector*, QList<QString>&, int, int,
-                     int, const QString& endDateTime, bool bAbortButtonEnabled);
+                     int, const QString& endDateTime, bool bAbortButtonEnabled,
+                     const QString& strStation,
+                     const QString& strTemprature);
      /****************************************************************************/
      /*!
       *  \brief  Disable the Abort button

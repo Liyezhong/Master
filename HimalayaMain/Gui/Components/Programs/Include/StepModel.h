@@ -64,11 +64,13 @@ public:
      *  \brief  Definition/Declaration of function ShowStation
      *
      *  \param bSet = bool type parameter
-     *
+     *  \param strStation = the translated word for "Station"
+     *  \param strTemprature = the translated word for "Temp."
      *  \return from ShowStation
      */
     /****************************************************************************/
-    void ShowStation(bool bSet);
+    void ShowStation(bool bSet,const QString& strStation,
+                     const QString& strTemprature);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetStationNameList
@@ -120,7 +122,7 @@ private:
     QList<QString> mp_DashboardStationNameList;       ///<  Definition/Declaration of variable mp_DashboardStationNameList
     bool m_IsShowStation;       ///<  Definition/Declaration of variable m_IsShowStation
     int m_CurSelectRowIndex;       ///<  Definition/Declaration of variable m_CurSelectRowIndex
-
+    QString m_strStation, m_strTemp;
 };
 
 } // end namespace Programs

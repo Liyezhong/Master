@@ -814,16 +814,6 @@
         <source>Programs</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="253"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="261"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CProgramRunningPanelWidget</name>
@@ -1050,11 +1040,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="317"/>
-        <source>Station</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="320"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
@@ -1063,11 +1048,6 @@ Date</source>
         <location filename="../../Programs/Source/StepModel.cpp" line="325"/>
         <location filename="../../Programs/Source/StepModel.cpp" line="331"/>
         <source>P/V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="326"/>
-        <source>Temp.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1822,6 +1802,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramPanelWidget.ui" line="106"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="124"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1875,6 +1856,11 @@ Date</source>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="125"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Dashboard::CProgramRunningPanelWidget</name>
@@ -1916,6 +1902,16 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Completed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
+        <source>Station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
+        <source>Temp.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

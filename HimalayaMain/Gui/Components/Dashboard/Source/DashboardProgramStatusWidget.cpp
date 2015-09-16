@@ -41,7 +41,9 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
                                                QList<QString>& StationNameList, int CurProgramStepIndex,
                                                int StepRemainingTime, int ProgramRemainingTime,
                                                const QString& endDateTime,
-                                               bool bAbortButtonEnabled)
+                                               bool bAbortButtonEnabled,
+                                               const QString& strStation,
+                                               const QString& strTemprature)
 {
     if (!p_Program || !pDataConnector)
         return;
@@ -49,7 +51,7 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     SetDialogTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
 
     m_StepModel.SetVisibleRowCount(6);
-    m_StepModel.ShowStation(true);
+    m_StepModel.ShowStation(true, strStation, strTemprature);
     m_StepModel.SetCurSelectRowIndex(CurProgramStepIndex);
     m_StepModel.SetStationNameList(StationNameList);
     m_StepModel.SetProgram(p_Program, pDataConnector->SettingsInterface->GetUserSettings(), pDataConnector->ReagentGroupList,

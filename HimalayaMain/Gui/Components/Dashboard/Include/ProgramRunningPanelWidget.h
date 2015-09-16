@@ -270,6 +270,7 @@ namespace Dashboard {
         bool m_isAborting;       ///<  Definition/Declaration of variable m_isAborting
         int m_firstProgramStepIndex;   ///< the first Program Step Index
         CDashboardProgramStatusWidget* m_pProgramStatusWidget;
+        QString m_strStation, m_strTemp;
     };
 }
 

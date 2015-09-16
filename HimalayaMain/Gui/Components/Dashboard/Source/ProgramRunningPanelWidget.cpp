@@ -176,9 +176,11 @@ void CProgramRunningPanelWidget::changeEvent(QEvent *p_Event)
 
 void CProgramRunningPanelWidget::RetranslateUI()
 {
-    m_strAborting = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
-    m_strAborted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborted.", 0, QApplication::UnicodeUTF8);
+    m_strAborting  = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
+    m_strAborted   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborted.", 0, QApplication::UnicodeUTF8);
     m_strCompleted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Completed!", 0, QApplication::UnicodeUTF8);
+    m_strStation   = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Station", 0, QApplication::UnicodeUTF8);
+    m_strTemp      = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Temp.", 0, QApplication::UnicodeUTF8);
 }
 
 void CProgramRunningPanelWidget::SetUserSettings(DataManager::CUserSettings *pUserSettings)
@@ -376,7 +378,8 @@ void CProgramRunningPanelWidget::OnProgramDetail()
                                        stationNameList, m_CurProgramStepIndex,
                                         m_CurRemainingTime,
                                        m_curRemainingTimeTotal,
-                                       m_DateTimeStr, bAboutEnable);
+                                       m_DateTimeStr, bAboutEnable,
+                                       m_strStation,  m_strTemp);
 
     (void)QObject::connect(m_pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
     (void)m_pProgramStatusWidget->exec();

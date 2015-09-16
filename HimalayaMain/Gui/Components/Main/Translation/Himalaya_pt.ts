@@ -814,16 +814,6 @@
         <source>Programs</source>
         <translation>Programas</translation>
     </message>
-    <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="253"/>
-        <source>Abort</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="261"/>
-        <source>Start</source>
-        <translation>Início</translation>
-    </message>
 </context>
 <context>
     <name>CProgramRunningPanelWidget</name>
@@ -1055,11 +1045,6 @@ Date</source>
         <translation>Duração</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="317"/>
-        <source>Station</source>
-        <translation>Estação</translation>
-    </message>
-    <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="320"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
@@ -1069,11 +1054,6 @@ Date</source>
         <location filename="../../Programs/Source/StepModel.cpp" line="331"/>
         <source>P/V</source>
         <translation>P/V</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/StepModel.cpp" line="326"/>
-        <source>Temp.</source>
-        <translation>Temp.</translation>
     </message>
 </context>
 <context>
@@ -1832,6 +1812,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramPanelWidget.ui" line="106"/>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="124"/>
         <source>Start</source>
         <translation>Início</translation>
     </message>
@@ -1885,6 +1866,11 @@ Date</source>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="125"/>
+        <source>Abort</source>
+        <translation>Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>Dashboard::CProgramRunningPanelWidget</name>
@@ -1927,6 +1913,16 @@ Date</source>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Completed!</source>
         <translation>Concluído!</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
+        <source>Station</source>
+        <translation>Estação</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
+        <source>Temp.</source>
+        <translation>Temp.</translation>
     </message>
 </context>
 <context>
