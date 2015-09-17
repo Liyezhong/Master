@@ -57,7 +57,8 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 DataManager::CDataManager* DataManager)
                                 :mp_SchedulerController(schedController),
                                 mp_SchedulerCommandProcessor(SchedCmdProcessor),
-                                mp_DataManager(DataManager)
+                                mp_DataManager(DataManager),
+                                m_OvenSensorsCheck(std::string("000000"))
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
@@ -1832,21 +1833,65 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
         else
         {
             int userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-            if( (timeElapse >= timeRange.second*1000) && (HWTemp < userInputMeltingPoint-4 || HWTemp > userInputMeltingPoint+12))
+            if(timeElapse >= timeRange.second*1000)
             {
-                switch(OvenType)
+                if (HWTemp > userInputMeltingPoint+12)
                 {
-                    case OVEN_TOP_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE;
-                        break;
-                    case OVEN_BOTTOM1_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE;
-                        break;
-                    case OVEN_BOTTOM2_SENSOR:
-                        retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE;
-                        break;
-                    default:
-                        break;
+                    switch(OvenType)
+                    {
+                        case OVEN_TOP_SENSOR:
+                        if (!m_OvenSensorsCheck.test(0))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_HIGH;
+                            m_OvenSensorsCheck.set(0,true);
+                        }
+                            break;
+                        case OVEN_BOTTOM1_SENSOR:
+                        if (!m_OvenSensorsCheck.test(1))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_HIGH;
+                            m_OvenSensorsCheck.set(1,true);
+                        }
+                            break;
+                        case OVEN_BOTTOM2_SENSOR:
+                        if (!m_OvenSensorsCheck.test(2))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_HIGH;
+                            m_OvenSensorsCheck.set(2,true);
+                        }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (HWTemp < userInputMeltingPoint-4)
+                {
+                    switch(OvenType)
+                    {
+                        case OVEN_TOP_SENSOR:
+                        if (!m_OvenSensorsCheck.test(3))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_LOW;
+                            m_OvenSensorsCheck.set(3,true);
+                        }
+                            break;
+                        case OVEN_BOTTOM1_SENSOR:
+                        if (!m_OvenSensorsCheck.test(4))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_LOW;
+                            m_OvenSensorsCheck.set(4,true);
+                        }
+                            break;
+                        case OVEN_BOTTOM2_SENSOR:
+                        if (!m_OvenSensorsCheck.test(5))
+                        {
+                            retCode = DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_LOW;
+                            m_OvenSensorsCheck.set(5,true);
+                        }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }

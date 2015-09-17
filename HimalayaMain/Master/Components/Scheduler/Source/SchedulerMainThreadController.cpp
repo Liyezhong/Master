@@ -4471,7 +4471,20 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             }
-            SendOutErrMsg(retCode);
+            // For events 500020081, 500020181,500020082, 500020182, 500020083 and 500020183, Scheduler will NOT enter error state
+            if (retCode == DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_LOW ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_LOW ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_LOW)
+            {
+                SendOutErrMsg(retCode, false);
+            }
+            else
+            {
+                SendOutErrMsg(retCode, true);
+            }
             if(m_IsErrorStateForHM)
                 return ;
         }

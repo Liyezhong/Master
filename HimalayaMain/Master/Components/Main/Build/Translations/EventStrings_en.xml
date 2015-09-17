@@ -721,6 +721,7 @@
         <string id="67176210" text1="Pressure test failed! Please clean the sealing ring as well as the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
         <string id="67176212" text1="Please check filling level, correct them Retry the filling function." text2=""/>
+        <string id="67176213" text1="Before clicking Retry button, please check if reagent in the related paraffin bath is sufficient. If not, please add paraffin at first" text2=""/>
         <string id="67176214" text1="Protocol was interrupted by power failure. Please remove the specimen and abort the protocol." text2=""/>
 	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
 	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service." text2=""/>
@@ -733,6 +734,12 @@
 	<string id="67176224" text1="Power failure on cleaning program, the program has been auto-restart." text2=""/>
 	<string id="67176225" text1="Error ID %1! Rotary valve abnormal, Please call service!" text2=""/>
 	<string id="67176226" text1="Error ID %1! The instrument has met some technical issues and can not finalize the protocol." text2=""/>
+	<string id="67176227" text1="Temperature of Oven Top sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176228" text1="Temperature of Oven Top sensor is less than melting point minus 4 degrees." text2=""/>
+	<string id="67176229" text1="Temperature of Oven Down1 sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176230" text1="Temperature of Oven Down1 sensor is less than melting point minus 4 degrees." text2=""/>
+	<string id="67176231" text1="Temperature of Oven Down2 sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176232" text1="Temperature of Oven Down2 sensor is less than melting point minus 4 degrees." text2=""/>
 	<string id="19202061" text1="User reset the Station %1." text2=""/>
 	<string id="19202062" text1="User change the reagent of Station %1 to %2." text2=""/>
 	<string id="19202063" text1="User set the Station %1 to full." text2=""/>
