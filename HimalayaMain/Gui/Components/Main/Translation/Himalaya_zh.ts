@@ -394,12 +394,12 @@
 <context>
     <name>CFileSelectionModel</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="204"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="205"/>
         <source>Use</source>
         <translation>使用</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="206"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="208"/>
         <source>File Name</source>
         <translation>文件名</translation>
     </message>
@@ -513,8 +513,8 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="241"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="275"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="774"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="777"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="778"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="781"/>
         <source>%1</source>
         <translation></translation>
     </message>
@@ -533,21 +533,6 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
         <source>New Program Step</source>
         <translation>新程序步骤</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
-        <source>Program Name</source>
-        <translation>程序名称</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="763"/>
-        <source>The Program name cannot be empty!</source>
-        <translation>程序名称不得为空！</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="767"/>
-        <source>The Program name cannot contain &quot;Leica&quot;</source>
-        <translation>程序名称不得包含 &quot;Leica&quot;。</translation>
     </message>
 </context>
 <context>
@@ -2129,16 +2114,6 @@ Date</source>
         <source>Import Files</source>
         <translation>导入文件</translation>
     </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="230"/>
-        <source>Use</source>
-        <translation>使用</translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="232"/>
-        <source>File Name</source>
-        <translation>文件名</translation>
-    </message>
 </context>
 <context>
     <name>MainMenu::CFileView</name>
@@ -2363,7 +2338,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="198"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1031"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1035"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2388,54 +2363,74 @@ Date</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1017"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
+        <source>Program Name</source>
+        <translation>程序名称</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="764"/>
+        <source>The Program name cannot be empty!</source>
+        <translation>程序名称不得为空！</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
+        <source>The Program name cannot contain &quot;Leica&quot;</source>
+        <translation>程序名称不得包含 &quot;Leica&quot;。</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
         <translation>编辑程序步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1018"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
         <source>New Program Step</source>
         <translation>新程序步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1019"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
         <source>Enter Program Name</source>
         <translation>输入程序名称</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1028"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1032"/>
         <source>Select Icon</source>
         <translation>选择图标</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1029"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1033"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1030"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1034"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1032"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1036"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>确定要删除所选的程序步骤吗？</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1033"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
         <source>Please enter a valid Program Name</source>
         <translation>请输入一个有效的程序名称</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1034"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1038"/>
         <source>Please select a Program Icon</source>
         <translation>请选择一个程序图标</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1035"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1039"/>
         <source>Close</source>
         <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1040"/>
+        <source>OK</source>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -2647,27 +2642,27 @@ Date</source>
 <context>
     <name>Programs::CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>Step</source>
         <translation>步骤</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1027"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1024"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1028"/>
         <source>Duration</source>
         <translation>持续时间</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1025"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1029"/>
         <source>Temperature</source>
         <translation>温度</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1030"/>
         <source>P/V</source>
         <translation>P/V</translation>
     </message>

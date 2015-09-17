@@ -394,12 +394,12 @@
 <context>
     <name>CFileSelectionModel</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="204"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="205"/>
         <source>Use</source>
         <translation>Use</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="206"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="208"/>
         <source>File Name</source>
         <translation>Nome do arquivo</translation>
     </message>
@@ -513,8 +513,8 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="241"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="275"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="774"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="777"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="778"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="781"/>
         <source>%1</source>
         <translation></translation>
     </message>
@@ -533,21 +533,6 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
         <source>New Program Step</source>
         <translation>Nova etapa do programa</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
-        <source>Program Name</source>
-        <translation>Nome do programa</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="763"/>
-        <source>The Program name cannot be empty!</source>
-        <translation>O nome do programa não pode ficar em branco!</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="767"/>
-        <source>The Program name cannot contain &quot;Leica&quot;</source>
-        <translation>O nome do programa não pode conter &quot;Leica&quot;</translation>
     </message>
 </context>
 <context>
@@ -2137,16 +2122,6 @@ Date</source>
         <source>Import Files</source>
         <translation>Importar arquivos</translation>
     </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="230"/>
-        <source>Use</source>
-        <translation>Use</translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="232"/>
-        <source>File Name</source>
-        <translation>Nome do arquivo</translation>
-    </message>
 </context>
 <context>
     <name>MainMenu::CFileView</name>
@@ -2371,7 +2346,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="198"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1031"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1035"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -2396,54 +2371,74 @@ Date</source>
         <translation>Excluir</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1017"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
+        <source>Program Name</source>
+        <translation>Nome do programa</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="764"/>
+        <source>The Program name cannot be empty!</source>
+        <translation>O nome do programa não pode ficar em branco!</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
+        <source>The Program name cannot contain &quot;Leica&quot;</source>
+        <translation>O nome do programa não pode conter &quot;Leica&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
         <translation>Editar etapa do programa</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1018"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
         <source>New Program Step</source>
         <translation>Nova etapa do programa</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1019"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
         <source>Enter Program Name</source>
         <translation>Inserir nome do programa</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1028"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1032"/>
         <source>Select Icon</source>
         <translation>Selecionar ícone</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1029"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1033"/>
         <source>Confirmation Message</source>
         <translation>Mensagem de confirmação</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1030"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1034"/>
         <source>Yes</source>
         <translation>Sim</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1032"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1036"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>Deseja realmente excluir a etapa do programa selecionada?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1033"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
         <source>Please enter a valid Program Name</source>
         <translation>Insira um nome válido para o programa</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1034"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1038"/>
         <source>Please select a Program Icon</source>
         <translation>Selecione um ícone de programa</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1035"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1039"/>
         <source>Close</source>
         <translation>Fechar</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1040"/>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2655,27 +2650,27 @@ Date</source>
 <context>
     <name>Programs::CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>Step</source>
         <translation>Intervalo</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1027"/>
         <source>Reagent</source>
         <translation>Reagente</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1024"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1028"/>
         <source>Duration</source>
         <translation>Duração</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1025"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1029"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1030"/>
         <source>P/V</source>
         <translation>P/V</translation>
     </message>

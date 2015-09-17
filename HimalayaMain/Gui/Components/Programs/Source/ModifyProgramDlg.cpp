@@ -754,17 +754,21 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
             delete mp_MessageDlg;
         }
         mp_MessageDlg = new MainMenu::CMessageDlg();
-        mp_MessageDlg->SetTitle(tr("Program Name"));
+        mp_MessageDlg->SetTitle(QApplication::translate("Programs::CModifyProgramDlg",
+                                                        "Program Name", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->HideButtons();
 
         if (EnteredText.trimmed().isEmpty()){
-            mp_MessageDlg->SetText(tr("The Program name cannot be empty!"));
+            mp_MessageDlg->SetText(QApplication::translate("Programs::CModifyProgramDlg",
+                                                           "The Program name cannot be empty!",
+                                                           0, QApplication::UnicodeUTF8));
             (void) mp_MessageDlg->exec();
             return;
         } else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
-            mp_MessageDlg->SetText(tr("The Program name cannot contain \"Leica\""));
+            mp_MessageDlg->SetText(QApplication::translate("Programs::CModifyProgramDlg",
+                                "The Program name cannot contain \"Leica\"", 0, QApplication::UnicodeUTF8));
             (void) mp_MessageDlg->exec();
             return;
         }
@@ -1033,6 +1037,7 @@ void CModifyProgramDlg::RetranslateUI()
     m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
     m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
     m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Programs::CModifyProgramDlg", "OK", 0, QApplication::UnicodeUTF8);
 
 }
 

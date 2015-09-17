@@ -1222,8 +1222,8 @@ void CDataConnector::SendRequestedFilesToImport(QStringList FileList)
 {
     // For the file selection cancel no need of displaying the wait dialog.
     if (FileList.count() > 0) {
-        mp_WaitDialog->SetDialogTitle(tr(m_strImport.toAscii()));
-        mp_WaitDialog->SetText(tr(m_strImportData.toAscii()));
+        mp_WaitDialog->SetDialogTitle(m_strImport);
+        mp_WaitDialog->SetText(m_strImportData);
         mp_WaitDialog->show();
     }
     MsgClasses::CmdDataImportFiles Command(120000, FileList);
