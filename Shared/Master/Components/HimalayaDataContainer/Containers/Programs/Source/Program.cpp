@@ -169,11 +169,11 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
         XmlStreamWriter.writeAttribute("Favorite", "false");
     }
 
-    if (GetBottleCheck()) {
-        XmlStreamWriter.writeAttribute("BottleCheck", "true");
-    } else {
-        XmlStreamWriter.writeAttribute("BottleCheck", "false");
-    }
+//    if (GetBottleCheck()) {
+//        XmlStreamWriter.writeAttribute("BottleCheck", "true");
+//    } else {
+//        XmlStreamWriter.writeAttribute("BottleCheck", "false");
+//    }
 
     XmlStreamWriter.writeStartElement("StepList");
     XmlStreamWriter.writeAttribute("NextStepID", GetNextFreeStepID(false));

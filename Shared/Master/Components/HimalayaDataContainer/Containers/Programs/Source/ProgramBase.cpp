@@ -303,16 +303,16 @@ bool CProgramBase::MoveProgramStep(qint32 FromIndex, qint32 ToIndex)
 
 QString CProgramBase::GetName()const
 {
-//    bool ok = false;
-//    if(!GetNameID().isEmpty())
-//    {
-//        quint32 strid = GetNameID().toUInt(&ok);
-//        if(ok)
-//        {
-//            return Global::UITranslator::TranslatorInstance().Translate(
-//                    Global::TranslatableString(strid));
-//        }
-//    }
+    bool ok = false;
+    if(!GetNameID().isEmpty())
+    {
+        quint32 strid = GetNameID().toUInt(&ok);
+        if(ok)
+        {
+            return Global::UITranslator::TranslatorInstance().Translate(
+                    Global::TranslatableString(strid));
+        }
+    }
     return m_Name;
 }
 

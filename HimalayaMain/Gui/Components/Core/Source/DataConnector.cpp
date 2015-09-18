@@ -1391,10 +1391,11 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     else {
         mp_OldFile = mp_LanguageFile;
     }
-    // change the language whenever the new language file receives from Main
-    Global::UITranslator::TranslatorInstance().SetDefaultLanguage(SettingsInterface->GetUserSettings()->GetLanguage());
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+
     emit LanguageChanged(Global::LanguageToString(Command.GetCurrentLanuage()));
+    Global::UITranslator::TranslatorInstance().SetDefaultLanguage(Command.GetCurrentLanuage());
+    emit DashboardStationsUpdated();
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 }
 
 /****************************************************************************/

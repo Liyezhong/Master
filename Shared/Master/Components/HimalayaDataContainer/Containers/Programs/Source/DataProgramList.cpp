@@ -109,7 +109,7 @@ void CDataProgramList::Init()
 
 void CDataProgramList::UpdateOnLanguageChanged()
 {
-   QWriteLocker Locker(mp_ReadWriteLock);
+/*   QWriteLocker Locker(mp_ReadWriteLock);
    for (qint32 I = 0; I < m_ProgramList.count(); I++) {
        CProgram *p_Program = GetProgram(I);
        if(!p_Program->GetNameID().isEmpty()){
@@ -122,7 +122,7 @@ void CDataProgramList::UpdateOnLanguageChanged()
            }
        }
    }
-   (void)Write();
+   (void)Write()*/;
 }
 
 /****************************************************************************/

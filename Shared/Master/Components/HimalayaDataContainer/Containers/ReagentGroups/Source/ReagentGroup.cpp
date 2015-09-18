@@ -321,16 +321,16 @@ CReagentGroup& CReagentGroup::operator=(const CReagentGroup& SourceReagentGroup)
 }
 QString CReagentGroup::GetReagentGroupName() const
 {
-//    bool ok = false;
-//    if(!GetGroupNameID().isEmpty())
-//    {
-//        quint32 strid = GetGroupNameID().toUInt(&ok);
-//        if(ok)
-//        {
-//            return Global::UITranslator::TranslatorInstance().Translate(
-//                    Global::TranslatableString(strid));
-//        }
-//    }
+    bool ok = false;
+    if(!GetGroupNameID().isEmpty())
+    {
+        quint32 strid = GetGroupNameID().toUInt(&ok);
+        if(ok)
+        {
+            return Global::UITranslator::TranslatorInstance().Translate(
+                    Global::TranslatableString(strid));
+        }
+    }
     return m_GroupName;
 }
 }//End of namespace DataManager

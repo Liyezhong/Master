@@ -180,7 +180,6 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
      *  once EventHandler is intialized, since at this moment , Event Handler is
      *  just created, and would not have read EventConfig.csv.
      */
-    ReadEventTranslations(QLocale::English, QLocale::English);
     mp_DataManager = new DataManager::CDataManager(this);
     //initialize the DataManagerBase pointer in MasterThread
     mp_DataManagerBase = mp_DataManager;
@@ -521,10 +520,59 @@ void HimalayaMasterThreadController::SendXML() {
 
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(6000, false)), m_CommandChannelGui);
 
+
+
+
     QByteArray *p_ByteArray = new QByteArray();
     p_ByteArray->clear();
     QDataStream XmlStream(p_ByteArray, QIODevice::ReadWrite);
     XmlStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
+    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
+    if (p_SettingsInterface) {
+        XmlStream << *p_SettingsInterface;
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(15000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
+    }
+
+    QByteArray EventData;
+    QDataStream EventDataStream(&EventData, QIODevice::ReadWrite);
+    EventDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+    Global::tTranslations TempTranslations;
+    TempTranslations = Global::UITranslator::TranslatorInstance().GetTranslations();
+    EventDataStream << TempTranslations;
+    (void)EventDataStream.device()->reset();
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(15000, EventDataStream)), m_CommandChannelGui);;
+
+
+    if (p_SettingsInterface) {
+        if (p_SettingsInterface->GetUserSettings(false) != NULL) {
+        // get the current language
+        QLocale::Language CurrentLanguage =
+                    p_SettingsInterface->GetUserSettings(false)->GetLanguage();
+
+        // store the langauge name de_DE
+        QString LanguageName(QLocale(CurrentLanguage).name());
+        // remove the DE
+        LanguageName.truncate(LanguageName.lastIndexOf('_'));
+        qDebug() << "Language Name ############################" << LanguageName << "#########################";
+
+        QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
+        (void) SendLanguageFileToGUI(LanguageFileName);
+        }
+    }
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
+    //Update Supported Languages
+    (void)UpdateSupportedGUILanguages();
+
+    DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
+    if (p_DeviceConfigurationInterface ) {
+        XmlStream << *p_DeviceConfigurationInterface;
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(15000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
+    }
 
     //send station.xml before reagents.xml. himalaya gui will set signal slot to update station by using reagent information
     // after parse station.xml.
@@ -564,14 +612,6 @@ void HimalayaMasterThreadController::SendXML() {
 
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
-    if (p_SettingsInterface) {
-        XmlStream << *p_SettingsInterface;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(15000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
-    }
-
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
 
     DataManager::CDataProgramList *p_ProgramList =  mp_DataManager->GetProgramList();
 
@@ -580,42 +620,7 @@ void HimalayaMasterThreadController::SendXML() {
            (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(15000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
        }
 
-    if (p_SettingsInterface) {
-        if (p_SettingsInterface->GetUserSettings(false) != NULL) {
-        // get the current language
-        QLocale::Language CurrentLanguage =
-                    p_SettingsInterface->GetUserSettings(false)->GetLanguage();
 
-        // store the langauge name de_DE
-        QString LanguageName(QLocale(CurrentLanguage).name());
-        // remove the DE
-        LanguageName.truncate(LanguageName.lastIndexOf('_'));
-        qDebug() << "Language Name ############################" << LanguageName << "#########################";
-
-        QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
-        (void) SendLanguageFileToGUI(LanguageFileName);
-        }
-    }
-
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
-    //Update Supported Languages
-    (void)UpdateSupportedGUILanguages();
-
-    DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
-    if (p_DeviceConfigurationInterface ) {
-        XmlStream << *p_DeviceConfigurationInterface;
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(15000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
-    }
-
-    QByteArray EventData;
-    QDataStream EventDataStream(&EventData, QIODevice::ReadWrite);
-    EventDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-    Global::tTranslations TempTranslations;
-    TempTranslations = Global::UITranslator::TranslatorInstance().GetTranslations();
-    EventDataStream << TempTranslations;
-    (void)EventDataStream.device()->reset();
-    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(15000, EventDataStream)), m_CommandChannelGui);
 
     delete p_ByteArray;
 }
@@ -1408,24 +1413,25 @@ void HimalayaMasterThreadController::OnLanguageChanged(const bool LanguangeChang
 
         QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
         this->SendLanguageFileToGUI(LanguageFileName);
-        DataManager::CDataProgramList* pProgramList = mp_DataManager->GetProgramList();
-        if(pProgramList)
-        {
-            pProgramList->UpdateOnLanguageChanged();
-            this->SendConfigurationFile(pProgramList, NetCommands::PROGRAM);
-        }
+        Global::EventTranslator::TranslatorInstance().SetDefaultLanguage(CurrentLanguage);
+//        DataManager::CDataProgramList* pProgramList = mp_DataManager->GetProgramList();
+//        if(pProgramList)
+//        {
+//            pProgramList->UpdateOnLanguageChanged();
+//            this->SendConfigurationFile(pProgramList, NetCommands::PROGRAM);
+//        }
 
-        if(mp_DataManager->GetReagentGroupList())
-        {
-            mp_DataManager->GetReagentGroupList()->UpdateOnLanguageChanged();
-            this->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
-        }
+//        if(mp_DataManager->GetReagentGroupList())
+//        {
+//            mp_DataManager->GetReagentGroupList()->UpdateOnLanguageChanged();
+//            this->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
+//        }
 
-        if(mp_DataManager->GetReagentList())
-        {
-            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
-            this->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
-        }
+//        if(mp_DataManager->GetReagentList())
+//        {
+//            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
+//            this->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
+//        }
     }
 }
 
