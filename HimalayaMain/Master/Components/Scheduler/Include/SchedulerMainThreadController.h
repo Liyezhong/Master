@@ -377,6 +377,7 @@ typedef enum
         bool    m_IsWaitHeatingRV;                            ///< wait heating RV
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
         bool    m_IsErrorStateForHM;                          ///< enter the error state
+        bool    m_ReportExhaustFanWarning;                    ///< flag to report exhaust fan warning
         bool    m_IsProcessing;                               ///< in processing
         QVector< QPair<QString, QString> >  m_DashboardStationList;     ///< The whole station List of dash board
         IdleStepState_t m_IdleState;                          ///< prepare for idle step state

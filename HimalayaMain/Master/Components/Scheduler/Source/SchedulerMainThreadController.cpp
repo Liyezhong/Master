@@ -175,6 +175,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CountTheLogSenserData = 0;
     m_CheckTheHardwareStatus = 0;
     m_IsFirstProcessingForDelay = true;
+    m_ReportExhaustFanWarning = true;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -4560,10 +4561,11 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
         LogDebug(QString("Current out of range, AL tube2 current is: %1").arg(reportError7.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
-    if (reportError8.instanceID != 0)
+    if (reportError8.instanceID != 0 && m_ReportExhaustFanWarning)
     {
+        m_ReportExhaustFanWarning = false;
         LogDebug(QString("Current out of range, Current is: %1").arg(reportError8.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
+        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, false);
         if(m_IsErrorStateForHM)
             return ;
     }

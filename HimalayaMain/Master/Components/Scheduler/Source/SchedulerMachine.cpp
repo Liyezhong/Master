@@ -1880,7 +1880,7 @@ void CSchedulerStateMachine::HandlePssmBottleCheckWorkFlow(const QString& cmdNam
                 mp_SchedulerThreadController->LogDebug("Pressure calibration for Bottle check completes");
                 m_BottleCheckSeq++;
             }
-            else if (qAbs(currentPressure) <= 2.0) //offset the calibration
+            else if (qAbs(currentPressure) <= 4.0) //offset the calibration
             {
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);

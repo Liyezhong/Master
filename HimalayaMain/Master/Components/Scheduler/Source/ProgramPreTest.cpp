@@ -275,7 +275,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 m_PressureCalibrationCounter = 0;
                 m_CurrentState = RV_POSITION_CHECKING;
             }
-            else if (qAbs(currentPressure) <= 2.0) //offset the calibration
+            else if (qAbs(currentPressure) <= 4.0) //offset the calibration
             {
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
