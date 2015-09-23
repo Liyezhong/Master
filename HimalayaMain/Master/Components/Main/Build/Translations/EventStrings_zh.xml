@@ -91,7 +91,7 @@
 		<string id="16973836" text1="确定" text2=""/>
 		<string id="16973841" text1="停止" text2=""/>
 		<string id="16973838" text1="是" text2=""/>
-		<string id="33619990" text1="无法更改为超过当前系统日期/时间 24 小时的日期和时间。" text2=""/>
+		<string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
 		<string id="33619991" text1="用户将当前系统日期/时间设为 %1" text2=""/>
 		<string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
 		<string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
@@ -102,7 +102,7 @@
 		<string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中" text2=""/>
 		<string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
 		<string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-		<string id="33818114" text1="步骤 %2 和步骤 %3 的程序 %1 试剂不兼容。" text2=""/>
+		<string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
 		<string id="33817861" text1="声级参数超出范围。" text2=""/>
 		<string id="33817860" text1="音量参数超出范围。" text2=""/>
 		<string id="33817859" text1="声音周期参数超出范围。" text2=""/>
@@ -117,7 +117,7 @@
 		<string id="33816623" text1="与程序 %2 关联的程序 ID %1 不唯一。" text2=""/>
 		<string id="33816620" text1="程序 %1 中的程序步骤包含无效的持续时间格式。" text2=""/>
 		<string id="33818117" text1="程序名称的长度超过程序 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-		<string id="33818113" text1="程序名称 %1 已被使用。请选择一个不同的程序名称。" text2=""/>
+		<string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
 		<string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
 		<string id="33816592" text1="验证 Programs.xml 失败。" text2=""/>
 		<string id="33816584" text1="读取 Programs.xml 失败。" text2=""/>
@@ -188,9 +188,9 @@
 		<string id="50331660" text1="清洁酒精" text2=""/>
 		<string id="50331659" text1="清洁剂" text2=""/>
 		<string id="50331657" text1="透明" text2=""/>
-		<string id="50331656" text1="绝对性脱水" text2=""/>
-		<string id="50331655" text1="稀释性脱水" text2=""/>
-		<string id="50331653" text1="固定" text2=""/>
+		<string id="50331656" text1="无水脱水剂" text2=""/>
+		<string id="50331655" text1="稀释性脱水剂" text2=""/>
+		<string id="50331653" text1="固定液" text2=""/>
 		<string id="50331658" text1="石蜡" text2=""/>
 		<string id="50331654" text1="水" text2=""/>
 		<string id="50331668" text1="石蜡" text2=""/>

@@ -97,6 +97,17 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void AddItemsToFavoritePanel();
+    protected:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function changeEvent
+         *
+         *  \param p_Event = QEvent type parameter
+         *
+         *  \return from changeEvent
+         */
+        /****************************************************************************/
+        void changeEvent(QEvent *p_Event);
     private slots:
         void OnResetFocus(bool reset);
         /****************************************************************************/
@@ -147,6 +158,14 @@ namespace Dashboard {
         /****************************************************************************/
         void UpdateFavProgram();
     private:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function RetranslateUI
+         *
+         *  \return from RetranslateUI
+         */
+        /****************************************************************************/
+        void RetranslateUI();
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function SetButtonGroup

@@ -253,3 +253,32 @@ void CFavoriteProgramsPanelWidget::SetInFavProgramButtonClicked()
 {
     m_IsInFavProgramButtonClicked = true;
 }
+
+void CFavoriteProgramsPanelWidget::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+        case QEvent::LanguageChange:
+            this->RetranslateUI();
+            break;
+        default:
+            break;
+    }
+}
+
+void CFavoriteProgramsPanelWidget::RetranslateUI()
+{
+    for ( int j = 0; j < m_FavProgramIDs.count(); j++)
+    {
+        QString ProgramId = m_FavProgramIDs.at(j);
+        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
+
+        CProgramLabel* label = m_mapLabel.value(j);
+        label->setText(ProgramName);
+    }
+
+    if (!m_NewSelectedProgramId.isEmpty())
+    {
+        SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+    }
+}

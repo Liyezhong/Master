@@ -16,7 +16,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="58"/>
         <source>Periodic Time</source>
-        <translation>发生暂停时间</translation>
+        <translation>发生间隔时间</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="60"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="127"/>
         <source>Add more cassettes:</source>
-        <translation>添加更多包埋盒：</translation>
+        <translation>添加包埋盒数目：</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="83"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="86"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="80"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>用户数据导出</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="81"/>
@@ -358,7 +358,7 @@
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="253"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="269"/>
@@ -614,12 +614,12 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>可处理包埋盒数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>可处理循环数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
@@ -887,13 +887,13 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>可处理包埋盒数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>可处理循环数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
@@ -961,7 +961,7 @@
         <source>Cassettes
 since
 change</source>
-        <translation>更换后的包埋盒</translation>
+        <translation>已处理的包埋盒</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -969,7 +969,7 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>更换后的循环</translation>
+        <translation>已处理的循环</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
@@ -1173,7 +1173,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>用户数据导出</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
@@ -1340,13 +1340,13 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>可处理包埋盒数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>可处理的循环数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
@@ -1403,7 +1403,7 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation>更换后的
+        <translation>已处理的
 包埋盒</translation>
     </message>
     <message>
@@ -1527,7 +1527,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="257"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="258"/>
@@ -1562,17 +1562,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
         <source>Program End Date/Time cannot be earlier than the ASAP End Date Time.</source>
-        <translation>程序结束日期/时间不得早于 ASAP 结束日期/时间.</translation>
+        <translation>程序结束时间不得早于 ASAP 结束时间。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="268"/>
         <source>Program End Date/Time cannot be later than one week.</source>
-        <translation>程序结束日期/时间不得晚于一周。</translation>
+        <translation>程序结束时间不得晚于一周。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
         <source>Program End Date/Time cannot be later than the ASAP End Date Time as the first program step is not Fixation reagent.</source>
-        <translation>由于第一个程序步骤不是固定试剂，程序的结束日期/时间不得晚于 ASAP 的结束日期时间。</translation>
+        <translation>由于第一个程序步骤不是固定试剂，程序的结束时间不得晚于 ASAP 的结束日期时间。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1623,17 +1623,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1305"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
-        <translation>没有适合程序步骤 &quot;%1&quot;/&quot;%2&quot; 的安全试剂。您是否要继续？</translation>
+        <translation>没有适合程序 %2 步骤 %1 的安全试剂。 您是否要继续？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1306"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
-        <translation></translation>
+        <translation>程序步骤 &quot;%1&quot;/&quot;%2&quot; 无法找到相应的试剂站点。站点只能在程序中使用一次。请为该步骤的试剂分配单独的站点。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1307"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
-        <translation>站点 &quot;%1&quot; 被设置为空 (程序步骤 &quot;%2&quot;/&quot;%3&quot;)，无法启动程序。</translation>
+        <translation>您无法启动程序，程序 %3 的步骤 %2 所在站点 %1 被设置成空。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1308"/>
@@ -1648,7 +1648,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1310"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
-        <translation>石蜡未完全融化，程序第一步将短暂延迟。您是否要继续？</translation>
+        <translation>石蜡未完全熔化，程序第一步将延长时间。您是否要继续？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1311"/>
@@ -1663,7 +1663,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1313"/>
         <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
-        <translation>组织安全程序已成功完成。是否排空脱水缸？</translation>
+        <translation>组织保护程序已成功完成。是否排空脱水缸？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
@@ -1693,7 +1693,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
         <source>The retort is contaminated. Please lock the retort and select Cleaning Program to run!</source>
-        <translation>脱水缸已被污染。请锁定脱水缸并选择要运行的清洁程序！</translation>
+        <translation>脱水缸已被污染。请关闭并锁定脱水缸并选择要运行的清洁程序！</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
@@ -1718,7 +1718,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
-        <translation>该程序所需的试剂已过期。请使用新鲜试剂替换过期试剂！程序将不会启动。</translation>
+        <translation>该程序所需的试剂已过期。程序将不会启动。请使用新鲜试剂替换过期试剂！</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
@@ -1948,7 +1948,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="36"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>用户数据导出</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="69"/>
@@ -2009,7 +2009,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="73"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="245"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="76"/>
@@ -2054,7 +2054,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="218"/>
         <source>The selected date is invalid. Please select another one.</source>
-        <translation>所选的日期无效。请重新选择日期。</translation>
+        <translation>所选的日期无效，请重新选择日期。</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="231"/>
@@ -2529,7 +2529,7 @@ Date</source>
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
         <source>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?</source>
-        <translation>石蜡缸设置温度与程序温度的差值超过 2℃。石蜡温度过高可能会损坏组织。您是否要继续？</translation>
+        <translation>石蜡缸设置温度与程序温度的差值超过 2℃。石蜡温度过高可能会损坏组织，您是否要继续？</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
@@ -2766,7 +2766,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>可处理包埋盒数:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2786,12 +2786,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="563"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>可处理包埋盒数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="566"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>可处理的循环数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="569"/>
@@ -2806,7 +2806,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="575"/>
         <source>Reagent name shall not contain &apos;leica&apos;.</source>
-        <translation>试剂名称不应包含 &apos;leica&apos;。</translation>
+        <translation>试剂名称不应包含 ”leica“。</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="578"/>
@@ -2861,7 +2861,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="721"/>
         <source>Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.</source>
-        <translation>是否确定要关闭试剂管理系统模式？清洁试剂的使用时间超过建议的时间可能会导致试剂管线中的石蜡堵塞。清洁程序可照常运行。但必须小心控制试剂质量。</translation>
+        <translation>是否确定要关闭试剂管理系统模式？清洁试剂的使用时间超过建议的时间可能会导致试剂管线中的石蜡堵塞。清洁程序可照常运行，但必须小心控制试剂质量。</translation>
     </message>
 </context>
 <context>
@@ -3154,7 +3154,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="277"/>
         <source>Periodic Time</source>
-        <translation>发生暂停时间</translation>
+        <translation>发生间隔时间</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="281"/>
@@ -3263,7 +3263,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="312"/>
         <source>Periodic time (Min.): %1</source>
-        <translation>发生暂停时间 (最小值): %1</translation>
+        <translation>发生间隔时间 (最小值): %1</translation>
     </message>
 </context>
 <context>
@@ -3367,7 +3367,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="36"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>用户数据导出</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="69"/>
@@ -3553,7 +3553,7 @@ Date</source>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="243"/>
         <source>Enable Remote Care Events</source>
-        <translation>启用 RemoteCare 事件</translation>
+        <translation>启用远程维护事件</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
@@ -3785,7 +3785,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="321"/>
         <source>If the instrument is shut down now, you may have to wait %1 hours to ensure the paraffin is melted before running the next program. Do you really want to shut down your instrument?</source>
-        <translation>如果现在关闭仪器，则必须等待 %1 小时，以确保在运行下一个程序之前石蜡融化。是否确定要关闭仪器？</translation>
+        <translation>如果现在关闭仪器，运行下一个程序以前可能不得不等待%1小时以确保石蜡熔化。是否确定要关闭仪器？</translation>
     </message>
 </context>
 <context>
@@ -3836,7 +3836,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
         <source>You changed the Paraffin melting temperature. If you confirm by &quot;Yes&quot; the Paraffin melting time will be at least %1 hours until another program may be started. Selecting &quot;No&quot; will allow the current Paraffin bath temperature to be accepted and you can immediately start a protocol run.</source>
-        <translation>您已更改了石蜡融化温度。 如果使用&quot;是&quot;予以确认，石蜡融化时间至少需要 %1 小时，才能运行其他程序。 选择&quot;否&quot;将接受当前的石蜡缸温度，您可立即启动程序执行。</translation>
+        <translation>您已更改了石蜡熔化温度。 如果使用&quot;是&quot;予以确认，石蜡熔化时间至少需要 %1 小时，才能运行其他程序。 选择&quot;否&quot;将接受当前的石蜡缸温度，您可立即启动程序执行。</translation>
     </message>
 </context>
 <context>
