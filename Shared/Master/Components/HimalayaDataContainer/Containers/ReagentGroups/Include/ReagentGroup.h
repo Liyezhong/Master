@@ -110,11 +110,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Gets the Name of the particular reagent
-     *
+     *  \param forWriteXml true if the name is used for writing to xml file
      *  \return Name String
      */
     /****************************************************************************/
-    QString GetReagentGroupName() const;
+    QString GetReagentGroupName(bool forWriteXml = false) const;
 
     /****************************************************************************/
     /*!

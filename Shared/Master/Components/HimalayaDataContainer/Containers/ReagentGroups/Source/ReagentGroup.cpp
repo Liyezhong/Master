@@ -103,7 +103,7 @@ bool CReagentGroup::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Com
     XmlStreamWriter.writeStartElement("ReagentGroup");
 
     XmlStreamWriter.writeAttribute("ID", GetGroupID());
-    XmlStreamWriter.writeAttribute("Name", GetReagentGroupName());
+    XmlStreamWriter.writeAttribute("Name", GetReagentGroupName(true));
     XmlStreamWriter.writeAttribute("NameID", GetGroupNameID());
     XmlStreamWriter.writeAttribute("Color", GetGroupColor());
     if (m_IsCleaningReagentGroup)
@@ -319,10 +319,10 @@ CReagentGroup& CReagentGroup::operator=(const CReagentGroup& SourceReagentGroup)
     }
     return *this;
 }
-QString CReagentGroup::GetReagentGroupName() const
+QString CReagentGroup::GetReagentGroupName(bool forWriteXml) const
 {
     bool ok = false;
-    if(!GetGroupNameID().isEmpty())
+    if(!GetGroupNameID().isEmpty() && !forWriteXml)
     {
         quint32 strid = GetGroupNameID().toUInt(&ok);
         if(ok)

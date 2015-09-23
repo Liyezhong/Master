@@ -86,7 +86,7 @@ bool CReagent::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
     XmlStreamWriter.writeStartElement("Reagent");
 
     XmlStreamWriter.writeAttribute("ID", GetReagentID());
-    XmlStreamWriter.writeAttribute("Name", GetReagentName());
+    XmlStreamWriter.writeAttribute("Name", GetReagentName(true));
     XmlStreamWriter.writeAttribute("NameID", GetReagentNameID());
     XmlStreamWriter.writeAttribute("Group", GetGroupID());
 
@@ -356,10 +356,10 @@ void CReagent::ResetLastErrors()
     }
     m_ListOfErrors.clear();
 }
-QString CReagent::GetReagentName() const
+QString CReagent::GetReagentName(bool forWriteXml) const
 {
     bool ok = false;
-    if(IsLeicaReagent())
+    if(IsLeicaReagent()&& !forWriteXml)
     {
         quint32 strid = GetReagentNameID().toUInt(&ok);
         if(ok)

@@ -113,11 +113,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Retrieve the program name
-     *
+     *  \param forWriteXml true if the name is used for writing to xml file
      *  \return  name
      */
     /****************************************************************************/
-    QString GetName() const;
+    QString GetName(bool forWriteXml = false) const;
     /****************************************************************************/
     /*!
      *  \brief Sets the program name

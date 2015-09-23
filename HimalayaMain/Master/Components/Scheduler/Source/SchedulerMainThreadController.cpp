@@ -2435,19 +2435,29 @@ void SchedulerMainThreadController::CalculateTheGapTimeAndBufferTime(bool IsStar
         if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
         {
             m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.UserSetEndTime - QDateTime::currentMSecsSinceEpoch() - m_EndTimeAndStepTime.LastParaffinProcessingTime * 1000;
-            if(m_EndTimeAndStepTime.BufferTime < 0)
+            if(m_EndTimeAndStepTime.BufferTime < 0) // delay
             {
-                m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
-                LogDebug(QString("The program will be completed %1 millisecond later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
+				if(m_EndTimeAndStepTime.BufferTime < -300000)// warning if the delay time is more than 5 minutes.
+				{
+                	m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
+                	LogDebug(QString("The program will be completed %1 millisecond later").arg(m_EndTimeAndStepTime.BufferTime));
+				}
                 m_EndTimeAndStepTime.BufferTime = 0;
             }
-            else if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1 )
+            else if(m_EndTimeAndStepTime.BufferTime > 0)//finish in advance
             {
-                m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
-                LogDebug(QString("The program will be completed %1 millisecond later or in advance.").arg(m_EndTimeAndStepTime.BufferTime));
-                m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
+				// after the 10% compensation with paraffin,  the advanced time is still more than 5 minutes; then rise warning message.
+				if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1  + 300000)
+				{
+                	m_EndTimeAndStepTime.WarningFlagForBufferTime = true;
+                	LogDebug(QString("The program will be completed %1 millisecond in advance.")
+							.arg(m_EndTimeAndStepTime.BufferTime - m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1));
+				}
+				if(m_EndTimeAndStepTime.BufferTime > m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1)
+				{
+                	m_EndTimeAndStepTime.BufferTime = m_EndTimeAndStepTime.TotalParaffinProcessingTime * 1000 * 0.1;
+				}
             }
-            LogDebug(QString("The last program step:%1 buffer is:%2 millisecond.").arg(m_CurProgramStepIndex + 1).arg(m_EndTimeAndStepTime.BufferTime));
         }
     }
 }
@@ -2588,6 +2598,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
                     }
                     leftTime += m_EndTimeAndStepTime.Scenario260CostTime;
                     m_EndTimeAndStepTime.ParaffinStepsCostTime += m_EndTimeAndStepTime.Scenario260CostTime;
+                    m_EndTimeAndStepTime.TotalParaffinProcessingTime = 0;
                 }
                 if(i == (pProgram->GetNumberOfSteps() - 1))
                 {

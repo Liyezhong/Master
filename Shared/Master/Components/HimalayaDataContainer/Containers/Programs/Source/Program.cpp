@@ -154,7 +154,7 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
 
     XmlStreamWriter.writeStartElement("Program");
     XmlStreamWriter.writeAttribute("ID", GetID());
-    XmlStreamWriter.writeAttribute("Name", GetName());
+    XmlStreamWriter.writeAttribute("Name", GetName(true));
     XmlStreamWriter.writeAttribute("NameID", GetNameID());
     XmlStreamWriter.writeAttribute("Icon", GetIcon());
     if (IsLeicaProgram()) {

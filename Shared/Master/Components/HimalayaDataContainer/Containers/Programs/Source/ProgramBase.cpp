@@ -301,10 +301,10 @@ bool CProgramBase::MoveProgramStep(qint32 FromIndex, qint32 ToIndex)
     return false;
 }
 
-QString CProgramBase::GetName()const
+QString CProgramBase::GetName(bool forWriteXml)const
 {
     bool ok = false;
-    if(!GetNameID().isEmpty())
+    if(!GetNameID().isEmpty() && !forWriteXml)
     {
         quint32 strid = GetNameID().toUInt(&ok);
         if(ok)
