@@ -1146,7 +1146,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -1226,64 +1226,64 @@ Date</source>
         <translation>ソフトウェアのアップデート中 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1991"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2104"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1992"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1997"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>新しいソフトウェアが利用できます。[リモートSW更新]をクリックして更新を開始してください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2002"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2003"/>
         <source>New software is not available.</source>
         <translation>新しいソフトウェアは利用できません。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2008"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2009"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>RCServerからの新規ソフトウェアのダウンロードに失敗しました。サービス窓口へご連絡ください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2014"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>リモートサーバからの新規ソフトウェアのダウンロードが完了しました。 [OK]を押してソフトウェアの更新を開始してください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2020"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2021"/>
         <source>Software update failed.</source>
         <translation>ソフトウェアの更新に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2050"/>
         <source>Now download the update package from the remote server. Please wait......</source>
         <translation>リモートサーバから更新パッケージをダウンロードしています。しばらくお待ちください...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2079"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
         <source>Confirmation Message</source>
         <translation>メッセージの確認</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2083"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2087"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>リモートユーザーによってリモートセッションが要求されています。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2102"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
         <source>Information Message</source>
         <translation>情報メッセージ</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2108"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>リモートユーザーによってリモートセッションが終了されています。</translation>
     </message>
