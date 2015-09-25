@@ -104,17 +104,17 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE;
     }
     //For Oven Top
-    if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop, true))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
     }
     //For Oven Bottom1
-    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1, true))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
     }
     //For Oven Bottom2
-    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2, true))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
     }
@@ -1006,8 +1006,16 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
     return  m_RTLevelSensor.OTCheckPassed;
 }
 
-bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
+bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp, bool isOven)
 {
+    //First of all, if the sensor belongs to Oven(Oven top, two oven bottoms), we need check lowest temperature(40 degree).
+    if (isOven)
+    {
+        if (HWTemp < 40.0)
+        {
+            return false;
+        }
+    }
     if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;
