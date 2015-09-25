@@ -1901,6 +1901,48 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             break;
                     }
                 }
+                else
+                {
+                    switch(OvenType)
+                    {
+                    case OVEN_TOP_SENSOR:
+                        if (m_OvenSensorsCheck[0])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_HIGH, 0,true, false);
+                            m_OvenSensorsCheck.set(0,false);
+                        }
+                        if (m_OvenSensorsCheck[3])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_LOW, 0,true, false);
+                            m_OvenSensorsCheck.set(3,false);
+                        }
+                        break;
+                    case OVEN_BOTTOM1_SENSOR:
+                        if (m_OvenSensorsCheck[1])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_HIGH, 0,true, false);
+                            m_OvenSensorsCheck.set(1,false);
+                        }
+                        if (m_OvenSensorsCheck[4])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_LOW, 0,true, false);
+                            m_OvenSensorsCheck.set(4,false);
+                        }
+                        break;
+                    case OVEN_BOTTOM2_SENSOR:
+                        if (m_OvenSensorsCheck[2])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_HIGH, 0,true, false);
+                            m_OvenSensorsCheck.set(2,false);
+                        }
+                        if (m_OvenSensorsCheck[5])
+                        {
+                            mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_LOW, 0,true, false);
+                            m_OvenSensorsCheck.set(5,false);
+                        }
+                        break;
+                    }
+                }
             }
         }
     }
