@@ -54,7 +54,7 @@
 		<string id="16843278" text1="用户登录" text2=""/>
 		<string id="16843295" text1="关" text2=""/>
 		<string id="16843294" text1="开" text2=""/>
-		<string id="16843314" text1="清洁试剂管理系统状态已更改为 %1。" text2=""/>
+		<string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
 		<string id="16843315" text1="包埋盒" text2=""/>
 		<string id="16843316" text1="循环" text2=""/>
 		<string id="16843317" text1="天数" text2=""/>
@@ -91,7 +91,7 @@
 		<string id="16973836" text1="确定" text2=""/>
 		<string id="16973841" text1="停止" text2=""/>
 		<string id="16973838" text1="是" text2=""/>
-		<string id="33619990" text1="仪器时差更改不能超过24小时。" text2=""/>
+		<string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
 		<string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
 		<string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
 		<string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
@@ -102,7 +102,7 @@
 		<string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中" text2=""/>
 		<string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
 		<string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-		<string id="33818114" text1="步骤 %2 和步骤 %3 的程序 %1 试剂不兼容。" text2=""/>
+		<string id="33818114" text1="程序%1的步骤%2和步骤%3试剂不兼容。" text2=""/>
 		<string id="33817861" text1="声音类型参数超出范围。" text2=""/>
 		<string id="33817860" text1="音量参数超出范围。" text2=""/>
 		<string id="33817859" text1="声音周期参数超出范围。" text2=""/>
@@ -117,7 +117,7 @@
 		<string id="33816623" text1="程序%2与%1的ID 一样。" text2=""/>
 		<string id="33816620" text1="程序%1的时间格式错误。" text2=""/>
 		<string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-		<string id="33818113" text1="程序名称 %1 已被使用。请选择一个不同的程序名称。" text2=""/>
+		<string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
 		<string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
 		<string id="33816592" text1="程序验证失败。" text2=""/>
 		<string id="33816584" text1="程序读取失败。" text2=""/>
@@ -129,7 +129,7 @@
 		<string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
 		<string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
 		<string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-		<string id="33817864" text1="未知清洁试剂管理系统模式" text2=""/>
+		<string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
 		<string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
 		<string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
 		<string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
@@ -175,18 +175,18 @@
 		<string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
 		<string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
 		<string id="50331651" text1="标准活检组织" text2=""/>
-		<string id="50331652" text1="清洁程序" text2=""/>
+		<string id="50331652" text1="清洗程序" text2=""/>
 		<string id="50331650" text1="标准过夜组织" text2=""/>
-		<string id="50331671" text1="清洁酒精" text2=""/>
-		<string id="50331670" text1="清洁二甲苯" text2=""/>
+		<string id="50331671" text1="清洗酒精" text2=""/>
+		<string id="50331670" text1="清洗二甲苯" text2=""/>
 		<string id="50331666" text1="酒精 100%" text2=""/>
 		<string id="50331662" text1="酒精 70%" text2=""/>
 		<string id="50331663" text1="酒精 80%" text2=""/>
 		<string id="50331664" text1="酒精 90%" text2=""/>
 		<string id="50331665" text1="酒精 95%" text2=""/>
 		<string id="50331661" text1="福尔马林" text2=""/>
-		<string id="50331660" text1="清洁酒精" text2=""/>
-		<string id="50331659" text1="清洁试剂" text2=""/>
+		<string id="50331660" text1="清洗酒精" text2=""/>
+		<string id="50331659" text1="清洗试剂" text2=""/>
 		<string id="50331657" text1="透明剂" text2=""/>
 		<string id="50331656" text1="无水脱水剂" text2=""/>
 		<string id="50331655" text1="稀释性脱水剂" text2=""/>
@@ -258,7 +258,7 @@
 		<string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
 		<string id="67176220" text1="请清洁液位传感器。" text2=""/>
 		<string id="67176223" text1="错误%1！ 终止失败。" text2=""/>
-		<string id="67176224" text1="清洁程序已从电源故障中恢复。" text2=""/>
+		<string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
 		<string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
 		<string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
 		<string id="19202061" text1="用户重置站点 %1数据。" text2=""/>
@@ -731,5 +731,19 @@
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
+	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>
