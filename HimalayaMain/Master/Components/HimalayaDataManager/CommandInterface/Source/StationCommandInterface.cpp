@@ -95,6 +95,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdStationChangeReagent(10000, cmd.StationID(), cmd.ReagentID())));
         QString reagentName;
+        quint32 reagentNameID = 0;
         QString reagentId = cmd.ReagentID();
         if ("" == reagentId)
         {
@@ -102,11 +103,25 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
         }
         else
         {
-            reagentName = static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(cmd.ReagentID())->GetReagentName();
+            CReagent* reagent =  static_cast<CDataContainer*>(mp_DataContainer)->ReagentList->GetReagent(cmd.ReagentID());
+            reagentName = reagent->GetReagentName();
+            if(reagent->IsLeicaReagent())
+            {
+                reagentNameID = reagent->GetReagentNameID().toUInt();
+            }
         }
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_CHANGE_STATION,
-                                                   Global::tTranslatableStringList() << cmd.StationID()
-                                                   << reagentName);
+        if(reagentNameID == 0)
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_CHANGE_STATION,
+                                                       Global::tTranslatableStringList() << cmd.StationID()
+                                                       << reagentName);
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_STATION_CHANGE_STATION,
+                                                       Global::tTranslatableStringList() << cmd.StationID()
+                                                       << Global::TranslatableString(reagentNameID));
+        }
 
     }
 

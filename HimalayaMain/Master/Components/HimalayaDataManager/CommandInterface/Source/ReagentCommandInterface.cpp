@@ -187,12 +187,24 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         ReagentDataStream << Reagent;
         SendAckAndUpdateGUI(Ref, AckCommandChannel, Global::CommandShPtr_t(
                                 new MsgClasses::CmdReagentUpdate(10000, ReagentDataStream)));
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_UPDATE_REAGENT,
-                                                   Global::tTranslatableStringList() << Reagent.GetReagentName()
-                                                   <<QString::number(Reagent.GetMaxCassettes())
-                                                   <<QString::number(Reagent.GetMaxCycles())
-                                                   <<QString::number(Reagent.GetMaxDays())
-                                                   <<Reagent.GetGroupID());
+        if(Reagent.IsLeicaReagent())
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_UPDATE_REAGENT,
+                                                       Global::tTranslatableStringList() << Global::TranslatableString(Reagent.GetReagentNameID().toUInt())
+                                                       <<QString::number(Reagent.GetMaxCassettes())
+                                                       <<QString::number(Reagent.GetMaxCycles())
+                                                       <<QString::number(Reagent.GetMaxDays())
+                                                       <<Reagent.GetGroupID());
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_UPDATE_REAGENT,
+                                                       Global::tTranslatableStringList() << Reagent.GetReagentName()
+                                                       <<QString::number(Reagent.GetMaxCassettes())
+                                                       <<QString::number(Reagent.GetMaxCycles())
+                                                       <<QString::number(Reagent.GetMaxDays())
+                                                       <<Reagent.GetGroupID());
+        }
         qDebug()<<"\n\n Update Reagent Success";
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();

@@ -485,11 +485,24 @@ void SchedulerMainThreadController::OnSelfTestDone(bool flag)
             else
             {
                 QString ProgramName = "";
+                quint32 ProgramNameID = 0;
                 if(mp_DataManager&& mp_DataManager->GetProgramList()&&mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId()))
                 {
                     ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetName();
+                    if(mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->IsLeicaProgram())
+                    {
+                        ProgramNameID = mp_DataManager->GetProgramList()->GetProgram(m_ProgramStatusInfor.GetProgramId())->GetNameID().toUInt();
+                    }
                 }
-                RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+                if(ProgramNameID == 0)
+                {
+                    RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,QStringList()<<ProgramName<<QString("[%1]").arg(m_ProgramStatusInfor.GetStepID()));
+                }
+                else
+                {
+                    Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE,Global::tTranslatableStringList()
+                                                               <<Global::TranslatableString(ProgramNameID));
+                }
                 m_SchedulerMachine->EnterPowerFailure();
             }
         }
@@ -827,8 +840,19 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
-            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, QStringList() << ProgramName << "" + m_ReagentExpiredFlag);
+            if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID))
+            {
+                const DataManager::CProgram* program = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID);
+                if(program->IsLeicaProgram())
+                {
+                    Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,Global::tTranslatableStringList()
+                                                               <<Global::TranslatableString(program->GetNameID().toUInt()) << m_ReagentExpiredFlag);
+                }
+                else
+                {
+                    RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, QStringList() << program->GetName() << "" + m_ReagentExpiredFlag);
+                }
+            }
 
             //send command to main controller to tell the left time
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000,
@@ -1408,8 +1432,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         m_CurrentStepState = PSSM_PROGRAM_FINISH;
 
         //program finished
-        QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-        RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<ProgramName);
+        if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID))
+        {
+            const DataManager::CProgram* program = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID);
+            if(program->IsLeicaProgram())
+            {
+                Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED, Global::tTranslatableStringList()
+                                                           <<Global::TranslatableString(program->GetNameID().toUInt()));
+            }
+            else
+            {
+                RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<program->GetName());
+            }
+        }
         m_SchedulerMachine->SendRunComplete();
 
         //send command to main controller to tell the left time
@@ -2728,9 +2763,15 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     this->SendAcknowledgeOK(Ref);
 
     QString ProgramName;
+    quint32 ProgramNameID = 0;
     if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID()))
     {
         ProgramName = mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->GetName();
+        if(mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->IsLeicaProgram())
+        {
+            ProgramNameID = mp_DataManager->GetProgramList()->GetProgram(Cmd.GetProgramID())->GetNameID().toUInt();
+        }
+
     }
 
     SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
@@ -2740,27 +2781,67 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
         {
             QDateTime EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(Cmd.ProgramRunDuration());
             m_EndTimeAndStepTime.UserSetEndTime = QDateTime::currentDateTime().addSecs(Cmd.ProgramRunDuration()).toMSecsSinceEpoch();
-            RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM, QStringList()<<ProgramName
-                       <<EndDateTime.toString()); //log
+            if(ProgramNameID == 0)
+            {
+                RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM, QStringList()<<ProgramName
+                           <<EndDateTime.toString()); //log
+            }
+            else
+            {
+                Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_REC_START_PROGRAM,Global::tTranslatableStringList()
+                                                           <<Global::TranslatableString(ProgramNameID) << EndDateTime.toString());
+            }
         }
         else
         {
-            RaiseEvent(EVENT_SCHEDULER_REC_CONTINUE_PROGRAM,QStringList()<<ProgramName); //log
+            if(ProgramNameID == 0)
+            {
+                RaiseEvent(EVENT_SCHEDULER_REC_CONTINUE_PROGRAM, QStringList()<<ProgramName); //log
+            }
+            else
+            {
+                Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_REC_CONTINUE_PROGRAM,Global::tTranslatableStringList()
+                                                           <<Global::TranslatableString(ProgramNameID));
+            }
         }
         CheckCarbonFilterExpired();
         return;
     }
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
     {
-        RaiseEvent(EVENT_SCHEDULER_REC_PAUSE_PROGRAM,QStringList()<<ProgramName); //log
+        if(ProgramNameID == 0)
+        {
+            RaiseEvent(EVENT_SCHEDULER_REC_PAUSE_PROGRAM,QStringList()<<ProgramName); //log
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_REC_PAUSE_PROGRAM,Global::tTranslatableStringList()
+                                                   <<Global::TranslatableString(ProgramNameID));
+        }
     }
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_ABORT)
     {
-        RaiseEvent(EVENT_SCHEDULER_REC_ABORT_PROGRAM,QStringList()<<ProgramName); //log
+        if(ProgramNameID == 0)
+        {
+            RaiseEvent(EVENT_SCHEDULER_REC_ABORT_PROGRAM,QStringList()<<ProgramName); //log
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_REC_ABORT_PROGRAM,Global::tTranslatableStringList()
+                                                   <<Global::TranslatableString(ProgramNameID));
+        }
     }
     else if(Cmd.ProgramActionType() == DataManager::PROGRAM_DRAIN)
     {
-        RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,QStringList()<<ProgramName); //log
+        if(ProgramNameID == 0)
+        {
+            RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,QStringList()<<ProgramName); //log
+        }
+        else
+        {
+            Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_REC_DRAIN_PROGRAM,Global::tTranslatableStringList()
+                                                   <<Global::TranslatableString(ProgramNameID));
+        }
     }
 }
 
@@ -4834,11 +4915,25 @@ void SchedulerMainThreadController::OnFillingHeatingRV()
     {
         PVMode += "V";
     }
-    RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
-               << m_CurProgramStepInfo.stationID
-               <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
-               <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
-               <<PVMode);
+    QString ReagentID = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
+    const DataManager::CReagent* reagent = mp_DataManager->GetReagentList()->GetReagent(ReagentID);
+    if(reagent && reagent->IsLeicaReagent())
+    {
+        Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,Global::tTranslatableStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                   << m_CurProgramStepInfo.stationID
+                   <<Global::TranslatableString(reagent->GetReagentNameID().toUInt())
+                   << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                   <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                   <<PVMode);
+    }
+    else
+    {
+        RaiseEvent(EVENT_SCHEDULER_PROGRAM_STEP_START,QStringList()<<QString("[%1]").arg(m_CurProgramStepIndex)
+                   << m_CurProgramStepInfo.stationID
+                   <<m_CurReagnetName << DataManager::Helper::ConvertSecondsToTimeString(m_CurProgramStepInfo.durationInSeconds)
+                   <<(m_CurProgramStepInfo.temperature > 0 ? QString("[%1]").arg(m_CurProgramStepInfo.temperature) : QString("Amb"))
+                   <<PVMode);
+    }
 
     if(m_CurProgramStepInfo.reagentGroup == "RG6")
     {
