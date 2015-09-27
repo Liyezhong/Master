@@ -1072,7 +1072,6 @@ private:
     QString m_strImportData;       ///<  Definition/Declaration of variable m_strImportData
     QString m_strLogFile;       ///<  Definition/Declaration of variable m_strLogFile
     QString m_strGettingDailyLog;       ///<  Definition/Declaration of variable m_strGettingDailyLog
-    QString m_strTurnOffSwitch;       ///<  Definition/Declaration of variable m_strTurnOffSwitch
     MainMenu::CWaitDialog *mp_WaitDlgExecChanged;    //!< Displayed when Execution Chaged command recved
 
 private slots:

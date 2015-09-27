@@ -1151,7 +1151,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1988"/>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
@@ -1216,79 +1216,74 @@ Date</source>
         <translation>Obtendo o arquivo de registro de operação diário...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1138"/>
-        <source>Please turn off the switch on the back of the instrument to shutdown the instrument.</source>
-        <translation>Desligue o interruptor atrás do aparelho para desligá-lo.</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1330"/>
         <source>Software Update</source>
         <translation>Atualização do software</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1334"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
         <source>Updating the software ...</source>
         <translation>Atualizando o software...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1992"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1997"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1995"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Novo software disponível. Clique em &apos;Atualização SW remota&apos; para iniciar a atualização.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2003"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
         <source>New software is not available.</source>
         <translation>Não há um novo software disponível.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2009"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Falha no download do novo software a partir do RCServer. Entre em contato com a assistência técnica.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2014"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>O download do novo software a partir do servidor remoto está concluído.  Pressione &quot;OK&quot; para iniciar a atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2021"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2019"/>
         <source>Software update failed.</source>
         <translation>Falha na atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2050"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2048"/>
         <source>Now download the update package from the remote server. Please wait......</source>
         <translation>Faça o download do pacote de atualização do servidor remoto. Aguarde...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
         <source>Confirmation Message</source>
         <translation>Mensagem de confirmação</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2087"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2085"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Uma sessão remota foi solicitada por um usuário remoto.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2101"/>
         <source>Information Message</source>
         <translation>Mensagem de informações</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2108"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2106"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>A sessão remota foi encerrada pelo usuário remoto.</translation>
     </message>
@@ -1753,8 +1748,28 @@ Date</source>
         <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
         <translation>A temperatura da retorta está alta demais. Aguarde o resfriamento da retorta antes de inserir novas amostras e iniciar o novo programa.</translation>
     </message>
+    <message utf8="true">
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
+        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
+        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
+        <source>Please confirm modifying Paraffin temperature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
         <source>Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent</source>
         <translation>Ao apertar o botão &quot;Sim&quot;, o supervisor está ciente do início do programa com reagente vencido.</translation>
     </message>

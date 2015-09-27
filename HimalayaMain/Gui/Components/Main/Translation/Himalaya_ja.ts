@@ -961,7 +961,9 @@
         <source>Cassettes
 since
 change</source>
-        <translation>変更からのカセット数</translation>
+        <translation>変更から
+のカセッ
+ト数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -969,7 +971,9 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>変更からのサイクル</translation>
+        <translation>変更から
+のサイク
+ル</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
@@ -1146,7 +1150,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1988"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
@@ -1211,79 +1215,74 @@ Date</source>
         <translation>日次ログファイルを取得中 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1138"/>
-        <source>Please turn off the switch on the back of the instrument to shutdown the instrument.</source>
-        <translation>装置背面のスイッチをオフにし、装置をシャットダウンしてください。</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1330"/>
         <source>Software Update</source>
         <translation>ソフトウェアの更新</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1334"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
         <source>Updating the software ...</source>
         <translation>ソフトウェアのアップデート中 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1992"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1997"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1995"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>新しいソフトウェアが利用できます。[リモートSW更新]をクリックして更新を開始してください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2003"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
         <source>New software is not available.</source>
         <translation>新しいソフトウェアは利用できません。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2009"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>RCServerからの新規ソフトウェアのダウンロードに失敗しました。サービス窓口へご連絡ください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2014"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>リモートサーバからの新規ソフトウェアのダウンロードが完了しました。 [OK]を押してソフトウェアの更新を開始してください。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2021"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2019"/>
         <source>Software update failed.</source>
         <translation>ソフトウェアの更新に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2050"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2048"/>
         <source>Now download the update package from the remote server. Please wait......</source>
         <translation>リモートサーバから更新パッケージをダウンロードしています。しばらくお待ちください...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
         <source>Confirmation Message</source>
         <translation>メッセージの確認</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2087"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2085"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>リモートユーザーによってリモートセッションが要求されています。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2101"/>
         <source>Information Message</source>
         <translation>情報メッセージ</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2108"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2106"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>リモートユーザーによってリモートセッションが終了されています。</translation>
     </message>
@@ -1391,7 +1390,8 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="469"/>
         <source>Station</source>
-        <translation>ステーション</translation>
+        <translation>ステーシ
+ョン</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
@@ -1403,7 +1403,9 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation>変更からのカセット数</translation>
+        <translation>変更から
+のカセッ
+ト数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1411,7 +1413,9 @@ change</source>
         <source>Cycles
 since
 change</source>
-        <translation>変更からのサイクル</translation>
+        <translation>変更から
+のサイク
+ル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>
@@ -1743,8 +1747,28 @@ Date</source>
         <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
         <translation>レトルト温度が高すぎます。レトルト温度が下がってから、試料を挿入して次のプログラムを開始してください。</translation>
     </message>
+    <message utf8="true">
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
+        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
+        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
+        <source>Please confirm modifying Paraffin temperature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
         <source>Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent</source>
         <translation>[はい]ボタンを押すと、使用期限切れの試薬でプログラムを開始することがスーパーバイザーに通知されます。</translation>
     </message>

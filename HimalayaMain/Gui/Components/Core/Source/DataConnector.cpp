@@ -1134,9 +1134,6 @@ void CDataConnector::RetranslateUI()
 
    m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
    m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting the daily run log file ...", 0, QApplication::UnicodeUTF8);
-
-   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back of the instrument to shutdown the instrument.", 0, QApplication::UnicodeUTF8);
-
 }
 
 
