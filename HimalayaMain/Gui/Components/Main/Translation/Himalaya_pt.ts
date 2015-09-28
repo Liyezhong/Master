@@ -1151,7 +1151,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1988"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1987"/>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
@@ -1216,74 +1216,74 @@ Date</source>
         <translation>Obtendo o arquivo de registro de operação diário...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1330"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1329"/>
         <source>Software Update</source>
         <translation>Atualização do software</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1331"/>
         <source>Updating the software ...</source>
         <translation>Atualizando o software...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2079"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2102"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1995"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Novo software disponível. Clique em &apos;Atualização SW remota&apos; para iniciar a atualização.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2000"/>
         <source>New software is not available.</source>
         <translation>Não há um novo software disponível.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2006"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Falha no download do novo software a partir do RCServer. Entre em contato com a assistência técnica.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2011"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>O download do novo software a partir do servidor remoto está concluído.  Pressione &quot;OK&quot; para iniciar a atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2019"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
         <source>Software update failed.</source>
         <translation>Falha na atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2048"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2047"/>
         <source>Now download the update package from the remote server. Please wait......</source>
         <translation>Faça o download do pacote de atualização do servidor remoto. Aguarde...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2077"/>
         <source>Confirmation Message</source>
         <translation>Mensagem de confirmação</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2085"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Uma sessão remota foi solicitada por um usuário remoto.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2101"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2100"/>
         <source>Information Message</source>
         <translation>Mensagem de informações</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2106"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>A sessão remota foi encerrada pelo usuário remoto.</translation>
     </message>

@@ -14,7 +14,8 @@ namespace Reagents {
  */
 /****************************************************************************/
 CReagentSubMenuWidget::CReagentSubMenuWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CReagentSubMenuWidget)
+    mp_Ui(new Ui::CReagentSubMenuWidget),
+    m_IsRetranslateUi(true)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr(""));
@@ -54,15 +55,22 @@ CReagentSubMenuWidget::~CReagentSubMenuWidget()
 /****************************************************************************/
 void CReagentSubMenuWidget::changeEvent(QEvent *p_Event)
 {
-    switch (p_Event->type()) {
+   QWidget::changeEvent(p_Event);
+   switch (p_Event->type()) {
         case QEvent::LanguageChange:
-            mp_Ui->retranslateUi(this);
+            if (this->isVisible()) {
+                mp_Ui->retranslateUi(this);
+                m_IsRetranslateUi = false;
+            }
+            else {
+                m_IsRetranslateUi = true;
+            }
             RetranslateUI();
             break;
         default:
             break;
     }
-    QWidget::changeEvent(p_Event);
+
 }
 
 /****************************************************************************/
@@ -74,6 +82,16 @@ void CReagentSubMenuWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentSubMenuWidget", "", 0, QApplication::UnicodeUTF8));
 }
+
+void CReagentSubMenuWidget::showEvent(QShowEvent *p_Event)
+{
+    Q_UNUSED(p_Event);
+    if (m_IsRetranslateUi) {
+        mp_Ui->retranslateUi(this);
+        m_IsRetranslateUi =false;
+    }
+}
+
 }
 
 

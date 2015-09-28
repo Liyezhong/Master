@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
-        <translation>瓶检查失败！请查看瓶检查状态列表中的详细信息。</translation>
+        <translation>试剂/石蜡液位检查失败！请查看试剂/石蜡液位检查状态列表中的详细信息。</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="40"/>
         <source>Bottle check</source>
-        <translation>瓶检查</translation>
+        <translation>试剂/石蜡液位检查</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1988"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1987"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
@@ -1213,74 +1213,74 @@ Date</source>
         <translation>正在获取日志文件...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1330"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1329"/>
         <source>Software Update</source>
         <translation>软件更新</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1332"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1331"/>
         <source>Updating the software ...</source>
         <translation>正在更新软件 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1990"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2080"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2103"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2079"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2102"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1995"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>新软件可用。单击“远程软件更新”开始更新。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2000"/>
         <source>New software is not available.</source>
         <translation>新软件不可用。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2006"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>无法从远程维护服务器下载新软件。请联系维修人员。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2012"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2011"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>已成功从远程服务器下载新软件。 按下“确定”开始软件更新。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2019"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
         <source>Software update failed.</source>
         <translation>软件更新失败。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2048"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2047"/>
         <source>Now download the update package from the remote server. Please wait......</source>
         <translation>现在从远程服务器下载更新包。请等待...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2078"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2077"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2082"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2085"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>远程用户已请求了远程会话。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2101"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2100"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2106"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>远程用户已结束了远程会话。</translation>
     </message>
@@ -2725,7 +2725,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="301"/>
         <source>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</source>
-        <translation>在开始瓶检查之前，请检查并确认脱水缸已空并很干净，然后按下“是”。瓶检查功能需要大约 7 分钟。</translation>
+        <translation>在开始试剂/石蜡液位检查之前，请检查并确认脱水缸已清洗并干燥，然后按下“是”。试剂/石蜡液位检查功能需要大约 7 分钟。</translation>
     </message>
 </context>
 <context>
@@ -3293,7 +3293,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/BottleCheckStatusDlg.ui" line="26"/>
         <source>Bottle check status:</source>
-        <translation>瓶检查状态</translation>
+        <translation>试剂/石蜡液位检查状态</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/BottleCheckStatusDlg.ui" line="55"/>
@@ -3353,7 +3353,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
         <source>Bottle check</source>
-        <translation>瓶检查</translation>
+        <translation>试剂/石蜡液位检查</translation>
     </message>
 </context>
 <context>
@@ -3833,7 +3833,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="145"/>
         <source>Bottle check</source>
-        <translation>瓶检查</translation>
+        <translation>试剂/石蜡液位检查</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="203"/>
