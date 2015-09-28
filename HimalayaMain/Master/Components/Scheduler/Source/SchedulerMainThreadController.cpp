@@ -1991,6 +1991,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
                 return  CTRL_CMD_ALARM_LOC_ON;
             case 2:
                 return  CTRL_CMD_ALARM_LOC_OFF;
+            case 1:
+                return  CTRL_CMD_ALARM_DEVICE_ON;
+            case 0:
+                return  CTRL_CMD_ALARM_DEVICE_OFF;
             case -1:
                 return  CTRL_CMD_ALARM_ALL_OFF;
             }
@@ -4758,6 +4762,12 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
         break;
     case CTRL_CMD_ALARM_LOC_OFF:
         opcode = 2;
+        break;
+    case CTRL_CMD_ALARM_DEVICE_ON:
+        opcode = 1;
+        break;
+    case CTRL_CMD_ALARM_DEVICE_OFF:
+        opcode = 0;
         break;
     case CTRL_CMD_ALARM_ALL_OFF:
         opcode = -1;
