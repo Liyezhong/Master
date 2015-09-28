@@ -441,11 +441,10 @@ private:
      *  \brief check the current temperature of heat sensor
      *  \param heatingSensor = struct HeatingSensor
      *  \param HWTemp is qreal of tmperature
-     *  \param isOven - flag to indicate if the sensor belongs to Oven
      *  \return form bool
      */
     /****************************************************************************/
-    inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp, bool isOven=false);
+    inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
 
     /****************************************************************************/
     /*!

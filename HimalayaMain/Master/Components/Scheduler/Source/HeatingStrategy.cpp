@@ -104,17 +104,17 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE;
     }
     //For Oven Top
-    if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop, true))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
     }
     //For Oven Bottom1
-    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1, true))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
     }
     //For Oven Bottom2
-    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2, true))
+    if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2))
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
     }
@@ -1006,16 +1006,8 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
     return  m_RTLevelSensor.OTCheckPassed;
 }
 
-bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp, bool isOven)
+bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
-    //First of all, if the sensor belongs to Oven(Oven top, two oven bottoms), we need check lowest temperature(40 degree).
-    if (isOven)
-    {
-        if (HWTemp < 40.0)
-        {
-            return false;
-        }
-    }
     if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;
@@ -1840,9 +1832,24 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
         }
         else
         {
+
             int userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
             if(timeElapse >= timeRange.second*1000)
             {
+                //If temperature of Oven sensors is below to 40 degree, out of range error will be raised
+                if (HWTemp < 40.0)
+                {
+                    switch(OvenType)
+                    {
+                    case OVEN_TOP_SENSOR:
+                        return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
+                    case OVEN_BOTTOM1_SENSOR:
+                        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+                    case OVEN_BOTTOM2_SENSOR:
+                        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
+                    }
+                }
+
                 if (HWTemp > userInputMeltingPoint+12)
                 {
                     switch(OvenType)
