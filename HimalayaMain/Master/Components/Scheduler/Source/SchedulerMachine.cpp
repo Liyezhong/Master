@@ -2352,8 +2352,8 @@ void CSchedulerStateMachine::OnEnterSelfTest()
 void CSchedulerStateMachine::OnEnterIdleState()
 {
     EventHandler::StateHandler::Instance().setIdleState();
-    EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     EventHandler::StateHandler::Instance().setAvailability(false, EVENT_SCHEDULER_IN_ERROR_STATE);
+    EventHandler::StateHandler::Instance().setActivityUpdate(false, 0);
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_IN_IDLE_STATE);
     mp_SchedulerThreadController->OnEnterIdleState();
     mp_SchedulerThreadController->StartTimer();

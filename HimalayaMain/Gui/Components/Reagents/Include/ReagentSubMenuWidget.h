@@ -26,23 +26,11 @@ class CReagentSubMenuWidget : public MainMenu::CPanelFrame
     friend class CTestReagents;
 
 private:
-    bool m_IsRetranslateUi;
     Ui::CReagentSubMenuWidget *mp_Ui;                     //!< User interface
     void RetranslateUI();
 
 protected:
-    void changeEvent(QEvent *p_Event);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function showEvent
-     *
-     *  \param p_Event = QShowEvent type parameter
-     *
-     *  \return from showEvent
-     */
-    /****************************************************************************/
-    void showEvent(QShowEvent *p_Event);
-
+void changeEvent(QEvent *p_Event);
 
 public:
     explicit CReagentSubMenuWidget(QWidget *p_Parent = 0);

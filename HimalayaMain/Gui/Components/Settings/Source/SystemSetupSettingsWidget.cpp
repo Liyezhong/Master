@@ -364,6 +364,7 @@ void CSystemSetupSettingsWidget::OnApply()
     {
         emit ParaffinMeltPointchanged(lastMeltPoint, temp, false);
     }
+    emit UnselectProgram();
 }
 
 void CSystemSetupSettingsWidget::OnBottleCheck()

@@ -3853,7 +3853,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
         <source>You changed the Paraffin melting temperature. If you confirm by &quot;Yes&quot; the Paraffin melting time will be at least %1 hours until another program may be started. Selecting &quot;No&quot; will allow the current Paraffin bath temperature to be accepted and you can immediately start a protocol run.</source>
-        <translation>您已更改了石蜡熔化温度。 如果使用&quot;是&quot;予以确认，石蜡熔化时间至少需要 %1 小时，才能运行含石蜡程序。 选择&quot;否&quot;将接受当前的石蜡缸温度，您可立即启动程序执行。</translation>
+        <translation>您已更改了石蜡熔化温度。 如果选择&quot;是&quot;予以确认，石蜡熔化时间至少需要 %1 小时，才能运行含石蜡程序。 选择&quot;否&quot;，您可立即启动程序执行。</translation>
     </message>
 </context>
 <context>
