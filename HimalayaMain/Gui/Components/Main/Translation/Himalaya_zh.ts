@@ -1360,12 +1360,12 @@ Date</source>
 <context>
     <name>Core::CReagentStationEditModel</name>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="225"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="233"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="227"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="235"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
@@ -1373,12 +1373,12 @@ Date</source>
 <context>
     <name>Core::CReagentStationModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="233"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
         <source>Station</source>
         <translation>站点</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="236"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
         <source>Reagent</source>
         <translation>试剂</translation>
     </message>
@@ -1695,7 +1695,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
         <source>Program &quot;%1&quot; is aborted!</source>
-        <translation>程序 &quot;%1&quot; 被中止！</translation>
+        <translation>程序 &quot;%1&quot; 被终止！</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
@@ -2100,10 +2100,10 @@ Date</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="168"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="176"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="191"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="193"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="169"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="177"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="192"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="194"/>
         <source>Error Messages</source>
         <translation>错误消息</translation>
     </message>
@@ -2391,8 +2391,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
-        <source>The Program name cannot contain &quot;Leica&quot;</source>
-        <translation>程序名称不得包含 &quot;Leica&quot;。</translation>
+        <source>The Program name cannot contain &quot;leica&quot;</source>
+        <translation>程序名称不得包含&quot;leica&quot;。</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
@@ -2687,7 +2687,7 @@ Date</source>
 <context>
     <name>Reagent Station::CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="231"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="221"/>
         <source>Stations</source>
         <translation>站点</translation>
     </message>
@@ -2890,7 +2890,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="38"/>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="221"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="229"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2900,17 +2900,17 @@ Date</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="222"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="230"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="223"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="231"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="224"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="232"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -3042,7 +3042,7 @@ Date</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="239"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="229"/>
         <source>Select Reagent</source>
         <translation>选择试剂</translation>
     </message>

@@ -1358,12 +1358,12 @@ Date</source>
 <context>
     <name>Core::CReagentStationEditModel</name>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="225"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="233"/>
         <source>Reagent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="227"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="235"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1371,12 +1371,12 @@ Date</source>
 <context>
     <name>Core::CReagentStationModel</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="233"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="236"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
         <source>Reagent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2096,10 +2096,10 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="168"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="176"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="191"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="193"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="169"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="177"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="192"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="194"/>
         <source>Error Messages</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2387,7 +2387,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
-        <source>The Program name cannot contain &quot;Leica&quot;</source>
+        <source>The Program name cannot contain &quot;leica&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2683,7 +2683,7 @@ Date</source>
 <context>
     <name>Reagent Station::CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="231"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="221"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2886,7 +2886,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="38"/>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="221"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="229"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2896,17 +2896,17 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="222"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="230"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="223"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="231"/>
         <source>Information Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="224"/>
+        <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="232"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3038,7 +3038,7 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="239"/>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="229"/>
         <source>Select Reagent</source>
         <translation type="unfinished"></translation>
     </message>

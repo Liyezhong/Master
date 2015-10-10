@@ -768,7 +768,7 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
             return;
         } else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
             mp_MessageDlg->SetText(QApplication::translate("Programs::CModifyProgramDlg",
-                                "The Program name cannot contain \"Leica\"", 0, QApplication::UnicodeUTF8));
+                                "The Program name cannot contain \"leica\"", 0, QApplication::UnicodeUTF8));
             (void) mp_MessageDlg->exec();
             return;
         }
