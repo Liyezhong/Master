@@ -106,16 +106,6 @@ void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSe
 /****************************************************************************/
 void CReagentStationWidget::OnEdit()
 {
-    if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
-    {
-        bool bRevertSelectedProgram = false;
-        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
-            return;
-
-        if (bRevertSelectedProgram)
-            emit UnselectProgram();
-    }
-
     m_MessageDlg.SetText(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDialogTitle(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetEditedDashboardStation(mp_DashStation);

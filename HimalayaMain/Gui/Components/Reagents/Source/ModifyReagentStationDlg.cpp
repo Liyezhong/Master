@@ -23,6 +23,7 @@
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ModifyReagentStatusDlg.h"
 #include <Dashboard/Include/CommonString.h>
+#include "Core/Include/GlobalHelper.h"
 
 namespace Reagents {
 /****************************************************************************/
@@ -173,6 +174,13 @@ void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 /************************************************************************/
 void CModifyReagentStationDlg::OnOk()
 {
+	bool bRevertSelectedProgram = false;
+    if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
+        return;
+
+    if (bRevertSelectedProgram)
+        emit UnselectProgram();
+		
     m_EditedStation.SetDashboardReagentStatus("Empty");
     accept();
     emit UpdateStationChangeReagent(m_EditedStation.GetDashboardStationID(),
