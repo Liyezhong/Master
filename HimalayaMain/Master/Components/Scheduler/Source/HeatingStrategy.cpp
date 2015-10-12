@@ -424,16 +424,27 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME, 0);
     }
-    // For Retort Top
-    if (false == this->CheckSensorHeatingOverTime(m_RTTop, strctHWMonitor.TempRTSide))
+    // For Retort Top and Retort Bottom
+    if (false == this->CheckSensorHeatingOverTime(m_RTTop, strctHWMonitor.TempRTSide) ||
+            false == this->CheckSensorHeatingOverTime(m_RTBottom, strctHWMonitor.TempRTBottom1))
     {
-        return DCL_ERR_DEV_RETORT_HEATING_OVERTIME;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_HEATING_OVERTIME);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_HEATING_OVERTIME, 0);
+            return DCL_ERR_DEV_RETORT_HEATING_OVERTIME;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_HEATING_OVERTIME,val);
+        }
     }
-    // For Retort Bottom
-    if (false == this->CheckSensorHeatingOverTime(m_RTBottom, strctHWMonitor.TempRTBottom1))
+    else
     {
-        return DCL_ERR_DEV_RETORT_HEATING_OVERTIME;
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_HEATING_OVERTIME,0);
     }
+
     //For Oven Top
     retCode = CheckOvenHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop, OVEN_TOP_SENSOR);
     if( DCL_ERR_FCT_CALL_SUCCESS != retCode)

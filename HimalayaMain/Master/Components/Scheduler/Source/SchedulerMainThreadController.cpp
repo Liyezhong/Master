@@ -192,6 +192,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_HEATING_OVERTIME, 0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
     m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
