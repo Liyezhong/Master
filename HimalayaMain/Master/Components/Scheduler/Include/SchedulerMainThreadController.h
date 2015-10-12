@@ -24,6 +24,7 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                  From Qt-Library
 #include <QQueue>
+#include <QMap>
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
 #include "Threads/Include/ThreadController.h"
@@ -388,6 +389,7 @@ typedef enum
         quint8  m_CheckTheHardwareStatus;                     ///< Check the hardware status
         bool    m_IsFirstProcessingForDelay;                  ///< is first enter processing for delay time
         QString m_ReagentExpiredFlag;                         ///< Reagent expired flag
+        QMap<DeviceControl::ReturnCode_t,quint8> m_RetCodeCounterList;      //!< Counter list for Error ReturnCode
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -1542,6 +1544,20 @@ protected:
          */
         /****************************************************************************/
         void OnEnterIdleState();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Get the value for the specific element
+         */
+        /****************************************************************************/
+        quint8 GetRetCodeCounter(DeviceControl::ReturnCode_t RetCode) const { return m_RetCodeCounterList[RetCode]; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Set value for the specific element
+         */
+        /****************************************************************************/
+        void SetRetCodeCounter(DeviceControl::ReturnCode_t RetCode, quint8 val) { m_RetCodeCounterList[RetCode] = val; }
 
     public slots:
 

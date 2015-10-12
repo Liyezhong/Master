@@ -86,59 +86,214 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     //For Level Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTLevelSensor, strctHWMonitor.TempALLevelSensor))
     {
-        return DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE,0);
+            return DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE,0);
     }
     //For Retort Bottom1 Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom1))
     {
-        return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE, 0);
+            return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE, val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE, 0);
     }
     //For Retort Bottom2 Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom2))
     {
-        return DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE,0);
+            return DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE,0);
     }
     //For Retort Top Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTTop, strctHWMonitor.TempRTSide))
     {
-        return DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE,0);
+            return DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE,val);
+        }
+
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE,0);
     }
     //For Oven Top
     if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+            return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
     }
     //For Oven Bottom1
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+            return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
     }
     //For Oven Bottom2
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+            return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
     }
     //For Rotary Valve Rod
     if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, strctHWMonitor.TempRV1))
     {
-        return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE,0);
+            return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE,0);
     }
     //For Rotary Valve outlet
     if (false == this->CheckSensorCurrentTemperature(m_RV_2_Outlet, strctHWMonitor.TempRV2))
     {
-        return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE,0);
+            return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE,0);
     }
 
     //For LA RV Tube
     if (false == this->CheckSensorCurrentTemperature(m_LARVTube, strctHWMonitor.TempALTube1))
     {
-        return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,0);
+            return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,0);
     }
 
     //For LA Wax Trap
     if (false == this->CheckSensorCurrentTemperature(m_LAWaxTrap, strctHWMonitor.TempALTube2))
     {
-        return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,0);
+            return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,0);
     }
 
     if (scenario != m_CurScenario)
@@ -226,7 +381,21 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         {
             if(!CheckRTBottomsDifference(strctHWMonitor.TempRTBottom1, strctHWMonitor.TempRTBottom2))
             {
-                return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+                quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED);
+                val++;
+                if (val>=3)
+                {
+                    mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED,0);
+                    return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+                }
+                else
+                {
+                    mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED,val);
+                }
+            }
+            else
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED,0);
             }
         }
     }
@@ -239,7 +408,21 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     // For Level Sensor
     if (false == this->CheckSensorHeatingOverTime(m_RTLevelSensor, strctHWMonitor.TempALLevelSensor))
     {
-        return DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
+        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME);
+        val++;
+        if (val>=3)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME, 0);
+            return DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME,val);
+        }
+    }
+    else
+    {
+        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME, 0);
     }
     // For Retort Top
     if (false == this->CheckSensorHeatingOverTime(m_RTTop, strctHWMonitor.TempRTSide))
@@ -274,7 +457,21 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
         {
-            return DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME;
+            quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME);
+            val++;
+            if (val>=3)
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME,0);
+                return DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME;
+            }
+            else
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME,val);
+            }
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME,0);
         }
      }
 
@@ -284,12 +481,40 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
         if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
         {
-            return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
+            quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET);
+            val++;
+            if (val>=3)
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET,0);
+                return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
+            }
+            else
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET,val);
+            }
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET,0);
         }
         //For LA RVTube
         if (false == this->CheckSensorHeatingOverTime(m_LARVTube, strctHWMonitor.TempALTube1))
         {
-            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP;
+            quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP);
+            val++;
+            if (val>=3)
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,0);
+                return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP;
+            }
+            else
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,val);
+            }
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,0);
         }
 #if 0
         //For LA WaxTrap
@@ -306,7 +531,21 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         if (strctHWMonitor.TempALTube1 < (userInputMeltingPoint -1) || qFuzzyCompare(strctHWMonitor.TempALTube1,299))
         {
-            return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
+            quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL);
+            val++;
+            if (val>=3)
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL,0);
+                return DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL;
+            }
+            else
+            {
+                mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL,val);
+            }
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL,0);
         }
 
         if (strctHWMonitor.TempALTube2 < (userInputMeltingPoint-1) || qFuzzyCompare(strctHWMonitor.TempALTube2,299))
@@ -314,8 +553,22 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             //Based on discussion on Auguest 13rd, 2015, we will report error only when temperature doesn't reach target AND heater status is off
             if (false == strctHWMonitor.LATube2HeatingStatus)
             {
-                return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
+                quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL);
+                val++;
+                if (val>=3)
+                {
+                    mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL,0);
+                    return DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL;
+                }
+                else
+                {
+                    mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL,val);
+                }
             }
+        }
+        else
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL,0);
         }
     }
 
@@ -1842,11 +2095,75 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                     switch(OvenType)
                     {
                     case OVEN_TOP_SENSOR:
-                        return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
+                    {
+                        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE);
+                        val++;
+                        if (val>=3)
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+                            return DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE;
+                        }
+                        else
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,val);
+                        }
+                    }
+                        break;
                     case OVEN_BOTTOM1_SENSOR:
-                        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+                    {
+                        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE);
+                        val++;
+                        if (val>=3)
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+                            return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE;
+                        }
+                        else
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,val);
+                        }
+                    }
+                        break;
                     case OVEN_BOTTOM2_SENSOR:
-                        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
+                    {
+                        quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE);
+                        val++;
+                        if (val>=3)
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+                            return DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE;
+                        }
+                        else
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,val);
+                        }
+                    }
+                        break;
+                    }
+                }
+                else
+                {
+                    switch(OvenType)
+                    {
+                    case OVEN_TOP_SENSOR:
+                        if (CheckSensorCurrentTemperature(m_OvenTop, HWTemp))
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+                        }
+                        break;
+
+                    case OVEN_BOTTOM1_SENSOR:
+                        if (CheckSensorCurrentTemperature(m_OvenBottom, HWTemp))
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+                        }
+                        break;
+                    case OVEN_BOTTOM2_SENSOR:
+                        if (CheckSensorCurrentTemperature(m_OvenBottom, HWTemp))
+                        {
+                            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+                        }
+                        break;
                     }
                 }
 
