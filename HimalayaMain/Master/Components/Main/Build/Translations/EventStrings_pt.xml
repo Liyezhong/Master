@@ -43,14 +43,14 @@
 		<string id="17629215" text1="Falha na exportação. Comando de compactação não encontrado no sistema." text2=""/>
 		<string id="17629214" text1="Falha na exportação. Não foi possível compactar os arquivos." text2=""/>
 		<string id="17629216" text1="Falha na exportação. A compactação está levando muito tempo para terminar." text2=""/>
-		<string id="16846862" text1="Usuário ciente ao pressionar o botão." text2=""/>
+		<string id="16846862" text1="Usuário ciente ao pressionar o botão:%1." text2=""/>
 		<string id="16846854" text1="Depuração" text2=""/>
 		<string id="16846851" text1="Erro" text2=""/>
 		<string id="16846850" text1="Erro fatal" text2=""/>
 		<string id="16846853" text1="Informação" text2=""/>
 		<string id="16846849" text1="Tipo indefinido" text2=""/>
 		<string id="16846852" text1="Aviso" text2=""/>
-		<string id="16846861" text1="Resolvido:" text2=""/>
+		<string id="16846861" text1="Resolvido." text2=""/>
 		<string id="16843278" text1="Login do usuário" text2=""/>
 		<string id="16843295" text1="Desligado" text2=""/>
 		<string id="16843294" text1="Ligado" text2=""/>
@@ -268,6 +268,7 @@
 		<string id="19267602" text1="O usuário adicionou o reagente %1, Cassetes até a troca %2, Ciclos até a troca %3, Dias até a troca %4, Grupo de reagentes %5." text2=""/>
 		<string id="19267603" text1="O usuário excluiu o reagente %1." text2=""/>
 		<string id="19267604" text1="O usuário atualizou o reagente %1, Cassetes até a troca %2, Ciclos até a troca %3, Dias até a troca %4, Grupo de reagentes %5." text2=""/>
+		<string id="16973842" text1="selecting timeout." text2=""/>
 		<string id="16843520" text1="Os arquivos de som para o alarme não foram encontrados." text2=""/>
 		<string id="19398660" text1="ConnectionManager: Falha na autenticação do cliente %1 pela versão." text2=""/>
 		<string id="19398659" text1="ConnectionManager: Cliente %1 com versão %2 conectado." text2=""/>
@@ -731,19 +732,19 @@
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
-	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
-    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
-    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
-    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
-    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
-    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
-    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
-    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
-    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
-    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
-    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
-    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
-    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
-    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>

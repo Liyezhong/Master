@@ -43,14 +43,14 @@
 		<string id="17629215" text1="Export failed. Zip command not found in the system." text2=""/>
 		<string id="17629214" text1="Export failed. Unable to zip the files." text2=""/>
 		<string id="17629216" text1="Export failed. Zip is taking long time to complete the request." text2=""/>
-		<string id="16846862" text1="User acknowledged by pressing button." text2=""/>
+		<string id="16846862" text1="User acknowledged by pressing button: %1" text2=""/>
 		<string id="16846854" text1="Debug" text2=""/>
 		<string id="16846851" text1="Error" text2=""/>
 		<string id="16846850" text1="Fatal Error" text2=""/>
 		<string id="16846853" text1="Info" text2=""/>
 		<string id="16846849" text1="Undefined Type" text2=""/>
 		<string id="16846852" text1="Warning" text2=""/>
-		<string id="16846861" text1="Resolved:" text2=""/>
+		<string id="16846861" text1="Resolved." text2=""/>
 		<string id="16843278" text1="User Login" text2=""/>
 		<string id="16843295" text1="Off" text2=""/>
 		<string id="16843294" text1="On" text2=""/>
@@ -211,7 +211,7 @@
 		<string id="67174928" text1="Bottle check successful." text2=""/>
 		<string id="67174929" text1="Pre-test successful." text2=""/>
 		<string id="67175168" text1="Detect an unfinished program %1 at step %2." text2=""/>
-		<string id="67175186" text1="The system file with unfinished program list is missing. Please check to determine whether the storage is damaged." text2=""/>
+		<string id="67175186" text1="The system file with unfinished program list is missing.Please check to determine whether the storage is damaged." text2=""/>
 		<string id="67175200" text1="Start program %1" text2=""/>
 		<string id="67175202" text1="Still need %1 to heat oven for melting paraffin." text2=""/>
 		<string id="67175203" text1="Aborting program…" text2=""/>
@@ -268,6 +268,7 @@
 		<string id="19267602" text1="User added the reagent: %1, Cassettes until change:%2, Cycles until change:%3, Days until change:%4, Reagent Group: %5." text2=""/>
 		<string id="19267603" text1="User deleted reagent %1." text2=""/>
 		<string id="19267604" text1="User updated the reagent: %1, Cassettes until change:%2, Cycles until change:%3, Days until change:%4, Reagent Group: %5." text2=""/>
+		<string id="16973842" text1="selecting timeout" text2=""/>
 		<string id="16843520" text1="Sound files for alarm are missing." text2=""/>
 		<string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
 		<string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
@@ -731,19 +732,19 @@
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
-	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
-    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
-    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
-    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
-    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
-    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
-    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
-    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
-    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
-    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
-    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
-    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
-    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
-    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>

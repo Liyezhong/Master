@@ -43,14 +43,14 @@
 		<string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
 		<string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
 		<string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-		<string id="16846862" text1="用户通过按下按钮进行确认。" text2=""/>
+		<string id="16846862" text1="用户通过按下按钮进行确认：%1。" text2=""/>
 		<string id="16846854" text1="调试" text2=""/>
 		<string id="16846851" text1="错误" text2=""/>
 		<string id="16846850" text1="严重出错" text2=""/>
 		<string id="16846853" text1="信息" text2=""/>
 		<string id="16846849" text1="未定义类型" text2=""/>
 		<string id="16846852" text1="警告" text2=""/>
-		<string id="16846861" text1="已解决：" text2=""/>
+		<string id="16846861" text1="已解决。" text2=""/>
 		<string id="16843278" text1="用户登录" text2=""/>
 		<string id="16843295" text1="关" text2=""/>
 		<string id="16843294" text1="开" text2=""/>
@@ -102,7 +102,7 @@
 		<string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中" text2=""/>
 		<string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
 		<string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-		<string id="33818114" text1="程序%1的步骤%2和步骤%3试剂不兼容。" text2=""/>
+		<string id="33818114" text1="程序XXX的步骤x和步骤x+1试剂不兼容。" text2=""/>
 		<string id="33817861" text1="声音类型参数超出范围。" text2=""/>
 		<string id="33817860" text1="音量参数超出范围。" text2=""/>
 		<string id="33817859" text1="声音周期参数超出范围。" text2=""/>
@@ -268,6 +268,7 @@
 		<string id="19267602" text1="用户添加了试剂： %1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
 		<string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
 		<string id="19267604" text1="用户更新了试剂： %1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
+		<string id="16973842" text1="selecting timeout" text2=""/>
 		<string id="16843520" text1="警报的声音文件丢失。" text2=""/>
 		<string id="19398660" text1="连接管理器：客户端 %1 版本认证失败。" text2=""/>
 		<string id="19398659" text1="连接管理器：版本 %2 的客户端 %1 已连接。" text2=""/>
@@ -731,19 +732,19 @@
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
-	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
-    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
-    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
-    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
-    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
-    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
-    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
-    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
-    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
-    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
-    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
-    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
-    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
-    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>

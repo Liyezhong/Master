@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-	<language name="ja">
+	<language name="jp">
 		<string id="17039372" text1="シナリオ%2で装置にエラー%1が発生し、 復旧動作%3が施行されました。動作結果は%4です。" text2=""/>
 		<string id="16973834" text1="何らかの理由でイベントロギングが無効にされています。お近くのサービス窓口へご連絡ください。" text2=""/>
 		<string id="17235997" text1="詳細情報についてはユーザーログをチェックしてください。" text2=""/>
@@ -43,14 +43,14 @@
 		<string id="17629215" text1="エクスポートに失敗しました。システム内にZipコマンドが見つかりません。" text2=""/>
 		<string id="17629214" text1="エクスポートに失敗しました。ファイルを圧縮できません。" text2=""/>
 		<string id="17629216" text1="エクスポートに失敗しました。圧縮に時間がかかりすぎ、要求を完了できません。" text2=""/>
-		<string id="16846862" text1="ボタンを押すとユーザーに通知されます。" text2=""/>
+		<string id="16846862" text1="ボタンを押すとユーザーに通知されます %1。" text2=""/>
 		<string id="16846854" text1="デバッグ" text2=""/>
 		<string id="16846851" text1="エラー" text2=""/>
 		<string id="16846850" text1="致命的なエラー" text2=""/>
 		<string id="16846853" text1="参考" text2=""/>
 		<string id="16846849" text1="未定義のタイプ" text2=""/>
 		<string id="16846852" text1="警告" text2=""/>
-		<string id="16846861" text1="解決：" text2=""/>
+		<string id="16846861" text1="解決。" text2=""/>
 		<string id="16843278" text1="ユーザーログイン" text2=""/>
 		<string id="16843295" text1="オフ" text2=""/>
 		<string id="16843294" text1="オン" text2=""/>
@@ -269,6 +269,7 @@
 		<string id="19267603" text1="ユーザーが試薬%1を削除しました。" text2=""/>
 		<string id="19267604" text1="ユーザーが試薬%1を更新しました，変更までのカセット数：%2，変更までのサイクル数：%3，変更までの日数：%4，試薬グループ：%5." text2=""/>
 		<string id="16843520" text1="アラーム用の音声ファイルが見つかりません。" text2=""/>
+		<string id="16973842" text1="selecting timeout。" text2=""/>
 		<string id="19398660" text1="ConnectionManager：クライアント%1のバージョン認証に失敗しました。" text2=""/>
 		<string id="19398659" text1="ConnectionManager：バージョン%2のクライアント%1に接続しました。" text2=""/>
 		<string id="19398657" text1="ConnectionManager：クライアント%1。メッセージが完了していません。" text2=""/>
@@ -731,19 +732,19 @@
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
-	<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
-    <string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
-    <string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
-    <string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
-    <string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
-    <string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
-    <string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
-    <string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
-    <string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
-    <string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
-    <string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
-    <string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
-    <string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
-    <string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>
