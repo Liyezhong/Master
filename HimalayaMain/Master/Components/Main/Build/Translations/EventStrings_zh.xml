@@ -212,7 +212,8 @@
 		<string id="67174929" text1="预检成功。" text2=""/>
 		<string id="67175168" text1="检测到程序 %1在步骤 %2未完成 。" text2=""/>
 		<string id="67175186" text1="包含未完成程序列表的系统文件丢失。请检查，确定存储设备是否已损坏。" text2=""/>
-		<string id="67175200" text1="启动程序 %1" text2=""/>
+		<string id="67175200" text1="启动程序 %1。" text2=""/>
+        <string id="67175225" text1="启动程序 %1。 管理员按下&quot;是&quot;按钮确认，使用过期试剂 %2, %3 开始程序。" text2=""/>
 		<string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
 		<string id="67175203" text1="正在终止程序。" text2=""/>
 		<string id="67175204" text1="程序已终止。" text2=""/>

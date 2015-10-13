@@ -843,14 +843,42 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             if(mp_DataManager && mp_DataManager->GetProgramList() && mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID))
             {
                 const DataManager::CProgram* program = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID);
+                quint32 EVENT_CODE_START_PROGRAM = EVENT_SCHEDULER_START_PROGRAM;
+                Global::tTranslatableStringList  translatableStringList;
+                QStringList paramStringList;
+                if (!m_ReagentExpiredFlag.isEmpty())
+                {
+                    int index = m_ReagentExpiredFlag.indexOf(':');
+                    QString reagentID = m_ReagentExpiredFlag.left(index);
+                    QString stationID = m_ReagentExpiredFlag.mid(index + 1);
+                    CReagent* reagent = mp_DataManager->GetReagentList()->GetReagent(reagentID);
+                    EVENT_CODE_START_PROGRAM = EVENT_SCHEDULER_START_PROGRAM_WITH_EXPIRED_REAGENT;
+                    if(program->IsLeicaProgram()) {
+                        translatableStringList << Global::TranslatableString(program->GetNameID().toUInt())
+                                               << Global::TranslatableString(reagent->GetReagentNameID().toUInt())
+                                               << stationID;
+                    }
+                    else {
+                        paramStringList << program->GetName() << reagent->GetReagentName() << stationID;
+                    }
+                }
+                else {
+                    if(program->IsLeicaProgram()) {
+                        translatableStringList << Global::TranslatableString(program->GetNameID().toUInt());
+                    }
+                    else {
+                        paramStringList << program->GetName();
+                    }
+                }
+
+
                 if(program->IsLeicaProgram())
                 {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_SCHEDULER_START_PROGRAM,Global::tTranslatableStringList()
-                                                               <<Global::TranslatableString(program->GetNameID().toUInt()) << m_ReagentExpiredFlag);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_CODE_START_PROGRAM, translatableStringList);
                 }
                 else
                 {
-                    RaiseEvent(EVENT_SCHEDULER_START_PROGRAM, QStringList() << program->GetName() << "" + m_ReagentExpiredFlag);
+                    RaiseEvent(EVENT_CODE_START_PROGRAM, paramStringList);
                 }
             }
 

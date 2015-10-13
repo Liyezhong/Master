@@ -955,7 +955,7 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
 
         if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
         {
-            reagentExpiredFlag = " " + m_strReagentExpiredLog + ": " + p_Reagent->GetReagentName()+ "," + stationID + ".";
+            reagentExpiredFlag = p_Reagent->GetReagentID() + ":" + stationID;
             break;
         }
     }
@@ -1333,8 +1333,6 @@ void CDashboardWidget::RetranslateUI()
     QString strTemp4 = QApplication::translate("Dashboard::CDashboardWidget", "Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
 
     m_strDiffTemp = strTemp1 + strTemp2 + strTemp3 + strTemp4;
-
-    m_strReagentExpiredLog  = QApplication::translate("Dashboard::CDashboardWidget", "Supervisor acknowledged by pressing button \"Yes\" to start the Program with Expired Reagent", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)

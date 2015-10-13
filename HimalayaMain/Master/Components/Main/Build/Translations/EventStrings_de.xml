@@ -213,6 +213,7 @@
 		<string id="67175168" text1="Nicht abgeschlossenes Programm %1 bei Schritt %2 erkannt." text2=""/>
 		<string id="67175186" text1="Systemdatei mit Liste der nicht abgeschlossenen Programme fehlt. Bitte prüfen, ob Speicher beschädigt ist." text2=""/>
 		<string id="67175200" text1="Programm %1 starten" text2=""/>
+        <string id="67175225" text1="Programm %1 starten. Von Supervisor bestätigt durch Drücken von &quot;Ja&quot; zum Starten des Programms mit abgelaufenem Reagenz:%2, %3." text2=""/> 
 		<string id="67175202" text1="Noch %1 zum Aufheizen des Ofens zum Paraffinschmelzen erforderlich." text2=""/>
 		<string id="67175203" text1="Programm wird abgebrochen…" text2=""/>
 		<string id="67175204" text1="Programm abgebrochen." text2=""/>
