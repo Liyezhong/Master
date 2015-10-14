@@ -177,7 +177,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     }
     else
     {
-        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+        if (strctHWMonitor.TempOvenTop >= 40)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+        }
     }
     //For Oven Bottom1
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
@@ -196,7 +199,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     }
     else
     {
-        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+        if (strctHWMonitor.TempOvenBottom1 >=40)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+        }
     }
     //For Oven Bottom2
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom2))
@@ -215,7 +221,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     }
     else
     {
-        mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+        if (strctHWMonitor.TempOvenBottom2 >=40)
+        {
+            mp_SchedulerController->SetRetCodeCounter(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+        }
     }
     //For Rotary Valve Rod
     if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, strctHWMonitor.TempRV1))
@@ -2168,7 +2177,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (false == this->CheckSensorCurrentTemperature(m_OvenTop, HWTemp))
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_HIGH, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(0,false);
+                                //m_OvenSensorsCheck.set(0,false);
                             }
                         }
                             break;
@@ -2183,7 +2192,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (false == CheckSensorCurrentTemperature(m_OvenBottom, HWTemp))
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_HIGH, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(1,false);
+                               // m_OvenSensorsCheck.set(1,false);
                             }
                         }
                             break;
@@ -2198,7 +2207,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (false == CheckSensorCurrentTemperature(m_OvenBottom,HWTemp))
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_HIGH, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(2,false);
+                                //m_OvenSensorsCheck.set(2,false);
                             }
 
                         }
@@ -2222,7 +2231,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (HWTemp<40)
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_LOW, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(3,false);
+                                //m_OvenSensorsCheck.set(3,false);
                             }
                         }
                             break;
@@ -2237,7 +2246,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (HWTemp<40)
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_LOW, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(4,false);
+                                //m_OvenSensorsCheck.set(4,false);
                             }
                         }
                             break;
@@ -2252,7 +2261,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::CheckOvenHeatingOverTime(OvenSensor
                             if (HWTemp<40)
                             {
                                 mp_SchedulerController->RaiseError(0, DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_LOW, m_CurScenario,true, false);
-                                m_OvenSensorsCheck.set(5,false);
+                                //m_OvenSensorsCheck.set(5,false);
                             }
                         }
                             break;
