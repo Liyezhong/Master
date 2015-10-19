@@ -157,7 +157,7 @@ int CHeatingTestWithWater::Run(void)
     bool HeatingRet = HeatingDlg.StartHeating(false);
     if (!HeatingDlg.result()) {
         (void)dev->RetortStopHeating();
-        return RETURN_OK;
+        return RETURN_ABORT;
     }
     if (!HeatingRet) {
         text = tr("Retort Level Sensor Heating Test failed.<br/>"
