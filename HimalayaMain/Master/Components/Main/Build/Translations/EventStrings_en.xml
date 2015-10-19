@@ -734,11 +734,11 @@
 	<string id="67176224" text1="Power failure on cleaning program, the program has been auto-restart." text2=""/>
 	<string id="67176225" text1="Error ID %1! Rotary valve abnormal, Please call service!" text2=""/>
 	<string id="67176226" text1="Error ID %1! The instrument has met some technical issues and can not finalize the protocol." text2=""/>
-	<string id="67176227" text1="Temperature of Oven Top sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176227" text1="Temperature of Oven Top sensor has exceeded melting point plus 12 degrees" text2=""/>
 	<string id="67176228" text1="Temperature of Oven Top sensor is less than melting point minus 4 degrees." text2=""/>
-	<string id="67176229" text1="Temperature of Oven Down1 sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176229" text1="Temperature of Oven Down1 sensor has exceeded melting point plus 12 degrees" text2=""/>
 	<string id="67176230" text1="Temperature of Oven Down1 sensor is less than melting point minus 4 degrees." text2=""/>
-	<string id="67176231" text1="Temperature of Oven Down2 sensor has exceed melting point plus 12 degrees" text2=""/>
+	<string id="67176231" text1="Temperature of Oven Down2 sensor has exceeded melting point plus 12 degrees" text2=""/>
 	<string id="67176232" text1="Temperature of Oven Down2 sensor is less than melting point minus 4 degrees." text2=""/>
 	<string id="19202061" text1="User reset the Station %1." text2=""/>
 	<string id="19202062" text1="User change the reagent of Station %1 to %2." text2=""/>
