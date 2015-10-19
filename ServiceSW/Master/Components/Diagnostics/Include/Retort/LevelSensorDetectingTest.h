@@ -112,10 +112,10 @@ private:
     /*!
      *  \brief To heating level sensor and show status on GUI.
      *  \iparam TempFlag = flag for Xylene;
-     *  \return true or false
+     *  \return OK, FAIL or ABORT
      */
     /****************************************************************************/
-    bool LevelSensorHeating(bool TempFlag);
+    int LevelSensorHeating(bool TempFlag);
 
 private:
     CDiagnosticMessageDlg*  mp_MessageDlg;      //!< The pointer of message dialog.

@@ -76,8 +76,9 @@ int CLevelSensorDetectingTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    if (!LevelSensorHeating(true)) {
-        return RETURN_ERR_FAIL;
+    int HeatingRetValue = LevelSensorHeating(true);
+    if (HeatingRetValue != RETURN_OK) {
+        return HeatingRetValue;
     }
 
     Text = QString("Filling retort from the bottle %1").arg(BottleNumber);
@@ -94,8 +95,9 @@ int CLevelSensorDetectingTest::Run(void)
         return RETURN_ERR_FAIL;
     }
 
-    if (!LevelSensorHeating(false)) {
-        return RETURN_ERR_FAIL;
+    HeatingRetValue = LevelSensorHeating(false);
+    if (HeatingRetValue != RETURN_OK) {
+        return HeatingRetValue;
     }
 
     Text = QString("Filling retort from the bottle 13 cleaning alcohol.");
@@ -199,23 +201,26 @@ bool CLevelSensorDetectingTest::TestDraining(int RetCode, int Positon)
     }
 }
 
-bool CLevelSensorDetectingTest::LevelSensorHeating(bool TempFlag)
+int CLevelSensorDetectingTest::LevelSensorHeating(bool TempFlag)
 {
     CLevelSensorHeatingDialog* p_HeatingDlg = new CLevelSensorHeatingDialog(mp_Parent);
     p_HeatingDlg->SetTitle(m_MessageTitle);
 
     bool HeatingRet = p_HeatingDlg->StartHeating(TempFlag);
+    int RetValue = RETURN_OK;
 
     if (p_HeatingDlg->result() == 0) {
         HeatingRet = false;
+        RetValue = RETURN_ABORT;
     }
     else if (!HeatingRet) {
         ShowFinishDlg(1);
+        RetValue = RETURN_ERR_FAIL;
     }
 
     delete p_HeatingDlg;
 
-    return HeatingRet;
+    return RetValue;
 }
 
 int CLevelSensorDetectingTest::ShowConfirmDlg(int StepNum)
