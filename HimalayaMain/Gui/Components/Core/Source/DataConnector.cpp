@@ -1355,7 +1355,13 @@ void CDataConnector::ExecutionStateHandler(Global::tRefType Ref, const NetComman
 /****************************************************************************/
 void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands::CmdLanguageFile &Command)
 {
-    mp_LanguageFile = new QFile(QString("languagefile%1.qm").arg(m_LanguageChangeCount));
+    QString fileName(QString("languagefile%1.qm").arg(m_LanguageChangeCount));
+    if (QFile::exists(fileName))
+    {
+        QFile::remove(fileName);
+    }
+
+    mp_LanguageFile = new QFile(fileName);
     if (!mp_LanguageFile->isOpen()) {
         (void)mp_LanguageFile->open(QIODevice::ReadWrite);
     }
@@ -1378,16 +1384,12 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     }
     qApp->installTranslator(&m_Translator);
     m_LanguageChangeCount++;
-    if (m_LanguageChangeCount != 1) {
-        if (mp_OldFile) {
-            (void)mp_OldFile->remove();
-            delete mp_OldFile;
-            mp_OldFile = mp_LanguageFile;
-        }
+
+    if (mp_OldFile) {
+        (void)mp_OldFile->remove();
+        delete mp_OldFile;
     }
-    else {
-        mp_OldFile = mp_LanguageFile;
-    }
+    mp_OldFile = mp_LanguageFile;
 
     emit LanguageChanged(Global::LanguageToString(Command.GetCurrentLanuage()));
     Global::UITranslator::TranslatorInstance().SetDefaultLanguage(Command.GetCurrentLanuage());
