@@ -169,7 +169,8 @@ void CDataManagementWidget::ResetButtons()
 
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (!m_ProcessRunning) {
+    bool IsError = Core::CGlobalHelper::GetSystemErrorStatus();
+    if (!m_ProcessRunning || IsError) {
         mp_Ui->saveusbButton->setEnabled(true);
          mp_Ui->serviceExportButton->setEnabled(true);
     }
