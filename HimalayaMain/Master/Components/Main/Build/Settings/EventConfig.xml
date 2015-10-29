@@ -518,19 +518,19 @@
 			<Step ID="1" Type="ACT" Action="RS_OvenWarning"/>
 		</Event>
 		<Event Code="" ErrorID="513020082" ErrorType="WARNING" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175996" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176229" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176227" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_OvenWarning"/>
 		</Event>
 		<Event Code="" ErrorID="513020182" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175996" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176230" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176228" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_OvenWarning"/>
 		</Event>
 		<Event Code="" ErrorID="513020083" ErrorType="WARNING" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175997" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176231" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176227" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_OvenWarning"/>
 		</Event>
 		<Event Code="" ErrorID="513020183" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67175997" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176232" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176228" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_OvenWarning"/>
 		</Event>
 		<Event Code="" ErrorID="513030031" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE"  ServiceString="67175998" EventSource="SCHEDULER">

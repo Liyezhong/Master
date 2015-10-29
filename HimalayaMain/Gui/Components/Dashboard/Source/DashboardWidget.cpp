@@ -127,8 +127,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, CancelTissueProtectPassedPrompt(),
                       this, CancelTissueProtectPassedPrompt());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, TissueProtectPassed(),
-                      this, OnTissueProtectPassed());
+    CONNECTSIGNALSLOT(mp_DataConnector, TissueProtectPassed(bool),
+                      this, OnTissueProtectPassed(bool));
 
     CONNECTSIGNALSLOT(mp_DataConnector, OvenCoverOpen(),
                       this, OnOvenCoverOpen());
@@ -333,13 +333,20 @@ void CDashboardWidget::CancelTissueProtectPassedPrompt()
         mp_TissueProtectPassedMsgDlg->reject();
 }
 
-void CDashboardWidget::OnTissueProtectPassed()
+void CDashboardWidget::OnTissueProtectPassed(bool flag)
 {
     mp_TissueProtectPassedMsgDlg = new MainMenu::CMessageDlg(this);
-    mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Information);
+    if (flag)
+    {
+        mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Information);
+        mp_TissueProtectPassedMsgDlg->SetText(m_strTissueProtectPassed);
+    }
+    else
+    {
+        mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Warning);
+        mp_TissueProtectPassedMsgDlg->SetText(m_strTissueProtectPassed_Warning);
+    }
     mp_TissueProtectPassedMsgDlg->SetTitle(CommonString::strConfirmMsg);
-    QString strTemp(m_strTissueProtectPassed);
-    mp_TissueProtectPassedMsgDlg->SetText(strTemp);
     mp_TissueProtectPassedMsgDlg->SetButtonText(1, CommonString::strOK);
     mp_TissueProtectPassedMsgDlg->HideButtons();
 
@@ -1311,6 +1318,7 @@ void CDashboardWidget::RetranslateUI()
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramWillComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed successfully. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened, please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strWaitingForFillingCompleted = QApplication::translate("Dashboard::CDashboardWidget", "Please wait for filling to be completed.", 0, QApplication::UnicodeUTF8);

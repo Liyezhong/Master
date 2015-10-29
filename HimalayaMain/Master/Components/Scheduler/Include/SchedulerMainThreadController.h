@@ -1706,9 +1706,10 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send out Tisue Protect done message to GUI
+         *  \param  flag = To indicate if safe reagent is fully passed or passed with warning
          */
         /****************************************************************************/
-        void SendTissueProtectMsg();
+        void SendTissueProtectMsg(bool flag);
 
         /****************************************************************************/
         /*!

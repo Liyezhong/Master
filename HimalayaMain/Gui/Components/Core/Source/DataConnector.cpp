@@ -1836,7 +1836,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         break;
         case DataManager::TISSUE_PROTECT_PASSED:
         {
-            emit TissueProtectPassed();
+            emit TissueProtectPassed(true);
+        }
+        case DataManager::TISSUE_PROTECT_PASSED_WARNING:
+        {
+            emit TissueProtectPassed(false);
         }
         break;
 		case DataManager::OVEN_COVER_OPEN:

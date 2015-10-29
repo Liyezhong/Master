@@ -164,7 +164,7 @@ private:
     quint8 m_DrainSafeReagent;                              //!< Sequnece of drain safe reagent
     quint8 m_ProcessingSafeReagent;                         //!< Sequnece of processing safe reagent
     qint64 m_StartWaitTime;                                 //!< start up time for wait
-    bool   m_IsFillingSuccessful;                           //!< flag to indicate if Filling is successful or not
+    bool   m_IsSafeReagentSuccessful;                       //!< flag to indicate if safe reagent is successful or not
     StateList_t m_CurrentStep;                              //!< current step
 
 private:

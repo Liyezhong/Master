@@ -2344,9 +2344,17 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
     return true;
 }
 
-void SchedulerMainThreadController::SendTissueProtectMsg()
+void SchedulerMainThreadController::SendTissueProtectMsg(bool flag)
 {
-    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = NULL;
+    if (flag)
+    {
+        CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    }
+    else
+    {
+        CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED_WARNING);
+    }
     Q_ASSERT(CmdTissueProtectDone);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
@@ -5198,6 +5206,22 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
             EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(ErrorID);
             break;
+        case 513020081:
+        case 513020082:
+        case 513020083:
+        {
+            qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            EventStringParList<<QString("%1").arg(userInputMeltingPoint+12);
+            break;
+        }
+        case 513020181:
+        case 513020182:
+        case 513020183:
+        {
+            qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            EventStringParList<<QString("%1").arg(userInputMeltingPoint-4);
+            break;
+        }
         default:
             EventStringParList << QString("%1").arg(ErrorID);
             break;
