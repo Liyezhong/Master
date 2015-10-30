@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-	<language name="jp">
+	<language name="ja">
 		<string id="17039372" text1="シナリオ%2で装置にエラー%1が発生し、 復旧動作%3が施行されました。動作結果は%4です。" text2=""/>
 		<string id="16973834" text1="何らかの理由でイベントロギングが無効にされています。お近くのサービス窓口へご連絡ください。" text2=""/>
 		<string id="17235997" text1="詳細情報についてはユーザーログをチェックしてください。" text2=""/>
