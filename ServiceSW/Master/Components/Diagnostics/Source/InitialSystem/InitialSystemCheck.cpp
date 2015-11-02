@@ -30,6 +30,7 @@
 #include "Diagnostics/Include/InitialSystem/RetortPreTest.h"
 #include "Diagnostics/Include/InitialSystem/RVPreTest.h"
 #include "Diagnostics/Include/SelectMeltingPointDialog.h"
+#include "Diagnostics/Include/InitialSystem/PressureSensorAutoCalibrate.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include <QDebug>
@@ -92,6 +93,13 @@ int CInitialSystemCheck::Run(void)
     if (Ret != RETURN_OK) {
         return Ret;
     }
+    ServiceDeviceProcess::Instance()->Pause(1000);
+
+    CPressureSensorAutoCalibrate *PressureSensorCalibrate = new CPressureSensorAutoCalibrate(mp_Parent);
+    Ret = PressureSensorCalibrate->Run();
+    emit RefreshStatusToGUI(Service::INITIAL_PRESSURE_SENSOR, Ret);
+    delete PressureSensorCalibrate;
+
     ServiceDeviceProcess::Instance()->Pause(1000);
 
     ConfirmParaffinBath();

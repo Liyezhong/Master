@@ -196,11 +196,14 @@ void CInitialSystem::OnRefreshStatus(Service::InitialSystemTestType Type, int Re
         mp_Ui->voltageCheckLabel->setPixmap(SetPixmap);
 
         if (Ret == RETURN_OK) {
-            mp_Ui->preTestLabel->setText(tr("Pre-test..."));
+            mp_Ui->preTestLabel->setText(tr("Pressure sensor calibration..."));
         }
         else {
             mp_Ui->mainDisplayBtn->setEnabled(true);
         }
+        break;
+    case Service ::INITIAL_PRESSURE_SENSOR:
+        mp_Ui->preCheckLable->setPixmap(SetPixmap);
         break;
     case Service::INITIAL_OVEN:
         mp_Ui->ovenCheckLabel->setPixmap(SetPixmap);

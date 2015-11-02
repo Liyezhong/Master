@@ -134,17 +134,17 @@ void CACVoltageTest::ShowFailMessage(int Error)
                 "if mains input voltage is within [198-253V AC] or [90-132V AC]." \
                 "Alternatively check resistance of Retort bottom heater, cable and function of ASB5." \
                 "Resolve the issue accordingly and restart service software.<br>" \
-                "Unless this error is resolved, all test functions using AC " \
+                "Until this error is resolved, all test functions using AC " \
                 "heating are disabled. The instrument must not be used " \
-                "by the user unless this error is resolved";
+                "by the user until this error is resolved";
     }
     else if (Error == 2) {
         Text = "AC Voltage Selection Selftest Failed.<br>" \
                 "Please check if mains input voltage is within [198-253V AC] or [90-132V AC]. " \
                 "Alternatively check resistance of Rotary Valve heater, cable and function of ASB3." \
                 "Resolve the issue accordingly and restart service software.<br>" \
-                "Unless this error is resolved, all test functions using AC heating are " \
-                "disabled. The instrument must not be used by the user unless this error " \
+                "Until this error is resolved, all test functions using AC heating are " \
+                "disabled. The instrument must not be used by the user until this error " \
                 "is resolved.";
     }
 

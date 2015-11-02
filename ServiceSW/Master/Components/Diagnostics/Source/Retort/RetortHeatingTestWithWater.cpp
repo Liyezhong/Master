@@ -180,7 +180,7 @@ int CHeatingTestWithWater::Run(void)
 
         text = tr("Retort Heating Test (with Water) failed.<br/>"
                   "Level sensor did not detect any liquid within 2mins. "
-                  "Clean level sensor, perform Retort_Level Sensor Dection test.");
+                  "Clean level sensor, perform Retort_Level Sensor Detection test.");
         dlg->ShowMessage(title, text, RETURN_ERR_FAIL);
         return RETURN_ERR_FAIL;
     }

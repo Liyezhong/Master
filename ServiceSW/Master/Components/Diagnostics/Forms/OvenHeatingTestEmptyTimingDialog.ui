@@ -164,7 +164,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Current Temeprature (Bottom 1)(°C):</string>
+     <string>Current Temperature (Bottom 1)(°C):</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelCurTempBottom1">

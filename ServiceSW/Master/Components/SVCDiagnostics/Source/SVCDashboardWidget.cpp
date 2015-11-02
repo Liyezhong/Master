@@ -225,7 +225,7 @@ void CSVCDashboardWidget::InitLabel()
     mp_RotaryValveTemp2->setPos(133, 196);
     mp_RotaryValveCurrent->setPos(133, 209);
     mp_RotaryValveTargetTemp->setPos(133, 222);
-    mp_RotaryValvePosition->setText("Position: Unknow");
+    mp_RotaryValvePosition->setText("Position: Unknown");
     mp_RotaryValveTemp1->setText("Temp1: 0\260C");
     mp_RotaryValveTemp2->setText("Temp1: 0\260C");
     mp_RotaryValveCurrent->setText("Current: 0A");
@@ -682,6 +682,15 @@ void CSVCDashboardWidget::OnSelectPosition()
             return;
         }
 
+        Text = "Please verify status of the retort. "\
+                "If there is any reagent or paraffin in the retort, "\
+                "abort and change to the \"Diagnostic_Retort_Reagent Drain\" function "
+                "to drain the liquid back to the original position. Thereafter flush the retort if necessary.";
+        Ret = mp_MsgDlg->ShowConfirmMessage("Warning!", Text, Diagnostics::CDiagnosticMessageDlg::OK_ABORT);
+        if (Ret == (int)Diagnostics::CDiagnosticMessageDlg::ABORT) {
+            return;
+        }
+
         Text = "Rotary valve is initializing...";
         mp_MsgDlg->ShowWaitingDialog(Title, Text);
         Ret = Diagnostics::ServiceDeviceProcess::Instance()->RVInitialize();
@@ -967,7 +976,7 @@ bool CSVCDashboardWidget::CheckRVTemperature()
 QString CSVCDashboardWidget::PostionToStr(bool TubeFlag, qreal Position)
 {   
     if (Position == 0) {
-        return QString("Unknow");
+        return QString("Unknown");
     }
 
     QString PositionStr;

@@ -174,16 +174,16 @@ void CMainsRelayTest::ShowFailMessage(int Error)
         Text = "Mains Relay Selftest Failed.<br>Please exchange " \
                 "Mains relay and repeat the test. If still not successful," \
                 "replace ASB15. <br>" \
-                "Unless this error is resolved, all test functions using AC " \
+                "Until this error is resolved, all test functions using AC " \
                 "heating are disabled. The instrument must not be used " \
-                "by the user unless this error is resolved";
+                "by the user until this error is resolved";
     }
     else if (Error == 2) {
         Text = "Mains Relay Selftest Failed.<br>" \
                 "Please exchange Mains relay and " \
                 "repeat the test. If no success, exchange ASB3 and ASB5.<br>" \
-                "Unless this error is resolved, all test functions using AC heating are " \
-                "disabled. The instrument must not be used by the user unless this error " \
+                "Until this error is resolved, all test functions using AC heating are " \
+                "disabled. The instrument must not be used by the user until this error " \
                 "is resolved.";
     }
 

@@ -227,7 +227,7 @@ void CFillingNDrainingTest::ShowFinishDlg(int RetNum)
     else if (RetNum == 5) {
         Text = "System Filling & Draining Test failed.<br>"\
                 "Level sensor did not detect any liquid within 2mins. "\
-                "Clean level sensor, perform Retort_Level Sensor Dection test.";
+                "Clean level sensor, perform Retort_Level Sensor Detection test.";
     }
 
     mp_MessageDlg->ShowMessage(FILLINGNDRAINING_TITLE, Text, Ret);

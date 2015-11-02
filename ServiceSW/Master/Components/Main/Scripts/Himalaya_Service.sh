@@ -29,6 +29,7 @@ if [ ! -f $PRIV_KEY ] || [ $IS_SAME -ne 0 ] ; then
 fi
 
 echo $1
+export LANG=en_US.UTF-8
 ./himalaya_service $1 -qws
 
 while true

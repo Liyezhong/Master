@@ -262,7 +262,7 @@ void CLevelSensorDetectingTest::ShowFinishDlg(int RetNum)
         break;
     case 2:
         Text = " Retort Level Sensor Detection Test failed.<br> "
-                "Clean level sensor, repeat this test. If still failed, exchange the level senor.";
+                "Clean level sensor, repeat this test. If still failed, exchange the level sensor.";
         break;
     case 3:
         Text = " Retort Level Sensor Detection Test failed.<br> "

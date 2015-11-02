@@ -238,6 +238,7 @@ enum InitialSystemTestType{
     INITIAL_ROTARY_VALVE,       ///< rotary valve
     INITIAL_MAINS_RELAY,        ///< mains relay
     INITIAL_AC_VOLTAGE,         ///< AC voltage
+    INITIAL_PRESSURE_SENSOR,     ///< Pressure Sensor
     INITIAL_LIQUID_TUBE         ///< Liquid tube
 };
 

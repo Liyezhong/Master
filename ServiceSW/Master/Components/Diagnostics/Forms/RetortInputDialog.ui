@@ -67,7 +67,7 @@ measured by calibrated external thermometer</string>
     </rect>
    </property>
    <property name="text">
-    <string>Pease retype the same temperature value
+    <string>Please retype the same temperature value
 for verification</string>
    </property>
   </widget>
