@@ -520,6 +520,7 @@ void CSVCDashboardWidget::Valve1Selected()
 {
     qDebug()<<"Valve1 selected.";
 
+#if 0
     quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
@@ -551,6 +552,31 @@ void CSVCDashboardWidget::Valve1Selected()
         }
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+#endif
+    quint32 EventId(0);
+    CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
+    if (Status == CGraphicsItemPart::Working) {
+        SetValveStatus(1, 0);
+        SetValveStatus(0, 1);
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -40);
+
+        mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
+        mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
+
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
+        SetValveStatus(0, 0);
+
+        mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+        mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+    }
 
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve1");
 }
@@ -558,7 +584,7 @@ void CSVCDashboardWidget::Valve1Selected()
 void CSVCDashboardWidget::Valve2Selected()
 {
     qDebug()<<"Valve1 selected.";
-
+#if 0
     quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
@@ -588,6 +614,29 @@ void CSVCDashboardWidget::Valve2Selected()
             mp_GV2->SetStatus(CGraphicsItemPart::Working);
             return;
         }
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+    }
+#endif
+    quint32 EventId(0);
+    CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
+    if (Status == CGraphicsItemPart::Working) {
+        SetValveStatus(0, 0);
+        SetValveStatus(1, 1);
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);
+        mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
+        mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
+
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
+        SetValveStatus(1, 0);
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+        mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+        mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
 
@@ -626,7 +675,7 @@ bool CSVCDashboardWidget::SetValveStatus(quint8 ValveIndex, quint8 Status)
 void CSVCDashboardWidget::PumpSelected()
 {
     qDebug()<<"Pump selected.";
-
+#if 0
     quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
@@ -660,7 +709,30 @@ void CSVCDashboardWidget::PumpSelected()
         }
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
     }
+#endif
+    quint32 EventId(0);
 
+    CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
+
+    if (Status == CGraphicsItemPart::Working) {
+        SetValveStatus(0, 0);
+        SetValveStatus(1, 0);
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
+        mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+    }
+    else if (Status == CGraphicsItemPart::Normal){
+        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
+
+        mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+        Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
+
+        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+    }
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Pump");
 }
 
