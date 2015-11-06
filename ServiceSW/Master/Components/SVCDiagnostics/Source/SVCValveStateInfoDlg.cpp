@@ -35,22 +35,22 @@ CSVCValveStateInfoDlg::CSVCValveStateInfoDlg(QWidget* p_Parent):
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
-    mp_TableWidget->resize(310, 240);
+    mp_TableWidget->resize(320, 240);
 
     mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->setModel(&m_Model);
 
-    m_Model.setHorizontalHeaderLabels(QStringList()<<tr("")<<tr("Pressure")<<tr("Vacuum")<<tr("Ambient"));
+    m_Model.setHorizontalHeaderLabels(QStringList()<<tr("")<<tr("Pressure")<<tr("Vacuum")<<tr("Relief Valve"));
 
-    AddItem("Pump", "On", "On", "Off");
-    AddItem("Valve1", "Off", "On", "Off");
-    AddItem("Valve2", "On", "Off", "Off");
+    AddItem("Pump", "-", "-", "On");
+    AddItem("Valve1", "-", "On", "-");
+    AddItem("Valve2", "On", "-", "-");
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 70);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 70);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 80);
 
 //    mp_TableWidget->verticalHeader()->resizeSection(0,150);
 //    mp_TableWidget->verticalHeader()->resizeSection(1,150);

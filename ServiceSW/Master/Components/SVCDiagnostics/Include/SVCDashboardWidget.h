@@ -273,6 +273,15 @@ private:
 
     /****************************************************************************/
     /*!
+     *  \brief To check if the current pressure is in the range (-2kPa ~ +2kPa)
+     *  \return true or false
+     */
+    /****************************************************************************/
+
+    bool CheckIfPressureInRange();
+
+    /****************************************************************************/
+    /*!
      *  \brief Create all part
      *  \iparam PartResName = the name of the part
      *  \iparam Pos = the pos of the part

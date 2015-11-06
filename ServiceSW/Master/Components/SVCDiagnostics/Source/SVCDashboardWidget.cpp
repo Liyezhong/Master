@@ -520,45 +520,29 @@ void CSVCDashboardWidget::Valve1Selected()
 {
     qDebug()<<"Valve1 selected.";
 
-#if 0
     quint32 EventId(0);
-
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
-
     if (Status == CGraphicsItemPart::Working) {
-        if ((mp_GV2->Status() == CGraphicsItemPart::Working)) {
-            if (SetValveStatus(1, 0)) {
-                mp_GV2->SetStatus(CGraphicsItemPart::Normal);
-                Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
-            }
-            else {
-                ShowFailedDlg("Valve1", "Valve2 close failed");
-                return;
-            }
-        }
-
-        if (!SetValveStatus(0, 1)) {
-            ShowFailedDlg("Valve1", "Valve1 open failed");
+        if (CheckIfPressureInRange() == false){
             mp_GV1->SetStatus(CGraphicsItemPart::Normal);
             return;
         }
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
-    }
-    else if (Status == CGraphicsItemPart::Normal){
-        if (!SetValveStatus(0, 0)) {
-            ShowFailedDlg("Valve1", "Valve1 close failed");
-            mp_GV1->SetStatus(CGraphicsItemPart::Working);
+
+        if(!SetValveStatus(1, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 2");
+            mp_GV1->SetStatus(CGraphicsItemPart::Normal);
             return;
         }
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
-    }
-#endif
-    quint32 EventId(0);
-    CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
-    if (Status == CGraphicsItemPart::Working) {
-        SetValveStatus(1, 0);
-        SetValveStatus(0, 1);
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -40);
+        if (!SetValveStatus(0, 1)) {
+            ShowFailedDlg("Error", "Failedd to open valve 1");
+            mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+            return;
+        }
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -40) == -1) {
+            ShowFailedDlg("Error", "Failed to set target vacuum -40kPa");
+            mp_GV1->SetStatus(CGraphicsItemPart::Normal);
+            return;
+        }
 
         mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
         mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
@@ -567,8 +551,14 @@ void CSVCDashboardWidget::Valve1Selected()
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
-        SetValveStatus(0, 0);
+        if(Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1) {
+            ShowFailedDlg("Error", "Failed to stop pump");
+        }
+        if (!SetValveStatus(0, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 1");
+            mp_GV1->SetStatus(CGraphicsItemPart::Working);
+            return;
+        }
 
         mp_GV2->SetStatus(CGraphicsItemPart::Normal);
         mp_Pump->SetStatus(CGraphicsItemPart::Normal);
@@ -584,45 +574,30 @@ void CSVCDashboardWidget::Valve1Selected()
 void CSVCDashboardWidget::Valve2Selected()
 {
     qDebug()<<"Valve1 selected.";
-#if 0
+
     quint32 EventId(0);
-
     CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
-
     if (Status == CGraphicsItemPart::Working) {
-        if (mp_GV1->Status() == CGraphicsItemPart::Working) {
-            if (SetValveStatus(0, 0)) {
-                mp_GV1->SetStatus(CGraphicsItemPart::Normal);
-                Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
-            }
-            else {
-                ShowFailedDlg("Valve2", "Valve1 close failed");
-                return;
-            }
-        }
-
-        if (!SetValveStatus(1, 1)) {
-            ShowFailedDlg("Valve2", "Valve2 open failed");
+        if (CheckIfPressureInRange() == false){
             mp_GV2->SetStatus(CGraphicsItemPart::Normal);
             return;
         }
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
-    }
-    else if (Status == CGraphicsItemPart::Normal){
-        if (!SetValveStatus(1, 0)) {
-            ShowFailedDlg("Valve2", "Valve2 close failed");
-            mp_GV2->SetStatus(CGraphicsItemPart::Working);
+
+        if (!SetValveStatus(0, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 1");
+            mp_GV2->SetStatus(CGraphicsItemPart::Normal);
+            return ;
+        }
+        if (!SetValveStatus(1, 1)) {
+            ShowFailedDlg("Error", "Failed to open valve 2");
+            mp_GV2->SetStatus(CGraphicsItemPart::Normal);
             return;
         }
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
-    }
-#endif
-    quint32 EventId(0);
-    CGraphicsItemPart::PartStatus Status = mp_GV2->Status();
-    if (Status == CGraphicsItemPart::Working) {
-        SetValveStatus(0, 0);
-        SetValveStatus(1, 1);
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);
+
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40) == -1) {
+            ShowFailedDlg("Error", "Failed to set target pressure");
+            return ;
+        }
         mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
         mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
 
@@ -631,8 +606,15 @@ void CSVCDashboardWidget::Valve2Selected()
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
-        SetValveStatus(1, 0);
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1)
+        {
+            ShowFailedDlg("Error", "Failed to stop pump");
+        }
+        if (!SetValveStatus(1, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 2");
+            mp_GV2->SetStatus(CGraphicsItemPart::Working);
+            return;
+        }
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
         mp_GV1->SetStatus(CGraphicsItemPart::Normal);
         mp_Pump->SetStatus(CGraphicsItemPart::Normal);
@@ -672,52 +654,71 @@ bool CSVCDashboardWidget::SetValveStatus(quint8 ValveIndex, quint8 Status)
     return true;
 }
 
+bool CSVCDashboardWidget::CheckIfPressureInRange()
+{
+    float Pressure(0.0);
+    int Ret(0);
+    Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpGetPressure(&Pressure);
+    if (Ret == -1) {
+        ShowFailedDlg("Error", "Can't get pressure value.");
+        return false;
+    }
+
+    if (qAbs(Pressure) <= 2.0) {
+        return true;
+    }
+
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
+    QString Title = "Warning!";
+    QString Message = QString().sprintf("The current pressure of %.2f kPa is not in the range of (-2kPa~+2kPa)."
+                              "Please retry after 5 seconds. If you see this message again, "
+                              "please calibrate the pressure sensor manually.", Pressure);
+    dlg->SetTitle(Title);
+    dlg->SetText(Message);
+    dlg->SetIcon(QMessageBox::Warning);
+
+    dlg->HideButtons();
+    dlg->SetButtonText(1, "OK");
+
+    dlg->setModal(true);
+
+    (void)dlg->exec();
+    delete dlg;
+
+    return false;
+}
+
 void CSVCDashboardWidget::PumpSelected()
 {
     qDebug()<<"Pump selected.";
-#if 0
+
+
     quint32 EventId(0);
 
     CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
 
     if (Status == CGraphicsItemPart::Working) {
-        int Ret = (int)Diagnostics::RETURN_OK;
-        if (mp_GV2->Status() == CGraphicsItemPart::Working) {//valve 2 is Open
-            qDebug()<<"To create pressure";
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
-        }
-        else if (mp_GV1->Status() == CGraphicsItemPart::Working) { //valve 1 is open
-            qDebug()<<"To create vaccum";
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(9, -40);//vaccum
-        }
-        else {
-            Ret = Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
-        }
-
-        if (Ret != (int)Diagnostics::RETURN_OK) {
-            ShowFailedDlg("Pump", "Pump open failed.");
+        if (CheckIfPressureInRange() == false){
             mp_Pump->SetStatus(CGraphicsItemPart::Normal);
             return;
-        }      
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
-    }
-    else if (Status == CGraphicsItemPart::Normal){
-        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() != (int)Diagnostics::RETURN_OK) {
-            ShowFailedDlg("Pump", "Pump close failed.");
-            mp_Pump->SetStatus(CGraphicsItemPart::Working);
+        }
+
+        if (!SetValveStatus(0, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 1.");
+            mp_Pump->SetStatus(CGraphicsItemPart::Normal);
             return;
         }
-        EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
-    }
-#endif
-    quint32 EventId(0);
+        if (!SetValveStatus(1, 0)) {
+            ShowFailedDlg("Error", "Failed to close valve 2.");
+            mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+            return;
+        }
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40) == -1) {
+            ShowFailedDlg("Error", "Failed to set target pressure.");
+            mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+            return ;
+        }
 
-    CGraphicsItemPart::PartStatus Status = mp_Pump->Status();
-
-    if (Status == CGraphicsItemPart::Working) {
-        SetValveStatus(0, 0);
-        SetValveStatus(1, 0);
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpSetPressure(1, 40);//pressure
         mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
@@ -725,7 +726,11 @@ void CSVCDashboardWidget::PumpSelected()
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
     }
     else if (Status == CGraphicsItemPart::Normal){
-        Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor();
+        if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1){
+            mp_Pump->SetStatus(CGraphicsItemPart::Working);
+            ShowFailedDlg("Error", "Failed to stop pump");
+            return ;
+        }
 
         mp_GV1->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2->SetStatus(CGraphicsItemPart::Normal);
