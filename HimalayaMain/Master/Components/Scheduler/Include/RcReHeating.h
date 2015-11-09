@@ -28,7 +28,7 @@
 namespace Scheduler{
 
 #define RV_SENSOR2_TEMP (40)                    //!< RV sensor2 temperature
-#define WAIT_RV_SENSOR2_TEMP (1800)             //!< Wait RV Sensor2 time
+#define WAIT_RV_SENSOR2_TEMP (3000)             //!< Wait RV Sensor2 time
 #define WAIT_PARAFFIN_TEMP_TIME (900)           //!< Wait paraffin timeout
 
 class SchedulerMainThreadController;
