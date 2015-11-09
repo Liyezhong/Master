@@ -45,7 +45,8 @@ CSVCDashboardWidget::CSVCDashboardWidget(QWidget *p_Parent) :
     m_RetortTargetTempValue(-1),
     m_RVTargetTempValue(-1),
     m_LiquidTubeTempValue(-1),
-    m_AirTubeTempValue(-1)
+    m_AirTubeTempValue(-1),
+    m_PumpTestStatus(0)
 {
     mp_Ui->setupUi(this);
     mp_Ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
@@ -518,8 +519,8 @@ void CSVCDashboardWidget::FanSelected()
 
 void CSVCDashboardWidget::Valve1Selected()
 {
-    qDebug()<<"Valve1 selected.";
 
+    qDebug()<<"Valve1 selected.";
     quint32 EventId(0);
     CGraphicsItemPart::PartStatus Status = mp_GV1->Status();
     if (Status == CGraphicsItemPart::Working) {
@@ -549,6 +550,7 @@ void CSVCDashboardWidget::Valve1Selected()
 
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+        m_PumpTestStatus = 1;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if(Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1) {
@@ -566,6 +568,7 @@ void CSVCDashboardWidget::Valve1Selected()
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
 
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+        m_PumpTestStatus = 0;
     }
 
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve1");
@@ -604,6 +607,7 @@ void CSVCDashboardWidget::Valve2Selected()
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
 
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+        m_PumpTestStatus = 2;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1)
@@ -620,6 +624,7 @@ void CSVCDashboardWidget::Valve2Selected()
         mp_Pump->SetStatus(CGraphicsItemPart::Normal);
 
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+        m_PumpTestStatus = 0;
     }
 
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Valve2");
@@ -724,6 +729,7 @@ void CSVCDashboardWidget::PumpSelected()
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
 
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_ACTIVATE;
+        m_PumpTestStatus = 3;
     }
     else if (Status == CGraphicsItemPart::Normal){
         if (Diagnostics::ServiceDeviceProcess::Instance()->PumpStopCompressor() == -1){
@@ -737,6 +743,7 @@ void CSVCDashboardWidget::PumpSelected()
         Diagnostics::ServiceDeviceProcess::Instance()->Pause(500);
 
         EventId = EVENT_GUI_SVCDIAGNOSTICS_PART_DEACTIVATE;
+        m_PumpTestStatus = 0;
     }
     Global::EventObject::Instance().RaiseEvent(EventId, Global::tTranslatableStringList()<<"Pump");
 }
@@ -974,30 +981,49 @@ void CSVCDashboardWidget::UpdatePartStatus()
 
     mp_Fan->SetStatus(p_DevProc->PumpGetFan() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
 
-    quint8 Value;
-    p_DevProc->PumpGetValve(0, Value);
-    if (Value == 1) {
-        mp_GV1->SetStatus(CGraphicsItemPart::Working);
-        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
-    } else if (Value == 0) {
+    if (m_PumpTestStatus == 0) {
         mp_GV1->SetStatus(CGraphicsItemPart::Normal);
         mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
-    }
 
-    p_DevProc->PumpGetValve(1, Value);
-    if (Value == 1) {
-        mp_GV2->SetStatus(CGraphicsItemPart::Working);
-        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
-        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
-    } else if (Value == 0) {
         mp_GV2->SetStatus(CGraphicsItemPart::Normal);
         mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
         mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
-    }
 
-    mp_Pump->SetStatus(p_DevProc->PumpGetStatus() ? CGraphicsItemPart::Working : CGraphicsItemPart::Normal);
+        mp_Pump->SetStatus(CGraphicsItemPart::Normal);
+    }
+    else if (m_PumpTestStatus == 1) {
+        mp_GV1->SetStatus(CGraphicsItemPart::Working);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Disabled);
+
+        mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+
+        mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
+    } else if (m_PumpTestStatus == 1) {
+        mp_GV2->SetStatus(CGraphicsItemPart::Working);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Normal);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Disabled);
+
+        mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+
+        mp_Pump->SetStatus(CGraphicsItemPart::Disabled);
+    }
+    else if (m_PumpTestStatus == 3) {
+        mp_Pump->SetStatus(CGraphicsItemPart::Working);
+
+        mp_GV1->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV1StateRight->SetStatus(CGraphicsItemPart::Normal);
+
+        mp_GV2->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateLeft->SetStatus(CGraphicsItemPart::Disabled);
+        mp_GV2StateRight->SetStatus(CGraphicsItemPart::Normal);
+    }
 }
 
 void CSVCDashboardWidget::UpdateOvenLabel(qreal OvenTemp1, qreal OvenTemp2, qreal OvenTemp3, quint16 Current)

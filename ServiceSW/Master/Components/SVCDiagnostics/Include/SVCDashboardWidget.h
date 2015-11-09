@@ -369,6 +369,7 @@ private:
     int m_RVTargetTempValue;
     int m_LiquidTubeTempValue;
     int m_AirTubeTempValue;
+    int m_PumpTestStatus;                   //!< L&A pressure test status.
 };
 
 }//end of namespace
