@@ -4890,13 +4890,13 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
             val++;
             if (Scenario >=200 && Scenario <= 297)
             {
-                // Notify retort lid is opened
-                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-                Q_ASSERT(CmdRetortCoverOpen);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
                 if (val>=3)
                 {
+                    // Notify retort lid is opened
+                    MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                    Q_ASSERT(CmdRetortCoverOpen);
+                    Global::tRefType fRef = GetNewCommandRef();
+                    SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
                     m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = 0;
                     SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
                 }
