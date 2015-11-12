@@ -142,9 +142,22 @@ bool CRsTSensorErr3MinRetry::CheckTSensorCurrentStatus()
         ret = false;
     }
 
+    qreal temp3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenBottom2;
+    if ( false == mp_SchedulerThreadController->GetHeatingStrategy()->CheckSensorTempOverRange("OvenBottom", temp3) )
+    {
+        ret = false;
+    }
+
     if ( false == mp_SchedulerThreadController->CheckSlaveTempModulesCurrentRange(3) )
     {
         ret = false;
+    }
+
+    // New requirement - check lower limt of the three Oven sensors (40 degrees)
+
+    if (temp1<40.0 || temp2<40.0 || temp3<40.0)
+    {
+        return false;
     }
     return ret;
 }

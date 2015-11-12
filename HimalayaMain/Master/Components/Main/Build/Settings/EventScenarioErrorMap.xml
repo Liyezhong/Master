@@ -86,9 +86,12 @@
        <event id="500020021"    name="EVENT_WaxBath_TSensorUp_OutofRange"/>
        <event id="500020031"    name="EVENT_WaxBath_TSensorDown1_OutofRange"/>
        <event id="500020041"    name="EVENT_WaxBath_TSensorDown2_OutofRange"/>
-       <event id="500020081"    name="EVENT_WaxBath_SensorUp_Heating_OutofTargetRange"/>
-       <event id="500020082"    name="EVENT_WaxBath_SensorDown1_Heating_OutofTargetRange"/>
-       <event id="500020083"    name="EVENT_WaxBath_SensorDown2_Heating_OutofTargetRange"/>
+       <event id="500020081"    name="EVENT_WaxBath_SensorUp_Heating_OutofTargetRange_high"/>
+       <event id="500020181"    name="EVENT_WaxBath_SensorUp_Heating_OutofTargetRange_low"/>
+       <event id="500020082"    name="EVENT_WaxBath_SensorDown1_Heating_OutofTargetRange_high"/>
+       <event id="500020182"    name="EVENT_WaxBath_SensorDown1_Heating_OutofTargetRange_low"/>
+       <event id="500020083"    name="EVENT_WaxBath_SensorDown2_Heating_OutofTargetRange_high"/>
+       <event id="500020183"    name="EVENT_WaxBath_SensorDown2_Heating_OutofTargetRange_low"/>
        <event id="500020090"    name="EVENT_WaxBath_OvenCover_Status_Open"/>
   </group>
  <group name="Rotary Valve">
@@ -841,15 +844,29 @@
     <event eventid="500020081">
         <error errorid="513020081">
             <scenario type="single" id="200"/>
-	    <scenario type="range" startid="211" endid="217"/>
+            <scenario type="range" startid="211" endid="217"/>
             <scenario type="range" startid="221" endid="227"/>
             <scenario type="range" startid="231" endid="237"/>
             <scenario type="range" startid="241" endid="247"/>
             <scenario type="range" startid="251" endid="257"/>
             <scenario type="single" id="260"/>
             <scenario type="range" startid="271" endid="277"/>
+            <scenario type="single" id="003"/>
+            <scenario type="single" id="004"/>
+            <scenario type="single" id="203"/>
+            <scenario type="range" startid="281" endid="297"/>
         </error>
+    </event>
+    <event eventid="500020181">
         <error errorid="513020181">
+            <scenario type="single" id="200"/>
+            <scenario type="range" startid="211" endid="217"/>
+            <scenario type="range" startid="221" endid="227"/>
+            <scenario type="range" startid="231" endid="237"/>
+            <scenario type="range" startid="241" endid="247"/>
+            <scenario type="range" startid="251" endid="257"/>
+            <scenario type="single" id="260"/>
+            <scenario type="range" startid="271" endid="277"/>
             <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
@@ -866,8 +883,23 @@
             <scenario type="range" startid="251" endid="257"/>
             <scenario type="single" id="260"/>
             <scenario type="range" startid="271" endid="277"/>
+            <scenario type="single" id="003"/>
+            <scenario type="single" id="004"/>
+            <scenario type="single" id="203"/>
+            <scenario type="range" startid="281" endid="297"/>
         </error>
+    </event>
+    <event eventid="500020182">
         <error errorid="513020182">
+            <scenario type="single" id="200"/>
+            <scenario type="range" startid="211" endid="217"/>
+            <scenario type="range" startid="221" endid="227"/>
+            <scenario type="range" startid="231" endid="237"/>
+            <scenario type="range" startid="241" endid="247"/>
+            <scenario type="range" startid="251" endid="257"/>
+            <scenario type="single" id="260"/>
+            <scenario type="range" startid="271" endid="277"/>
+            <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
             <scenario type="range" startid="281" endid="297"/>
@@ -883,8 +915,22 @@
             <scenario type="range" startid="251" endid="257"/>
             <scenario type="single" id="260"/>
             <scenario type="range" startid="271" endid="277"/>
+            <scenario type="single" id="003"/>
+            <scenario type="single" id="004"/>
+            <scenario type="single" id="203"/>
+            <scenario type="range" startid="281" endid="297"/>
         </error>
+    </event>
+    <event eventid="500020183">
         <error errorid="513020183">
+            <scenario type="single" id="200"/>
+            <scenario type="range" startid="211" endid="217"/>
+            <scenario type="range" startid="221" endid="227"/>
+            <scenario type="range" startid="231" endid="237"/>
+            <scenario type="range" startid="241" endid="247"/>
+            <scenario type="range" startid="251" endid="257"/>
+            <scenario type="single" id="260"/>
+            <scenario type="range" startid="271" endid="277"/>
             <scenario type="single" id="003"/>
             <scenario type="single" id="004"/>
             <scenario type="single" id="203"/>
@@ -939,7 +985,6 @@
             <scenario type="single" id="277"/>
         </error>
         <error errorid="513030012">
-            <scenario type="single" id="003"/>
             <scenario type="single" id="283"/>
             <scenario type="single" id="285"/>
             <scenario type="single" id="287"/>
@@ -1249,6 +1294,8 @@
             <scenario type="single" id="232"/>
             <scenario type="single" id="242"/>
             <scenario type="single" id="252"/>
+        </error>
+        <error errorid="513040123">
             <scenario type="single" id="272"/>
         </error>
         <error errorid="513040124">

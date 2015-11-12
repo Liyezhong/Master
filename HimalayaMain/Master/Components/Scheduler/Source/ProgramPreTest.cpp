@@ -168,21 +168,38 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
             reportError2 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
             reportError3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
             reportError4 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
-            if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= 3*1000)
+            if (reportError1.instanceID==0 && reportError2.instanceID==0 && reportError3.instanceID==0 && reportError3.instanceID==0)
             {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                mp_SchedulerThreadController->SetRetCodeCounter(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE,0);
             }
-            if (reportError2.instanceID != 0 && (now-reportError2.errorTime) <= 3*1000)
+            else
             {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-            }
-            if (reportError3.instanceID != 0 && (now-reportError3.errorTime) <= 3*1000)
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-            }
-            if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= 3*1000)
-            {
-                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                quint8 val = mp_SchedulerThreadController->GetRetCodeCounter(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                val++;
+                if (val>=3)
+                {
+                    mp_SchedulerThreadController->SetRetCodeCounter(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE,0);
+                    if (reportError1.instanceID != 0 && (now-reportError1.errorTime) <= 3*1000)
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                    }
+                    if (reportError2.instanceID != 0 && (now-reportError2.errorTime) <= 3*1000)
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                    }
+                    if (reportError3.instanceID != 0 && (now-reportError3.errorTime) <= 3*1000)
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                    }
+                    if (reportError4.instanceID != 0 && (now-reportError4.errorTime) <= 3*1000)
+                    {
+                        mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                    }
+                }
+                else
+                {
+                    mp_SchedulerThreadController->SetRetCodeCounter(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE,val);
+                }
             }
         }
     case RT_TEMCTRL_OFF:
@@ -275,7 +292,7 @@ void CProgramPreTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCod
                 m_PressureCalibrationCounter = 0;
                 m_CurrentState = RV_POSITION_CHECKING;
             }
-            else if (qAbs(currentPressure) <= 2.0) //offset the calibration
+            else if (qAbs(currentPressure) <= 3.0) //offset the calibration
             {
                 m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);

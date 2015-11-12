@@ -102,6 +102,7 @@ private:
     QSharedPointer<QState> mp_RcVacuum;                                                 ///<  Error State's sub state: for RC_Vacuum;
     QSharedPointer<QState> mp_RcFilling;                                                ///<  Error State's sub state: for RC_Filling;
     QSharedPointer<QState> mp_RcDraining;                                               ///<  Error State's sub state: for RC_Draining;
+    QSharedPointer<QState> mp_RcForceDraining;                                          ///<  Error State's sub state: for RC_ForceDraining;
     QSharedPointer<QState> mp_RsDrainAtOnce;                                            ///<  Error State's sub state: for RS_DrainAtOnce
     QSharedPointer<QState> mp_RcBottleCheckI;                                           ///<  Error State's sub state: for RC_BottleCheck_I
     QSharedPointer<QState> mp_ErrorRsFillingAfterFlushState;                            ///<  Error State's sub state: for RS_FillingAfterFlush
@@ -644,12 +645,20 @@ public:
      */
     /****************************************************************************/
     void EnterRcFilling();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRcDraining
      */
     /****************************************************************************/
     void EnterRcDraining();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifyRcForceDraining
+     */
+    /****************************************************************************/
+    void EnterRcForceDraining();
 
     /****************************************************************************/
     /*!
@@ -880,6 +889,17 @@ public:
      */
     /****************************************************************************/
     void HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcForceDrainingWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     */
+    /****************************************************************************/
+    void HandleForceDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
 
     /****************************************************************************/
     /*!
@@ -1888,6 +1908,13 @@ signals:
      */
     /****************************************************************************/
     void SigRcDraining();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRcForceDraining
+     */
+    /****************************************************************************/
+    void SigRcForceDraining();
 
     /****************************************************************************/
     /*!

@@ -24,6 +24,7 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
@@ -174,10 +175,45 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CountTheLogSenserData = 0;
     m_CheckTheHardwareStatus = 0;
     m_IsFirstProcessingForDelay = true;
+    m_ReportExhaustFanWarning = true;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
     memset(&m_CleaningDry, 0, sizeof(m_CleaningDry));
+
+    //Initialize the Return Code counter list
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE, 0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RETORT_HEATING_OVERTIME, 0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORUP_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_RV_HEATING_TSENSOR2_LESSTHAN_40DEGREEC_OVERTIME,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB3_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB5_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE,0);
+    m_RetCodeCounterList.insert(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE,0);
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -1634,6 +1670,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         {
             m_SchedulerMachine->EnterRcDraining();
         }
+        else if(CTRL_CMD_RC_FORCEDRAINING == ctrlCmd)
+        {
+            m_SchedulerMachine->EnterRcForceDraining();
+        }
         else if(CTRL_CMD_RS_DRAINATONCE == ctrlCmd)
         {
             m_SchedulerMachine->EnterRsDrainAtOnce();
@@ -1735,6 +1775,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RC_DRAINING == currentState)
     {
          m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_FORCEDRAINING == currentState)
+    {
+         m_SchedulerMachine->HandleForceDrainingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RS_DRAINATONCE == currentState)
     {
@@ -1930,6 +1974,12 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_DRAINING;
         }
+        if (cmd == "rc_forcedraining")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RC_FORCEDRAINING;
+        }
+
         if (cmd == "rs_drainatonce")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
@@ -2038,6 +2088,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
                 return  CTRL_CMD_ALARM_LOC_ON;
             case 2:
                 return  CTRL_CMD_ALARM_LOC_OFF;
+            case 1:
+                return  CTRL_CMD_ALARM_DEVICE_ON;
+            case 0:
+                return  CTRL_CMD_ALARM_DEVICE_OFF;
             case -1:
                 return  CTRL_CMD_ALARM_ALL_OFF;
             }
@@ -2353,9 +2407,17 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
     return true;
 }
 
-void SchedulerMainThreadController::SendTissueProtectMsg()
+void SchedulerMainThreadController::SendTissueProtectMsg(bool flag)
 {
-    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    MsgClasses::CmdProgramAcknowledge* CmdTissueProtectDone = NULL;
+    if (flag)
+    {
+        CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED);
+    }
+    else
+    {
+        CmdTissueProtectDone = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::TISSUE_PROTECT_PASSED_WARNING);
+    }
     Q_ASSERT(CmdTissueProtectDone);
     Global::tRefType fRef = GetNewCommandRef();
     SendCommand(fRef, Global::CommandShPtr_t(CmdTissueProtectDone));
@@ -4200,6 +4262,22 @@ void SchedulerMainThreadController::RCDrain()
     m_TickTimer.start();
 }
 
+void SchedulerMainThreadController::RCForceDrain()
+{
+    LogDebug("Send cmd to DCL to RcForceDrain");
+    CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, this);
+    cmd->SetRVPosition(this->GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID));
+    cmd->SetDrainPressure(40.0);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    LogDebug("Notice GUI Draining started");
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(15000,m_CurProgramStepInfo.stationID , true, false, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+    m_TickTimer.start();
+}
+
 void SchedulerMainThreadController::Drain()
 {
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
@@ -4560,7 +4638,20 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             }
-            SendOutErrMsg(retCode);
+            // For events 500020081, 500020181,500020082, 500020182, 500020083 and 500020183, Scheduler will NOT enter error state
+            if (retCode == DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE_LOW ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE_LOW ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_HIGH ||
+                retCode == DCL_ERR_DEV_WAXBATH_SENSORDOWN2_HEATING_OUTOFTARGETRANGE_LOW)
+            {
+                SendOutErrMsg(retCode, false);
+            }
+            else
+            {
+                SendOutErrMsg(retCode, true);
+            }
             if(m_IsErrorStateForHM)
                 return ;
         }
@@ -4593,33 +4684,51 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     reportError7 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
     reportError8 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(PRESS_FAN_OUT_OF_RANGE, "LA", AL_FAN);
     reportError9 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV",0);
-    if (reportError1.instanceID != 0)
+
+    if (reportError1.instanceID==0 && reportError2.instanceID==0 && reportError3.instanceID==0 && reportError4.instanceID==0)
     {
-        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = 0;
     }
-    if (reportError2.instanceID != 0)
+    else
     {
-        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
-    }
-    if (reportError3.instanceID != 0 )
-    {
-        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
-    }
-    if (reportError4.instanceID != 0)
-    {
-        LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = 0;
+            if (reportError1.instanceID != 0)
+            {
+                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError1.errorData));
+                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                if(m_IsErrorStateForHM)
+                    return ;
+            }
+            if (reportError2.instanceID != 0)
+            {
+                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError2.errorData));
+                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                if(m_IsErrorStateForHM)
+                    return ;
+            }
+            if (reportError3.instanceID != 0 )
+            {
+                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError3.errorData));
+                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                if(m_IsErrorStateForHM)
+                    return ;
+            }
+            if (reportError4.instanceID != 0)
+            {
+                LogDebug(QString("Current out of range, ASB5 AC current is: %1").arg(reportError4.errorData));
+                SendOutErrMsg(DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE);
+                if(m_IsErrorStateForHM)
+                    return ;
+            }
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_ASB5_AC_CURRENT_OUTOFRANGE] = val;
+        }
     }
     if (reportError5.instanceID != 0)
     {
@@ -4636,19 +4745,48 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
         LogDebug(QString("Current out of range, AL tube2 current is: %1").arg(reportError7.errorData));
         //SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
     }
-    if (reportError8.instanceID != 0)
+    if (reportError8.instanceID != 0 && m_ReportExhaustFanWarning)
     {
-        LogDebug(QString("Current out of range, Current is: %1").arg(reportError8.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN);
-        if(m_IsErrorStateForHM)
-            return ;
+        LogDebug(QString("Exhaust Fan Current out of range, Current is: %1").arg(reportError8.errorData));
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = 0;
+            m_ReportExhaustFanWarning = false;
+            SendOutErrMsg(DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN, false);
+            if(m_IsErrorStateForHM)
+                return ;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN] = 0;
     }
     if (reportError9.instanceID != 0)
     {
         LogDebug(QString("Current out of range, the current is :%1").arg(reportError9.errorData));
-        SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE] = 0;
     }
 
     // For voltage related
@@ -4677,46 +4815,129 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
     if (strctHWMonitor.Slave15Voltage < slave15LowerLimit || strctHWMonitor.Slave15Voltage > slave15UpperLimit)
     {
         LogDebug(QString("slave 15 voltage is: %1").arg(strctHWMonitor.Slave15Voltage));
-        SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_MC_VOLTAGE_24V_ASB15_OUTOFRANGE] = 0;
     }
 
     // For current related
     if (strctHWMonitor.Slave3Current > m_SlaveAttrList[0].CurrentMax5VDC)
     {
         LogDebug(QString("slave 3 5V current is: %1").arg(strctHWMonitor.Slave3Current));
-        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB3_OUTOFRANGE] = 0;
     }
     if (strctHWMonitor.Slave5Current > m_SlaveAttrList[1].CurrentMax5VDC)
     {
         LogDebug(QString("slave 5 5V current is: %1").arg(strctHWMonitor.Slave5Current));
-        SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_MC_DC_5V_ASB5_OUTOFRANGE] = 0;
     }
 
     //Check No-Signal error for Retort sensors
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom1))
     {
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL] = 0;
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTBottom2))
     {
-        LogDebug("The RT bottom2 no signal");
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL] = 0;
     }
     if (false == this->CheckRetortTempSensorNoSignal(Scenario, strctHWMonitor.TempRTSide))
     {
-        SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
-        if(m_IsErrorStateForHM)
-            return ;
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL];
+        val++;
+        if (val>=3)
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL] = 0;
+            SendOutErrMsg(DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL);
+            if(m_IsErrorStateForHM)
+                return;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL] = val;
+        }
+    }
+    else
+    {
+        m_RetCodeCounterList[DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL] = 0;
     }
     //the Level Scenario no signal is the same with over range
     if (false == this->CheckLevelSensorNoSignal(Scenario, strctHWMonitor.TempALLevelSensor))
@@ -4742,52 +4963,94 @@ void SchedulerMainThreadController::CheckSlaveAllSensor(quint32 Scenario, const 
 
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE && 1 == strctHWMonitor.OvenLidStatus)
     {
+        quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN];
+        val++;
         //oven is open
         if(m_CheckOvenCover)
         {
             if ( (Scenario >= 2 && Scenario <= 260) || (Scenario >= 281 && Scenario <= 297) )
             {
-                SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
-                m_CheckOvenCover = false;
+                if (val>=3)
+                {
+                    m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN] = 0;
+                    SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, false);
+                    m_CheckOvenCover = false;
+                }
+                else
+                {
+                    m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN] = val;
+                }
             }
         }
         if(Scenario >= 271 && Scenario <= 277)
         {
-            ReleasePressure();
-            SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
-            if(m_IsErrorStateForHM)
-                return ;
+            if (val>=3)
+            {
+                m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN] = 0;
+                ReleasePressure();
+                SendOutErrMsg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN);
+                if(m_IsErrorStateForHM)
+                    return;
+            }
+            else
+            {
+                m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN] = val;
+            }
         }
+    }
+    else
+    {
+       m_RetCodeCounterList[DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN] = 0;
     }
     if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
     {
         if(1 == strctHWMonitor.RetortLockStatus && m_CurrentStepState != PSSM_PAUSE)
         {
+            quint8 val = m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR];
+            val++;
             if (Scenario >=200 && Scenario <= 297)
             {
-                // Notify retort lid is opened
-                MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
-                Q_ASSERT(CmdRetortCoverOpen);
-                Global::tRefType fRef = GetNewCommandRef();
-                SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
-
-                SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
-            }
-            else if (007 == Scenario)
-            {
-                if (!m_SchedulerMachine->NonRVErrorOccuredInBottleCheck())
+                if (val>=3)
                 {
-
-                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, false);
                     // Notify retort lid is opened
                     MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
                     Q_ASSERT(CmdRetortCoverOpen);
                     Global::tRefType fRef = GetNewCommandRef();
                     SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+                    m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = 0;
+                    SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR);
+                }
+                else
+                {
+                    m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = val;
+                }
+            }
+            else if (007 == Scenario)
+            {
+                if (!m_SchedulerMachine->NonRVErrorOccuredInBottleCheck())
+                {
+                    if (val>=3)
+                    {
+                        m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = 0;
+                        SendOutErrMsg(DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, false);
+                        // Notify retort lid is opened
+                        MsgClasses::CmdProgramAcknowledge* CmdRetortCoverOpen = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::RETORT_COVER_OPERN);
+                        Q_ASSERT(CmdRetortCoverOpen);
+                        Global::tRefType fRef = GetNewCommandRef();
+                        SendCommand(fRef, Global::CommandShPtr_t(CmdRetortCoverOpen));
+                    }
+                    else
+                    {
+                        m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = val;
+                    }
                 }
             }
             if(m_IsErrorStateForHM)
                 return ;
+        }
+        else
+        {
+            m_RetCodeCounterList[DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR] = 0;
         }
     }
 }
@@ -4833,11 +5096,18 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
     case CTRL_CMD_ALARM_LOC_OFF:
         opcode = 2;
         break;
+    case CTRL_CMD_ALARM_DEVICE_ON:
+        opcode = 1;
+        break;
+    case CTRL_CMD_ALARM_DEVICE_OFF:
+        opcode = 0;
+        break;
     case CTRL_CMD_ALARM_ALL_OFF:
         opcode = -1;
         break;
     case CTRL_CMD_POWER_FAILURE_MEG:
     case CTRL_CMD_DRAIN_SR:
+    case CTRL_CMD_DRAIN:
         Global::AlarmHandler::Instance().reset();
         opcode = -1;
         break;
@@ -5070,6 +5340,22 @@ void SchedulerMainThreadController::GetStringIDList(quint32 ErrorID,
             EventStringParList<<QString("%1").arg(ErrorID);
             EventRDStringParList<<QString("%1").arg(ErrorID);
             break;
+        case 513020081:
+        case 513020082:
+        case 513020083:
+        {
+            qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            EventStringParList<<QString("%1").arg(userInputMeltingPoint+12);
+            break;
+        }
+        case 513020181:
+        case 513020182:
+        case 513020183:
+        {
+            qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            EventStringParList<<QString("%1").arg(userInputMeltingPoint-4);
+            break;
+        }
         default:
             EventStringParList << QString("%1").arg(ErrorID);
             break;

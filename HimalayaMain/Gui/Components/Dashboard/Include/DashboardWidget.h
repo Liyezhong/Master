@@ -184,6 +184,7 @@ private:
     QString m_strProgramWillComplete;
     QString m_strProgramComplete;
     QString m_strTissueProtectPassed;
+    QString m_strTissueProtectPassed_Warning;
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
     QString m_strItIsPausing;
@@ -275,9 +276,10 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnTissueProtectPassed
+     *  \param  flag = To indicate if safe reagent is totally passed or passed with warning
      */
     /****************************************************************************/
-    void OnTissueProtectPassed();
+    void OnTissueProtectPassed(bool flag);
 
     /****************************************************************************/
     /*!

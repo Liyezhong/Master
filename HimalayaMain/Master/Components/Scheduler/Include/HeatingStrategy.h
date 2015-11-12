@@ -20,6 +20,7 @@
 #ifndef HEATING_STRATEGY_H
 #define HEATING_STRATEGY_H
 #include <QObject>
+#include <bitset>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
@@ -415,6 +416,7 @@ private:
     qreal                               m_RTBottomCurrentTemp;          //!< Retort bottom current temperature just for self test
     qreal                               m_RTSideCurrentTemp;            //!< Retort side current temperature just for self test
     qreal                               m_RVHeatingRodCurrentTemp;      //!< RV heating rod current temperature just for self test
+    std::bitset<6>                      m_OvenSensorsCheck;             //!< Bits for individual Oven sensors check
 
     /****************************************************************************/
     /*!
@@ -442,7 +444,7 @@ private:
      *  \return form bool
      */
     /****************************************************************************/
-	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
+    inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
 
     /****************************************************************************/
     /*!

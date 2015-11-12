@@ -24,6 +24,7 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                  From Qt-Library
 #include <QQueue>
+#include <QMap>
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
 #include "Threads/Include/ThreadController.h"
@@ -377,6 +378,7 @@ typedef enum
         bool    m_IsWaitHeatingRV;                            ///< wait heating RV
         bool    m_IsSendMsgForWaitHeatRV;                     ///< wether send message for waiting heating RV
         bool    m_IsErrorStateForHM;                          ///< enter the error state
+        bool    m_ReportExhaustFanWarning;                    ///< flag to report exhaust fan warning
         bool    m_IsProcessing;                               ///< in processing
         QVector< QPair<QString, QString> >  m_DashboardStationList;     ///< The whole station List of dash board
         IdleStepState_t m_IdleState;                          ///< prepare for idle step state
@@ -387,6 +389,7 @@ typedef enum
         quint8  m_CheckTheHardwareStatus;                     ///< Check the hardware status
         bool    m_IsFirstProcessingForDelay;                  ///< is first enter processing for delay time
         QString m_ReagentExpiredFlag;                         ///< Reagent expired flag
+        QMap<DeviceControl::ReturnCode_t,quint8> m_RetCodeCounterList;      //!< Counter list for Error ReturnCode
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -1542,6 +1545,20 @@ protected:
         /****************************************************************************/
         void OnEnterIdleState();
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Get the value for the specific element
+         */
+        /****************************************************************************/
+        quint8 GetRetCodeCounter(DeviceControl::ReturnCode_t RetCode) const { return m_RetCodeCounterList[RetCode]; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Set value for the specific element
+         */
+        /****************************************************************************/
+        void SetRetCodeCounter(DeviceControl::ReturnCode_t RetCode, quint8 val) { m_RetCodeCounterList[RetCode] = val; }
+
     public slots:
 
         /****************************************************************************/
@@ -1640,6 +1657,12 @@ protected:
 
         /****************************************************************************/
         /*!
+         *  \brief  Definition/Declaration of slot RC_ForceDrain
+         */
+        /****************************************************************************/
+        void RCForceDrain();
+        /****************************************************************************/
+        /*!
          *  \brief  Definition/Declaration of slot RC_Drain_AtOnce
          */
         /****************************************************************************/
@@ -1683,9 +1706,10 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Send out Tisue Protect done message to GUI
+         *  \param  flag = To indicate if safe reagent is fully passed or passed with warning
          */
         /****************************************************************************/
-        void SendTissueProtectMsg();
+        void SendTissueProtectMsg(bool flag);
 
         /****************************************************************************/
         /*!

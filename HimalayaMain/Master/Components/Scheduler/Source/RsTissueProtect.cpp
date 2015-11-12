@@ -49,7 +49,7 @@ CRsTissueProtect::CRsTissueProtect(SchedulerMainThreadController* SchedControlle
     m_ReleasePressure = 0;
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
-    m_IsFillingSuccessful = true;
+    m_IsSafeReagentSuccessful = true;
     m_CurrentStep = UNDEF;
 }
 
@@ -68,7 +68,7 @@ void CRsTissueProtect::Start()
     m_ReleasePressure = 0;
     m_DrainSafeReagent = 0;
     m_ProcessingSafeReagent = 0;
-    m_IsFillingSuccessful = true;
+    m_IsSafeReagentSuccessful = true;
     m_CurrentStep = INIT;
 }
 
@@ -92,7 +92,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         m_LevelSensorSeq = 0;
         m_MoveToSealSeq = 0;;
         m_StartWaitTime = 0;
-        m_IsFillingSuccessful = true;
+        m_IsSafeReagentSuccessful = true;
 
         m_StationID = this->GetStationID();
         if ("" == m_StationID)
@@ -249,16 +249,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             mp_SchedulerController->LogDebug("RS_Safe_Reagent, in LevelSensor Heating state");
             if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
             {
-                m_MoveToTubeSeq = 0;
-                m_FillSeq = 0;
-                m_LevelSensorSeq = 0;
-                m_MoveToSealSeq = 0;
-                SendTasksDoneSig(false);
+                m_IsSafeReagentSuccessful = false;
             }
-            else
-            {
-                m_LevelSensorSeq++;
-            }
+            m_LevelSensorSeq++;
         }
         else
         {
@@ -270,11 +263,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
             else if (1 == retValue)
             {
-                m_MoveToTubeSeq = 0;
-                m_FillSeq = 0;
+                m_IsSafeReagentSuccessful = false;
                 m_LevelSensorSeq = 0;
-                m_MoveToSealSeq = 0;
-                SendTasksDoneSig(false);
+                m_CurrentStep = FILLING;
             }
             else if (2 == retValue)
             {
@@ -308,28 +299,28 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 {
                     if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
                     {
-
+                        CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
+                        cmd->SetDelayTime(5000);
+                        mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
+                        m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
+                        m_CurrentStep = WAIT_8S;
                     }
                     else
                     {
-                        m_IsFillingSuccessful = false;
+                        m_IsSafeReagentSuccessful = false;
+                        m_CurrentStep = MOVE_TO_SEALING;
                     }
-                    CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
-                    cmd->SetDelayTime(5000);
-                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
-                    m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
-                    m_CurrentStep = WAIT_8S;
                 }
                 else
                 {
                     if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                     {
-                        mp_SchedulerController->LogDebug(QString("Program Step Filling OK"));
+                        mp_SchedulerController->LogDebug(QString("While level sensor is normal, program Step Filling OK"));
                     }
                     else
                     {
-                        mp_SchedulerController->LogDebug(QString("Program Step Filling failed"));
-                        m_IsFillingSuccessful = false;
+                        mp_SchedulerController->LogDebug(QString("While level sensor is normal, program Step Filling failed"));
+                        m_IsSafeReagentSuccessful = false;
                     }
                     m_CurrentStep = MOVE_TO_SEALING;
                 }
@@ -364,10 +355,10 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 {
                     m_MoveToSealSeq++;
                 }
-                else // In this case, we just release pressure
+                else
                 {
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Seal state, move to seal failed");
-                    m_CurrentStep = RELEASE_PRESSURE;
+                    SendTasksDoneSig(false);
                 }
             }
         }
@@ -401,17 +392,8 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in RELEASE_PRESSURE, Pressuer release failed");
             }
-            if (m_IsFillingSuccessful)
-            {
-                m_ReleasePressure = 0;
-                m_CurrentStep = PROCESSING_SAFE_REAGENT;
-            }
-            else
-            {
-                m_ReleasePressure = 0;
-                m_IsFillingSuccessful = true; //Reset the value
-                SendTasksDoneSig(false);
-            }
+            m_ReleasePressure = 0;
+            m_CurrentStep = PROCESSING_SAFE_REAGENT;
         }
         else
         {
@@ -434,7 +416,14 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else if(1 == m_ProcessingSafeReagent)
         {
-            mp_SchedulerController->SendTissueProtectMsg();
+            if (m_IsSafeReagentSuccessful)
+            {
+                mp_SchedulerController->SendTissueProtectMsg(true);
+            }
+            else
+            {
+                mp_SchedulerController->SendTissueProtectMsg(false);
+            }
             m_ProcessingSafeReagent++;
         }
         if(2 == m_ProcessingSafeReagent && CTRL_CMD_DRAIN_SR == ctrlCmd)

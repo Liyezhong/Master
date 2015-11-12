@@ -659,7 +659,7 @@ signals:
      *  \brief  Definition/Declaration of signal TissueProtectPassed
      */
     /****************************************************************************/
-    void TissueProtectPassed();
+    void TissueProtectPassed(bool);
 
     /****************************************************************************/
     /*!
