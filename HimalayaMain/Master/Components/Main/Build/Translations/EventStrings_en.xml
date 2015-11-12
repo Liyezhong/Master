@@ -251,7 +251,8 @@
 		<string id="67176209" text1="Please close the retort lid and confirm Retry button." text2=""/>
 		<string id="67176210" text1="Pressure test failed! Please clean the seal ring and the upper part of the retort as described in the user manual." text2=""/>
 		<string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
-		<string id="67176212" text1="Please check and correct bottle fill level. Then retry filling." text2=""/>
+		<string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent within 15 minutes." text2=""/>
+		<string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
 		<string id="67176214" text1="Protocol was interrupted by power failure. Please abort the protocol and remove the specimens." text2=""/>
 		<string id="67176216" text1="Power failure recovery process failed in reheating. Please call service." text2=""/>
 		<string id="67176217" text1="Power failure recovery process failed. Please call service." text2=""/>
@@ -729,39 +730,25 @@
 		<string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
 		<string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
 		<string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent within 15 minutes." text2=""/>
-    <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
-        <string id="67176214" text1="Protocol was interrupted by power failure. Please remove the specimen and abort the protocol." text2=""/>
-	<string id="67176216" text1="Power failure recovery processing failed in reheating. Please call service." text2=""/>
-	<string id="67176217" text1="Power failure recovery processing failed in some error. Please call service." text2=""/>
-	<string id="67176218" text1="system error. Please call service." text2=""/>
-	<string id="67176219" text1="Safe reagent failed. Please call service." text2=""/>
-	<string id="67176220" text1="Please clear level sensor by sourcing pad." text2=""/>
-	<string id="67176221" text1="Error ID %1! In whole processing, some process interval time out 4 minutes." text2=""/>
-	<string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
-	<string id="67176223" text1="Error ID %1! Abort failed." text2=""/>
-	<string id="67176224" text1="Power failure on cleaning program, the program has been auto-restart." text2=""/>
-	<string id="67176225" text1="Error ID %1! Rotary valve abnormal, Please call service!" text2=""/>
-	<string id="67176226" text1="Error ID %1! The instrument has met some technical issues and can not finalize the protocol." text2=""/>
 		<string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
 		<string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
 		<string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
 		<string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
-	<string id="67176227" text1="Paraffin temperature in paraffin bath is higher than %1. Please check paraffin melting status." text2=""/>
-	<string id="67176228" text1="Paraffin temperature in paraffin bath is lower than %1. Please check paraffin melting status." text2=""/>
-<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
-<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
-<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
-<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
-<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
-<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
-<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
-<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
-<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
-<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
-<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
-<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
-<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
-<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
+		<string id="67176227" text1="Paraffin temperature in paraffin bath is higher than %1. Please check paraffin melting status." text2=""/>
+		<string id="67176228" text1="Paraffin temperature in paraffin bath is lower than %1. Please check paraffin melting status." text2=""/>
+		<string id="16846865" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG1" text2=""/>
+		<string id="16846866" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG2" text2=""/>
+		<string id="16846867" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG3" text2=""/>
+		<string id="16846868" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG4" text2=""/>
+		<string id="16846869" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG5" text2=""/>
+		<string id="16846870" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG6" text2=""/>
+		<string id="16846871" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG7" text2=""/>
+		<string id="16846872" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG8" text2=""/>
+		<string id="16846873" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG9" text2=""/>
+		<string id="16846874" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG10" text2=""/>
+		<string id="16846875" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG11" text2=""/>
+		<string id="16846876" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG12" text2=""/>
+		<string id="16846877" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG13" text2=""/>
+		<string id="16846878" text1="EVENT_SHUTDOWN_ON_CHECK_FLAG14" text2=""/>
 	</language>
 </strings>
