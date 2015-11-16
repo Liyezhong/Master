@@ -131,6 +131,14 @@ private:
 
     /****************************************************************************/
     /*!
+     *  \brief  function of HandlePressureCalibration
+     *  \param  cmdName = QString
+     */
+    /****************************************************************************/
+    void HandlePressureCalibration(const QString &cmdName);
+
+    /****************************************************************************/
+    /*!
      *  \brief  function of StartHeatingWithScenario
      *  \return bool
      */
@@ -186,6 +194,7 @@ private:
     typedef enum{
         UNDEF,
         INIT_STATE,
+        PRESSURE_CALIBRATION,
         START_TEMPERATURE,
         CHECK_TEMPERATURE,
         GET_RV_POSOTION,
@@ -218,6 +227,11 @@ private:
     RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
     QString                         m_LastReagentID;                    //!< last reagent ID
     quint8                          m_CountTheEffectiveTemp;            //!< cout the effecitive temperature
+    quint32                         m_PressureCalibrationSeq;           //!< Sequence of Pressure Calibration
+    qreal                           m_PressureDriftOffset;              //!< Pressure calibration offset
+    quint8                          m_PressureCalibrationCounter;       //!< Counter of Pressure Calibratoin
+    qint64                          m_ReleasePressureTime;              //!< Time of releasing pressure
+    quint8                          m_IsLoged;                          //!< Whether loged
 };
 
 }

@@ -614,11 +614,6 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
 
     if(POWERFAILURE_INIT == m_PowerFailureStep)
     {
-        if(m_SchedulerCommandProcessor != NULL)
-        {
-            m_SchedulerCommandProcessor->ALSetPressureDrift(m_ProgramStatusInfor.GetPressureDriftOffset());
-        }
-
         QString curProgramID = m_ProgramStatusInfor.GetProgramId();
         if (curProgramID.isNull() || curProgramID.isEmpty())
         {

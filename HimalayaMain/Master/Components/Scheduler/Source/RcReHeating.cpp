@@ -42,6 +42,11 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_IsNeedRunCleaning(false)
     ,m_RsReagentCheckStep(FORCE_DRAIN)
     ,m_CountTheEffectiveTemp(0)
+    ,m_PressureCalibrationSeq(0)
+    ,m_PressureDriftOffset(0.0)
+    ,m_PressureCalibrationCounter(0)
+    ,m_ReleasePressureTime(0)
+    ,m_IsLoged(0)
 {
 }
 
@@ -55,6 +60,9 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
     {
         case INIT_STATE:
             HandleInint();
+            break;
+        case PRESSURE_CALIBRATION:
+            HandlePressureCalibration(cmdName);
             break;
         case START_TEMPERATURE:
             if(true == StartHeatingSensor())
@@ -111,7 +119,75 @@ void CRcReHeating::HandleInint()
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
     }
-    m_CurrentStep = START_TEMPERATURE;
+    m_CurrentStep = PRESSURE_CALIBRATION;
+}
+
+void CRcReHeating::HandlePressureCalibration(const QString &cmdName)
+{
+    if (0 == m_PressureCalibrationSeq)
+    {
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+        m_PressureCalibrationSeq++;
+    }
+    else if (1 == m_PressureCalibrationSeq)
+    {
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RELEASE_PRESSURE_CALIBRATION_SUCCESS);
+            m_PressureCalibrationSeq++;
+            m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
+        }
+    }
+    else if (2 == m_PressureCalibrationSeq)
+    {
+        if(0 == m_IsLoged)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_WAIT_20S);
+            m_IsLoged++;
+        }
+        if ((QDateTime::currentMSecsSinceEpoch() - m_ReleasePressureTime) >= 20*1000)
+        {
+            m_IsLoged = 0;
+            m_PressureCalibrationSeq++;
+        }
+    }
+    else if (3 == m_PressureCalibrationSeq)
+    {
+        // Firstly, check if calibration has been 3 times
+        if (3 == m_PressureCalibrationCounter)
+        {
+            m_PressureCalibrationSeq = 0;
+            m_PressureCalibrationCounter = 0;
+            mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);//Just log with warning
+            m_CurrentStep = START_TEMPERATURE; //move to next step
+        }
+        else if (m_PressureCalibrationCounter > 0)
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_RETRY_PRESSURE_CALIBRATION);
+        }
+
+        m_PressureCalibrationCounter++;
+
+        qreal currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_GET_CURRENT_PRESSURE, QStringList()<<QString::number(currentPressure));
+
+        if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
+        {
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_PRESSURE_CALIBRATION_SUCCESS);
+            m_PressureCalibrationSeq = 0;
+            m_PressureCalibrationCounter = 0;
+            m_CurrentStep = START_TEMPERATURE;
+        }
+        else if (qAbs(currentPressure) <= 3.0) //offset the calibration
+        {
+            m_PressureDriftOffset = m_PressureDriftOffset + currentPressure;
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(m_PressureDriftOffset);
+            mp_SchedulerThreadController->SetLastPressureOffset(m_PressureDriftOffset);
+            m_PressureCalibrationSeq = 0;
+            mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_OFFSET_CALIBRATION);
+        }
+    }
 }
 
 bool CRcReHeating::StartHeatingSensor()
