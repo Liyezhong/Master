@@ -340,13 +340,15 @@ void CDashboardWidget::OnTissueProtectPassed(bool flag)
     {
         mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Information);
         mp_TissueProtectPassedMsgDlg->SetText(m_strTissueProtectPassed);
+        mp_TissueProtectPassedMsgDlg->SetTitle(CommonString::strConfirmMsg);
     }
     else
     {
         mp_TissueProtectPassedMsgDlg->SetIcon(QMessageBox::Warning);
         mp_TissueProtectPassedMsgDlg->SetText(m_strTissueProtectPassed_Warning);
+        mp_TissueProtectPassedMsgDlg->SetTitle(CommonString::strWarning);
     }
-    mp_TissueProtectPassedMsgDlg->SetTitle(CommonString::strConfirmMsg);
+
     mp_TissueProtectPassedMsgDlg->SetButtonText(1, CommonString::strOK);
     mp_TissueProtectPassedMsgDlg->HideButtons();
 
