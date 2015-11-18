@@ -294,7 +294,21 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 mp_SchedulerController->StopFillRsTissueProtect(m_StationID);
                 m_FillSeq = 0;
-                // Both in success and failire, we always move it to sealing position                    
+                // If return code belongs to one of the followings, we will move RV to sealing position.
+                // Otherwise, we think the filling failed and throw safe reagent error
+                // 1. DCL_ERR_FCT_CALL_SUCCESS
+                // 2. DCL_ERR_DEV_LA_FILLING_OVERFLOW
+                // 3. DCL_ERR_DEV_LA_FILLING_INSUFFICIENT
+                // 4. DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN
+                if ( retCode != DCL_ERR_FCT_CALL_SUCCESS
+                   && retCode != DCL_ERR_DEV_LA_FILLING_OVERFLOW
+                   && retCode != DCL_ERR_DEV_LA_FILLING_INSUFFICIENT
+                   && retCode != DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN)
+                {
+                    mp_SchedulerController->LogDebug("RS_Safe_Reagent, Filling failed");
+                    SendTasksDoneSig(false);
+                    return;
+                }
                 if (true == m_IsLevelSensorRelated)
                 {
                     if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
