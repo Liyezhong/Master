@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SW_Version Version="1">
   <SW>
-    <Release Version="HIM_0.022" Date="2015-09-23" />
+    <Release Version="HIM_0.023" Date="2015-11-09" />
   </SW>
   <Master_SW>
     <file Filename="himalaya" Version="MSW_0.008" Date="2015-11-06"></file>
