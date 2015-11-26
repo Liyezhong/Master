@@ -86,7 +86,7 @@
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
-        <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
+        <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
         <translation>试剂/石蜡液位检查失败！请查看试剂/石蜡液位检查状态列表中的详细信息。</translation>
     </message>
     <message>
@@ -544,11 +544,6 @@
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
-        <source>Ok</source>
-        <translation>确定</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -556,6 +551,11 @@
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Close</source>
         <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
+        <source>OK</source>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1987"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
@@ -1223,64 +1223,64 @@ Date</source>
         <translation>正在更新软件 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1989"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2079"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2102"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>新软件可用。单击“远程软件更新”开始更新。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2000"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
         <source>New software is not available.</source>
         <translation>新软件不可用。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2006"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>无法从远程维护服务器下载新软件。请联系维修人员。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2011"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>已成功从远程服务器下载新软件。 按下“确定”开始软件更新。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
         <source>Software update failed.</source>
         <translation>软件更新失败。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2047"/>
-        <source>Now download the update package from the remote server. Please wait......</source>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
+        <source>Now download the update package from the remote server. Please wait...</source>
         <translation>现在从远程服务器下载更新包。请等待...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2077"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
         <source>Confirmation Message</source>
         <translation>确认消息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2081"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2088"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>远程用户已请求了远程会话。</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2100"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>远程用户已结束了远程会话。</translation>
     </message>
@@ -1558,7 +1558,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
-        <source>Program End Date/Time cannot be earlier than the ASAP End Date Time.</source>
+        <source>Program End Date/Time cannot be earlier than the ASAP End Date/Time.</source>
         <translation>程序结束时间不得早于 ASAP 结束时间。</translation>
     </message>
     <message>
@@ -1568,7 +1568,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
-        <source>Program End Date/Time cannot be later than the ASAP End Date Time as the first program step is not Fixation reagent.</source>
+        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.</source>
         <translation>由于第一个程序步骤不是固定试剂，程序的结束时间不得晚于 ASAP 的结束时间。</translation>
     </message>
     <message>
@@ -1618,154 +1618,154 @@ Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1305"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>没有适合程序 %2 步骤 %1 的安全试剂。 您是否要继续？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1306"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1315"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>程序&quot;%2&quot;的步骤&quot;%1&quot;无法找到相应的试剂站点。站点只能在程序中使用一次。请为该步骤的试剂分配单独的站点。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1307"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1316"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>您无法启动程序，程序 %3 的步骤 %2 所在站点 %1 被设置成空。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1308"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1317"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>由于石蜡未完全熔化，且程序第一个步骤不是固定试剂，程序无法启动。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1309"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1318"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>您可在 %1 小时 %2 分 %3 秒后启动程序。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1310"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>石蜡未完全熔化，程序第一步将延长时间。您是否要继续？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1311"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
         <source>Enter number of Cassettes:</source>
         <translation>输入包埋盒数目:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1312"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>程序 &quot;%1&quot; 已完成！是否排空脱水缸？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1313"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1322"/>
         <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
         <translation>组织保护程序已成功完成。是否排空脱水缸？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1323"/>
+        <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
+        <translation>组织保护程序已完成，并显示警告信息。是否排空脱水缸？</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>蜡箱门已打开，请关闭，然后单击“确定”按钮。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1315"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
         <source>Retort lid was opened. Please close it and then click OK.</source>
         <translation>脱水缸盖已打开。请关闭盖子，然后单击“确定”。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1316"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1326"/>
         <source>Pausing...</source>
         <translation>正在暂停...</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1317"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1327"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>仪器正在预热。最多需要等待 30 分钟，才能使用仪器。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1318"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1328"/>
         <source>Please remove the specimens from the retort!</source>
         <translation>请从脱水缸中取出样品！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1329"/>
         <source>The retort is contaminated. Please lock the retort and select Cleaning Program to run!</source>
         <translation>脱水缸已被污染。请关闭脱水缸，运行清洗程序！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>程序 &quot;%1&quot; 被终止！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>程序 &quot;%1&quot; 已成功完成！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1322"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>请关闭脱水缸，然后重试！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1323"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>无法在试剂管理系统关闭的情况下使用仪器预装程序。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1334"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>该程序所需的试剂已过期。程序将不会启动。请使用新鲜试剂替换过期试剂！</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1335"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>部分试剂已过期，确定要启动？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1326"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1336"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>请输入新添加的包埋盒数：</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1327"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
         <source>Did you add new cassettes?</source>
         <translation>是否添加了新的包埋盒？</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1328"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>由于等待时间超过五分钟，仪器将重新加热，并使用安全试剂进行填充。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1329"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1339"/>
         <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
         <translation>脱水缸温度太高。请等待脱水缸冷却，然后再放入样品，启动下一个程序。</translation>
     </message>
     <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
         <translation>因为程序的石蜡温度与蜡箱温度设定不同（相差大于2度），所选程序无法开始。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1341"/>
         <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
         <translation>请将程序的石蜡温度与蜡箱温度改至匹配，然后开始程序。</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1342"/>
         <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1343"/>
         <source>Please confirm modifying Paraffin temperature.</source>
         <translation> </translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
-        <source>Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent</source>
-        <translation>管理员按下“是”按钮确认，使用过期试剂 %1 开始程序</translation>
     </message>
 </context>
 <context>
@@ -2100,10 +2100,10 @@ Date</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="169"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="177"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="192"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="194"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="168"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="176"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="191"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="193"/>
         <source>Error Messages</source>
         <translation>错误消息</translation>
     </message>
@@ -2465,7 +2465,6 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="361"/>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="204"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
@@ -2473,6 +2472,11 @@ Date</source>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="203"/>
         <source>Information Message</source>
         <translation>信息消息</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="204"/>
+        <source>OK</source>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="206"/>
@@ -2743,7 +2747,6 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="305"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="132"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
@@ -2753,6 +2756,7 @@ Date</source>
         <translation>关闭</translation>
     </message>
     <message>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="132"/>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="140"/>
         <source>OK</source>
         <translation>确定</translation>
@@ -3347,7 +3351,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
-        <source>Bottle check failed! Please check the details in the Bottle check status list.</source>
+        <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
         <translation>试剂/石蜡液位检查失败！请查看试剂/石蜡液位检查状态列表中的详细信息。</translation>
     </message>
     <message>
@@ -3407,7 +3411,7 @@ Date</source>
         <translation>远程软件更新</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="213"/>
+        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="214"/>
         <source>Data Management</source>
         <translation>数据管理</translation>
     </message>
@@ -3569,8 +3573,8 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="243"/>
-        <source>Enable Remote Care Events</source>
-        <translation>启用”远程维护“事件</translation>
+        <source>Enable RemoteCare Events</source>
+        <translation>启用“远程维护”事件</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
@@ -3852,8 +3856,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
-        <source>You changed the Paraffin melting temperature. If you confirm by &quot;Yes&quot; the Paraffin melting time will be at least %1 hours until another program may be started. Selecting &quot;No&quot; will allow the current Paraffin bath temperature to be accepted and you can immediately start a protocol run.</source>
-        <translation>您已更改了石蜡熔化温度。 如果选择&quot;是&quot;予以确认，石蜡熔化时间至少需要 %1 小时，才能运行含石蜡程序。 选择&quot;否&quot;，您可立即启动程序执行。</translation>
+        <source>The paraffin melting temperature has been changed. Please click &quot;Yes&quot; to start remelting paraffin, and it will take %1 hours before using paraffin. If you want to skip the process of remelting paraffin, please visually confirm all paraffin are completely melted, then click &quot;No&quot; to use paraffin immediately.</source>
+        <translation>您已更改了石蜡熔化温度。 如果选择 &quot;是&quot;，石蜡熔化时间至少需要 %1 小时，才能运行含石蜡程序。 选择 &quot;否&quot; 将接受当前的蜡箱温度，您可立即启动程序。</translation>
     </message>
 </context>
 <context>
@@ -3865,7 +3869,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
-        <source>System is performing self-testing
+        <source>System is performing a self-test
 Please wait...</source>
         <translation>系统正在执行自检
 请等待...</translation>

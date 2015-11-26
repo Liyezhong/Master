@@ -1993,7 +1993,7 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information",
                                                     0, QApplication::UnicodeUTF8));
-    mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
                                                            0, QApplication::UnicodeUTF8));
     mp_MessageDlg->HideButtons();
 
@@ -2052,7 +2052,7 @@ void CDataConnector::SendRCSWUpdate()
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
-                    "Now download the update package from the remote server. Please wait......",
+                    "Now download the update package from the remote server. Please wait...",
                                                    0, QApplication::UnicodeUTF8));
     mp_MessageDlg->HideAllButtons();
     (void)mp_MessageDlg->show();
@@ -2083,7 +2083,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
         mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Confirmation Message",
                                                          0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(3, QApplication::translate("Core::CDataConnector", "Cancel",
                                                                0, QApplication::UnicodeUTF8));
@@ -2106,7 +2106,7 @@ void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const
         mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
         mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information Message",
                                                          0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "OK",
                                                                0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote session has been ended by the remote user.",

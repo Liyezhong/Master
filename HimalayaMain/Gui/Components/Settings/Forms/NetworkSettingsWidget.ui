@@ -138,7 +138,7 @@
       <item row="0" column="0" colspan="3">
        <widget class="QCheckBox" name="checkBox_RemoteCare">
         <property name="text">
-         <string>Enable Remote Care Events</string>
+         <string>Enable RemoteCare Events</string>
         </property>
        </widget>
       </item>

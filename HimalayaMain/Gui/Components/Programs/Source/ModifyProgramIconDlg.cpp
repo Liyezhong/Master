@@ -37,7 +37,7 @@ namespace Programs {
 CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
     MainMenu::CDialogFrame(p_Parent, p_MainWindow), mp_Ui(new Ui::CModifyProgramIconDlg),
     m_strConfirmMsg(tr("Information Message")),
-    m_strOK(tr("Ok")), m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
+    m_strOK(tr("OK")), m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {
     Q_UNUSED(p_MainWindow)
     mp_Ui->setupUi(GetContentFrame());
@@ -201,7 +201,7 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
 void CModifyProgramIconDlg::RetranslateUI()
 {
     m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramIconDlg", "Information Message", 0, QApplication::UnicodeUTF8);
-    m_strOK = QApplication::translate("Programs::CModifyProgramIconDlg", "Ok", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Programs::CModifyProgramIconDlg", "OK", 0, QApplication::UnicodeUTF8);
     m_strCancel = QApplication::translate("Programs::CModifyProgramIconDlg", "Cancel", 0, QApplication::UnicodeUTF8);
     m_strClose = QApplication::translate("Programs::CModifyProgramIconDlg", "Close", 0, QApplication::UnicodeUTF8);
 }

@@ -34,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>System is performing self-testing
+    <string>System is performing a self-test
 Please wait...</string>
    </property>
   </widget>

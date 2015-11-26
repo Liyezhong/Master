@@ -32,7 +32,7 @@ namespace Settings {
         m_Failed(tr("Failed")),
         m_bNoneUpdated(true),
         m_bShouldReportError(false),
-        m_strReportMsg(tr("Bottle check failed! Please check the details in the Bottle check status list.")),
+        m_strReportMsg(tr("Bottle Check failed! Please check the details in the Bottle Check status list.")),
         m_strWarning(tr("Warning")),
         m_strOK(tr("OK"))
     {
@@ -158,7 +158,7 @@ namespace Settings {
         m_Failed = QApplication::translate("Settings::CBottleCheckStatusDlg", "Failed", 0, QApplication::UnicodeUTF8);
         m_strWarning = QApplication::translate("Settings::CBottleCheckStatusDlg", "Warning", 0, QApplication::UnicodeUTF8);
         m_strOK = QApplication::translate("Settings::CBottleCheckStatusDlg", "OK", 0, QApplication::UnicodeUTF8);
-        m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check failed! Please check the details in the Bottle check status list.", 0, QApplication::UnicodeUTF8);
+        m_strReportMsg = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle Check failed! Please check the details in the Bottle Check status list.", 0, QApplication::UnicodeUTF8);
         QString dlgTitle = QApplication::translate("Settings::CBottleCheckStatusDlg", "Bottle check", 0, QApplication::UnicodeUTF8);
 
         SetDialogTitle(dlgTitle);

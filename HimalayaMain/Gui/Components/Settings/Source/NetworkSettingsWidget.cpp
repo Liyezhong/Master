@@ -240,7 +240,7 @@ bool CNetworkSettingsWidget::validator(QString &input, SettingType_t type)
 void CNetworkSettingsWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CNetworkSettingsWidget", "Network", 0, QApplication::UnicodeUTF8));
-    mp_Ui->checkBox_RemoteCare->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Enable Remote Care Events", 0, QApplication::UnicodeUTF8));
+    mp_Ui->checkBox_RemoteCare->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Enable RemoteCare Events", 0, QApplication::UnicodeUTF8));
     mp_Ui->checkBox_DirectConnection->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Direct Connection", 0, QApplication::UnicodeUTF8));
     mp_Ui->proxyUserNameLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy User Name", 0, QApplication::UnicodeUTF8));
     mp_Ui->proxyPasswordLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Password", 0, QApplication::UnicodeUTF8));

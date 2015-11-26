@@ -60,6 +60,13 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
         case QLocale::Portuguese:
         case QLocale::Chinese:
         case QLocale::Japanese:
+        case QLocale::Korean: //ko
+        case QLocale::Czech:   //cs
+        case QLocale::French: //fr
+        case QLocale::Hungarian: //hu
+        case QLocale::Dutch: //nl
+        case QLocale::Polish: //pl
+        case QLocale::Turkish: //tr
             break;
         default:
             qDebug() << "Unsupported language is detected";
