@@ -50,8 +50,9 @@ CLanguageModel::CLanguageModel(QObject *p_Parent):
 /****************************************************************************/
 void CLanguageModel::SetLanguageList(QStringList LanguageList)
 {
+    beginResetModel();
     m_LanguageList = LanguageList;
-   // m_VisibleRowCount = m_LanguageList.count();
+    endResetModel();
 }
 
 /****************************************************************************/
