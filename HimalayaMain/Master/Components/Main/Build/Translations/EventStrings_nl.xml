@@ -1,276 +1,276 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="zh">
-        <string id="17039372" text1="在 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
-        <string id="16973834" text1="由于未知原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
-        <string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
-        <string id="17235976" text1="%1 语言包未找到。" text2=""/>
-        <string id="17235977" text1="密码与要求不符。所需长度应为 4 至 16 个字符。" text2=""/>
-        <string id="17236006" text1="远程维护设置失败。" text2=""/>
-        <string id="19267585" text1="试剂名称 %1 已被使用。请使用其它试剂名称。" text2=""/>
-        <string id="19267599" text1="%1 失败。" text2=""/>
-        <string id="17236009" text1="试剂的数据模块初始化失败。" text2=""/>
-        <string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
-        <string id="17235998" text1="关机时保存文件 %1 失败。" text2=""/>
-        <string id="17236013" text1="读取设备历史信息失败。" text2=""/>
-        <string id="17236011" text1="站点配置错误。" text2=""/>
-        <string id="17629209" text1="导出失败。高级加密标准尚未初始化。" text2=""/>
-        <string id="17629201" text1="导出失败。无法打开文件进行读取。" text2=""/>
-        <string id="17629202" text1="导出失败。无法打开文件进行写入。" text2=""/>
-        <string id="17629200" text1="导出失败。无法加密导出的数据包。" text2=""/>
-        <string id="17629185" text1="目录创建失败" text2=""/>
-        <string id="17629203" text1="读取文件出错" text2=""/>
-        <string id="17629204" text1="写入文件出错" text2=""/>
-        <string id="17629194" text1="导出失败。" text2=""/>
-        <string id="17629186" text1="文件复制失败" text2=""/>
-        <string id="17629213" text1="导出失败。无法生成用于加密导出数据包的密钥。" text2=""/>
-        <string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化。" text2=""/>
-        <string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配。" text2=""/>
-        <string id="17629190" text1="导出失败。数据模块初始化失败。" text2=""/>
-        <string id="17629199" text1="导出失败。请求导出的类型无效。" text2=""/>
-        <string id="17629212" text1="导出失败。检测到错误的文件模式。" text2=""/>
-        <string id="17629197" text1="导出失败。日志目录不存在。" text2=""/>
-        <string id="17629211" text1="导出失败。未设置用于计算的密钥位数。" text2=""/>
-        <string id="17629195" text1="导出失败。源目录不存在。" text2=""/>
-        <string id="17629193" text1="导出成功" text2=""/>
-        <string id="17629196" text1="导出失败。目标目录不存在。" text2=""/>
-        <string id="17629198" text1="导出失败。目标文件名格式错误。" text2=""/>
-        <string id="17629192" text1="导出失败。无法归档文件。" text2=""/>
-        <string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件。" text2=""/>
-        <string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629191" text1="导出失败。验证数据模块失败。" text2=""/>
-        <string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
-        <string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
-        <string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-        <string id="16846862" text1="用户通过按下按钮进行确认：%1" text2=""/>
-        <string id="16846854" text1="调试" text2=""/>
-        <string id="16846851" text1="错误" text2=""/>
-        <string id="16846850" text1="严重出错" text2=""/>
-        <string id="16846853" text1="信息" text2=""/>
-        <string id="16846849" text1="未定义类型" text2=""/>
-        <string id="16846852" text1="警告" text2=""/>
-        <string id="16846861" text1="已解决。" text2=""/>
-        <string id="16843278" text1="用户登录" text2=""/>
-        <string id="16843295" text1="关" text2=""/>
-        <string id="16843294" text1="开" text2=""/>
-        <string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
-        <string id="16843315" text1="包埋盒" text2=""/>
-        <string id="16843316" text1="循环" text2=""/>
-        <string id="16843317" text1="天数" text2=""/>
-        <string id="16843292" text1="警报错误音已更改" text2=""/>
-        <string id="16843301" text1="警报错误音的音量已更改" text2=""/>
-        <string id="16843291" text1="警报警告音已更改" text2=""/>
-        <string id="16843300" text1="警报警告音的音量已更改" text2=""/>
-        <string id="16843288" text1="日期格式已更改为 %1" text2=""/>
-        <string id="16843272" text1="已将语言设置为 %1" text2=""/>
-        <string id="16843275" text1="网络设置已更改" text2=""/>
-        <string id="16843274" text1="蜡箱温度已更改为 %1" text2=""/>
-        <string id="16843293" text1="脱水试剂管理系统状态已更改为 %1" text2=""/>
-        <string id="16843286" text1="温度格式已更改为 %1" text2=""/>
-        <string id="16843287" text1="时间格式已更改为 %1" text2=""/>
-        <string id="17039365" text1="仪器初始化失败" text2=""/>
-        <string id="19529731" text1="密码更改成功。" text2=""/>
-        <string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
-        <string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="17825800" text1="仪器已从电源故障中恢复。" text2=""/>
-        <string id="19005441" text1="软件更新无法启动。" text2=""/>
-        <string id="19005442" text1="软件更新失败" text2=""/>
-        <string id="19005443" text1="软件更新回滚失败" text2=""/>
-        <string id="19005447" text1="软件更新成功" text2=""/>
-        <string id="19005448" text1="此软件包版本低于当前版本。软件更新已取消，未执行更新。" text2=""/>
-        <string id="17891331" text1="系统初始化完成" text2=""/>
-        <string id="17891335" text1="请关闭仪器背面的电源开关。" text2=""/>
-        <string id="17891336" text1="安装已完成。 请拔下 USB 驱动器，然后重启仪器。" text2=""/>
-        <string id="17891337" text1="仪器正在更新数据。请不要中断。" text2=""/>
-        <string id="17891338" text1="软件更新正在进行， 请不要中断。" text2=""/>
-        <string id="17891339" text1="意外错误。请联系维修人员。" text2=""/>
-        <string id="16973837" text1="取消" text2=""/>
-        <string id="16973840" text1="继续" text2=""/>
-        <string id="16973839" text1="否" text2=""/>
-        <string id="16973836" text1="确定" text2=""/>
-        <string id="16973841" text1="停止" text2=""/>
-        <string id="16973838" text1="是" text2=""/>
-        <string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
-        <string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
-        <string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
-        <string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
-        <string id="33817097" text1="组验证失败。程序数据模块未初始化。" text2=""/>
-        <string id="33817088" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817092" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817096" text1="组验证失败。试剂数据模块未初始化。" text2=""/>
-        <string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中。" text2=""/>
-        <string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
-        <string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-        <string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
-        <string id="33817861" text1="声音类型参数超出范围。" text2=""/>
-        <string id="33817860" text1="音量参数超出范围。" text2=""/>
-        <string id="33817859" text1="声音周期参数超出范围。" text2=""/>
-        <string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
-        <string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
-        <string id="33816608" text1="程序 %1 中的步骤 ID %2 无效。" text2=""/>
-        <string id="33817862" text1="石蜡温度超出范围。" text2=""/>
-        <string id="33816626" text1="新建程序失败。" text2=""/>
-        <string id="33816597" text1="程序列表中最多只允许 %1 个程序。" text2=""/>
-        <string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
-        <string id="33816631" text1="程序删除失败。" text2=""/>
-        <string id="33816623" text1="程序 %2 与 %1 的ID 一样。" text2=""/>
-        <string id="33816620" text1="程序 %1 的时间格式错误。" text2=""/>
-        <string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-        <string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
-        <string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
-        <string id="33816592" text1="程序验证失败。" text2=""/>
-        <string id="33816584" text1="程序读取失败。" text2=""/>
-        <string id="33816605" text1="程序 %1 中的步骤数超过限值。最多允许 14 个步骤。" text2=""/>
-        <string id="33818116" text1="程序 %1 必须至少有 %2 个步骤。" text2=""/>
-        <string id="33818118" text1="程序 %2 中步骤 %1 的浸泡时间超过限值。有效范围：%3 - %4。" text2=""/>
-        <string id="33818119" text1="程序 %2 中步骤 %1 的温度超过限值。有效范围：%3 - %4 (摄氏度)。" text2=""/>
-        <string id="33816606" text1="程序 %1 中找到无效试剂 ID %2。" text2=""/>
-        <string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
-        <string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
-        <string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-        <string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
-        <string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
-        <string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
-        <string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
-        <string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
-        <string id="16842767" text1="删除文件 %1 出错。" text2=""/>
-        <string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
-        <string id="16842772" text1="时间偏移太大（%1 秒）。允许的最大值为 %2 秒。" text2=""/>
-        <string id="16846858" text1="将时间设置为 %1。" text2=""/>
-        <string id="33619971" text1="仪器已启动 (序列号为 %1，类型为 %2)" text2=""/>
-        <string id="33947653" text1="导入失败。导入文件的格式不正确" text2=""/>
-        <string id="50331760" text1="导入失败。设备名称不匹配。" text2=""/>
-        <string id="50331763" text1="导出失败。没有找到USB驱动器。" text2=""/>
-        <string id="50331762" text1="导入失败。没有找到USB驱动器。" text2=""/>
-        <string id="33947665" text1="导入导出正在运行。" text2=""/>
-        <string id="33947664" text1="导入失败。" text2=""/>
-        <string id="33947657" text1="导入失败。数据模块初始化失败" text2=""/>
-        <string id="33947652" text1="导入失败。没有要导入的文件。" text2=""/>
-        <string id="33947655" text1="导入失败。导入数据包中没有所需的文件。" text2=""/>
-        <string id="33947659" text1="导入失败。回滚失败。" text2=""/>
-        <string id="33947662" text1="导入成功。" text2=""/>
-        <string id="33947656" text1="导入失败。软件版本与导入文件不匹配" text2=""/>
-        <string id="50331759" text1="导入失败。数据包文件损坏" text2=""/>
-        <string id="50331761" text1="导入类型无效。" text2=""/>
-        <string id="33947660" text1="导入失败。更新回滚失败。" text2=""/>
-        <string id="33947658" text1="导入失败。验证数据模块失败" text2=""/>
-        <string id="33619974" text1="密码更改成功。" text2=""/>
-        <string id="33619972" text1="登录失败。密码错误。" text2=""/>
-        <string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="33619978" text1="图形界面已经连接。" text2=""/>
-        <string id="33619975" text1="图形界面已经断开。" text2=""/>
-        <string id="50331719" text1="活性炭过滤器已过期，请更换。" text2=""/>
-        <string id="50331771" text1="活性炭过滤器已过期，请尽快更换。" text2=""/>
-        <string id="50331772" text1="用户添加了程序 %1。" text2=""/>
-        <string id="50331773" text1="用户更新了程序 %1。" text2=""/>
-        <string id="50331774" text1="用户删除了程序 %1。" text2=""/>
-        <string id="50331775" text1="将用户模式更改为标准用户。" text2=""/>
-        <string id="50331776" text1="将用户模式更改为管理员。" text2=""/>
-        <string id="50331777" text1="将用户模式更改为检修人员。" text2=""/>
-        <string id="50331718" text1="请联系检修人员，执行年度预防性维护，以保持仪器正常工作。" text2=""/>
-        <string id="50331765" text1="活性炭过滤器维护时间已重置。" text2=""/>
-        <string id="50331764" text1="仪器维护时间已重置。" text2=""/>
-        <string id="50331766" text1="暂停超过 5 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
-        <string id="50331651" text1="标准活检组织" text2=""/>
-        <string id="50331652" text1="清洗程序" text2=""/>
-        <string id="50331650" text1="标准过夜组织" text2=""/>
-        <string id="50331671" text1="清洗酒精" text2=""/>
-        <string id="50331670" text1="清洗二甲苯" text2=""/>
-        <string id="50331666" text1="酒精 100%" text2=""/>
-        <string id="50331662" text1="酒精 70%" text2=""/>
-        <string id="50331663" text1="酒精 80%" text2=""/>
-        <string id="50331664" text1="酒精 90%" text2=""/>
-        <string id="50331665" text1="酒精 95%" text2=""/>
-        <string id="50331661" text1="福尔马林" text2=""/>
-        <string id="50331660" text1="清洗酒精" text2=""/>
-        <string id="50331659" text1="清洗试剂" text2=""/>
-        <string id="50331657" text1="透明剂" text2=""/>
-        <string id="50331656" text1="无水脱水剂" text2=""/>
-        <string id="50331655" text1="稀释性脱水剂" text2=""/>
-        <string id="50331653" text1="固定剂" text2=""/>
-        <string id="50331658" text1="石蜡" text2=""/>
-        <string id="50331654" text1="水" text2=""/>
-        <string id="50331668" text1="石蜡" text2=""/>
-        <string id="50331669" text1="去离子水" text2=""/>
-        <string id="50331667" text1="二甲苯" text2=""/>
-        <string id="67174416" text1="用户关闭仪器。" text2=""/>
-        <string id="67174417" text1="执行恢复操作：%1。" text2=""/>
-        <string id="67174418" text1="用户启动程序 %1，结束时间 %2。" text2=""/>
-        <string id="67174419" text1="用户继续执行程序 %1。" text2=""/>
-        <string id="67174420" text1="用户暂停程序 %1。" text2=""/>
-        <string id="67174421" text1="用户终止程序 %1。" text2=""/>
-        <string id="67174422" text1="用户排空程序 %1 的最后一种试剂。" text2=""/>
-        <string id="67174423" text1="用户将石蜡熔点从 %1 更改为 %2。" text2=""/>
-        <string id="67174656" text1="启动自检。" text2=""/>
-        <string id="67174733" text1="自检已成功。" text2=""/>
-        <string id="67174912" text1="启动预检。" text2=""/>
-        <string id="67174927" text1="启动试剂/石蜡液位检查。" text2=""/>
-        <string id="67174928" text1="试剂/石蜡液位检查成功。" text2=""/>
-        <string id="67174929" text1="预检成功。" text2=""/>
-        <string id="67175168" text1="检测到程序 %1 在步骤 %2 未完成 。" text2=""/>
-        <string id="67175186" text1="包含未完成程序列表的系统文件丢失。 请检查，确定存储设备是否已损坏。" text2=""/>
-        <string id="67175200" text1="启动程序 %1" text2=""/>
-        <string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
-        <string id="67175203" text1="正在终止程序。" text2=""/>
-        <string id="67175204" text1="程序已终止。" text2=""/>
-        <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175207" text1="正在排液。" text2=""/>
-        <string id="67175208" text1="等待填充石蜡。" text2=""/>
-        <string id="67175209" text1="加热液位传感器。" text2=""/>
-        <string id="67175210" text1="已开始填充" text2=""/>
-        <string id="67175213" text1="已开始脱水" text2=""/>
-        <string id="67175215" text1="已完成步骤 %1" text2=""/>
-        <string id="67175216" text1="已开始步骤 %1 (站点 %2、%3、%4、%5、%6)。" text2=""/>
-        <string id="67175217" text1="已完成程序 %1" text2=""/>
-        <string id="67175218" text1="开始干燥过程。" text2=""/>
-        <string id="67175219" text1="完成干燥过程。" text2=""/>
-        <string id="67175220" text1="步骤 %1 和步骤 %2 之间的时间超过 4 分钟。" text2=""/>
-        <string id="67175222" text1="填充成功。" text2=""/>
-        <string id="67175223" text1="排液成功。" text2=""/>
-        <string id="67175224" text1="开始冷却。" text2=""/>
-        <string id="67175424" text1="预检查" text2=""/>
-        <string id="67175425" text1="干燥过程" text2=""/>
-        <string id="67176012" text1="空气系统：负压未到达目标值。真空到达最大值 %1 kPa。" text2=""/>
-        <string id="67176025" text1="旋转阀功能不正常。请检查。" text2=""/>
-        <string id="67176026" text1="仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="67176194" text1="错误 %1！在干燥过程中密封失败。" text2=""/>
-        <string id="67176196" text1="错误 %1！蜡箱门打开，是否要重新熔化石蜡？" text2=""/>
-        <string id="67176198" text1="请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176199" text1="请根据用户手册检查试剂瓶液位。" text2=""/>
-        <string id="67176200" text1="脱水缸排液失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
-        <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
-        <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
-        <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
-        <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
-        <string id="67176210" text1="压力测试失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176211" text1="远程警报系统未连接！请将设备连接至远程警报系统。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内添加试剂。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请取出样品。" text2=""/>
-        <string id="67176216" text1="电源故障恢复过程中加热失败。请联系维修人员。" text2=""/>
-        <string id="67176217" text1="电源故障恢复程序失败。请联系维修人员。" text2=""/>
-        <string id="67176218" text1="系统错误。请联系维修人员。" text2=""/>
-        <string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
-        <string id="67176220" text1="请清洁液位传感器。" text2=""/>
-        <string id="67176223" text1="错误 %1！终止失败。" text2=""/>
-        <string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
-        <string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
-        <string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="19202061" text1="用户重置站点 %1 数据。" text2=""/>
-        <string id="19202062" text1="用户将站点 %1 中的试剂更改为 %2。" text2=""/>
-        <string id="19202063" text1="用户将站点 %1 设为满。" text2=""/>
-        <string id="19202064" text1="用户将站点 %1 设为空。" text2=""/>
-        <string id="19267602" text1="用户添加了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
-        <string id="19267604" text1="用户更新了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="16973842" text1="用户选择超时。" text2=""/>
-        <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
-        <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
+    <language name="nl">
+        <string id="17039372" text1="Het apparaat heeft storing %1 tijdens scenario %2 geconstateerd en heeft geprobeerd om herstelactie %3 uit te voeren. Het resultaat van de actie is %4." text2=""/>
+        <string id="16973834" text1="De gebeurtenis wordt om een of andere reden niet in het logbestand opgeslagen. Neem contact op met de servicafdeling." text2=""/>
+        <string id="17235997" text1="Raadpleeg de gebruikerslog voor meer informatie." text2=""/>
+        <string id="17235976" text1="Vertalingen voor taal %1 niet gevonden." text2=""/>
+        <string id="17235977" text1="Het wachtwoord voldoet niet aan de eisen. Het wachtwoord dient tussen 4 en 16 karakters lang te zijn." text2=""/>
+        <string id="17236006" text1="Configureren van de Remote Care is mislukt." text2=""/>
+        <string id="19267585" text1="De reagensnaam %1 wordt al gebruikt. Gebruik een andere reagensnaam." text2=""/>
+        <string id="19267599" text1="%1 is mislukt." text2=""/>
+        <string id="17236009" text1="Initialiseren van datamodule voor reagentia is mislukt." text2=""/>
+        <string id="17760274" text1="Opslaan van gebruikersinstellingen is mislukt. Neem contact op met de servicafdeling." text2=""/>
+        <string id="17235998" text1="Opslaan van XML %1 mislukte tijdens afsluiten." text2=""/>
+        <string id="17236013" text1="Lezen van InstrumentHistory.xml is mislukt." text2=""/>
+        <string id="17236011" text1="Verifiëren van Verifying Station.xml is mislukt." text2=""/>
+        <string id="17629209" text1="Export mislukt. Advance Encryption Standard is niet geïnitialiseerd." text2=""/>
+        <string id="17629201" text1="Export mislukt. Kan bestand niet openen om te lezen." text2=""/>
+        <string id="17629202" text1="Export mislukt. Kan bestand niet openen om te schrijven." text2=""/>
+        <string id="17629200" text1="Export mislukt. Encryptie van exportpakket is mislukt." text2=""/>
+        <string id="17629185" text1="Aanmaken van map is mislukt" text2=""/>
+        <string id="17629203" text1="Fout bij lezen van bestand" text2=""/>
+        <string id="17629204" text1="Fout bij schrijven van bestand" text2=""/>
+        <string id="17629194" text1="Export mislukt." text2=""/>
+        <string id="17629186" text1="Kopiëren van bestand is mislukt" text2=""/>
+        <string id="17629213" text1="Export mislukt. Genereren van veiligheidssleutel voor encryptie van exportpakket is mislukt." text2=""/>
+        <string id="17629208" text1="Export mislukt. Hash-based message authentication code is niet geïnitialiseerd." text2=""/>
+        <string id="17629205" text1="Export mislukt. Index van hash chain en index van USB-apparaat komen overeen." text2=""/>
+        <string id="17629190" text1="Export mislukt. Initialisatie van datamodule is mislukt." text2=""/>
+        <string id="17629199" text1="Export mislukt. Gewenste export heeft ongeldig type." text2=""/>
+        <string id="17629212" text1="Export mislukt. Verkeerde bestandsmodus is gedetecteerd." text2=""/>
+        <string id="17629197" text1="Export mislukt. Logmap bestaat niet." text2=""/>
+        <string id="17629211" text1="Export mislukt. De key bits zijn niet ingesteld voor berekeningen." text2=""/>
+        <string id="17629195" text1="Export mislukt. Bronmap bestaat niet." text2=""/>
+        <string id="17629193" text1="Export gelukt" text2=""/>
+        <string id="17629196" text1="Export mislukt. Doelmap bestaat niet." text2=""/>
+        <string id="17629198" text1="Export mislukt. Naam van doelbestand is verkeerd." text2=""/>
+        <string id="17629192" text1="Export mislukt. Bestanden kunnen niet worden gearchiveerd." text2=""/>
+        <string id="17629187" text1="Export mislukt. Bestand RMS_Status.csv kan niet worden aangemaakt." text2=""/>
+        <string id="17629188" text1="Export mislukt. Bestand TempConfiguration.xml kan niet worden aangemaakt." text2=""/>
+        <string id="17629189" text1="Export mislukt. Bestand TempConfiguration.xml kan niet worden gelezen." text2=""/>
+        <string id="17629191" text1="Export mislukt. Verificatie van datamodule is mislukt." text2=""/>
+        <string id="17629215" text1="Export mislukt. Zipopdracht niet gevonden in het systeem." text2=""/>
+        <string id="17629214" text1="Export mislukt. Bestanden kunnen niet worden gezipt." text2=""/>
+        <string id="17629216" text1="Export mislukt. Zippen duurt te lang." text2=""/>
+        <string id="16846862" text1="Gebruiker bevestigd door drukken knop: %1" text2=""/>
+        <string id="16846854" text1="Debug" text2=""/>
+        <string id="16846851" text1="Storing" text2=""/>
+        <string id="16846850" text1="Fatale fout" text2=""/>
+        <string id="16846853" text1="Info" text2=""/>
+        <string id="16846849" text1="Ongedefinieerd type" text2=""/>
+        <string id="16846852" text1="Waarschuwing" text2=""/>
+        <string id="16846861" text1="Opgelost." text2=""/>
+        <string id="16843278" text1="Gebruikerslogin" text2=""/>
+        <string id="16843295" text1="Uit" text2=""/>
+        <string id="16843294" text1="Aan" text2=""/>
+        <string id="16843314" text1="Reiniging toestand Reagens Management Systeem gewijzigd in %1." text2=""/>
+        <string id="16843315" text1="Cassettes" text2=""/>
+        <string id="16843316" text1="Cycli" text2=""/>
+        <string id="16843317" text1="Dagen" text2=""/>
+        <string id="16843292" text1="Alarm: foutgeluid gewijzigd" text2=""/>
+        <string id="16843301" text1="Alarm: volume foutgeluid gewijzigd" text2=""/>
+        <string id="16843291" text1="Alarm: waarschuwingsgeluid gewijzigd" text2=""/>
+        <string id="16843300" text1="Alarm: volume waarschuwingsgeluid gewijzigd" text2=""/>
+        <string id="16843288" text1="Datumweergave gewijzigd in %1" text2=""/>
+        <string id="16843272" text1="Taal ingesteld op %1" text2=""/>
+        <string id="16843275" text1="Netwerkinstellingen gewijzigd" text2=""/>
+        <string id="16843274" text1="Oventemperatuur gewijzigd naar %1" text2=""/>
+        <string id="16843293" text1="Verwerking toestand Reagens Management Systeem gewijzigd in %1" text2=""/>
+        <string id="16843286" text1="Temperatuurweergave gewijzigd in %1" text2=""/>
+        <string id="16843287" text1="Tijdsweergave gewijzigd in %1" text2=""/>
+        <string id="17039365" text1="Initialisatie van instrument mislukt" text2=""/>
+        <string id="19529731" text1="Wachtwoord succesvol gewijzigd." text2=""/>
+        <string id="19529729" text1="Inloggen mislukt. Verkeerd wachtwoord. Geldige wachtwoorden bestaan uit 4 tot 16 karakters." text2=""/>
+        <string id="19529730" text1="Wachtwoord kan niet worden gewijzigd. Wachtwoorden komen niet overeen." text2=""/>
+        <string id="17825800" text1="Systeem hersteld van stroomstoring." text2=""/>
+        <string id="19005441" text1="Software-update kon niet worden gestart vanwege een fout." text2=""/>
+        <string id="19005442" text1="Software-update is mislukt" text2=""/>
+        <string id="19005443" text1="Rollback van software-update is mislukt" text2=""/>
+        <string id="19005447" text1="Software-update is gelukt" text2=""/>
+        <string id="19005448" text1="De huidige software is nieuwer dan het updatepakket. Software-update is geannuleerd zonder updating." text2=""/>
+        <string id="17891331" text1="Systeem-initialisatie voltooid" text2=""/>
+        <string id="17891335" text1="Schakel het apparaat uit met de schakelaar aan de achterzijde." text2=""/>
+        <string id="17891336" text1="Installatie is voltooid.  Verwijder de USB-stick en start het apparaat opnieuw op." text2=""/>
+        <string id="17891337" text1="Het apparaat is de rollback-gegevens aan het updaten. Onderbreek dit proces niet." text2=""/>
+        <string id="17891338" text1="Software-update loopt ... onderbreek dit proces niet." text2=""/>
+        <string id="17891339" text1="Onverwachte fout. Neem contact op met de serviceafdeling." text2=""/>
+        <string id="16973837" text1="Annuleren" text2=""/>
+        <string id="16973840" text1="Verder" text2=""/>
+        <string id="16973839" text1="Nee" text2=""/>
+        <string id="16973836" text1="OK" text2=""/>
+        <string id="16973841" text1="Stoppen" text2=""/>
+        <string id="16973838" text1="Ja" text2=""/>
+        <string id="33619990" text1="Kan datum en tijd niet meer dan 24 uur van die van huidig systeem wijzigen." text2=""/>
+        <string id="33619991" text1="Gebruiker heeft huidige datum/tijd van het systeem ingesteld op %1" text2=""/>
+        <string id="33817094" text1="Groepsverificatie is mislukt. Datamodule met basisgegevens is niet geïnitialiseerd." text2=""/>
+        <string id="33817095" text1="Groepsverificatie is mislukt. Type datamodule is ongeldig." text2=""/>
+        <string id="33817097" text1="Groepsverificatie is mislukt. Datamodule met programmagegevens is niet geïnitialiseerd." text2=""/>
+        <string id="33817088" text1="Reagens-ID bestaat in programmalijst maar niet in reagenslijst: %1." text2=""/>
+        <string id="33817092" text1="Reagens-ID bestaat in gebruikersinstellingen maar niet in reagenslijst: %1." text2=""/>
+        <string id="33817096" text1="Groepsverificatie is mislukt. Datamodule met reagensgegevens is niet geïnitialiseerd." text2=""/>
+        <string id="33817093" text1="Station-ID bestaat in stationslijst maar niet in stationsmatrix: %1." text2=""/>
+        <string id="33817098" text1="Groepsverificatie is mislukt. Datamodule met stationsgegevens is niet geïnitialiseerd." text2=""/>
+        <string id="33817101" text1="Groepsverificatie is mislukt. Datamodule met gebruikersinstellingen is niet geïnitialiseerd." text2=""/>
+        <string id="33818114" text1="Programma  %1  reagentia voor stap %2 en stap %3 zijn niet compatibel." text2=""/>
+        <string id="33817861" text1="De waarde voor het geluidsniveau ligt buiten bereik." text2=""/>
+        <string id="33817860" text1="De waarde voor het geluidsvolume ligt buiten bereik." text2=""/>
+        <string id="33817859" text1="De waarde voor het geluidsinterval ligt buiten bereik." text2=""/>
+        <string id="33816577" text1="%1 is geen geldige programma-ID." text2=""/>
+        <string id="33816578" text1="Fout bij het ophalen van service-informatie voor apparaat %1" text2=""/>
+        <string id="33816608" text1="Stap ID %2 in programma %1 is ongeldig." text2=""/>
+        <string id="33817862" text1="De paraffinetemperatuur ligt buiten bereik." text2=""/>
+        <string id="33816626" text1="Toevoegen van programma is mislukt." text2=""/>
+        <string id="33816597" text1="De programmalijst bevat meer dan %1 programma's. Slechts %1 programma's zijn toegestaan." text2=""/>
+        <string id="33816624" text1="Wissen van programma is mislukt vanwege ongeldige programma-ID %1." text2=""/>
+        <string id="33816631" text1="Wissen van programma is mislukt." text2=""/>
+        <string id="33816623" text1="Programma-ID %1 voor programma %2 is niet uniek." text2=""/>
+        <string id="33816620" text1="Programmastap(pen) in programma %1 bevat ongeldige duurweergave." text2=""/>
+        <string id="33818117" text1="Lengte van programmanaam overschrijdt beperking voor programma %1 . Geldig bereik %2  -  %3 karakters." text2=""/>
+        <string id="33818113" text1="De programmanaam %1 wordt al gebruikt. Kies een andere programmanaam." text2=""/>
+        <string id="33816596" text1="Ongeldige index in programma-hashtabel." text2=""/>
+        <string id="33816592" text1="Verifiëren van Programs.xml is mislukt." text2=""/>
+        <string id="33816584" text1="Lezen van Programs.xml is mislukt." text2=""/>
+        <string id="33816605" text1="Aantal stappen in programma %1 overschrijdt de limiet. Max. 14 stappen toegestaan." text2=""/>
+        <string id="33818116" text1="Programma %1 moet ten minste %2 stap(pen) hebben." text2=""/>
+        <string id="33818118" text1="Duur in stap %1 van programma %2 overschrijdt de limiet. Geldig bereik:  %3  -  %4 ." text2=""/>
+        <string id="33818119" text1="Temperatuur in stap %1 van programma %2 overschrijdt de limiet. Geldig bereik:  %3  -  %4  (Celsius)." text2=""/>
+        <string id="33816606" text1="Programmaverifier vond ongeldige reagens-ID %2 in programma %1." text2=""/>
+        <string id="33816846" text1="Lezen van %1 reagens in reagenslijst is mislukt." text2=""/>
+        <string id="33816845" text1="Schrijven van %1 reagentia in reagenslijst is mislukt." text2=""/>
+        <string id="33816840" text1="Reagensnaam %1 is te lang (max. 32 karakters)." text2=""/>
+        <string id="33817864" text1="Onbekend reinigingsmodel Reagens Management Systeem " text2=""/>
+        <string id="33817863" text1="Onbekend verwerkingsmodel Reagens Management Systeem" text2=""/>
+        <string id="33818115" text1="De programmanaam mag het woord Leica niet bevatten." text2=""/>
+        <string id="50331649" text1="Export mislukt. Onvoldoende geheugencapaciteit op SD-kaart." text2=""/>
+        <string id="50331672" text1="Export mislukt. Onvoldoende geheugencapaciteit op USB-stick." text2=""/>
+        <string id="16842767" text1="Er is een fout opgetreden bij het wissen van bestand %1." text2=""/>
+        <string id="16842762" text1="Er is een fout opgetreden bij het lezen van configuratiebestand %1." text2=""/>
+        <string id="16842772" text1="Tijdafwijking van %1 seconden is te groot. Max. toegestane waarde bedraagt %2 seconden." text2=""/>
+        <string id="16846858" text1="Stel datum/tijd in op %1 ." text2=""/>
+        <string id="33619971" text1="Gestart apparaat (serienummer: %1, type: %2)" text2=""/>
+        <string id="33947653" text1="Import mislukt. Het formaat van het importbestand is niet correct" text2=""/>
+        <string id="50331760" text1="Import mislukt. De apparaatnaam is niet correct." text2=""/>
+        <string id="50331763" text1="Er is geen USB-apparaat gevonden in het apparaat om bestanden te exporteren." text2=""/>
+        <string id="50331762" text1="Er is geen USB-apparaat gevonden in het apparaat om bestanden te importeren." text2=""/>
+        <string id="33947665" text1="ImportExport thread loopt…" text2=""/>
+        <string id="33947664" text1="Import mislukt" text2=""/>
+        <string id="33947657" text1="Import mislukt. Initialisatie van datamodule is mislukt" text2=""/>
+        <string id="33947652" text1="Import mislukt. Er is geen bestand om te importeren." text2=""/>
+        <string id="33947655" text1="Import mislukt. Vereiste bestanden zijn niet aanwezig in importpakket." text2=""/>
+        <string id="33947659" text1="Import mislukt. Rollback is mislukt." text2=""/>
+        <string id="33947662" text1="Importeren is gelukt." text2=""/>
+        <string id="33947656" text1="Import mislukt. SW-versies komen niet overeen met de importbestanden" text2=""/>
+        <string id="50331759" text1="Import mislukt. Het pakketbestand is corrupt" text2=""/>
+        <string id="50331761" text1="Type import is ongeldig." text2=""/>
+        <string id="33947660" text1="Import mislukt. Updaten van rollback is mislukt." text2=""/>
+        <string id="33947658" text1="Import mislukt. Verificatie van datamodule is mislukt" text2=""/>
+        <string id="33619974" text1="Wachtwoord succesvol gewijzigd." text2=""/>
+        <string id="33619972" text1="Inloggen mislukt. Verkeerd wachtwoord." text2=""/>
+        <string id="33619973" text1="Wachtwoord kan niet worden gewijzigd. Wachtwoorden komen niet overeen." text2=""/>
+        <string id="33619978" text1="GUI verbonden" text2=""/>
+        <string id="33619975" text1="GUI is gestopt." text2=""/>
+        <string id="50331719" text1="Het actieve-koolstoffilter is te oud. Vervang door een nieuw actieve-koolstoffilter." text2=""/>
+        <string id="50331771" text1="Het actieve-koolstoffilter is te oud. Vervang z.s.m. door een nieuw actieve-koolstoffilter." text2=""/>
+        <string id="50331772" text1="Gebruiker heeft programma %1 toegevoegd." text2=""/>
+        <string id="50331773" text1="Gebruiker heeft programma %1 bijgewerkt." text2=""/>
+        <string id="50331774" text1="Gebruiker heeft programma %1 verwijderd." text2=""/>
+        <string id="50331775" text1="Verander de gebruikersmodus in standaardgebruiker." text2=""/>
+        <string id="50331776" text1="Verander de gebruikersmodus in beheerder." text2=""/>
+        <string id="50331777" text1="Verander de gebruikersmodus in service." text2=""/>
+        <string id="50331718" text1="Neem contact op met de serviceafdeling voor jaarlijks preventief onderhoud, zodat uw apparaat goed blijft werken" text2=""/>
+        <string id="50331765" text1="De bedrijfstijd van het actieve-koolstoffilter is gereset." text2=""/>
+        <string id="50331764" text1="De bedrijfstijd van het apparaat is gereset." text2=""/>
+        <string id="50331766" text1="Pauze is langer dan 5 minuten. Hervat het programma zo snel mogelijk!" text2=""/>
+        <string id="50331767" text1="Pauze is langer dan 10 minuten. Hervat het programma zo snel mogelijk!" text2=""/>
+        <string id="50331768" text1="Het programma kan niet worden hervat. Pauze is langer dan 15 minuten." text2=""/>
+        <string id="50331651" text1="Biopsie" text2=""/>
+        <string id="50331652" text1="Rein.progr." text2=""/>
+        <string id="50331650" text1="'s Nachts" text2=""/>
+        <string id="50331671" text1="Reinigingsalcohol" text2=""/>
+        <string id="50331670" text1="Reinigingsxyleen" text2=""/>
+        <string id="50331666" text1="Ethanol 100%" text2=""/>
+        <string id="50331662" text1="Ethanol 70%" text2=""/>
+        <string id="50331663" text1="Ethanol 80%" text2=""/>
+        <string id="50331664" text1="Ethanol 90%" text2=""/>
+        <string id="50331665" text1="Ethanol 95%" text2=""/>
+        <string id="50331661" text1="Formaline" text2=""/>
+        <string id="50331660" text1="Reinigingsalcohol" text2=""/>
+        <string id="50331659" text1="Reinigingsoplossing" text2=""/>
+        <string id="50331657" text1="Klaring" text2=""/>
+        <string id="50331656" text1="Dehydratie, absoluut" text2=""/>
+        <string id="50331655" text1="Dehydratie, verdund" text2=""/>
+        <string id="50331653" text1="Fixatie" text2=""/>
+        <string id="50331658" text1="Paraffine" text2=""/>
+        <string id="50331654" text1="Water" text2=""/>
+        <string id="50331668" text1="Paraffine" text2=""/>
+        <string id="50331669" text1="Verwerking water" text2=""/>
+        <string id="50331667" text1="Xyleen" text2=""/>
+        <string id="67174416" text1="Gebruiker heeft apparaat uitgeschakeld." text2=""/>
+        <string id="67174417" text1="Voer herstelactie %1 uit." text2=""/>
+        <string id="67174418" text1="Gebruiker heeft programma %1 gestart met eindtijd %2." text2=""/>
+        <string id="67174419" text1="Gebruiker heeft programma %1 hervat." text2=""/>
+        <string id="67174420" text1="Gebruiker heeft programma %1 gepauzeerd." text2=""/>
+        <string id="67174421" text1="Gebruiker heeft programma %1 afgebroken." text2=""/>
+        <string id="67174422" text1="Gebruiker heeft het laatste reagens van het programma %1 verwijderd." text2=""/>
+        <string id="67174423" text1="Gebruiker heeft het smeltpunt van de paraffine veranderd van %1 in %2." text2=""/>
+        <string id="67174656" text1="Start de zelftest." text2=""/>
+        <string id="67174733" text1="Zelftest is gelukt." text2=""/>
+        <string id="67174912" text1="Start de pre-test." text2=""/>
+        <string id="67174927" text1="Start de flessencontrole." text2=""/>
+        <string id="67174928" text1="Flessenscontrole is gelukt." text2=""/>
+        <string id="67174929" text1="Pre-test is gelukt." text2=""/>
+        <string id="67175168" text1="Onvoltooid programma %1 in stap %2 gedetecteerd." text2=""/>
+        <string id="67175186" text1="Het systeembestand met onvoltooide programmalijst ontbreekt. Controleer of de opslag beschadigd is." text2=""/>
+        <string id="67175200" text1="Start programma %1" text2=""/>
+        <string id="67175202" text1="Nog %1 nodig om de oven te verwarmen om de paraffine te smelten." text2=""/>
+        <string id="67175203" text1="Programma wordt afgebroken…" text2=""/>
+        <string id="67175204" text1="Programma afgebroken." text2=""/>
+        <string id="67175205" text1="Programma gepauzeerd." text2=""/>
+        <string id="67175207" text1="Leegmaken…" text2=""/>
+        <string id="67175208" text1="Wachten tot paraffine wordt bijgevuld." text2=""/>
+        <string id="67175209" text1="Niveausensor verwarmen voor het vullen" text2=""/>
+        <string id="67175210" text1="Vullen gestart" text2=""/>
+        <string id="67175213" text1="Verwerken gestart" text2=""/>
+        <string id="67175215" text1="Voltooide stap %1" text2=""/>
+        <string id="67175216" text1="Gestarte stap %1 (station %2, %3, %4, %5, %6)." text2=""/>
+        <string id="67175217" text1="Voltooid programma %1" text2=""/>
+        <string id="67175218" text1="Start het droogproces." text2=""/>
+        <string id="67175219" text1="Sluit het droogproces af." text2=""/>
+        <string id="67175220" text1="De tijd tussen stap %1 en stap %2 was langer dan 4 minuten." text2=""/>
+        <string id="67175222" text1="Succesvol gevuld." text2=""/>
+        <string id="67175223" text1="Succesvol leeggemaakt." text2=""/>
+        <string id="67175224" text1="Afkoelen gestart." text2=""/>
+        <string id="67175424" text1="Vooraf controleren" text2=""/>
+        <string id="67175425" text1="Droogproces" text2=""/>
+        <string id="67176012" text1="Luchtsysteem: Vacuüm bereikt doelwaarde niet. Vacuüm bereikte max. %1 kPa. " text2=""/>
+        <string id="67176025" text1="Rotatieklep werkt niet normaal. Controleer de rotatieklep." text2=""/>
+        <string id="67176026" text1="Het apparaat heeft technische problemen en kan het protocol niet voltooien." text2=""/>
+        <string id="67176194" text1="Fout-ID %1!  Afdichting niet in orde in droog scenario." text2=""/>
+        <string id="67176196" text1="Fout-ID %1!  Deksel van paraffineoven is open. Wilt u de nieuwe paraffine nu smelten?" text2=""/>
+        <string id="67176198" text1="Reinig de afdichtring en het bovenste gedeelte van de retort zoals beschreven in de gebruiksaanwijzing." text2=""/>
+        <string id="67176199" text1="Controleer de fles(sen) zoals beschreven in de gebruiksaanwijzing." text2=""/>
+        <string id="67176200" text1="Leegmaken van retort is mislukt! Reinig de afdichtring en het bovenste gedeelte van de retort zoals beschreven in de gebruiksaanwijzing." text2=""/>
+        <string id="67176201" text1="Fout-ID %1! Neem contact op met de serviceafdeling!" text2=""/>
+        <string id="67176202" text1="Fout-ID %1! Storing in uitlaatsysteem! Neem contact op met de serviceafdeling!" text2=""/>
+        <string id="67176203" text1="Fout-ID %1! Neem contact op met de serviceafdeling!" text2=""/>
+        <string id="67176204" text1="Fout-ID %1! Verwijder en bescherm de monsters.  Neem contact op met de serviceafdeling!" text2=""/>
+        <string id="67176207" text1="Lokaal alarmsysteem niet aangesloten! Sluit het apparaat aan op het lokale alarmsysteem" text2=""/>
+        <string id="67176208" text1="Sluit het deksel van de paraffineoven!" text2=""/>
+        <string id="67176209" text1="Sluit het deksel van de retort en druk op de knop Opnieuw proberen." text2=""/>
+        <string id="67176210" text1="Druktest is mislukt! Reinig de afdichtring en het bovenste gedeelte van de retort zoals beschreven in de gebruiksaanwijzing." text2=""/>
+        <string id="67176211" text1="Remote alarmsysteem niet aangesloten! Sluit het apparaat aan op het remote alarmsysteem." text2=""/>
+        <string id="67176212" text1="Controleer de toestand van de reagensflessen. Als het niveau in de flessen onder het minimumniveau ligt, dan binnen 15 minuten reagens bijvullen." text2=""/>
+        <string id="67176214" text1="Protocol is onderbroken door stroomstoring. Breek het protocol af en verwijder de monsters." text2=""/>
+        <string id="67176216" text1="Hernieuwde opwarming door herstelproces na stroomstoring is mislukt. Neem contact op met de serviceafdeling." text2=""/>
+        <string id="67176217" text1="Herstelproces na stroomstoring is mislukt. Neem contact op met de serviceafdeling." text2=""/>
+        <string id="67176218" text1="Systeemstoringen. Neem contact op met de serviceafdeling." text2=""/>
+        <string id="67176219" text1="Beschermen van weefsel met veilig reagens is mislukt. Neem contact op met de serviceafdeling." text2=""/>
+        <string id="67176220" text1="Reinig de niveausensor." text2=""/>
+        <string id="67176223" text1="Fout-ID %1!  Afbreken is mislukt." text2=""/>
+        <string id="67176224" text1="Stroomstoring tijdens reinigingsprogramma. Het programma is automatisch opnieuw gestart." text2=""/>
+        <string id="67176225" text1="Fout-ID %1! Rotatieklep werkt niet goed. Neem contact op met de serviceafdeling!" text2=""/>
+        <string id="67176226" text1="Fout-ID %1! Het apparaat heeft technische problemen en kan het protocol niet voltooien." text2=""/>
+        <string id="19202061" text1="Gebruik heeft station %1 gereset." text2=""/>
+        <string id="19202062" text1="Gebruiker heeft het reagens in station %1 gewijzigd in %2." text2=""/>
+        <string id="19202063" text1="Gebruiker het station %1 ingesteld op vol." text2=""/>
+        <string id="19202064" text1="Gebruiker het station %1 ingesteld op leeg." text2=""/>
+        <string id="19267602" text1="Gebruiker heeft het volgende reagens toegevoegd: %1, Cassettes tot wijziging:%2, Cycli tot wijziging:%3, Dagen tot wijziging:%4, Reagensgroep: %5." text2=""/>
+        <string id="19267603" text1="Gebruiker heeft reagens %1 gewist." text2=""/>
+        <string id="19267604" text1="Gebruiker heeft het volgende reagens toegevoegd: %1, Cassettes tot wijziging:%2, Cycli tot wijziging:%3, Dagen tot wijziging:%4, Reagensgroep: %5." text2=""/>
+        <string id="16973842" text1="Time-out kiezen" text2=""/>
+        <string id="67176227" text1="Paraffinetemperatuur in paraffinebad is hoger dan %1. Controleer de smelttoestand van de paraffine." text2=""/>
+        <string id="67176228" text1="Paraffinetemperatuur in paraffinebad is lager dan %1. Controleer de smelttoestand van de paraffine." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>

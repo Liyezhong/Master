@@ -1,276 +1,276 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="zh">
-        <string id="17039372" text1="在 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
-        <string id="16973834" text1="由于未知原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
-        <string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
-        <string id="17235976" text1="%1 语言包未找到。" text2=""/>
-        <string id="17235977" text1="密码与要求不符。所需长度应为 4 至 16 个字符。" text2=""/>
-        <string id="17236006" text1="远程维护设置失败。" text2=""/>
-        <string id="19267585" text1="试剂名称 %1 已被使用。请使用其它试剂名称。" text2=""/>
-        <string id="19267599" text1="%1 失败。" text2=""/>
-        <string id="17236009" text1="试剂的数据模块初始化失败。" text2=""/>
-        <string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
-        <string id="17235998" text1="关机时保存文件 %1 失败。" text2=""/>
-        <string id="17236013" text1="读取设备历史信息失败。" text2=""/>
-        <string id="17236011" text1="站点配置错误。" text2=""/>
-        <string id="17629209" text1="导出失败。高级加密标准尚未初始化。" text2=""/>
-        <string id="17629201" text1="导出失败。无法打开文件进行读取。" text2=""/>
-        <string id="17629202" text1="导出失败。无法打开文件进行写入。" text2=""/>
-        <string id="17629200" text1="导出失败。无法加密导出的数据包。" text2=""/>
-        <string id="17629185" text1="目录创建失败" text2=""/>
-        <string id="17629203" text1="读取文件出错" text2=""/>
-        <string id="17629204" text1="写入文件出错" text2=""/>
-        <string id="17629194" text1="导出失败。" text2=""/>
-        <string id="17629186" text1="文件复制失败" text2=""/>
-        <string id="17629213" text1="导出失败。无法生成用于加密导出数据包的密钥。" text2=""/>
-        <string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化。" text2=""/>
-        <string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配。" text2=""/>
-        <string id="17629190" text1="导出失败。数据模块初始化失败。" text2=""/>
-        <string id="17629199" text1="导出失败。请求导出的类型无效。" text2=""/>
-        <string id="17629212" text1="导出失败。检测到错误的文件模式。" text2=""/>
-        <string id="17629197" text1="导出失败。日志目录不存在。" text2=""/>
-        <string id="17629211" text1="导出失败。未设置用于计算的密钥位数。" text2=""/>
-        <string id="17629195" text1="导出失败。源目录不存在。" text2=""/>
-        <string id="17629193" text1="导出成功" text2=""/>
-        <string id="17629196" text1="导出失败。目标目录不存在。" text2=""/>
-        <string id="17629198" text1="导出失败。目标文件名格式错误。" text2=""/>
-        <string id="17629192" text1="导出失败。无法归档文件。" text2=""/>
-        <string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件。" text2=""/>
-        <string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629191" text1="导出失败。验证数据模块失败。" text2=""/>
-        <string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
-        <string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
-        <string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-        <string id="16846862" text1="用户通过按下按钮进行确认：%1" text2=""/>
-        <string id="16846854" text1="调试" text2=""/>
-        <string id="16846851" text1="错误" text2=""/>
-        <string id="16846850" text1="严重出错" text2=""/>
-        <string id="16846853" text1="信息" text2=""/>
-        <string id="16846849" text1="未定义类型" text2=""/>
-        <string id="16846852" text1="警告" text2=""/>
-        <string id="16846861" text1="已解决。" text2=""/>
-        <string id="16843278" text1="用户登录" text2=""/>
-        <string id="16843295" text1="关" text2=""/>
-        <string id="16843294" text1="开" text2=""/>
-        <string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
-        <string id="16843315" text1="包埋盒" text2=""/>
-        <string id="16843316" text1="循环" text2=""/>
-        <string id="16843317" text1="天数" text2=""/>
-        <string id="16843292" text1="警报错误音已更改" text2=""/>
-        <string id="16843301" text1="警报错误音的音量已更改" text2=""/>
-        <string id="16843291" text1="警报警告音已更改" text2=""/>
-        <string id="16843300" text1="警报警告音的音量已更改" text2=""/>
-        <string id="16843288" text1="日期格式已更改为 %1" text2=""/>
-        <string id="16843272" text1="已将语言设置为 %1" text2=""/>
-        <string id="16843275" text1="网络设置已更改" text2=""/>
-        <string id="16843274" text1="蜡箱温度已更改为 %1" text2=""/>
-        <string id="16843293" text1="脱水试剂管理系统状态已更改为 %1" text2=""/>
-        <string id="16843286" text1="温度格式已更改为 %1" text2=""/>
-        <string id="16843287" text1="时间格式已更改为 %1" text2=""/>
-        <string id="17039365" text1="仪器初始化失败" text2=""/>
-        <string id="19529731" text1="密码更改成功。" text2=""/>
-        <string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
-        <string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="17825800" text1="仪器已从电源故障中恢复。" text2=""/>
-        <string id="19005441" text1="软件更新无法启动。" text2=""/>
-        <string id="19005442" text1="软件更新失败" text2=""/>
-        <string id="19005443" text1="软件更新回滚失败" text2=""/>
-        <string id="19005447" text1="软件更新成功" text2=""/>
-        <string id="19005448" text1="此软件包版本低于当前版本。软件更新已取消，未执行更新。" text2=""/>
-        <string id="17891331" text1="系统初始化完成" text2=""/>
-        <string id="17891335" text1="请关闭仪器背面的电源开关。" text2=""/>
-        <string id="17891336" text1="安装已完成。 请拔下 USB 驱动器，然后重启仪器。" text2=""/>
-        <string id="17891337" text1="仪器正在更新数据。请不要中断。" text2=""/>
-        <string id="17891338" text1="软件更新正在进行， 请不要中断。" text2=""/>
-        <string id="17891339" text1="意外错误。请联系维修人员。" text2=""/>
-        <string id="16973837" text1="取消" text2=""/>
-        <string id="16973840" text1="继续" text2=""/>
-        <string id="16973839" text1="否" text2=""/>
-        <string id="16973836" text1="确定" text2=""/>
-        <string id="16973841" text1="停止" text2=""/>
-        <string id="16973838" text1="是" text2=""/>
-        <string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
-        <string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
-        <string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
-        <string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
-        <string id="33817097" text1="组验证失败。程序数据模块未初始化。" text2=""/>
-        <string id="33817088" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817092" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817096" text1="组验证失败。试剂数据模块未初始化。" text2=""/>
-        <string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中。" text2=""/>
-        <string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
-        <string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-        <string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
-        <string id="33817861" text1="声音类型参数超出范围。" text2=""/>
-        <string id="33817860" text1="音量参数超出范围。" text2=""/>
-        <string id="33817859" text1="声音周期参数超出范围。" text2=""/>
-        <string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
-        <string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
-        <string id="33816608" text1="程序 %1 中的步骤 ID %2 无效。" text2=""/>
-        <string id="33817862" text1="石蜡温度超出范围。" text2=""/>
-        <string id="33816626" text1="新建程序失败。" text2=""/>
-        <string id="33816597" text1="程序列表中最多只允许 %1 个程序。" text2=""/>
-        <string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
-        <string id="33816631" text1="程序删除失败。" text2=""/>
-        <string id="33816623" text1="程序 %2 与 %1 的ID 一样。" text2=""/>
-        <string id="33816620" text1="程序 %1 的时间格式错误。" text2=""/>
-        <string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-        <string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
-        <string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
-        <string id="33816592" text1="程序验证失败。" text2=""/>
-        <string id="33816584" text1="程序读取失败。" text2=""/>
-        <string id="33816605" text1="程序 %1 中的步骤数超过限值。最多允许 14 个步骤。" text2=""/>
-        <string id="33818116" text1="程序 %1 必须至少有 %2 个步骤。" text2=""/>
-        <string id="33818118" text1="程序 %2 中步骤 %1 的浸泡时间超过限值。有效范围：%3 - %4。" text2=""/>
-        <string id="33818119" text1="程序 %2 中步骤 %1 的温度超过限值。有效范围：%3 - %4 (摄氏度)。" text2=""/>
-        <string id="33816606" text1="程序 %1 中找到无效试剂 ID %2。" text2=""/>
-        <string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
-        <string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
-        <string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-        <string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
-        <string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
-        <string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
-        <string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
-        <string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
-        <string id="16842767" text1="删除文件 %1 出错。" text2=""/>
-        <string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
-        <string id="16842772" text1="时间偏移太大（%1 秒）。允许的最大值为 %2 秒。" text2=""/>
-        <string id="16846858" text1="将时间设置为 %1。" text2=""/>
-        <string id="33619971" text1="仪器已启动 (序列号为 %1，类型为 %2)" text2=""/>
-        <string id="33947653" text1="导入失败。导入文件的格式不正确" text2=""/>
-        <string id="50331760" text1="导入失败。设备名称不匹配。" text2=""/>
-        <string id="50331763" text1="导出失败。没有找到USB驱动器。" text2=""/>
-        <string id="50331762" text1="导入失败。没有找到USB驱动器。" text2=""/>
-        <string id="33947665" text1="导入导出正在运行。" text2=""/>
-        <string id="33947664" text1="导入失败。" text2=""/>
-        <string id="33947657" text1="导入失败。数据模块初始化失败" text2=""/>
-        <string id="33947652" text1="导入失败。没有要导入的文件。" text2=""/>
-        <string id="33947655" text1="导入失败。导入数据包中没有所需的文件。" text2=""/>
-        <string id="33947659" text1="导入失败。回滚失败。" text2=""/>
-        <string id="33947662" text1="导入成功。" text2=""/>
-        <string id="33947656" text1="导入失败。软件版本与导入文件不匹配" text2=""/>
-        <string id="50331759" text1="导入失败。数据包文件损坏" text2=""/>
-        <string id="50331761" text1="导入类型无效。" text2=""/>
-        <string id="33947660" text1="导入失败。更新回滚失败。" text2=""/>
-        <string id="33947658" text1="导入失败。验证数据模块失败" text2=""/>
-        <string id="33619974" text1="密码更改成功。" text2=""/>
-        <string id="33619972" text1="登录失败。密码错误。" text2=""/>
-        <string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="33619978" text1="图形界面已经连接。" text2=""/>
-        <string id="33619975" text1="图形界面已经断开。" text2=""/>
-        <string id="50331719" text1="活性炭过滤器已过期，请更换。" text2=""/>
-        <string id="50331771" text1="活性炭过滤器已过期，请尽快更换。" text2=""/>
-        <string id="50331772" text1="用户添加了程序 %1。" text2=""/>
-        <string id="50331773" text1="用户更新了程序 %1。" text2=""/>
-        <string id="50331774" text1="用户删除了程序 %1。" text2=""/>
-        <string id="50331775" text1="将用户模式更改为标准用户。" text2=""/>
-        <string id="50331776" text1="将用户模式更改为管理员。" text2=""/>
-        <string id="50331777" text1="将用户模式更改为检修人员。" text2=""/>
-        <string id="50331718" text1="请联系检修人员，执行年度预防性维护，以保持仪器正常工作。" text2=""/>
-        <string id="50331765" text1="活性炭过滤器维护时间已重置。" text2=""/>
-        <string id="50331764" text1="仪器维护时间已重置。" text2=""/>
-        <string id="50331766" text1="暂停超过 5 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
-        <string id="50331651" text1="标准活检组织" text2=""/>
-        <string id="50331652" text1="清洗程序" text2=""/>
-        <string id="50331650" text1="标准过夜组织" text2=""/>
-        <string id="50331671" text1="清洗酒精" text2=""/>
-        <string id="50331670" text1="清洗二甲苯" text2=""/>
-        <string id="50331666" text1="酒精 100%" text2=""/>
-        <string id="50331662" text1="酒精 70%" text2=""/>
-        <string id="50331663" text1="酒精 80%" text2=""/>
-        <string id="50331664" text1="酒精 90%" text2=""/>
-        <string id="50331665" text1="酒精 95%" text2=""/>
-        <string id="50331661" text1="福尔马林" text2=""/>
-        <string id="50331660" text1="清洗酒精" text2=""/>
-        <string id="50331659" text1="清洗试剂" text2=""/>
-        <string id="50331657" text1="透明剂" text2=""/>
-        <string id="50331656" text1="无水脱水剂" text2=""/>
-        <string id="50331655" text1="稀释性脱水剂" text2=""/>
-        <string id="50331653" text1="固定剂" text2=""/>
-        <string id="50331658" text1="石蜡" text2=""/>
-        <string id="50331654" text1="水" text2=""/>
-        <string id="50331668" text1="石蜡" text2=""/>
-        <string id="50331669" text1="去离子水" text2=""/>
-        <string id="50331667" text1="二甲苯" text2=""/>
-        <string id="67174416" text1="用户关闭仪器。" text2=""/>
-        <string id="67174417" text1="执行恢复操作：%1。" text2=""/>
-        <string id="67174418" text1="用户启动程序 %1，结束时间 %2。" text2=""/>
-        <string id="67174419" text1="用户继续执行程序 %1。" text2=""/>
-        <string id="67174420" text1="用户暂停程序 %1。" text2=""/>
-        <string id="67174421" text1="用户终止程序 %1。" text2=""/>
-        <string id="67174422" text1="用户排空程序 %1 的最后一种试剂。" text2=""/>
-        <string id="67174423" text1="用户将石蜡熔点从 %1 更改为 %2。" text2=""/>
-        <string id="67174656" text1="启动自检。" text2=""/>
-        <string id="67174733" text1="自检已成功。" text2=""/>
-        <string id="67174912" text1="启动预检。" text2=""/>
-        <string id="67174927" text1="启动试剂/石蜡液位检查。" text2=""/>
-        <string id="67174928" text1="试剂/石蜡液位检查成功。" text2=""/>
-        <string id="67174929" text1="预检成功。" text2=""/>
-        <string id="67175168" text1="检测到程序 %1 在步骤 %2 未完成 。" text2=""/>
-        <string id="67175186" text1="包含未完成程序列表的系统文件丢失。 请检查，确定存储设备是否已损坏。" text2=""/>
-        <string id="67175200" text1="启动程序 %1" text2=""/>
-        <string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
-        <string id="67175203" text1="正在终止程序。" text2=""/>
-        <string id="67175204" text1="程序已终止。" text2=""/>
-        <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175207" text1="正在排液。" text2=""/>
-        <string id="67175208" text1="等待填充石蜡。" text2=""/>
-        <string id="67175209" text1="加热液位传感器。" text2=""/>
-        <string id="67175210" text1="已开始填充" text2=""/>
-        <string id="67175213" text1="已开始脱水" text2=""/>
-        <string id="67175215" text1="已完成步骤 %1" text2=""/>
-        <string id="67175216" text1="已开始步骤 %1 (站点 %2、%3、%4、%5、%6)。" text2=""/>
-        <string id="67175217" text1="已完成程序 %1" text2=""/>
-        <string id="67175218" text1="开始干燥过程。" text2=""/>
-        <string id="67175219" text1="完成干燥过程。" text2=""/>
-        <string id="67175220" text1="步骤 %1 和步骤 %2 之间的时间超过 4 分钟。" text2=""/>
-        <string id="67175222" text1="填充成功。" text2=""/>
-        <string id="67175223" text1="排液成功。" text2=""/>
-        <string id="67175224" text1="开始冷却。" text2=""/>
-        <string id="67175424" text1="预检查" text2=""/>
-        <string id="67175425" text1="干燥过程" text2=""/>
-        <string id="67176012" text1="空气系统：负压未到达目标值。真空到达最大值 %1 kPa。" text2=""/>
-        <string id="67176025" text1="旋转阀功能不正常。请检查。" text2=""/>
-        <string id="67176026" text1="仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="67176194" text1="错误 %1！在干燥过程中密封失败。" text2=""/>
-        <string id="67176196" text1="错误 %1！蜡箱门打开，是否要重新熔化石蜡？" text2=""/>
-        <string id="67176198" text1="请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176199" text1="请根据用户手册检查试剂瓶液位。" text2=""/>
-        <string id="67176200" text1="脱水缸排液失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
-        <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
-        <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
-        <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
-        <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
-        <string id="67176210" text1="压力测试失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176211" text1="远程警报系统未连接！请将设备连接至远程警报系统。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内添加试剂。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请取出样品。" text2=""/>
-        <string id="67176216" text1="电源故障恢复过程中加热失败。请联系维修人员。" text2=""/>
-        <string id="67176217" text1="电源故障恢复程序失败。请联系维修人员。" text2=""/>
-        <string id="67176218" text1="系统错误。请联系维修人员。" text2=""/>
-        <string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
-        <string id="67176220" text1="请清洁液位传感器。" text2=""/>
-        <string id="67176223" text1="错误 %1！终止失败。" text2=""/>
-        <string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
-        <string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
-        <string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="19202061" text1="用户重置站点 %1 数据。" text2=""/>
-        <string id="19202062" text1="用户将站点 %1 中的试剂更改为 %2。" text2=""/>
-        <string id="19202063" text1="用户将站点 %1 设为满。" text2=""/>
-        <string id="19202064" text1="用户将站点 %1 设为空。" text2=""/>
-        <string id="19267602" text1="用户添加了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
-        <string id="19267604" text1="用户更新了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="16973842" text1="用户选择超时。" text2=""/>
-        <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
-        <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
+    <language name="hu">
+        <string id="17039372" text1="A készülék a következő hibát (%1) jelzett a következő esetben: %2, és megkísérelte végrehajtani a következő javítási műveletet: %3. A művelet eredménye: %4." text2=""/>
+        <string id="16973834" text1="Az esemény naplózása valamilyen okból le van tiltva. Lépjen kapcsolatba a helyi szervizzel." text2=""/>
+        <string id="17235997" text1="További információt a felhasználói naplóban talál." text2=""/>
+        <string id="17235976" text1="A(z) %1 nyelvhez nem találhatók fordítások." text2=""/>
+        <string id="17235977" text1="A jelszó nem felel meg a követelményeknek. 4 és 16 karakter közötti hosszúságúnak kell lennie." text2=""/>
+        <string id="17236006" text1="A távoli kezelés konfigurálása sikertelen." text2=""/>
+        <string id="19267585" text1="A vegyszer neve (%1) már használatban van. Használjon másik vegyszernevet." text2=""/>
+        <string id="19267599" text1="A(z) %1 sikertelen." text2=""/>
+        <string id="17236009" text1="A vegyszerek adatmoduljának inicializálása sikertelen." text2=""/>
+        <string id="17760274" text1="A felhasználói beállítások mentése sikertelen. Lépjen kapcsolatba a szervizzel." text2=""/>
+        <string id="17235998" text1="A(z) %1 XML-fájl írása sikertelen a leállítás közben." text2=""/>
+        <string id="17236013" text1="Az InstrumentHistory.xml olvasása sikertelen." text2=""/>
+        <string id="17236011" text1="A Verifying Station.xml sikertelen." text2=""/>
+        <string id="17629209" text1="Az exportálás sikertelen. A fejlett titkosító szabvány nincs inicializálva." text2=""/>
+        <string id="17629201" text1="Az exportálás sikertelen. A fájl nem nyitható meg olvasásra." text2=""/>
+        <string id="17629202" text1="Az exportálás sikertelen. A fájl nem nyitható meg írásra." text2=""/>
+        <string id="17629200" text1="Az exportálás sikertelen. Az exportálási csomag titkosítása sikertelen." text2=""/>
+        <string id="17629185" text1="A könyvtár létrehozása sikertelen." text2=""/>
+        <string id="17629203" text1="Hiba a fájl olvasásakor." text2=""/>
+        <string id="17629204" text1="Hiba a fájl írásakor." text2=""/>
+        <string id="17629194" text1="Az exportálás sikertelen." text2=""/>
+        <string id="17629186" text1="A fájl másolása sikertelen." text2=""/>
+        <string id="17629213" text1="Az exportálás sikertelen. A titkos kulcs generálása sikertelen az exportálási csomag titkosításához." text2=""/>
+        <string id="17629208" text1="Az exportálás sikertelen. A Hash-alapú üzenethitelesítés kódja nincs inicializálva." text2=""/>
+        <string id="17629205" text1="Az exportálás sikertelen. A Hash-lánc indexe és az USB-eszköz indexe megegyezik." text2=""/>
+        <string id="17629190" text1="Az exportálás sikertelen. Az adatmodul inicializálása sikertelen." text2=""/>
+        <string id="17629199" text1="Az exportálás sikertelen. A kért exportálás típusa érvénytelen." text2=""/>
+        <string id="17629212" text1="Az exportálás sikertelen. Az észlelt fájlmód helytelen." text2=""/>
+        <string id="17629197" text1="Az exportálás sikertelen. A napló könyvtára nem létezik." text2=""/>
+        <string id="17629211" text1="Az exportálás sikertelen. A kulcsbitek nincsenek beállítva számításhoz." text2=""/>
+        <string id="17629195" text1="Az exportálás sikertelen. A forráskönyvtár nem létezik." text2=""/>
+        <string id="17629193" text1="Az exportálás sikeres volt." text2=""/>
+        <string id="17629196" text1="Az exportálás sikertelen. A célkönyvtár nem létezik." text2=""/>
+        <string id="17629198" text1="Az exportálás sikertelen. A célfájl névformátuma helytelen." text2=""/>
+        <string id="17629192" text1="Az exportálás sikertelen. A fájlok nem archiválhatók." text2=""/>
+        <string id="17629187" text1="Az exportálás sikertelen. Az RMS_Status.csv fájl nem hozható létre." text2=""/>
+        <string id="17629188" text1="Az exportálás sikertelen. A TempConfiguration.xml fájl nem hozható létre." text2=""/>
+        <string id="17629189" text1="Az exportálás sikertelen. A TempConfiguration.xml fájl nem olvasható." text2=""/>
+        <string id="17629191" text1="Az exportálás sikertelen. Az adatmodul ellenőrzése sikertelen." text2=""/>
+        <string id="17629215" text1="Az exportálás sikertelen. A rendszerben nem található tömörítési parancs." text2=""/>
+        <string id="17629214" text1="Az exportálás sikertelen. A fájlok nem tömöríthetők." text2=""/>
+        <string id="17629216" text1="Az exportálás sikertelen. A tömörítés túl hosszú időt vesz igénybe a kérelem teljesítéséhez." text2=""/>
+        <string id="16846862" text1="A felhasználó elfogadta a következő gomb megnyomásával: %1" text2=""/>
+        <string id="16846854" text1="Hibakeresés" text2=""/>
+        <string id="16846851" text1="Hiba" text2=""/>
+        <string id="16846850" text1="Végzetes hiba" text2=""/>
+        <string id="16846853" text1="Adatok" text2=""/>
+        <string id="16846849" text1="Nem definiált típus" text2=""/>
+        <string id="16846852" text1="Figyelmeztetés" text2=""/>
+        <string id="16846861" text1="Megoldva" text2=""/>
+        <string id="16843278" text1="Felhasználó bejelentkezése" text2=""/>
+        <string id="16843295" text1="Ki" text2=""/>
+        <string id="16843294" text1="Be" text2=""/>
+        <string id="16843314" text1="A Vegyszerkezelő rendszer tisztítási állapota módosítva a következőre: %1." text2=""/>
+        <string id="16843315" text1="Kazetták" text2=""/>
+        <string id="16843316" text1="Ciklusok" text2=""/>
+        <string id="16843317" text1="Napok (Days)" text2=""/>
+        <string id="16843292" text1="A riasztási hiba hangja módosítva." text2=""/>
+        <string id="16843301" text1="A riasztási hiba hangereje és hangszíne módosítva." text2=""/>
+        <string id="16843291" text1="A riasztás figyelmeztetési hangja módosítva." text2=""/>
+        <string id="16843300" text1="A riasztás figyelmeztetési hangereje és hangszíne módosítva." text2=""/>
+        <string id="16843288" text1="A dátumformátum módosítva a következőre: %1" text2=""/>
+        <string id="16843272" text1="A nyelv beállítva a következőre: %1" text2=""/>
+        <string id="16843275" text1="A hálózati beállítások módosítva." text2=""/>
+        <string id="16843274" text1="A kemence hőmérséklete módosítva a következőre: %1" text2=""/>
+        <string id="16843293" text1="A Vegyszerkezelő rendszer feldolgozási állapota módosítva a következőre: %1" text2=""/>
+        <string id="16843286" text1="A hőmérséklet formátuma módosítva a következőre: %1" text2=""/>
+        <string id="16843287" text1="Az idő formátuma módosítva a következőre: %1" text2=""/>
+        <string id="17039365" text1="A készülék inicializálása sikertelen." text2=""/>
+        <string id="19529731" text1="A jelszó sikeresen módosítva." text2=""/>
+        <string id="19529729" text1="A bejelentkezés sikertelen. A jelszó helytelen. A jelszónak 4 és 16 karakter közötti hosszúságúnak kell lennie." text2=""/>
+        <string id="19529730" text1="A jelszó nem módosítható. A jelszavak nem egyeznek." text2=""/>
+        <string id="17825800" text1="A rendszer helyreállítva energiaellátási hiba után." text2=""/>
+        <string id="19005441" text1="A szoftver frissítése hiba miatt nem indítható." text2=""/>
+        <string id="19005442" text1="A szoftver frissítése sikertelen." text2=""/>
+        <string id="19005443" text1="A szoftverfrissítés visszavonása sikertelen." text2=""/>
+        <string id="19005447" text1="A szoftver frissítése sikeres volt." text2=""/>
+        <string id="19005448" text1="Az aktuális szoftver újabb, mint a frissítőcsomag. A szoftverfrissítés megszakítva frissítés nélkül." text2=""/>
+        <string id="17891331" text1="A rendszer inicializálása befejeződött." text2=""/>
+        <string id="17891335" text1="Kapcsolja ki a készüléket a hátulján található kapcsoló átbillentésével." text2=""/>
+        <string id="17891336" text1="A telepítés befejeződött.  Húzza ki az USB-meghajtót, majd indítsa újra a készüléket." text2=""/>
+        <string id="17891337" text1="A készülék frissíti a visszavonási adatokat. A folyamatot ne szakítsa meg." text2=""/>
+        <string id="17891338" text1="A szoftverfrissítés fut... A folyamatot ne szakítsa meg." text2=""/>
+        <string id="17891339" text1="Váratlan hiba. Hívja a szervizt." text2=""/>
+        <string id="16973837" text1="Megszakítás" text2=""/>
+        <string id="16973840" text1="Folytatás" text2=""/>
+        <string id="16973839" text1="Nincs" text2=""/>
+        <string id="16973836" text1="OK" text2=""/>
+        <string id="16973841" text1="Leállítás" text2=""/>
+        <string id="16973838" text1="Igen" text2=""/>
+        <string id="33619990" text1="A dátum és az idő nem módosítható az aktuális belső rendszerdátumnál és -időnél 24 órával későbbre." text2=""/>
+        <string id="33619991" text1="A felhasználó az aktuális rendszerdátumot és -időt a következőre állította be: %1" text2=""/>
+        <string id="33817094" text1="A csoport ellenőrzése sikertelen. Az alapdátum modulja nincs inicializálva." text2=""/>
+        <string id="33817095" text1="A csoport ellenőrzése sikertelen. Az adatmodul típusa nem érvényes." text2=""/>
+        <string id="33817097" text1="A csoport ellenőrzése sikertelen. A program adatmodulja nincs inicializálva." text2=""/>
+        <string id="33817088" text1="A vegyszer azonosítója megtalálható a programlistában, de a vegyszerlistában nem: %1." text2=""/>
+        <string id="33817092" text1="A vegyszer azonosítója megtalálható a felhasználói beállítások között, de a vegyszerlistában nem: %1." text2=""/>
+        <string id="33817096" text1="A csoport ellenőrzése sikertelen. A vegyszer adatmodulja nincs inicializálva." text2=""/>
+        <string id="33817093" text1="Az állomás azonosítója megtalálható az állomáslistában, de az állomásmátrixban nem: %1." text2=""/>
+        <string id="33817098" text1="A csoport ellenőrzése sikertelen. Az állomás adatmodulja nincs inicializálva." text2=""/>
+        <string id="33817101" text1="A csoport ellenőrzése sikertelen. A felhasználói beállítások adatmodulja nincs inicializálva." text2=""/>
+        <string id="33818114" text1="A(z) %1 program vegyszerei nem kompatibilisek a(z) %2 és a(z) %3 lépés esetében." text2=""/>
+        <string id="33817861" text1="A hangszint paraméter a tartományon kívül esik." text2=""/>
+        <string id="33817860" text1="A hang hangerő-paramétere a tartományon kívül esik." text2=""/>
+        <string id="33817859" text1="A hang időszaki paramétere a tartományon kívül esik." text2=""/>
+        <string id="33816577" text1="A(z) %1  nem érvényes programazonosító." text2=""/>
+        <string id="33816578" text1="Hiba történt a(z) %1 eszköz szervizadatainak beolvasásakor." text2=""/>
+        <string id="33816608" text1="A(z) %2 lépésazonosító érvénytelen a(z) %1 programban." text2=""/>
+        <string id="33817862" text1="A paraffin hőmérséklete a tartományon kívül esik." text2=""/>
+        <string id="33816626" text1="A program hozzáadása sikertelen." text2=""/>
+        <string id="33816597" text1="A programlista több, mint %1 programot tartalmaz. Legfeljebb %1 program engedélyezett." text2=""/>
+        <string id="33816624" text1="A program törlése sikertelen érvénytelen programazonosító miatt: %1." text2=""/>
+        <string id="33816631" text1="A program törlése sikertelen." text2=""/>
+        <string id="33816623" text1="A(z) %1 programazonosító nem egyedi a(z) %2 program esetében." text2=""/>
+        <string id="33816620" text1="A(z) %1 program lépései érvénytelen időtartam-formátumot tartalmaznak." text2=""/>
+        <string id="33818117" text1="A programnév hossza meghaladja a program korlátját: %1 . Az érvényes tartomány: %2  -  %3  karakter." text2=""/>
+        <string id="33818113" text1="A(z) %1 programnév már használatban van. Válasszon másik programnevet." text2=""/>
+        <string id="33816596" text1="Érvénytelen index a program hash táblájában." text2=""/>
+        <string id="33816592" text1="A Programs.xml ellenőrzése sikertelen." text2=""/>
+        <string id="33816584" text1="A Programs.xml olvasása sikertelen." text2=""/>
+        <string id="33816605" text1="A(z) %1 program lépéseinek száma meghaladja a korlátot. Legfeljebb 14 lépés engedélyezett." text2=""/>
+        <string id="33818116" text1="A(z) %1 programnak legalább %2  lépéssel kell rendelkeznie." text2=""/>
+        <string id="33818118" text1="A(z) %1 lépés időtartama a(z) %2  programban meghaladja a korlátot. Érvényes tartomány: %3  -  %4 ." text2=""/>
+        <string id="33818119" text1="A(z) %1 lépés hőmérséklete a(z) %2 programban meghaladja a korlátot. Érvényes tartomány: %3  -  %4  (Celsius)." text2=""/>
+        <string id="33816606" text1="A programellenőrző érvénytelen vegyszert (%2) talált a(z) %1 programban." text2=""/>
+        <string id="33816846" text1="A vegyszerlista nem tudta beolvasni a(z) %1  vegyszert." text2=""/>
+        <string id="33816845" text1="A vegyszerlista nem tudta írni a(z) %1vegyszert." text2=""/>
+        <string id="33816840" text1="A(z) %1 vegyszer neve túl hosszú (legfeljebb 32 karakter lehet)." text2=""/>
+        <string id="33817864" text1="A Vegyszerkezelő rendszer tisztítási modellje ismeretlen." text2=""/>
+        <string id="33817863" text1="A Vegyszerkezelő rendszer feldolgozási modellje ismeretlen." text2=""/>
+        <string id="33818115" text1="A felhasználói program neve nem tartalmazhatja a Leica szót." text2=""/>
+        <string id="50331649" text1="Az exportálás sikertelen. Nincs elegendő hely az SD-kártyán." text2=""/>
+        <string id="50331672" text1="Az exportálás sikertelen. Nincs elegendő hely az USB-tárolón." text2=""/>
+        <string id="16842767" text1="Hiba történt a(z) %1 fájl törlésekor." text2=""/>
+        <string id="16842762" text1="Hiba történ a(z) %1 konfigurációs fájl olvasásakor." text2=""/>
+        <string id="16842772" text1="A(z) %1 másodperces időeltolás túl hosszú. A maximálisan engedélyezett érték %2 másodperc." text2=""/>
+        <string id="16846858" text1="A dátum és az idő beállítva a következő értékre: %1." text2=""/>
+        <string id="33619971" text1="A készülék elindítva (gyártási szám: %1, típus: %2)." text2=""/>
+        <string id="33947653" text1="Az importálás sikertelen. Az importfájl formátuma helytelen." text2=""/>
+        <string id="50331760" text1="Az importálás sikertelen. Az eszköznév nem egyezik." text2=""/>
+        <string id="50331763" text1="A készülékben nem található USB-eszköz a fájlok exportálásához." text2=""/>
+        <string id="50331762" text1="A készülékben nem található USB-eszköz a fájlok importálásához." text2=""/>
+        <string id="33947665" text1="Az importálási és exportálási szál fut…" text2=""/>
+        <string id="33947664" text1="Importálás sikertelen" text2=""/>
+        <string id="33947657" text1="Az importálás sikertelen. Az adatmodul inicializálása sikertelen." text2=""/>
+        <string id="33947652" text1="Az importálás sikertelen. Nincs importálható fájl." text2=""/>
+        <string id="33947655" text1="Az importálás sikertelen. A szükséges fájlok nem találhatók az importálási csomagban." text2=""/>
+        <string id="33947659" text1="Az importálás sikertelen. A visszavonás sikertelen." text2=""/>
+        <string id="33947662" text1="Az importálás sikeres volt." text2=""/>
+        <string id="33947656" text1="Az importálás sikertelen. A szoftververziók nem egyeznek meg az importfájlokkal." text2=""/>
+        <string id="50331759" text1="Az importálás sikertelen. A csomagfájl sérült." text2=""/>
+        <string id="50331761" text1="Az importálás típusa nem érvényes." text2=""/>
+        <string id="33947660" text1="Az importálás sikertelen. A frissítés visszavonása sikertelen." text2=""/>
+        <string id="33947658" text1="Az importálás sikertelen. Az adatmodul ellenőrzése sikertelen." text2=""/>
+        <string id="33619974" text1="A jelszó sikeresen módosítva." text2=""/>
+        <string id="33619972" text1="A bejelentkezés sikertelen. A jelszó helytelen." text2=""/>
+        <string id="33619973" text1="A jelszó nem módosítható. A jelszavak nem egyeznek." text2=""/>
+        <string id="33619978" text1="Grafikus felhasználói felület csatlakoztatva" text2=""/>
+        <string id="33619975" text1="A grafikus felhasználói felület leállítva." text2=""/>
+        <string id="50331719" text1="Az aktív szénszűrő elhasználódott. Cserélje ki új aktív szénszűrőre." text2=""/>
+        <string id="50331771" text1="Az aktív szénszűrő elhasználódott. Amint lehetséges, cserélje ki új aktív szénszűrőre." text2=""/>
+        <string id="50331772" text1="A felhasználó hozzáadta a(z) %1 programot." text2=""/>
+        <string id="50331773" text1="A felhasználó frissítette a(z) %1 programot." text2=""/>
+        <string id="50331774" text1="A felhasználó eltávolította a(z) %1 programot." text2=""/>
+        <string id="50331775" text1="Módosítsa a felhasználó módját a Szokásos felhasználó értékre." text2=""/>
+        <string id="50331776" text1="Módosítsa a felhasználó módját a Rendszergazda értékre." text2=""/>
+        <string id="50331777" text1="Módosítsa a felhasználó módját a Szerviz értékre." text2=""/>
+        <string id="50331718" text1="Hívja a szervizt, és a készülék megfelelő működésének fenntartása érdekében kérje meg őket az éves megelőző karbantartás elvégzésére." text2=""/>
+        <string id="50331765" text1="Az aktív szénszűrő működési ideje alaphelyzetbe állítva." text2=""/>
+        <string id="50331764" text1="A készülék működési ideje alaphelyzetbe állítva." text2=""/>
+        <string id="50331766" text1="A szünet hosszabb, mint 5 perc. Folytassa a programot, amint lehetséges." text2=""/>
+        <string id="50331767" text1="A szünet hosszabb, mint 10 perc. Folytassa a programot, amint lehetséges." text2=""/>
+        <string id="50331768" text1="A program nem folytatható. A szünet hosszabb, mint 15 perc." text2=""/>
+        <string id="50331651" text1="Biopszia" text2=""/>
+        <string id="50331652" text1="Tisztítóprogr." text2=""/>
+        <string id="50331650" text1="Éjszakai" text2=""/>
+        <string id="50331671" text1="Tisztító alkohol" text2=""/>
+        <string id="50331670" text1="Tisztító xilol" text2=""/>
+        <string id="50331666" text1="Etanol 100%" text2=""/>
+        <string id="50331662" text1="Etanol 70%" text2=""/>
+        <string id="50331663" text1="Etanol 80%" text2=""/>
+        <string id="50331664" text1="Etanol 90%" text2=""/>
+        <string id="50331665" text1="Etanol 95%" text2=""/>
+        <string id="50331661" text1="Formalin" text2=""/>
+        <string id="50331660" text1="Tisztító alkohol" text2=""/>
+        <string id="50331659" text1="Tisztító oldószer" text2=""/>
+        <string id="50331657" text1="Tisztítás" text2=""/>
+        <string id="50331656" text1="Kiszáradás, abszolút" text2=""/>
+        <string id="50331655" text1="Kiszáradás, hígított" text2=""/>
+        <string id="50331653" text1="Rögzítés" text2=""/>
+        <string id="50331658" text1="Paraffin" text2=""/>
+        <string id="50331654" text1="Víz" text2=""/>
+        <string id="50331668" text1="Paraffin" text2=""/>
+        <string id="50331669" text1="Technológiai víz" text2=""/>
+        <string id="50331667" text1="Xilol" text2=""/>
+        <string id="67174416" text1="A felhasználó leállította a készüléket." text2=""/>
+        <string id="67174417" text1="Hajtsa végre a javítási műveletet: %1." text2=""/>
+        <string id="67174418" text1="A felhasználó elindította a(z) %1 programot %2 záró időponttal." text2=""/>
+        <string id="67174419" text1="A felhasználó folytatta a(z) %1 programot." text2=""/>
+        <string id="67174420" text1="A felhasználó szüneteltette a(z) %1 programot." text2=""/>
+        <string id="67174421" text1="A felhasználó megszakította a(z) %1 programot." text2=""/>
+        <string id="67174422" text1="A felhasználó leeresztette a(z) %1 program utolsó vegyszerét." text2=""/>
+        <string id="67174423" text1="A felhasználó módosította a paraffin olvadási pontját %1 értékről %2 értékre." text2=""/>
+        <string id="67174656" text1="Indítsa el az önellenőrzést." text2=""/>
+        <string id="67174733" text1="Az önellenőrzés sikeres volt." text2=""/>
+        <string id="67174912" text1="Indítsa el az előzetes ellenőrzést." text2=""/>
+        <string id="67174927" text1="Indítsa el a palack ellenőrzését." text2=""/>
+        <string id="67174928" text1="A palack ellenőrzése sikeres volt." text2=""/>
+        <string id="67174929" text1="Az előzetes ellenőrzése sikeres volt." text2=""/>
+        <string id="67175168" text1="A rendszer befejezetlen programot (%1) észlelt a(z) %2 lépésben." text2=""/>
+        <string id="67175186" text1="A befejezetlen programlistával rendelkező rendszerfájl hiányzik. Ellenőrizze, hogy tár sérült-e." text2=""/>
+        <string id="67175200" text1="A(z) %1 program indítása" text2=""/>
+        <string id="67175202" text1="A(z) %1 továbbra is szükséges a kemence felmelegítéséhez a paraffin megolvasztásához." text2=""/>
+        <string id="67175203" text1="Program megszakítása…" text2=""/>
+        <string id="67175204" text1="A program megszakítva." text2=""/>
+        <string id="67175205" text1="A program szüneteltetve." text2=""/>
+        <string id="67175207" text1="Leeresztés…" text2=""/>
+        <string id="67175208" text1="Paraffin feltöltésére várakozik." text2=""/>
+        <string id="67175209" text1="A szintérzékelő melegítése feltöltéshez" text2=""/>
+        <string id="67175210" text1="A feltöltés elindítva." text2=""/>
+        <string id="67175213" text1="A feldolgozás elindítva." text2=""/>
+        <string id="67175215" text1="A(z) %1 lépés befejezve." text2=""/>
+        <string id="67175216" text1="A(z) %1 lépés elindítva (állomás: %2, %3, %4, %5, %6)." text2=""/>
+        <string id="67175217" text1="A(z) %1 program befejezve." text2=""/>
+        <string id="67175218" text1="Indítsa el a leeresztést." text2=""/>
+        <string id="67175219" text1="Fejezze be a leeresztést." text2=""/>
+        <string id="67175220" text1="A(z) %1 és a(z) %2 lépés közötti idő hosszabb, mint 4 perc." text2=""/>
+        <string id="67175222" text1="Sikeresen feltöltve." text2=""/>
+        <string id="67175223" text1="Sikeresen leeresztve." text2=""/>
+        <string id="67175224" text1="A hűtés elindítva." text2=""/>
+        <string id="67175424" text1="Előzetes ellenőrzés" text2=""/>
+        <string id="67175425" text1="Leeresztés" text2=""/>
+        <string id="67176012" text1="Légrendszer: A vákuum nem érte el a célértéket. A vákuum elérte a maximális %1 kPa értéket. " text2=""/>
+        <string id="67176025" text1="A forgószelep nem megfelelően működik. Ellenőrizze a forgószelepet." text2=""/>
+        <string id="67176026" text1="A készülék műszaki problémákat észlelt, ezért nem tudja befejezni a protokollt." text2=""/>
+        <string id="67176194" text1="Hiba azonosítója: %1.  A tömítés sikertelen a leeresztéskor." text2=""/>
+        <string id="67176196" text1="Hiba azonosítója: %1.  A viaszfürdő kemencéjének fedele nyitva van. Szeretne most friss paraffint olvasztani?" text2=""/>
+        <string id="67176198" text1="Tisztítsa meg a tömítőgyűrűt és a vízelvonó henger felső részét a felhasználói kézikönyvben leírt módon." text2=""/>
+        <string id="67176199" text1="Ellenőrizze a palackokat a felhasználói kézikönyv szerint." text2=""/>
+        <string id="67176200" text1="A vízelvonó henger leeresztése sikertelen. Tisztítsa meg a tömítőgyűrűt és a vízelvonó henger felső részét a felhasználói kézikönyvben leírt módon." text2=""/>
+        <string id="67176201" text1="Hiba azonosítója: %1. Hívja a szervizt." text2=""/>
+        <string id="67176202" text1="Hiba azonosítója: %1. Az elszívórendszer meghibásodott! Tájékoztassa a szervizt!" text2=""/>
+        <string id="67176203" text1="Hiba azonosítója: %1. Hívja a szervizt." text2=""/>
+        <string id="67176204" text1="Hiba azonosítója: %1. Távolítsa el a mintát, és helyezze biztonságos helyre.  Hívja a szervizt." text2=""/>
+        <string id="67176207" text1="A helyi riasztórendszer nincs csatlakoztatva! Csatlakoztassa az eszközt a helyi riasztórendszerhez." text2=""/>
+        <string id="67176208" text1="Zárja le a paraffinkemence fedelét!" text2=""/>
+        <string id="67176209" text1="Zárja le a vízelvonó henger fedelét, és nyomja meg az Ismét gombot." text2=""/>
+        <string id="67176210" text1="A nyomásteszt sikertelen! Tisztítsa meg a tömítőgyűrűt és a vízelvonó henger felső részét a felhasználói kézikönyvben leírt módon." text2=""/>
+        <string id="67176211" text1="A távoli riasztórendszer nincs csatlakoztatva! Csatlakoztassa az eszközt a távoli riasztórendszerhez." text2=""/>
+        <string id="67176212" text1="Ellenőrizze a vegyszeres palackok állapotát. Ha a vegyszer szintje alacsonyabb a minimális szintnél, adjon hozzá vegyszert 15 percen belül." text2=""/>
+        <string id="67176214" text1="A protokoll energiaellátási hiba miatt félbeszakadt. Szakítsa meg a protokollt, és távolítsa el a mintát." text2=""/>
+        <string id="67176216" text1="Az energiaellátás helyreállítási folyamata sikertelen az ismételt felmelegítés során. Hívja a szervizt." text2=""/>
+        <string id="67176217" text1="Az energiaellátás helyreállítási folyamata sikertelen. Hívja a szervizt." text2=""/>
+        <string id="67176218" text1="Rendszerhibák. Hívja a szervizt." text2=""/>
+        <string id="67176219" text1="A szövet biztonságos vegyszerrel való védelme sikertelen. Hívja a szervizt." text2=""/>
+        <string id="67176220" text1="Tisztítsa meg a szintérzékelőt." text2=""/>
+        <string id="67176223" text1="Hiba azonosítója: %1.  A megszakítás sikertelen." text2=""/>
+        <string id="67176224" text1="Energiaellátási probléma merült fel a tisztítási program során. A program automatikusan újraindult." text2=""/>
+        <string id="67176225" text1="Hiba azonosítója: %1. A forgószelep működése rendellenes. Hívja a szervizt." text2=""/>
+        <string id="67176226" text1="Hiba azonosítója: %1. A készülék műszaki problémákat észlelt, ezért nem tudja befejezni a protokollt." text2=""/>
+        <string id="19202061" text1="A felhasználó alaphelyzetbe állította a(z) %1 állomást." text2=""/>
+        <string id="19202062" text1="A felhasználó módosította a vegyszert a(z) %1 állomáson %2 értékre." text2=""/>
+        <string id="19202063" text1="A felhasználó telire állította a(z) %1 állomást." text2=""/>
+        <string id="19202064" text1="A felhasználó üresre állította a(z) %1 állomást." text2=""/>
+        <string id="19267602" text1="A felhasználó hozzáadta a vegyszert: %1, kazetták a módosításig: %2, ciklusok a módosításig: %3, napok száma a módosításig: %4, vegyszercsoport: %5." text2=""/>
+        <string id="19267603" text1="A felhasználó törölte a(z) %1 vegyszert." text2=""/>
+        <string id="19267604" text1="A felhasználó frissítette a(z) %1 vegyszert., kazetták a módosításig: %2, ciklusok a módosításig: %3, napok száma a módosításig: %4, vegyszercsoport: %5." text2=""/>
+        <string id="16973842" text1="időtúllépés kiválasztása" text2=""/>
+        <string id="67176227" text1="A paraffinfürdőben lévő paraffin hőmérséklete nagyobb, mint %1. Ellenőrizze a paraffin olvadási állapotát." text2=""/>
+        <string id="67176228" text1="A paraffinfürdőben lévő paraffin hőmérséklete kisebb, mint %1. Ellenőrizze a paraffin olvadási állapotát." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>

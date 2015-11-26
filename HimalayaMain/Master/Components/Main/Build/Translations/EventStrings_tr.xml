@@ -1,276 +1,276 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="zh">
-        <string id="17039372" text1="在 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
-        <string id="16973834" text1="由于未知原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
-        <string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
-        <string id="17235976" text1="%1 语言包未找到。" text2=""/>
-        <string id="17235977" text1="密码与要求不符。所需长度应为 4 至 16 个字符。" text2=""/>
-        <string id="17236006" text1="远程维护设置失败。" text2=""/>
-        <string id="19267585" text1="试剂名称 %1 已被使用。请使用其它试剂名称。" text2=""/>
-        <string id="19267599" text1="%1 失败。" text2=""/>
-        <string id="17236009" text1="试剂的数据模块初始化失败。" text2=""/>
-        <string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
-        <string id="17235998" text1="关机时保存文件 %1 失败。" text2=""/>
-        <string id="17236013" text1="读取设备历史信息失败。" text2=""/>
-        <string id="17236011" text1="站点配置错误。" text2=""/>
-        <string id="17629209" text1="导出失败。高级加密标准尚未初始化。" text2=""/>
-        <string id="17629201" text1="导出失败。无法打开文件进行读取。" text2=""/>
-        <string id="17629202" text1="导出失败。无法打开文件进行写入。" text2=""/>
-        <string id="17629200" text1="导出失败。无法加密导出的数据包。" text2=""/>
-        <string id="17629185" text1="目录创建失败" text2=""/>
-        <string id="17629203" text1="读取文件出错" text2=""/>
-        <string id="17629204" text1="写入文件出错" text2=""/>
-        <string id="17629194" text1="导出失败。" text2=""/>
-        <string id="17629186" text1="文件复制失败" text2=""/>
-        <string id="17629213" text1="导出失败。无法生成用于加密导出数据包的密钥。" text2=""/>
-        <string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化。" text2=""/>
-        <string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配。" text2=""/>
-        <string id="17629190" text1="导出失败。数据模块初始化失败。" text2=""/>
-        <string id="17629199" text1="导出失败。请求导出的类型无效。" text2=""/>
-        <string id="17629212" text1="导出失败。检测到错误的文件模式。" text2=""/>
-        <string id="17629197" text1="导出失败。日志目录不存在。" text2=""/>
-        <string id="17629211" text1="导出失败。未设置用于计算的密钥位数。" text2=""/>
-        <string id="17629195" text1="导出失败。源目录不存在。" text2=""/>
-        <string id="17629193" text1="导出成功" text2=""/>
-        <string id="17629196" text1="导出失败。目标目录不存在。" text2=""/>
-        <string id="17629198" text1="导出失败。目标文件名格式错误。" text2=""/>
-        <string id="17629192" text1="导出失败。无法归档文件。" text2=""/>
-        <string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件。" text2=""/>
-        <string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629191" text1="导出失败。验证数据模块失败。" text2=""/>
-        <string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
-        <string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
-        <string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-        <string id="16846862" text1="用户通过按下按钮进行确认：%1" text2=""/>
-        <string id="16846854" text1="调试" text2=""/>
-        <string id="16846851" text1="错误" text2=""/>
-        <string id="16846850" text1="严重出错" text2=""/>
-        <string id="16846853" text1="信息" text2=""/>
-        <string id="16846849" text1="未定义类型" text2=""/>
-        <string id="16846852" text1="警告" text2=""/>
-        <string id="16846861" text1="已解决。" text2=""/>
-        <string id="16843278" text1="用户登录" text2=""/>
-        <string id="16843295" text1="关" text2=""/>
-        <string id="16843294" text1="开" text2=""/>
-        <string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
-        <string id="16843315" text1="包埋盒" text2=""/>
-        <string id="16843316" text1="循环" text2=""/>
-        <string id="16843317" text1="天数" text2=""/>
-        <string id="16843292" text1="警报错误音已更改" text2=""/>
-        <string id="16843301" text1="警报错误音的音量已更改" text2=""/>
-        <string id="16843291" text1="警报警告音已更改" text2=""/>
-        <string id="16843300" text1="警报警告音的音量已更改" text2=""/>
-        <string id="16843288" text1="日期格式已更改为 %1" text2=""/>
-        <string id="16843272" text1="已将语言设置为 %1" text2=""/>
-        <string id="16843275" text1="网络设置已更改" text2=""/>
-        <string id="16843274" text1="蜡箱温度已更改为 %1" text2=""/>
-        <string id="16843293" text1="脱水试剂管理系统状态已更改为 %1" text2=""/>
-        <string id="16843286" text1="温度格式已更改为 %1" text2=""/>
-        <string id="16843287" text1="时间格式已更改为 %1" text2=""/>
-        <string id="17039365" text1="仪器初始化失败" text2=""/>
-        <string id="19529731" text1="密码更改成功。" text2=""/>
-        <string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
-        <string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="17825800" text1="仪器已从电源故障中恢复。" text2=""/>
-        <string id="19005441" text1="软件更新无法启动。" text2=""/>
-        <string id="19005442" text1="软件更新失败" text2=""/>
-        <string id="19005443" text1="软件更新回滚失败" text2=""/>
-        <string id="19005447" text1="软件更新成功" text2=""/>
-        <string id="19005448" text1="此软件包版本低于当前版本。软件更新已取消，未执行更新。" text2=""/>
-        <string id="17891331" text1="系统初始化完成" text2=""/>
-        <string id="17891335" text1="请关闭仪器背面的电源开关。" text2=""/>
-        <string id="17891336" text1="安装已完成。 请拔下 USB 驱动器，然后重启仪器。" text2=""/>
-        <string id="17891337" text1="仪器正在更新数据。请不要中断。" text2=""/>
-        <string id="17891338" text1="软件更新正在进行， 请不要中断。" text2=""/>
-        <string id="17891339" text1="意外错误。请联系维修人员。" text2=""/>
-        <string id="16973837" text1="取消" text2=""/>
-        <string id="16973840" text1="继续" text2=""/>
-        <string id="16973839" text1="否" text2=""/>
-        <string id="16973836" text1="确定" text2=""/>
-        <string id="16973841" text1="停止" text2=""/>
-        <string id="16973838" text1="是" text2=""/>
-        <string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
-        <string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
-        <string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
-        <string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
-        <string id="33817097" text1="组验证失败。程序数据模块未初始化。" text2=""/>
-        <string id="33817088" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817092" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817096" text1="组验证失败。试剂数据模块未初始化。" text2=""/>
-        <string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中。" text2=""/>
-        <string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
-        <string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-        <string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
-        <string id="33817861" text1="声音类型参数超出范围。" text2=""/>
-        <string id="33817860" text1="音量参数超出范围。" text2=""/>
-        <string id="33817859" text1="声音周期参数超出范围。" text2=""/>
-        <string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
-        <string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
-        <string id="33816608" text1="程序 %1 中的步骤 ID %2 无效。" text2=""/>
-        <string id="33817862" text1="石蜡温度超出范围。" text2=""/>
-        <string id="33816626" text1="新建程序失败。" text2=""/>
-        <string id="33816597" text1="程序列表中最多只允许 %1 个程序。" text2=""/>
-        <string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
-        <string id="33816631" text1="程序删除失败。" text2=""/>
-        <string id="33816623" text1="程序 %2 与 %1 的ID 一样。" text2=""/>
-        <string id="33816620" text1="程序 %1 的时间格式错误。" text2=""/>
-        <string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-        <string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
-        <string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
-        <string id="33816592" text1="程序验证失败。" text2=""/>
-        <string id="33816584" text1="程序读取失败。" text2=""/>
-        <string id="33816605" text1="程序 %1 中的步骤数超过限值。最多允许 14 个步骤。" text2=""/>
-        <string id="33818116" text1="程序 %1 必须至少有 %2 个步骤。" text2=""/>
-        <string id="33818118" text1="程序 %2 中步骤 %1 的浸泡时间超过限值。有效范围：%3 - %4。" text2=""/>
-        <string id="33818119" text1="程序 %2 中步骤 %1 的温度超过限值。有效范围：%3 - %4 (摄氏度)。" text2=""/>
-        <string id="33816606" text1="程序 %1 中找到无效试剂 ID %2。" text2=""/>
-        <string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
-        <string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
-        <string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-        <string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
-        <string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
-        <string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
-        <string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
-        <string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
-        <string id="16842767" text1="删除文件 %1 出错。" text2=""/>
-        <string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
-        <string id="16842772" text1="时间偏移太大（%1 秒）。允许的最大值为 %2 秒。" text2=""/>
-        <string id="16846858" text1="将时间设置为 %1。" text2=""/>
-        <string id="33619971" text1="仪器已启动 (序列号为 %1，类型为 %2)" text2=""/>
-        <string id="33947653" text1="导入失败。导入文件的格式不正确" text2=""/>
-        <string id="50331760" text1="导入失败。设备名称不匹配。" text2=""/>
-        <string id="50331763" text1="导出失败。没有找到USB驱动器。" text2=""/>
-        <string id="50331762" text1="导入失败。没有找到USB驱动器。" text2=""/>
-        <string id="33947665" text1="导入导出正在运行。" text2=""/>
-        <string id="33947664" text1="导入失败。" text2=""/>
-        <string id="33947657" text1="导入失败。数据模块初始化失败" text2=""/>
-        <string id="33947652" text1="导入失败。没有要导入的文件。" text2=""/>
-        <string id="33947655" text1="导入失败。导入数据包中没有所需的文件。" text2=""/>
-        <string id="33947659" text1="导入失败。回滚失败。" text2=""/>
-        <string id="33947662" text1="导入成功。" text2=""/>
-        <string id="33947656" text1="导入失败。软件版本与导入文件不匹配" text2=""/>
-        <string id="50331759" text1="导入失败。数据包文件损坏" text2=""/>
-        <string id="50331761" text1="导入类型无效。" text2=""/>
-        <string id="33947660" text1="导入失败。更新回滚失败。" text2=""/>
-        <string id="33947658" text1="导入失败。验证数据模块失败" text2=""/>
-        <string id="33619974" text1="密码更改成功。" text2=""/>
-        <string id="33619972" text1="登录失败。密码错误。" text2=""/>
-        <string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="33619978" text1="图形界面已经连接。" text2=""/>
-        <string id="33619975" text1="图形界面已经断开。" text2=""/>
-        <string id="50331719" text1="活性炭过滤器已过期，请更换。" text2=""/>
-        <string id="50331771" text1="活性炭过滤器已过期，请尽快更换。" text2=""/>
-        <string id="50331772" text1="用户添加了程序 %1。" text2=""/>
-        <string id="50331773" text1="用户更新了程序 %1。" text2=""/>
-        <string id="50331774" text1="用户删除了程序 %1。" text2=""/>
-        <string id="50331775" text1="将用户模式更改为标准用户。" text2=""/>
-        <string id="50331776" text1="将用户模式更改为管理员。" text2=""/>
-        <string id="50331777" text1="将用户模式更改为检修人员。" text2=""/>
-        <string id="50331718" text1="请联系检修人员，执行年度预防性维护，以保持仪器正常工作。" text2=""/>
-        <string id="50331765" text1="活性炭过滤器维护时间已重置。" text2=""/>
-        <string id="50331764" text1="仪器维护时间已重置。" text2=""/>
-        <string id="50331766" text1="暂停超过 5 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
-        <string id="50331651" text1="标准活检组织" text2=""/>
-        <string id="50331652" text1="清洗程序" text2=""/>
-        <string id="50331650" text1="标准过夜组织" text2=""/>
-        <string id="50331671" text1="清洗酒精" text2=""/>
-        <string id="50331670" text1="清洗二甲苯" text2=""/>
-        <string id="50331666" text1="酒精 100%" text2=""/>
-        <string id="50331662" text1="酒精 70%" text2=""/>
-        <string id="50331663" text1="酒精 80%" text2=""/>
-        <string id="50331664" text1="酒精 90%" text2=""/>
-        <string id="50331665" text1="酒精 95%" text2=""/>
-        <string id="50331661" text1="福尔马林" text2=""/>
-        <string id="50331660" text1="清洗酒精" text2=""/>
-        <string id="50331659" text1="清洗试剂" text2=""/>
-        <string id="50331657" text1="透明剂" text2=""/>
-        <string id="50331656" text1="无水脱水剂" text2=""/>
-        <string id="50331655" text1="稀释性脱水剂" text2=""/>
-        <string id="50331653" text1="固定剂" text2=""/>
-        <string id="50331658" text1="石蜡" text2=""/>
-        <string id="50331654" text1="水" text2=""/>
-        <string id="50331668" text1="石蜡" text2=""/>
-        <string id="50331669" text1="去离子水" text2=""/>
-        <string id="50331667" text1="二甲苯" text2=""/>
-        <string id="67174416" text1="用户关闭仪器。" text2=""/>
-        <string id="67174417" text1="执行恢复操作：%1。" text2=""/>
-        <string id="67174418" text1="用户启动程序 %1，结束时间 %2。" text2=""/>
-        <string id="67174419" text1="用户继续执行程序 %1。" text2=""/>
-        <string id="67174420" text1="用户暂停程序 %1。" text2=""/>
-        <string id="67174421" text1="用户终止程序 %1。" text2=""/>
-        <string id="67174422" text1="用户排空程序 %1 的最后一种试剂。" text2=""/>
-        <string id="67174423" text1="用户将石蜡熔点从 %1 更改为 %2。" text2=""/>
-        <string id="67174656" text1="启动自检。" text2=""/>
-        <string id="67174733" text1="自检已成功。" text2=""/>
-        <string id="67174912" text1="启动预检。" text2=""/>
-        <string id="67174927" text1="启动试剂/石蜡液位检查。" text2=""/>
-        <string id="67174928" text1="试剂/石蜡液位检查成功。" text2=""/>
-        <string id="67174929" text1="预检成功。" text2=""/>
-        <string id="67175168" text1="检测到程序 %1 在步骤 %2 未完成 。" text2=""/>
-        <string id="67175186" text1="包含未完成程序列表的系统文件丢失。 请检查，确定存储设备是否已损坏。" text2=""/>
-        <string id="67175200" text1="启动程序 %1" text2=""/>
-        <string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
-        <string id="67175203" text1="正在终止程序。" text2=""/>
-        <string id="67175204" text1="程序已终止。" text2=""/>
-        <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175207" text1="正在排液。" text2=""/>
-        <string id="67175208" text1="等待填充石蜡。" text2=""/>
-        <string id="67175209" text1="加热液位传感器。" text2=""/>
-        <string id="67175210" text1="已开始填充" text2=""/>
-        <string id="67175213" text1="已开始脱水" text2=""/>
-        <string id="67175215" text1="已完成步骤 %1" text2=""/>
-        <string id="67175216" text1="已开始步骤 %1 (站点 %2、%3、%4、%5、%6)。" text2=""/>
-        <string id="67175217" text1="已完成程序 %1" text2=""/>
-        <string id="67175218" text1="开始干燥过程。" text2=""/>
-        <string id="67175219" text1="完成干燥过程。" text2=""/>
-        <string id="67175220" text1="步骤 %1 和步骤 %2 之间的时间超过 4 分钟。" text2=""/>
-        <string id="67175222" text1="填充成功。" text2=""/>
-        <string id="67175223" text1="排液成功。" text2=""/>
-        <string id="67175224" text1="开始冷却。" text2=""/>
-        <string id="67175424" text1="预检查" text2=""/>
-        <string id="67175425" text1="干燥过程" text2=""/>
-        <string id="67176012" text1="空气系统：负压未到达目标值。真空到达最大值 %1 kPa。" text2=""/>
-        <string id="67176025" text1="旋转阀功能不正常。请检查。" text2=""/>
-        <string id="67176026" text1="仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="67176194" text1="错误 %1！在干燥过程中密封失败。" text2=""/>
-        <string id="67176196" text1="错误 %1！蜡箱门打开，是否要重新熔化石蜡？" text2=""/>
-        <string id="67176198" text1="请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176199" text1="请根据用户手册检查试剂瓶液位。" text2=""/>
-        <string id="67176200" text1="脱水缸排液失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
-        <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
-        <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
-        <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
-        <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
-        <string id="67176210" text1="压力测试失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176211" text1="远程警报系统未连接！请将设备连接至远程警报系统。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内添加试剂。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请取出样品。" text2=""/>
-        <string id="67176216" text1="电源故障恢复过程中加热失败。请联系维修人员。" text2=""/>
-        <string id="67176217" text1="电源故障恢复程序失败。请联系维修人员。" text2=""/>
-        <string id="67176218" text1="系统错误。请联系维修人员。" text2=""/>
-        <string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
-        <string id="67176220" text1="请清洁液位传感器。" text2=""/>
-        <string id="67176223" text1="错误 %1！终止失败。" text2=""/>
-        <string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
-        <string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
-        <string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="19202061" text1="用户重置站点 %1 数据。" text2=""/>
-        <string id="19202062" text1="用户将站点 %1 中的试剂更改为 %2。" text2=""/>
-        <string id="19202063" text1="用户将站点 %1 设为满。" text2=""/>
-        <string id="19202064" text1="用户将站点 %1 设为空。" text2=""/>
-        <string id="19267602" text1="用户添加了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
-        <string id="19267604" text1="用户更新了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="16973842" text1="用户选择超时。" text2=""/>
-        <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
-        <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
+    <language name="tr">
+        <string id="17039372" text1="Cihaz, %2 senaryosu sırasında %1 hatasıyla karşılaştı; bu durumda %3 kurtarma işlemi denendi. İşlemin sonucu: %4." text2=""/>
+        <string id="16973834" text1="Olay kaydı tutma işlemi bazı nedenlerden dolayı devre dışı bırakıldı. Lütfen yerel servisinizle bağlantıya geçin." text2=""/>
+        <string id="17235997" text1="Daha fazla bilgi için kullanıcı günlüğünü kontrol edin." text2=""/>
+        <string id="17235976" text1="'%1 dili için çeviriler bulunamadı." text2=""/>
+        <string id="17235977" text1="Şifre kurallara uygun değil. Gereken uzunluk 4 ile 16 karakter arasında olmalı." text2=""/>
+        <string id="17236006" text1="Uzaktan Bakım yapılandırması başarısız oldu." text2=""/>
+        <string id="19267585" text1="%1 adlı reaktif zaten kullanımda. Lütfen farklı bir reaktif adı kullanın." text2=""/>
+        <string id="19267599" text1="%1 başarısız oldu." text2=""/>
+        <string id="17236009" text1="Reaktiflerle ait veri modülünün başlatılması başarısız oldu." text2=""/>
+        <string id="17760274" text1="Kullanıcı ayarlarının kaydedilmesi başarısız oldu. Lütfen servisle bağlantıya geçin." text2=""/>
+        <string id="17235998" text1="Kapatma sırasında XML %1 yazma başarısız." text2=""/>
+        <string id="17236013" text1="CihazGeçmişi.xml dosyasının okunması başarısız oldu." text2=""/>
+        <string id="17236011" text1="İstasyon.xml doğrulaması başarısız oldu." text2=""/>
+        <string id="17629209" text1="Dışarı aktarım başarısız. Gelişmiş Şifreleme Standardı başlatılmadı." text2=""/>
+        <string id="17629201" text1="Dışarı aktarım başarısız. Dosya, okumak için açılamıyor." text2=""/>
+        <string id="17629202" text1="Dışarı aktarım başarısız. Dosya, yazmak için açılamıyor." text2=""/>
+        <string id="17629200" text1="Dışarı aktarım başarısız. Dışarı aktarım paketini şifreleme başarısız oldu." text2=""/>
+        <string id="17629185" text1="Dizin oluşturma başarısız oldu" text2=""/>
+        <string id="17629203" text1="Dosya okumada hata" text2=""/>
+        <string id="17629204" text1="Dosya yazmada hata" text2=""/>
+        <string id="17629194" text1="Dışarı aktarım başarısız." text2=""/>
+        <string id="17629186" text1="Dosya kopyalama başarısız oldu" text2=""/>
+        <string id="17629213" text1="Dışarı aktarım başarısız. Dışarı aktarım paketini şifreleme için gereken gizli anahtar oluşturulamadı." text2=""/>
+        <string id="17629208" text1="Dışarı aktarım başarısız. Karmaya dayalı mesaj doğrulama kodu başlatılmadı." text2=""/>
+        <string id="17629205" text1="Dışarı aktarım başarısız. Karma zinciri indeksiyle USB cihaz indeksi birbiriyle eşleşiyor." text2=""/>
+        <string id="17629190" text1="Dışarı aktarım başarısız. Veri modülü başlatma başarısız oldu." text2=""/>
+        <string id="17629199" text1="Dışarı aktarım başarısız. Geçersiz dışarı aktarım türü talep edildi." text2=""/>
+        <string id="17629212" text1="Dışarı aktarım başarısız. Yanlış dosya modu saptandı." text2=""/>
+        <string id="17629197" text1="Dışarı aktarım başarısız. Günlük dizini yok." text2=""/>
+        <string id="17629211" text1="Dışarı aktarım başarısız. Hesaplama için anahtar bitler belirlenmedi." text2=""/>
+        <string id="17629195" text1="Dışarı aktarım başarısız. Kaynak dizini yok." text2=""/>
+        <string id="17629193" text1="Dışarı aktarım başarılı" text2=""/>
+        <string id="17629196" text1="Dışarı aktarım başarısız. Hedef dizini yok." text2=""/>
+        <string id="17629198" text1="Dışarı aktarım başarısız. Hedef dosya adı biçimi yanlış." text2=""/>
+        <string id="17629192" text1="Dışarı aktarım başarısız. Dosyalar arşivlenemiyor." text2=""/>
+        <string id="17629187" text1="Dışarı aktarım başarısız. RMS_Status.csv dosyası oluşturulamıyor." text2=""/>
+        <string id="17629188" text1="Dışarı aktarım başarısız. TempConfiguration.xml dosyası oluşturulamıyor." text2=""/>
+        <string id="17629189" text1="Dışarı aktarım başarısız. TempConfiguration.xml dosyası okunamıyor." text2=""/>
+        <string id="17629191" text1="Dışarı aktarım başarısız. Veri modülü doğrulaması başarısız oldu." text2=""/>
+        <string id="17629215" text1="Dışarı aktarım başarısız. Sıkıştırma komutu sistemde bulunamadı." text2=""/>
+        <string id="17629214" text1="Dışarı aktarım başarısız. Dosyalar sıkıştırılamıyor." text2=""/>
+        <string id="17629216" text1="Dışarı aktarım başarısız. Sıkıştırma işleminin tamamlanması uzun süre alıyor." text2=""/>
+        <string id="16846862" text1="Kullanıcı tarafından tuşa basılarak onaylandı: %1" text2=""/>
+        <string id="16846854" text1="Hata ayıklama" text2=""/>
+        <string id="16846851" text1="Hata" text2=""/>
+        <string id="16846850" text1="Önemli Hata" text2=""/>
+        <string id="16846853" text1="Bilgi" text2=""/>
+        <string id="16846849" text1="Tanımlanmamış Tip" text2=""/>
+        <string id="16846852" text1="Uyarı" text2=""/>
+        <string id="16846861" text1="Çözüldü." text2=""/>
+        <string id="16843278" text1="Kullanıcı Girişi" text2=""/>
+        <string id="16843295" text1="Kapalı" text2=""/>
+        <string id="16843294" text1="Açık" text2=""/>
+        <string id="16843314" text1="RYS temizleme durumu %1 olarak değiştirildi." text2=""/>
+        <string id="16843315" text1="Kaset" text2=""/>
+        <string id="16843316" text1="Siklus" text2=""/>
+        <string id="16843317" text1="Gün" text2=""/>
+        <string id="16843292" text1="Alarm hata sesi değiştirildi" text2=""/>
+        <string id="16843301" text1="Alarm hata sesinin yüksekliği değiştirildi" text2=""/>
+        <string id="16843291" text1="Alarm ikaz sesi değiştirildi" text2=""/>
+        <string id="16843300" text1="Alarm ikaz sesinin yüksekliği değiştirildi" text2=""/>
+        <string id="16843288" text1="Tarih formatı %1 olarak değiştirildi" text2=""/>
+        <string id="16843272" text1="Dil ayarı: %1" text2=""/>
+        <string id="16843275" text1="Ağ Ayarları değiştirildi" text2=""/>
+        <string id="16843274" text1="Fırın sıcaklığı %1 yapıldı" text2=""/>
+        <string id="16843293" text1="RYS durumu %1 olarak değiştirildi" text2=""/>
+        <string id="16843286" text1="Sıcaklık formatı %1 olarak değiştirildi" text2=""/>
+        <string id="16843287" text1="Saat formatı %1 olarak değiştirildi" text2=""/>
+        <string id="17039365" text1="Cihazın başlatılması başarısız" text2=""/>
+        <string id="19529731" text1="Şifre başarıyla değiştirildi." text2=""/>
+        <string id="19529729" text1="Oturum açma başarısız oldu. Yanlış şifre. Geçerli şifre 4-16 karakter olmalıdır." text2=""/>
+        <string id="19529730" text1="Şifre değiştirilemiyor. Şifreler eşleşmiyor." text2=""/>
+        <string id="17825800" text1="Sistem enerji kesintisini atlattı." text2=""/>
+        <string id="19005441" text1="Hata nedeniyle yazılım güncellemesi başlatılamadı." text2=""/>
+        <string id="19005442" text1="Yazılım güncellemesi başarısız oldu" text2=""/>
+        <string id="19005443" text1="Yazılım güncellemesini geri alma başarısız oldu" text2=""/>
+        <string id="19005447" text1="Yazılım güncellemesi başarılı" text2=""/>
+        <string id="19005448" text1="Mevcut yazılım, güncelleme paketinden daha yeni. Yazılım Güncellemesi, güncelleme yapılmadan iptal edildi." text2=""/>
+        <string id="17891331" text1="Sistem başlatma tamamlandı" text2=""/>
+        <string id="17891335" text1="Arkadaki anahtarı kapalı konuma getirerek cihazı kapatın." text2=""/>
+        <string id="17891336" text1="Kurulum sonlandırıldı.  Lütfen USB sürücüsünü yerinden çıkarın ve cihazı yeniden başlatın." text2=""/>
+        <string id="17891337" text1="Cihaz geri alma verilerini güncelliyor. Lütfen bu işlemi kesmeyin." text2=""/>
+        <string id="17891338" text1="Yazılım Güncellemesi çalıştırılıyor... Lütfen bu işlemi kesmeyin." text2=""/>
+        <string id="17891339" text1="Beklenmeyen hata. Lütfen servisi arayın." text2=""/>
+        <string id="16973837" text1="İptal" text2=""/>
+        <string id="16973840" text1="Devam" text2=""/>
+        <string id="16973839" text1="Hayır" text2=""/>
+        <string id="16973836" text1="Tamam" text2=""/>
+        <string id="16973841" text1="Durdur" text2=""/>
+        <string id="16973838" text1="Evet" text2=""/>
+        <string id="33619990" text1="Mevcut sistem tarihi/saati 24 saatten fazla değiştirilemez." text2=""/>
+        <string id="33619991" text1="Kullanıcı mevcut sistem tarih ve saatini %1 olarak değiştirdi" text2=""/>
+        <string id="33817094" text1="Grup doğrulaması başarısız oldu. Temel tarih modülü başlatılmadı." text2=""/>
+        <string id="33817095" text1="Grup doğrulaması başarısız oldu. Veri modülü türü geçerli değil." text2=""/>
+        <string id="33817097" text1="Grup doğrulaması başarısız oldu. Program veri modülü başlatılmadı." text2=""/>
+        <string id="33817088" text1="Reaktif ID, Program listesinde var ama Reaktif listesinde yok: %1." text2=""/>
+        <string id="33817092" text1="Reaktif ID, Kullanıcı ayarlarında var ama Reaktif listesinde yok: %1." text2=""/>
+        <string id="33817096" text1="Grup doğrulaması başarısız oldu. Reaktif veri modülü başlatılmadı." text2=""/>
+        <string id="33817093" text1="İstasyon ID, İstasyon listesinde var ama İstasyon matrisinde yok: %1." text2=""/>
+        <string id="33817098" text1="Grup doğrulaması başarısız oldu. İstasyon veri modülü başlatılmadı." text2=""/>
+        <string id="33817101" text1="Grup doğrulaması başarısız oldu. Kullanıcı ayarları veri modülü başlatılmadı." text2=""/>
+        <string id="33818114" text1="Adım %2 ve Adım %3 için %1 Reaktifleri uyumlu değil." text2=""/>
+        <string id="33817861" text1="Ses düzeyi parametresi izin verilen aralığın dışında." text2=""/>
+        <string id="33817860" text1="Ses yüksekliği parametresi izin verilen aralığın dışında." text2=""/>
+        <string id="33817859" text1="Ses periyotu parametresi izin verilen aralığın dışında." text2=""/>
+        <string id="33816577" text1="%1, geçerli bir Program ID değil." text2=""/>
+        <string id="33816578" text1="%1 cihazına ait servis bilgilerini alırken hata oluştu" text2=""/>
+        <string id="33816608" text1="%1 programındaki %2 Adım ID geçersiz." text2=""/>
+        <string id="33817862" text1="Parafin sıcaklığı izin verilen aralığın dışında." text2=""/>
+        <string id="33816626" text1="Programı ekleme başarısız oldu." text2=""/>
+        <string id="33816597" text1="Program listesinde %1 programdan fazlası bulunuyor. Sadece %1 programa izin verilir." text2=""/>
+        <string id="33816624" text1="Geçersiz Program ID %1 nedeniyle programın silinmesi başarısız oldu." text2=""/>
+        <string id="33816631" text1="Programın silinmesi başarısız oldu." text2=""/>
+        <string id="33816623" text1="Program %2 ile ilişkilendirilen Program ID %1 benzersiz değil." text2=""/>
+        <string id="33816620" text1="Program %1 içindeki program adımları geçersiz süre biçimi içeriyor." text2=""/>
+        <string id="33818117" text1="%1 programı için Program adının uzunluğu sınırlamayı aşıyor. Geçerli aralık %2  -  %3  karakterdir." text2=""/>
+        <string id="33818113" text1="%1 adlı program zaten kullanımda. Lütfen farklı bir program adı seçin." text2=""/>
+        <string id="33816596" text1="Program karma tablosunda geçersiz indeks." text2=""/>
+        <string id="33816592" text1="Programlar.xml doğrulaması başarısız oldu." text2=""/>
+        <string id="33816584" text1="Programlar.xml okuması başarısız oldu." text2=""/>
+        <string id="33816605" text1="%1 Programındaki adımların sayısı sınırı aşıyor. En fazla 14 adıma izin verilir." text2=""/>
+        <string id="33818116" text1="%1 programında en az %2  adım bulunmalıdır." text2=""/>
+        <string id="33818118" text1="%2 programındaki %1 adımının süresi sınırları aşıyor. Geçerli aralık:  %3  -  %4 ." text2=""/>
+        <string id="33818119" text1="%2 programındaki %1 adımının sıcaklığı sınırları aşıyor. Geçerli aralık:  %3  -  %4  (Celsius)." text2=""/>
+        <string id="33816606" text1="Program Doğrulayıcı, %1 programı içinde %2 geçersiz Reaktif ID'sini buldu." text2=""/>
+        <string id="33816846" text1="ReaktifListesi, %1  reaktifi okumada başarısız oldu." text2=""/>
+        <string id="33816845" text1="ReaktifListesi, %1 reaktifi yazmada başarısız oldu." text2=""/>
+        <string id="33816840" text1="Reaktif Adı  %1 çok uzun (maks. 32 karakter)." text2=""/>
+        <string id="33817864" text1="Bilinmeyen RYS temizleme modeli" text2=""/>
+        <string id="33817863" text1="Bilinmeyen RYS işlem modeli" text2=""/>
+        <string id="33818115" text1="Kullanıcı Program adında Leica kelimesi bulunamaz." text2=""/>
+        <string id="50331649" text1="Dışarı aktarım başarısız. SD kart üzerinde yeterli yer yok." text2=""/>
+        <string id="50331672" text1="Dışarı aktarım başarısız. USB depolama üzerinde yeterli yer yok." text2=""/>
+        <string id="16842767" text1="%1 dosyasını silerken hata oluştu." text2=""/>
+        <string id="16842762" text1="%1 yapılandırma dosyasını okurken hata oluştu." text2=""/>
+        <string id="16842772" text1="%1 saniyelik zaman ofset değeri çok büyük. İzin verilen maksimum değer %2 saniyedir." text2=""/>
+        <string id="16846858" text1="Tarihi / saati %1 olarak ayarlayın." text2=""/>
+        <string id="33619971" text1="Cihaz başlatıldı (seri no: %1 tip: %2)" text2=""/>
+        <string id="33947653" text1="İçe aktarım başarısız. İçe aktarım dosyasının biçimi hatalı" text2=""/>
+        <string id="50331760" text1="İçe aktarım başarısız. Cihaz adı eşleşmiyor." text2=""/>
+        <string id="50331763" text1="Cihaz üzerinde dosyaları dışa aktarmak için USB cihazı bulunamadı." text2=""/>
+        <string id="50331762" text1="Cihaz üzerinde dosyaları içe aktarmak için USB cihazı bulunamadı." text2=""/>
+        <string id="33947665" text1="İçeDışaAktarım iş parçası çalışıyor…" text2=""/>
+        <string id="33947664" text1="İçe aktarım başarısız" text2=""/>
+        <string id="33947657" text1="İçe aktarım başarısız. Veri modülü başlatma başarısız oldu" text2=""/>
+        <string id="33947652" text1="İçe aktarım başarısız. İçe aktaracak dosya yok." text2=""/>
+        <string id="33947655" text1="İçe aktarım başarısız. İçe aktarım paketinde gerekli dosyalar yok." text2=""/>
+        <string id="33947659" text1="İçe aktarım başarısız. Geri alma başarısız." text2=""/>
+        <string id="33947662" text1="İçe aktarım başarılı." text2=""/>
+        <string id="33947656" text1="İçe aktarım başarısız. Yazılım sürümleri içe aktarım dosyalarıyla eşleşmiyor" text2=""/>
+        <string id="50331759" text1="İçe aktarım başarısız. Paket bozulmuş" text2=""/>
+        <string id="50331761" text1="İçe aktarım tipi geçerli değil." text2=""/>
+        <string id="33947660" text1="İçe aktarım başarısız. Güncelleme geri alma başarısız." text2=""/>
+        <string id="33947658" text1="İçe aktarım başarısız. Veri modülü doğrulaması başarısız oldu" text2=""/>
+        <string id="33619974" text1="Şifre başarıyla değiştirildi." text2=""/>
+        <string id="33619972" text1="Oturum açma başarısız oldu. Yanlış şifre." text2=""/>
+        <string id="33619973" text1="Şifre değiştirilemiyor. Şifreler eşleşmiyor." text2=""/>
+        <string id="33619978" text1="GUI bağlandı" text2=""/>
+        <string id="33619975" text1="GUI durduruldu." text2=""/>
+        <string id="50331719" text1="Aktif karbon filtrenin süresi doldu Lütfen yeni bir aktif karbon filtreyle değiştirin." text2=""/>
+        <string id="50331771" text1="Aktif karbon filtrenin süresi doldu Lütfen olabildiğince çabuk yeni bir aktif karbon filtreyle değiştirin." text2=""/>
+        <string id="50331772" text1="Kullanıcı %1 programını ekledi." text2=""/>
+        <string id="50331773" text1="Kullanıcı %1 programını güncelledi." text2=""/>
+        <string id="50331774" text1="Kullanıcı %1 programını kaldırdı." text2=""/>
+        <string id="50331775" text1="Kullanıcı modunu standart kullanıcı olarak değiştir." text2=""/>
+        <string id="50331776" text1="Kullanıcı modunu Süpervizör olarak değiştir." text2=""/>
+        <string id="50331777" text1="Kullanıcı modunu Servis olarak değiştir." text2=""/>
+        <string id="50331718" text1="Cihazınızın doğru biçimde çalışmayı sürdürmesi için lütfen servisi arayarak önleyici yıllık bakım yaptırın" text2=""/>
+        <string id="50331765" text1="Aktif karbon filtre çalışma süresi sıfırlandı." text2=""/>
+        <string id="50331764" text1="Cihaz çalışma süresi sıfırlandı." text2=""/>
+        <string id="50331766" text1="Duraklama süresi 5 dakikayı aştı. Lütfen olabildiğince çabuk biçimde programı devam ettirin!" text2=""/>
+        <string id="50331767" text1="Duraklama süresi 10 dakikayı aştı. Lütfen olabildiğince çabuk biçimde programı devam ettirin!" text2=""/>
+        <string id="50331768" text1="Programa devam edilemiyor. Duraklama süresi 15 dakikayı aştı." text2=""/>
+        <string id="50331651" text1="Biyopsi" text2=""/>
+        <string id="50331652" text1="Temzl. Progr." text2=""/>
+        <string id="50331650" text1="Bütün gece" text2=""/>
+        <string id="50331671" text1="Alkol temizleniyor" text2=""/>
+        <string id="50331670" text1="Ksilen temizleniyor" text2=""/>
+        <string id="50331666" text1="%100 etanol" text2=""/>
+        <string id="50331662" text1="%70 etanol" text2=""/>
+        <string id="50331663" text1="%80 etanol" text2=""/>
+        <string id="50331664" text1="%90 etanol" text2=""/>
+        <string id="50331665" text1="%95 etanol" text2=""/>
+        <string id="50331661" text1="Formalin" text2=""/>
+        <string id="50331660" text1="Alkol temizleniyor" text2=""/>
+        <string id="50331659" text1="Eritici temizleniyor" text2=""/>
+        <string id="50331657" text1="Temizleniyor" text2=""/>
+        <string id="50331656" text1="Sudan arındırma, mutlak" text2=""/>
+        <string id="50331655" text1="Sudan arındırma, seyreltilmiş" text2=""/>
+        <string id="50331653" text1="Sabitleme" text2=""/>
+        <string id="50331658" text1="Parafin" text2=""/>
+        <string id="50331654" text1="Su" text2=""/>
+        <string id="50331668" text1="Parafin" text2=""/>
+        <string id="50331669" text1="Su işleniyor" text2=""/>
+        <string id="50331667" text1="Ksilen" text2=""/>
+        <string id="67174416" text1="Cihaz kullanıcı tarafından kapatılıyor." text2=""/>
+        <string id="67174417" text1="%1 kurtarma işlemini yapın." text2=""/>
+        <string id="67174418" text1="Kullanıcı %1 programını başlattı, Bitiş Saati: %2." text2=""/>
+        <string id="67174419" text1="Kullanıcı %1 programını devam ettirdi." text2=""/>
+        <string id="67174420" text1="Kullanıcı %1 programını duraklattı." text2=""/>
+        <string id="67174421" text1="Kullanıcı %1 programını iptal etti." text2=""/>
+        <string id="67174422" text1="Kullanıcı %1 programının son reaktifini tahliye etti." text2=""/>
+        <string id="67174423" text1="Kullanıcı parafin erime noktasını %1 değerinden  %2 değerine değiştirdi." text2=""/>
+        <string id="67174656" text1="Otomatik testi başlat." text2=""/>
+        <string id="67174733" text1="Otomatik test başarılı." text2=""/>
+        <string id="67174912" text1="Ön testi başlat." text2=""/>
+        <string id="67174927" text1="Şişe kontrolünü başlat." text2=""/>
+        <string id="67174928" text1="Şişe kontrolü başarılı." text2=""/>
+        <string id="67174929" text1="Ön test başarılı." text2=""/>
+        <string id="67175168" text1="%1 programının %2 adımında tamamlanmamış olduğu saptandı." text2=""/>
+        <string id="67175186" text1="Tamamlanmamış program listesini içeren sistem dosyası eksik. Lütfen depolama alanının zarar görüp görmediğini kontrol edin." text2=""/>
+        <string id="67175200" text1="%1 programını başlat" text2=""/>
+        <string id="67175202" text1="Parafini eritmek üzere fırını ısıtmak için hâlâ %1 gerekiyor." text2=""/>
+        <string id="67175203" text1="Program iptal ediliyor…" text2=""/>
+        <string id="67175204" text1="Program iptal edildi." text2=""/>
+        <string id="67175205" text1="Program durduruldu." text2=""/>
+        <string id="67175207" text1="Tahliye ediliyor…" text2=""/>
+        <string id="67175208" text1="Parafinin dolması bekleniyor." text2=""/>
+        <string id="67175209" text1="Dolum için seviye sensörü ısıtılıyor" text2=""/>
+        <string id="67175210" text1="Doldurma başladı" text2=""/>
+        <string id="67175213" text1="İşlem başladı" text2=""/>
+        <string id="67175215" text1="Adım %1 tamamlandı" text2=""/>
+        <string id="67175216" text1="Adım %1 başlatıldı (İstasyon %2, %3, %4, %5, %6)." text2=""/>
+        <string id="67175217" text1="Program %1 tamamlandı" text2=""/>
+        <string id="67175218" text1="Kurutma işlemini başlat." text2=""/>
+        <string id="67175219" text1="Kurutma işlemini tamamla." text2=""/>
+        <string id="67175220" text1="Adım %1 ve adım %2 arasındaki süre 4 dakikayı aştı." text2=""/>
+        <string id="67175222" text1="Başarıyla dolduruldu." text2=""/>
+        <string id="67175223" text1="Başarıyla tahliye edildi." text2=""/>
+        <string id="67175224" text1="Soğutma başladı." text2=""/>
+        <string id="67175424" text1="Ön kontrol yapılıyor" text2=""/>
+        <string id="67175425" text1="Kurutma işlemi" text2=""/>
+        <string id="67176012" text1="Hava Sistemi: Vakum, hedef değere ulaşmadı. Vakum değeri maksimum %1 kPa oldu. " text2=""/>
+        <string id="67176025" text1="Döner Kapak normal çalışmıyor. Lütfen Döner Kapağı kontrol edin." text2=""/>
+        <string id="67176026" text1="Cihaz bazı teknik sorunlarla karşılaştı ve protokol tamamlanamadı." text2=""/>
+        <string id="67176194" text1="Hata ID %1!  Kuru senaryoda sızdırmazlık hatası." text2=""/>
+        <string id="67176196" text1="Hata ID %1!  Mum banyosu fırınının kapağı açık, taze parafini şimdi eritmek istiyor musunuz?" text2=""/>
+        <string id="67176198" text1="Lütfen sızdırmazlık halkasını ve haznenin üst bölümünü kullanım kılavuzunda açıklandığı biçimde temizleyin." text2=""/>
+        <string id="67176199" text1="Lütfen şişeleri kullanım kılavuzuna göre kontrol edin." text2=""/>
+        <string id="67176200" text1="Haznenin tahliyesi başarısız oldu! Lütfen sızdırmazlık halkasını ve haznenin üst bölümünü kullanım kılavuzunda açıklandığı biçimde temizleyin." text2=""/>
+        <string id="67176201" text1="Hata ID %1! Lütfen servisi arayın!" text2=""/>
+        <string id="67176202" text1="Hata ID %1! Egzoz sisteminde hata! Lütfen servise bilgi verin!" text2=""/>
+        <string id="67176203" text1="Hata ID %1! Lütfen servisi arayın!" text2=""/>
+        <string id="67176204" text1="Hata ID %1! Lütfen numuneleri kaldırın ve güvenlik altına alın.  Lütfen servisi arayın!" text2=""/>
+        <string id="67176207" text1="Yerel alarm sistemi bağlanmadı! Lütfen cihazı yerel alarm sistemine bağlayın" text2=""/>
+        <string id="67176208" text1="Lütfen parafin fırınının kapağını kapatın!" text2=""/>
+        <string id="67176209" text1="Lütfen haznenin kapağını kapatın ve Tekrar dene butonuyla onaylayın." text2=""/>
+        <string id="67176210" text1="Basınç testi başarısız oldu! Lütfen sızdırmazlık halkasını ve haznenin üst bölümünü kullanım kılavuzunda açıklandığı biçimde temizleyin." text2=""/>
+        <string id="67176211" text1="Uzak alarm sistemi bağlanmadı! Lütfen cihazı uzak alarm sistemine bağlayın." text2=""/>
+        <string id="67176212" text1="Lütfen reaktif şişelerinin durumunu kontrol edin; reaktif düzeyi, minimum düzeyin altındaysa 15 dakika içinde reaktif ekleyin." text2=""/>
+        <string id="67176214" text1="Protokol, enerji arızası nedeniyle kesintiye uğradı. Lütfen protokolü iptal edin ve numuneleri kaldırın." text2=""/>
+        <string id="67176216" text1="Isıtmada enerji arızasından kurtulma işlemi başarısız oldu. Lütfen servisi arayın." text2=""/>
+        <string id="67176217" text1="Enerji arızasından kurtulma işlemi başarısız oldu. Lütfen servisi arayın." text2=""/>
+        <string id="67176218" text1="Sistem hataları. Lütfen servisi arayın." text2=""/>
+        <string id="67176219" text1="Dokunun güvenli reaktifle korunması başarısız oldu. Lütfen servisi arayın." text2=""/>
+        <string id="67176220" text1="Lütfen seviye sensörünü temizleyin." text2=""/>
+        <string id="67176223" text1="Hata ID %1!  İptal başarısız oldu." text2=""/>
+        <string id="67176224" text1="Temzl. Progr. da enerji arızası. Program otomatik olarak yeniden başlatıldı." text2=""/>
+        <string id="67176225" text1="Hata ID %1! Döner Kapak anormal çalışıyor. Lütfen servisi arayın!" text2=""/>
+        <string id="67176226" text1="Hata ID %1! Cihaz bazı teknik sorunlarla karşılaştı ve protokol tamamlanamadı." text2=""/>
+        <string id="19202061" text1="Kullanıcı %1 istasyonunu sıfırladı." text2=""/>
+        <string id="19202062" text1="Kullanıcı %1 istasyonundaki reaktifi %2 olarak değiştirdi." text2=""/>
+        <string id="19202063" text1="Kullanıcı %1 istasyonunu dolu olarak ayarladı." text2=""/>
+        <string id="19202064" text1="Kullanıcı %1 istasyonunu boş olarak ayarladı." text2=""/>
+        <string id="19267602" text1="Kullanıcı şu reaktifi ekledi: %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan siklus sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
+        <string id="19267603" text1="Kullanıcı, reaktifi sildi %1." text2=""/>
+        <string id="19267604" text1="Kullanıcı reaktifi güncelledi:  %1, Değişikliğe kadar kalan kaset sayısı:%2, değişikliğe kadar kalan siklus sayısı:%3, Değişikliğe kadar kalan gün sayısı:%4, Reaktif Grubu: %5." text2=""/>
+        <string id="16973842" text1="zaman aşımı seçiliyor" text2=""/>
+        <string id="67176227" text1="Parafin banyosundaki parafin sıcaklığı %1 değerinden yüksek. Lütfen parafinin erime durumunu kontrol edin." text2=""/>
+        <string id="67176228" text1="Parafin banyosundaki parafin sıcaklığı %1 değerinden düşük. Lütfen parafinin erime durumunu kontrol edin." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>

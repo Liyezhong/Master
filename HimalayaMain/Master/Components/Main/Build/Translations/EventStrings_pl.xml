@@ -1,276 +1,276 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="zh">
-        <string id="17039372" text1="在 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
-        <string id="16973834" text1="由于未知原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
-        <string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
-        <string id="17235976" text1="%1 语言包未找到。" text2=""/>
-        <string id="17235977" text1="密码与要求不符。所需长度应为 4 至 16 个字符。" text2=""/>
-        <string id="17236006" text1="远程维护设置失败。" text2=""/>
-        <string id="19267585" text1="试剂名称 %1 已被使用。请使用其它试剂名称。" text2=""/>
-        <string id="19267599" text1="%1 失败。" text2=""/>
-        <string id="17236009" text1="试剂的数据模块初始化失败。" text2=""/>
-        <string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
-        <string id="17235998" text1="关机时保存文件 %1 失败。" text2=""/>
-        <string id="17236013" text1="读取设备历史信息失败。" text2=""/>
-        <string id="17236011" text1="站点配置错误。" text2=""/>
-        <string id="17629209" text1="导出失败。高级加密标准尚未初始化。" text2=""/>
-        <string id="17629201" text1="导出失败。无法打开文件进行读取。" text2=""/>
-        <string id="17629202" text1="导出失败。无法打开文件进行写入。" text2=""/>
-        <string id="17629200" text1="导出失败。无法加密导出的数据包。" text2=""/>
-        <string id="17629185" text1="目录创建失败" text2=""/>
-        <string id="17629203" text1="读取文件出错" text2=""/>
-        <string id="17629204" text1="写入文件出错" text2=""/>
-        <string id="17629194" text1="导出失败。" text2=""/>
-        <string id="17629186" text1="文件复制失败" text2=""/>
-        <string id="17629213" text1="导出失败。无法生成用于加密导出数据包的密钥。" text2=""/>
-        <string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化。" text2=""/>
-        <string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配。" text2=""/>
-        <string id="17629190" text1="导出失败。数据模块初始化失败。" text2=""/>
-        <string id="17629199" text1="导出失败。请求导出的类型无效。" text2=""/>
-        <string id="17629212" text1="导出失败。检测到错误的文件模式。" text2=""/>
-        <string id="17629197" text1="导出失败。日志目录不存在。" text2=""/>
-        <string id="17629211" text1="导出失败。未设置用于计算的密钥位数。" text2=""/>
-        <string id="17629195" text1="导出失败。源目录不存在。" text2=""/>
-        <string id="17629193" text1="导出成功" text2=""/>
-        <string id="17629196" text1="导出失败。目标目录不存在。" text2=""/>
-        <string id="17629198" text1="导出失败。目标文件名格式错误。" text2=""/>
-        <string id="17629192" text1="导出失败。无法归档文件。" text2=""/>
-        <string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件。" text2=""/>
-        <string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629191" text1="导出失败。验证数据模块失败。" text2=""/>
-        <string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
-        <string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
-        <string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-        <string id="16846862" text1="用户通过按下按钮进行确认：%1" text2=""/>
-        <string id="16846854" text1="调试" text2=""/>
-        <string id="16846851" text1="错误" text2=""/>
-        <string id="16846850" text1="严重出错" text2=""/>
-        <string id="16846853" text1="信息" text2=""/>
-        <string id="16846849" text1="未定义类型" text2=""/>
-        <string id="16846852" text1="警告" text2=""/>
-        <string id="16846861" text1="已解决。" text2=""/>
-        <string id="16843278" text1="用户登录" text2=""/>
-        <string id="16843295" text1="关" text2=""/>
-        <string id="16843294" text1="开" text2=""/>
-        <string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
-        <string id="16843315" text1="包埋盒" text2=""/>
-        <string id="16843316" text1="循环" text2=""/>
-        <string id="16843317" text1="天数" text2=""/>
-        <string id="16843292" text1="警报错误音已更改" text2=""/>
-        <string id="16843301" text1="警报错误音的音量已更改" text2=""/>
-        <string id="16843291" text1="警报警告音已更改" text2=""/>
-        <string id="16843300" text1="警报警告音的音量已更改" text2=""/>
-        <string id="16843288" text1="日期格式已更改为 %1" text2=""/>
-        <string id="16843272" text1="已将语言设置为 %1" text2=""/>
-        <string id="16843275" text1="网络设置已更改" text2=""/>
-        <string id="16843274" text1="蜡箱温度已更改为 %1" text2=""/>
-        <string id="16843293" text1="脱水试剂管理系统状态已更改为 %1" text2=""/>
-        <string id="16843286" text1="温度格式已更改为 %1" text2=""/>
-        <string id="16843287" text1="时间格式已更改为 %1" text2=""/>
-        <string id="17039365" text1="仪器初始化失败" text2=""/>
-        <string id="19529731" text1="密码更改成功。" text2=""/>
-        <string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
-        <string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="17825800" text1="仪器已从电源故障中恢复。" text2=""/>
-        <string id="19005441" text1="软件更新无法启动。" text2=""/>
-        <string id="19005442" text1="软件更新失败" text2=""/>
-        <string id="19005443" text1="软件更新回滚失败" text2=""/>
-        <string id="19005447" text1="软件更新成功" text2=""/>
-        <string id="19005448" text1="此软件包版本低于当前版本。软件更新已取消，未执行更新。" text2=""/>
-        <string id="17891331" text1="系统初始化完成" text2=""/>
-        <string id="17891335" text1="请关闭仪器背面的电源开关。" text2=""/>
-        <string id="17891336" text1="安装已完成。 请拔下 USB 驱动器，然后重启仪器。" text2=""/>
-        <string id="17891337" text1="仪器正在更新数据。请不要中断。" text2=""/>
-        <string id="17891338" text1="软件更新正在进行， 请不要中断。" text2=""/>
-        <string id="17891339" text1="意外错误。请联系维修人员。" text2=""/>
-        <string id="16973837" text1="取消" text2=""/>
-        <string id="16973840" text1="继续" text2=""/>
-        <string id="16973839" text1="否" text2=""/>
-        <string id="16973836" text1="确定" text2=""/>
-        <string id="16973841" text1="停止" text2=""/>
-        <string id="16973838" text1="是" text2=""/>
-        <string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
-        <string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
-        <string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
-        <string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
-        <string id="33817097" text1="组验证失败。程序数据模块未初始化。" text2=""/>
-        <string id="33817088" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817092" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817096" text1="组验证失败。试剂数据模块未初始化。" text2=""/>
-        <string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中。" text2=""/>
-        <string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
-        <string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-        <string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
-        <string id="33817861" text1="声音类型参数超出范围。" text2=""/>
-        <string id="33817860" text1="音量参数超出范围。" text2=""/>
-        <string id="33817859" text1="声音周期参数超出范围。" text2=""/>
-        <string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
-        <string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
-        <string id="33816608" text1="程序 %1 中的步骤 ID %2 无效。" text2=""/>
-        <string id="33817862" text1="石蜡温度超出范围。" text2=""/>
-        <string id="33816626" text1="新建程序失败。" text2=""/>
-        <string id="33816597" text1="程序列表中最多只允许 %1 个程序。" text2=""/>
-        <string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
-        <string id="33816631" text1="程序删除失败。" text2=""/>
-        <string id="33816623" text1="程序 %2 与 %1 的ID 一样。" text2=""/>
-        <string id="33816620" text1="程序 %1 的时间格式错误。" text2=""/>
-        <string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-        <string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
-        <string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
-        <string id="33816592" text1="程序验证失败。" text2=""/>
-        <string id="33816584" text1="程序读取失败。" text2=""/>
-        <string id="33816605" text1="程序 %1 中的步骤数超过限值。最多允许 14 个步骤。" text2=""/>
-        <string id="33818116" text1="程序 %1 必须至少有 %2 个步骤。" text2=""/>
-        <string id="33818118" text1="程序 %2 中步骤 %1 的浸泡时间超过限值。有效范围：%3 - %4。" text2=""/>
-        <string id="33818119" text1="程序 %2 中步骤 %1 的温度超过限值。有效范围：%3 - %4 (摄氏度)。" text2=""/>
-        <string id="33816606" text1="程序 %1 中找到无效试剂 ID %2。" text2=""/>
-        <string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
-        <string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
-        <string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-        <string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
-        <string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
-        <string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
-        <string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
-        <string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
-        <string id="16842767" text1="删除文件 %1 出错。" text2=""/>
-        <string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
-        <string id="16842772" text1="时间偏移太大（%1 秒）。允许的最大值为 %2 秒。" text2=""/>
-        <string id="16846858" text1="将时间设置为 %1。" text2=""/>
-        <string id="33619971" text1="仪器已启动 (序列号为 %1，类型为 %2)" text2=""/>
-        <string id="33947653" text1="导入失败。导入文件的格式不正确" text2=""/>
-        <string id="50331760" text1="导入失败。设备名称不匹配。" text2=""/>
-        <string id="50331763" text1="导出失败。没有找到USB驱动器。" text2=""/>
-        <string id="50331762" text1="导入失败。没有找到USB驱动器。" text2=""/>
-        <string id="33947665" text1="导入导出正在运行。" text2=""/>
-        <string id="33947664" text1="导入失败。" text2=""/>
-        <string id="33947657" text1="导入失败。数据模块初始化失败" text2=""/>
-        <string id="33947652" text1="导入失败。没有要导入的文件。" text2=""/>
-        <string id="33947655" text1="导入失败。导入数据包中没有所需的文件。" text2=""/>
-        <string id="33947659" text1="导入失败。回滚失败。" text2=""/>
-        <string id="33947662" text1="导入成功。" text2=""/>
-        <string id="33947656" text1="导入失败。软件版本与导入文件不匹配" text2=""/>
-        <string id="50331759" text1="导入失败。数据包文件损坏" text2=""/>
-        <string id="50331761" text1="导入类型无效。" text2=""/>
-        <string id="33947660" text1="导入失败。更新回滚失败。" text2=""/>
-        <string id="33947658" text1="导入失败。验证数据模块失败" text2=""/>
-        <string id="33619974" text1="密码更改成功。" text2=""/>
-        <string id="33619972" text1="登录失败。密码错误。" text2=""/>
-        <string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="33619978" text1="图形界面已经连接。" text2=""/>
-        <string id="33619975" text1="图形界面已经断开。" text2=""/>
-        <string id="50331719" text1="活性炭过滤器已过期，请更换。" text2=""/>
-        <string id="50331771" text1="活性炭过滤器已过期，请尽快更换。" text2=""/>
-        <string id="50331772" text1="用户添加了程序 %1。" text2=""/>
-        <string id="50331773" text1="用户更新了程序 %1。" text2=""/>
-        <string id="50331774" text1="用户删除了程序 %1。" text2=""/>
-        <string id="50331775" text1="将用户模式更改为标准用户。" text2=""/>
-        <string id="50331776" text1="将用户模式更改为管理员。" text2=""/>
-        <string id="50331777" text1="将用户模式更改为检修人员。" text2=""/>
-        <string id="50331718" text1="请联系检修人员，执行年度预防性维护，以保持仪器正常工作。" text2=""/>
-        <string id="50331765" text1="活性炭过滤器维护时间已重置。" text2=""/>
-        <string id="50331764" text1="仪器维护时间已重置。" text2=""/>
-        <string id="50331766" text1="暂停超过 5 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
-        <string id="50331651" text1="标准活检组织" text2=""/>
-        <string id="50331652" text1="清洗程序" text2=""/>
-        <string id="50331650" text1="标准过夜组织" text2=""/>
-        <string id="50331671" text1="清洗酒精" text2=""/>
-        <string id="50331670" text1="清洗二甲苯" text2=""/>
-        <string id="50331666" text1="酒精 100%" text2=""/>
-        <string id="50331662" text1="酒精 70%" text2=""/>
-        <string id="50331663" text1="酒精 80%" text2=""/>
-        <string id="50331664" text1="酒精 90%" text2=""/>
-        <string id="50331665" text1="酒精 95%" text2=""/>
-        <string id="50331661" text1="福尔马林" text2=""/>
-        <string id="50331660" text1="清洗酒精" text2=""/>
-        <string id="50331659" text1="清洗试剂" text2=""/>
-        <string id="50331657" text1="透明剂" text2=""/>
-        <string id="50331656" text1="无水脱水剂" text2=""/>
-        <string id="50331655" text1="稀释性脱水剂" text2=""/>
-        <string id="50331653" text1="固定剂" text2=""/>
-        <string id="50331658" text1="石蜡" text2=""/>
-        <string id="50331654" text1="水" text2=""/>
-        <string id="50331668" text1="石蜡" text2=""/>
-        <string id="50331669" text1="去离子水" text2=""/>
-        <string id="50331667" text1="二甲苯" text2=""/>
-        <string id="67174416" text1="用户关闭仪器。" text2=""/>
-        <string id="67174417" text1="执行恢复操作：%1。" text2=""/>
-        <string id="67174418" text1="用户启动程序 %1，结束时间 %2。" text2=""/>
-        <string id="67174419" text1="用户继续执行程序 %1。" text2=""/>
-        <string id="67174420" text1="用户暂停程序 %1。" text2=""/>
-        <string id="67174421" text1="用户终止程序 %1。" text2=""/>
-        <string id="67174422" text1="用户排空程序 %1 的最后一种试剂。" text2=""/>
-        <string id="67174423" text1="用户将石蜡熔点从 %1 更改为 %2。" text2=""/>
-        <string id="67174656" text1="启动自检。" text2=""/>
-        <string id="67174733" text1="自检已成功。" text2=""/>
-        <string id="67174912" text1="启动预检。" text2=""/>
-        <string id="67174927" text1="启动试剂/石蜡液位检查。" text2=""/>
-        <string id="67174928" text1="试剂/石蜡液位检查成功。" text2=""/>
-        <string id="67174929" text1="预检成功。" text2=""/>
-        <string id="67175168" text1="检测到程序 %1 在步骤 %2 未完成 。" text2=""/>
-        <string id="67175186" text1="包含未完成程序列表的系统文件丢失。 请检查，确定存储设备是否已损坏。" text2=""/>
-        <string id="67175200" text1="启动程序 %1" text2=""/>
-        <string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
-        <string id="67175203" text1="正在终止程序。" text2=""/>
-        <string id="67175204" text1="程序已终止。" text2=""/>
-        <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175207" text1="正在排液。" text2=""/>
-        <string id="67175208" text1="等待填充石蜡。" text2=""/>
-        <string id="67175209" text1="加热液位传感器。" text2=""/>
-        <string id="67175210" text1="已开始填充" text2=""/>
-        <string id="67175213" text1="已开始脱水" text2=""/>
-        <string id="67175215" text1="已完成步骤 %1" text2=""/>
-        <string id="67175216" text1="已开始步骤 %1 (站点 %2、%3、%4、%5、%6)。" text2=""/>
-        <string id="67175217" text1="已完成程序 %1" text2=""/>
-        <string id="67175218" text1="开始干燥过程。" text2=""/>
-        <string id="67175219" text1="完成干燥过程。" text2=""/>
-        <string id="67175220" text1="步骤 %1 和步骤 %2 之间的时间超过 4 分钟。" text2=""/>
-        <string id="67175222" text1="填充成功。" text2=""/>
-        <string id="67175223" text1="排液成功。" text2=""/>
-        <string id="67175224" text1="开始冷却。" text2=""/>
-        <string id="67175424" text1="预检查" text2=""/>
-        <string id="67175425" text1="干燥过程" text2=""/>
-        <string id="67176012" text1="空气系统：负压未到达目标值。真空到达最大值 %1 kPa。" text2=""/>
-        <string id="67176025" text1="旋转阀功能不正常。请检查。" text2=""/>
-        <string id="67176026" text1="仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="67176194" text1="错误 %1！在干燥过程中密封失败。" text2=""/>
-        <string id="67176196" text1="错误 %1！蜡箱门打开，是否要重新熔化石蜡？" text2=""/>
-        <string id="67176198" text1="请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176199" text1="请根据用户手册检查试剂瓶液位。" text2=""/>
-        <string id="67176200" text1="脱水缸排液失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
-        <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
-        <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
-        <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
-        <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
-        <string id="67176210" text1="压力测试失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176211" text1="远程警报系统未连接！请将设备连接至远程警报系统。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内添加试剂。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请取出样品。" text2=""/>
-        <string id="67176216" text1="电源故障恢复过程中加热失败。请联系维修人员。" text2=""/>
-        <string id="67176217" text1="电源故障恢复程序失败。请联系维修人员。" text2=""/>
-        <string id="67176218" text1="系统错误。请联系维修人员。" text2=""/>
-        <string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
-        <string id="67176220" text1="请清洁液位传感器。" text2=""/>
-        <string id="67176223" text1="错误 %1！终止失败。" text2=""/>
-        <string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
-        <string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
-        <string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="19202061" text1="用户重置站点 %1 数据。" text2=""/>
-        <string id="19202062" text1="用户将站点 %1 中的试剂更改为 %2。" text2=""/>
-        <string id="19202063" text1="用户将站点 %1 设为满。" text2=""/>
-        <string id="19202064" text1="用户将站点 %1 设为空。" text2=""/>
-        <string id="19267602" text1="用户添加了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
-        <string id="19267604" text1="用户更新了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="16973842" text1="用户选择超时。" text2=""/>
-        <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
-        <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
+    <language name="pl">
+        <string id="17039372" text1="Urządzenie napotkało błąd %1 w czasie scenariusza %2; i próbowało wykonać działanie naprawcze %3. Wynik działania to %4." text2=""/>
+        <string id="16973834" text1="Z jakiegoś powodu logowanie zdarzeń zostało wyłączone. Prosimy o kontakt z serwisem." text2=""/>
+        <string id="17235997" text1="Więcej informacji w dzienniku użytkownika. " text2=""/>
+        <string id="17235976" text1="Tłumaczenia dla języka  %1  nie zostały znalezione." text2=""/>
+        <string id="17235977" text1="Hasło nie spełnia wymagań. Wymagana długość to między 4 a 16 znaków." text2=""/>
+        <string id="17236006" text1="Nie można skonfigurować obsługi zdalnej." text2=""/>
+        <string id="19267585" text1="Nazwa odczynnika %1 jest już wykorzystywana. Prosimy wybrać inną nazwę odczynnika." text2=""/>
+        <string id="19267599" text1="Niepowodzenie %1." text2=""/>
+        <string id="17236009" text1="Niepowodzenie inicjalizacji modułu danych dla odczynników." text2=""/>
+        <string id="17760274" text1="Zapisywanie ustawień użytkownika nie powiodło się. Prosimy o kontakt z serwisem." text2=""/>
+        <string id="17235998" text1="Zapisywanie XML %1 w czasie wyłączania nie powiodło się." text2=""/>
+        <string id="17236013" text1="Odczytanie InstrumentHistory.xml nie powiodło się." text2=""/>
+        <string id="17236011" text1="Sprawdzanie Station.xml nie powiodło się." text2=""/>
+        <string id="17629209" text1="Eksport nie powiódł się. Zaawansowany standard szyfrowania nie został zainicjalizowany." text2=""/>
+        <string id="17629201" text1="Eksport nie powiódł się. Nie można otworzyć pliku do odczytu." text2=""/>
+        <string id="17629202" text1="Eksport nie powiódł się. Nie można otworzyć pluli do zapisu." text2=""/>
+        <string id="17629200" text1="Eksport nie powiódł się. Nie można zaszyfrować pakietu eksportu." text2=""/>
+        <string id="17629185" text1="Nie powiodło się tworzenie katalogu" text2=""/>
+        <string id="17629203" text1="Błąd odczytu pliku" text2=""/>
+        <string id="17629204" text1="Błąd zapisu pliku" text2=""/>
+        <string id="17629194" text1="Eksport nie powiódł się." text2=""/>
+        <string id="17629186" text1="Kopiowanie pliku nie powiodło się" text2=""/>
+        <string id="17629213" text1="Eksport nie powiódł się. Nie powiodło się generowanie klucza szyfrowania pakietu eksportu." text2=""/>
+        <string id="17629208" text1="Eksport nie powiódł się. Kod MAC z wmieszanym kluczem nie został zainicjalizowany." text2=""/>
+        <string id="17629205" text1="Eksport nie powiódł się. Indeks łańcucha i indeks urządzenia USB są zgodne." text2=""/>
+        <string id="17629190" text1="Eksport nie powiódł się. Inicjalizacja modułu danych nie powiodła się." text2=""/>
+        <string id="17629199" text1="Eksport nie powiódł się. Nieprawidłowy typ żądanego eksportu." text2=""/>
+        <string id="17629212" text1="Eksport nie powiódł się. Wykryto nieprawidłowy tryb pliku." text2=""/>
+        <string id="17629197" text1="Eksport nie powiódł się. Katalog logów nie istnieje." text2=""/>
+        <string id="17629211" text1="Eksport nie powiódł się. Długość klucza nie została ustawiona do obliczeń." text2=""/>
+        <string id="17629195" text1="Eksport nie powiódł się. Katalog źródłowy nie istnieje." text2=""/>
+        <string id="17629193" text1="Eksport zakończono prawidłowo " text2=""/>
+        <string id="17629196" text1="Eksport nie powiódł się. Katalog docelowy nie istnieje." text2=""/>
+        <string id="17629198" text1="Eksport nie powiódł się. Format nazwy pliku docelowego jest nieprawidłowy." text2=""/>
+        <string id="17629192" text1="Eksport nie powiódł się. Nie można zarchiwizować plików." text2=""/>
+        <string id="17629187" text1="Eksport nie powiódł się. Nie można utworzyć pliku RMS_Status.csv." text2=""/>
+        <string id="17629188" text1="Eksport nie powiódł się. Nie można utworzyć pliku TempConfiguration.xml." text2=""/>
+        <string id="17629189" text1="Eksport nie powiódł się. Nie można odczytać pliku TempConfiguration.xml." text2=""/>
+        <string id="17629191" text1="Eksport nie powiódł się. Weryfikacja modułu danych nie powiodła się." text2=""/>
+        <string id="17629215" text1="Eksport nie powiódł się. Nie znaleziono komendy Zip w systemie." text2=""/>
+        <string id="17629214" text1="Eksport nie powiódł się. Nie można skompresować plików." text2=""/>
+        <string id="17629216" text1="Eksport nie powiódł się. Zipowanie zajmuje dużo czasu." text2=""/>
+        <string id="16846862" text1="Użytkownik potwierdzony przyciśnięciem przycisku: %1" text2=""/>
+        <string id="16846854" text1="Debug" text2=""/>
+        <string id="16846851" text1="Błąd" text2=""/>
+        <string id="16846850" text1="Błąd krytyczny" text2=""/>
+        <string id="16846853" text1="Info" text2=""/>
+        <string id="16846849" text1="Typ niezdefiniowany" text2=""/>
+        <string id="16846852" text1="Ostrzeżenie" text2=""/>
+        <string id="16846861" text1="Rozwiązano." text2=""/>
+        <string id="16843278" text1="Login użytkownika" text2=""/>
+        <string id="16843295" text1="Wyłącz." text2=""/>
+        <string id="16843294" text1="Włącz." text2=""/>
+        <string id="16843314" text1="Stan czyszczenia SZO został zmieniony na %1." text2=""/>
+        <string id="16843315" text1="Kasety" text2=""/>
+        <string id="16843316" text1="Cykle" text2=""/>
+        <string id="16843317" text1="Dni" text2=""/>
+        <string id="16843292" text1="Zmieniono dźwięk błędu alarmu" text2=""/>
+        <string id="16843301" text1="Zmieniono głośność błędu alarmu" text2=""/>
+        <string id="16843291" text1="Zmieniono dźwięk ostrzeżenia alarmu" text2=""/>
+        <string id="16843300" text1="Zmieniono głośność ostrzeżenia alarmu" text2=""/>
+        <string id="16843288" text1="Format daty zmieniono na %1" text2=""/>
+        <string id="16843272" text1="Ustawiono język na %1" text2=""/>
+        <string id="16843275" text1="Zmieniono ustawienia sieci" text2=""/>
+        <string id="16843274" text1="Zmieniono temperaturę grzałki na %1" text2=""/>
+        <string id="16843293" text1="Stan przetwarzania SZO został zmieniony na %1" text2=""/>
+        <string id="16843286" text1="Format temperatury zmieniono na %1" text2=""/>
+        <string id="16843287" text1="Format czasu zmieniono na %1" text2=""/>
+        <string id="17039365" text1="Inicjalizacja urządzenia nie powiodła się" text2=""/>
+        <string id="19529731" text1="Zmiana hasła przebiegła prawidłowo." text2=""/>
+        <string id="19529729" text1="Logowanie nie powiodło się. Nieprawidłowe hasło. Prawidłowe hasło zawiera od 4 do 16 znaków." text2=""/>
+        <string id="19529730" text1="Zmiana hasła nie jest możliwa. Hasła nie pasują do siebie." text2=""/>
+        <string id="17825800" text1="Przywrócono stan systemu po awarii zasilania." text2=""/>
+        <string id="19005441" text1="Aktualizacja oprogramowania nie mogła się rozpocząć, w związku z wystąpieniem błędu. " text2=""/>
+        <string id="19005442" text1="Aktualizacja oprogramowania nie powiodła się" text2=""/>
+        <string id="19005443" text1="Cofnięcie aktualizacji oprogramowania nie powiodło się" text2=""/>
+        <string id="19005447" text1="Aktualizacja oprogramowania powiodła się " text2=""/>
+        <string id="19005448" text1="Aktualne oprogramowanie jest nowsze, niż pakiet aktualizacji. Aktualizacja oprogramowania została anulowana, bez aktualizacji." text2=""/>
+        <string id="17891331" text1="Inicjalizacja systemu zakończona" text2=""/>
+        <string id="17891335" text1="Wyłączyć urządzenie za pomocą przycisku z tyłu." text2=""/>
+        <string id="17891336" text1="Instalacja zakończona.  Wyjąć napęd USB, a następnie ponownie uruchomić urządzenie." text2=""/>
+        <string id="17891337" text1="Urządzenie aktualizuje dane przywracania systemu. Prosimy nie przerywać." text2=""/>
+        <string id="17891338" text1="Trwa aktualizacja oprogramowania ... Prosimy nie przerywać." text2=""/>
+        <string id="17891339" text1="Nieoczekiwany błąd. Prosimy wezwać serwis." text2=""/>
+        <string id="16973837" text1="Anuluj" text2=""/>
+        <string id="16973840" text1="Kontynuuj" text2=""/>
+        <string id="16973839" text1="Nie" text2=""/>
+        <string id="16973836" text1="OK" text2=""/>
+        <string id="16973841" text1="Stop" text2=""/>
+        <string id="16973838" text1="Tak" text2=""/>
+        <string id="33619990" text1="Nie można zmienić daty i czasu na więcej niż 24 godziny od aktualnej wewnętrznej systemowej daty/czasu ." text2=""/>
+        <string id="33619991" text1="Użytkownik ustawił aktualną godzinę systemową na   %1" text2=""/>
+        <string id="33817094" text1="Weryfikacja grupy nie powiodła się. Podstawowy moduł daty nie został zainicjalizowany." text2=""/>
+        <string id="33817095" text1="Weryfikacja grupy nie powiodła się. Typ modułu danych nie jest prawidłowy." text2=""/>
+        <string id="33817097" text1="Weryfikacja grupy nie powiodła się. Moduł danych programu nie jest zainicjalizowany." text2=""/>
+        <string id="33817088" text1="ID odczynnika istnieje na liście programów, ale nie na liście odczynników: %1." text2=""/>
+        <string id="33817092" text1="ID odczynnika istnieje w ustawieniach użytkownika, ale nie na liście odczynników: %1." text2=""/>
+        <string id="33817096" text1="Weryfikacja grupy nie powiodła się. Moduł danych odczynnika nie jest zainicjalizowany." text2=""/>
+        <string id="33817093" text1="ID stacji istnieje na liście stacji, ale nie w macierzy stacji : %1." text2=""/>
+        <string id="33817098" text1="Weryfikacja grupy nie powiodła się. Moduł danych stacji nie jest zainicjalizowany." text2=""/>
+        <string id="33817101" text1="Weryfikacja grupy nie powiodła się. Dane ustawień użytkownika nie są zainicjalizowane." text2=""/>
+        <string id="33818114" text1="Program  %1  odczynniki dla kroku %2 i krok %3 nie są kompatybilne." text2=""/>
+        <string id="33817861" text1="Parametr poziomu dźwięku jest poza zakresem." text2=""/>
+        <string id="33817860" text1="Parametr głośności dźwięku jest poza zakresem." text2=""/>
+        <string id="33817859" text1="Parametr okresu dźwięku jest poza zakresem." text2=""/>
+        <string id="33816577" text1="%1 nie jest prawidłowym ID programu." text2=""/>
+        <string id="33816578" text1="Błąd przy pobieraniu informacji serwisowych dla urządzenia %1" text2=""/>
+        <string id="33816608" text1="ID kroku %2 w programie %1 jest nieprawidłowe." text2=""/>
+        <string id="33817862" text1="Temperatura parafiny jest poza zakresem." text2=""/>
+        <string id="33816626" text1="Dodanie programu nie powiodło się." text2=""/>
+        <string id="33816597" text1="Lista programów zawiera więcej niż %1 programów. Dopuszczalnych jest tylko %1 programów." text2=""/>
+        <string id="33816624" text1="Kasowanie programu nie powiodło się, na skutek nieprawidłowego ID programu %1." text2=""/>
+        <string id="33816631" text1="Kasowanie programu nie powiodło się." text2=""/>
+        <string id="33816623" text1="ID %1 związane z programem %2 nie jest unikalne." text2=""/>
+        <string id="33816620" text1="Kroki w programie %1 zawierają nieprawidłowy format czasu." text2=""/>
+        <string id="33818117" text1="Długość nazwy programu przekracza limit dla programu  %1 . Prawidłowy zakres  %2  -  %3  znaków." text2=""/>
+        <string id="33818113" text1="Nazwa programu  %1 jest już wykorzystywana. Prosimy wybrać inną nazwę programu." text2=""/>
+        <string id="33816596" text1="Nieprawidłowy indeks w tabeli mieszającej programu." text2=""/>
+        <string id="33816592" text1="Sprawdzanie Programs.xml nie powiodło się." text2=""/>
+        <string id="33816584" text1="Odczytanie Programs.xml nie powiodło się." text2=""/>
+        <string id="33816605" text1="Liczba kroków w programie %1 przekracza limit. Dopuszczalnych jest maks. 14 kroków." text2=""/>
+        <string id="33818116" text1="Program  %1  musi zawierać przynajmniej %2  kroków." text2=""/>
+        <string id="33818118" text1="Czas trwania kroku  %1  programu  %2  przekracza limit. Prawidłowy zakres:  %3  -  %4 ." text2=""/>
+        <string id="33818119" text1="Temperatura w kroku  %1  programu  %2  przekracza limit. Prawidłowy zakres:  %3  -  %4  (stopni Celsjusza)." text2=""/>
+        <string id="33816606" text1="Program Verifier znalazł nieprawidłowy ID odczynnika %2 w programie %1." text2=""/>
+        <string id="33816846" text1="Lista odczynników nie może odczytać %1  odczynnika." text2=""/>
+        <string id="33816845" text1="Lista odczynników nie może zapisać %1  odczynników." text2=""/>
+        <string id="33816840" text1="Nazwa odczynnika %1  jest zbyt długa (maks. 32 znaki)." text2=""/>
+        <string id="33817864" text1="Nieznany model czyszczenia SZO" text2=""/>
+        <string id="33817863" text1="Nieznany model przetwarzania SZO" text2=""/>
+        <string id="33818115" text1="Nazwa programu użytkownika nie może zawierać słowa "Leica"." text2=""/>
+        <string id="50331649" text1="Eksport nie powiódł się. Brak miejsca na karcie SD." text2=""/>
+        <string id="50331672" text1="Eksport nie powiódł się. Za mało miejsca na pamięci USB." text2=""/>
+        <string id="16842767" text1="Przy usuwaniu pliku %1 pojawił się błąd." text2=""/>
+        <string id="16842762" text1="Przy odczytywaniu pliku konfiguracji %1 pojawił się błąd." text2=""/>
+        <string id="16842772" text1="Offset czasu %1 jest zbyt długi. Maksymalna dopuszczalna wartość to  %2  sekund." text2=""/>
+        <string id="16846858" text1="Ustawiono datę / godzinę na  %1 ." text2=""/>
+        <string id="33619971" text1="Urządzenie uruchomione (numer seryjny to %1 a typ %2)" text2=""/>
+        <string id="33947653" text1="Import nie powiódł się. Format pliku importu jest niewłaściwy" text2=""/>
+        <string id="50331760" text1="Import nie powiódł się. Nazwa urządzenia nie pasuje." text2=""/>
+        <string id="50331763" text1="Brak pamięci USB do eksportu plików w urządzeniu." text2=""/>
+        <string id="50331762" text1="Brak pamięci USB do importu plików w urządzeniu." text2=""/>
+        <string id="33947665" text1="Wątek Import/Eksport uruchomiony…" text2=""/>
+        <string id="33947664" text1="Import nie powiódł się." text2=""/>
+        <string id="33947657" text1="Import nie powiódł się. Inicjalizacja modułu danych nie powiodła się" text2=""/>
+        <string id="33947652" text1="Import nie powiódł się. Brak pliku do importu." text2=""/>
+        <string id="33947655" text1="Import nie powiódł się. Potrzebnych plików nie ma w pakiecie importu." text2=""/>
+        <string id="33947659" text1="Import nie powiódł się. Przywrócenie systemu nie powiodło się." text2=""/>
+        <string id="33947662" text1="Import zakończony powodzeniem." text2=""/>
+        <string id="33947656" text1="Import nie powiódł się. Wersje SW nie pasują do plików importu" text2=""/>
+        <string id="50331759" text1="Import nie powiódł się. Plik pakietu jest uszkodzony" text2=""/>
+        <string id="50331761" text1="Typ importu jest niewłaściwy." text2=""/>
+        <string id="33947660" text1="Import nie powiódł się. Przywrócenie systemu po aktualizacji nie powiodło się." text2=""/>
+        <string id="33947658" text1="Import nie powiódł się. Weryfikacja modułu danych nie powiodła się" text2=""/>
+        <string id="33619974" text1="Zmiana hasła przebiegła prawidłowo." text2=""/>
+        <string id="33619972" text1="Logowanie nie powiodło się. Nieprawidłowe hasło. " text2=""/>
+        <string id="33619973" text1="Zmiana hasła nie jest możliwa. Hasła nie pasują do siebie." text2=""/>
+        <string id="33619978" text1="GUI podłączone" text2=""/>
+        <string id="33619975" text1="GUI zatrzymane." text2=""/>
+        <string id="50331719" text1="Filtr z węglem aktywowanym jest przeterminowany. Prosimy o wymianę na nowy filtr." text2=""/>
+        <string id="50331771" text1="Filtr z węglem aktywowanym jest przeterminowany. Prosimy o jak najszybszą wymianę na nowy filtr." text2=""/>
+        <string id="50331772" text1="Użytkownik dodał program %1." text2=""/>
+        <string id="50331773" text1="Użytkownik zaktualizował program %1." text2=""/>
+        <string id="50331774" text1="Użytkownik usunął program %1." text2=""/>
+        <string id="50331775" text1="Zmienić tryb użytkownika na standardowego użytkownika." text2=""/>
+        <string id="50331776" text1="Zmienić tryb użytkownika na administratora." text2=""/>
+        <string id="50331777" text1="Zmienić tryb użytkownika na serwis." text2=""/>
+        <string id="50331718" text1="Prosimy o kontakt z serwisem w celu dokonania corocznej konserwacji, dzięki której urządzenie będzie prawidłowo działało" text2=""/>
+        <string id="50331765" text1="Czas działania filtra z węglem aktywnym został zresetowany." text2=""/>
+        <string id="50331764" text1="Czas działania urządzenia został zresetowany." text2=""/>
+        <string id="50331766" text1="Pauza przekracza 5 minut. Prosimy o jak najszybszy powrót do programu!" text2=""/>
+        <string id="50331767" text1="Pauza przekracza 10 minut. Prosimy o jak najszybszy powrót do programu!" text2=""/>
+        <string id="50331768" text1="Program nie może być ponownie uruchomiony. Czas pauzy przekracza 15 minut." text2=""/>
+        <string id="50331651" text1="Biopsja" text2=""/>
+        <string id="50331652" text1="Pr. czyszcz." text2=""/>
+        <string id="50331650" text1="Na noc" text2=""/>
+        <string id="50331671" text1="Alkohol do czyszczenia" text2=""/>
+        <string id="50331670" text1="Ksylen do czyszczenia" text2=""/>
+        <string id="50331666" text1="Etanol 100%" text2=""/>
+        <string id="50331662" text1="Etanol 70%" text2=""/>
+        <string id="50331663" text1="Etanol 80%" text2=""/>
+        <string id="50331664" text1="Etanol 90%" text2=""/>
+        <string id="50331665" text1="Etanol 95%" text2=""/>
+        <string id="50331661" text1="Formalina" text2=""/>
+        <string id="50331660" text1="Alkohol do czyszczenia" text2=""/>
+        <string id="50331659" text1="Rozpuszczalnik do czyszczenia" text2=""/>
+        <string id="50331657" text1="Czyszczenie" text2=""/>
+        <string id="50331656" text1="Odwodnienie, absolutny" text2=""/>
+        <string id="50331655" text1="Odwodnienie, rozcieńczony" text2=""/>
+        <string id="50331653" text1="Utrwalanie" text2=""/>
+        <string id="50331658" text1="Parafina" text2=""/>
+        <string id="50331654" text1="Woda" text2=""/>
+        <string id="50331668" text1="Parafina" text2=""/>
+        <string id="50331669" text1="Woda procesowa" text2=""/>
+        <string id="50331667" text1="Ksylen" text2=""/>
+        <string id="67174416" text1="Użytkownik wyłączył urządzenie." text2=""/>
+        <string id="67174417" text1="Wykonać działanie naprawcze %1." text2=""/>
+        <string id="67174418" text1="Użytkownik uruchomił program %1 z czasem zakończenia %2." text2=""/>
+        <string id="67174419" text1="Użytkownik kontynuował program %1." text2=""/>
+        <string id="67174420" text1="Użytkownik spauzował program %1." text2=""/>
+        <string id="67174421" text1="Użytkownik przerwał program %1." text2=""/>
+        <string id="67174422" text1="Użytkownik opróżnił ostatni odczynnik programu %1." text2=""/>
+        <string id="67174423" text1="Użytkownik zmienił temperaturę topnienia parafiny z %1 na %2." text2=""/>
+        <string id="67174656" text1="Uruchomienie autotestu." text2=""/>
+        <string id="67174733" text1="Sukces autotestu." text2=""/>
+        <string id="67174912" text1="Uruchomienie testu wstępnego." text2=""/>
+        <string id="67174927" text1="Uruchomienie sprawdzania butelek." text2=""/>
+        <string id="67174928" text1="Sprawdzanie butelek zakończone powodzeniem." text2=""/>
+        <string id="67174929" text1="Test wstępny zakończony powodzeniem." text2=""/>
+        <string id="67175168" text1="Wykryto nie skończony program %1 na etapie kroku %2." text2=""/>
+        <string id="67175186" text1="Brak pliku systemowego z nie zakończoną listą programu. Prosimy o sprawdzenie, czy pamięć jest uszkodzona." text2=""/>
+        <string id="67175200" text1="Uruchomienie programu %1" text2=""/>
+        <string id="67175202" text1="Nadal potrzeba %1 na ogrzanie grzałki w celu roztopienia parafiny." text2=""/>
+        <string id="67175203" text1="Przerywanie programu…" text2=""/>
+        <string id="67175204" text1="Program przerwany." text2=""/>
+        <string id="67175205" text1="Program spauzowany." text2=""/>
+        <string id="67175207" text1="Opróżnianie…" text2=""/>
+        <string id="67175208" text1="Oczekiwanie na napełnienie parafiną." text2=""/>
+        <string id="67175209" text1="Ogrzewanie czujnika poziomu dla napełnienia" text2=""/>
+        <string id="67175210" text1="Uruchomiono napełnianie" text2=""/>
+        <string id="67175213" text1="Uruchomiono obróbkę" text2=""/>
+        <string id="67175215" text1="Zakończono krok %1" text2=""/>
+        <string id="67175216" text1="Rozpoczęto krok %1(stacja %2, %3, %4, %5, %6)." text2=""/>
+        <string id="67175217" text1="Zakończono program %1" text2=""/>
+        <string id="67175218" text1="Rozpoczęcie procesu suszenia." text2=""/>
+        <string id="67175219" text1="Zakończenie procesu suszenia." text2=""/>
+        <string id="67175220" text1="Czas między krokiem %1 i %2 przekracza 4 minuty." text2=""/>
+        <string id="67175222" text1="Napełnienie powiodło się." text2=""/>
+        <string id="67175223" text1="Opróżnianie odczynnika powiodło się." text2=""/>
+        <string id="67175224" text1="Rozpoczęto schładzanie." text2=""/>
+        <string id="67175424" text1="Sprawdzanie wstępne" text2=""/>
+        <string id="67175425" text1="Proces suszenia" text2=""/>
+        <string id="67176012" text1="System powietrza: Próżnia nie osiągnęła wartości docelowej. Próżnia osiągnęła maks. %1 kPa. " text2=""/>
+        <string id="67176025" text1="Zawór obrotowy nie działa prawidłowo. Prosimy sprawdzić zawór obrotowy." text2=""/>
+        <string id="67176026" text1="Urządzenie napotkało na problemy techniczne i nie może zakończyć protokołu." text2=""/>
+        <string id="67176194" text1="Błąd ID %1!  Awaria uszczelki w suchym scenariuszu." text2=""/>
+        <string id="67176196" text1="Błąd ID %1!  Otwarta pokrywa grzałki łaźni, czy chcesz teraz stopić świeżą parafinę?" text2=""/>
+        <string id="67176198" text1="Prosimy o oczyszczenie uszczelki i górnej części retorty, zgodnie z opisem w instrukcji obsługi." text2=""/>
+        <string id="67176199" text1="Prosimy sprawdzić butelki, zgodnie z instrukcją obsługi." text2=""/>
+        <string id="67176200" text1="Opróżnianie retorty nie powiodło się! Prosimy o oczyszczenie uszczelki i górnej części retorty, zgodnie z opisem w instrukcji obsługi." text2=""/>
+        <string id="67176201" text1="Błąd ID %1!  Prosimy wezwać serwis." text2=""/>
+        <string id="67176202" text1="Błąd ID %1!  System odprowadzania gazów nie działa! Prosimy o kontakt z serwisem!" text2=""/>
+        <string id="67176203" text1="Błąd ID %1!  Prosimy wezwać serwis." text2=""/>
+        <string id="67176204" text1="Błąd ID %1!  Prosimy o wyjęcie i zabezpieczenie próbek.  Prosimy wezwać serwis." text2=""/>
+        <string id="67176207" text1="System lokalnego alarmu nie jest podłączony! Prosimy o podłączenie urządzenia do systemu lokalnego alarmu" text2=""/>
+        <string id="67176208" text1="Prosimy o zamknięcie pokrywy grzałki parafiny!" text2=""/>
+        <string id="67176209" text1="Prosimy o zamknięcie pokrywy retorty i naciśnięcie przycisku Ponów." text2=""/>
+        <string id="67176210" text1="Test ciśnienia nie powiódł się! Prosimy o oczyszczenie uszczelki i górnej części retorty, zgodnie z opisem w instrukcji obsługi." text2=""/>
+        <string id="67176211" text1="System alarmu zdalnego nie jest podłączony! Prosimy o podłączenie urządzenia do systemu alarmu zdalnego." text2=""/>
+        <string id="67176212" text1="Prosimy sprawdzić status butelek odczynników. Jeśli poziom odczynnika znajduje się poniżej poziomu minimalnego, prosimy o dodanie odczynnika w ciągu 15 minut." text2=""/>
+        <string id="67176214" text1="Protokół został zakłócony przez awarię zasilania. Prosimy przerwać protokół i wyjąć próbki." text2=""/>
+        <string id="67176216" text1="Proces powrotu do pracy po awarii zasilania został przerwany w czasie nagrzewania. Prosimy wezwać serwis." text2=""/>
+        <string id="67176217" text1="Proces powrotu do pracy po awarii zasilania nie powiódł się. Prosimy wezwać serwis." text2=""/>
+        <string id="67176218" text1="Błędy systemowe. Prosimy wezwać serwis." text2=""/>
+        <string id="67176219" text1="Zabezpieczenie tkanki za pomocą bezpiecznego odczynnika nie powiodło się. Prosimy wezwać serwis." text2=""/>
+        <string id="67176220" text1="Prosimy oczyścić czujnik poziomu." text2=""/>
+        <string id="67176223" text1="Błąd ID %1!  Przerywanie nie powiodło się." text2=""/>
+        <string id="67176224" text1="Awaria zasilania w czasie trwania pr. czyszcz. Program został automatycznie uruchomiony ponownie." text2=""/>
+        <string id="67176225" text1="Błąd ID %1!  Zawór obrotowy działa nieprawidłowo. Prosimy wezwać serwis." text2=""/>
+        <string id="67176226" text1="Błąd ID %1!  Urządzenie napotkało na problemy techniczne i nie może zakończyć protokołu." text2=""/>
+        <string id="19202061" text1="Użytkownik zresetował stację %1." text2=""/>
+        <string id="19202062" text1="Użytkownik zmienił odczynnik w stacji %1 na %2." text2=""/>
+        <string id="19202063" text1="Użytkownik ustawił stację %1 jako pełną." text2=""/>
+        <string id="19202064" text1="Użytkownik ustawił stację %1 jako pustą." text2=""/>
+        <string id="19267602" text1="Użytkownik dodał odczynnik: %1, kasety do wymiany:%2, cykle do wymiany:%3, dni do wymiany:%4, grupa odczynników: %5." text2=""/>
+        <string id="19267603" text1="Użytkownik usunął odczynnik %1." text2=""/>
+        <string id="19267604" text1="Użytkownik zaktualizował odczynnik: %1, kasety do wymiany:%2, cykle do wymiany:%3, dni do wymiany:%4, grupa odczynników: %5." text2=""/>
+        <string id="16973842" text1="wybór czasu przerwy" text2=""/>
+        <string id="67176227" text1="Temperatura parafiny w łaźni parafiny jest wyższa niż %1. Prosimy sprawdzić status topienia parafiny." text2=""/>
+        <string id="67176228" text1="Temperatura parafiny w łaźni parafiny jest niższa niż %1. Prosimy sprawdzić status topienia parafiny." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>

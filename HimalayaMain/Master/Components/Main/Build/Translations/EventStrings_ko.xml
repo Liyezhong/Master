@@ -1,276 +1,276 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-    <language name="zh">
-        <string id="17039372" text1="在 %2 中，仪器遇到错误 %1；并尝试执行恢复操作 %3。操作结果为 %4。" text2=""/>
-        <string id="16973834" text1="由于未知原因，事件日志已被禁用。请联系当地维修人员。" text2=""/>
-        <string id="17235997" text1="如要了解更多信息，请查看用户日志。" text2=""/>
-        <string id="17235976" text1="%1 语言包未找到。" text2=""/>
-        <string id="17235977" text1="密码与要求不符。所需长度应为 4 至 16 个字符。" text2=""/>
-        <string id="17236006" text1="远程维护设置失败。" text2=""/>
-        <string id="19267585" text1="试剂名称 %1 已被使用。请使用其它试剂名称。" text2=""/>
-        <string id="19267599" text1="%1 失败。" text2=""/>
-        <string id="17236009" text1="试剂的数据模块初始化失败。" text2=""/>
-        <string id="17760274" text1="保存用户设置失败。请联系维修人员。" text2=""/>
-        <string id="17235998" text1="关机时保存文件 %1 失败。" text2=""/>
-        <string id="17236013" text1="读取设备历史信息失败。" text2=""/>
-        <string id="17236011" text1="站点配置错误。" text2=""/>
-        <string id="17629209" text1="导出失败。高级加密标准尚未初始化。" text2=""/>
-        <string id="17629201" text1="导出失败。无法打开文件进行读取。" text2=""/>
-        <string id="17629202" text1="导出失败。无法打开文件进行写入。" text2=""/>
-        <string id="17629200" text1="导出失败。无法加密导出的数据包。" text2=""/>
-        <string id="17629185" text1="目录创建失败" text2=""/>
-        <string id="17629203" text1="读取文件出错" text2=""/>
-        <string id="17629204" text1="写入文件出错" text2=""/>
-        <string id="17629194" text1="导出失败。" text2=""/>
-        <string id="17629186" text1="文件复制失败" text2=""/>
-        <string id="17629213" text1="导出失败。无法生成用于加密导出数据包的密钥。" text2=""/>
-        <string id="17629208" text1="导出失败。基于哈希的消息认证码尚未初始化。" text2=""/>
-        <string id="17629205" text1="导出失败。哈希链索引和 USB 设备索引相匹配。" text2=""/>
-        <string id="17629190" text1="导出失败。数据模块初始化失败。" text2=""/>
-        <string id="17629199" text1="导出失败。请求导出的类型无效。" text2=""/>
-        <string id="17629212" text1="导出失败。检测到错误的文件模式。" text2=""/>
-        <string id="17629197" text1="导出失败。日志目录不存在。" text2=""/>
-        <string id="17629211" text1="导出失败。未设置用于计算的密钥位数。" text2=""/>
-        <string id="17629195" text1="导出失败。源目录不存在。" text2=""/>
-        <string id="17629193" text1="导出成功" text2=""/>
-        <string id="17629196" text1="导出失败。目标目录不存在。" text2=""/>
-        <string id="17629198" text1="导出失败。目标文件名格式错误。" text2=""/>
-        <string id="17629192" text1="导出失败。无法归档文件。" text2=""/>
-        <string id="17629187" text1="导出失败。无法创建 RMS_Status.csv 文件。" text2=""/>
-        <string id="17629188" text1="导出失败。无法创建 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629189" text1="导出失败。无法读取 TempConfiguration.xml 文件。" text2=""/>
-        <string id="17629191" text1="导出失败。验证数据模块失败。" text2=""/>
-        <string id="17629215" text1="导出失败。系统中未找到压缩命令。" text2=""/>
-        <string id="17629214" text1="导出失败。无法压缩文件。" text2=""/>
-        <string id="17629216" text1="导出失败。压缩需要长时间才能完成请求。" text2=""/>
-        <string id="16846862" text1="用户通过按下按钮进行确认：%1" text2=""/>
-        <string id="16846854" text1="调试" text2=""/>
-        <string id="16846851" text1="错误" text2=""/>
-        <string id="16846850" text1="严重出错" text2=""/>
-        <string id="16846853" text1="信息" text2=""/>
-        <string id="16846849" text1="未定义类型" text2=""/>
-        <string id="16846852" text1="警告" text2=""/>
-        <string id="16846861" text1="已解决。" text2=""/>
-        <string id="16843278" text1="用户登录" text2=""/>
-        <string id="16843295" text1="关" text2=""/>
-        <string id="16843294" text1="开" text2=""/>
-        <string id="16843314" text1="清洗试剂管理系统状态已更改为 %1。" text2=""/>
-        <string id="16843315" text1="包埋盒" text2=""/>
-        <string id="16843316" text1="循环" text2=""/>
-        <string id="16843317" text1="天数" text2=""/>
-        <string id="16843292" text1="警报错误音已更改" text2=""/>
-        <string id="16843301" text1="警报错误音的音量已更改" text2=""/>
-        <string id="16843291" text1="警报警告音已更改" text2=""/>
-        <string id="16843300" text1="警报警告音的音量已更改" text2=""/>
-        <string id="16843288" text1="日期格式已更改为 %1" text2=""/>
-        <string id="16843272" text1="已将语言设置为 %1" text2=""/>
-        <string id="16843275" text1="网络设置已更改" text2=""/>
-        <string id="16843274" text1="蜡箱温度已更改为 %1" text2=""/>
-        <string id="16843293" text1="脱水试剂管理系统状态已更改为 %1" text2=""/>
-        <string id="16843286" text1="温度格式已更改为 %1" text2=""/>
-        <string id="16843287" text1="时间格式已更改为 %1" text2=""/>
-        <string id="17039365" text1="仪器初始化失败" text2=""/>
-        <string id="19529731" text1="密码更改成功。" text2=""/>
-        <string id="19529729" text1="登录失败。密码错误。有效密码包含 4 至 16 个字符。" text2=""/>
-        <string id="19529730" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="17825800" text1="仪器已从电源故障中恢复。" text2=""/>
-        <string id="19005441" text1="软件更新无法启动。" text2=""/>
-        <string id="19005442" text1="软件更新失败" text2=""/>
-        <string id="19005443" text1="软件更新回滚失败" text2=""/>
-        <string id="19005447" text1="软件更新成功" text2=""/>
-        <string id="19005448" text1="此软件包版本低于当前版本。软件更新已取消，未执行更新。" text2=""/>
-        <string id="17891331" text1="系统初始化完成" text2=""/>
-        <string id="17891335" text1="请关闭仪器背面的电源开关。" text2=""/>
-        <string id="17891336" text1="安装已完成。 请拔下 USB 驱动器，然后重启仪器。" text2=""/>
-        <string id="17891337" text1="仪器正在更新数据。请不要中断。" text2=""/>
-        <string id="17891338" text1="软件更新正在进行， 请不要中断。" text2=""/>
-        <string id="17891339" text1="意外错误。请联系维修人员。" text2=""/>
-        <string id="16973837" text1="取消" text2=""/>
-        <string id="16973840" text1="继续" text2=""/>
-        <string id="16973839" text1="否" text2=""/>
-        <string id="16973836" text1="确定" text2=""/>
-        <string id="16973841" text1="停止" text2=""/>
-        <string id="16973838" text1="是" text2=""/>
-        <string id="33619990" text1="无法更改到超过当前系统时间24小时。" text2=""/>
-        <string id="33619991" text1="用户将当前系统时间设为 %1" text2=""/>
-        <string id="33817094" text1="组验证失败。基本日期模块未初始化。" text2=""/>
-        <string id="33817095" text1="组验证失败。数据模块类型无效。" text2=""/>
-        <string id="33817097" text1="组验证失败。程序数据模块未初始化。" text2=""/>
-        <string id="33817088" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817092" text1="试剂 %1 不在试剂列表中。" text2=""/>
-        <string id="33817096" text1="组验证失败。试剂数据模块未初始化。" text2=""/>
-        <string id="33817093" text1="ID 为 %1 的站点位于站点列表中但不位于站点矩阵中。" text2=""/>
-        <string id="33817098" text1="组验证失败。站点数据模块未初始化。" text2=""/>
-        <string id="33817101" text1="组验证失败。用户设置数据模块未初始化。" text2=""/>
-        <string id="33818114" text1="程序 %1 的步骤 %2 和步骤 %3 试剂不兼容。" text2=""/>
-        <string id="33817861" text1="声音类型参数超出范围。" text2=""/>
-        <string id="33817860" text1="音量参数超出范围。" text2=""/>
-        <string id="33817859" text1="声音周期参数超出范围。" text2=""/>
-        <string id="33816577" text1="%1 不是有效的程序 ID。" text2=""/>
-        <string id="33816578" text1="检索设备 %1 的服务信息出错" text2=""/>
-        <string id="33816608" text1="程序 %1 中的步骤 ID %2 无效。" text2=""/>
-        <string id="33817862" text1="石蜡温度超出范围。" text2=""/>
-        <string id="33816626" text1="新建程序失败。" text2=""/>
-        <string id="33816597" text1="程序列表中最多只允许 %1 个程序。" text2=""/>
-        <string id="33816624" text1="因程序 ID %1 无效，删除程序失败。" text2=""/>
-        <string id="33816631" text1="程序删除失败。" text2=""/>
-        <string id="33816623" text1="程序 %2 与 %1 的ID 一样。" text2=""/>
-        <string id="33816620" text1="程序 %1 的时间格式错误。" text2=""/>
-        <string id="33818117" text1="程序名称的长度超过 %1 的限值。有效范围：%2 - %3 个字符。" text2=""/>
-        <string id="33818113" text1="程序名称 %1 已被使用，请选择一个不同的程序名称。" text2=""/>
-        <string id="33816596" text1="程序哈希表中的索引无效。" text2=""/>
-        <string id="33816592" text1="程序验证失败。" text2=""/>
-        <string id="33816584" text1="程序读取失败。" text2=""/>
-        <string id="33816605" text1="程序 %1 中的步骤数超过限值。最多允许 14 个步骤。" text2=""/>
-        <string id="33818116" text1="程序 %1 必须至少有 %2 个步骤。" text2=""/>
-        <string id="33818118" text1="程序 %2 中步骤 %1 的浸泡时间超过限值。有效范围：%3 - %4。" text2=""/>
-        <string id="33818119" text1="程序 %2 中步骤 %1 的温度超过限值。有效范围：%3 - %4 (摄氏度)。" text2=""/>
-        <string id="33816606" text1="程序 %1 中找到无效试剂 ID %2。" text2=""/>
-        <string id="33816846" text1="试剂列表读取 %1 试剂失败。" text2=""/>
-        <string id="33816845" text1="试剂列表写入 %1 试剂失败。" text2=""/>
-        <string id="33816840" text1="试剂名称 %1 太长 (最多 32 个字符)。" text2=""/>
-        <string id="33817864" text1="未知清洗试剂管理系统模式" text2=""/>
-        <string id="33817863" text1="未知浸泡试剂管理系统模式" text2=""/>
-        <string id="33818115" text1="用户程序名称不能包含词语“Leica”。" text2=""/>
-        <string id="50331649" text1="导出失败。SD 卡上空间不足。" text2=""/>
-        <string id="50331672" text1="导出失败。USB 存储设备上空间不足。" text2=""/>
-        <string id="16842767" text1="删除文件 %1 出错。" text2=""/>
-        <string id="16842762" text1="读取配置文件 %1 出错。" text2=""/>
-        <string id="16842772" text1="时间偏移太大（%1 秒）。允许的最大值为 %2 秒。" text2=""/>
-        <string id="16846858" text1="将时间设置为 %1。" text2=""/>
-        <string id="33619971" text1="仪器已启动 (序列号为 %1，类型为 %2)" text2=""/>
-        <string id="33947653" text1="导入失败。导入文件的格式不正确" text2=""/>
-        <string id="50331760" text1="导入失败。设备名称不匹配。" text2=""/>
-        <string id="50331763" text1="导出失败。没有找到USB驱动器。" text2=""/>
-        <string id="50331762" text1="导入失败。没有找到USB驱动器。" text2=""/>
-        <string id="33947665" text1="导入导出正在运行。" text2=""/>
-        <string id="33947664" text1="导入失败。" text2=""/>
-        <string id="33947657" text1="导入失败。数据模块初始化失败" text2=""/>
-        <string id="33947652" text1="导入失败。没有要导入的文件。" text2=""/>
-        <string id="33947655" text1="导入失败。导入数据包中没有所需的文件。" text2=""/>
-        <string id="33947659" text1="导入失败。回滚失败。" text2=""/>
-        <string id="33947662" text1="导入成功。" text2=""/>
-        <string id="33947656" text1="导入失败。软件版本与导入文件不匹配" text2=""/>
-        <string id="50331759" text1="导入失败。数据包文件损坏" text2=""/>
-        <string id="50331761" text1="导入类型无效。" text2=""/>
-        <string id="33947660" text1="导入失败。更新回滚失败。" text2=""/>
-        <string id="33947658" text1="导入失败。验证数据模块失败" text2=""/>
-        <string id="33619974" text1="密码更改成功。" text2=""/>
-        <string id="33619972" text1="登录失败。密码错误。" text2=""/>
-        <string id="33619973" text1="无法更改密码。密码不匹配。" text2=""/>
-        <string id="33619978" text1="图形界面已经连接。" text2=""/>
-        <string id="33619975" text1="图形界面已经断开。" text2=""/>
-        <string id="50331719" text1="活性炭过滤器已过期，请更换。" text2=""/>
-        <string id="50331771" text1="活性炭过滤器已过期，请尽快更换。" text2=""/>
-        <string id="50331772" text1="用户添加了程序 %1。" text2=""/>
-        <string id="50331773" text1="用户更新了程序 %1。" text2=""/>
-        <string id="50331774" text1="用户删除了程序 %1。" text2=""/>
-        <string id="50331775" text1="将用户模式更改为标准用户。" text2=""/>
-        <string id="50331776" text1="将用户模式更改为管理员。" text2=""/>
-        <string id="50331777" text1="将用户模式更改为检修人员。" text2=""/>
-        <string id="50331718" text1="请联系检修人员，执行年度预防性维护，以保持仪器正常工作。" text2=""/>
-        <string id="50331765" text1="活性炭过滤器维护时间已重置。" text2=""/>
-        <string id="50331764" text1="仪器维护时间已重置。" text2=""/>
-        <string id="50331766" text1="暂停超过 5 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331767" text1="暂停超过 10 分钟。请尽快继续程序执行！" text2=""/>
-        <string id="50331768" text1="程序无法继续。暂停时间超过 15 分钟。" text2=""/>
-        <string id="50331651" text1="标准活检组织" text2=""/>
-        <string id="50331652" text1="清洗程序" text2=""/>
-        <string id="50331650" text1="标准过夜组织" text2=""/>
-        <string id="50331671" text1="清洗酒精" text2=""/>
-        <string id="50331670" text1="清洗二甲苯" text2=""/>
-        <string id="50331666" text1="酒精 100%" text2=""/>
-        <string id="50331662" text1="酒精 70%" text2=""/>
-        <string id="50331663" text1="酒精 80%" text2=""/>
-        <string id="50331664" text1="酒精 90%" text2=""/>
-        <string id="50331665" text1="酒精 95%" text2=""/>
-        <string id="50331661" text1="福尔马林" text2=""/>
-        <string id="50331660" text1="清洗酒精" text2=""/>
-        <string id="50331659" text1="清洗试剂" text2=""/>
-        <string id="50331657" text1="透明剂" text2=""/>
-        <string id="50331656" text1="无水脱水剂" text2=""/>
-        <string id="50331655" text1="稀释性脱水剂" text2=""/>
-        <string id="50331653" text1="固定剂" text2=""/>
-        <string id="50331658" text1="石蜡" text2=""/>
-        <string id="50331654" text1="水" text2=""/>
-        <string id="50331668" text1="石蜡" text2=""/>
-        <string id="50331669" text1="去离子水" text2=""/>
-        <string id="50331667" text1="二甲苯" text2=""/>
-        <string id="67174416" text1="用户关闭仪器。" text2=""/>
-        <string id="67174417" text1="执行恢复操作：%1。" text2=""/>
-        <string id="67174418" text1="用户启动程序 %1，结束时间 %2。" text2=""/>
-        <string id="67174419" text1="用户继续执行程序 %1。" text2=""/>
-        <string id="67174420" text1="用户暂停程序 %1。" text2=""/>
-        <string id="67174421" text1="用户终止程序 %1。" text2=""/>
-        <string id="67174422" text1="用户排空程序 %1 的最后一种试剂。" text2=""/>
-        <string id="67174423" text1="用户将石蜡熔点从 %1 更改为 %2。" text2=""/>
-        <string id="67174656" text1="启动自检。" text2=""/>
-        <string id="67174733" text1="自检已成功。" text2=""/>
-        <string id="67174912" text1="启动预检。" text2=""/>
-        <string id="67174927" text1="启动试剂/石蜡液位检查。" text2=""/>
-        <string id="67174928" text1="试剂/石蜡液位检查成功。" text2=""/>
-        <string id="67174929" text1="预检成功。" text2=""/>
-        <string id="67175168" text1="检测到程序 %1 在步骤 %2 未完成 。" text2=""/>
-        <string id="67175186" text1="包含未完成程序列表的系统文件丢失。 请检查，确定存储设备是否已损坏。" text2=""/>
-        <string id="67175200" text1="启动程序 %1" text2=""/>
-        <string id="67175202" text1="仍然需要 %1 加热蜡箱，以熔化石蜡。" text2=""/>
-        <string id="67175203" text1="正在终止程序。" text2=""/>
-        <string id="67175204" text1="程序已终止。" text2=""/>
-        <string id="67175205" text1="程序已暂停。" text2=""/>
-        <string id="67175207" text1="正在排液。" text2=""/>
-        <string id="67175208" text1="等待填充石蜡。" text2=""/>
-        <string id="67175209" text1="加热液位传感器。" text2=""/>
-        <string id="67175210" text1="已开始填充" text2=""/>
-        <string id="67175213" text1="已开始脱水" text2=""/>
-        <string id="67175215" text1="已完成步骤 %1" text2=""/>
-        <string id="67175216" text1="已开始步骤 %1 (站点 %2、%3、%4、%5、%6)。" text2=""/>
-        <string id="67175217" text1="已完成程序 %1" text2=""/>
-        <string id="67175218" text1="开始干燥过程。" text2=""/>
-        <string id="67175219" text1="完成干燥过程。" text2=""/>
-        <string id="67175220" text1="步骤 %1 和步骤 %2 之间的时间超过 4 分钟。" text2=""/>
-        <string id="67175222" text1="填充成功。" text2=""/>
-        <string id="67175223" text1="排液成功。" text2=""/>
-        <string id="67175224" text1="开始冷却。" text2=""/>
-        <string id="67175424" text1="预检查" text2=""/>
-        <string id="67175425" text1="干燥过程" text2=""/>
-        <string id="67176012" text1="空气系统：负压未到达目标值。真空到达最大值 %1 kPa。" text2=""/>
-        <string id="67176025" text1="旋转阀功能不正常。请检查。" text2=""/>
-        <string id="67176026" text1="仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="67176194" text1="错误 %1！在干燥过程中密封失败。" text2=""/>
-        <string id="67176196" text1="错误 %1！蜡箱门打开，是否要重新熔化石蜡？" text2=""/>
-        <string id="67176198" text1="请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176199" text1="请根据用户手册检查试剂瓶液位。" text2=""/>
-        <string id="67176200" text1="脱水缸排液失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176201" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176202" text1="错误 %1！排气系统故障！请通知维修人员！" text2=""/>
-        <string id="67176203" text1="错误 %1！请联系维修人员！" text2=""/>
-        <string id="67176204" text1="错误 %1！请取出样品。请联系维修人员！" text2=""/>
-        <string id="67176207" text1="本地警报系统未连接！请将设备连接至本地警报系统" text2=""/>
-        <string id="67176208" text1="请关闭蜡箱门！" text2=""/>
-        <string id="67176209" text1="请关闭脱水缸盖，并点击“重试”按钮。" text2=""/>
-        <string id="67176210" text1="压力测试失败！请根据用户手册所述清洁脱水缸密封圈以及脱水缸上表面。" text2=""/>
-        <string id="67176211" text1="远程警报系统未连接！请将设备连接至远程警报系统。" text2=""/>
-        <string id="67176212" text1="请检查试剂瓶状态，如果试剂低于最低液位，请在 15 分钟内添加试剂。" text2=""/>
-        <string id="67176214" text1="电源故障，程序已中断。请取出样品。" text2=""/>
-        <string id="67176216" text1="电源故障恢复过程中加热失败。请联系维修人员。" text2=""/>
-        <string id="67176217" text1="电源故障恢复程序失败。请联系维修人员。" text2=""/>
-        <string id="67176218" text1="系统错误。请联系维修人员。" text2=""/>
-        <string id="67176219" text1="使用安全试剂保护组织失败。请联系维修人员。" text2=""/>
-        <string id="67176220" text1="请清洁液位传感器。" text2=""/>
-        <string id="67176223" text1="错误 %1！终止失败。" text2=""/>
-        <string id="67176224" text1="清洗程序已从电源故障中恢复。" text2=""/>
-        <string id="67176225" text1="错误 %1！旋转阀功能异常。请联系维修人员！" text2=""/>
-        <string id="67176226" text1="错误 %1！仪器遇到技术问题，无法完成程序。" text2=""/>
-        <string id="19202061" text1="用户重置站点 %1 数据。" text2=""/>
-        <string id="19202062" text1="用户将站点 %1 中的试剂更改为 %2。" text2=""/>
-        <string id="19202063" text1="用户将站点 %1 设为满。" text2=""/>
-        <string id="19202064" text1="用户将站点 %1 设为空。" text2=""/>
-        <string id="19267602" text1="用户添加了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="19267603" text1="用户删除了试剂 %1。" text2=""/>
-        <string id="19267604" text1="用户更新了试剂：%1，更换前已处理的包埋盒数：%2，更换前已处理循环次数：%3，更换前已用的天数：%4，试剂组：%5。" text2=""/>
-        <string id="16973842" text1="用户选择超时。" text2=""/>
-        <string id="67176227" text1="蜡缸中的石蜡温度高于 %1。请检查熔蜡状态。" text2=""/>
-        <string id="67176228" text1="蜡缸中的石蜡温度低于 %1。请检查熔蜡状态。" text2=""/>
+    <language name="ko">
+        <string id="17039372" text1="시나리오 %2; 동안에 기기에 오류 %1가 발생하여. 복구를 시도했습니다 %3. 결과는 %4입니다." text2=""/>
+        <string id="16973834" text1="어떤 이유로 이벤트 로그가 불가능합니다. 서비스센터에 연락하십시오." text2=""/>
+        <string id="17235997" text1="보다 자세한 정보를 위해 사용자 로그를 확인하십시오." text2=""/>
+        <string id="17235976" text1="언어 %1 번역을 찾을 없습니다." text2=""/>
+        <string id="17235977" text1="암호가 조건에 맞지 않습니다. 암호 길이는 4 - 16 문자 이내여야 합니다." text2=""/>
+        <string id="17236006" text1="원격 관리 구성 실패." text2=""/>
+        <string id="19267585" text1="시약명 %1이 이미 사용 중입니다. 다른 시약명을 사용하십시오." text2=""/>
+        <string id="19267599" text1="%1 실패." text2=""/>
+        <string id="17236009" text1="시약을 위한 데이터 모듈 초기화 실패." text2=""/>
+        <string id="17760274" text1="사용자 설정 저장 실패. 서비스센터에 연락하십시오." text2=""/>
+        <string id="17235998" text1="종료 중에 XML %1쓰기가 실패했습니다." text2=""/>
+        <string id="17236013" text1="InstrumentHistory.xml 읽기 실패." text2=""/>
+        <string id="17236011" text1="Station.xml 인증 실패." text2=""/>
+        <string id="17629209" text1="엑스포트 실패. 고급 암호화 표준이 초기화되지 않았습니다." text2=""/>
+        <string id="17629201" text1="엑스포트 실패. 읽기를 위한 파일을 열 수 없습니다." text2=""/>
+        <string id="17629202" text1="엑스포트 실패. 쓰기를 위한 파일을 열 수 없습니다." text2=""/>
+        <string id="17629200" text1="엑스포트 실패. 스포팅 패키지 암호화 실패." text2=""/>
+        <string id="17629185" text1="디렉토리 생성 실패" text2=""/>
+        <string id="17629203" text1="파일 읽기 오류" text2=""/>
+        <string id="17629204" text1="파일 쓰기 오류" text2=""/>
+        <string id="17629194" text1="엑스포트 실패." text2=""/>
+        <string id="17629186" text1="파일 복사 실패" text2=""/>
+        <string id="17629213" text1="엑스포트 실패. 엑스포팅 패키지 암호화를 위한 비밀키 생성 실패." text2=""/>
+        <string id="17629208" text1="엑스포트 실패. 해쉬-기반 메시지 인증 코드가 초기화되지 않았습니다." text2=""/>
+        <string id="17629205" text1="엑스포트 실패. 해쉬 체인 색인과 USB 장치 색인이 맞지 않습니다." text2=""/>
+        <string id="17629190" text1="엑스포트 실패. 데이터 모듈 초기화 실패." text2=""/>
+        <string id="17629199" text1="엑스포트 실패. 요청된 엑스포트 유형이 유효하지 않습니다." text2=""/>
+        <string id="17629212" text1="엑스포트 실패. 틀린 파일 모드가 감지됨." text2=""/>
+        <string id="17629197" text1="엑스포트 실패. 로그 디렉토리가 존재하지 않습니다." text2=""/>
+        <string id="17629211" text1="엑스포트 실패. 키 비트가 계산을 위해 설정되지 않음." text2=""/>
+        <string id="17629195" text1="엑스포트 실패. 소스 디렉토리가 존재하지 않음." text2=""/>
+        <string id="17629193" text1="엑스포트 성공" text2=""/>
+        <string id="17629196" text1="엑스포트 실패. 대상 디렉토리가 존재하지 않음." text2=""/>
+        <string id="17629198" text1="엑스포트 실패. 대상 파일명 포맷이 잘못됨." text2=""/>
+        <string id="17629192" text1="엑스포트 실패. 파일을 보관할 수 없음." text2=""/>
+        <string id="17629187" text1="엑스포트 실패. RMS_Status.csv 파일을 생성할 수 없음." text2=""/>
+        <string id="17629188" text1="엑스포트 실패. TempConfiguration.xml 파일을 생성할 수 없음." text2=""/>
+        <string id="17629189" text1="엑스포트 실패. TempConfiguration.xml 파일을 읽을 수 없음." text2=""/>
+        <string id="17629191" text1="엑스포트 실패. 데이터 모듈 인증 실패." text2=""/>
+        <string id="17629215" text1="엑스포트 실패. 압축 명령어가 시스템에서 발견되지 않음." text2=""/>
+        <string id="17629214" text1="엑스포트 실패. 파일을 보관할 수 없음." text2=""/>
+        <string id="17629216" text1="엑스포트 실패. 압축 요청 완성 시간이 오래 걸림." text2=""/>
+        <string id="16846862" text1="사용자가 버튼: %1을 눌러 승인했음" text2=""/>
+        <string id="16846854" text1="디버그" text2=""/>
+        <string id="16846851" text1="오류" text2=""/>
+        <string id="16846850" text1="치명적 오류" text2=""/>
+        <string id="16846853" text1="정보" text2=""/>
+        <string id="16846849" text1="정의안된 유형" text2=""/>
+        <string id="16846852" text1="경고" text2=""/>
+        <string id="16846861" text1="해결됨." text2=""/>
+        <string id="16843278" text1="사용자 로그인" text2=""/>
+        <string id="16843295" text1="꺼짐" text2=""/>
+        <string id="16843294" text1="켜짐" text2=""/>
+        <string id="16843314" text1="시약관리시스템 상태 세정이 %1로 변경되었음." text2=""/>
+        <string id="16843315" text1="카세트" text2=""/>
+        <string id="16843316" text1="주기" text2=""/>
+        <string id="16843317" text1="일" text2=""/>
+        <string id="16843292" text1="오류 알람음 변경됨" text2=""/>
+        <string id="16843301" text1="오류 알람 볼륨 톤 변경됨" text2=""/>
+        <string id="16843291" text1="경고 알람음 변경됨" text2=""/>
+        <string id="16843300" text1="경고 알람 볼륨 톤 변경됨" text2=""/>
+        <string id="16843288" text1="날짜 포맷 변경됨 %1" text2=""/>
+        <string id="16843272" text1="언어 설정 %1" text2=""/>
+        <string id="16843275" text1="네트워크 설정 변경됨" text2=""/>
+        <string id="16843274" text1="오븐 온도 변경됨 %1" text2=""/>
+        <string id="16843293" text1="처리중인 시약관리시스템 상태가 %1로 변경됨" text2=""/>
+        <string id="16843286" text1="온도 포맷 변경됨 %1" text2=""/>
+        <string id="16843287" text1="시간 포맷 변경됨 %1" text2=""/>
+        <string id="17039365" text1="기기 초기화 실패" text2=""/>
+        <string id="19529731" text1="비밀번호 변경 성공." text2=""/>
+        <string id="19529729" text1="로그인 실패. 암호 틀림. 유효한 암호는 4 - 16 문자입니다." text2=""/>
+        <string id="19529730" text1="암호를 변경할 수 없음. 암호가 맞지 않음." text2=""/>
+        <string id="17825800" text1="기기가 전원 실패로부터 복구되었습니다." text2=""/>
+        <string id="19005441" text1="오류로 인하여 소프트웨어 업데이트를 시작할 수 없습니다." text2=""/>
+        <string id="19005442" text1="소프트웨어 업데이트 실패" text2=""/>
+        <string id="19005443" text1="소프트웨어 업데이트 되돌림 실패" text2=""/>
+        <string id="19005447" text1="소프트웨어 업데이트 성공" text2=""/>
+        <string id="19005448" text1="현재의 소프트웨어가 업데이트 패키지보다 최신 버전입니다. 소프트웨어 업데이트가 업데이트 없이 실패." text2=""/>
+        <string id="17891331" text1="시스템 초기화 완료" text2=""/>
+        <string id="17891335" text1="뒤에 있는 스위치로 기기를 끄십시오." text2=""/>
+        <string id="17891336" text1="설치 완료.  USB 드라이브를 빼고 기기를 재부팅하십시오." text2=""/>
+        <string id="17891337" text1="기기가 되돌림 데이터를 업데이트하고 있습니다. 이 과정을 중지하지 마십시오." text2=""/>
+        <string id="17891338" text1="소프트웨어 업데이트 중... 이 과정을 중지하지 마십시오." text2=""/>
+        <string id="17891339" text1="예상하지 못한 오류. 서비스센터에 연락하십시오." text2=""/>
+        <string id="16973837" text1="취소" text2=""/>
+        <string id="16973840" text1="계속" text2=""/>
+        <string id="16973839" text1="아니오" text2=""/>
+        <string id="16973836" text1="확인" text2=""/>
+        <string id="16973841" text1="정지" text2=""/>
+        <string id="16973838" text1="예" text2=""/>
+        <string id="33619990" text1="날짜와 시간을 현재의 내부 날짜/시간보다 24시간 이상으로 변경할 수 없음." text2=""/>
+        <string id="33619991" text1="사용자가 현재의 시스템 날짜와 시간을 %1으로 설정함" text2=""/>
+        <string id="33817094" text1="그룹 인증 실패. 기준일 모듈이 초기화되지 않음." text2=""/>
+        <string id="33817095" text1="그룹 인증 실패. 데이터 모듈 유형이 유효하지 않음." text2=""/>
+        <string id="33817097" text1="그룹 인증 실패. 프로그램 데이터 모듈이 초기화되지 않음." text2=""/>
+        <string id="33817088" text1="시약 ID가 프로그램 목록에 있지만 시약 목록에는 없음: %1." text2=""/>
+        <string id="33817092" text1="시약 ID가 사용자 설정에 있지만 시약 목록에는 없음: %1." text2=""/>
+        <string id="33817096" text1="그룹 인증 실패. 시약 데이터 모듈이 초기화되지 않음." text2=""/>
+        <string id="33817093" text1="스테이션 ID가 스테이션 목록에는 있지만 스테이션 틀: %1에는 없습니다.." text2=""/>
+        <string id="33817098" text1="그룹 인증 실패. 스테이션 데이터 모듈이 초기화되지 않음." text2=""/>
+        <string id="33817101" text1="그룹 인증 실패. 사용자 설정 데이터 모듈이 초기화되지 않음." text2=""/>
+        <string id="33818114" text1="단계 %2와 단계 %3를 위한 프로그램 %1 시약이 호환하지 않음." text2=""/>
+        <string id="33817861" text1="소리 수준 패러미터가 범위를 벗어남." text2=""/>
+        <string id="33817860" text1="소리 크기 패러미터가 범위를 벗어남." text2=""/>
+        <string id="33817859" text1="소리 주기 패러미터가 범위를 벗어남." text2=""/>
+        <string id="33816577" text1="%1은 유효한 프로그램 ID가 아님." text2=""/>
+        <string id="33816578" text1="기기 %1의 서비스 정보 회수 중 오류" text2=""/>
+        <string id="33816608" text1="프로그램 %1의 단계 ID %2가 유효하지 않음." text2=""/>
+        <string id="33817862" text1="파라핀 온도가 범위를 벗어남." text2=""/>
+        <string id="33816626" text1="프로그램 추가 실패." text2=""/>
+        <string id="33816597" text1="프로그램 목록이 %1 프로그램 이상을 포함함. %1 프로그램만 허용됨." text2=""/>
+        <string id="33816624" text1="유효하지 않은 프로그램 ID %1로 인하여 프로그램 삭제 실패." text2=""/>
+        <string id="33816631" text1="프로그램 삭제 실패." text2=""/>
+        <string id="33816623" text1="프로그램 %2와 관련된 프로그램 ID %1가 고유하지 않음." text2=""/>
+        <string id="33816620" text1="프로그램 %1의 프로그램 단계(들)가 유효하지 않은 기간 형식을 포함함." text2=""/>
+        <string id="33818117" text1="프로그램명의 길이가 프로그램 %1의 한계를 벗어남. 유효 범위 %2  -  %3 문자." text2=""/>
+        <string id="33818113" text1="프로그램명 %1이 이미 사용 중임. 다른 프로그램명을 선택하십시오." text2=""/>
+        <string id="33816596" text1="프로그램 해쉬 표에 유효하지 않은 색인." text2=""/>
+        <string id="33816592" text1="Programs.xml 인증 실패." text2=""/>
+        <string id="33816584" text1="Programs.xml 읽기 실패." text2=""/>
+        <string id="33816605" text1="프로그램 %1의 단계 수가 한계를 벗어남. 최대 14 단계까지 허용됨." text2=""/>
+        <string id="33818116" text1="프로그램 %1은 최소한 %2  단계(들)여야 함." text2=""/>
+        <string id="33818118" text1="프로그램 %2의 단계 %1에서 기간이 한계를 벗어남. 유효 범위:  %3  -  %4 ." text2=""/>
+        <string id="33818119" text1="프로그램 %2의 단계 %1에서 온도가 한계를 벗어남. 유효 범위:  %3  -  %4  (섭씨)." text2=""/>
+        <string id="33816606" text1="프로그램 %1에서 유효하지 않은 시약 ID %2가 발견됨." text2=""/>
+        <string id="33816846" text1="ReagentList가 %1 시약을 읽지 못함." text2=""/>
+        <string id="33816845" text1="ReagentList가 %1 시약을 쓰지 못함." text2=""/>
+        <string id="33816840" text1="시약 %1  이름이 너무 김 (최대 32 문자)." text2=""/>
+        <string id="33817864" text1="알 수 없는 시약관리시스템 세정 모델" text2=""/>
+        <string id="33817863" text1="알 수 없는 시약관리시스템 처리 모델" text2=""/>
+        <string id="33818115" text1="사용자 프로그램명은 Leica라는 단어를 포함할 수 없음." text2=""/>
+        <string id="50331649" text1="엑스포트 실패. SD 카드 공간 부족." text2=""/>
+        <string id="50331672" text1="엑스포트 실패. USB 저장장치 공간 부족." text2=""/>
+        <string id="16842767" text1="파일 %1 삭제 시 오류 발생." text2=""/>
+        <string id="16842762" text1="구성 파일 %1 읽기 시 오류 발생." text2=""/>
+        <string id="16842772" text1="시간 오프셋 %1이 너무 김. 최대 허용값은 %2  초임." text2=""/>
+        <string id="16846858" text1="날짜 / 시간을 %1으로 설정." text2=""/>
+        <string id="33619971" text1="기기가 시작됨 (일련번호는 %1이고 유형은 %2임)" text2=""/>
+        <string id="33947653" text1="임포트 실패. 임포트 파일 형식이 올바르지 않음" text2=""/>
+        <string id="50331760" text1="임포트 실패. 기기명이 일치하지 않음." text2=""/>
+        <string id="50331763" text1="파일을 엑스포트하기 위한 USB 장치가 기기에서 발견되지 않음." text2=""/>
+        <string id="50331762" text1="파일을 임포트하기 위한 USB 장치가 기기에서 발견되지 않음." text2=""/>
+        <string id="33947665" text1="ImportExport 스레드가 작동 중..." text2=""/>
+        <string id="33947664" text1="임포트 실패" text2=""/>
+        <string id="33947657" text1="임포트 실패. 데이터 모듈 초기화 실패" text2=""/>
+        <string id="33947652" text1="임포트 실패. 임포트할 파일 없음." text2=""/>
+        <string id="33947655" text1="임포트 실패. 요청된 파일이 임포트 패키지에 없음." text2=""/>
+        <string id="33947659" text1="임포트 실패. 되돌리기 실패." text2=""/>
+        <string id="33947662" text1="임포트 성공." text2=""/>
+        <string id="33947656" text1="임포트 실패. SW 버전이 임포트 파일과 맞지 않음" text2=""/>
+        <string id="50331759" text1="임포트 실패. 패키지 파일에 오류 발생" text2=""/>
+        <string id="50331761" text1="임포트 유형이 유효하지 않음." text2=""/>
+        <string id="33947660" text1="임포트 실패. 업데이트 되돌리기 실패." text2=""/>
+        <string id="33947658" text1="임포트 실패. 데이터 모듈 인증 실패." text2=""/>
+        <string id="33619974" text1="비밀번호 변경 성공." text2=""/>
+        <string id="33619972" text1="로그인 실패. 암호 틀림." text2=""/>
+        <string id="33619973" text1="암호를 변경할 수 없음. 암호가 맞지 않음." text2=""/>
+        <string id="33619978" text1="GUI 연결됨" text2=""/>
+        <string id="33619975" text1="GUI 정지됨." text2=""/>
+        <string id="50331719" text1="활성 탄소 필터가 만료되었습니다. 새로운 활성 탄소 필터로 교체하십시오." text2=""/>
+        <string id="50331771" text1="활성 탄소 필터가 만료되었습니다. 새로운 활성 탄소 필터로 가능한 빨리 교체하십시오." text2=""/>
+        <string id="50331772" text1="사용자 추가된 프로그램 %1." text2=""/>
+        <string id="50331773" text1="사용자 업데이트된 프로그램 %1." text2=""/>
+        <string id="50331774" text1="사용자 제거된 프로그램 %1." text2=""/>
+        <string id="50331775" text1="사용자 모드를 표준 사용자로 전환하십시오." text2=""/>
+        <string id="50331776" text1="사용자 모드를 관리자 모드로 전환하십시오." text2=""/>
+        <string id="50331777" text1="사용자 모드를 서비스 모드로 전환하십시오." text2=""/>
+        <string id="50331718" text1="기기가 적합하게 작동하도록 유지하기 위해 연례 예방적 유지관리를 수행하기 위해 서비스센터에 전화하십시오" text2=""/>
+        <string id="50331765" text1="활성 탄소 필터 작동 시간이 리셋되었습니다." text2=""/>
+        <string id="50331764" text1="기기 작동 시간이 리셋되었습니다." text2=""/>
+        <string id="50331766" text1="중지 시간이 5분을 초과했습니다. 가능한 빨리 프로그램을 다시 시작하십시오!" text2=""/>
+        <string id="50331767" text1="중지가 시간이 10 분을 초과했습니다. 가능한 빨리 프로그램을 다시 시작하십시오!" text2=""/>
+        <string id="50331768" text1="프로그램을 다시 시작할 수 없습니다. 중지가 시간이 15 분을 초과했습니다." text2=""/>
+        <string id="50331651" text1="생체조직검사" text2=""/>
+        <string id="50331652" text1="세정 프로그램" text2=""/>
+        <string id="50331650" text1="하룻밤" text2=""/>
+        <string id="50331671" text1="세정 알코올" text2=""/>
+        <string id="50331670" text1="세정 크실렌" text2=""/>
+        <string id="50331666" text1="에탄올 100%" text2=""/>
+        <string id="50331662" text1="에탄올 70%" text2=""/>
+        <string id="50331663" text1="에탄올 80%" text2=""/>
+        <string id="50331664" text1="에탄올 90%" text2=""/>
+        <string id="50331665" text1="에탄올 95%" text2=""/>
+        <string id="50331661" text1="포르말린" text2=""/>
+        <string id="50331660" text1="세정 알코올" text2=""/>
+        <string id="50331659" text1="세정 솔벤트" text2=""/>
+        <string id="50331657" text1="세정" text2=""/>
+        <string id="50331656" text1="탈수, 100%" text2=""/>
+        <string id="50331655" text1="탈수, 희석" text2=""/>
+        <string id="50331653" text1="고정" text2=""/>
+        <string id="50331658" text1="파라핀" text2=""/>
+        <string id="50331654" text1="물" text2=""/>
+        <string id="50331668" text1="파라핀" text2=""/>
+        <string id="50331669" text1="처리용수" text2=""/>
+        <string id="50331667" text1="크실렌" text2=""/>
+        <string id="67174416" text1="사용자 정지 기기." text2=""/>
+        <string id="67174417" text1="복구 조치 %1를 취하십시오." text2=""/>
+        <string id="67174418" text1="사용자가 프로그램 %1을 종료 시간 %2으로 시작함." text2=""/>
+        <string id="67174419" text1="사용자가 프로그램 %1을 계속함." text2=""/>
+        <string id="67174420" text1="사용자가 프로그램 %1을 중지함." text2=""/>
+        <string id="67174421" text1="사용자가 프로그램 %1을 중지함." text2=""/>
+        <string id="67174422" text1="사용자가 프로그램 %1의 마지막 시약을 비움." text2=""/>
+        <string id="67174423" text1="사용자가 파라핀 용해점을 %1에서 %2로 변경함." text2=""/>
+        <string id="67174656" text1="자가-테스트를 시작하십시오." text2=""/>
+        <string id="67174733" text1="자가-테스트 성공." text2=""/>
+        <string id="67174912" text1="사전-테스트를 시작하십시오." text2=""/>
+        <string id="67174927" text1="보틀 점검을 시작하십시오." text2=""/>
+        <string id="67174928" text1="보틀 점검 성공." text2=""/>
+        <string id="67174929" text1="사전-테스트 성공." text2=""/>
+        <string id="67175168" text1="단계 %2에서 완료되지 않은 프로그램 %1 발견." text2=""/>
+        <string id="67175186" text1="완료되자 않은 프로그램 목록의 시스템 파일 실종 . 저장매체 손상 여부를 확인하십시오." text2=""/>
+        <string id="67175200" text1="프로그램 %1을 시작하십시오" text2=""/>
+        <string id="67175202" text1="파라핀 용해를 위해 오븐 가열이 아직 %1이 필요합니다." text2=""/>
+        <string id="67175203" text1="프로그램 중지 중…" text2=""/>
+        <string id="67175204" text1="프로그램 중단됨." text2=""/>
+        <string id="67175205" text1="프로그램 중지됨." text2=""/>
+        <string id="67175207" text1="비우는 중…" text2=""/>
+        <string id="67175208" text1="파라핀 충전 대기 중." text2=""/>
+        <string id="67175209" text1="충전을 위해 레벨 센서 가열 중" text2=""/>
+        <string id="67175210" text1="충전 시작됨" text2=""/>
+        <string id="67175213" text1="처리 시작됨" text2=""/>
+        <string id="67175215" text1="단계 %1 완료" text2=""/>
+        <string id="67175216" text1="단계 %1(스테이션 %2, %3, %4, %5, %6) 시작됨." text2=""/>
+        <string id="67175217" text1="프로그램 %1 완료" text2=""/>
+        <string id="67175218" text1="건조 과정을 시작하십시오." text2=""/>
+        <string id="67175219" text1="건조 과정을 마치십시오." text2=""/>
+        <string id="67175220" text1="단계 %1과 단계 %2 사이의 시간이 4 분을 초과했습니다." text2=""/>
+        <string id="67175222" text1="충전 성공." text2=""/>
+        <string id="67175223" text1="비움 성공." text2=""/>
+        <string id="67175224" text1="냉각 시작됨." text2=""/>
+        <string id="67175424" text1="사전점검" text2=""/>
+        <string id="67175425" text1="건조 과정" text2=""/>
+        <string id="67176012" text1="공기 시스템: 진공이 목표값에 도달하지 않았습니다. 진공이 최대 %1에 도달했습니다. kPa. " text2=""/>
+        <string id="67176025" text1="회전 밸브가 정상적으로 작동하지 않습니다. 회전 밸브를 점검하십시오." text2=""/>
+        <string id="67176026" text1="기기에 어떤 기술적인 문제가 발생하여 프로토콜을 완료할 수 없습니다." text2=""/>
+        <string id="67176194" text1="오류 ID %1!  건조 시나리오에서 봉합 실패." text2=""/>
+        <string id="67176196" text1="오류 ID %1!  왁스 배쓰 오븐 커버가 열림, 지금 새로운 파라핀을 용해하겠습니까?" text2=""/>
+        <string id="67176198" text1="사용설명서에 기술된 대로 봉합 링과 증류기의 상단부를 세정하십시오." text2=""/>
+        <string id="67176199" text1="사용설명서에 따라 보틀(들)을 점검하십시오." text2=""/>
+        <string id="67176200" text1="증류기 비우기 실패! 사용설명서에 기술된 대로 봉합 링과 증류기의 상단부를 세정하십시오." text2=""/>
+        <string id="67176201" text1="오류 ID %1! 서비스센터에 연락하십시오!" text2=""/>
+        <string id="67176202" text1="오류 ID %1! 배기 시스템 실패! 서비스센터에 알리십시오!" text2=""/>
+        <string id="67176203" text1="오류 ID %1! 서비스센터에 연락하십시오!" text2=""/>
+        <string id="67176204" text1="오류 ID %1! 표본을 제거하고 보호하십시오.  서비스센터에 연락하십시오!" text2=""/>
+        <string id="67176207" text1="지역 알람 시스템이 연결되지 않았습니다! 기기를 지역 알람 시스템에 연결하십시오" text2=""/>
+        <string id="67176208" text1="파라핀 오브 덮개를 닫으십시오!" text2=""/>
+        <string id="67176209" text1="증류기 뚜껑을 닫고 재시도 버튼으로 확인하십시오." text2=""/>
+        <string id="67176210" text1="압력 테스트 실패! 사용설명서에 기술된 대로 봉합 링과 증류기의 상단부를 세정하십시오." text2=""/>
+        <string id="67176211" text1="원격 알람 시스템이 연결되지 않았습니다! 기기를 지역 원격 시스템에 연결하십시오." text2=""/>
+        <string id="67176212" text1="시약 보틀 상태를 점검하고, 시약 레벨이 최소 레벨 이하이면, 15분 이내에 시약을 추가하십시오." text2=""/>
+        <string id="67176214" text1="전원 중단으로 프로토콜이 중지되었습니다. 프로토콜을 중단하고 표본을 제거하십시오." text2=""/>
+        <string id="67176216" text1="재가열 동안에 전원 중단 복구 과정 실패. 서비스센터에 연락하십시오." text2=""/>
+        <string id="67176217" text1="전원 중단 복구 과정 실패. 서비스센터에 연락하십시오." text2=""/>
+        <string id="67176218" text1="시스템 오류. 서비스센터에 연락하십시오." text2=""/>
+        <string id="67176219" text1="안전 시약으로 조직 보호 실패. 서비스센터에 연락하십시오." text2=""/>
+        <string id="67176220" text1="레벨 센서를 세정하십시오." text2=""/>
+        <string id="67176223" text1="오류 ID %1!  중단 실패." text2=""/>
+        <string id="67176224" text1="세정 프로그램에 전원 중단. 프로그램이 자동으로 재시작했습니다." text2=""/>
+        <string id="67176225" text1="오류 ID %1! 회전 밸브 기능이 비정상입니다. 서비스센터에 연락하십시오!" text2=""/>
+        <string id="67176226" text1="오류 ID %1! 기기에 어떤 기술적인 문제가 발생하여 프로토콜을 완료할 수 없습니다." text2=""/>
+        <string id="19202061" text1="사용자 스테이션 %1을 리셋했습니다." text2=""/>
+        <string id="19202062" text1="사용자가 스테이션 %1의 시약을 %2으로 변경했습니다." text2=""/>
+        <string id="19202063" text1="사용가 스테이션 %1 완충으로 설정했습니다." text2=""/>
+        <string id="19202064" text1="사용자가 스테이션 %1을 비움으로 설정했습니다." text2=""/>
+        <string id="19267602" text1="사용자가 시약: %1을 추가했습니다, 변경까지 카세트:%2, 변경까지 주기:%3, 변경까지 일수:%4, 시약 그룹: %5." text2=""/>
+        <string id="19267603" text1="사용자가 시약 %1을 삭제했습니다." text2=""/>
+        <string id="19267604" text1="사용자가 시약: %1을 업데이트했습니다, 변경까지 카세트:%2, 변경까지 주기:%3, 변경까지 일수:%4, 시약 그룹: %5." text2=""/>
+        <string id="16973842" text1="타임아웃 선택하기" text2=""/>
+        <string id="67176227" text1="파라핀 배쓰에 파라핀 온도가 %1보다 높습니다. 파라핀 용해 상태를 점검하십시오." text2=""/>
+        <string id="67176228" text1="파라핀 배쓰에 파라핀 온도가 %1보다 낮습니다. 파라핀 용해 상태를 점검하십시오." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
