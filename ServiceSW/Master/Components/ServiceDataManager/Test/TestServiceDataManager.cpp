@@ -145,7 +145,7 @@ void CTestServiceDataManager::TestTestCaseFactory()
     QCOMPARE(p_OvenTestEmpty->GetParameter(QString("AmbTempHigh")), QString("35"));
 
     QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "HeatTargetTemp1"), QString("85"));
-    QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "HeatTargetTemp2"), QString("52"));
+    QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "HeatTargetTemp2"), QString("54"));
 }
 
 void CTestServiceDataManager::TestModuleDataList()
