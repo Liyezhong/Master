@@ -1391,6 +1391,27 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     }
     mp_OldFile = mp_LanguageFile;
 
+    QLocale::Language lastLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
+    QString strFontFamily;
+    if ((lastLang != QLocale::Korean) && (QLocale::Korean == Command.GetCurrentLanuage()))
+    {
+        strFontFamily = "NanumGothic";
+    }
+
+    if ((lastLang == QLocale::Korean) && (QLocale::Korean != Command.GetCurrentLanuage()))
+    {
+        strFontFamily = "FreeSans";
+    }
+
+    if  (!strFontFamily.isEmpty())
+    {
+        QApplication* pApp =  dynamic_cast<QApplication*>(QCoreApplication::instance());
+        QFont font;
+        font.setPointSize(11);
+        font.setFamily(strFontFamily);
+        pApp->setFont(font);
+    }
+
     emit LanguageChanged(Global::LanguageToString(Command.GetCurrentLanuage()));
     Global::UITranslator::TranslatorInstance().SetDefaultLanguage(Command.GetCurrentLanuage());
     emit DashboardStationsUpdated();

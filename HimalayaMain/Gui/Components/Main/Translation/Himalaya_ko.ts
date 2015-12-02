@@ -11,12 +11,12 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="55"/>
         <source>Volume</source>
-        <translation>양</translation>
+        <translation>음량</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="58"/>
         <source>Periodic Time</source>
-        <translation>주기</translation>
+        <translation>알람 주기</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="60"/>
@@ -26,12 +26,12 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="166"/>
         <source>Edit Information</source>
-        <translation>편집 정보</translation>
+        <translation>정보 편집</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="189"/>
         <source>Edit Warning</source>
-        <translation>편집 경고</translation>
+        <translation>경고 편집</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="212"/>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="42"/>
         <source>Alarm</source>
-        <translation>경보</translation>
+        <translation>알림</translation>
     </message>
 </context>
 <context>
@@ -52,17 +52,17 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="29"/>
         <source>Waiting</source>
-        <translation>기다리는 중</translation>
+        <translation>대기 중</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="29"/>
         <source>Empty</source>
-        <translation>비어 있음</translation>
+        <translation>Empty</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="29"/>
         <source>Passed</source>
-        <translation>통과</translation>
+        <translation>패스</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="30"/>
@@ -72,12 +72,12 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="30"/>
         <source>Checking</source>
-        <translation>점검</translation>
+        <translation>확인 중</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="31"/>
         <source>Build pressure failed</source>
-        <translation>압력 증가 실패</translation>
+        <translation>압력 주입 실패</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="32"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>보틀 점검 실패!보틀 점검 상태 목록의 세부사항을 확인하십시오.</translation>
+        <translation>시약 확인 실패! 시약 확인 결과 리스트에서 자세한 내용을 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="40"/>
         <source>Bottle check</source>
-        <translation>보틀 점검</translation>
+        <translation>시약 확인</translation>
     </message>
 </context>
 <context>
@@ -140,17 +140,17 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="123"/>
         <source>The total number of cassettes should be between 1 and 200.</source>
-        <translation>카세트 전체 수는 1 - 200까지 입니다.</translation>
+        <translation>카세트 숫자는 1에서 200 사이여야 합니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="126"/>
         <source>Original cassette number: </source>
-        <translation>원래의 카세트 수: </translation>
+        <translation>최초 카세트 숫자: </translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="127"/>
         <source>Add more cassettes:</source>
-        <translation>카세트 추가:</translation>
+        <translation>카세트 추가</translation>
     </message>
 </context>
 <context>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="89"/>
         <source>Year</source>
-        <translation>년</translation>
+        <translation>년도</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="92"/>
@@ -251,17 +251,17 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
         <source>The changes can not be saved.</source>
-        <translation>변경사항이 저장될 수 없습니다.</translation>
+        <translation>변동 사항을 저장할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
         <source>Startup</source>
-        <translation>시작</translation>
+        <translation>장비 시동</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
         <source>Initializing device communication ...</source>
-        <translation>기기 시작…</translation>
+        <translation>장비의 통신 연결을 초기화 하는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="73"/>
         <source>Reinitializing device communication ...</source>
-        <translation>기기 통신 재시작 중...</translation>
+        <translation>기기의 통신을 다시 초기화 하는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="74"/>
@@ -296,32 +296,32 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="78"/>
         <source>Operation ongoing</source>
-        <translation>작동 중</translation>
+        <translation>작동 진행 중</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="79"/>
         <source>Saving Settings ...</source>
-        <translation>설정 저장 중...</translation>
+        <translation>설정 저장 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="80"/>
         <source>User Export</source>
-        <translation>사용자 엑스포트</translation>
+        <translation>사용자 내려받기</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="81"/>
         <source>Exporting user data ...</source>
-        <translation>사용자 데이터 엑스포팅 ...</translation>
+        <translation>사용자 정보를 내보내는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="82"/>
         <source>Service Export</source>
-        <translation>서비스엑스포트</translation>
+        <translation>서비스 정보 내보내기</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="83"/>
         <source>Exporting service data ...</source>
-        <translation>서비스 데이터 엑스포팅 ...</translation>
+        <translation>서비스 정보를 내보내는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="86"/>
@@ -334,7 +334,7 @@
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="49"/>
         <source>Data Management</source>
-        <translation>데이터 관리</translation>
+        <translation>정보관리</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="285"/>
         <source>Year</source>
-        <translation>년</translation>
+        <translation>년도</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="341"/>
@@ -401,7 +401,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="208"/>
         <source>File Name</source>
-        <translation>파일명</translation>
+        <translation>파일 이름</translation>
     </message>
 </context>
 <context>
@@ -410,7 +410,7 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="52"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="211"/>
         <source>File Name</source>
-        <translation>파일명</translation>
+        <translation>파일 이름</translation>
     </message>
 </context>
 <context>
@@ -438,12 +438,12 @@
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="277"/>
         <source>Enter Instrument Name</source>
-        <translation>기기명 입력</translation>
+        <translation>장비명을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="281"/>
         <source>Instrument Name</source>
-        <translation>기기명</translation>
+        <translation>장비 이름</translation>
     </message>
 </context>
 <context>
@@ -468,7 +468,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
         <source>Select Icon</source>
-        <translation>아이콘 선택</translation>
+        <translation>아이콘 지정</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
@@ -488,7 +488,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="75"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="76"/>
@@ -498,12 +498,12 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="77"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>정말로 선택된 프로그램 단계를 삭제하겠습니까?</translation>
+        <translation>선택한 단계를 정말 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="78"/>
         <source>Please enter a valid Program Name</source>
-        <translation>유효한 프로그램명을 입력하십시오</translation>
+        <translation>유효한 프로그램 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="79"/>
@@ -521,18 +521,18 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="376"/>
         <source>Enter Program Name</source>
-        <translation>프로그램명 입력</translation>
+        <translation>프로그램 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="440"/>
         <source>Edit Program Step</source>
-        <translation>프로그램단계편집</translation>
+        <translation>단계 편집</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="425"/>
         <source>New Program Step</source>
-        <translation>새 프로그램 단계</translation>
+        <translation>새 단계</translation>
     </message>
 </context>
 <context>
@@ -550,7 +550,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
@@ -606,7 +606,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="41"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -614,22 +614,22 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>변경 전까지 카세트</translation>
+        <translation>처리 가능한 카세트 수량</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>변경 전까지 주기</translation>
+        <translation>처리 가능한 싸이클 수</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>변경 전까지 일수</translation>
+        <translation>잔여 교체 기한</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
         <source>Please enter valid data</source>
-        <translation>유효한 데이터를 입력하십시오</translation>
+        <translation>유효한 날짜를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
@@ -644,17 +644,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>
         <source>Enter Cycle Value</source>
-        <translation>주기 값 입력</translation>
+        <translation>싸이클 횟수를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="54"/>
         <source>Enter Day Value</source>
-        <translation>일수 값 입력</translation>
+        <translation>일수를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="460"/>
         <source>Enter Reagent Name</source>
-        <translation>시약명 입력</translation>
+        <translation>시약 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="534"/>
@@ -697,7 +697,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="554"/>
         <source>Stop</source>
-        <translation>정지</translation>
+        <translation>중지</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="559"/>
@@ -710,32 +710,32 @@
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
         <source>Enter Proxy User Name</source>
-        <translation>프록시 사용자명을 입력</translation>
+        <translation>프록시 사용자이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="49"/>
         <source>Enter Proxy Password</source>
-        <translation>프록시 암호를 입력</translation>
+        <translation>프록시 비밀번호를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="50"/>
         <source>Enter Proxy IP Address</source>
-        <translation>프록시 IP 주소를 입력</translation>
+        <translation>프록시 IP 주소를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="51"/>
         <source>Enter Proxy Port</source>
-        <translation>프록시 포트를 입력</translation>
+        <translation>프록시 포트를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="52"/>
         <source>IP address is not correct</source>
-        <translation>IP 주소가 정확하지 않습니다</translation>
+        <translation>IP 주소가 바르지 않습니다</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="53"/>
         <source>Network port is not correct.</source>
-        <translation>네트워크 포트가 올바르지 않습니다.</translation>
+        <translation>네트워크 포트가 바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="56"/>
@@ -748,7 +748,7 @@
     <message>
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="40"/>
         <source>Parameter</source>
-        <translation>패러미터</translation>
+        <translation>파라미터</translation>
     </message>
 </context>
 <context>
@@ -769,7 +769,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="246"/>
         <source>Number</source>
-        <translation>번호</translation>
+        <translation>숫자</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="248"/>
@@ -784,7 +784,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="252"/>
         <source>Duration</source>
-        <translation>기간</translation>
+        <translation>시간</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="254"/>
@@ -805,12 +805,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="22"/>
         <source>Aborted.</source>
-        <translation>중단됨.</translation>
+        <translation>중지완료</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="23"/>
         <source>Completed!</source>
-        <translation>성공!</translation>
+        <translation>완료!</translation>
     </message>
 </context>
 <context>
@@ -818,12 +818,12 @@
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="59"/>
         <source>Edit Program</source>
-        <translation>프로그램편집</translation>
+        <translation>프로그램 편집</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="60"/>
         <source>View Program</source>
-        <translation>프로그램보기</translation>
+        <translation>프로그램 보기</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="61"/>
@@ -833,7 +833,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="62"/>
         <source>Do you really want to delete the selected program?</source>
-        <translation>정말로 선택된 프로그램을 삭제하겠습니까?</translation>
+        <translation>선택한 프로그램을 정말 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="63"/>
@@ -861,7 +861,7 @@
     <message>
         <location filename="../../Core/Source/ReagentGroupModel.cpp" line="215"/>
         <source>Color</source>
-        <translation>색상</translation>
+        <translation>색깔</translation>
     </message>
 </context>
 <context>
@@ -869,7 +869,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="32"/>
         <source>Select Color</source>
-        <translation>색상 선택</translation>
+        <translation>색상 지정</translation>
     </message>
 </context>
 <context>
@@ -887,19 +887,19 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>변경 전까지 카세트</translation>
+        <translation>처리 가능한 카세트 수량</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>변경 전까지 주기</translation>
+        <translation>처리 가능한 싸이클 수</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>변경 전까지 일수</translation>
+        <translation>잔여 교체 기한</translation>
     </message>
 </context>
 <context>
@@ -907,7 +907,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="56"/>
         <source>RMS</source>
-        <translation>시약관리시스템</translation>
+        <translation>RMS</translation>
     </message>
 </context>
 <context>
@@ -1027,7 +1027,7 @@ Date</source>
         <location filename="../../Programs/Source/StepModel.cpp" line="316"/>
         <location filename="../../Programs/Source/StepModel.cpp" line="321"/>
         <source>Duration</source>
-        <translation>기간</translation>
+        <translation>시간</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="320"/>
@@ -1074,7 +1074,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="19"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="20"/>
@@ -1112,7 +1112,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1112"/>
         <source>Communication error. Please try again or contact your local service.</source>
-        <translation>통신 오류 다시 시도하거나 서비스센터에 연락하십시오.</translation>
+        <translation>통신 오류. 다시 시도하시거나 서비스 센터에 문의하십시오.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1113"/>
@@ -1122,17 +1122,17 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1114"/>
         <source>The changes can not be saved.</source>
-        <translation>변경사항이 저장될 수 없습니다.</translation>
+        <translation>변동 사항을 저장할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1115"/>
         <source>Startup</source>
-        <translation>시작</translation>
+        <translation>장비 시동</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1116"/>
         <source>Initializing device communication ...</source>
-        <translation>기기 시작…</translation>
+        <translation>장비의 통신 연결을 초기화 하는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1117"/>
@@ -1142,7 +1142,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1118"/>
         <source>Reinitializing device communication ...</source>
-        <translation>기기 통신 재시작 중...</translation>
+        <translation>기기의 통신을 다시 초기화 하는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
@@ -1168,42 +1168,42 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
         <source>Operation ongoing</source>
-        <translation>작동 중</translation>
+        <translation>작동 진행 중</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1125"/>
         <source>Saving Settings ...</source>
-        <translation>설정 저장 중...</translation>
+        <translation>설정 저장 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
         <source>User Export</source>
-        <translation>사용자 엑스포트</translation>
+        <translation>사용자 내려받기</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
         <source>Exporting user data ...</source>
-        <translation>사용자 데이터 엑스포팅 ...</translation>
+        <translation>사용자 정보를 내보내는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
         <source>Service Export</source>
-        <translation>서비스엑스포트</translation>
+        <translation>서비스 정보 내보내기</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
         <source>Exporting service data ...</source>
-        <translation>서비스 데이터 엑스포팅 ...</translation>
+        <translation>서비스 정보를 내보내는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1132"/>
         <source>Import</source>
-        <translation>임포트</translation>
+        <translation>가져오기</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
         <source>Importing data ...</source>
-        <translation>데이터 임포트 중...</translation>
+        <translation>정보 가져오는 중</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1135"/>
@@ -1213,7 +1213,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
         <source>Getting the daily run log file ...</source>
-        <translation>매일의 가동 로그 파일을 가져오는 중...</translation>
+        <translation>일일 운영 로그파일을 가져오는 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1329"/>
@@ -1223,7 +1223,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1331"/>
         <source>Updating the software ...</source>
-        <translation>소프트웨어 업데이트 중...</translation>
+        <translation>소프트웨어 업데이느 중 …</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
@@ -1240,17 +1240,17 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
         <source>New software is not available.</source>
-        <translation>새 소프트웨어 이용불가.</translation>
+        <translation>새로운 소프트웨어가 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
-        <translation>원격서버로부터 새로운 프로그램 다운로드 실패 서비스센터에 연락하십시오.</translation>
+        <translation>RC 서버로 부터 새로운 소프트웨어를 다운로드하는데 실패했습니다. 서비스 직원에게 문의하세요.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
-        <translation>원격 서버로부터 새로운 소프트웨어 다운로드가 완료되었습니다.  &quot;확인&quot;을 놀러 소프트웨어 업데이트를 시작하십시오.</translation>
+        <translation>리모트 서버를 통해 새로운 소프트웨어를 다운로드 완료했습니다. 새 소프트웨어를 시작하려면 &quot;확인&quot;을 누르십시오.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
@@ -1260,7 +1260,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
         <source>Now download the update package from the remote server. Please wait...</source>
-        <translation>지금 원격 서버에서 업데이트 패키지를 다운로드하십시오. 기다리십시오...</translation>
+        <translation>리모트 서버로부터 업데이트 페키지를 내려받는 중입니다. 잠시 기다려 주십시오 ...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
@@ -1285,7 +1285,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote session has been ended by the remote user.</source>
-        <translation>원격 사용자로부터 원격 세션이 종료되었습니다.</translation>
+        <translation>리모트 사용자가 리모트 세션을 종료하였습니다.</translation>
     </message>
 </context>
 <context>
@@ -1321,7 +1321,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="204"/>
         <source>Color</source>
-        <translation>색상</translation>
+        <translation>색깔</translation>
     </message>
 </context>
 <context>
@@ -1340,19 +1340,19 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>변경 전까지 카세트</translation>
+        <translation>처리 가능한 카세트 수량</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>변경 전까지 주기</translation>
+        <translation>처리 가능한 싸이클 수</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>변경 전까지 일수</translation>
+        <translation>잔여 교체 기한</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -1509,7 +1509,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="66"/>
         <source>ASAP</source>
-        <translation>가급적 빨리</translation>
+        <translation>즉시시작</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="139"/>
@@ -1540,7 +1540,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="259"/>
         <source>Year</source>
-        <translation>년</translation>
+        <translation>년도</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="262"/>
@@ -1565,12 +1565,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="267"/>
         <source>Program End Date/Time cannot be earlier than the ASAP End Date/Time.</source>
-        <translation>프로그램 종료 일/시간은 가능한 빠른 종료 일/시간 이하일 수 없습니다.</translation>
+        <translation>프로그램 종료 날짜/시간이 &apos;즉시 시작&apos;으로 작동 시의 종료 날짜/시간보다 빠를 수는 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="268"/>
         <source>Program End Date/Time cannot be later than one week.</source>
-        <translation>프로그램 종료 일/시간은 일주일 이상일 수 없습니다.</translation>
+        <translation>프로그램 종료 날짜/시간이 일주일 후 이상 늦을 수는 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
@@ -1580,7 +1580,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
         <source>Run</source>
-        <translation>가동</translation>
+        <translation>작동</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="272"/>
@@ -1593,12 +1593,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="71"/>
         <source>Step remaining time:</source>
-        <translation>단계 잔여 시간:</translation>
+        <translation>단계 남은 시간:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="78"/>
         <source>Program remaining time:</source>
-        <translation>프로그램 잔여 시간:</translation>
+        <translation>프로그램 남은 시간:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="85"/>
@@ -1608,12 +1608,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="135"/>
         <source>Abort Program</source>
-        <translation>프로그램 중단</translation>
+        <translation>프로그램 중지</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="155"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -1636,22 +1636,22 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1316"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
-        <translation>스테이션&quot;%1&quot;이 &quot;%3&quot;의 프로그램 단계 &quot;%2&quot;에서 공백으로 설정되었으므로 프로그램을 시작할 수 없습니다.</translation>
+        <translation>&quot;%2&quot; 의 &quot;%3&quot; 단계에 &quot;%1&quot; 스테이션이 Empty로 지정되어 있어 프로그램을 시작할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1317"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
-        <translation>파라핀이 완전히 용해되지 않았고 프로그램 첫 단계가 고정 시약이 아니므로 프로그램을 시작할 수 없습니다.</translation>
+        <translation>파라핀이 완전히 녹지 않았고 첫 단계가 고정시약이 아니므로, 프로그램을 시작할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1318"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
-        <translation>%1 시간 %2 분 %3 초 안에 프로그램을 시작할 수 있습니다.</translation>
+        <translation>프로그램을 %1시간 %2분 %3초 뒤에 시작할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
-        <translation>파라핀이 완전히 용해되지 않으면 프로그램이 첫 단계에서 잠시 지연될 수 있습니다. 계속하겠습니까?</translation>
+        <translation>파라핀이 완전히 녹지 않았으므로 첫 단계가 다소 지연됩니다. 계속하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
@@ -1661,97 +1661,97 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
-        <translation>프로그램 &quot;%1&quot; 완성! 증류기를 배수하겠습니까?</translation>
+        <translation>&quot;%1&quot; 프로그램이 완료되었습니다! 리토르트를 비우시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1322"/>
         <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
-        <translation>안전한 조직 처리가 성공적으로 이뤄졌습니다. 증류기를 배수하겠습니까?</translation>
+        <translation>조직 안전보관처리가 성공적으로 완료되었습니다. 리토르트를 비우시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1323"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
-        <translation>안전한 조직 처리가 경고에 따라 성공적으로 이뤄졌습니다. 증류기를 배수하겠습니까?</translation>
+        <translation>조직 안전보관처리가 경고와 함께 완료되었습니다. 리토르트를 비우시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
-        <translation>오븐 커버가 열렸습니다. 커버를 닫고 확인 버튼을 클릭하십시오.</translation>
+        <translation>오븐의 덮개가 열려 있습니다. 덮개를 덮고 다시 &apos;확인&apos;을 눌러 주십시오.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
         <source>Retort lid was opened. Please close it and then click OK.</source>
-        <translation>증류기 뚜껑 열림. 뚜껑을 닫고 확인을 클릭하십시오.</translation>
+        <translation>리토르트 덮개가 열려있습니다. 덮개를 닫고 다시 &apos;확인&apos;을 누르십시오.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1326"/>
         <source>Pausing...</source>
-        <translation>중지 중...</translation>
+        <translation>일시정지 중…</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1327"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
-        <translation>기기를 예열하고 있습니다. 기기 사용 전에 대기 시간이 최대 30분일 수도 있습니다.</translation>
+        <translation>장비 예열 중입니다. 장비가 사용 가능할 때까지 대기 시간은 30분 미만입니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1328"/>
         <source>Please remove the specimens from the retort!</source>
-        <translation>증류기에서 표본을 제거허십시오!</translation>
+        <translation>리토르트에서 검체를 제거하십시오!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1329"/>
         <source>The retort is contaminated. Please lock the retort and select Cleaning Program to run!</source>
-        <translation>증류기가 오염되었습니다. 증류기를 잠그고 세정 프로그램을 가동하십시오!</translation>
+        <translation>리토르트가 오염되었습니다. 리토르트를 잠그고 클리닝 프로그램을 작동하십시오.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
         <source>Program &quot;%1&quot; is aborted!</source>
-        <translation>프로그램&quot;%1&quot; 중단!</translation>
+        <translation>&quot;%1&quot; 프로그램이 중단되었습니다!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
-        <translation>프로그램 &quot;%1&quot; 성공적으로 완성!</translation>
+        <translation>&quot;%1&quot; 프로그램이 성공적으로 완료되었습니다!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
         <source>Please close and lock the retort, then try again!</source>
-        <translation>증류기를 닫고 잠근 후에, 다시 시도하십시오!</translation>
+        <translation>리토르트 덮개를 덮고 잠근 후 다시 시도하십시오!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
-        <translation>Leica 프로그램으로 시약관리시스템을 끌 수 없습니다.</translation>
+        <translation>RMS가 꺼져있을 때는 라이카 프로그램을 실행할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1334"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
-        <translation>이 프로그램에 필요한 시약이 만료되었습니다. 만료된 시약을 새 시약으로 교체하십시오! 프로그램이 시작되지 않을 것입니다.</translation>
+        <translation>이 프로그램 운영에 필요한 시약의 유효기간이 경과했습니다. 새로운 시약으로 교체해 주십시오! 프로그램이 시작되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1335"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
-        <translation>정말로 프로그램을 만료된 시약과 함께 시작하겠습니까?</translation>
+        <translation>유효기간이 지난 시약으로 프로그램을 작동하길 원하십니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1336"/>
         <source>Please enter the number of new-added cassettes:</source>
-        <translation>새로-추가된 카세트 수를 추가하십시오:</translation>
+        <translation>새로 추가한 카세트의 수량을 입력하십시오:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
         <source>Did you add new cassettes?</source>
-        <translation>새 카세트를 추가했습니까?</translation>
+        <translation>새 카세트를 추가하셨습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
-        <translation>대기 시간이 5분 이상이므로, 기기가 재가열되고 안전한 시약이 넣이질 것입니다.</translation>
+        <translation>대기 시간이 5분 이상이므로, 장비를 다시 예열하고 안전 시약을 주입합니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1339"/>
         <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
-        <translation>증류기 온도가 너무 높습니다. 표본을 삽입하고 다음 프로그램을 시작하기 전에 증류기가 식을 때까지 기다리십시오.</translation>
+        <translation>리토르트 내부 온도가 너무 높습니다. 리토르트 온도가 내려간 후에 검체를 넣고 프로그램을 시작하십시오.</translation>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
@@ -1829,7 +1829,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
         <source>Would you like to abort the program?</source>
-        <translation>프로그램을 중지하겠습니까?</translation>
+        <translation>프로그램 작동을 중단하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
@@ -1869,7 +1869,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="125"/>
         <source>Abort</source>
-        <translation>중단</translation>
+        <translation>중지</translation>
     </message>
 </context>
 <context>
@@ -1882,12 +1882,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="59"/>
         <source>Remaining Time:</source>
-        <translation>잔여 시간:</translation>
+        <translation>남은 시간:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="66"/>
         <source>Step Time:</source>
-        <translation>단계 시간:</translation>
+        <translation>단계 소요 시간:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="132"/>
@@ -1897,22 +1897,22 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="176"/>
         <source>Program Details</source>
-        <translation>프로그램 세부사항</translation>
+        <translation>프로그램 상세내역</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="179"/>
         <source>Aborting...</source>
-        <translation>중단중...</translation>
+        <translation>중지중</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="180"/>
         <source>Aborted.</source>
-        <translation>중단됨.</translation>
+        <translation>중지완료</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="181"/>
         <source>Completed!</source>
-        <translation>성공!</translation>
+        <translation>완료!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
@@ -1940,17 +1940,17 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1045"/>
         <source>Please enter text</source>
-        <translation>텍스트를 입력</translation>
+        <translation>텍스트를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1051"/>
         <source>The entered text is too short. The length must be at least %1 characters.</source>
-        <translation>입력 텍스트가 너무 짧습니다. 길이가 최소한 %1 문자여야 합니다.</translation>
+        <translation>입력하신 내용이 너무 짧습니다. 입력 내용이 %1 글자 이상이어야 합니다.</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1058"/>
         <source>The entered text is too long. The length must not be greater than %1 characters.</source>
-        <translation>입력 텍스트가 너무 깁니다. 길이가 %1 문자 이하여야 합니다.</translation>
+        <translation>입력하신 내용이 너무 깁니다. 입력 내용이 %1 글자를 초과할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -1971,18 +1971,18 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="36"/>
         <source>User Export</source>
-        <translation>사용자 엑스포트</translation>
+        <translation>사용자 내려받기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="69"/>
         <source>Service Export</source>
-        <translation>서비스엑스포트</translation>
+        <translation>서비스 정보 내보내기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="105"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="292"/>
         <source>Import</source>
-        <translation>임포트</translation>
+        <translation>가져오기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="138"/>
@@ -1992,22 +1992,22 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="171"/>
         <source>Remote SW Update</source>
-        <translation>원격 SW 업데이트</translation>
+        <translation>리모트 소프트웨어 업데이트</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="294"/>
         <source>Export</source>
-        <translation>엑스포트</translation>
+        <translation>내보내기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="296"/>
         <source>Importing data ...</source>
-        <translation>데이터 임포트 중...</translation>
+        <translation>정보 가져오는 중</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="298"/>
         <source>Exporting data ...</source>
-        <translation>데이터엑스포트 ...</translation>
+        <translation>정보를 내보내는 중 …</translation>
     </message>
 </context>
 <context>
@@ -2044,7 +2044,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="79"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="247"/>
         <source>Year</source>
-        <translation>년</translation>
+        <translation>년도</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="82"/>
@@ -2077,7 +2077,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="218"/>
         <source>The selected date is invalid. Please select another one.</source>
-        <translation>선택한 일자가 유효하지 않습니다. 다른 일자를 선택하십시오.</translation>
+        <translation>선택하신 날짜가 유효하지 않습니다. 다른 날짜를 선택하십시오.</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="231"/>
@@ -2103,7 +2103,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ErrorMsgDlg.ui" line="51"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="168"/>
@@ -2135,7 +2135,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="48"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="228"/>
         <source>Import Files</source>
-        <translation>파일 임포트</translation>
+        <translation>파일 가져오기</translation>
     </message>
 </context>
 <context>
@@ -2154,12 +2154,12 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="165"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="289"/>
         <source>Event Viewer</source>
-        <translation>이벤트뷰어</translation>
+        <translation>이벤트 뷰어</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="287"/>
         <source>File Name</source>
-        <translation>파일명</translation>
+        <translation>파일 이름</translation>
     </message>
 </context>
 <context>
@@ -2236,7 +2236,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="44"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="100"/>
         <source>Service Export</source>
-        <translation>서비스엑스포트</translation>
+        <translation>서비스 정보 내보내기</translation>
     </message>
 </context>
 <context>
@@ -2295,7 +2295,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/TextDialog.ui" line="46"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -2308,7 +2308,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WaitDialog.ui" line="58"/>
         <source>Abort</source>
-        <translation>중단</translation>
+        <translation>중지</translation>
     </message>
 </context>
 <context>
@@ -2321,7 +2321,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WarningMsgDlg.ui" line="51"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="170"/>
@@ -2388,12 +2388,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="757"/>
         <source>Program Name</source>
-        <translation>프로그램명</translation>
+        <translation>프로그램 이름</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="764"/>
         <source>The Program name cannot be empty!</source>
-        <translation>프로그램명은 공백일 수 없습니다!</translation>
+        <translation>프로그램 이름이 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="770"/>
@@ -2403,22 +2403,22 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1021"/>
         <source>Edit Program Step</source>
-        <translation>프로그램단계편집</translation>
+        <translation>단계 편집</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1022"/>
         <source>New Program Step</source>
-        <translation>새 프로그램 단계</translation>
+        <translation>새 단계</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1023"/>
         <source>Enter Program Name</source>
-        <translation>프로그램명 입력</translation>
+        <translation>프로그램 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1032"/>
         <source>Select Icon</source>
-        <translation>아이콘 선택</translation>
+        <translation>아이콘 지정</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1033"/>
@@ -2433,12 +2433,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1036"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>정말로 선택된 프로그램 단계를 삭제하겠습니까?</translation>
+        <translation>선택한 단계를 정말 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1037"/>
         <source>Please enter a valid Program Name</source>
-        <translation>유효한 프로그램명을 입력하십시오</translation>
+        <translation>유효한 프로그램 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1038"/>
@@ -2448,7 +2448,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1039"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1040"/>
@@ -2487,7 +2487,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="206"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -2495,7 +2495,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="104"/>
         <source>Pressure/Vacuum type</source>
-        <translation>압력/진공 유형</translation>
+        <translation>Pressure / Vaccume 형식</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="110"/>
@@ -2556,7 +2556,7 @@ Date</source>
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
         <source>The set temperature of paraffin baths differs from the temperature of the program by more than 2℃. Higher paraffin temperature may damage the tissue. Would you like to continue?</source>
-        <translation>파라핀 배쓰의 설정 온도가 프로그램 온도와 2℃ 이상 차이가 납니다. 그 이상의 파라핀 온도는 조직을 손상할 수 있습니다. 계속하겠습니까?</translation>
+        <translation>파라핀배스에 지정한 온도와 프로그램에 지정한 온도가 2°C이상 차이납니다. 파라핀 온도가 높으면 조직에 손상을 줄 수 있습니다. 계속하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
@@ -2574,7 +2574,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="589"/>
         <source>Number</source>
-        <translation>번호</translation>
+        <translation>숫자</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="591"/>
@@ -2589,7 +2589,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="595"/>
         <source>Duration</source>
-        <translation>기간</translation>
+        <translation>시간</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="597"/>
@@ -2628,12 +2628,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="600"/>
         <source>Edit Program</source>
-        <translation>프로그램편집</translation>
+        <translation>프로그램 편집</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="603"/>
         <source>View Program</source>
-        <translation>프로그램보기</translation>
+        <translation>프로그램 보기</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="606"/>
@@ -2643,7 +2643,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="609"/>
         <source>Do you really want to delete the selected program?</source>
-        <translation>정말로 선택된 프로그램을 삭제하겠습니까?</translation>
+        <translation>선택한 프로그램을 정말 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="612"/>
@@ -2681,7 +2681,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1028"/>
         <source>Duration</source>
-        <translation>기간</translation>
+        <translation>시간</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1029"/>
@@ -2699,7 +2699,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="221"/>
         <source>Stations</source>
-        <translation>스테이션들</translation>
+        <translation>스테이션</translation>
     </message>
 </context>
 <context>
@@ -2712,17 +2712,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="452"/>
         <source>Would you like to set Station %1 as empty?</source>
-        <translation>스테이션 %1을 비움으로 설정하겠습니까?</translation>
+        <translation>스테이션 %1을 Empty로 지정하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="455"/>
         <source>Would you like to reset data for Station %1?</source>
-        <translation>스테이션 %1을 위한 데이터를 리셋하겠습니까?</translation>
+        <translation>스테이션 %1의 정보를 리셋하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="458"/>
         <source>Would you like to set Station %1 as full?</source>
-        <translation>스테이션 %1을 채움으로 설정하겠습니까?</translation>
+        <translation>스테이션 %1을 Full로 지정하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="461"/>
@@ -2759,7 +2759,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="138"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="132"/>
@@ -2778,7 +2778,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="28"/>
         <source>Reagent name:</source>
-        <translation>시약명:</translation>
+        <translation>시약 이름:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="94"/>
@@ -2813,37 +2813,37 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="563"/>
         <source>Cassettes until change</source>
-        <translation>변경 전까지 카세트</translation>
+        <translation>처리 가능한 카세트 수량</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="566"/>
         <source>Cycles until change</source>
-        <translation>변경 전까지 주기</translation>
+        <translation>처리 가능한 싸이클 수</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="569"/>
         <source>Days until change</source>
-        <translation>변경 전까지 일수</translation>
+        <translation>잔여 교체 기한</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="572"/>
         <source>Please enter the reagent Name</source>
-        <translation>시약명을 입력하십시오</translation>
+        <translation>시약 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="575"/>
         <source>Reagent name shall not contain &apos;leica&apos;.</source>
-        <translation>시약명은 &apos;leica&apos;를 포함하지 않습니다.</translation>
+        <translation>시약 이름에 &apos;leica&apos;을 포함할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="578"/>
         <source>The same reagent name is in use already. Please change the reagent name.</source>
-        <translation>동일한 시약명이 이미 사용 중입니다. 시약명을 변경하십시오.</translation>
+        <translation>같은 시약 이름이 이미 존재합니다. 다른 이름을 사용하십시오.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="581"/>
         <source>Please enter valid data</source>
-        <translation>유효한 데이터를 입력하십시오</translation>
+        <translation>유효한 날짜를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="584"/>
@@ -2853,12 +2853,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="587"/>
         <source>Failed to add the reagent. Please contact service.</source>
-        <translation>시약 추가 실패. 서비스센터에 연락하십시오.</translation>
+        <translation>시약 추가 실패. 서비스 직원에게 문의하세요.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="590"/>
         <source>Failed to copy the reagent. Please contact service.</source>
-        <translation>시약 복사 추가 실패. 서비스센터에 연락하십시오.</translation>
+        <translation>시약 복사 실패. 서비스 직원에게 문의하세요.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="593"/>
@@ -2868,27 +2868,27 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="596"/>
         <source>Enter Cycle Value</source>
-        <translation>주기 값 입력</translation>
+        <translation>싸이클 횟수를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="599"/>
         <source>Enter Day Value</source>
-        <translation>일수 값 입력</translation>
+        <translation>일수를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="602"/>
         <source>Enter Reagent Name</source>
-        <translation>시약명 입력</translation>
+        <translation>시약 이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="719"/>
         <source>Do you really want to change the RMS controlling mode?  If reagents are being replaced, please reset data for those reagents on the Status page.</source>
-        <translation>정말로 시약관리시스템 모드를 변경하겠습니까?  시약을 교체하려면, 상태 페이지에서 해당 시약 데이터를 리셋하십시오.</translation>
+        <translation>RMS 관리 모드를 정말 바꾸시겠습니까? 시약을 교체하는 경우 시약 관리창에서 시약 정보를 리셋하십시오.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="721"/>
         <source>Do you really want to turn off RMS mode? Longer than the recommended use of cleaning reagents can cause paraffin blockages in reagent lines. The cleaning program can be run as usual. However, the reagent quality must be controlled carefully.</source>
-        <translation>정말로 시약관리시스템 모드를 끄겠습니까? 세정 시약을 권장 사용 시간보다 길게 사용하면 시약 라인에 파라핀 폐색을 일으킬 수 있습니다 . 세정 프로그램을 평상시처럼 가동할 수 있습니다. 하지만, 시약 품질을 주의하여 관리해야 합니다.</translation>
+        <translation>RMS 모드를 정말 정지하시겠습니까? 클리닝 시약을 적정시간 이상 사용하면, 시약공급라인에 파라핀이 굳어 막힐 수 있습니다. 클리닝 프로그램 운영에는 문제가 없으나 시약 상태를 주의깊게 확인하시기 바랍니다. </translation>
     </message>
 </context>
 <context>
@@ -2912,7 +2912,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="230"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="231"/>
@@ -2940,7 +2940,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="206"/>
         <source>Select Color</source>
-        <translation>색상 선택</translation>
+        <translation>색상 지정</translation>
     </message>
 </context>
 <context>
@@ -2953,7 +2953,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="42"/>
         <source>Processing Reagents</source>
-        <translation>처리 시약</translation>
+        <translation>조직처리 시약</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="57"/>
@@ -2981,7 +2981,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="115"/>
         <source>Cleaning Reagents</source>
-        <translation>세정 시약</translation>
+        <translation>클리닝 시약</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="198"/>
@@ -3001,12 +3001,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="200"/>
         <source>Groups</source>
-        <translation>그룹들</translation>
+        <translation>그룹</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="704"/>
         <source>RMS</source>
-        <translation>시약관리시스템</translation>
+        <translation>RMS</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="707"/>
@@ -3016,12 +3016,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="710"/>
         <source>New Reagent</source>
-        <translation>새로운 시약</translation>
+        <translation>새 시약</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="713"/>
         <source>Do you really want to delete the selected reagent?</source>
-        <translation>정말로 선택된 시약을 삭제하겠습니까?</translation>
+        <translation>선택한 시약을 정말 제거하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="716"/>
@@ -3067,17 +3067,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="66"/>
         <source>Set as Empty</source>
-        <translation>비움으로 설정</translation>
+        <translation>Empty로 지정</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="73"/>
         <source>Set as Full</source>
-        <translation>채움으로 선택</translation>
+        <translation>Full로 지정</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="80"/>
         <source>Reset Data</source>
-        <translation>데이터 리셋</translation>
+        <translation>리셋 날짜</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="464"/>
@@ -3151,7 +3151,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="158"/>
         <source>Periodic</source>
-        <translation>주기적인</translation>
+        <translation>주기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="191"/>
@@ -3161,7 +3161,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="211"/>
         <source>Test</source>
-        <translation>테스트</translation>
+        <translation>검사</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="218"/>
@@ -3176,12 +3176,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="276"/>
         <source>Volume</source>
-        <translation>양</translation>
+        <translation>음량</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="277"/>
         <source>Periodic Time</source>
-        <translation>주기</translation>
+        <translation>알람 주기</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="281"/>
@@ -3191,7 +3191,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="285"/>
         <source>Edit Information</source>
-        <translation>편집 정보</translation>
+        <translation>정보 편집</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="286"/>
@@ -3201,7 +3201,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="287"/>
         <source>Edit Warning</source>
-        <translation>편집 경고</translation>
+        <translation>경고 편집</translation>
     </message>
 </context>
 <context>
@@ -3270,7 +3270,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="293"/>
         <source>Alarm</source>
-        <translation>경보</translation>
+        <translation>알림</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
@@ -3308,22 +3308,22 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/BottleCheckStatusDlg.ui" line="55"/>
         <source>Close</source>
-        <translation>닫음</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="152"/>
         <source>Waiting</source>
-        <translation>기다리는 중</translation>
+        <translation>대기 중</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="153"/>
         <source>Empty</source>
-        <translation>비어 있음</translation>
+        <translation>Empty</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="154"/>
         <source>Passed</source>
-        <translation>통과</translation>
+        <translation>패스</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="155"/>
@@ -3333,12 +3333,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="156"/>
         <source>Checking</source>
-        <translation>점검</translation>
+        <translation>확인 중</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="157"/>
         <source>Build pressure failed</source>
-        <translation>압력 증가 실패</translation>
+        <translation>압력 주입 실패</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="158"/>
@@ -3358,12 +3358,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation>보틀 점검 실패!보틀 점검 상태 목록의 세부사항을 확인하십시오.</translation>
+        <translation>시약 확인 실패! 시약 확인 결과 리스트에서 자세한 내용을 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
         <source>Bottle check</source>
-        <translation>보틀 점검</translation>
+        <translation>시약 확인</translation>
     </message>
 </context>
 <context>
@@ -3394,17 +3394,17 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="36"/>
         <source>User Export</source>
-        <translation>사용자 엑스포트</translation>
+        <translation>사용자 내려받기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="69"/>
         <source>Service Export</source>
-        <translation>서비스엑스포트</translation>
+        <translation>서비스 정보 내보내기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="105"/>
         <source>Import</source>
-        <translation>임포트</translation>
+        <translation>가져오기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="141"/>
@@ -3414,12 +3414,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="177"/>
         <source>Remote SW Update</source>
-        <translation>원격 SW 업데이트</translation>
+        <translation>리모트 소프트웨어 업데이트</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="214"/>
         <source>Data Management</source>
-        <translation>데이터 관리</translation>
+        <translation>정보관리</translation>
     </message>
 </context>
 <context>
@@ -3448,17 +3448,17 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="20"/>
         <source>Instrument Name</source>
-        <translation>기기명</translation>
+        <translation>장비 이름</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="49"/>
         <source>Undefined instrument</source>
-        <translation>정의되지 않은 기기</translation>
+        <translation>지정되지 않은 장비</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="59"/>
         <source>Serial Number</source>
-        <translation>일련번호</translation>
+        <translation>일련 번호</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="71"/>
@@ -3516,7 +3516,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="230"/>
         <source>Languages</source>
-        <translation>언어들</translation>
+        <translation>언어</translation>
     </message>
 </context>
 <context>
@@ -3529,25 +3529,25 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="20"/>
         <source>Remote Care</source>
-        <translation>원격 관리</translation>
+        <translation>리모트케어</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="26"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="244"/>
         <source>Direct Connection</source>
-        <translation>직접 연결</translation>
+        <translation>직접연결</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="46"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="245"/>
         <source>Proxy User Name</source>
-        <translation>프록시 사용자명</translation>
+        <translation>프록시 사용자이름</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="73"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="246"/>
         <source>Proxy Password</source>
-        <translation>프록시 암호</translation>
+        <translation>프록시 비밀번호</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="80"/>
@@ -3569,7 +3569,7 @@ Date</source>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="127"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="248"/>
         <source>Proxy Port</source>
-        <translation>프록시 포트t</translation>
+        <translation>프록시 포트</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="134"/>
@@ -3580,7 +3580,7 @@ Date</source>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="243"/>
         <source>Enable RemoteCare Events</source>
-        <translation>원격관리 이벤트 실행</translation>
+        <translation>리모트케어 이벤트 활성화</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
@@ -3596,32 +3596,32 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="250"/>
         <source>Enter Proxy User Name</source>
-        <translation>프록시 사용자명을 입력</translation>
+        <translation>프록시 사용자이름을 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="251"/>
         <source>Enter Proxy Password</source>
-        <translation>프록시 암호를 입력</translation>
+        <translation>프록시 비밀번호를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="252"/>
         <source>Enter Proxy IP Address</source>
-        <translation>프록시 IP 주소를 입력</translation>
+        <translation>프록시 IP 주소를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="253"/>
         <source>Enter Proxy Port</source>
-        <translation>프록시 포트를 입력</translation>
+        <translation>프록시 포트를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="254"/>
         <source>IP address is not correct</source>
-        <translation>IP 주소가 정확하지 않습니다</translation>
+        <translation>IP 주소가 바르지 않습니다</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="255"/>
         <source>Network port is not correct.</source>
-        <translation>네트워크 포트가 올바르지 않습니다.</translation>
+        <translation>네트워크 포트가 바르지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -3634,7 +3634,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="98"/>
         <source>Languages</source>
-        <translation>언어들</translation>
+        <translation>언어</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="109"/>
@@ -3649,7 +3649,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="132"/>
         <source>Alarm</source>
-        <translation>경보</translation>
+        <translation>알림</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="143"/>
@@ -3659,12 +3659,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
         <source>System Setup</source>
-        <translation>시스템 설정</translation>
+        <translation>시스템 셋업</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>
         <source>Data Mgmt.</source>
-        <translation>데이터 관리.</translation>
+        <translation>정보관리</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="176"/>
@@ -3684,7 +3684,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="101"/>
         <source>Parameter</source>
-        <translation>패러미터</translation>
+        <translation>파라미터</translation>
     </message>
 </context>
 <context>
@@ -3712,27 +3712,27 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="155"/>
         <source>Time Format:</source>
-        <translation>시간 포맷:</translation>
+        <translation>시간 형식:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="201"/>
         <source>Date Format:</source>
-        <translation>날짜 포맷:</translation>
+        <translation>날짜 형식:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="211"/>
         <source>International: dd.mm.yyyy</source>
-        <translation>국제: 일.월.년</translation>
+        <translation>국제형식: dd.mm.yyyy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="218"/>
         <source>ISO: yyyy-mm-dd</source>
-        <translation>ISO: 년-월-일</translation>
+        <translation>ISO형식: yyyy-mm-dd</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="225"/>
         <source>US: mm/dd/yyyy</source>
-        <translation>미국: 월/일/년</translation>
+        <translation>미국형식: mm/dd/yyyy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="263"/>
@@ -3755,7 +3755,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
         <source>Preventive Maintenance Reminder [Days]</source>
-        <translation>예방적 유지관리 알림 [일수]</translation>
+        <translation>예방 점검 알림 [일]</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="36"/>
@@ -3777,7 +3777,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="98"/>
         <source>Active carbon filter [Days]</source>
-        <translation>활성 탄소 필터 [일]</translation>
+        <translation>활성탄소필터 [일]</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="123"/>
@@ -3787,7 +3787,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="130"/>
         <source>Alarm threshold :</source>
-        <translation>경보 한계:</translation>
+        <translation>알림 주기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="180"/>
@@ -3797,7 +3797,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="204"/>
         <source>Shutdown</source>
-        <translation>정지</translation>
+        <translation>전원끄기</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="243"/>
@@ -3812,7 +3812,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="321"/>
         <source>If the instrument is shut down now, you may have to wait %1 hours to ensure the paraffin is melted before running the next program. Do you really want to shut down your instrument?</source>
-        <translation>기기를 지금 끄면, 다음 프로그램 가동 전에 파라핀 용해를 확인하기 위해 %1 시간을 기다려야 합니다. 정말로 기기를 끄겠습니까?</translation>
+        <translation>지금 장비의 전원을 끄면, 다음에 작동하기 전 파라핀을 완전히 녹이기 위해 %1 시간정도 기다려야 합니다. 장비 전원을 정말 끄시겠습니까? </translation>
     </message>
 </context>
 <context>
@@ -3825,7 +3825,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SettingsWidget.cpp" line="177"/>
         <source>Parameter</source>
-        <translation>패러미터</translation>
+        <translation>파라미터</translation>
     </message>
 </context>
 <context>
@@ -3843,7 +3843,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="145"/>
         <source>Bottle check</source>
-        <translation>보틀 점검</translation>
+        <translation>시약 확인</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="203"/>
@@ -3853,12 +3853,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="294"/>
         <source>System Setup</source>
-        <translation>시스템 설정</translation>
+        <translation>시스템 셋업</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="295"/>
         <source>Do you really want to change the paraffin bath temperature?</source>
-        <translation>정말로 파라핀 배쓰 온도를 변경하겠습니까?</translation>
+        <translation>파라핀배스의 온도를 정말 바꾸시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
@@ -3896,7 +3896,7 @@ Please wait...</source>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="204"/>
         <source>Change Password</source>
-        <translation>암호 변경</translation>
+        <translation>비밀번호 변경</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="81"/>
@@ -3910,19 +3910,19 @@ Please wait...</source>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="319"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="537"/>
         <source>Enter Password</source>
-        <translation>암호입력</translation>
+        <translation>비밀번호를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="456"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="541"/>
         <source>Enter New Password</source>
-        <translation>새 암호입력</translation>
+        <translation>새로운 비밀번호를 입력하십시오</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="463"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="546"/>
         <source>Confirm New Password</source>
-        <translation>새 암호확인</translation>
+        <translation>새 비밀번호 확인</translation>
     </message>
 </context>
 </TS>

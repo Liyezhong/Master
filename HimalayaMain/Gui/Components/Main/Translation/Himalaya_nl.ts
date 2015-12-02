@@ -3659,7 +3659,7 @@ datum</translation>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="154"/>
         <source>System Setup</source>
-        <translation>Systeeminstellingen</translation>
+        <translation>Systeem Setup</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="165"/>

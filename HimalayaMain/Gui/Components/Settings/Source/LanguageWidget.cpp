@@ -46,6 +46,10 @@ CLanguageWidget::CLanguageWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Pa
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_UserSettings = new DataManager::CHimalayaUserSettings();
     m_LanguageModel.SetVisibleRowCount(8);
+    QFont Font;
+    Font.setPointSize(11);
+    Font.setFamily("NanumGothic");
+    setFont(Font);
     mp_TableWidget->setModel(&m_LanguageModel);
     mp_Ui->tableWidget->SetContent(mp_TableWidget);
     PopulateLanguageList();
