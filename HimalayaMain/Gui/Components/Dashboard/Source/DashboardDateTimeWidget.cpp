@@ -266,7 +266,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
     mp_MessageDlg->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Warning", 0, QApplication::UnicodeUTF8));
     m_strEarlierEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date/Time cannot be earlier than the ASAP End Date/Time.", 0, QApplication::UnicodeUTF8);
     m_strLaterEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date/Time cannot be later than one week.", 0, QApplication::UnicodeUTF8);
-    m_strCannotDelay = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.", 0, QApplication::UnicodeUTF8);
+    m_strCannotDelay = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.", 0, QApplication::UnicodeUTF8);
     m_strRun = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Run", 0, QApplication::UnicodeUTF8);
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
     m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time of program", 0, QApplication::UnicodeUTF8);

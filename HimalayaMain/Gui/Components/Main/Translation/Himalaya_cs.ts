@@ -87,7 +87,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="35"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrola lahví se nezdařila! Zkontrolujte podrobnosti ve stavovém seznamu kontroly lahví.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="36"/>
@@ -449,7 +449,7 @@
 <context>
     <name>CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
+        <location filename="../../Settings/Source/LanguageModel.cpp" line="160"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
@@ -555,7 +555,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1150,7 +1150,7 @@ výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
@@ -1161,6 +1161,9 @@ výměny</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1225,64 +1228,57 @@ výměny</translation>
         <translation>Aktualizace softwaru ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
-        <source>Ok</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Je k dispozici nový software. Klepnutím na &apos;Vzdálená aktualizace SW&apos; spusťte aktualizaci.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
         <source>New software is not available.</source>
         <translation>Nový software není k dispozici.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Nepodařilo se stáhnout nový software z RCServeru. Obraťte se na servis.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>Stažení nového softwaru ze vzdáleného serveru je dokončeno.  Stisknutím „Ok“ spusťte aktualizaci softwaru.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
         <source>Software update failed.</source>
         <translation>Aktualizace softwaru se nezdařila.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Nyní si stáhněte aktualizační balíček ze vzdáleného serveru. Čekejte ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Confirmation Message</source>
         <translation>Potvrzující zpráva</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2088"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Vzdálená relace byla požadována vzdáleným uživatelem.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
         <source>Information Message</source>
         <translation>Informační hlášení</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>Vzdálená relace byla ukončena vzdáleným uživatelem.</translation>
     </message>
@@ -1572,8 +1568,8 @@ výměny</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
-        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.</source>
-        <translation type="unfinished"></translation>
+        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
+        <translation>Datum/čas konce programu nemůže být pozdější než datum/čas konce pro Okamžitě, neboť prvním krokem programu není fixace činidla.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1753,23 +1749,8 @@ výměny</translation>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
-        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Spuštění zvoleného programu není možné, poněvadž se teplota parafínu liší od nastavené teploty parafínové lázně (odchylka 2 °C). Program lze ihned spustit, pokud bude teplota parafínu v tomto programu přizpůsobena teplotě parafínové lázně. Program nebude možné spustit po dobu až 15 hodin, pokud bude teplota parafínové lázně vyšší nebo rovna teplotě parafínu v programu! Potvrďte úpravu teploty parafínu.</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1341"/>
-        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1342"/>
-        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1343"/>
-        <source>Please confirm modifying Paraffin temperature.</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -2480,7 +2461,7 @@ výměny</translation>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="204"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="206"/>
@@ -3356,7 +3337,7 @@ výměny</translation>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="161"/>
         <source>Bottle Check failed! Please check the details in the Bottle Check status list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrola lahví se nezdařila! Zkontrolujte podrobnosti ve stavovém seznamu kontroly lahví.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="162"/>
@@ -3494,7 +3475,7 @@ výměny</translation>
 <context>
     <name>Settings::CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="231"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="235"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
@@ -3512,7 +3493,7 @@ výměny</translation>
         <translation>Uložit</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="230"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="234"/>
         <source>Languages</source>
         <translation>Jazyky</translation>
     </message>

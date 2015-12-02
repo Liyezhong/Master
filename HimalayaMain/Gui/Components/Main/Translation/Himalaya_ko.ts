@@ -449,7 +449,7 @@
 <context>
     <name>CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
+        <location filename="../../Settings/Source/LanguageModel.cpp" line="160"/>
         <source>Language</source>
         <translation>언어</translation>
     </message>
@@ -1151,7 +1151,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
         <source>Information</source>
         <translation>정보</translation>
     </message>
@@ -1162,6 +1162,9 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -1226,64 +1229,57 @@ Date</source>
         <translation>소프트웨어 업데이느 중 …</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
-        <source>Ok</source>
-        <translation>확인</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>새 소프트웨어 이용가능. &apos;원격 SW 업데이트&apos;를 클릭하여 업데이트를 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
         <source>New software is not available.</source>
         <translation>새로운 소프트웨어가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>RC 서버로 부터 새로운 소프트웨어를 다운로드하는데 실패했습니다. 서비스 직원에게 문의하세요.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>리모트 서버를 통해 새로운 소프트웨어를 다운로드 완료했습니다. 새 소프트웨어를 시작하려면 &quot;확인&quot;을 누르십시오.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
         <source>Software update failed.</source>
         <translation>소프트웨어 업데이트 실패</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>리모트 서버로부터 업데이트 페키지를 내려받는 중입니다. 잠시 기다려 주십시오 ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Confirmation Message</source>
         <translation>확인 메시지</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2088"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>원격 사용자로부터 원격 세션이 요청되었습니다.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
         <source>Information Message</source>
         <translation>정보 메시지</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>리모트 사용자가 리모트 세션을 종료하였습니다.</translation>
     </message>
@@ -1574,8 +1570,8 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
-        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.</source>
-        <translation>프로그램 첫 단계가 고정 시약이 아니므로 프로그램 종료 일/시간이 가능한 빠른 종료 일/시간 이상일 수 없습니다.</translation>
+        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
+        <translation>첫 단계가 고정시약이 아니므로, 프로그램 종료 날짜/시간이 &apos;즉시 시작&apos;으로 작동 시의 종료 날짜/시간보다 늦을 수는 없습니다.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1755,23 +1751,8 @@ Date</source>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
-        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
-        <translation>파라핀 온도가 설정된 파라핀 배쓰 온도와 차이가 나므로(편차2°C), 선택한 프로그램을 시작할 수 없습니다. 이 프로그램에서 파라핀 온도가 파라핀 배쓰 온도에 맟춰 조정되면, 프로그램이 즉시 시작될 수 있습니다. 파라핀 배쓰 온도가 증가되어 파라핀 프로그램 온도와 동등하게 되면 최대 15 시간까지 프로그램을 시작할 수 없습니다! 파라핀 온도 수정을 확인하십시오.</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1341"/>
-        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1342"/>
-        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1343"/>
-        <source>Please confirm modifying Paraffin temperature.</source>
-        <translation></translation>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
+        <translation>파라핀 온도가 지정된 파라핀배스 온도와 차이가 있어서 (2°C 차이) 선택한 프로그램을 실행할 수가 없습니다. 프로그램 상의 파라핀 온도를 파라핀배스의 온도에 맞게 조정하면, 프로그램을 즉시 실행할 수 있습니다. 온도가 맞지 않으면 최장 15시간 동안 프로그램을 실행하지 않습니다. 파라핀 온도를 조정하십시오.</translation>
     </message>
 </context>
 <context>
@@ -3496,7 +3477,7 @@ Date</source>
 <context>
     <name>Settings::CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="231"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="235"/>
         <source>Language</source>
         <translation>언어</translation>
     </message>
@@ -3514,7 +3495,7 @@ Date</source>
         <translation>저장</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="230"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="234"/>
         <source>Languages</source>
         <translation>언어</translation>
     </message>

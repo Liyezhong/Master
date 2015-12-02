@@ -449,7 +449,7 @@
 <context>
     <name>CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
+        <location filename="../../Settings/Source/LanguageModel.cpp" line="160"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
@@ -1151,7 +1151,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
         <source>Information</source>
         <translation>Informações</translation>
     </message>
@@ -1162,6 +1162,9 @@ Date</source>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1226,64 +1229,57 @@ Date</source>
         <translation>Atualizando o software...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
-        <source>Ok</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Novo software disponível. Clique em &apos;Atualização SW remota&apos; para iniciar a atualização.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
         <source>New software is not available.</source>
         <translation>Não há um novo software disponível.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Falha no download do novo software a partir do RCServer. Entre em contato com a assistência técnica.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>O download do novo software a partir do servidor remoto está concluído.  Pressione &quot;OK&quot; para iniciar a atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
         <source>Software update failed.</source>
         <translation>Falha na atualização do software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Faça o download do pacote de atualização do servidor remoto. Aguarde...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Confirmation Message</source>
         <translation>Mensagem de confirmação</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2088"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Uma sessão remota foi solicitada por um usuário remoto.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
         <source>Information Message</source>
         <translation>Mensagem de informações</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>A sessão remota foi encerrada pelo usuário remoto.</translation>
     </message>
@@ -1574,7 +1570,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
-        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.</source>
+        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
         <translation>Data/hora de término do programa não pode ser maior que a data/hora de término do ASAP porque a primeira etapa do programa não é um reagente de fixação.</translation>
     </message>
     <message>
@@ -1755,23 +1751,8 @@ Date</source>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
-        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Não é possível iniciar o programa escolhido porque a temperatura da parafina é diferente da temperatura definida no banho de parafina (diferença de 2 °C). O programa pode ser iniciado imediatamente se a temperatura da parafina nesse programa corresponder à temperatura do banho de parafina. Não é possível iniciar por até 15 horas se a temperatura do banho de parafina for a mesma do programa de parafina! Confirme a modificação da temperatura da parafina.</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1341"/>
-        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1342"/>
-        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1343"/>
-        <source>Please confirm modifying Paraffin temperature.</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -3496,7 +3477,7 @@ Date</source>
 <context>
     <name>Settings::CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="231"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="235"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
@@ -3514,7 +3495,7 @@ Date</source>
         <translation>Salvar</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="230"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="234"/>
         <source>Languages</source>
         <translation>Idiomas</translation>
     </message>

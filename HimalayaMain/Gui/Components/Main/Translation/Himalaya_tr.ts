@@ -449,7 +449,7 @@
 <context>
     <name>CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
+        <location filename="../../Settings/Source/LanguageModel.cpp" line="160"/>
         <source>Language</source>
         <translation>Dil</translation>
     </message>
@@ -1152,7 +1152,7 @@ Tarihi</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1994"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
         <source>Information</source>
         <translation>Bilgi</translation>
     </message>
@@ -1163,6 +1163,9 @@ Tarihi</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>OK</source>
         <translation>Tamam</translation>
     </message>
@@ -1227,64 +1230,57 @@ Tarihi</translation>
         <translation>Yazılım güncelleniyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1996"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2086"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
-        <source>Ok</source>
-        <translation>Tamam</translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2001"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Yeni Yazılım mevcut. Güncellemeyi başlatmak üzere &quot;Uzaktan Yazılım Güncelleme&quot;yi tıklayın.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2007"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
         <source>New software is not available.</source>
         <translation>Yeni Yazılım mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2013"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Uzaktan Bakım Sunucusundan yeni yazılım indirme başarısız oldu. Lütfen servisle bağlantıya geçin.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2018"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>Yeni yazılımın uzak sunucudan indirilmesi tamamlandı.  Yazılım güncellemesini başlatmak için &quot;Tamam&quot;a basın.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2025"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
         <source>Software update failed.</source>
         <translation>Yazılım güncellemesi başarısız oldu.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2054"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Şimdi uzak sunucudan güncelleme paketini indirin. Lütfen bekleyin...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2084"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
         <source>Confirmation Message</source>
         <translation>Onay Mesajı</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2088"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2091"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Uzak oturum, uzak kullanıcı tarafından talep edildi.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
         <source>Information Message</source>
         <translation>Bilgi Mesajı</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>Uzak oturum, uzak kullanıcı tarafından sonlandırıldı.</translation>
     </message>
@@ -1576,7 +1572,7 @@ Tarihi</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
-        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a Fixation reagent.</source>
+        <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
         <translation>İlk program adımı sabitleme reaktifi olmadığı için Program Bitiş Tarih/Saati, Olabildiğince çabuk Bitiş Tarih/Saatinden önce olamaz.</translation>
     </message>
     <message>
@@ -1757,23 +1753,8 @@ Tarihi</translation>
     </message>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
-        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).</source>
+        <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Seçili program başlatılamıyor; çünkü programın Parafin sıcaklığı, belirlenmiş Parafin banyosu sıcaklığından farklı (2°C fark). Bu programdaki Parafin sıcaklığını Parafin banyosu sıcaklığına uyacak biçimde adapte ederseniz program hemen başlatılabilir. Parafin banyosu sıcaklığı, Parafin program sıcaklığına eşit olacak biçimde artırılırsa program 15 saate kadar bir süreyle başlayamaz! Lütfen Parafin sıcaklığının değiştirilmesini onaylayın.</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1341"/>
-        <source>Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1342"/>
-        <source>Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature! </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1343"/>
-        <source>Please confirm modifying Paraffin temperature.</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -3498,7 +3479,7 @@ Tarihi</translation>
 <context>
     <name>Settings::CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="231"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="235"/>
         <source>Language</source>
         <translation>Dil</translation>
     </message>
@@ -3516,7 +3497,7 @@ Tarihi</translation>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/LanguageWidget.cpp" line="230"/>
+        <location filename="../../Settings/Source/LanguageWidget.cpp" line="234"/>
         <source>Languages</source>
         <translation>Diller</translation>
     </message>
