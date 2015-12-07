@@ -1270,7 +1270,7 @@
 	    <Event Code="" ErrorID="67174929" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_PRETEST_SUCCESS" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67174929" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174992" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174992" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_STRATEGY_INITIALIZE_FAILED" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174992" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174993" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_RETORTSIDE_PRETEST" LogLevel="High" UserLog="FALSE">
@@ -1282,7 +1282,7 @@
 	    <Event Code="" ErrorID="67174995" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_LEVEL_SENSOR" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174995" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67174996" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_RETORT" LogLevel="High" UserLog="TRUE">
+	    <Event Code="" ErrorID="67174996" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_RETORT" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67174996" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67174997" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_HEATING_OVEN" LogLevel="High" UserLog="FALSE">
