@@ -28,7 +28,7 @@ namespace Scheduler{
 QString CmdALFilling::NAME = "Scheduler::ALFilling";
 
 CmdALFilling::CmdALFilling(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+    CmdSchedulerCommandBase(Timeout, controller), m_SafeReagent4Paraffin(false)
 {
 }
 

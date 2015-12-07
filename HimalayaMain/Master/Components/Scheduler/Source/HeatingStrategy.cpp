@@ -84,7 +84,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     *
     ********************************************************************************/
     //For Level Sensor
+#if 0
     if (false == this->CheckSensorCurrentTemperature(m_RTLevelSensor, strctHWMonitor.TempALLevelSensor))
+#endif
+    if (strctHWMonitor.TempALLevelSensor > 180.0)
     {
         quint8 val = mp_SchedulerController->GetRetCodeCounter(DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE);
         val++;
@@ -1236,7 +1239,10 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
     }
     if ("LevelSensor" == HeaterName)
     {
+#if 0
         if(HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
+#endif
+        if(HWTemp >= 180.0)
         {
             return 1;
         }
@@ -1246,7 +1252,10 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
         }
 
         if (HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature
+        #if 0
                 && HWTemp < m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
+        #endif
+                && HWTemp < 180.0)
         {
             return 2; //pass
         }
