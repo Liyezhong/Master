@@ -24,6 +24,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdIDForceDraining.h"
 #include "Scheduler/Commands/Include/CmdALStopCmdExec.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
@@ -220,7 +221,9 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 m_MoveToTubeSeq = 0;
                 mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Move_To_Tube state, move to tube success");
-                if (false == m_IsLevelSensorRelated)
+
+                //For Paraffin, in case of level sensor's error, we still reuse level sensor
+                if (false == m_IsLevelSensorRelated || "RG6" == m_ReagentGroup)
                 {
                     m_CurrentStep = LEVELSENSOR_HEATING;
                 }
@@ -278,13 +281,13 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if (0 == m_FillSeq)
         {
             mp_SchedulerController->LogDebug("RS_Safe_Reagent, in Filling state");
-            if (true == m_IsLevelSensorRelated)
+            if ("RG6" == m_ReagentGroup)
             {
-                mp_SchedulerController->FillRsTissueProtect(m_StationID, false);
+                mp_SchedulerController->FillRsTissueProtect(m_StationID, false, true);
             }
             else
             {
-                mp_SchedulerController->FillRsTissueProtect(m_StationID, true);
+                mp_SchedulerController->FillRsTissueProtect(m_StationID, true, false);
             }
             m_FillSeq++;
         }
@@ -303,40 +306,52 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if ( retCode != DCL_ERR_FCT_CALL_SUCCESS
                    && retCode != DCL_ERR_DEV_LA_FILLING_OVERFLOW
                    && retCode != DCL_ERR_DEV_LA_FILLING_INSUFFICIENT
-                   && retCode != DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN)
+                   && retCode != DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN
+                   && retCode != DCL_ERR_DEV_LA_FILLING_SOAK_EMPTY)
                 {
                     mp_SchedulerController->LogDebug("RS_Safe_Reagent, Filling failed");
                     SendTasksDoneSig(false);
                     return;
                 }
-                if (true == m_IsLevelSensorRelated)
+                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
-                    {
-                        CmdALDraining* cmd = new CmdALDraining(500, mp_SchedulerController);
-                        cmd->SetDelayTime(5000);
-                        mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(cmd);
-                        m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
-                        m_CurrentStep = WAIT_8S;
-                    }
-                    else
-                    {
-                        m_IsSafeReagentSuccessful = false;
-                        m_CurrentStep = MOVE_TO_SEALING;
-                    }
-                }
-                else
-                {
-                    if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                    {
-                        mp_SchedulerController->LogDebug(QString("While level sensor is normal, program Step Filling OK"));
-                    }
-                    else
-                    {
-                        mp_SchedulerController->LogDebug(QString("While level sensor is normal, program Step Filling failed"));
-                        m_IsSafeReagentSuccessful = false;
-                    }
+                    mp_SchedulerController->LogDebug(QString("Return code is successful, program Step Filling OK"));
                     m_CurrentStep = MOVE_TO_SEALING;
+                    break;
+                }
+
+                if (DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode || DCL_ERR_DEV_LA_FILLING_TIMEOUT_4MIN == retCode)
+                {
+                    mp_SchedulerController->LogDebug(QString("program Step Filling failed, and retrun code is insufficient or 4 min timeout"));
+                    m_IsSafeReagentSuccessful = false;
+                    m_CurrentStep = MOVE_TO_SEALING;
+                    break;
+                }
+
+                if (DCL_ERR_DEV_LA_FILLING_OVERFLOW == retCode)
+                {
+                    mp_SchedulerController->LogDebug(QString(" Return code of program Step Filling is filling overflow"));
+                    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerController));
+                    m_StartWaitTime = QDateTime::currentMSecsSinceEpoch();
+                    m_CurrentStep = WAIT_8S;
+
+                    if (false == m_IsLevelSensorRelated)
+                    {
+                        m_IsSafeReagentSuccessful = false;
+                    }
+                    else
+                    {
+                        m_IsSafeReagentSuccessful = true;
+                    }
+
+                    break;
+                }
+
+                if (DCL_ERR_DEV_LA_FILLING_SOAK_EMPTY == retCode) // Only for paraffin
+                {
+                    mp_SchedulerController->LogDebug(QString("Paraffin soak empty, program Step Filling OK"));
+                    m_CurrentStep = MOVE_TO_SEALING;
+                    break;
                 }
             }
         }
@@ -346,7 +361,7 @@ void CRsTissueProtect::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if ((QDateTime::currentMSecsSinceEpoch() - m_StartWaitTime) >= 8*1000)
         {
             m_StartWaitTime = 0;
-            //emit MoveToSealing();
+            OnReleasePressure();
             m_CurrentStep = MOVE_TO_SEALING;
         }
         else

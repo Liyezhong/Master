@@ -82,6 +82,7 @@ typedef struct {
 } ProgramStepInfor;
 
 const qint64 TIME_FOR_FIX_TIME = 180;    ///< seconds for fix time
+const quint64 EVENTID_ALARM_FOR_DRAIN = 610000100; // Event ID for alarm Draining
 
 #define TIME_FOR_CLEANING_DRY_STEP            720    ///< seconds spending in dry step
 #define TIME_FOR_HEATING_LEVEL_SENSOR         30     ///< seconds for heating level sensor
@@ -1392,10 +1393,11 @@ protected:
          *  \brief  Filling for Rs_Tissue_Protect
          *  \param  StationID - QString
          *  \param  EnableInsufficientCheck - bool
+         *  \param  SafeReagent4Paraffin - bool
          *  \return void
          */
         /****************************************************************************/
-        void FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck);
+        void FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck,bool SafeReagent4Paraffin);
 
         /****************************************************************************/
         /*!

@@ -1282,6 +1282,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                                 Global::tRefType fRef = GetNewCommandRef();
                                 SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
                                 m_completionNotifierSent = true;
+
+                                // We also need start up alarm(local and device) to info user
+                                Global::AlarmHandler::Instance().setAlarm(EVENTID_ALARM_FOR_DRAIN,Global::ALARM_INFO,true);
+                                HandleRmtLocAlarm(CTRL_CMD_ALARM_LOC_ON);
+                                HandleRmtLocAlarm(CTRL_CMD_ALARM_DEVICE_ON);
+
                             }
                         }
                         else
@@ -4111,13 +4117,14 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
     return true;
 }
 
-void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck)
+void SchedulerMainThreadController::FillRsTissueProtect(const QString& StationID, bool EnableInsufficientCheck, bool SafeReagent4Paraffin)
 {
     LogDebug("Send cmd to DCL to Fill in Rs_Tissue_Protect");
     CmdALFilling* cmd  = new CmdALFilling(500, this);
     cmd->SetDelayTime(0);
 
     cmd->SetEnableInsufficientCheck(EnableInsufficientCheck);
+    cmd->SetSafeReagent4Paraffin(SafeReagent4Paraffin);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     if(!m_IsCleaningProgram)
@@ -5102,8 +5109,11 @@ void SchedulerMainThreadController::HandleRmtLocAlarm(quint32 ctrlcmd)
         break;
     case CTRL_CMD_POWER_FAILURE_MEG:
     case CTRL_CMD_DRAIN_SR:
-    case CTRL_CMD_DRAIN:
         Global::AlarmHandler::Instance().reset();
+        opcode = -1;
+        break;
+    case CTRL_CMD_DRAIN:
+        Global::AlarmHandler::Instance().setAlarm(EVENTID_ALARM_FOR_DRAIN,Global::ALARM_INFO,false);
         opcode = -1;
         break;
     default:

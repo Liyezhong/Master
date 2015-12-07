@@ -372,10 +372,12 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         else if  ("Scheduler::ALFilling" == cmdName)
         {
             scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),
-                                                                    qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()));
-            mp_SchedulerThreadController->LogDebug(QString("==CMD==:Filling, delay time:%1, insufficient check:%2")
+                                                                    qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck(),
+                                                                    qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetSafeReagent4Paraffin()));
+            mp_SchedulerThreadController->LogDebug(QString("==CMD==:Filling, delay time:%1, insufficient check:%2, SafeReagent4Paraffin: %3")
                                                    .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime())
-                                                   .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()) );
+                                                   .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck())
+                                                   .arg(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetSafeReagent4Paraffin()));
         }
         else if ("Scheduler::ALStopCmdExec" == cmdName)
         {

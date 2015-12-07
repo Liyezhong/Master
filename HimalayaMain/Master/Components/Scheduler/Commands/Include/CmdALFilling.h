@@ -121,6 +121,26 @@ public:
      */
     /****************************************************************************/
 	void SetEnableInsufficientCheck(bool EnableInsufficientCheck){m_EnableInsufficientCheck = EnableInsufficientCheck;}
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetSafeReagent4Paraffin
+     *
+     *	\return from GetSafeReagent4Paraffin
+     */
+    /****************************************************************************/
+    bool GetSafeReagent4Paraffin(){return m_SafeReagent4Paraffin;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetSafeReagent4Paraffin
+     *
+     *  \param SafeReagent4Paraffin = bool
+     *
+     */
+    /****************************************************************************/
+    void SetSafeReagent4Paraffin(bool SafeReagent4Paraffin){m_SafeReagent4Paraffin = SafeReagent4Paraffin;}
 	
     /****************************************************************************/
     /*!
@@ -149,6 +169,7 @@ private:
     mutable DeviceControl::ReturnCode_t m_result;   ///<  Definition/Declaration of variable m_result
     mutable quint32 m_DelayTime;                    ///<  Definition/Declaration of variable m_DelayTime
     mutable bool m_EnableInsufficientCheck;         ///<  Definition/Declaration of variable m_EnableInsufficientCheck
+    mutable bool m_SafeReagent4Paraffin;            ///<  Definition/Declaration of variable m_SafeReagent4Paraffin
 	
 };
 
