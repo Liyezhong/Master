@@ -16,7 +16,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="58"/>
         <source>Periodic Time</source>
-        <translation>Barra de intervalo</translation>
+        <translation>Tempo periód.</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="60"/>
@@ -1870,7 +1870,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="66"/>
         <source>Step Time:</source>
-        <translation>Tempo do intervalo:</translation>
+        <translation>Tempo interv.:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="132"/>
