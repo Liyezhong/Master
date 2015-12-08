@@ -3116,6 +3116,16 @@ d&apos;échange</translation>
     </message>
 </context>
 <context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
+        <source>Program is running.
+Please do not open the retort lid!
+Please do not unplug any bottles!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Settings::CAlarmSettingsDlg</name>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="20"/>

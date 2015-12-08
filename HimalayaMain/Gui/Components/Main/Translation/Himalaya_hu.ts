@@ -928,7 +928,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="248"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="250"/>
@@ -949,7 +949,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="363"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="365"/>
@@ -1375,7 +1375,7 @@ dátuma</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
@@ -1388,7 +1388,7 @@ dátuma</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="469"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
@@ -1900,7 +1900,7 @@ dátuma</translation>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
@@ -3112,6 +3112,16 @@ dátuma</translation>
         <location filename="../../Reagents/Forms/ReagentWidget.ui" line="20"/>
         <source>Form</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
+        <source>Program is running.
+Please do not open the retort lid!
+Please do not unplug any bottles!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

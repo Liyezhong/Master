@@ -291,12 +291,12 @@ void CReagentStatusWidget::ResizeHorizontalSection()
     {
         return;
     }
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 80);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 120);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 85);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 90);
-    mp_TableWidget->horizontalHeader()->resizeSection(4, 120);
-    mp_TableWidget->horizontalHeader()->resizeSection(5, 50);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 95);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(4, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(5, 60);
 }
 
 bool CReagentStatusWidget::IsReagentExpired()

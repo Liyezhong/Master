@@ -980,7 +980,8 @@ wijziging</translation>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="384"/>
         <source>Expiry
 Date</source>
-        <translation>Vervaldatum</translation>
+        <translation>Verval
+datum</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
@@ -3110,6 +3111,16 @@ datum</translation>
         <location filename="../../Reagents/Forms/ReagentWidget.ui" line="20"/>
         <source>Form</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
+        <source>Program is running.
+Please do not open the retort lid!
+Please do not unplug any bottles!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

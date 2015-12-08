@@ -1015,7 +1015,8 @@ výměny</translation>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="310"/>
         <source>Step</source>
-        <translation>Krok údržby</translation>
+        <translation>Krok
+údržby</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
@@ -2650,7 +2651,8 @@ výměny</translation>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>Step</source>
-        <translation>Krok údržby</translation>
+        <translation>Krok
+údržby</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1027"/>
@@ -2706,7 +2708,7 @@ výměny</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="461"/>
         <source>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</source>
-        <translation>Please check that the retort is empty and clean prior starting bottle check and then press &quot;yes&quot;. Bottle check function will require approximately 7 minutes.</translation>
+        <translation>Zkontrolujte před spuštěním kontroly lahví, jestli je retorta prázdná a čistá, poté stiskněte „ano“. Funkce kontroly lahve vyžaduje přibližně 7 min.</translation>
     </message>
 </context>
 <context>
@@ -3108,6 +3110,16 @@ výměny</translation>
         <location filename="../../Reagents/Forms/ReagentWidget.ui" line="20"/>
         <source>Form</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
+        <source>Program is running.
+Please do not open the retort lid!
+Please do not unplug any bottles!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

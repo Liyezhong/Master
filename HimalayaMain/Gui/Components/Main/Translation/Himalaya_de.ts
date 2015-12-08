@@ -986,7 +986,8 @@ Date</source>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
         <source>Exchange
 Date</source>
-        <translation>Austauschdatum</translation>
+        <translation>Austausch
+datum</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="390"/>
@@ -1423,7 +1424,8 @@ Date</source>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="505"/>
         <source>Exchange
 Date</source>
-        <translation>Austauschdatum</translation>
+        <translation>Austausch
+datum</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="507"/>
@@ -3108,6 +3110,16 @@ Date</source>
         <location filename="../../Reagents/Forms/ReagentWidget.ui" line="20"/>
         <source>Form</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ScreenSaverWidget</name>
+    <message>
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
+        <source>Program is running.
+Please do not open the retort lid!
+Please do not unplug any bottles!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
