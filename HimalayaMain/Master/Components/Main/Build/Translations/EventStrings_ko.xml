@@ -273,6 +273,13 @@
         <string id="67176228" text1="파라핀 배쓰의 파라핀 온도가 %1보다 낮습니다. 파라핀 녹은 상태를 확인하십시오." text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
+        <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
+        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
+        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
+        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
+        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
+        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
+        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
@@ -550,7 +557,6 @@
         <string id="19333643" text1="Reporting event failed" text2=""/>
         <string id="19333720" text1="RCA is connected to web server" text2=""/>
         <string id="67174401" text1="Slave boards initialized successfully." text2=""/>
-        <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
         <string id="67174403" text1="Main Relay opened successfully." text2=""/>
         <string id="67174404" text1="Fail to open the Main Relay %1." text2=""/>
         <string id="67174657" text1="Delay 3 second." text2=""/>
@@ -728,11 +734,6 @@
         <string id="67176022" text1="Pressure test time out before RV move to tube position for draining." text2=""/>
         <string id="67176023" text1="RotaryValve: Moving from tube position %1 to %2 failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step." text2=""/>
         <string id="67176024" text1="RotaryValve: Moving from tube position %1 to %2 failed before or after processing tissue." text2=""/>
-        <string id="67176192" text1="Error ID %1! Draining time more than 2 minutes." text2=""/>
-        <string id="67176193" text1="Error ID %1! Filling time more than 2 minutes." text2=""/>
-        <string id="67176195" text1="Error ID %1! Sealing failed in processing scenario." text2=""/>
-        <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
-        <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
         <string id="67174930" text1="Bottle check: failed for Station:%1." text2=""/>
         <string id="67174931" text1="Bottle check:Blockage for Station:%1." text2=""/>
         <string id="67174932" text1="Bottle check:Build pressure failed for Station:%1." text2=""/>
