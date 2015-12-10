@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
-    <height>401</height>
+    <width>611</width>
+    <height>394</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
@@ -18,10 +18,13 @@
     <enum>QLayout::SetDefaultConstraint</enum>
    </property>
    <property name="leftMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
     <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -47,7 +50,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>515</width>
+         <width>545</width>
          <height>16777215</height>
         </size>
        </property>
@@ -111,7 +114,7 @@
   <customwidget>
    <class>MainMenu::CScrollTable</class>
    <extends>QWidget</extends>
-   <header>MainMenu/Include/ScrollTable.h</header>
+   <header location="global">MainMenu/Include/ScrollTable.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

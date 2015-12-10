@@ -3225,7 +3225,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="53"/>
         <source>Volume: 3</source>
-        <translation>Volume</translation>
+        <translation>Volume: 3</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="73"/>
@@ -3253,7 +3253,7 @@ Please do not unplug any bottles!</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="109"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="185"/>
         <source>Volume: 7</source>
-        <translation>Volume:</translation>
+        <translation>Volume: 7</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
@@ -3269,22 +3269,22 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
         <source>Sound: %1</source>
-        <translation>Son:</translation>
+        <translation>Son: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>
         <source>Volume: %1</source>
-        <translation>Volume:</translation>
+        <translation>Volume: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="308"/>
         <source>Periodic: Off</source>
-        <translation>Périodique:</translation>
+        <translation>Périodique:Arrêt</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="312"/>
         <source>Periodic time (Min.): %1</source>
-        <translation>Durée période (min.): </translation>
+        <translation>Durée période (min.): %1</translation>
     </message>
 </context>
 <context>

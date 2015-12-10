@@ -3102,7 +3102,7 @@ datum</translation>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="143"/>
         <source> RMS</source>
-        <translation>Reagens Management Systeem</translation>
+        <translation>RMS</translation>
     </message>
 </context>
 <context>
@@ -3267,7 +3267,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
         <source>Sound: %1</source>
-        <translation>Geluid:</translation>
+        <translation>Geluid: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>

@@ -3268,12 +3268,12 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
         <source>Sound: %1</source>
-        <translation>Som:</translation>
+        <translation>Som: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>
         <source>Volume: %1</source>
-        <translation>Volume:</translation>
+        <translation>Volume: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="308"/>
@@ -3283,7 +3283,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="312"/>
         <source>Periodic time (Min.): %1</source>
-        <translation>Tempo periódico (mín.): </translation>
+        <translation>Tempo periódico (mín.): %1</translation>
     </message>
 </context>
 <context>

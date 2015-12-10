@@ -3268,12 +3268,12 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
         <source>Sound: %1</source>
-        <translation>Ses:</translation>
+        <translation>Ses: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>
         <source>Volume: %1</source>
-        <translation>Ses Seviyesi</translation>
+        <translation>Ses Seviyesi: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="308"/>

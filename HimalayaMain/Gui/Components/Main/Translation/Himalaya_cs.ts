@@ -3101,7 +3101,7 @@ výměny</translation>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="143"/>
         <source> RMS</source>
-        <translation>Systém správy činidel (RMS)</translation>
+        <translation>RMS</translation>
     </message>
 </context>
 <context>

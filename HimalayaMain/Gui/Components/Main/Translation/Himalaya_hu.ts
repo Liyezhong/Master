@@ -2959,7 +2959,7 @@ dátuma</translation>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="144"/>
         <source>Days</source>
-        <translation>Napok (Days)</translation>
+        <translation>Napok</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="115"/>
@@ -3103,7 +3103,7 @@ dátuma</translation>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="143"/>
         <source> RMS</source>
-        <translation>Vegyszerkezelő rendszer</translation>
+        <translation>RMS</translation>
     </message>
 </context>
 <context>
@@ -3154,7 +3154,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="211"/>
         <source>Test</source>
-        <translation>Teszt (TEST)</translation>
+        <translation>Teszt</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="218"/>
@@ -3268,7 +3268,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="301"/>
         <source>Sound: %1</source>
-        <translation>Hang:</translation>
+        <translation>Hang: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="304"/>
@@ -3870,7 +3870,7 @@ Please do not unplug any bottles!</source>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
         <source>System is performing a self-test
 Please wait...</source>
-        <translation>A rendszer önellenőrzést hajt végre…
+        <translation>A rendszer önellenőrzést hajt végre
 Várjon...</translation>
     </message>
 </context>

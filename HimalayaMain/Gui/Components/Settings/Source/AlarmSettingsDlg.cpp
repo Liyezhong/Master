@@ -275,7 +275,7 @@ void CAlarmSettingsDlg::RetranslateUI()
    mp_Ui->sound_scrollpanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Sound", 0, QApplication::UnicodeUTF8));
    mp_Ui->scrollPanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Volume", 0, QApplication::UnicodeUTF8));
    QString trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", 0, QApplication::UnicodeUTF8),
-                                                   90);
+                                                   95);
    mp_Ui->periodictime_scrolltable->SetTitle(trimmedString);
 
    trimmedString = Core::CGlobalHelper::TrimText(this->fontMetrics(), QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", 0, QApplication::UnicodeUTF8),

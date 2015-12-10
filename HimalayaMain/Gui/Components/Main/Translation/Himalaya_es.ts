@@ -1573,7 +1573,7 @@ cambio</translation>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="269"/>
         <source>Program End Date/Time cannot be later than the ASAP End Date/Time as the first program step is not a fixation reagent.</source>
-        <translation type="unfinished"></translation>
+        <translation>La fecha/hora de finalización del programa no puede ser posterior a la fecha/hora de finalización inmediata, puesto que el primer paso del programa no es un reactivo de fijación.</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="270"/>
@@ -1754,7 +1754,7 @@ cambio</translation>
     <message utf8="true">
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es imposible iniciar el programa elegido porque la temperatura de su parafina difiere de la temperatura del baño establecida (desviación de 2 °C). El programa se puede iniciar de inmediato si la temperatura de la parafina de este programa está adaptada para que coincida con la temperatura del baño de parafina. ¡Es imposible iniciar el programa hasta dentro de 15 horas si la temperatura del baño de parafina se aumenta para igualarla a la temperatura del programa de parafina! Confirme la modificación de la temperatura de la parafina.</translation>
     </message>
 </context>
 <context>
@@ -3278,7 +3278,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="308"/>
         <source>Periodic: Off</source>
-        <translation>Periódico:</translation>
+        <translation>Periódico: Arrêt</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="312"/>

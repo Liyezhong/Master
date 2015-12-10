@@ -146,10 +146,10 @@ void CProgramWidget::changeEvent(QEvent *p_Event)
 void CProgramWidget::ResizeHorizontalSection()
 {
     mp_TableWidget->horizontalHeader()->resizeSection(0, 70);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 78);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 84);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 210);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 72);
-    mp_TableWidget->horizontalHeader()->resizeSection(4, 60);
+    mp_TableWidget->horizontalHeader()->resizeSection(4, 75);
 }
 
 /****************************************************************************/
