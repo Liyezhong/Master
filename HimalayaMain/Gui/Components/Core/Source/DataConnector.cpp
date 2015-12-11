@@ -1393,12 +1393,11 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
 
     QLocale::Language lastLang = Global::UITranslator::TranslatorInstance().GetDefaultLanguage();
     QString strFontFamily;
-    if ((lastLang != QLocale::Korean) && (QLocale::Korean == Command.GetCurrentLanuage()))
+    if (QLocale::Korean == Command.GetCurrentLanuage())
     {
         strFontFamily = "NanumGothic";
     }
-
-    if ((lastLang == QLocale::Korean) && (QLocale::Korean != Command.GetCurrentLanuage()))
+    else if ((lastLang == QLocale::Korean) && (QLocale::Korean != Command.GetCurrentLanuage()))
     {
         strFontFamily = "FreeSans";
     }
