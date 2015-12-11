@@ -1091,7 +1091,7 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
  *  \iparam Type =
  */
 /****************************************************************************/
-void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool Type)
+void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, Global::AlarmType Type)
 {
     qDebug()<< Volume << Sound << Type;
 

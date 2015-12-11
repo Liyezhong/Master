@@ -102,8 +102,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
 
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),
             mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
-    CONNECTSIGNALSLOT(mp_Ui->pageAlarm, PlayTestTone(quint8 , quint8 , bool ),
-            mp_Data, SendCmdPlayTestToneAlarm(quint8 , quint8 , bool ));
+    CONNECTSIGNALSLOT(mp_Ui->pageAlarm, PlayTestTone(quint8 , quint8 , Global::AlarmType ),
+            mp_Data, SendCmdPlayTestToneAlarm(quint8 , quint8 , Global::AlarmType ));
     CONNECTSIGNALSLOT(mp_Data, UserSettingsUpdated(), this, UserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, ExecSending(const QString, const QStringList &), mp_Data, SendDataImportExport(const QString , const QStringList &));
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, EmitSWUpdate(bool), mp_Data, SendSWUpdate(bool));

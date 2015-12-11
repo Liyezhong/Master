@@ -59,9 +59,9 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Error,AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Information, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Warning, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
-    CONNECTSIGNALSIGNAL(mp_Error, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
-    CONNECTSIGNALSIGNAL(mp_Information, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
-    CONNECTSIGNALSIGNAL(mp_Warning, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
+    CONNECTSIGNALSIGNAL(mp_Error, PlayTestTone(quint8, quint8, Global::AlarmType ), this, PlayTestTone(quint8, quint8, Global::AlarmType ));
+    CONNECTSIGNALSIGNAL(mp_Information, PlayTestTone(quint8, quint8, Global::AlarmType ), this, PlayTestTone(quint8, quint8, Global::AlarmType ));
+    CONNECTSIGNALSIGNAL(mp_Warning, PlayTestTone(quint8, quint8, Global::AlarmType ), this, PlayTestTone(quint8, quint8, Global::AlarmType ));
 }
 
 /****************************************************************************/

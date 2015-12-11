@@ -245,7 +245,7 @@ public slots:
      *  \brief  Definition/Declaration of SendCmdPlayTestToneAlarm
      */
     /****************************************************************************/
-    void SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool Type);
+    void SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, Global::AlarmType Type);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendReagentAdd

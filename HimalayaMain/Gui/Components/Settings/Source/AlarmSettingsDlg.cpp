@@ -37,7 +37,7 @@ namespace Settings {
  */
 /****************************************************************************/
 CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent) :
-    MainMenu::CDialogFrame(p_Parent), m_Type(false), mp_Ui(new Ui::CAlarmSettingsDlg),
+    MainMenu::CDialogFrame(p_Parent), m_Type(Global::ALARM_NONE), mp_Ui(new Ui::CAlarmSettingsDlg),
     m_CurrentUserRole(MainMenu::CMainWindow::Service),
     mp_UserSettings(NULL),
     m_ProcessRunning(false),
@@ -372,14 +372,14 @@ void CAlarmSettingsDlg::OnPlayTone()
 
     if (m_AlarmScreen == Information){
 
-        m_Type=true;
+        m_Type = Global::ALARM_INFO;
     }
     else if (m_AlarmScreen == Error){
 
-        m_Type=true;
+        m_Type = Global::ALARM_ERROR;
     }
     else if(m_AlarmScreen == Warning){
-        m_Type=false;
+        m_Type = Global::ALARM_WARNING;
     }
     emit PlayTestTone(mp_VolumeScrollWheel->GetCurrentData().toInt(),(mp_SoundScrollWheel->GetCurrentData().toInt()), m_Type);
 }

@@ -64,7 +64,7 @@ public:
     ~CAlarmSettingsDlg();
     void UpdateDisplay(void);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
-    bool m_Type;       ///<  Definition/Declaration of variable m_Type
+    Global::AlarmType m_Type;       ///<  Definition/Declaration of variable m_Type
 
     /****************************************************************************/
     /*!
@@ -149,10 +149,10 @@ signals:
      *  \brief  play test tone
      *  \param  volume = volume value
      *  \param  sound = which sound number
-     *  \param isAlarmAudio = it is alarm or note audio file
+     *  \param  alarmType = alarm type
      */
     /****************************************************************************/
-    void PlayTestTone(quint8 volume, quint8 sound, bool isAlarmAudio);
+    void PlayTestTone(quint8 volume, quint8 sound, Global::AlarmType alarmType);
 };
 
 } // end namespace Settings
