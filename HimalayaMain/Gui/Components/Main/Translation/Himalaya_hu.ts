@@ -110,7 +110,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="242"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation>Állomás</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="244"/>
@@ -3364,7 +3364,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="144"/>
         <source>Station</source>
-        <translation>Állomás (Station)</translation>
+        <translation type="unfinished">Állomás</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="147"/>
@@ -3856,7 +3856,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="297"/>
         <source>The paraffin melting temperature has been changed. Please click &quot;Yes&quot; to start remelting paraffin, and it will take %1 hours before using paraffin. If you want to skip the process of remelting paraffin, please visually confirm all paraffin are completely melted, then click &quot;No&quot; to use paraffin immediately.</source>
-        <translation></translation>
+        <translation>A paraffin olvadási hőmérséklete módosult. Kattintson az &quot;Igen&quot; gombra a paraffin ismételt olvasztásának megkezdéséhez. A paraffin használatáig %1 órát kell várni. Ha szeretné kihagyni a paraffin ismételt olvasztási folyamatát, vizuálisan ellenőrizze, hogy az összes paraffin teljesen megolvadt-e, majd kattintson a &quot;Nem&quot; gombra a paraffin azonnali használatához.</translation>
     </message>
 </context>
 <context>

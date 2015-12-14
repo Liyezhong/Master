@@ -907,7 +907,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="56"/>
         <source>RMS</source>
-        <translation>RMS</translation>
+        <translation>시약관리시스템</translation>
     </message>
 </context>
 <context>
@@ -1622,7 +1622,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
-        <translation>프로그램 단계를 위한 안전한 시약 없음 &quot;%1&quot; of &quot;%2&quot;. 계속하겠습니까?</translation>
+        <translation>&quot;%1&quot; 의 &quot;%2&quot; 단계를 위한 안전시약이 없습니다. 계속 진행 하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1315"/>
@@ -2987,7 +2987,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="704"/>
         <source>RMS</source>
-        <translation>RMS</translation>
+        <translation>시약관리시스템</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="707"/>
@@ -3137,7 +3137,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="151"/>
         <source>   Off  </source>
-        <translation></translation>
+        <translation>   꺼짐   </translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="158"/>
