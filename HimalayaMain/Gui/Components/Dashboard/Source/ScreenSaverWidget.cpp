@@ -1,7 +1,7 @@
 #include "Dashboard/Include/ScreenSaverWidget.h"
 #include "ui_ScreenSaverWidget.h"
 #include <QTimer>
-
+#include "MainMenu/Include/MainWindow.h"
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     QWidget(p),
@@ -15,6 +15,7 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     m_timer->setInterval(1800000);//, here should be 30 mintues, 1800000
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_timer->start();
+    ui->lblWarning->setVisible(false);
 }
 
 ScreenSaverWidget::~ScreenSaverWidget()
@@ -40,6 +41,16 @@ bool ScreenSaverWidget::event ( QEvent * event )
 void ScreenSaverWidget::AppIdleForLongTime()
 {
     m_timer->stop();
+
+    if (MainMenu::CMainWindow::GetProcessRunningStatus())
+    {
+        ui->lblWarning->setVisible(true);
+    }
+    else
+    {
+        ui->lblWarning->setVisible(false);
+    }
+
     this->show();
 }
 
