@@ -618,32 +618,30 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
     Core::CGlobalHelper::SetProgramPaused(false);
     if (!IsRetortContaminated)
     {
-        MainMenu::CMessageDlg messageDlg(this);
-        messageDlg.SetIcon(QMessageBox::Information);
-        messageDlg.SetTitle(CommonString::strInforMsg);
+        mp_RemoveSpecimenDlg = new MainMenu::CMessageDlg(this);
+        mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
+        mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
         QString strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        messageDlg.SetText(strTemp);
-        messageDlg.SetButtonText(1, CommonString::strOK);
-        messageDlg.HideButtons();
-        if (messageDlg.exec())
+        mp_RemoveSpecimenDlg->SetText(strTemp + m_strTakeOutSpecimen);
+        mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
+        mp_RemoveSpecimenDlg->HideButtons();
+        mp_RemoveSpecimenDlg->EnableButton(1, false);
+        m_pCheckRetortLidTimer->start();
+        if (mp_RemoveSpecimenDlg->exec())
         {
-            messageDlg.SetIcon(QMessageBox::Information);
-            messageDlg.SetTitle(CommonString::strConfirmMsg);
-            messageDlg.SetText(m_strTakeOutSpecimen);
-            messageDlg.SetButtonText(1, CommonString::strOK);
-            messageDlg.HideButtons();
-            if (messageDlg.exec())
-            {
-                mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
-                ui->programPanelWidget->ChangeStartButtonToStartState();
-                ui->programPanelWidget->EnableStartButton(true);
-                ui->programPanelWidget->EnablePauseButton(false);
-                //switch to the dashboard page
-                mp_MainWindow->SetTabWidgetIndex();
-                emit SwitchToFavoritePanel();
-                OnUnselectProgram();
-            }
+            m_pCheckRetortLidTimer->stop();
+            mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
+            ui->programPanelWidget->ChangeStartButtonToStartState();
+            ui->programPanelWidget->EnableStartButton(true);
+            ui->programPanelWidget->EnablePauseButton(false);
+            //switch to the dashboard page
+            mp_MainWindow->SetTabWidgetIndex();
+            emit SwitchToFavoritePanel();
+            OnUnselectProgram();
         }
+
+        delete mp_RemoveSpecimenDlg;
+        mp_RemoveSpecimenDlg = NULL;
 		m_ProgramStatus = Aborted;
     }
 }
