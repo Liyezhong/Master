@@ -42,6 +42,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
     mp_ProgramWillCompleteMsgDlg(NULL),
+    mp_RemoveSpecimenDlg(NULL),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinHeatingDuration(0),
@@ -71,6 +72,10 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this, mp_MainWindow);
     mp_wdgtDateTime->setModal(true);
     mp_wdgtDateTime->SetUserSettings(m_pUserSetting);
+
+    m_pCheckRetortLidTimer = new QTimer(this);
+    m_pCheckRetortLidTimer->setInterval(1000);
+    CONNECTSIGNALSLOT(m_pCheckRetortLidTimer, timeout(), this, OnTimerCheckRetortLid());
 
     CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), ui->programPanelWidget, OnSelectEndDateTime(const QDateTime &));
@@ -205,6 +210,7 @@ CDashboardWidget::~CDashboardWidget()
 {
     try {
             delete ui;
+			delete m_pCheckRetortLidTimer;
         }
         catch (...) {
             // to please Lint.
@@ -512,10 +518,13 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
      }
      else
      {
-            MainMenu::CMessageDlg messageDlg(this);
-            messageDlg.SetIcon(QMessageBox::Information);
-            messageDlg.SetButtonText(1, CommonString::strOK);
-            messageDlg.HideButtons();
+            mp_RemoveSpecimenDlg = new MainMenu::CMessageDlg(this);
+            mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
+            mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
+            mp_RemoveSpecimenDlg->HideButtons();
+            mp_RemoveSpecimenDlg->EnableButton(1, false);
+            QString strMsgDisplay(m_strTakeOutSpecimen);
+
             if (m_ProgramStatus == Completed ||
             m_ProgramStatus == Aborting || m_ProgramStatus == CompletedAsSafeReagent)
             {
@@ -531,9 +540,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
 
                 if (m_ProgramStatus != CompletedAsSafeReagent)
                 {
-                    messageDlg.SetTitle(CommonString::strInforMsg);
-                    messageDlg.SetText(strTemp);
-                    (void)messageDlg.exec();
+                    strMsgDisplay = strTemp + m_strTakeOutSpecimen;
                     if (m_ProgramStatus == Aborting)
                     {
                         m_ProgramStatus = Aborted;
@@ -543,17 +550,19 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 Core::CGlobalHelper::SetProgramPaused(false);
             }
 
-            messageDlg.SetTitle(CommonString::strConfirmMsg);
-            messageDlg.SetText(m_strTakeOutSpecimen);
-            if (messageDlg.exec())
+            mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
+            mp_RemoveSpecimenDlg->SetText(strMsgDisplay);
+			m_pCheckRetortLidTimer->start();
+            if (mp_RemoveSpecimenDlg->exec())
             {
+				m_pCheckRetortLidTimer->stop();
                 mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
                 //represent the retort as contaminated status
                 ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED, lastReagentGroupID, "");
 
-                messageDlg.SetText(m_strRetortContaminated);
-                messageDlg.EnableButton(1, true);
-                if (messageDlg.exec())
+                mp_RemoveSpecimenDlg->SetText(m_strRetortContaminated);
+                
+                if (mp_RemoveSpecimenDlg->exec())
                 {
                     //only show Cleaning program in the favorite panel
                     emit AddItemsToFavoritePanel(true);
@@ -572,6 +581,8 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
                 mp_MainWindow->SetTabWidgetIndex();
                 emit SwitchToFavoritePanel();
             }
+			delete mp_RemoveSpecimenDlg;
+			mp_RemoveSpecimenDlg = NULL;
      }
 }
 
@@ -655,43 +666,62 @@ void CDashboardWidget::OnCleanPrgmCompleteAsSafeReagent()
     (void)messageDlg.exec();
 }
 
+void CDashboardWidget::OnTimerCheckRetortLid()
+{
+    if (!m_bRetortLocked && mp_RemoveSpecimenDlg)
+    {
+        mp_RemoveSpecimenDlg->EnableButton(1, true);
+    }
+}
+
 void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
 {
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
     m_IsDrainingWhenPrgrmCompleted = false;
-    if ((!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C') || !IsRetortContaminated)
+    QString strTemp;
+    strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+
+    bool bExecSubsequent = false;
+    mp_RemoveSpecimenDlg = new MainMenu::CMessageDlg(this);
+	mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
+	mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
+    mp_RemoveSpecimenDlg->HideButtons();
+    if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     {
-        MainMenu::CMessageDlg messageDlg(this);
-        messageDlg.SetIcon(QMessageBox::Information);
-        messageDlg.SetTitle(CommonString::strInforMsg);
-        QString strTemp;
-        strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        messageDlg.SetText(strTemp);
-        messageDlg.SetButtonText(1, CommonString::strOK);
-        messageDlg.HideButtons();
-        if (messageDlg.exec())
-        {
-            if (!IsRetortContaminated && (m_SelectedProgramId.at(0) != 'C'))
-            {
-                messageDlg.SetTitle(CommonString::strConfirmMsg);
-                messageDlg.SetText(m_strTakeOutSpecimen);
-                (void)messageDlg.exec();
-                mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
-            }
-            ui->programPanelWidget->EnablePauseButton(false);
-            emit AddItemsToFavoritePanel();
-            ui->programPanelWidget->ChangeStartButtonToStartState();
+        mp_RemoveSpecimenDlg->SetTitle(CommonString::strInforMsg);
+        mp_RemoveSpecimenDlg->SetText(strTemp);    
+        mp_RemoveSpecimenDlg->exec();
+        bExecSubsequent = true;
+    }
+    else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
+    {
+        mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
+        mp_RemoveSpecimenDlg->SetText(strTemp + m_strTakeOutSpecimen);
+		mp_RemoveSpecimenDlg->EnableButton(1, false);
+        m_pCheckRetortLidTimer->start();
+        (void)mp_RemoveSpecimenDlg->exec();
+        m_pCheckRetortLidTimer->stop();
+        bExecSubsequent = true;
+        mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
+    }
 
-            ui->programPanelWidget->EnableStartButton(false);
+    delete mp_RemoveSpecimenDlg;
+    mp_RemoveSpecimenDlg = NULL;
 
-            m_StationList.clear();
-            m_SelectedProgramId = "";
-            int asapEndTime = 0;
-            emit ProgramSelected(m_SelectedProgramId, m_StationList);
-            emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
+    if (bExecSubsequent)
+    {
+        ui->programPanelWidget->EnablePauseButton(false);
+        emit AddItemsToFavoritePanel();
+        ui->programPanelWidget->ChangeStartButtonToStartState();
 
-        }
+        ui->programPanelWidget->EnableStartButton(false);
+
+        m_StationList.clear();
+        m_SelectedProgramId = "";
+        int asapEndTime = 0;
+        emit ProgramSelected(m_SelectedProgramId, m_StationList);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_bIsFirstStepFixation, m_StationList, 0);
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
@@ -1325,8 +1355,8 @@ void CDashboardWidget::RetranslateUI()
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK.", 0, QApplication::UnicodeUTF8);
     m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
-    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort!", 0, QApplication::UnicodeUTF8);
-    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
+    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort. And confirm specimen are removed and retort is empty,  then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
+    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
