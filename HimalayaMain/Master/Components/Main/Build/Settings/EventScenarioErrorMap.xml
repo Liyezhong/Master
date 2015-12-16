@@ -182,11 +182,51 @@
     <event eventid="500060100">
         <error errorid="520060002">
             <scenario type="single" id="203"/>
-            <scenario type="range" startid="281" endid="297"/>
+            <scenario type="range" startid="281" endid="282"/>
+            <scenario type="single" id="284"/>
+            <scenario type="range" startid="286" endid="287"/>
+            <scenario type="range" startid="291" endid="292"/>
+            <scenario type="single" id="294"/>
+            <scenario type="range" startid="296" endid="297"/>
         </error>
         <error errorid="520060003">
             <scenario type="single" id="200"/>
-            <scenario type="range" startid="211" endid="277"/>
+            <scenario type="range" startid="211" endid="212"/>
+            <scenario type="single" id="214"/>
+            <scenario type="range" startid="216" endid="217"/>
+            <scenario type="range" startid="221" endid="222"/>
+            <scenario type="single" id="224"/>
+            <scenario type="range" startid="226" endid="227"/>
+            <scenario type="range" startid="231" endid="232"/>
+            <scenario type="single" id="234"/>
+            <scenario type="range" startid="236" endid="237"/>
+            <scenario type="range" startid="241" endid="242"/>
+            <scenario type="single" id="244"/>
+            <scenario type="range" startid="246" endid="247"/>
+            <scenario type="range" startid="251" endid="252"/>
+            <scenario type="single" id="254"/>
+            <scenario type="range" startid="256" endid="257"/>
+            <scenario type="range" startid="271" endid="272"/>
+            <scenario type="single" id="274"/>
+            <scenario type="range" startid="276" endid="277"/>
+        </error>
+        <error errorid="520060004">
+            <scenario type="single" id="213"/>
+            <scenario type="single" id="215"/>
+            <scenario type="single" id="223"/>
+            <scenario type="single" id="225"/>
+            <scenario type="single" id="233"/>
+            <scenario type="single" id="235"/>
+            <scenario type="single" id="243"/>
+            <scenario type="single" id="245"/>
+            <scenario type="single" id="253"/>
+            <scenario type="single" id="255"/>
+            <scenario type="single" id="273"/>
+            <scenario type="single" id="275"/>
+            <scenario type="single" id="283"/>
+            <scenario type="single" id="285"/>
+            <scenario type="single" id="293"/>
+            <scenario type="single" id="295"/>
         </error>
     </event>
     <event eventid="500060200">

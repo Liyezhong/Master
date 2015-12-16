@@ -1071,15 +1071,15 @@ void CSchedulerStateMachine::EnterRcCheckRTLock()
     emit SigEnterRcCheckRTLock();
 }
 
-void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedRunCleaning)
+void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& StationID, bool NeedResume)
 {
     mp_SchedulerThreadController->StopTimer();
-    if(NeedRunCleaning)
+    if(NeedResume)
     {
-        mp_RcReHeating->SetNeedRunCleaning(NeedRunCleaning);
+        mp_RcReHeating->SetNeedResume(true);
     }
     mp_RcReHeating->SetScenario(Scenario);
-    mp_RcReHeating->SetReagentID(ReagentID);
+    mp_RcReHeating->SetStationID(StationID);
     emit SigRcReHeating();
 }
 

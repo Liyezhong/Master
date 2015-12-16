@@ -23,9 +23,7 @@
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Include/SchedulerEventCodes.h"
-#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
-#include "Scheduler/Commands/Include/CmdIDForceDraining.h"
-#include "Scheduler/Commands/Include/CmdALVaccum.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToCurrentTubePosition.h"
 #include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 
@@ -39,8 +37,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
     ,m_StartPressureTime(0)
-    ,m_IsNeedRunCleaning(false)
-    ,m_RsReagentCheckStep(FORCE_DRAIN)
+    ,m_IsNeedResume(false)
     ,m_CountTheEffectiveTemp(0)
     ,m_PressureCalibrationSeq(0)
     ,m_PressureDriftOffset(0.0)
@@ -91,10 +88,10 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
+    if(200 == m_LastScenario|| 260 == m_LastScenario || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1"))
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
-        if(!m_IsNeedRunCleaning)
+        if(!m_IsNeedResume)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
@@ -102,7 +99,7 @@ void CRcReHeating::HandleInint()
     else if(212 <= m_LastScenario && m_LastScenario <= 257)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
-        if(!m_IsNeedRunCleaning)
+        if(!m_IsNeedResume)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
@@ -110,7 +107,7 @@ void CRcReHeating::HandleInint()
     else if(271 <= m_LastScenario && m_LastScenario <= 277)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP);
-        if(!m_IsNeedRunCleaning)
+        if(!m_IsNeedResume)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
@@ -264,6 +261,7 @@ void CRcReHeating::CheckTheTemperature()
             if(m_CountTheEffectiveTemp > 3)
             {
                 m_CountTheEffectiveTemp = 0;
+                mp_SchedulerThreadController->LogDebug("Temperature of RV2 is NOT effective in RCReHeating");
                 mp_StateMachine->OnTasksDone(false);
             }
             return;
@@ -277,6 +275,7 @@ void CRcReHeating::CheckTheTemperature()
         {
             if(QDateTime::currentMSecsSinceEpoch() - m_StartHeatingTime > WAIT_RV_SENSOR2_TEMP * 1000)
             {
+                mp_SchedulerThreadController->LogDebug("Temperature of RV2 is NOT effective in RCReHeating");
                 mp_StateMachine->OnTasksDone(false);
             }
         }
@@ -295,6 +294,7 @@ void CRcReHeating::CheckTheTemperature()
             {
                 if( CurrentTime - m_StartHeatingTime > WAIT_PARAFFIN_TEMP_TIME * 1000)
                 {
+                    mp_SchedulerThreadController->LogDebug("RV2 can't reach target temperature in RCReHeating");
                     mp_StateMachine->OnTasksDone(false);
                 }
             }
@@ -304,242 +304,122 @@ void CRcReHeating::CheckTheTemperature()
 
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    qreal CurrentPressure = 0.0;
-    if(200 == m_LastScenario || 211 == m_LastScenario || 260 == m_LastScenario)
+    //For the scenarios 2*3 and 2*5, we always consider power failure failed.
+    if ((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="5"))
+    {
+        mp_SchedulerThreadController->LogDebug(QString("Position of Rotary Valve is uncertain in the scenario %1").arg(m_LastScenario));
+        mp_StateMachine->OnTasksDone(false);
+        return;
+    }
+
+    //For the scenarios 200, 203, 260, 2*1 and 2*7, we always consider power failure succeeded.
+    if(200 == m_LastScenario || 203 == m_LastScenario || 260 == m_LastScenario
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
+    {
+        if (m_IsNeedResume)
+        {
+            mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+        }
+        else
+        {
+            mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
+        }
+        mp_SchedulerThreadController->LogDebug(QString("RcReheating always succeeds in the scenario %1").arg(m_LastScenario));
+        mp_StateMachine->OnTasksDone(true);
+        return;
+    }
+
+    // For the scenarios 2*4, we need move back to tube position
+    if (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="4")
     {
         if (0 == m_StartReq)
         {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+            RVPosition_t sealPos = mp_SchedulerThreadController->GetRVSealPositionByStationID(m_LastStationID);
+            CmdRVReqMoveToCurrentTubePosition* cmd = new CmdRVReqMoveToCurrentTubePosition(500, mp_SchedulerThreadController);
+            cmd->SetRVPosition(sealPos);
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            m_StartReq++;
+            mp_SchedulerThreadController->LogDebug(QString("Move RV back to tube postion in the scenario %1").arg(m_LastScenario));
+        }
+        else if (1 == m_StartReq)
+        {
+            if("Scheduler::RVReqMoveToCurrentTubePosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    mp_StateMachine->OnTasksDone(false);
+                    m_StartReq = 0;
+                    return;
+                }
+            }
+
+            RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(m_LastStationID);
+            if (tubePos == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV)
+            {
+                mp_SchedulerThreadController->LogDebug(QString("RV has backed to tube position in Power Failure: %1").arg(tubePos));
+                m_CurrentStep = BEGIN_DRAIN;
+                m_StartReq = 0;
+                return;
+            }
+
+        }
+    }
+    else
+    {
+        m_CurrentStep = BEGIN_DRAIN;
+        return;
+    }
+}
+
+void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+{
+    Q_UNUSED(retCode)
+
+    if (0 == m_StartReq)
+    {
+        CmdALPressure* cmd  = new CmdALPressure(500, mp_SchedulerThreadController);
+        cmd->SetTargetPressure(40.0);
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+        m_StartReq ++;
+        m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
+        mp_SchedulerThreadController->OnBeginDrain();
+        mp_SchedulerThreadController->LogDebug("Begin to forced draining in RcReHeating");
+    }
+    else if (1 == m_StartReq)
+    {
+        if ("Scheduler::ALPressure" == cmdName)
+        {
             m_StartReq++;
         }
-        else if(mp_SchedulerThreadController->IsRVRightPosition(INITIALIZE_POS))
+    }
+    else if (2 == m_StartReq)
+    {
+        if (QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60*1000)
         {
-            if(m_IsNeedRunCleaning)
+            mp_SchedulerThreadController->LogDebug("Complete forced draining and release pressure in RcReHeating");
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            m_StartReq++;
+            mp_SchedulerThreadController->OnStopDrain();
+        }
+    }
+    else if (3 == m_StartReq)
+    {
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (m_IsNeedResume)
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+            }
+            else
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
             }
             mp_StateMachine->OnTasksDone(true);
             m_StartReq = 0;
         }
-        else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
-        {
-            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-            {
-                mp_StateMachine->OnTasksDone(false);
-                m_StartReq = 0;
-            }
-        }
     }
-    else
-    {
-        switch(m_RsReagentCheckStep)
-        {
-        case FORCE_DRAIN:
-            if(0 == m_StartReq)
-            {
-                mp_SchedulerThreadController->LogDebug("reagent check build pressure.");
-                CmdALPressure* CmdPressure = new CmdALPressure(500, mp_SchedulerThreadController);
-                CmdPressure->SetTargetPressure(40.0);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(CmdPressure);
-                m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
-                m_StartReq++;
-            }
-            else if(1 == m_StartReq)
-            {
-                if("Scheduler::ALPressure" == cmdName)
-                {
-                    m_StartReq++;
-                }
-            }
-            else if(2 == m_StartReq)
-            {
-                if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 60 * 1000)
-                {
-                    mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                    m_StartReq++;
-                }
-            }
-            else if(3 == m_StartReq)
-            {
-                if("Scheduler::ALReleasePressure" == cmdName)
-                {
-                    m_RsReagentCheckStep = BUILD_VACUUM;
-                    m_StartReq = 0;
-                }
-            }
-            break;
-        case BUILD_VACUUM:
-            if(0 == m_StartReq)
-            {
-                mp_SchedulerThreadController->LogDebug("Send cmd to DCL to build vacuum in PowerFailure");
-                CmdALVaccum* cmd = new CmdALVaccum(500, mp_SchedulerThreadController);
-                cmd->SetTargetPressure(-0.5);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                m_StartReq++;
-            }
-            else if("Scheduler::ALVaccum" == cmdName)
-            {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_StartReq++;
-                    m_StartPressureTime = QDateTime::currentMSecsSinceEpoch();
-                }
-                else
-                {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    m_StartReq = 0;
-                    mp_StateMachine->OnTasksDone(false);
-                }
-            }
-            else if(2 == m_StartReq)
-            {
-                CurrentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL;
-                if( -5 < CurrentPressure && CurrentPressure <= -0.5)
-                {
-                    mp_SchedulerThreadController->LogDebug(QString("Build vaccum success, the pressure:%1").arg(CurrentPressure));
-                    m_RsReagentCheckStep = MOVE_INITIALIZE_POSITION;
-                    m_StartReq = 0;
-                }
-                else
-                {
-                    if(QDateTime::currentMSecsSinceEpoch() - m_StartPressureTime > 5 * 1000)
-                    {
-                        m_StartReq = 0;
-                        m_RsReagentCheckStep = FORCE_DRAIN;
-                        mp_StateMachine->OnTasksDone(false);
-                    }
-                }
-            }
-            break;
-        case MOVE_INITIALIZE_POSITION:
-            if(0 == m_StartReq)
-            {
-                CmdRVReqMoveToInitialPosition *cmd = new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController);
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-                m_StartReq++;
-            }
-            else if(mp_SchedulerThreadController->IsRVRightPosition(INITIALIZE_POS))
-            {
-                m_RsReagentCheckStep = MOVE_TUBEPOSITION;
-                m_StartReq = 0;
-            }
-            else if("Scheduler::RVReqMoveToInitialPosition" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    mp_StateMachine->OnTasksDone(false);
-                    m_StartReq = 0;
-                }
-            }
-            break;
-        case MOVE_TUBEPOSITION:
-            if(0 == m_StartReq)
-            {
-                if( !mp_SchedulerThreadController->MoveRV(TUBE_POS) )
-                {
-                    m_RsReagentCheckStep = FORCE_DRAIN;
-                    mp_StateMachine->OnTasksDone(false);
-                    m_StartReq = 0;
-                }
-                else
-                {
-                    m_StartReq++;
-                }
-            }
-            else if(mp_SchedulerThreadController->IsRVRightPosition(TUBE_POS))
-            {
-                m_StartReq = 0;
-                m_RsReagentCheckStep = REALSE_PRESSURE;
-            }
-            else
-            {
-                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-                {
-                    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                    {
-                        m_RsReagentCheckStep = FORCE_DRAIN;
-                        mp_StateMachine->OnTasksDone(false);
-                    }
-                }
-            }
-            break;
-        case REALSE_PRESSURE:
-            if(0 == m_StartReq)
-            {
-                mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
-                m_StartReq++;
-            }
-            else if("Scheduler::ALReleasePressure" == cmdName)
-            {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_CurrentStep = BEGIN_DRAIN;
-                }
-                else
-                {
-                    mp_StateMachine->OnTasksDone(false);
-                }
-                m_StartReq = 0;
-                m_RsReagentCheckStep = FORCE_DRAIN;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
-{
-    if (0 == m_StartReq)
-    {
-        CmdIDForceDraining* cmd  = new CmdIDForceDraining(500, mp_SchedulerThreadController);
-
-        QString stationID = mp_SchedulerThreadController->GetCurrentStationID();
-        RVPosition_t tubePos = mp_SchedulerThreadController->GetRVTubePositionByStationID(stationID);
-        cmd->SetRVPosition((quint32)(tubePos));
-        cmd->SetDrainPressure(40.0);
-        cmd->SetReagentGrpID(GetReagentID());
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-        m_StartReq ++;
-        mp_SchedulerThreadController->OnBeginDrain();
-    }
-    else if ("Scheduler::IDForceDraining" == cmdName)
-    {
-        mp_SchedulerThreadController->OnStopDrain();
-        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-        {
-            if(m_IsNeedRunCleaning)
-            {
-                mp_SchedulerThreadController->SetCurrentStepState(PSSM_POWERFAILURE_FINISH);
-            }
-            mp_StateMachine->OnTasksDone(true);
-        }
-        else
-        {
-            mp_StateMachine->OnTasksDone(false);
-        }
-        m_StartReq = 0;
-    }
-}
-
-QString CRcReHeating::GetReagentID()
-{
-    QString ReagentID;
-    if(281 <= m_LastScenario && m_LastScenario <= 287)
-    {
-        ReagentID = "RG7";
-    }
-    else if(291 <= m_LastScenario && m_LastScenario <= 297)
-    {
-        ReagentID = "RG8";
-    }
-    else
-    {
-        ReagentID = m_LastReagentID;
-    }
-    return ReagentID;
 }
 
 }

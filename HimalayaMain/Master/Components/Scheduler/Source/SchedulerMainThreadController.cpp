@@ -1735,11 +1735,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), false);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true);
         }
-        else if (CTRL_CMD_RC_REHEATING_CLEANING == ctrlCmd)
+        else if (CTRL_CMD_RC_REHEATING_NONRESUME == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetLastReagentGroup(), true);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {
@@ -2064,10 +2064,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_REHEATING;
         }
-        if (cmd == "rc_reheating_cleaning")
+        if (cmd == "rc_reheating_nonresume")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
-            return CTRL_CMD_RC_REHEATING_CLEANING;
+            return CTRL_CMD_RC_REHEATING_NONRESUME;
         }
         if (cmd == "rs_reagentcheck")
         {
@@ -3270,6 +3270,11 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     }
     if(m_ProgramStatusInfor.GetScenario() != scenario && scenario > 2 && scenario != 206)
     {
+        //During pressure test stage in the scenarios 2*5, we also think current scenario is 2*4
+        if (QString::number(scenario).left(1) == "2" && QString::number(scenario).right(1) =="5" && m_SchedulerMachine->GetPssmMVTubeSeq() <3)
+        {
+            return scenario;
+        }
         m_ProgramStatusInfor.SetScenario(scenario);
     }
     return scenario;
