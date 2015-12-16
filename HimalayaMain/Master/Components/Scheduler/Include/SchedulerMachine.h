@@ -720,11 +720,12 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnterRcReHeating
      *  \param  Scenario = qint32
-     *  \param  ReagentID = QString
+     *  \param  StationID = QString
      *  \param  NeedResume = bool
+     *  \param  Is5MinTimeOut = bool
      */
     /****************************************************************************/
-    void EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedResume);
+    void EnterRcReHeating(quint32 Scenario, const QString& StationID, bool NeedResume, bool Is5MinTimeOut);
 
     /****************************************************************************/
     /*!

@@ -38,6 +38,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_StartHeatingTime(0)
     ,m_StartPressureTime(0)
     ,m_IsNeedResume(false)
+    ,m_Is5MinTimeOut(false)
     ,m_CountTheEffectiveTemp(0)
     ,m_PressureCalibrationSeq(0)
     ,m_PressureDriftOffset(0.0)
@@ -91,7 +92,7 @@ void CRcReHeating::HandleInint()
     if(200 == m_LastScenario|| 260 == m_LastScenario || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1"))
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
-        if(!m_IsNeedResume)
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
@@ -99,7 +100,7 @@ void CRcReHeating::HandleInint()
     else if(212 <= m_LastScenario && m_LastScenario <= 257)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
-        if(!m_IsNeedResume)
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
@@ -107,7 +108,7 @@ void CRcReHeating::HandleInint()
     else if(271 <= m_LastScenario && m_LastScenario <= 277)
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP);
-        if(!m_IsNeedResume)
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }

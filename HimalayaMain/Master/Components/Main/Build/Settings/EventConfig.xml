@@ -8,7 +8,7 @@
 		</Event>
 		<Event Code="" ErrorID="520060003" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176214" ButtonType="OK" NextStepOnTimeOut="1" TimeOut="5m" NextStepOnClickOK="2" StatusBar="YES"/>
-			<Step ID="1" Type="ACT" Action="RC_ReHeating_NonResume" NextStepOnFail="5" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_ReHeating_5mintimeout" NextStepOnFail="5" NextStepOnSuccess="3"/>
 			<Step ID="2" Type="ACT" Action="RC_ReHeating_NonResume" NextStepOnFail="5" NextStepOnSuccess="4"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>

@@ -1735,11 +1735,15 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true, false);
+        }
+        else if (CTRL_CMD_RC_REHEATING_5MINTIMEOUT == ctrlCmd)
+        {
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false, true);
         }
         else if (CTRL_CMD_RC_REHEATING_NONRESUME == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false, false);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {
@@ -2063,6 +2067,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_REHEATING;
+        }
+        if (cmd == "rc_reheating_5mintimeout")
+        {
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_RC_REHEATING_5MINTIMEOUT;
         }
         if (cmd == "rc_reheating_nonresume")
         {
