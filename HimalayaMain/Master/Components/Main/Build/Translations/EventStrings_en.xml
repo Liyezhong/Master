@@ -647,6 +647,8 @@
         <string id="67175172" text1="Reheating for 203, 281-297 step." text2=""/>
         <string id="67175184" text1="Scheduler enters the idle state." text2=""/>
         <string id="67175185" text1="Scheduler enters the error state." text2=""/>
+        <string id="67175187" text1="Lock the retort lid then press Ok button." text2=""/>
+        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
         <string id="67175201" text1="Set the rotary valve position to %1." text2=""/>
         <string id="67175206" text1="Release pressure." text2=""/>
         <string id="67175211" text1="Moving the rotary valve to the tube position of station %1." text2=""/>

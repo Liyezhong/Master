@@ -741,16 +741,40 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                 if(mp_HeatingStrategy->CheckRV2TemperatureSenseorsStatus())
                 {
                     m_IdleState = IDLE_DRAIN_10S;
+                    m_WasPressureIdle = false;
+                    m_SentInfoForLockLidIdle = false;
                 }
                 break;
             case IDLE_DRAIN_10S:
+                if(m_RetortLockStatus == 1)
+                {
+                    if(CTRL_CMD_USER_PRESS_OK_BUTTON_LOCK_RTLID_IDLE == ctrlCmd || !m_SentInfoForLockLidIdle)  //raise again
+                    {
+                        RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID);
+                        m_SentInfoForLockLidIdle = true;
+                    }
+                    if(m_WasPressureIdle)
+                    {
+                        ReleasePressure();
+                    }
+                    m_RVPositioinChSeqForIdle = 0;
+                    return;
+                }
                 if(0 == m_RVPositioinChSeqForIdle)
                 {
+                    if(m_SentInfoForLockLidIdle)
+                    {
+                        RaiseEvent(EVENT_SCHEDULER_LOCK_RETORT_LID, QStringList(), false); // remove the message box
+                    }
+                    m_SentInfoForLockLidIdle = false;
+                    RaiseEvent(EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID);
+
                     CmdALPressure* CmdPressure = new CmdALPressure(500, this);
                     CmdPressure->SetTargetPressure(30.0);
                     m_SchedulerCommandProcessor->pushCmd(CmdPressure);
                     m_PressureStartTime = QDateTime::currentMSecsSinceEpoch();
                     m_RVPositioinChSeqForIdle++;
+                    m_WasPressureIdle = true;
                     LogDebug("Drain for 10 seconds.");
                 }
                 else if(1 == m_RVPositioinChSeqForIdle)
@@ -765,6 +789,8 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                 {
                     m_RVPositioinChSeqForIdle = 0;
                     m_IdleState = IDLE_MOVE_RV_INITIALIZE;
+                    m_WasPressureIdle = false;
+                    RaiseEvent(EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID,QStringList(), false); // remove the msg
                 }
                 break;
             case IDLE_MOVE_RV_INITIALIZE:
@@ -2021,6 +2047,12 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             //warning action not need eventkey
             //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_USER_RESPONSE_PAUSE_ALARM;
+        }
+        if (cmd == "user_confirm_lock_rtlid_idle")
+        {
+            //warning action not need eventkey
+            m_EventKey = pCmdSystemAction->GetEventKey();
+            return CTRL_CMD_USER_PRESS_OK_BUTTON_LOCK_RTLID_IDLE;
         }
         if (cmd == "rc_check_rtlock")
         {
