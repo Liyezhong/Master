@@ -148,7 +148,7 @@ const quint32 EVENT_SCHEDULER_HEATING_LATBUE2_OFF = SCHEDULER_BASE_ID + 0x258; /
 // running program
 // 1. Power failudre
 const quint32 EVENT_SCHEDULER_POWER_FAILURE = SCHEDULER_BASE_ID + 0x0300; ///< Detect an unfinished program %1 at step %2.
-const quint32 EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP = SCHEDULER_BASE_ID + 0x0301; ///< Reheating for 200, 211 and 260 step.
+const quint32 EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP = SCHEDULER_BASE_ID + 0x0301; ///< Reheating for 200, 2*1 and 260 step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP = SCHEDULER_BASE_ID + 0x0302; ///< Reheating for reagents step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP = SCHEDULER_BASE_ID + 0x0303; ///< Reheating for paraffin step.
 const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING = SCHEDULER_BASE_ID + 0x0304; ///< Reheating for 203, 281~297 step.
@@ -157,6 +157,8 @@ const quint32 EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING = SCHEDULER_BASE_ID + 
 const quint32 EVENT_SCHEDULER_IN_IDLE_STATE = SCHEDULER_BASE_ID + 0x0310; ///< Scheduler enters the idle state.
 const quint32 EVENT_SCHEDULER_IN_ERROR_STATE = SCHEDULER_BASE_ID + 0x0311; ///< Scheduler enters the Error state.
 const quint32 EVENT_SCHEDULER_READ_PROGRAM_STATUS_FILE_FAIL = SCHEDULER_BASE_ID + 0x0312; ///< Not found unfinished program, please confirm.
+const quint32 EVENT_SCHEDULER_LOCK_RETORT_LID = SCHEDULER_BASE_ID + 0x0313; ///< Lock the retort lid then press Ok button.
+const quint32 EVENT_SCHEDULER_DRAIN_10S_NOT_OPEN_RETORT_LID = SCHEDULER_BASE_ID + 0x0314; ///< Draining for 10 seconds. Do not open the retort lid.
 // 3. runing program
 const quint32 EVENT_SCHEDULER_START_PROGRAM = SCHEDULER_BASE_ID + 0x0320; ///< start the program %1
 const quint32 EVENT_SCHEDULER_SET_RV_POSITION = SCHEDULER_BASE_ID + 0x0321; ///< Set the rotary valve position to %1.

@@ -41,6 +41,32 @@
     <pixmap resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">:/HimalayaImages/Icons/Dashboard/ScreenSaver/ScreenSaver.png</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="lblWarning">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>491</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>In processing…</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc"/>

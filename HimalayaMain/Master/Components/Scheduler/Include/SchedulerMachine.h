@@ -721,10 +721,10 @@ public:
      *  \brief  Definition/Declaration of function EnterRcReHeating
      *  \param  Scenario = qint32
      *  \param  ReagentID = QString
-     *  \param  NeedRunCleaning = bool
+     *  \param  NeedResume = bool
      */
     /****************************************************************************/
-    void EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedRunCleaning = false);
+    void EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedResume);
 
     /****************************************************************************/
     /*!
@@ -1037,6 +1037,14 @@ public:
      */
     /****************************************************************************/
     bool NonRVErrorOccuredInBottleCheck() {return m_NonRVErrorOccured; }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetPssmMVTubeSeq
+     *  \return  quint8 - current sequnece of tube moving
+     */
+    /****************************************************************************/
+    quint8 GetPssmMVTubeSeq() const { return m_PssmMVTubeSeq; }
 
 public slots:
     /****************************************************************************/

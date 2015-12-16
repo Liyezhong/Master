@@ -82,44 +82,20 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  function of StartHeatingWithScenario
-     *  \return qint32
+     *  \brief  function of SetStationID
+     *  \param  StationID - QString
      */
     /****************************************************************************/
-    inline quint32 GetScenario(){return m_LastScenario;}
+    inline void SetStationID(const QString& StationID) { m_LastStationID = StationID;}
 
     /****************************************************************************/
     /*!
-     *  \brief  function of SetReagentID
-     *  \param  ReagentID - QString
-     */
-    /****************************************************************************/
-    inline void SetReagentID(const QString& ReagentID) { m_LastReagentID = ReagentID;}
-
-    /****************************************************************************/
-    /*!
-     *  \brief  function of GetReagentID
-     *  \return QString
-     */
-    /****************************************************************************/
-    QString GetReagentID();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  function of SetNeedRunCleaning
+     *  \brief  function of SetNeedContinueRunning
      *  \param  value = bool
      *  \return void
      */
     /****************************************************************************/
-    inline void SetNeedRunCleaning(bool value)  {m_IsNeedRunCleaning = value;}
-
-    /****************************************************************************/
-    /*!
-     *  \brief  function of GetNeedRunCleaning
-     *  \return bool
-     */
-    /****************************************************************************/
-    inline bool GetNeedRunCleaning()    {return m_IsNeedRunCleaning;}
+    inline void SetNeedResume(bool value)  {m_IsNeedResume = value;}
 
 private:
     /****************************************************************************/
@@ -201,20 +177,6 @@ private:
         BEGIN_DRAIN
     }StateList_t;
 
-    /****************************************************************************/
-    /*!
-     * \brief The enum of step of reagent check
-     */
-    /****************************************************************************/
-    typedef enum
-    {
-        FORCE_DRAIN,
-        BUILD_VACUUM,
-        MOVE_INITIALIZE_POSITION,
-        MOVE_TUBEPOSITION,
-        REALSE_PRESSURE
-    }RS_REAGENTCHECK_t;
-
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;       //!< Pointer to Scheduler Thread Controller
     CSchedulerStateMachine*         mp_StateMachine;                    //!< pointer to scheduler state machine
@@ -223,9 +185,8 @@ private:
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
     qint64                          m_StartPressureTime;                //!< the start pressure time
-    bool                            m_IsNeedRunCleaning;                //!< is need enter cleaning program
-    RS_REAGENTCHECK_t               m_RsReagentCheckStep;               //!< the Rs_ReagentCheck state step
-    QString                         m_LastReagentID;                    //!< last reagent ID
+    bool                            m_IsNeedResume;                     //!< flag to indicat if protocol need resume or not
+    QString                         m_LastStationID;                    //!< last Station ID
     quint8                          m_CountTheEffectiveTemp;            //!< cout the effecitive temperature
     quint32                         m_PressureCalibrationSeq;           //!< Sequence of Pressure Calibration
     qreal                           m_PressureDriftOffset;              //!< Pressure calibration offset

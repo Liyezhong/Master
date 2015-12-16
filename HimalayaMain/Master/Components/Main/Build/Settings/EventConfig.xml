@@ -8,11 +8,15 @@
 		</Event>
 		<Event Code="" ErrorID="520060003" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176214" ButtonType="OK" NextStepOnTimeOut="1" TimeOut="5m" NextStepOnClickOK="2" StatusBar="YES"/>
-			<Step ID="1" Type="ACT" Action="RC_ReHeating" NextStepOnFail="5" NextStepOnSuccess="3"/>
-			<Step ID="2" Type="ACT" Action="RC_ReHeating_Cleaning" NextStepOnFail="5" NextStepOnSuccess="4"/>
+			<Step ID="1" Type="ACT" Action="RC_ReHeating_NonResume" NextStepOnFail="5" NextStepOnSuccess="3"/>
+			<Step ID="2" Type="ACT" Action="RC_ReHeating_NonResume" NextStepOnFail="5" NextStepOnSuccess="4"/>
 			<Step ID="3" Type="ACT" Action="RS_Tissue_Protect"/>
 			<Step ID="4" Type="ACT" Action="RC_Restart"/>
 			<Step ID="5" Type="MSG" StringID="67176216" ButtonType="OK" StatusBar="YES"/>
+		</Event>
+		<Event Code="" ErrorID="520060004" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RC_ReHeating_NonResume" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="67176215" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520060201" ErrorType="ERROR" AlarmType="AL_REMOTE" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176224" ButtonType="OK" StatusBar="YES"/>
@@ -639,6 +643,14 @@
 		<Event Code="" ErrorID="512050401" ErrorType="WARNING" AlarmType="AL_LOCAL" LogLevel="High" UserLog="TRUE"  ServiceString="67176013" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176211" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>
 		    <Step ID="1" Type="ACT" Action="Rs_CheckRemoteAlarmStatus"/>
+		</Event>
+		<Event Code="" ErrorID="67175187" ErrorType="WARNING" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67175187" ButtonType="OK" NextStepOnClickOK="1"/>
+		    <Step ID="1" Type="ACT" Action="user_confirm_lock_rtlid_idle"/>
+		</Event>
+		<Event Code="" ErrorID="67175188" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="MSG" StringID="67175188" ButtonType="WITHOUT_BUTTONS"/>
+			<Step ID="1" Type="ACT" Action="null"/>
 		</Event>
 		<Event Code="" ErrorID="512050411" ErrorType="WARNING" AlarmType="AL_DEVICE" LogLevel="High" UserLog="TRUE"  ServiceString="67176014" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176207" ButtonType="OK" NextStepOnClickOK="1" StatusBar="YES"/>

@@ -51,6 +51,7 @@
 #include "Scheduler/Commands/Include/CmdRVGetTemperatureControlState.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToCurrentTubePosition.h"
 #include "Scheduler/Commands/Include/CmdRVReqActRVPosition.h"
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlON.h"
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
@@ -494,6 +495,11 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
         {
             scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition() ) );
             mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to pos:%1").arg(qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition()));
+        }
+        else if  ("Scheduler::RVReqMoveToCurrentTubePosition" == cmdName)
+        {
+            scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToCurrentTubePosition( qSharedPointerDynamicCast<CmdRVReqMoveToCurrentTubePosition>(scmd)->GetRVPosition() ) );
+            mp_SchedulerThreadController->LogDebug(QString("==CMD==:Move RV to current tube pos:%1").arg(qSharedPointerDynamicCast<CmdRVReqMoveToCurrentTubePosition>(scmd)->GetRVPosition()));
         }
         else if  ("Scheduler::RVReqActRVPosition" == cmdName)
         {

@@ -384,6 +384,8 @@ typedef enum
         QVector< QPair<QString, QString> >  m_DashboardStationList;     ///< The whole station List of dash board
         IdleStepState_t m_IdleState;                          ///< prepare for idle step state
         qint8   m_RVPositioinChSeqForIdle;                    ///< RVPositioin sequence for idle
+        bool    m_WasPressureIdle;                            ///< has been pressured for 10 s
+        bool    m_SentInfoForLockLidIdle;                     ///< has sent the information for locking retort lid
         qint64  m_PressureStartTime;                          ///< pressure start time for idle
         bool    m_IsTakeSpecimen;                             ///< wether take of specimen
         qint8   m_CountTheLogSenserData;                      ///< control the sensor data log
@@ -1049,7 +1051,7 @@ protected:
          *  \iparam    Parameters paramter list
          */
          /****************************************************************************/
-        inline void RaiseEvent(const quint32 Event, const QStringList& Parameters = QStringList())
+        inline void RaiseEvent(const quint32 Event, const QStringList& Parameters = QStringList(), bool Active = true)
         {
 
             Global::tTranslatableStringList ParList;
@@ -1057,7 +1059,7 @@ protected:
             {
                 ParList << *ite;
             }
-            Global::EventObject::Instance().RaiseEvent(Event,ParList);
+            Global::EventObject::Instance().RaiseEvent(Event,ParList,Active);
         }
 
         /****************************************************************************/
