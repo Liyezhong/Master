@@ -1112,6 +1112,10 @@ void CDataConnector::RetranslateUI()
    m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication error. Please try again or contact your local service.", 0, QApplication::UnicodeUTF8);
    m_strCommunicationErrorTitle = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
    m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes can not be saved.", 0, QApplication::UnicodeUTF8);
+   if (mp_MessageDlg)
+   {
+        mp_MessageDlg->SetText(m_strChangeNotSave);
+   }
    m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
    m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8);
    m_strDisconnect = QApplication::translate("Core::CDataConnector", "Disconnect", 0, QApplication::UnicodeUTF8);
