@@ -1071,13 +1071,9 @@ void CSchedulerStateMachine::EnterRcCheckRTLock()
     emit SigEnterRcCheckRTLock();
 }
 
-void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& StationID, bool NeedResume, bool Is5MinTimeOut)
+void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& StationID, bool Is5MinTimeOut)
 {
     mp_SchedulerThreadController->StopTimer();
-    if (NeedResume)
-    {
-        mp_RcReHeating->SetNeedResume(true);
-    }
     if (Is5MinTimeOut)
     {
         mp_RcReHeating->Set5MinTimeOut(true);

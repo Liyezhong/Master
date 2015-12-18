@@ -40,7 +40,7 @@ namespace Scheduler{
 CProgramPreTest::CProgramPreTest(SchedulerMainThreadController* SchedController)
     :mp_SchedulerThreadController(SchedController)
 {
-    m_CurrentState = PRETEST_UNDEF;
+    m_CurrentState = PRETEST_INIT;
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;
@@ -413,6 +413,7 @@ void CProgramPreTest::ResetVarList(bool resume)
     {
         m_CurrentState = PRETEST_INIT;
     }
+
     m_RTTempStartTime = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;

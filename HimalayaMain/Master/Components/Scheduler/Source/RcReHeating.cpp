@@ -37,7 +37,6 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
     ,m_StartPressureTime(0)
-    ,m_IsNeedResume(false)
     ,m_Is5MinTimeOut(false)
     ,m_CountTheEffectiveTemp(0)
     ,m_PressureCalibrationSeq(0)
@@ -319,7 +318,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
     {
-        if (m_IsNeedResume)
+        if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
         {
             mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
         }
@@ -409,7 +408,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
     {
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
-            if (m_IsNeedResume)
+            if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
             }

@@ -725,7 +725,7 @@ public:
      *  \param  Is5MinTimeOut = bool
      */
     /****************************************************************************/
-    void EnterRcReHeating(quint32 Scenario, const QString& StationID, bool NeedResume, bool Is5MinTimeOut);
+    void EnterRcReHeating(quint32 Scenario, const QString& StationID, bool Is5MinTimeOut);
 
     /****************************************************************************/
     /*!

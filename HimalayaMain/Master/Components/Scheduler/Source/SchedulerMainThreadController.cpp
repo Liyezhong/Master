@@ -630,9 +630,22 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         if(curProgramID.at(0) == 'C')
         {
             m_IsCleaningProgram = true;
+            //In scenario 200 of Cleaning program, we treat it to scenario 281
+            if (200 == scenario)
+            {
+                m_CurrentScenario = 281;
+                scenario = 281;
+            }
+            else
+            {
+                m_CurrentScenario = scenario;
+            }
+        }
+        else
+        {
+            m_CurrentScenario = scenario;
         }
         m_CurProgramID = curProgramID;
-        m_CurrentScenario = scenario;
         m_FirstProgramStepIndex = 0;
 
         (void)this->PrepareProgramStationList(curProgramID, 0);
@@ -656,7 +669,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     }
     else if(POWERFAILURE_RUN == m_PowerFailureStep)
     {
-      SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
+        SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
     }
 }
 
@@ -1536,7 +1549,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<program->GetName());
             }
         }
-        m_SchedulerMachine->SendRunComplete();
+
 
         //send command to main controller to tell the left time
         QTime leftTime(0,0,0);
@@ -1568,6 +1581,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_IsCleaningProgram = false;
             m_ProgramStatusInfor.SetProgramFinished();
         }
+
+        m_SchedulerMachine->SendRunComplete();
     }
     else if(PSSM_PAUSE == stepState)
     {
@@ -1735,15 +1750,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true, false);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false);
         }
         else if (CTRL_CMD_RC_REHEATING_5MINTIMEOUT == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false, true);
-        }
-        else if (CTRL_CMD_RC_REHEATING_NONRESUME == ctrlCmd)
-        {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false, false);
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {
@@ -2072,11 +2083,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_REHEATING_5MINTIMEOUT;
-        }
-        if (cmd == "rc_reheating_nonresume")
-        {
-            m_EventKey = pCmdSystemAction->GetEventKey();
-            return CTRL_CMD_RC_REHEATING_NONRESUME;
         }
         if (cmd == "rs_reagentcheck")
         {
