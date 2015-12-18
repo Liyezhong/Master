@@ -163,6 +163,8 @@ private:
     MainMenu::CMessageDlg* mp_RetortLidOpenMsgDlg;              //!< retort lid open message dialog
     MainMenu::CMessageDlg* mp_PausingMsgDlg;                    //!< message dialog "It is pausing..."
     MainMenu::CMessageDlg* mp_RemoveSpecimenDlg;
+    MainMenu::CMessageDlg* mp_RemoveSpecimenWhenCompletedDlg;
+    MainMenu::CMessageDlg* mp_RemoveSpecimenWhenAbortedDlg;
 
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;

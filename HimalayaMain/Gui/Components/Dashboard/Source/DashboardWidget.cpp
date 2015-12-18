@@ -43,6 +43,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_ParaffinStepIndex(-1),
     mp_ProgramWillCompleteMsgDlg(NULL),
     mp_RemoveSpecimenDlg(NULL),
+    mp_RemoveSpecimenWhenCompletedDlg(NULL),
+    mp_RemoveSpecimenWhenAbortedDlg(NULL),
     m_TimeProposedForProgram(0),
     m_CostedTimeBeforeParaffin(0),
     m_ParaffinHeatingDuration(0),
@@ -618,16 +620,16 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
     Core::CGlobalHelper::SetProgramPaused(false);
     if (!IsRetortContaminated)
     {
-        mp_RemoveSpecimenDlg = new MainMenu::CMessageDlg(this);
-        mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
-        mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
+        mp_RemoveSpecimenWhenAbortedDlg = new MainMenu::CMessageDlg(this);
+        mp_RemoveSpecimenWhenAbortedDlg->SetIcon(QMessageBox::Information);
+        mp_RemoveSpecimenWhenAbortedDlg->SetTitle(CommonString::strConfirmMsg);
         QString strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        mp_RemoveSpecimenDlg->SetText(strTemp + m_strTakeOutSpecimen);
-        mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
-        mp_RemoveSpecimenDlg->HideButtons();
-        mp_RemoveSpecimenDlg->EnableButton(1, false);
+        mp_RemoveSpecimenWhenAbortedDlg->SetText(strTemp + m_strTakeOutSpecimen);
+        mp_RemoveSpecimenWhenAbortedDlg->SetButtonText(1, CommonString::strOK);
+        mp_RemoveSpecimenWhenAbortedDlg->HideButtons();
+        mp_RemoveSpecimenWhenAbortedDlg->EnableButton(1, false);
         m_pCheckRetortLidTimer->start();
-        if (mp_RemoveSpecimenDlg->exec())
+        if (mp_RemoveSpecimenWhenAbortedDlg->exec())
         {
             m_pCheckRetortLidTimer->stop();
             mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
@@ -640,8 +642,8 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
             OnUnselectProgram();
         }
 
-        delete mp_RemoveSpecimenDlg;
-        mp_RemoveSpecimenDlg = NULL;
+        delete mp_RemoveSpecimenWhenAbortedDlg;
+        mp_RemoveSpecimenWhenAbortedDlg = NULL;
 		m_ProgramStatus = Aborted;
     }
 }
@@ -670,6 +672,16 @@ void CDashboardWidget::OnTimerCheckRetortLid()
     {
         mp_RemoveSpecimenDlg->EnableButton(1, true);
     }
+
+    if (!m_bRetortLocked && mp_RemoveSpecimenWhenAbortedDlg)
+    {
+        mp_RemoveSpecimenDlg->EnableButton(1, true);
+    }
+
+    if (!m_bRetortLocked && mp_RemoveSpecimenWhenCompletedDlg)
+    {
+        mp_RemoveSpecimenWhenCompletedDlg->EnableButton(1, true);
+    }
 }
 
 void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
@@ -681,31 +693,31 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
     strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
 
     bool bExecSubsequent = false;
-    mp_RemoveSpecimenDlg = new MainMenu::CMessageDlg(this);
-	mp_RemoveSpecimenDlg->SetIcon(QMessageBox::Information);
-	mp_RemoveSpecimenDlg->SetButtonText(1, CommonString::strOK);
-    mp_RemoveSpecimenDlg->HideButtons();
+    mp_RemoveSpecimenWhenCompletedDlg = new MainMenu::CMessageDlg(this);
+    mp_RemoveSpecimenWhenCompletedDlg->SetIcon(QMessageBox::Information);
+    mp_RemoveSpecimenWhenCompletedDlg->SetButtonText(1, CommonString::strOK);
+    mp_RemoveSpecimenWhenCompletedDlg->HideButtons();
     if (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) == 'C')
     {
-        mp_RemoveSpecimenDlg->SetTitle(CommonString::strInforMsg);
-        mp_RemoveSpecimenDlg->SetText(strTemp);    
-        mp_RemoveSpecimenDlg->exec();
+        mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strInforMsg);
+        mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp);
+        mp_RemoveSpecimenWhenCompletedDlg->exec();
         bExecSubsequent = true;
     }
     else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
     {
-        mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
-        mp_RemoveSpecimenDlg->SetText(strTemp + m_strTakeOutSpecimen);
-		mp_RemoveSpecimenDlg->EnableButton(1, false);
+        mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strConfirmMsg);
+        mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp + m_strTakeOutSpecimen);
+        mp_RemoveSpecimenWhenCompletedDlg->EnableButton(1, false);
         m_pCheckRetortLidTimer->start();
-        (void)mp_RemoveSpecimenDlg->exec();
+        (void)mp_RemoveSpecimenWhenCompletedDlg->exec();
         m_pCheckRetortLidTimer->stop();
         bExecSubsequent = true;
         mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
     }
 
-    delete mp_RemoveSpecimenDlg;
-    mp_RemoveSpecimenDlg = NULL;
+    delete mp_RemoveSpecimenWhenCompletedDlg;
+    mp_RemoveSpecimenWhenCompletedDlg = NULL;
 
     if (bExecSubsequent)
     {
