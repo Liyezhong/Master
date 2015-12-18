@@ -310,19 +310,20 @@ bool CProgramPanelWidget::IsAbortEnabled()
 void CProgramPanelWidget::ProgramReadyPrompt()
 {
     this->ui->startButton->setEnabled(true);
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(m_strInformation);
-    ConfirmationMessageDlg.SetText(m_strReadyStartProgram);
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
-    ConfirmationMessageDlg.HideButtons();
-    ConfirmationMessageDlg.exec();
 }
 
 void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
     if ((m_ProgramStartReady || m_bWaitRotaryValveHeatingPrompt) && !Core::CGlobalHelper::GetSystemErrorStatus())
 	{
+        MainMenu::CMessageDlg ConfirmationMessageDlg;
+        ConfirmationMessageDlg.SetTitle(m_strInformation);
+        ConfirmationMessageDlg.SetText(m_strReadyStartProgram);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+        ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
+        ConfirmationMessageDlg.HideButtons();
+        ConfirmationMessageDlg.exec();
+
     	if (!m_SelectedProgramId.isEmpty())
         {
             ProgramReadyPrompt();

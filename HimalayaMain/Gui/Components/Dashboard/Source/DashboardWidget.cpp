@@ -542,7 +542,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
 
                 if (m_ProgramStatus != CompletedAsSafeReagent)
                 {
-                    strMsgDisplay = strTemp + m_strTakeOutSpecimen;
+                    strMsgDisplay = strTemp + " " + m_strTakeOutSpecimen;
                     if (m_ProgramStatus == Aborting)
                     {
                         m_ProgramStatus = Aborted;
@@ -624,7 +624,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
         mp_RemoveSpecimenWhenAbortedDlg->SetIcon(QMessageBox::Information);
         mp_RemoveSpecimenWhenAbortedDlg->SetTitle(CommonString::strConfirmMsg);
         QString strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        mp_RemoveSpecimenWhenAbortedDlg->SetText(strTemp + m_strTakeOutSpecimen);
+        mp_RemoveSpecimenWhenAbortedDlg->SetText(strTemp + " " + m_strTakeOutSpecimen);
         mp_RemoveSpecimenWhenAbortedDlg->SetButtonText(1, CommonString::strOK);
         mp_RemoveSpecimenWhenAbortedDlg->HideButtons();
         mp_RemoveSpecimenWhenAbortedDlg->EnableButton(1, false);
@@ -675,7 +675,7 @@ void CDashboardWidget::OnTimerCheckRetortLid()
 
     if (!m_bRetortLocked && mp_RemoveSpecimenWhenAbortedDlg)
     {
-        mp_RemoveSpecimenDlg->EnableButton(1, true);
+        mp_RemoveSpecimenWhenAbortedDlg->EnableButton(1, true);
     }
 
     if (!m_bRetortLocked && mp_RemoveSpecimenWhenCompletedDlg)
@@ -707,7 +707,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
     else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
     {
         mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strConfirmMsg);
-        mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp + m_strTakeOutSpecimen);
+        mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp + " " + m_strTakeOutSpecimen);
         mp_RemoveSpecimenWhenCompletedDlg->EnableButton(1, false);
         m_pCheckRetortLidTimer->start();
         (void)mp_RemoveSpecimenWhenCompletedDlg->exec();
