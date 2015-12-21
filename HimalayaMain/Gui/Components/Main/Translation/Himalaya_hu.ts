@@ -624,7 +624,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>Napok száma a módosításig</translation>
+        <translation>Napszám a módosításig</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
@@ -899,7 +899,7 @@
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>Napok száma a módosításig</translation>
+        <translation>Napszám a módosításig</translation>
     </message>
 </context>
 <context>
@@ -1349,7 +1349,7 @@ dátuma</translation>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>Napok száma a módosításig</translation>
+        <translation>Napszám a módosításig</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -2806,7 +2806,7 @@ dátuma</translation>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="569"/>
         <source>Days until change</source>
-        <translation>Napok száma a módosításig</translation>
+        <translation>Napszám a módosításig</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="572"/>

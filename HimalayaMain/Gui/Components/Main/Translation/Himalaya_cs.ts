@@ -1015,8 +1015,7 @@ výměny</translation>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="310"/>
         <source>Step</source>
-        <translation>Krok
-údržby</translation>
+        <translation>Krok</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
@@ -2651,8 +2650,7 @@ výměny</translation>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1026"/>
         <source>Step</source>
-        <translation>Krok
-údržby</translation>
+        <translation>Krok</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="1027"/>

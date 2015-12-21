@@ -614,17 +614,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>Değişikliğe kadar kalan kaset sayısı</translation>
+        <translation>Dğşkl. kdr kln kast s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Cycles until change</source>
-        <translation>Değişikliğe kadar kalan siklus sayısı</translation>
+        <translation>Dğşkl. kdr kln skls s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Days until change</source>
-        <translation>Değişikliğe kadar kalan gün sayısı</translation>
+        <translation>Dğşkl. kdr kln gün s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
@@ -887,19 +887,19 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>Değişikliğe kadar kalan kaset sayısı</translation>
+        <translation>Dğşkl. kdr kln kast s.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>Değişikliğe kadar kalan siklus sayısı</translation>
+        <translation>Dğşkl. kdr kln skls s.</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>Değişikliğe kadar kalan gün sayısı</translation>
+        <translation>Dğşkl. kdr kln gün s.</translation>
     </message>
 </context>
 <context>
@@ -1337,19 +1337,19 @@ Tarihi</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>Değişikliğe kadar kalan kaset sayısı</translation>
+        <translation>Dğşkl. kdr kln kast s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="753"/>
         <source>Cycles until change</source>
-        <translation>Değişikliğe kadar kalan siklus sayısı</translation>
+        <translation>Dğşkl. kdr kln skls s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="737"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="756"/>
         <source>Days until change</source>
-        <translation>Değişikliğe kadar kalan gün sayısı</translation>
+        <translation>Dğşkl. kdr kln gün s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="748"/>
@@ -2776,7 +2776,7 @@ Tarihi</translation>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>Değişikliğe kadar kalan kaset sayısı:</translation>
+        <translation>Dğşkl. kdr kln kast s.:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2796,17 +2796,17 @@ Tarihi</translation>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="563"/>
         <source>Cassettes until change</source>
-        <translation>Değişikliğe kadar kalan kaset sayısı</translation>
+        <translation>Dğşkl. kdr kln kast s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="566"/>
         <source>Cycles until change</source>
-        <translation>Değişikliğe kadar kalan siklus sayısı</translation>
+        <translation>Dğşkl. kdr kln skls s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="569"/>
         <source>Days until change</source>
-        <translation>Değişikliğe kadar kalan gün sayısı</translation>
+        <translation>Dğşkl. kdr kln gün s.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="572"/>

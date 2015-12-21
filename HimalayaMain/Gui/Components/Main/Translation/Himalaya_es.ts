@@ -614,7 +614,7 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cassettes until change</source>
-        <translation>Casetes hasta el cambio</translation>
+        <translation>Caset. hasta el cambio</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
@@ -887,7 +887,7 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>Casetes hasta el cambio</translation>
+        <translation>Caset. hasta el cambio</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
@@ -1337,7 +1337,7 @@ cambio</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="731"/>
         <source>Cassettes until change</source>
-        <translation>Casetes hasta el cambio</translation>
+        <translation>Caset. hasta el cambio</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="734"/>
@@ -2776,7 +2776,7 @@ cambio</translation>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation>Casetes hasta el cambio:</translation>
+        <translation>Caset. hasta el cambio:</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
@@ -2796,7 +2796,7 @@ cambio</translation>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="563"/>
         <source>Cassettes until change</source>
-        <translation>Casetes hasta el cambio</translation>
+        <translation>Caset. hasta el cambio</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="566"/>
