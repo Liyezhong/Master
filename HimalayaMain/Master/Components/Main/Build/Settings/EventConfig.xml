@@ -1313,16 +1313,16 @@
 	    <Event Code="" ErrorID="67175168" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE" LogLevel="High" UserLog="TRUE">
 	     <Step ID="0" Type="MSG" StringID="67175168" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175169" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67175169" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_NOREAGENT_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175169" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175170" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67175170" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_RVMOVING_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175170" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175171" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67175171" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_SOAKING_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175171" ButtonType="" StatusBar=""/>
 	    </Event>
-	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING" LogLevel="High" UserLog="FALSE">
+	    <Event Code="" ErrorID="67175172" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_POWER_FAILURE_FILLINGDRAINING_STEP" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175172" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175184" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_IN_IDLE_STATE" LogLevel="High" UserLog="FALSE">

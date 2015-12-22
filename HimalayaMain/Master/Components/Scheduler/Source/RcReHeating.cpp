@@ -88,33 +88,37 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario|| 260 == m_LastScenario || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1"))
+    if(200 == m_LastScenario|| 260 == m_LastScenario || 203 == m_LastScenario
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_NOREAGENT_STEP);
         if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(212 <= m_LastScenario && m_LastScenario <= 257)
+    else if((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="5"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_RVMOVING_STEP);
         if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(271 <= m_LastScenario && m_LastScenario <= 277)
+    else if(QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="4")
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SOAKING_STEP);
         if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
+    else if((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="2")
+             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="6"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_FILLINGDRAINING_STEP);
     }
     m_CurrentStep = PRESSURE_CALIBRATION;
 }
