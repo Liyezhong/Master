@@ -59,7 +59,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_ProgramStatus(Undefined_ProgramStatus),
     m_IsProgramAbortedOrCompleted(false),
     m_IsInAppendCasseteStatus(false),
-    m_bWaitRotaryValveHeatingPrompt(false)
+    m_bWaitRotaryValveHeatingPrompt(false),
+    m_ShowReadyStartPrompt(false)
 
 {
     ui->setupUi(this);
@@ -294,6 +295,17 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
     if (m_ProgramStatus != Aborting)
     {
         ui->programPanelWidget->OnProgramStartReadyUpdated();
+        if (m_ShowReadyStartPrompt)
+        {
+            MainMenu::CMessageDlg ConfirmationMessageDlg;
+            ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+            ConfirmationMessageDlg.SetText(m_strReadyStartProgram);
+            ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+            ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
+            ConfirmationMessageDlg.HideButtons();
+            ConfirmationMessageDlg.exec();
+            m_ShowReadyStartPrompt = false;
+        }
     }
 }
 
@@ -632,6 +644,7 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
         if (mp_RemoveSpecimenWhenAbortedDlg->exec())
         {
             m_pCheckRetortLidTimer->stop();
+            m_ShowReadyStartPrompt = true;
             mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
             ui->programPanelWidget->ChangeStartButtonToStartState();
             ui->programPanelWidget->EnableStartButton(true);
@@ -702,6 +715,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
         mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strInforMsg);
         mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp);
         mp_RemoveSpecimenWhenCompletedDlg->exec();
+        m_ShowReadyStartPrompt = true;
         bExecSubsequent = true;
     }
     else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
@@ -712,6 +726,7 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
         m_pCheckRetortLidTimer->start();
         (void)mp_RemoveSpecimenWhenCompletedDlg->exec();
         m_pCheckRetortLidTimer->stop();
+        m_ShowReadyStartPrompt = true;
         bExecSubsequent = true;
         mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
     }
@@ -1381,6 +1396,7 @@ void CDashboardWidget::RetranslateUI()
 Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.\
 Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!\
 Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
+    m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)

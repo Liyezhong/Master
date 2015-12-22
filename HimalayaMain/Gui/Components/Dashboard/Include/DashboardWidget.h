@@ -220,7 +220,8 @@ private:
     bool m_bWaitRotaryValveHeatingPrompt;                       //!< waiting for rotary valve heating to be completed message dialog
     QString m_strReagentExpiredLog;
     QTimer* m_pCheckRetortLidTimer;
-
+    QString m_strReadyStartProgram;
+    bool m_ShowReadyStartPrompt;
 public slots:
     /****************************************************************************/
     /*!
