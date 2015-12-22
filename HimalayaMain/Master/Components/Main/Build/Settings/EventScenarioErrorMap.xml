@@ -206,6 +206,7 @@
             <scenario type="range" startid="251" endid="252"/>
             <scenario type="single" id="254"/>
             <scenario type="range" startid="256" endid="257"/>
+            <scenario type="single" id="260"/>
             <scenario type="range" startid="271" endid="272"/>
             <scenario type="single" id="274"/>
             <scenario type="range" startid="276" endid="277"/>
