@@ -110,7 +110,7 @@
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="242"/>
         <source>Station</source>
-        <translation>w parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusModel.cpp" line="244"/>
@@ -928,7 +928,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="248"/>
         <source>Station</source>
-        <translation>w parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="250"/>
@@ -949,8 +949,7 @@
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="363"/>
         <source>Station</source>
-        <translation>w
-parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="365"/>
@@ -1376,7 +1375,7 @@ wymiany</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
         <source>Station</source>
-        <translation>w parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
@@ -1389,8 +1388,7 @@ wymiany</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="469"/>
         <source>Station</source>
-        <translation>w
-parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
@@ -1902,7 +1900,7 @@ wymiany</translation>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="182"/>
         <source>Station</source>
-        <translation>w parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="183"/>
@@ -3366,7 +3364,7 @@ Please do not unplug any bottles!</source>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="144"/>
         <source>Station</source>
-        <translation>w parafinie</translation>
+        <translation>stacja</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/BottleCheckStatusDlg.cpp" line="147"/>
