@@ -237,7 +237,7 @@
         <string id="67176025" text1="Rotary Valve is not functioning normally. Please check the Rotary Valve." text2=""/>
         <string id="67176026" text1="The instrument has encountered some technical issues and can not finish the protocol." text2=""/>
         <string id="67176194" text1="Error ID %1!  Seal failed in dry scenario." text2=""/>
-        <string id="67176196" text1="Error ID %1!  Wax bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
+        <string id="67176196" text1="Error ID %1!  Paraffin bath oven cover open, do you want to melt fresh paraffin now?" text2=""/>
         <string id="67176198" text1="Please clean the seal ring and the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176199" text1="Please check the bottle(s) according to user manual." text2=""/>
         <string id="67176200" text1="Draining of Retort has failed! Please clean the seal ring and the upper part of the retort as described in the user manual." text2=""/>
