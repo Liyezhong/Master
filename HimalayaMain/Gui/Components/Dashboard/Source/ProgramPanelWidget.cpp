@@ -113,7 +113,6 @@ void CProgramPanelWidget::RetranslateUI()
                                                                  0, QApplication::UnicodeUTF8));
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Would you like to abort the program?", 0, QApplication::UnicodeUTF8);
-    m_strReadyStartProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
 
     m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);
@@ -316,14 +315,6 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
     if ((m_ProgramStartReady || m_bWaitRotaryValveHeatingPrompt) && !Core::CGlobalHelper::GetSystemErrorStatus())
 	{
-        MainMenu::CMessageDlg ConfirmationMessageDlg;
-        ConfirmationMessageDlg.SetTitle(m_strInformation);
-        ConfirmationMessageDlg.SetText(m_strReadyStartProgram);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-        ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
-        ConfirmationMessageDlg.HideButtons();
-        ConfirmationMessageDlg.exec();
-
     	if (!m_SelectedProgramId.isEmpty())
         {
             ProgramReadyPrompt();

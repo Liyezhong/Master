@@ -424,7 +424,6 @@ private:
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
     QString m_strAbort, m_strStart;
-    QString m_strReadyStartProgram;
     bool m_startButtonDisabledAsSysError;
     bool m_pauseButtonDisabledAsSysError;
     bool m_ProgramStartReady;
