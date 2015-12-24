@@ -222,6 +222,7 @@ private:
     QTimer* m_pCheckRetortLidTimer;
     QString m_strReadyStartProgram;
     bool m_ShowReadyStartPrompt;
+    QString m_checkMachinePrompt;
 public slots:
     /****************************************************************************/
     /*!

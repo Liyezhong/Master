@@ -448,6 +448,7 @@ void CDashboardWidget::OnShowPauseMsgDialog()
     mp_PausingMsgDlg = new MainMenu::CMessageDlg(this);
     mp_PausingMsgDlg->SetIcon(QMessageBox::Information);
     mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
     mp_PausingMsgDlg->HideAllButtons();
     (void)mp_PausingMsgDlg->exec();
     delete mp_PausingMsgDlg;
@@ -952,6 +953,13 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
         return false;
 
     MainMenu::CMessageDlg messageDlg(this);
+    messageDlg.SetIcon(QMessageBox::Warning);
+    messageDlg.SetTitle(CommonString::strWarning);
+    messageDlg.SetText(m_checkMachinePrompt);
+    messageDlg.SetButtonText(1, CommonString::strOK);
+    messageDlg.HideButtons();
+    messageDlg.exec();
+
     if (m_bWaitRotaryValveHeatingPrompt)
     {
         messageDlg.SetIcon(QMessageBox::Warning);
@@ -1377,8 +1385,9 @@ void CDashboardWidget::RetranslateUI()
     m_strTissueProtectPassed = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed successfully. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
-    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK.", 0, QApplication::UnicodeUTF8);
-    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...", 0, QApplication::UnicodeUTF8);
+    m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK. \
+Wear respirator properly to prevent the potential harzad of reagent vapor. Don't touch the level sensor. It's hot!", 0, QApplication::UnicodeUTF8);
+    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort. And confirm specimen are removed and retort is empty,  then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);
@@ -1397,6 +1406,9 @@ Program can be started immediately, if Paraffin temperature in this program is a
 Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!\
 Please confirm modifying Paraffin temperature.", 0, QApplication::UnicodeUTF8);
     m_strReadyStartProgram = QApplication::translate("Dashboard::CDashboardWidget", "Ready to start a new program.", 0, QApplication::UnicodeUTF8);
+    m_checkMachinePrompt = QApplication::translate("Dashboard::CDashboardWidget", "Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter.\
+ Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.", 0, QApplication::UnicodeUTF8);
+
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
