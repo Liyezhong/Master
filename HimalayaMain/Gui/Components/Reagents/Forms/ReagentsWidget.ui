@@ -87,13 +87,13 @@
         <widget class="MainMenu::CScrollTable" name="scrollTable" native="true">
          <property name="minimumSize">
           <size>
-           <width>450</width>
+           <width>460</width>
            <height>125</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>434</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -153,7 +153,7 @@
         <widget class="MainMenu::CScrollTable" name="scrolltable_cleaning" native="true">
          <property name="minimumSize">
           <size>
-           <width>450</width>
+           <width>460</width>
            <height>125</height>
           </size>
          </property>
@@ -293,7 +293,7 @@
   <customwidget>
    <class>MainMenu::CScrollTable</class>
    <extends>QWidget</extends>
-   <header>MainMenu/Include/ScrollTable.h</header>
+   <header location="global">MainMenu/Include/ScrollTable.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

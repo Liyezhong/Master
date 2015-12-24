@@ -963,7 +963,7 @@ since
 change</source>
         <translation>Cassettes
 depuis le
-remplacement</translation>
+remplac</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -973,7 +973,7 @@ since
 change</source>
         <translation>Cycles
 depuis le
-remplacement</translation>
+remplac</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="375"/>
@@ -1403,7 +1403,7 @@ since
 change</source>
         <translation>Cassettes
 depuis le
-remplacement</translation>
+remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -1413,7 +1413,7 @@ since
 change</source>
         <translation>Cycles
 depuis le
-remplacement</translation>
+remplac</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="486"/>

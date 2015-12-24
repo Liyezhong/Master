@@ -149,14 +149,14 @@ void CReagentRMSWidget::ResizeHorizontalSection()
     {
         mp_TableWidget->horizontalHeader()->resizeSection(0, 120);
         mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
-        mp_TableWidget->horizontalHeader()->resizeSection(2, 140);
+        mp_TableWidget->horizontalHeader()->resizeSection(2, 150);
     }
 
     if (mp_TableWidgetCleaning)
     {
         mp_TableWidgetCleaning->horizontalHeader()->resizeSection(0, 120);
         mp_TableWidgetCleaning->horizontalHeader()->resizeSection(1, 150);
-        mp_TableWidgetCleaning->horizontalHeader()->resizeSection(2, 140);
+        mp_TableWidgetCleaning->horizontalHeader()->resizeSection(2, 150);
     }
 
 }
