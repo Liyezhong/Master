@@ -656,14 +656,15 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         if(203 == scenario)
         {
             m_IsCleaningProgram = true;
-            m_CurrentStepState = PSSM_CLEANING_DRY_STEP;
             SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
         }
         else if(281 <= scenario && scenario <= 297)
         {
             m_IsCleaningProgram = true;
-            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
-            SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
+            if (283 != scenario && 285 != scenario && 293 != scenario && 295 != scenario)
+            {
+                SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE_CLEANING_MSGBOX, false);
+            }
         }
         m_PowerFailureStep = POWERFAILURE_RUN;
     }
@@ -1096,23 +1097,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->SendResumeDryStep();
                 break;
             case PSSM_POWERFAILURE_FINISH:
-                if(m_IsCleaningProgram && 200 == m_ProgramStatusInfor.GetScenario())
+                if( !m_ProgramStatusInfor.IsRetortContaminted() )
                 {
-                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT));
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = GetNewCommandRef();
                     SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-                }
-                else
-                {
-                    if( !m_ProgramStatusInfor.IsRetortContaminted() )
-                    {
-                        MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-                        Q_ASSERT(commandPtrFinish);
-                        Global::tRefType Ref = GetNewCommandRef();
-                        SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-                        m_IsTakeSpecimen = true;
-                    }
+                    m_IsTakeSpecimen = true;
                 }
                 m_SchedulerMachine->SendRunComplete();
                 break;

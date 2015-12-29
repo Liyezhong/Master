@@ -324,7 +324,14 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
     {
         if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
         {
-            mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+            if (203 == m_LastScenario)
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_CLEANING_DRY_STEP);
+            }
+            else
+            {
+                mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
+            }
         }
         else
         {
