@@ -1018,10 +1018,10 @@ void SchedulerMainThreadController::UpdateStationReagentStatus(bool bOnlyNew)
 
 void SchedulerMainThreadController::SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType)
 {
-    MsgClasses::CmdProgramAcknowledge* commandPtrWaitForDrain(new MsgClasses::CmdProgramAcknowledge(5000, ackType));
-    Q_ASSERT(commandPtrWaitForDrain);
+    MsgClasses::CmdProgramAcknowledge* cmdProgramAcknowledge(new MsgClasses::CmdProgramAcknowledge(5000, ackType));
+    Q_ASSERT(cmdProgramAcknowledge);
     Global::tRefType fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(commandPtrWaitForDrain));
+    SendCommand(fRef, Global::CommandShPtr_t(cmdProgramAcknowledge));
 }
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)

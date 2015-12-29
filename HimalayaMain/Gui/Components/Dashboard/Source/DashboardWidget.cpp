@@ -181,11 +181,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, PowerFailureMsg(),
                       this, OnPowerFailureMsg());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ShowPauseMsgDialog(),
-                      this, OnShowPauseMsgDialog());
+    CONNECTSIGNALSLOT(mp_DataConnector, ShowMsgDialog(DataManager::MsgBoxType_t),
+                      this, OnShowMsgDialog(DataManager::MsgBoxType_t));
 
-    CONNECTSIGNALSLOT(mp_DataConnector, DismissPauseMsgDialog(),
-                      this, OnDismissPauseMsgDialog());
+    CONNECTSIGNALSLOT(mp_DataConnector, DismissMsgDialog(),
+                      this, OnDismissMsgDialog());
 
     CONNECTSIGNALSLOT(mp_DataConnector, WaitRotaryValveHeatingPrompt(),
                       this, OnWaitRotaryValveHeatingPrompt());
@@ -443,18 +443,27 @@ void CDashboardWidget::OnPowerFailureMsg()
 }
 
 
-void CDashboardWidget::OnShowPauseMsgDialog()
+void CDashboardWidget::OnShowMsgDialog(DataManager::MsgBoxType_t msgBoxType_t)
 {
     mp_PausingMsgDlg = new MainMenu::CMessageDlg(this);
     mp_PausingMsgDlg->SetIcon(QMessageBox::Information);
-    mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    if (DataManager::PAUSE_MSG == msgBoxType_t)
+    {
+         mp_PausingMsgDlg->SetText(m_strItIsPausing);
+    }
+    else if (DataManager::REUSME_MSG == msgBoxType_t)
+    {
+         mp_PausingMsgDlg->SetText(m_strItIsResuming);
+    }
+
+    mp_PausingMsgDlg->SetTextFormat(Qt::PlainText);
     mp_PausingMsgDlg->HideAllButtons();
     (void)mp_PausingMsgDlg->exec();
     delete mp_PausingMsgDlg;
     mp_PausingMsgDlg = NULL;
 }
 
-void CDashboardWidget::OnDismissPauseMsgDialog()
+void CDashboardWidget::OnDismissMsgDialog()
 {
     if (mp_PausingMsgDlg)
     {
@@ -1378,7 +1387,8 @@ void CDashboardWidget::RetranslateUI()
     m_strTissueProtectPassed_Warning = QApplication::translate("Dashboard::CDashboardWidget", "Tissue safety process has completed with warning. Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strOvenCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "The oven cover is open. Please close it then click the OK button.", 0, QApplication::UnicodeUTF8);
     m_strRetortCoverOpen = QApplication::translate("Dashboard::CDashboardWidget", "Retort lid was opened. Please close it and then click OK.", 0, QApplication::UnicodeUTF8);
-    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...", 0, QApplication::UnicodeUTF8);
+    m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
+    m_strItIsResuming = QApplication::translate("Dashboard::CDashboardWidget", "Resuming...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort. And confirm specimen are removed and retort is empty,  then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);

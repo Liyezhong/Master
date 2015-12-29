@@ -1902,12 +1902,18 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         break;
         case DataManager::SHOW_PAUSE_MSG_DLG:
         {
-            emit ShowPauseMsgDialog();
+            emit ShowMsgDialog(DataManager::PAUSE_MSG);
         }
         break;
+        case DataManager::DISMISS_RESUME_MSG_DLG:
         case DataManager::DISMISS_PAUSING_MSG_DLG:
         {
-            emit DismissPauseMsgDialog();
+            emit DismissMsgDialog();
+        }
+        break;
+        case DataManager::SHOW_RESUME_MSG_DLG:
+        {
+            emit ShowMsgDialog(DataManager::REUSME_MSG);
         }
         break;
         case DataManager::WAIT_ROTARY_VALVE_HEATING_PROMPT:

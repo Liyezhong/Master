@@ -191,6 +191,7 @@ private:
     QString m_strOvenCoverOpen;
     QString m_strRetortCoverOpen;
     QString m_strItIsPausing;
+    QString m_strItIsResuming;
     QString m_PowerFailureBoxTitle;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
@@ -307,16 +308,16 @@ private slots:
     void OnPowerFailureMsg();
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of OnShowPauseMsgDialog
+     *  \brief  Declaration of OnShowMsgDialog
      */
     /****************************************************************************/
-    void OnShowPauseMsgDialog();
+    void OnShowMsgDialog(DataManager::MsgBoxType_t msgBoxType);
     /****************************************************************************/
     /*!
-     *  \brief  Declaration of OnDismissPauseMsgDialog
+     *  \brief  Declaration of OnDismissMsgDialog
      */
     /****************************************************************************/
-    void OnDismissPauseMsgDialog();
+    void OnDismissMsgDialog();
     /****************************************************************************/
     /*!
      *  \brief  Declaration of OnWaitRotaryValveHeatingPrompt

@@ -119,7 +119,9 @@ typedef enum  {
         DISMISS_ROTARY_VALVE_HEATING_PROMPT,
         PROGRAM_COOLING_DWON,
         DISABLE_BOTTLE_CHECK,
-        ENABLE_BOTTLE_CHECK
+        ENABLE_BOTTLE_CHECK,
+        SHOW_RESUME_MSG_DLG,
+        DISMISS_RESUME_MSG_DLG
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
@@ -199,6 +201,15 @@ typedef enum  {
     REAGENT_STATUS_UNDEFINE ///< Undefined.
 } ReagentStatusType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition of enum MsgBoxType_t
+ */
+/****************************************************************************/
+typedef enum {
+    PAUSE_MSG, ///< pause message dialog
+    REUSME_MSG ///< resume message dialog
+} MsgBoxType_t;
 
 /****************************************************************************/
 /*!
