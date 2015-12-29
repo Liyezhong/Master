@@ -90,12 +90,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  function of SetNeedContinueRunning
+     *  \brief  function of Set5MinTimeOut
      *  \param  value = bool
      *  \return void
      */
     /****************************************************************************/
-    inline void SetNeedResume(bool value)  {m_IsNeedResume = value;}
+    inline void Set5MinTimeOut(bool value)  {m_Is5MinTimeOut = value;}
 
 private:
     /****************************************************************************/
@@ -185,7 +185,7 @@ private:
     qint32                          m_StartReq;                         //!< count start command
     qint64                          m_StartHeatingTime;                 //!< the start heating time
     qint64                          m_StartPressureTime;                //!< the start pressure time
-    bool                            m_IsNeedResume;                     //!< flag to indicat if protocol need resume or not
+    bool                            m_Is5MinTimeOut;                    //!< flag to indicat if RC_ReHeating was triggered by 5 minutes timeout
     QString                         m_LastStationID;                    //!< last Station ID
     quint8                          m_CountTheEffectiveTemp;            //!< cout the effecitive temperature
     quint32                         m_PressureCalibrationSeq;           //!< Sequence of Pressure Calibration

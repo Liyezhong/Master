@@ -271,6 +271,7 @@
         <string id="16973842" text1="selecting timeout" text2=""/>
         <string id="67176227" text1="Paraffin temperature in paraffin bath is higher than %1. Please check paraffin melting status." text2=""/>
         <string id="67176228" text1="Paraffin temperature in paraffin bath is lower than %1. Please check paraffin melting status." text2=""/>
+        <string id="67176229" text1="Please confirm to drain the retort for adding new baskets. Wear respirator properly to prevent the potential harzad of reagent vapor. Don't touch the level sensor.It's hot!" text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
@@ -642,10 +643,10 @@
         <string id="67174998" text1="Start rotary valve heating in scenario:%1, the target temperature:%2." text2=""/>
         <string id="67174999" text1="Start LA system(%1) heating in scenario:%2, the target temperature:%3." text2=""/>
         <string id="67175000" text1="LA Tube2 heating status is off." text2=""/>
-        <string id="67175169" text1="Reheating for 200, 211,221,231,241,251,271,281,291 and 260 step." text2=""/>
-        <string id="67175170" text1="Reheating for reagents step." text2=""/>
-        <string id="67175171" text1="Reheating for paraffin step." text2=""/>
-        <string id="67175172" text1="Reheating for 203, 282-287 or 292-297 step." text2=""/>
+        <string id="67175169" text1="Reheating for 200, 260, 203, 2*1 or 2*7 step." text2=""/>
+        <string id="67175170" text1="Reheating for 2*3 or 2*5 step." text2=""/>
+        <string id="67175171" text1="Reheating for 2*4 step." text2=""/>
+        <string id="67175172" text1="Reheating for 2*2 or 2*6 step." text2=""/>
         <string id="67175184" text1="Scheduler enters the idle state." text2=""/>
         <string id="67175185" text1="Scheduler enters the error state." text2=""/>
         <string id="67175187" text1="Lock the retort lid then press Ok button." text2=""/>

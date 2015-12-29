@@ -176,6 +176,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CheckTheHardwareStatus = 0;
     m_IsFirstProcessingForDelay = true;
     m_ReportExhaustFanWarning = true;
+    m_PauseStartTime = 0;
+    m_bWaitToPauseCmdYes = false;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -630,9 +632,22 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
         if(curProgramID.at(0) == 'C')
         {
             m_IsCleaningProgram = true;
+            //In scenario 200 of Cleaning program, we treat it to scenario 281
+            if (200 == scenario)
+            {
+                m_CurrentScenario = 281;
+                scenario = 281;
+            }
+            else
+            {
+                m_CurrentScenario = scenario;
+            }
+        }
+        else
+        {
+            m_CurrentScenario = scenario;
         }
         m_CurProgramID = curProgramID;
-        m_CurrentScenario = scenario;
         m_FirstProgramStepIndex = 0;
 
         (void)this->PrepareProgramStationList(curProgramID, 0);
@@ -656,7 +671,7 @@ void SchedulerMainThreadController::HandlePowerFailure(ControlCommandType_t ctrl
     }
     else if(POWERFAILURE_RUN == m_PowerFailureStep)
     {
-      SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
+        SendOutErrMsg(DCL_ERR_DEV_POWERFAILURE);
     }
 }
 
@@ -1018,10 +1033,10 @@ void SchedulerMainThreadController::UpdateStationReagentStatus(bool bOnlyNew)
 
 void SchedulerMainThreadController::SendProgramAcknowledge(DataManager::ProgramAcknownedgeType_t ackType)
 {
-    MsgClasses::CmdProgramAcknowledge* cmdProgramAcknowledge(new MsgClasses::CmdProgramAcknowledge(5000, ackType));
-    Q_ASSERT(cmdProgramAcknowledge);
+    MsgClasses::CmdProgramAcknowledge* commandPtrWaitForDrain(new MsgClasses::CmdProgramAcknowledge(5000, ackType));
+    Q_ASSERT(commandPtrWaitForDrain);
     Global::tRefType fRef = GetNewCommandRef();
-    SendCommand(fRef, Global::CommandShPtr_t(cmdProgramAcknowledge));
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrWaitForDrain));
 }
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -1194,12 +1209,27 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_bWaitToPause = true;
         }
 
+        if (CTRL_CMD_RS_PAUSE_CMD_YES == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPauseCmdYes = true;
+        }
+
         if( "Scheduler::ALFilling" == cmdName)
         {
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 RaiseEvent(EVENT_SCHEDULER_FILLING_SUCCESSFULLY);
-                m_SchedulerMachine->NotifyFillFinished();
+                if (m_bWaitToPauseCmdYes)
+                {
+                    LogDebug(QString("Program Step Beginning Pause"));
+                    m_SchedulerMachine->NotifyDrain4Pause(SM_UNDEF);
+                    return;
+                }
+                else
+                {
+                    m_SchedulerMachine->NotifyFillFinished();
+                }
             }
             else
             {
@@ -1216,6 +1246,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
             m_bWaitToPause = true;
+        }
+
+        if (CTRL_CMD_RS_PAUSE_CMD_YES == ctrlCmd)
+        {
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPauseCmdYes = true;
         }
 
         if(IsRVRightPosition(SEAL_POS))
@@ -1237,6 +1273,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_bWaitToPause = false;
                 LogDebug(QString("Program Step Beginning Pause"));
                 m_SchedulerMachine->NotifyPause(SM_UNDEF);
+                return;
+            }
+
+            if (m_bWaitToPauseCmdYes)
+            {
+                LogDebug(QString("Program Step Beginning Pause"));
+                m_SchedulerMachine->NotifyDrain4Pause(SM_UNDEF);
                 return;
             }
             m_SchedulerMachine->NotifyRVMoveToSealReady();
@@ -1264,139 +1307,152 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             LogDebug(QString("Program Step Beginning Pause"));
             m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
+            return;
         }
-        else
+
+        if(CTRL_CMD_RS_PAUSE_CMD_YES == ctrlCmd)
         {
-            if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
+            if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
             {
-                if(m_EndTimeAndStepTime.WarningFlagForStepTime)
-                {
-                    SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
-                    m_EndTimeAndStepTime.WarningFlagForStepTime = false;
-                }
-                else if(m_EndTimeAndStepTime.WarningFlagForBufferTime)
-                {
-                    SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
-                    m_EndTimeAndStepTime.WarningFlagForBufferTime = false;
-                }
+                AllStop();
+                m_lastPVTime = 0;
             }
-            qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
-            qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-            if ("RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+            SendProgramAcknowledge(SHOW_PAUSE_MSG_DLG);
+            m_bWaitToPauseCmdYes = true;
+            LogDebug(QString("Program Step Beginning Drain Pause"));
+            m_SchedulerMachine->NotifyDrain4Pause(PSSM_PROCESSING);
+            return;
+        }
+
+        if( "RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID) )
+        {
+            if(m_EndTimeAndStepTime.WarningFlagForStepTime)
             {
-                period += m_EndTimeAndStepTime.BufferTime;
+                SendOutErrMsg(DCL_ERR_DEV_LA_PROCESS_INTERVAL_TIMEOUT_4MIN, false);
+                m_EndTimeAndStepTime.WarningFlagForStepTime = false;
             }
-            if((now - m_TimeStamps.CurStepSoakStartTime ) > period)//Will finish Soaking
+            else if(m_EndTimeAndStepTime.WarningFlagForBufferTime)
             {
-                if(!m_IsReleasePressureOfSoakFinish)
+                SendOutErrMsg(DCL_ERR_DEV_LA_ENDTIME_TIMEOUT, false);
+                m_EndTimeAndStepTime.WarningFlagForBufferTime = false;
+            }
+        }
+        qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();/*lint -e647 */
+        qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+        if ("RG6" == m_CurProgramStepInfo.reagentGroup && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+        {
+            period += m_EndTimeAndStepTime.BufferTime;
+        }
+        if((now - m_TimeStamps.CurStepSoakStartTime ) > period)//Will finish Soaking
+        {
+            if(!m_IsReleasePressureOfSoakFinish)
+            {
+                m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
+                m_IsReleasePressureOfSoakFinish = true;
+            }
+            else if("Scheduler::ALReleasePressure" == cmdName)
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
-                    m_IsReleasePressureOfSoakFinish = true;
-                }
-                else if("Scheduler::ALReleasePressure" == cmdName)
-                {
-                    if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                    //if it is Cleaning program, need not notify user
+                    if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
                     {
-                        //if it is Cleaning program, need not notify user
-                        if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+                        //this is last step, need to notice user
+                        if(!m_completionNotifierSent)
                         {
-                            //this is last step, need to notice user
-                            if(!m_completionNotifierSent)
-                            {
-                                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
-                                Q_ASSERT(commandPtrFinish);
-                                Global::tRefType fRef = GetNewCommandRef();
-                                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-                                m_completionNotifierSent = true;
+                            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                            Q_ASSERT(commandPtrFinish);
+                            Global::tRefType fRef = GetNewCommandRef();
+                            SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                            m_completionNotifierSent = true;
 
-                                // We also need start up alarm(local and device) to info user
-                                Global::AlarmHandler::Instance().setAlarm(EVENTID_ALARM_FOR_DRAIN,Global::ALARM_INFO,true);
-                                HandleRmtLocAlarm(CTRL_CMD_ALARM_LOC_ON);
-                                HandleRmtLocAlarm(CTRL_CMD_ALARM_DEVICE_ON);
+                            // We also need start up alarm(local and device) to info user
+                            Global::AlarmHandler::Instance().setAlarm(EVENTID_ALARM_FOR_DRAIN,Global::ALARM_INFO,true);
+                            HandleRmtLocAlarm(CTRL_CMD_ALARM_LOC_ON);
+                            HandleRmtLocAlarm(CTRL_CMD_ALARM_DEVICE_ON);
 
-                            }
-                        }
-                        else
-                        {
-                            LogDebug(QString("Program Processing(Soak) Process finished"));
-                            m_SchedulerMachine->NotifyProcessingFinished();
-                            m_TimeStamps.CurStepSoakStartTime = 0;
-                            m_IsProcessing = false;
                         }
                     }
                     else
                     {
-                        SendOutErrMsg(retCode);
+                        LogDebug(QString("Program Processing(Soak) Process finished"));
+                        m_SchedulerMachine->NotifyProcessingFinished();
+                        m_TimeStamps.CurStepSoakStartTime = 0;
+                        m_IsProcessing = false;
                     }
                 }
-                if(CTRL_CMD_DRAIN == ctrlCmd && m_completionNotifierSent)
+                else
                 {
-                    LogDebug(QString("last Program Processing(Soak) Process finished"));
-                    m_SchedulerMachine->NotifyProcessingFinished();
-                    m_TimeStamps.CurStepSoakStartTime = 0;
-                    m_completionNotifierSent = false;
-                    m_IsProcessing = false;
+                    SendOutErrMsg(retCode);
                 }
             }
-            else // Begin to Soak
+            if(CTRL_CMD_DRAIN == ctrlCmd && m_completionNotifierSent)
             {
-                if (now > m_TimeStamps.ProposeSoakStartTime)
+                LogDebug(QString("last Program Processing(Soak) Process finished"));
+                m_SchedulerMachine->NotifyProcessingFinished();
+                m_TimeStamps.CurStepSoakStartTime = 0;
+                m_completionNotifierSent = false;
+                m_IsProcessing = false;
+            }
+        }
+        else // Begin to Soak
+        {
+            if (now > m_TimeStamps.ProposeSoakStartTime)
+            {
+                if(m_IsInSoakDelay)
                 {
-                    if(m_IsInSoakDelay)
+                    if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
                     {
-                        if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
+                        if(m_CurProgramStepInfo.isPressure)
                         {
-                            if(m_CurProgramStepInfo.isPressure)
-                            {
-                                m_ProcessingPV = 0;
-                                Pressure();
-                            }else if(m_CurProgramStepInfo.isVacuum)
-                            {
-                                m_ProcessingPV = 1;
-                                Vaccum();
-                            }
-                            m_lastPVTime = now;
-                        }
-                        m_IsInSoakDelay = false;
-                    }
-                    else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
-                    {
-                        // P/V take turns in 1 minute
-                        if((now - m_lastPVTime)>60000)
+                            m_ProcessingPV = 0;
+                            Pressure();
+                        }else if(m_CurProgramStepInfo.isVacuum)
                         {
-                            if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
-                            {
-                                m_ProcessingPV = 0;
-                                Pressure();
-                            }
-                            else
-                            {
-                                m_ProcessingPV = 1;
-                                Vaccum();
-                            }
-                            m_lastPVTime = now;
+                            m_ProcessingPV = 1;
+                            Vaccum();
                         }
+                        m_lastPVTime = now;
                     }
-
-                    // Check if Pressure or Vacuum operation reaches abs(25) in 30 seconds
-                    if ((now - m_lastPVTime) > 30*1000 && m_lastPVTime != 0)
-                    {
-                        if (qAbs(m_PressureAL) < 25.0)
-                        {
-                            if (0 == m_ProcessingPV) // for Pressure
-                            {
-                                m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
-                            }
-                            else if (1 == m_ProcessingPV)
-                            {
-                                m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
-                                SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
-                            }
-                        }
-                    }
-
+                    m_IsInSoakDelay = false;
                 }
+                else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
+                {
+                    // P/V take turns in 1 minute
+                    if((now - m_lastPVTime)>60000)
+                    {
+                        if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
+                        {
+                            m_ProcessingPV = 0;
+                            Pressure();
+                        }
+                        else
+                        {
+                            m_ProcessingPV = 1;
+                            Vaccum();
+                        }
+                        m_lastPVTime = now;
+                    }
+                }
+
+                // Check if Pressure or Vacuum operation reaches abs(25) in 30 seconds
+                if ((now - m_lastPVTime) > 30*1000 && m_lastPVTime != 0)
+                {
+                    if (qAbs(m_PressureAL) < 25.0)
+                    {
+                        if (0 == m_ProcessingPV) // for Pressure
+                        {
+                            m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                            SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_PRESSURE, false);
+                        }
+                        else if (1 == m_ProcessingPV)
+                        {
+                            m_ProcessingPV = 3; // Avoid the warning message to pop up too many times
+                            SendOutErrMsg(DCL_ERR_DEV_LA_SEALING_FAILED_VACUUM, false);
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -1428,11 +1484,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 RaiseEvent(EVENT_SCHEDULER_DRAINING_SUCCESSFULLY);
-                if (m_bWaitToPause)
+                if (m_bWaitToPause || m_bWaitToPauseCmdYes)
                 {
                      //dismiss the prompt of waiting for pause
                     SendProgramAcknowledge(DISMISS_PAUSING_MSG_DLG);
-                    m_bWaitToPause = false;
+                    m_bWaitToPause = false; 
+                    if (m_bWaitToPauseCmdYes)
+                    {
+                        m_bWaitToPauseCmdYes = false;
+                        m_SchedulerMachine->UpdateCurrentState(PSSM_FILLING_RVROD_HEATING);
+                    }
                     LogDebug(QString("Program Step Beginning Pause"));
                     m_SchedulerMachine->NotifyPause(SM_UNDEF);
                     return;
@@ -1536,7 +1597,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 RaiseEvent(EVENT_SCHEDULER_PROGRAM_FINISHED,QStringList()<<program->GetName());
             }
         }
-        m_SchedulerMachine->SendRunComplete();
+
 
         //send command to main controller to tell the left time
         QTime leftTime(0,0,0);
@@ -1568,6 +1629,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_IsCleaningProgram = false;
             m_ProgramStatusInfor.SetProgramFinished();
         }
+
+        m_SchedulerMachine->SendRunComplete();
     }
     else if(PSSM_PAUSE == stepState)
     {
@@ -1735,11 +1798,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if (CTRL_CMD_RC_REHEATING == ctrlCmd)
         {
-            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true);
-        }
-        else if (CTRL_CMD_RC_REHEATING_NONRESUME == ctrlCmd)
-        {
             m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), false);
+        }
+        else if (CTRL_CMD_RC_REHEATING_5MINTIMEOUT == ctrlCmd)
+        {
+            m_SchedulerMachine->EnterRcReHeating(m_ProgramStatusInfor.GetScenario(), m_ProgramStatusInfor.GetStationID(), true);
         }
         else if (CTRL_CMD_RS_REAGENTCHECK == ctrlCmd)
         {
@@ -1900,7 +1963,22 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
         {
-            return CTRL_CMD_PAUSE;
+            QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+            quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+            if ((QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
+                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="3")
+                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="4"))
+            {
+                m_PauseStartTime = 0;
+                this->SendOutErrMsg(DCL_ERR_DEV_INTER_PAUSE, false);
+                return CTRL_CMD_NONE;
+            }
+            else
+            {
+                m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+                return CTRL_CMD_PAUSE;
+            }
+
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_ABORT)
         {
@@ -2064,10 +2142,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_RC_REHEATING;
         }
-        if (cmd == "rc_reheating_nonresume")
+        if (cmd == "rc_reheating_5mintimeout")
         {
             m_EventKey = pCmdSystemAction->GetEventKey();
-            return CTRL_CMD_RC_REHEATING_NONRESUME;
+            return CTRL_CMD_RC_REHEATING_5MINTIMEOUT;
         }
         if (cmd == "rs_reagentcheck")
         {
@@ -2107,6 +2185,29 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             //warning action not need eventkey
             //m_EventKey = pCmdSystemAction->GetEventKey();
             return CTRL_CMD_OPEN_OVEN_CHANGE_HEATING_PARAFFIN;
+        }
+        if (cmd == "rs_pause_cmd_yes")
+        {
+            m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+            QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+            quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+            if ((QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
+                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="3")
+                    || (QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="4"))
+            {
+                LogDebug("Input CTRL_CMD_RS_PAUSE_CMD_YES");
+                return CTRL_CMD_RS_PAUSE_CMD_YES;
+            }
+            else
+            {
+                LogDebug("Input CTRL_CMD_PAUSE");
+                return CTRL_CMD_PAUSE;
+            }
+        }
+        if (cmd == "rs_pause_cmd_no")
+        {
+            m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+            return CTRL_CMD_PAUSE;
         }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
         {

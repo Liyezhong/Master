@@ -186,9 +186,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     CONNECTSIGNALSLOT(mp_PssmFillingState.data(), exited(), mp_SchedulerThreadController, OnStopFill());
     mp_PssmFillingState->addTransition(this, SIGNAL(sigFillFinished()), mp_PssmRVMoveToSealState.data());
+    mp_PssmFillingState->addTransition(this, SIGNAL(sigDrain4Pause()), mp_PssmDrainingState.data());
     CONNECTSIGNALSLOT(mp_PssmRVMoveToSealState.data(), entered(), this, OnRVMoveToSeal());
     mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigRVMoveToSealReady()), mp_PssmProcessingState.data());
     mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigDrain4Pause()), mp_PssmRVMoveToTubeState.data());
 
     CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, OnEnterPssmProcessing());
 
@@ -221,6 +223,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmCleaningDryStep.data(), entered(), mp_SchedulerThreadController, OnEnterDryStepState());
 
     mp_PssmProcessingState->addTransition(this, SIGNAL(sigPause()), mp_PssmPause.data());
+    mp_PssmProcessingState->addTransition(this, SIGNAL(sigDrain4Pause()), mp_PssmRVMoveToTubeState.data());
     CONNECTSIGNALSLOT(mp_PssmPause.data(), entered(), mp_SchedulerThreadController, Pause());
 
     CONNECTSIGNALSLOT(mp_SchedulerThreadController, NotifyResume(), this, OnNotifyResume());
@@ -919,6 +922,13 @@ void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
     emit sigPause();
 }
 
+void CSchedulerStateMachine::NotifyDrain4Pause(SchedulerStateMachine_t PreviousState)
+{
+    Q_UNUSED(PreviousState);
+    mp_SchedulerThreadController->StopTimer();
+    emit sigDrain4Pause();
+}
+
 void CSchedulerStateMachine::NotifyRsRvMoveToInitPositionFinished()
 {
     emit sigRsRvMoveToInitPositionFinished();
@@ -1071,12 +1081,12 @@ void CSchedulerStateMachine::EnterRcCheckRTLock()
     emit SigEnterRcCheckRTLock();
 }
 
-void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& StationID, bool NeedResume)
+void CSchedulerStateMachine::EnterRcReHeating(quint32 Scenario, const QString& StationID, bool Is5MinTimeOut)
 {
     mp_SchedulerThreadController->StopTimer();
-    if(NeedResume)
+    if (Is5MinTimeOut)
     {
-        mp_RcReHeating->SetNeedResume(true);
+        mp_RcReHeating->Set5MinTimeOut(true);
     }
     mp_RcReHeating->SetScenario(Scenario);
     mp_RcReHeating->SetStationID(StationID);

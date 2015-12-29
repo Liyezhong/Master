@@ -155,6 +155,7 @@
        <event id="500070400"    name="EVENT_INTER_ABORT"/>
        <event id="500070500"    name="EVENT_INTER_BOTTLECHECK_RV_FAILED"/>
        <event id="500070600"    name="EVENT_INTER_BOTTLECHECK_NONRV_FAILED_WARNING"/>
+       <event id="500070700"    name="EVENT_INTER_PAUSE"/>
   </group>
 </eventlist>
 
@@ -177,6 +178,28 @@
     <event eventid="500070400">
         <error errorid="520070400">
             <scenario type="all"/>
+        </error>
+    </event>
+    <event eventid="500070700">
+        <error errorid="520070700">
+            <scenario type="single" id="212"/>
+            <scenario type="single" id="213"/>
+            <scenario type="single" id="214"/>
+            <scenario type="single" id="222"/>
+            <scenario type="single" id="223"/>
+            <scenario type="single" id="224"/>
+            <scenario type="single" id="232"/>
+            <scenario type="single" id="233"/>
+            <scenario type="single" id="234"/>
+            <scenario type="single" id="242"/>
+            <scenario type="single" id="243"/>
+            <scenario type="single" id="244"/>
+            <scenario type="single" id="252"/>
+            <scenario type="single" id="253"/>
+            <scenario type="single" id="254"/>
+            <scenario type="single" id="272"/>
+            <scenario type="single" id="273"/>
+            <scenario type="single" id="274"/>
         </error>
     </event>
     <event eventid="500060100">
@@ -206,6 +229,7 @@
             <scenario type="range" startid="251" endid="252"/>
             <scenario type="single" id="254"/>
             <scenario type="range" startid="256" endid="257"/>
+            <scenario type="single" id="260"/>
             <scenario type="range" startid="271" endid="272"/>
             <scenario type="single" id="274"/>
             <scenario type="range" startid="276" endid="277"/>

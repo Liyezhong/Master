@@ -37,7 +37,7 @@ CRcReHeating::CRcReHeating(SchedulerMainThreadController* SchedController, CSche
     ,m_StartReq(0)
     ,m_StartHeatingTime(0)
     ,m_StartPressureTime(0)
-    ,m_IsNeedResume(false)
+    ,m_Is5MinTimeOut(false)
     ,m_CountTheEffectiveTemp(0)
     ,m_PressureCalibrationSeq(0)
     ,m_PressureDriftOffset(0.0)
@@ -88,33 +88,37 @@ void CRcReHeating::HandleWorkFlow(const QString &cmdName, ReturnCode_t retCode)
 
 void CRcReHeating::HandleInint()
 {
-    if(200 == m_LastScenario|| 260 == m_LastScenario || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1"))
+    if(200 == m_LastScenario|| 260 == m_LastScenario || 203 == m_LastScenario
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SPECIAL_STEP);
-        if(!m_IsNeedResume)
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_NOREAGENT_STEP);
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(212 <= m_LastScenario && m_LastScenario <= 257)
+    else if((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3")
+            || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="5"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_REAGENT_STEP);
-        if(!m_IsNeedResume)
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_RVMOVING_STEP);
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(271 <= m_LastScenario && m_LastScenario <= 277)
+    else if(QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="4")
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_PARAFFIN_STEP);
-        if(!m_IsNeedResume)
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_SOAKING_STEP);
+        if(m_Is5MinTimeOut)
         {
             mp_SchedulerThreadController->SendPowerFailureMsg();
         }
     }
-    else if(203 == m_LastScenario || (281 <= m_LastScenario && m_LastScenario <= 297) )
+    else if((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="2")
+             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="6"))
     {
-        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_BACK_CLEANING);
+        mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_FILLINGDRAINING_STEP);
     }
     m_CurrentStep = PRESSURE_CALIBRATION;
 }
@@ -218,7 +222,7 @@ bool CRcReHeating::StartHeatingSensor()
     ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("LA_Tube2");
     mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating LA_Tube2,retCode:%1").arg(ret));
     if(DCL_ERR_FCT_CALL_SUCCESS != ret)
-        return true;
+        return false;
 
     ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControlForPowerFailure("OvenTop");
     mp_SchedulerThreadController->LogDebug(QString("In RcReHeating start heating oven top,retCode:%1").arg(ret));
@@ -304,8 +308,8 @@ void CRcReHeating::CheckTheTemperature()
 
 void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    //For the scenarios 2*3 and 2*5, we always consider power failure failed.
-    if ((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3")
+    //For the scenarios 2*3 (except 203)and 2*5, we always consider power failure failed.
+    if ((QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="3" && 203 != m_LastScenario)
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="5"))
     {
         mp_SchedulerThreadController->LogDebug(QString("Position of Rotary Valve is uncertain in the scenario %1").arg(m_LastScenario));
@@ -318,7 +322,7 @@ void CRcReHeating::GetRvPosition(const QString& cmdName, DeviceControl::ReturnCo
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="1")
             || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="7"))
     {
-        if (m_IsNeedResume)
+        if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
         {
             mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
         }
@@ -408,7 +412,7 @@ void CRcReHeating::ProcessDraining(const QString& cmdName, DeviceControl::Return
     {
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
-            if (m_IsNeedResume)
+            if (mp_SchedulerThreadController->GetCurProgramID().at(0) == 'C')
             {
                 mp_SchedulerThreadController->SetCurrentStepState(PSSM_INIT);
             }

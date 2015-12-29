@@ -527,6 +527,14 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function NotifyDrain4Pause
+     *  \param PreviousState = SchedulerStateMachine_t type parameter
+     */
+    /****************************************************************************/
+    void NotifyDrain4Pause(SchedulerStateMachine_t PreviousState);
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function NotifyResumeDrain
      */
     /****************************************************************************/
@@ -720,11 +728,12 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnterRcReHeating
      *  \param  Scenario = qint32
-     *  \param  ReagentID = QString
+     *  \param  StationID = QString
      *  \param  NeedResume = bool
+     *  \param  Is5MinTimeOut = bool
      */
     /****************************************************************************/
-    void EnterRcReHeating(quint32 Scenario, const QString& ReagentID, bool NeedResume);
+    void EnterRcReHeating(quint32 Scenario, const QString& StationID, bool Is5MinTimeOut);
 
     /****************************************************************************/
     /*!
@@ -1597,6 +1606,13 @@ signals:
      */
     /****************************************************************************/
     void sigPause();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigDrain4Pause
+     */
+    /****************************************************************************/
+    void sigDrain4Pause();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigResumeToSelftest

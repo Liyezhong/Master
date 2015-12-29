@@ -393,6 +393,8 @@ typedef enum
         bool    m_IsFirstProcessingForDelay;                  ///< is first enter processing for delay time
         QString m_ReagentExpiredFlag;                         ///< Reagent expired flag
         QMap<DeviceControl::ReturnCode_t,quint8> m_RetCodeCounterList;      //!< Counter list for Error ReturnCode
+        qint64  m_PauseStartTime;                             ///< Start time of pause command
+        bool    m_bWaitToPauseCmdYes;                         ///< flag to indicate if PauseYes command is selected
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
