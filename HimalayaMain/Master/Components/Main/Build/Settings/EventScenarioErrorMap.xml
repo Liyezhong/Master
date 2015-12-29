@@ -224,6 +224,8 @@
             <scenario type="single" id="255"/>
             <scenario type="single" id="273"/>
             <scenario type="single" id="275"/>
+        </error>
+        <error errorid="520060005">
             <scenario type="single" id="283"/>
             <scenario type="single" id="285"/>
             <scenario type="single" id="293"/>
