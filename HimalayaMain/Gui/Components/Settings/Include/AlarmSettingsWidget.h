@@ -151,10 +151,10 @@ signals:
      *  \brief  Definition/Declaration of signal PlayTestTone
      *  \param  volume = volume value
      *  \param  sound = which sound number
-     *  \param isAlarmAudio = it is alarm or note audio file
+     *  \param alarmType = alarm type
      */
     /****************************************************************************/
-    void PlayTestTone(quint8 volume, quint8 sound, bool isAlarmAudio);
+    void PlayTestTone(quint8 volume, quint8 sound, Global::AlarmType alarmType);
 };
 
 } // end namespace Settings
