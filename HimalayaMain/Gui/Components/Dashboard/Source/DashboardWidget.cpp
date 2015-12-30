@@ -953,12 +953,15 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram(QString& reagentExpiredFlag
         return false;
 
     MainMenu::CMessageDlg messageDlg(this);
-    messageDlg.SetIcon(QMessageBox::Warning);
-    messageDlg.SetTitle(CommonString::strWarning);
-    messageDlg.SetText(m_checkMachinePrompt);
-    messageDlg.SetButtonText(1, CommonString::strOK);
-    messageDlg.HideButtons();
-    messageDlg.exec();
+    if (m_SelectedProgramId.at(0) != 'C')
+    {
+        messageDlg.SetIcon(QMessageBox::Warning);
+        messageDlg.SetTitle(CommonString::strWarning);
+        messageDlg.SetText(m_checkMachinePrompt);
+        messageDlg.SetButtonText(1, CommonString::strOK);
+        messageDlg.HideButtons();
+        messageDlg.exec();
+    }
 
     if (m_bWaitRotaryValveHeatingPrompt)
     {
