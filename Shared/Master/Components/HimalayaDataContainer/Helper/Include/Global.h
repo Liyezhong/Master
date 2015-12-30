@@ -121,7 +121,8 @@ typedef enum  {
         DISABLE_BOTTLE_CHECK,
         ENABLE_BOTTLE_CHECK,
         SHOW_RESUME_MSG_DLG,
-        DISMISS_RESUME_MSG_DLG
+        DISMISS_RESUME_MSG_DLG,
+        PAUSE_HAS_BEGUN
     } ProgramAcknownedgeType_t;
 /****************************************************************************/
 /*!
