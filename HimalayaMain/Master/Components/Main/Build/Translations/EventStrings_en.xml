@@ -250,7 +250,7 @@
         <string id="67176209" text1="Please close the retort lid and confirm Retry button." text2=""/>
         <string id="67176210" text1="Pressure test failed! Please clean the seal ring and the upper part of the retort as described in the user manual." text2=""/>
         <string id="67176211" text1="Remote alarm system not connected! Please connect the device with remote alarm system." text2=""/>
-        <string id="67176214" text1="Protocol was interrupted by power failure. Please abort the protocol and remove the specimens." text2=""/>
+        <string id="67176214" text1="Protocol was interrupted by power failure. Please abort the protocol." text2=""/>
         <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
         <string id="67176216" text1="Power failure recovery process failed in reheating. Please call service." text2=""/>
         <string id="67176217" text1="Power failure recovery process failed. Please call service." text2=""/>

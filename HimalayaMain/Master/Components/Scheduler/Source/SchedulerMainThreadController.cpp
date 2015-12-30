@@ -1097,14 +1097,23 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->SendResumeDryStep();
                 break;
             case PSSM_POWERFAILURE_FINISH:
-                if( !m_ProgramStatusInfor.IsRetortContaminted() )
+                if(m_ProgramStatusInfor.IsRetortContaminted())
                 {
+                    //send command to main controller to tell program finished
                     MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = GetNewCommandRef();
                     SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-                    m_IsTakeSpecimen = true;
                 }
+                else
+                {
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+                    Q_ASSERT(commandPtrFinish);
+                    Global::tRefType Ref = GetNewCommandRef();
+                    SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+                    m_ProgramStatusInfor.SetProgramFinished();
+                }
+
                 m_SchedulerMachine->SendRunComplete();
                 break;
             case PSSM_BOTTLE_CHECK:
@@ -3705,7 +3714,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
+
         break;
     case CDS_MOVE_TO_SEALING_13:
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
@@ -3722,11 +3731,29 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
                 m_ProgramStatusInfor.SetLastRVPosition(DeviceControl::RV_SEAL_13);
                 m_CleaningDry.CurrentState = CDS_WAIT_HIT_TEMPERATURE;
             }
+            else if (DCL_ERR_DEV_RV_MOTOR_LOSTCURRENTPOSITION == retCode)
+            {
+                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+                m_CleaningDry.CurrentState = CDS_MOVE_TO_INIT_POS;
+            }
             else
             {
                 m_CleaningDry.CurrentState = CDS_READY;
                 m_CleaningDry.StepStartTime = 0;
                 SendOutErrMsg(retCode);
+            }
+        }
+        break;
+    case CDS_MOVE_TO_INIT_POS:
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmd->GetName())
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                SendOutErrMsg(retCode);
+            }
+            else
+            {
+                m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
             }
         }
         break;
@@ -5435,7 +5462,7 @@ void SchedulerMainThreadController::SendSafeReagentFinishedCmd()
         }
         else
         {
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT_NO_CONTAMINATED));
             Q_ASSERT(commandPtrFinish);
             Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
