@@ -707,7 +707,7 @@
         <string id="67175986" text1="Heated reagent tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
         <string id="67175987" text1="Heated air tube: The temperature during is lower than the melting point at %1 ℃." text2=""/>
         <string id="67175988" text1="Heated reagent tube: The temperature is out of range at %1℃." text2=""/>
-        <string id="67175989" text1="Heated air tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
+        <string id="67175989" text1="Heated air tube: The temperature is out of range at %1 ℃." text2=""/>
         <string id="67175990" text1="Retort or Oven heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
         <string id="67175991" text1="Retort or Waxbath heating: Function of heating pad is incorrect. Please check the heating wire and measure resistance of the heating pad. If OK, then ASB5 should be checked!" text2=""/>
         <string id="67175995" text1="Paraffin oven heating: Top sensor cannot reach the target temperature (melting point) before start of paraffin process step. Please check the heating function of paraffin oven." text2=""/>
