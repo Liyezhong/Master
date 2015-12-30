@@ -878,6 +878,12 @@ signals:
      */
     /****************************************************************************/
     void EnableBottleCheck(bool bEnabled);
+    /****************************************************************************/
+    /*!
+     *  \brief  Declaration of signal ProgramActionStopped
+     */
+    /****************************************************************************/
+    void ProgramActionStopped(DataManager::ProgramStatusType_t);
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
 

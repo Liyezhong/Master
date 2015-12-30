@@ -205,8 +205,12 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(this, OnInteractStart(), ui->containerPanelWidget, OnInteractStart());
 
     CONNECTSIGNALSIGNAL(this, UpdateProgram(DataManager::CProgram&), ui->programPanelWidget, UpdateProgram(DataManager::CProgram&));
+	
+	CONNECTSIGNALSLOT(mp_DataConnector, CoolingDown(), this, OnCoolingDown());
+	
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        ui->programPanelWidget, ProgramActionStopped(DataManager::ProgramStatusType_t));
 
-    CONNECTSIGNALSLOT(mp_DataConnector, CoolingDown(), this, OnCoolingDown());
 }
 
 CDashboardWidget::~CDashboardWidget()

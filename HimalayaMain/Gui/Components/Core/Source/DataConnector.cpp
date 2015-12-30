@@ -1941,6 +1941,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
             emit EnableBottleCheck(false);
         }
         break;
+        case DataManager::PAUSE_HAS_BEGUN:
+        {
+            emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);
+        }
+        break;
         default:
         {
             qDebug() << "Do Nothing";
