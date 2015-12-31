@@ -3714,7 +3714,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         Q_ASSERT(commandPtr);
         Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
+        m_CleaningDry.CurrentState = CDS_MOVE_TO_SEALING_13;
         break;
     case CDS_MOVE_TO_SEALING_13:
         CmdMvRV = new CmdRVReqMoveToRVPosition(500, this);
