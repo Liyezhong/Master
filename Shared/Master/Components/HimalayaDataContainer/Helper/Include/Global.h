@@ -61,6 +61,18 @@ typedef enum  {
         PROGRAM_STATUS_ABORTED,
         PROGRAM_STATUS_PAUSED
    } ProgramStatusType_t;
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ProgramStatusType_t
+ */
+/****************************************************************************/
+typedef enum  {
+        COMPLETED_PROGRAM_GENERAL = 0,
+        COMPLETED_PROGRAM_SAFE_REAGENT,
+        COMPLETED_PROGRAM_POWER_FAILURE
+   } CompletedProgramType_t;
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of enum ProgramAcknownedgeType_t
@@ -76,6 +88,8 @@ typedef enum  {
         PROGRAM_RUN_FINISHED_NO_CONTAMINATED,
         PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT,
         PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT_NO_CONTAMINATED,
+        PROGRAM_RUN_FINISHED_AS_POWER_FAILURE,
+        PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED,
         CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT,
 
         PROGRAM_PAUSE_BEGIN,

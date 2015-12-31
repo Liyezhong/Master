@@ -1100,14 +1100,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(m_ProgramStatusInfor.IsRetortContaminted())
                 {
                     //send command to main controller to tell program finished
-                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = GetNewCommandRef();
                     SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
                 }
                 else
                 {
-                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED));
+                    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED));
                     Q_ASSERT(commandPtrFinish);
                     Global::tRefType Ref = GetNewCommandRef();
                     SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));

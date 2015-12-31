@@ -1792,6 +1792,12 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
+        case DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED:
+        {
+            emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_GENERAL, false);
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
         case DataManager::CLEANING_PROGRAM_COMPLETE_AS_SAFE_REAGENT:
         {
             emit CleanPrgmCompleteAsSafeReagent();
@@ -1800,13 +1806,25 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         break;
         case DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT:
         {
-            emit ProgramCompleted(true);
+            emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_SAFE_REAGENT);
             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
-        case DataManager::PROGRAM_RUN_FINISHED_NO_CONTAMINATED:
+        case DataManager::PROGRAM_RUN_FINISHED_AS_SAFE_REAGENT_NO_CONTAMINATED:
         {
-            emit ProgramCompleted(false, false);
+            emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_SAFE_REAGENT, false);
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+        case DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE:
+        {
+            emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_POWER_FAILURE);
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+        case DataManager::PROGRAM_RUN_FINISHED_AS_POWER_FAILURE_NO_CONTAMINATED:
+        {
+            emit ProgramCompleted(DataManager::COMPLETED_PROGRAM_POWER_FAILURE, false);
             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;

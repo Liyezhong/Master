@@ -697,11 +697,12 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramCompleted
-     *  \param  isDueToSafeReagent = safe reagent is due
+     *  \param  completedProgramType = the type of completed program
      *  \param  IsRetortContaminated =  whether Retort is contaminated or not
      */
     /****************************************************************************/
-    void ProgramCompleted(bool isDueToSafeReagent = false, bool IsRetortContaminated = true);
+    void ProgramCompleted(DataManager::CompletedProgramType_t completedProgramType
+                          = DataManager::COMPLETED_PROGRAM_GENERAL, bool IsRetortContaminated = true);
     /****************************************************************************/
     /*!
      *  \brief  Declaration of signal ProgramCompleted

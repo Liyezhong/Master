@@ -150,8 +150,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramBeginAbort(),
                               this, OnProgramBeginAbort());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(bool, bool),
-                              this, OnProgramCompleted(bool, bool));
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(DataManager::CompletedProgramType_t, bool),
+                              this, OnProgramCompleted(DataManager::CompletedProgramType_t, bool));
     CONNECTSIGNALSLOT(mp_DataConnector, CleanPrgmCompleteAsSafeReagent(),
                               this, OnCleanPrgmCompleteAsSafeReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
@@ -539,31 +539,29 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning(const QString& lastReag
             mp_RemoveSpecimenDlg->HideButtons();
             mp_RemoveSpecimenDlg->EnableButton(1, false);
             QString strMsgDisplay(m_strTakeOutSpecimen);
-
-            if (m_ProgramStatus == Completed ||
-            m_ProgramStatus == Aborting || m_ProgramStatus == CompletedAsSafeReagent)
+            QString strTemp;
+            if (m_ProgramStatus == Completed)
             {
-                QString strTemp;
-                if (m_ProgramStatus == Completed)
-                {
-                    strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-                }
-                else if (m_ProgramStatus == Aborting)
-                {
-                    strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-                }
-
-                if (m_ProgramStatus != CompletedAsSafeReagent)
-                {
-                    strMsgDisplay = strTemp + " " + m_strTakeOutSpecimen;
-                    if (m_ProgramStatus == Aborting)
-                    {
-                        m_ProgramStatus = Aborted;
-                    }
-                }
-                m_ProgramStatus = Undefined_ProgramStatus;
-                Core::CGlobalHelper::SetProgramPaused(false);
+                strTemp = m_strProgramCompleteSuccessfully.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
             }
+            else if (m_ProgramStatus == Aborting)
+            {
+                strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            }
+            else if (m_ProgramStatus == CompletedAsSafeReagent)
+            {
+
+                strTemp = m_strProgramCompleteSafeReagent.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            }
+            else if (m_ProgramStatus == CompletedAsPowerFailure)
+            {
+
+                strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            }
+            strMsgDisplay = strTemp + " " + m_strTakeOutSpecimen;
+            m_ProgramStatus = Undefined_ProgramStatus;
+            Core::CGlobalHelper::SetProgramPaused(false);
+
 
             mp_RemoveSpecimenDlg->SetTitle(CommonString::strConfirmMsg);
             mp_RemoveSpecimenDlg->SetText(strMsgDisplay);
@@ -698,13 +696,25 @@ void CDashboardWidget::OnTimerCheckRetortLid()
     }
 }
 
-void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetortContaminated)
+void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t completedProgramType,
+                                          bool IsRetortContaminated)
 {
     ui->programPanelWidget->IsResumeRun(false);
     m_CurProgramStepIndex = -1;
     m_IsDrainingWhenPrgrmCompleted = false;
     QString strTemp;
-    strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    if (DataManager::COMPLETED_PROGRAM_SAFE_REAGENT == completedProgramType)
+    {
+        strTemp = m_strProgramCompleteSafeReagent.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    }
+    else if (DataManager::COMPLETED_PROGRAM_POWER_FAILURE == completedProgramType)
+    {
+        strTemp = m_strProgramComplete.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    }
+    else
+    {
+        strTemp = m_strProgramCompleteSuccessfully.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    }
 
     bool bExecSubsequent = false;
     mp_RemoveSpecimenWhenCompletedDlg = new MainMenu::CMessageDlg(this);
@@ -751,8 +761,10 @@ void CDashboardWidget::OnProgramCompleted(bool isDueToSafeReagent, bool IsRetort
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
-    if (isDueToSafeReagent)
+    if (DataManager::COMPLETED_PROGRAM_SAFE_REAGENT == completedProgramType)
         m_ProgramStatus = CompletedAsSafeReagent;
+    else if (DataManager::COMPLETED_PROGRAM_POWER_FAILURE == completedProgramType)
+        m_ProgramStatus = CompletedAsPowerFailure;
     else
         m_ProgramStatus = Completed;
     Core::CGlobalHelper::SetProgramPaused(false);
@@ -1395,7 +1407,10 @@ Wear respirator properly to prevent the potential harzad of reagent vapor. Don't
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort. And confirm specimen are removed and retort is empty,  then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
-    m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
+    m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", 0, QApplication::UnicodeUTF8);
+    m_strProgramCompleteSuccessfully  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed successfully!", 0, QApplication::UnicodeUTF8);
+    m_strProgramCompleteSafeReagent  = QApplication::translate("Dashboard::CDashboardWidget", "Safe Reagent has completed! Program \"%1\" has aborted!", 0, QApplication::UnicodeUTF8);
+
     m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.", 0, QApplication::UnicodeUTF8);

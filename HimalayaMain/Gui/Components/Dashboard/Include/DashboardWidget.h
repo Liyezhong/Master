@@ -70,6 +70,7 @@ public:
         Aborting,
         Completed,
         CompletedAsSafeReagent,
+        CompletedAsPowerFailure,
         Aborted
     } ProgramStatus_t;
 
@@ -186,6 +187,8 @@ private:
     bool m_ProgramStartReady;
     QString m_strProgramWillComplete;
     QString m_strProgramComplete;
+    QString m_strProgramCompleteSuccessfully;
+    QString m_strProgramCompleteSafeReagent;
     QString m_strTissueProtectPassed;
     QString m_strTissueProtectPassed_Warning;
     QString m_strOvenCoverOpen;
@@ -360,7 +363,9 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/
-    void OnProgramCompleted(bool isDueToSafeReagent = false, bool IsRetortContaminated = true);
+    void OnProgramCompleted(DataManager::CompletedProgramType_t completedProgramType
+                            = DataManager::COMPLETED_PROGRAM_GENERAL,
+                            bool IsRetortContaminated = true);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramRunBegin
