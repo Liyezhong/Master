@@ -3745,7 +3745,7 @@ void SchedulerMainThreadController::DoCleaningDryStep(ControlCommandType_t ctrlC
         }
         break;
     case CDS_MOVE_TO_INIT_POS:
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmd->GetName())
+        if (cmd != NULL && ("Scheduler::RVReqMoveToInitialPosition" == cmd->GetName()))
         {
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
