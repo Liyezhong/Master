@@ -34,9 +34,10 @@
 			<Step ID="1" Type="MSG" StringID="67176223" ButtonType="OK" StatusBar="YES"/>
 		</Event>
 		<Event Code="" ErrorID="520070700" ErrorType="INFO" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
-			<Step ID="0" Type="MSG" StringID="67176229" ButtonType="YES_NO" NextStepOnClickYES="1" NextStepOnClickNO="2" TimeOut="30s" StatusBar="YES"/>
+			<Step ID="0" Type="MSG" StringID="67176229" ButtonType="YES_NO_CANCEL" NextStepOnClickYES="1" NextStepOnClickNO="2" NextStepOnClickCANCEL="3" NextStepOnTimeOut="3" TimeOut="30s" StatusBar="YES"/>
 			<Step ID="1" Type="ACT" Action="RS_PAUSE_CMD_YES"/>
 			<Step ID="2" Type="ACT" Action="RS_PAUSE_CMD_NO"/>
+			<Step ID="3" Type="ACT" Action="RS_PAUSE_CMD_CANCEL"/>
 		</Event>
 		<Event Code="" ErrorID="520070001" ErrorType="ERROR" AlarmType="" LogLevel="High" UserLog="TRUE" EventSource="SCHEDULER">
 			<Step ID="0" Type="MSG" StringID="67176219" ButtonType="OK" StatusBar="YES"/>

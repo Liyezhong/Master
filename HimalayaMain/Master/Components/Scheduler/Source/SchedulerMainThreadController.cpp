@@ -2209,6 +2209,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
             return CTRL_CMD_PAUSE;
         }
+        if (cmd == "rs_pause_cmd_cancel")
+        {
+            MsgClasses::CmdProgramAcknowledge* CmdPauseCmdCancel = new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_ENABLE);
+            Q_ASSERT(CmdPauseCmdCancel);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(CmdPauseCmdCancel));
+            return CTRL_CMD_NONE;
+        }
         if (cmd.startsWith("ALARM_", Qt::CaseInsensitive))
         {
             QString str = cmd;

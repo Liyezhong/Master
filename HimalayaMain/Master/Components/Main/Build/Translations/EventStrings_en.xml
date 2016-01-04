@@ -216,7 +216,7 @@
         <string id="67175202" text1="Still need %1 to heat oven for melting paraffin." text2=""/>
         <string id="67175203" text1="Aborting program…" text2=""/>
         <string id="67175204" text1="Program aborted." text2=""/>
-        <string id="67175205" text1="Program paused." text2=""/>
+        <string id="67175205" text1="The program has been paused." text2=""/>
         <string id="67175207" text1="Draining…" text2=""/>
         <string id="67175208" text1="Waiting to fill paraffin." text2=""/>
         <string id="67175209" text1="Heating the level sensor for filling" text2=""/>
