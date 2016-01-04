@@ -1356,7 +1356,7 @@
 	     <Step ID="0" Type="MSG" StringID="67175204" ButtonType="" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175205" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_OVEN_PAUSE" LogLevel="High" UserLog="TRUE">
-	     <Step ID="0" Type="MSG" StringID="67175205" ButtonType="" StatusBar=""/>
+	     <Step ID="0" Type="MSG" StringID="67175205" ButtonType="OK" StatusBar=""/>
 	    </Event>
 	    <Event Code="" ErrorID="67175206" ErrorType="INFO" AlarmType="No" Name="EVENT_SCHEDULER_RELEASE_PREASURE" LogLevel="High" UserLog="FALSE">
 	     <Step ID="0" Type="MSG" StringID="67175206" ButtonType="" StatusBar=""/>

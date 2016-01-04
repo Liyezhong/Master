@@ -271,7 +271,7 @@
         <string id="16973842" text1="selecting timeout" text2=""/>
         <string id="67176227" text1="Paraffin temperature in paraffin bath is higher than %1. Please check paraffin melting status." text2=""/>
         <string id="67176228" text1="Paraffin temperature in paraffin bath is lower than %1. Please check paraffin melting status." text2=""/>
-        <string id="67176229" text1="Please confirm to drain the retort for adding new baskets. Wear respirator properly to prevent the potential harzad of reagent vapor. Don't touch the level sensor.It's hot!" text2=""/>
+        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets;Click No and the reagnet remains in the retort;Click Cancel to cancel the pause operation.Wear respirator properly to prevent the potential hazard of reagent vapor.Don't touch the level sensor.It's hot!" text2=""/>
         <string id="67175225" text1="Start program %1. Supervisor acknowledged by pressing button &quot;Yes&quot; to start the Program with Expired Reagent:%2, %3." text2=""/>
         <string id="67176213" text1="Please check paraffin status in paraffin bath, if the paraffin level is lower than the minimum level, please add liquid paraffin into paraffin bath within 15 minutes." text2=""/>
         <string id="67176212" text1="Please check reagent bottles status, if reagent level is lower than the minimum level, please add reagent to the bottle within 15 minutes." text2=""/>
