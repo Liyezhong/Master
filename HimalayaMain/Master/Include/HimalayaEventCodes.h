@@ -343,5 +343,6 @@ const quint32 EVENT_DM_PROG_REMMOVE_PROGRAM = 50331774;	///< User remove the pro
 const quint32 EVENT_DM_CHANGE_TO_STANDARD_USER = 50331775;	///< Change the user role to the standard user.
 const quint32 EVENT_DM_CHANGE_TO_SUPERVISOR = 50331776;	///< Change the user role to Supervisor.
 const quint32 EVENT_DM_CHANGE_TO_SERVICE = 50331777;	///< Change the user role to Service.
+const quint32 EVENT_DM_STORAGE_RUN_OUT = 50331778;	///< The instrument storage is full. Please call for service.
 #endif // HIMALAYAEVENTCODES_H
 
