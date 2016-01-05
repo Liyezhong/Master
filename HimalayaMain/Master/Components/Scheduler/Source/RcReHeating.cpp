@@ -119,6 +119,10 @@ void CRcReHeating::HandleInint()
              || (QString::number(m_LastScenario).left(1) == "2" && QString::number(m_LastScenario).right(1) =="6"))
     {
         mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_POWER_FAILURE_FILLINGDRAINING_STEP);
+        if(m_Is5MinTimeOut)
+        {
+            mp_SchedulerThreadController->SendPowerFailureMsg();
+        }
     }
     m_CurrentStep = PRESSURE_CALIBRATION;
 }
