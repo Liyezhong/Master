@@ -640,10 +640,10 @@ void CDashboardWidget::OnProgramAborted(bool IsRetortContaminated)
         mp_RemoveSpecimenWhenAbortedDlg->HideButtons();
         mp_RemoveSpecimenWhenAbortedDlg->EnableButton(1, false);
         m_pCheckRetortLidTimer->start();
+        m_ShowReadyStartPrompt = true;
         if (mp_RemoveSpecimenWhenAbortedDlg->exec())
         {
             m_pCheckRetortLidTimer->stop();
-            m_ShowReadyStartPrompt = true;
             mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
             ui->programPanelWidget->ChangeStartButtonToStartState();
             ui->programPanelWidget->EnableStartButton(true);
@@ -725,8 +725,8 @@ void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t co
     {
         mp_RemoveSpecimenWhenCompletedDlg->SetTitle(CommonString::strInforMsg);
         mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp);
-        mp_RemoveSpecimenWhenCompletedDlg->exec();
         m_ShowReadyStartPrompt = true;
+        mp_RemoveSpecimenWhenCompletedDlg->exec();
         bExecSubsequent = true;
     }
     else if (!IsRetortContaminated && (!m_SelectedProgramId.isEmpty() && m_SelectedProgramId.at(0) != 'C'))
@@ -735,9 +735,9 @@ void CDashboardWidget::OnProgramCompleted(DataManager::CompletedProgramType_t co
         mp_RemoveSpecimenWhenCompletedDlg->SetText(strTemp + " " + m_strTakeOutSpecimen);
         mp_RemoveSpecimenWhenCompletedDlg->EnableButton(1, false);
         m_pCheckRetortLidTimer->start();
+        m_ShowReadyStartPrompt = true;
         (void)mp_RemoveSpecimenWhenCompletedDlg->exec();
         m_pCheckRetortLidTimer->stop();
-        m_ShowReadyStartPrompt = true;
         bExecSubsequent = true;
         mp_DataConnector->SendTakeOutSpecimenFinishedCMD();
     }
