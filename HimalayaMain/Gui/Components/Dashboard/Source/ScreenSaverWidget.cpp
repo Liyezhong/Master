@@ -2,6 +2,7 @@
 #include "ui_ScreenSaverWidget.h"
 #include <QTimer>
 #include "MainMenu/Include/MainWindow.h"
+#include "Core/Include/GlobalHelper.h"
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *p) :
     QWidget(p),
@@ -42,7 +43,7 @@ void ScreenSaverWidget::AppIdleForLongTime()
 {
     m_timer->stop();
 
-    if (MainMenu::CMainWindow::GetProcessRunningStatus())
+    if (MainMenu::CMainWindow::GetProcessRunningStatus() || Core::CGlobalHelper::GetProgramPaused())
     {
         ui->lblWarning->setVisible(true);
     }
