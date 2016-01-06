@@ -1404,7 +1404,7 @@ void CDashboardWidget::RetranslateUI()
 Wear respirator properly to prevent the potential harzad of reagent vapor. Don't touch the level sensor. It's hot!", 0, QApplication::UnicodeUTF8);
     m_strItIsPausing = QApplication::translate("Dashboard::CDashboardWidget", "Pausing...\nDon't open the retort lid and unplug any reagent bottles.", 0, QApplication::UnicodeUTF8);
     m_strWaitRotaryValveHeatingPrompt = QApplication::translate("Dashboard::CDashboardWidget", "Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.", 0, QApplication::UnicodeUTF8);
-    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please remove the specimens from the retort. And confirm specimen are removed and retort is empty,  then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
+    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press \"Ok\" button.", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated. Please start the cleaning program.", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" has completed!", 0, QApplication::UnicodeUTF8);

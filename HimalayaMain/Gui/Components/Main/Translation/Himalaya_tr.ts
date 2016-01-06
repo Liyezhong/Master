@@ -1126,161 +1126,161 @@ Tarihi</translation>
         <translation>Değişiklikler kaydedilemez.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1115"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
         <source>Startup</source>
         <translation>Başlat</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1116"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <source>Initializing device communication ...</source>
         <translation>Cihaz iletişimi başlatılıyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1117"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1121"/>
         <source>Disconnect</source>
         <translation>Bağlantıyı kes</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1118"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
         <source>Reinitializing device communication ...</source>
         <translation>Cihaz iletişimi tekrar başlatılıyor ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
         <source>Information</source>
         <translation>Bilgi</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2038"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2151"/>
         <source>OK</source>
         <translation>Tamam</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1128"/>
         <source>Operation ongoing</source>
         <translation>İşlem devam ediyor</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1125"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
         <source>Saving Settings ...</source>
         <translation>Ayarlar Kaydediliyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
         <source>User Export</source>
         <translation>Kullanıcı Dışa Aktarım</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1131"/>
         <source>Exporting user data ...</source>
         <translation>Kullanıcı verileri aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
         <source>Service Export</source>
         <translation>Servis Dışa Aktarım</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1134"/>
         <source>Exporting service data ...</source>
         <translation>Servis verileri aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1132"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
         <source>Import</source>
         <translation>İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1137"/>
         <source>Importing data ...</source>
         <translation>Veriler alınıyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1135"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1139"/>
         <source>Log Files</source>
         <translation>Günlük Dosyaları</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1140"/>
         <source>Getting the daily run log file ...</source>
         <translation>Gündelik çalıştırma günlük dosyası alınıyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1329"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1333"/>
         <source>Software Update</source>
         <translation>Yazılım Güncellemesi</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1331"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1335"/>
         <source>Updating the software ...</source>
         <translation>Yazılım güncelleniyor...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2043"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Yeni Yazılım mevcut. Güncellemeyi başlatmak üzere &quot;Uzaktan Yazılım Güncelleme&quot;yi tıklayın.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
         <source>New software is not available.</source>
         <translation>Yeni Yazılım mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2055"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Uzaktan Bakım Sunucusundan yeni yazılım indirme başarısız oldu. Lütfen servisle bağlantıya geçin.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>Yeni yazılımın uzak sunucudan indirilmesi tamamlandı.  Yazılım güncellemesini başlatmak için &quot;Tamam&quot;a basın.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2067"/>
         <source>Software update failed.</source>
         <translation>Yazılım güncellemesi başarısız oldu.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2096"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Şimdi uzak sunucudan güncelleme paketini indirin. Lütfen bekleyin...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2126"/>
         <source>Confirmation Message</source>
         <translation>Onay Mesajı</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Uzak oturum, uzak kullanıcı tarafından talep edildi.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2149"/>
         <source>Information Message</source>
         <translation>Bilgi Mesajı</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2154"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>Uzak oturum, uzak kullanıcı tarafından sonlandırıldı.</translation>
     </message>
@@ -1622,137 +1622,158 @@ Tarihi</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1392"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>&quot;%1&quot; / &quot;%2&quot; program adımı için güvenli reaktif yok. Devam etmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1315"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1393"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>Programın &quot;%1&quot; / &quot;%2&quot; adımı karşılık gelen reaktif istasyonunu bulamıyor. Bir istasyon programda sadece bir kere kullanılabilir. Lütfen bu adımdaki reaktif için ayrı bir istasyon atayın.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1316"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1394"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>&quot;%2&quot; / &quot;%3&quot; Program adımında &quot;%1&quot; İstasyonu Boş olarak ayarlandığı için programı başlatamazsınız.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1317"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1395"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>Parafin tam olarak erimediği ve ilk program adımı sabitleme reaktifi olmadığı için program başlatılamaz.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1318"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1396"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>Programı %1 saat %2 dakika %3 saniye sonra başlatabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1397"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>Parafin henüz tam olarak erimediği için programın ilk adımında kısa bir bekleme olacak. Devam etmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1398"/>
         <source>Enter number of Cassettes:</source>
         <translation>Kaset sayısını girin:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1399"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>&quot;%1&quot; programı tamamlandı! Hazneyi tahliye etmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1322"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1400"/>
         <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
         <translation>Doku güvenlik işlemi başarıyla tamamlandı. Hazneyi tahliye etmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1323"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1401"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
         <translation>Doku güvenlik işlemi uyarılarla tamamlandı. Hazneyi tahliye etmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1402"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>Fırının kapağı açık. Lütfen kapağı kapatın ve TAMAM&apos;ı tıklayın.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
-        <source>Retort lid was opened. Please close it and then click OK.</source>
-        <translation>Haznenin kapağı açıldı. Lütfen kapağı kapatın ve TAMAM&apos;ı tıklayın.</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1403"/>
+        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential harzad of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1326"/>
-        <source>Pausing...</source>
-        <translation>Duraklatılıyor...</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1405"/>
+        <source>Pausing...
+Don&apos;t open the retort lid and unplug any reagent bottles.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1327"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1408"/>
+        <source>The retort is contaminated. Please start the cleaning program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
+        <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <source>Ready to start a new program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1427"/>
+        <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1406"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>Cihazda ön ısıtma yapılıyor. Cihazın kullanıma hazır olması 30 dakikaya kadar süre alabilir.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1328"/>
-        <source>Please remove the specimens from the retort!</source>
-        <translation>Lütfen numuneleri hazneden kaldırın!</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1407"/>
+        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1329"/>
-        <source>The retort is contaminated. Please lock the retort and select Cleaning Program to run!</source>
-        <translation>Hazne kontamine oldu. Lütfen hazneyi kilitleyin ve Temzl. Progr.&apos;nı seçerek çalıştırın!</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1409"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>&quot;%1&quot; programı iptal edildi!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1410"/>
+        <source>Program &quot;%1&quot; has completed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1411"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>&quot;%1&quot; programı başarıyla tamamlandı!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
+        <source>Safe Reagent has completed! Program &quot;%1&quot; has aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1414"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>Lütfen hazneyi kapatıp kilitleyin ve yeniden deneyin!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>RYS KAPALI durumdayken Leica Programı çalıştırılamaz.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1334"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>Bu program için gereken reaktiflerin süresi doldu. Lütfen süresi dolan reaktifleri yenileriyle değiştirin! Program başlamayacak.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1335"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>Gerçekten Programı Süresi Dolan Reaktiflerle başlatmak istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1336"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>Lütfen yeni eklenen kaset sayısını girin:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
         <source>Did you add new cassettes?</source>
         <translation>Yeni kaset eklediniz mi?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>Bekleme süresi beş dakikadan uzun olduğundan, cihaz yeniden ısıtılacak ve güvenli reaktiflerle doldurulacak.</translation>
     </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1339"/>
-        <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
-        <translation>Hazne sıcaklığı çok yüksek. Lütfen numuneleri yerleştirip bir sonraki programı başlatmadan önce haznenin soğumasını bekleyin.</translation>
-    </message>
     <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Seçili program başlatılamıyor; çünkü programın Parafin sıcaklığı, belirlenmiş Parafin banyosu sıcaklığından farklı (2°C fark). Bu programdaki Parafin sıcaklığını Parafin banyosu sıcaklığına uyacak biçimde adapte ederseniz program hemen başlatılabilir. Parafin banyosu sıcaklığı, Parafin program sıcaklığına eşit olacak biçimde artırılırsa program 15 saate kadar bir süreyle başlayamaz! Lütfen Parafin sıcaklığının değiştirilmesini onaylayın.</translation>
     </message>
@@ -1765,15 +1786,15 @@ Tarihi</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="48"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="54"/>
         <source>Program1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="96"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="138"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="180"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="225"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="102"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="144"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="186"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="231"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -1873,12 +1894,12 @@ Tarihi</translation>
         <translation>Adım Süresi:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="132"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="135"/>
         <source>End of program</source>
         <translation>Program sonu</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="176"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="179"/>
         <source>Program Details</source>
         <translation>Program Detayları</translation>
     </message>
@@ -2583,23 +2604,23 @@ Tarihi</translation>
 <context>
     <name>Programs::CProgramWidget</name>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="72"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="75"/>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="615"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="82"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="85"/>
         <source>New</source>
         <translation>Yeni</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="92"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="95"/>
         <source>Copy</source>
         <translation>Kopyala</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="102"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="105"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
@@ -3116,11 +3137,9 @@ Tarihi</translation>
 </context>
 <context>
     <name>ScreenSaverWidget</name>
-    <message>
-        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
-        <source>Program is running.
-Please do not open the retort lid!
-Please do not unplug any bottles!</source>
+    <message utf8="true">
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="70"/>
+        <source>In processing…</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

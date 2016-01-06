@@ -1126,161 +1126,161 @@ cambio</translation>
         <translation>No se pueden guardar los cambios.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1115"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
         <source>Startup</source>
         <translation>Inicio</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1116"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
         <source>Initializing device communication ...</source>
         <translation>Inicializando comunicación del dispositivo...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1117"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1121"/>
         <source>Disconnect</source>
         <translation>Desconectar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1118"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
         <source>Reinitializing device communication ...</source>
         <translation>Reinicializando la comunicación del dispositivo…</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1120"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2015"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2036"/>
         <source>Information</source>
         <translation>Información</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1122"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
         <source>Warning</source>
         <translation>Advertencia</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1123"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2017"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2107"/>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2038"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2151"/>
         <source>OK</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1124"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1128"/>
         <source>Operation ongoing</source>
         <translation>Operación en curso</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1125"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
         <source>Saving Settings ...</source>
         <translation>Guardando ajustes…</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1126"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
         <source>User Export</source>
         <translation>Exportación de usuario</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1127"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1131"/>
         <source>Exporting user data ...</source>
         <translation>Exportando datos de usuario...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1129"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
         <source>Service Export</source>
         <translation>Exportación de servicio</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1130"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1134"/>
         <source>Exporting service data ...</source>
         <translation>Exportando datos de servicio...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1132"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1137"/>
         <source>Importing data ...</source>
         <translation>Importando datos...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1135"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1139"/>
         <source>Log Files</source>
         <translation>Archivos de registro</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1136"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1140"/>
         <source>Getting the daily run log file ...</source>
         <translation>Obteniendo el archivo de protocolo de ejecución diaria…</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1329"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1333"/>
         <source>Software Update</source>
         <translation>Actualización de software</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1331"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1335"/>
         <source>Updating the software ...</source>
         <translation>Actualizando el software...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2022"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2043"/>
         <source>New software is available. Click on &quot;Remote SW Update&quot; to start the update.</source>
         <translation>Hay nuevo software disponible. Haga clic en «Actualización remota de software» para iniciar la actualización.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2028"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2049"/>
         <source>New software is not available.</source>
         <translation>El nuevo software no está disponible.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2034"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2055"/>
         <source>Failed to download the new software from RCServer. Please contact service.</source>
         <translation>Fallo al descargar el nuevo software desde el servidor de asistencia remota. Contacte con el servicio.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2039"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2060"/>
         <source>Downloading of the new software from remote server is complete.  Press &quot;Ok&quot; to start thesoftware update.</source>
         <translation>Ha finalizado la descarga del nuevo software desde el servidor remoto.  Pulse «Aceptar» para iniciar la actualización del software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2046"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2067"/>
         <source>Software update failed.</source>
         <translation>Fallo en la actualización de software.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2075"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2096"/>
         <source>Now download the update package from the remote server. Please wait...</source>
         <translation>Ahora, descargue ahora el paquete de actualización desde el servidor remoto. Espere…</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2105"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2126"/>
         <source>Confirmation Message</source>
         <translation>Mensaje de confirmación</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2109"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2130"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2112"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
         <source>Remote Session has been requested by a remote user.</source>
         <translation>Un usuario remoto ha solicitado la sesión remota.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2128"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2149"/>
         <source>Information Message</source>
         <translation>Mensaje de información</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="2133"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="2154"/>
         <source>Remote session has been ended by the remote user.</source>
         <translation>El usuario remoto ha finalizado la sesión remota.</translation>
     </message>
@@ -1622,137 +1622,158 @@ cambio</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1314"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1392"/>
         <source>No safe reagent for the Program step &quot;%1&quot; of &quot;%2&quot;. Would you like to continue?</source>
         <translation>Ningún reactivo seguro para el paso del programa &quot;%1&quot; de &quot;%2&quot;. ¿Desea continuar?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1315"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1393"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station.  A station can be used only once in the program. Please assign a separate station for the reagent of this step.</source>
         <translation>El paso del programa &quot;%1&quot; de &quot;%2&quot; no encuentra la estación del reactivo correspondiente. Cada estación se puede utilizar solo una vez en el programa. Asigne una estación aparte para el reactivo de este paso.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1316"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1394"/>
         <source>You cannot start the program, because Station &quot;%1&quot; is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;.</source>
         <translation>No se puede iniciar el programa porque la estación &quot;%1&quot; está establecida como vacía en el paso del programa &quot;%2&quot; de &quot;%3&quot;.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1317"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1395"/>
         <source>Program cannot start because the paraffin is not melted completely and the first program step is not a fixation reagent.</source>
         <translation>El programa no se puede iniciar porque la parafina no se ha fundido por completo y el primer paso del programa no es un reactivo de fijación.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1318"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1396"/>
         <source>You can start program in %1 hours %2 minutes %3 seconds.</source>
         <translation>Puede iniciar el programa en %1 hora %2 minutos %3 segundos.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1319"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1397"/>
         <source>Program will be delayed briefly in the first step as the paraffin is not melted completely. Would you like to continue?</source>
         <translation>El programa se retrasará brevemente en el primer paso porque la parafina no se ha fundido por completo. ¿Desea continuar?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1320"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1398"/>
         <source>Enter number of Cassettes:</source>
         <translation>Introducir el número de casetes:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1321"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1399"/>
         <source>Program &quot;%1&quot; has completed! Would you like to drain the retort?</source>
         <translation>¡El programa &quot;%1&quot; ha finalizado! ¿Desea vaciar la retorta?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1322"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1400"/>
         <source>Tissue safety process has completed successfully. Would you like to drain the retort?</source>
         <translation>El proceso de seguridad del tejido ha finalizado correctamente. ¿Desea vaciar la retorta?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1323"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1401"/>
         <source>Tissue safety process has completed with warning. Would you like to drain the retort?</source>
         <translation>El proceso de seguridad del tejido ha finalizado con advertencias. ¿Desea vaciar la retorta?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1324"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1402"/>
         <source>The oven cover is open. Please close it then click the OK button.</source>
         <translation>La cubierta del horno está abierta. Cierre y haga clic en el botón Aceptar.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1325"/>
-        <source>Retort lid was opened. Please close it and then click OK.</source>
-        <translation>La tapa de la retorta estaba abierta. Ciérrela y haga clic en Aceptar.</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1403"/>
+        <source>Retort lid was opened. Please close it and then click OK. Wear respirator properly to prevent the potential harzad of reagent vapor. Don&apos;t touch the level sensor. It&apos;s hot!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1326"/>
-        <source>Pausing...</source>
-        <translation>Pausando…</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1405"/>
+        <source>Pausing...
+Don&apos;t open the retort lid and unplug any reagent bottles.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1327"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1408"/>
+        <source>The retort is contaminated. Please start the cleaning program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1421"/>
+        <source>Retort temperature is too high. Please allow the retort to cool down before inserting specimens and starting the next program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1426"/>
+        <source>Ready to start a new program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1427"/>
+        <source>Please check the level of all reagents and clean the retort level sensor, the sealing ring of the retort and the retort filter. Reinstall the retort filter after cleaning. Load the specimens into the retort and make sure that the retort is locked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1406"/>
         <source>Instrument is pre-heating. Wait time may be up to 30 minutes before the instrument is ready to use.</source>
         <translation>El instrumento se está precalentando. El tiempo de espera puede ser de hasta 30 minutos para que el instrumento esté listo.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1328"/>
-        <source>Please remove the specimens from the retort!</source>
-        <translation>¡Retire las muestras de la retorta!</translation>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1407"/>
+        <source>Remove specimen and lock the retort. And confirm specimen are removed and retort is empty, then press &quot;Ok&quot; button.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1329"/>
-        <source>The retort is contaminated. Please lock the retort and select Cleaning Program to run!</source>
-        <translation>La retorta está contaminada. Cierre la retorta y seleccione el programa de limpieza para ejecutarlo.</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1330"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1409"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation>¡El programa &quot;%1&quot; se ha anulado!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1331"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1410"/>
+        <source>Program &quot;%1&quot; has completed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1411"/>
         <source>Program &quot;%1&quot; has completed successfully!</source>
         <translation>¡El programa &quot;%1&quot; ha finalizado correctamente!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1332"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1412"/>
+        <source>Safe Reagent has completed! Program &quot;%1&quot; has aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1414"/>
         <source>Please close and lock the retort, then try again!</source>
         <translation>¡Cierre y bloquee la retorta e inténtelo de nuevo!</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1333"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1415"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
         <translation>El programa de Leica no se puede utilizar con el EMC desactivado.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1334"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1416"/>
         <source>Reagents needed for this program are expired. Please replace the expired ones with fresh reagents! Program will not start.</source>
         <translation>Los reactivos necesarios para este programa han caducado. ¡Sustituya los caducados por reactivos nuevos! El programa no se iniciará.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1335"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1417"/>
         <source>Do you really want to start the Program with Expired Reagents?</source>
         <translation>¿Realmente desea iniciar el programa con los reactivos caducados?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1336"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1418"/>
         <source>Please enter the number of new-added cassettes:</source>
         <translation>Introduzca el número de casetes nuevos añadidos:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1337"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1419"/>
         <source>Did you add new cassettes?</source>
         <translation>¿Ha añadido nuevos casetes?</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1338"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1420"/>
         <source>Because the wait time is more than five minutes, the instrument will be re-heated and filled with safe reagents.</source>
         <translation>Debido a que el tiempo de espera es más de cinco minutos, el instrumento se volverá a calentar y llenar con reactivos seguros.</translation>
     </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1339"/>
-        <source>Retort temperature is too high. Please allow the retort to coo down before inserting specimens and starting the next program.</source>
-        <translation>La temperatura de la retorta es demasiado alta. Deje que la retorta se enfríe antes de introducir muestras y comenzar el siguiente programa.</translation>
-    </message>
     <message utf8="true">
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1340"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="1422"/>
         <source>Starting the chosen program is impossible, because its Paraffin temperature is differing from set Paraffin bath temperature (deviation 2°C).Program can be started immediately, if Paraffin temperature in this program is adapted to match the Paraffin bath temperature.Program is impossible to start for up to 15 hours if Paraffin bath temperature is increased to equal with Paraffin program temperature!Please confirm modifying Paraffin temperature.</source>
         <translation>Es imposible iniciar el programa elegido porque la temperatura de su parafina difiere de la temperatura del baño establecida (desviación de 2 °C). El programa se puede iniciar de inmediato si la temperatura de la parafina de este programa está adaptada para que coincida con la temperatura del baño de parafina. ¡Es imposible iniciar el programa hasta dentro de 15 horas si la temperatura del baño de parafina se aumenta para igualarla a la temperatura del programa de parafina! Confirme la modificación de la temperatura de la parafina.</translation>
     </message>
@@ -1765,15 +1786,15 @@ cambio</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="48"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="54"/>
         <source>Program1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="96"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="138"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="180"/>
-        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="225"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="102"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="144"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="186"/>
+        <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="231"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -1873,12 +1894,12 @@ cambio</translation>
         <translation>Tiempo paso:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="132"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="135"/>
         <source>End of program</source>
         <translation>Fin del programa</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="176"/>
+        <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="179"/>
         <source>Program Details</source>
         <translation>Detalles del programa</translation>
     </message>
@@ -2583,23 +2604,23 @@ cambio</translation>
 <context>
     <name>Programs::CProgramWidget</name>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="72"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="75"/>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="615"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="82"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="85"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="92"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="95"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="102"/>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="105"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
@@ -3116,11 +3137,9 @@ cambio</translation>
 </context>
 <context>
     <name>ScreenSaverWidget</name>
-    <message>
-        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="64"/>
-        <source>Program is running.
-Please do not open the retort lid!
-Please do not unplug any bottles!</source>
+    <message utf8="true">
+        <location filename="../../Dashboard/Forms/ScreenSaverWidget.ui" line="70"/>
+        <source>In processing…</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
