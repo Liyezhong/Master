@@ -175,7 +175,7 @@
         <string id="50331767" text1="A pausa excede 10 minutos. Continue o programa o mais breve possível!" text2=""/>
         <string id="50331768" text1="Não é possível continuar o programa. A pausa excede 15 minutos." text2=""/>
         <string id="50331651" text1="Biópsia" text2=""/>
-        <string id="50331652" text1="Prog. limpeza" text2=""/>
+        <string id="50331652" text1="Prog. Limpeza" text2=""/>
         <string id="50331650" text1="À noite" text2=""/>
         <string id="50331671" text1="Álcool de limpeza" text2=""/>
         <string id="50331670" text1="Xileno de limpeza" text2=""/>
@@ -216,7 +216,6 @@
         <string id="67175202" text1="Necessário %1 aquecer o forno para fusão da parafina." text2=""/>
         <string id="67175203" text1="Cancelando…" text2=""/>
         <string id="67175204" text1="Programa cancelado." text2=""/>
-        <string id="67175205" text1="Programa pausado." text2=""/>
         <string id="67175207" text1="Drenando..." text2=""/>
         <string id="67175208" text1="Aguardando parafina." text2=""/>
         <string id="67175209" text1="Aquecendo o sensor de nível para enchimento" text2=""/>
@@ -244,14 +243,11 @@
         <string id="67176201" text1="ID do erro %1! Ligue para a assistência técnica!" text2=""/>
         <string id="67176202" text1="ID do erro %1! Falha no sistema de exaustão! Informe a assistência técnica!" text2=""/>
         <string id="67176203" text1="ID do erro %1! Ligue para a assistência técnica!" text2=""/>
-        <string id="67176204" text1="ID do erro %1! Remova e proteja as amostras.  Ligue para a assistência técnica!" text2=""/>
         <string id="67176207" text1="Sistema de alarme local não conectado! Conecte o dispositivo com sistema de alarme local" text2=""/>
         <string id="67176208" text1="Feche a tampa do forno de parafina!" text2=""/>
         <string id="67176209" text1="Feche a tampa da retorta e confirme no botão Retry." text2=""/>
         <string id="67176210" text1="Falha no teste de pressão! Limpe o anel de vedação e a parte superior da retorta como descrito no manual do usuário." text2=""/>
         <string id="67176211" text1="Sistema de alarme remoto não conectado! Conecte o dispositivo com sistema de alarme remoto." text2=""/>
-        <string id="67176212" text1="Verifique o status dos fracos de reagentes. Se o nível dos reagentes estiver abaixo do nível mínimo, adicione reagente em 15 minutos." text2=""/>
-        <string id="67176214" text1="O protocolo foi interrompido por falha de energia. Cancele o protocolo e remova as amostras." text2=""/>
         <string id="67176216" text1="Falha no reaquecimento no processo de recuperação por falha de energia. Ligue para a assistência técnica." text2=""/>
         <string id="67176217" text1="Falha no processo de recuperação por falha de energia. Ligue para a assistência técnica." text2=""/>
         <string id="67176218" text1="Erros de sistema. Ligue para a assistência técnica." text2=""/>
@@ -280,6 +276,16 @@
         <string id="67176221" text1="Error ID %1! In whole soaking, some process interval time out 4 minutes." text2=""/>
         <string id="67176222" text1="Error ID %1! Process end time out." text2=""/>
         <string id="67174402" text1="Error happened during Slaves initializing %1." text2=""/>
+        <string id="67175226" text1="Finish processing of the last step and wait for user confirming to drain the retort." text2=""/>
+        <string id="67176215" text1="The rotary valve position is uncertain due to power failure. Please call for service." text2=""/>
+        <string id="67176229" text1="Click Yes to drain the retort empty for adding new baskets; Click No and the reagent remains in the retort; Click Cancel to cancel the pause operation. Wear respirator properly to prevent the potential hazard of reagent vapor. Don't touch the level sensor. It's hot!" text2=""/>
+        <string id="67175205" text1="The program has been paused." text2=""/>
+        <string id="67175230" text1="Because user paused the program, the program end time will be updated to %1." text2=""/>
+        <string id="67175188" text1="Draining for 10 seconds. Do not open the retort lid." text2=""/>
+        <string id="67175187" text1="Lock the retort, then press ok button." text2=""/>
+        <string id="67176214" text1="Program was interrupted by power failure. Please abort the program." text2=""/>
+        <string id="50331778" text1="The instrument storage is full. Please call for service." text2=""/>
+        <string id="67176204" text1="Error ID %1! Please call service!" text2=""/>
         <string id="16843520" text1="Sound files for alarm are missing." text2=""/>
         <string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
         <string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
@@ -642,10 +648,10 @@
         <string id="67174998" text1="Start rotary valve heating in scenario:%1, the target temperature:%2." text2=""/>
         <string id="67174999" text1="Start LA system(%1) heating in scenario:%2, the target temperature:%3." text2=""/>
         <string id="67175000" text1="LA Tube2 heating status is off." text2=""/>
-        <string id="67175169" text1="Reheating for 200, 211 and 260 step." text2=""/>
-        <string id="67175170" text1="Reheating for reagents step." text2=""/>
-        <string id="67175171" text1="Reheating for paraffin step." text2=""/>
-        <string id="67175172" text1="Reheating for 203, 281-297 step." text2=""/>
+        <string id="67175169" text1="Reheating for 200, 260, 203, 2*1 or 2*7 step." text2=""/>
+        <string id="67175170" text1="Reheating for 2*3 or 2*5 step." text2=""/>
+        <string id="67175171" text1="Reheating for 2*4 step." text2=""/>
+        <string id="67175172" text1="Reheating for 2*2 or 2*6 step." text2=""/>
         <string id="67175184" text1="Scheduler enters the idle state." text2=""/>
         <string id="67175185" text1="Scheduler enters the error state." text2=""/>
         <string id="67175201" text1="Set the rotary valve position to %1." text2=""/>
@@ -661,7 +667,7 @@
         <string id="67175941" text1="Station no. %1 is filled with an insufficient amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level." text2=""/>
         <string id="67175942" text1="Station no. %1 is filled with an insufficient amount of reagent. Please check if the reagent station or wax-bath is filled to the correct level. Station no. %1 is filling with an insufficient amount of reagent (retry)." text2=""/>
         <string id="67175943" text1="Draining of retort to station %1 failed during processing! The max pressure is %2 kPa. Draining of retort to station %1 failed during retry! The max pressure is %2 kPa." text2=""/>
-        <string id="67175944" text1="Filling of retort from station failed during processing! Filling time exceeds 4 minutes. Tube to this station is likely restricted or blocked (potentially by paraffin). Check bottle connector for any blockage and check tube inside bottle for kinks. If no fault found there, please use the station cleaning program. This program will flush the tube to this station using the cleaning xylene bottle first, followed by the cleaning alcohol bottle." text2=""/>
+        <string id="67175944" text1="Filling of retort from station failed during processing! Filling time exceeds 4 minutes. Tube to this station is likely to be restricted or blocked, (potentially by paraffin). Check bottle connector for any blockage and check tube inside bottle for kinks. If no fault found there, please use the station cleaning program. This will flush the tube to this station using the cleaning xylene bottle first, followed by the cleaning alcohol bottle." text2=""/>
         <string id="67175945" text1="Filling time of station exceeds 4 minutes during processing. Tube to this station is likely restricted or blocked, (potentially by paraffin). Check bottle connector for any blockage and check tube inside bottle for kinks. If no fault found there, please use the station cleaning program. This will flush the tube to this station using the cleaning xylene bottle first, followed by the cleaning alcohol bottle." text2=""/>
         <string id="67175946" text1="The user opened the paraffin oven cover during a paraffin step. This could potentially have caused the paraffin to solidify. If the paraffin bath was removed, this could have caused a filling or draining error." text2=""/>
         <string id="67175947" text1="Retort: Overflow occurred during reagent filling. This happened in a non-paraffin step. Please check the level sensor status and check if the air system (wax-trap, air tubes) are still in working condition." text2=""/>
@@ -691,15 +697,15 @@
         <string id="67175970" text1="Paraffin oven heating: Bottom sensor 2 is out of range." text2=""/>
         <string id="67175971" text1="RotaryValve: Cannot get the original position!" text2=""/>
         <string id="67175972" text1="RotaryValve: Moving from tube position failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step." text2=""/>
-        <string id="67175973" text1="RotaryValve: Moving from tube position failed before or after protocol." text2=""/>
+        <string id="67175973" text1="RotaryValve: Moving from tube position failed during cleaning steps." text2=""/>
         <string id="67175974" text1="RotaryValve: Temperature of Rotary valve sensor 1 is out of range during pre-test." text2=""/>
-        <string id="67175975" text1="RotaryValve: Temperature of Rotary valve sensor 1 is out of range before or after protocol." text2=""/>
+        <string id="67175975" text1="RotaryValve: Temperature of Rotary valve sensor 1 is out of range during cleaning steps." text2=""/>
         <string id="67175976" text1="RotaryValve: Temperature of Rotary valve sensor 2 is out of range during pre-test." text2=""/>
         <string id="67175977" text1="RotaryValve: Temperature of Rotary valve sensor 2 out of range." text2=""/>
         <string id="67175978" text1="RotaryValve: Heating current of Rotary valve is out of range during pre-test." text2=""/>
-        <string id="67175979" text1="RotaryValve: Heating current of Rotary valve is out of range before or after protocol." text2=""/>
+        <string id="67175979" text1="RotaryValve: Heating current of Rotary valve is out of range during cleaning steps." text2=""/>
         <string id="67175980" text1="RotaryValve: The value of Rotary Valve temperature sensor2 is less than 40 degree C. Please check the heating function of Rotary Valve." text2=""/>
-        <string id="67175983" text1="Pressure Sensor: Incorrect zero-value during pre-test. Please check zero-value at ambient pressure. If it is abnormal (>1.5 kPa), please retry with open retort lid. If still abnormal, exchange the pressure sensor." text2=""/>
+        <string id="67175983" text1="Pressure Sensor: Incorrect zero-value during pre-test. Please check zero-value at ambient pressure. If it is abnormal (>3Kpa), please retry with open retort lid. If still abnormal, exchange the pressure sensor." text2=""/>
         <string id="67175984" text1="Pressure Sensor: The pressure value during processing is out of the range [-100, +100] kPa. Please check function of pressure sensor and exchange if necessary." text2=""/>
         <string id="67175985" text1="Exhaust system: Exhaust fan does not work due to no or insufficient current flow. Please check voltage on according connector. If proper voltage is present, exchange exhaust fan." text2=""/>
         <string id="67175986" text1="Heated reagent tube: The temperature is lower than the melting point at %1 ℃." text2=""/>
