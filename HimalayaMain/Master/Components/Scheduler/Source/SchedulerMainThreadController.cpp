@@ -178,6 +178,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_ReportExhaustFanWarning = true;
     m_PauseStartTime = 0;
     m_bWaitToPauseCmdYes = false;
+    m_IsResumeFromPause = false;
+    m_StateAtPause = SM_UNDEF;
 
     ResetTheTimeParameter();
     m_DisableAlarm = Global::Workaroundchecking("DISABLE_ALARM");
@@ -870,6 +872,51 @@ void SchedulerMainThreadController::PrepareForIdle(ControlCommandType_t ctrlCmd,
                 break;
         }
     }
+}
+
+void SchedulerMainThreadController::CheckResuemFromPause(SchedulerStateMachine_t currentState)
+{
+    if (!m_IsResumeFromPause || currentState != m_StateAtPause)
+    {
+        return;
+    }
+    // First of all, set the boolean variable to false;
+    m_IsResumeFromPause = false;
+
+    // Dismiss the resuming dialogue
+    MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::DISMISS_RESUME_MSG_DLG));
+    Q_ASSERT(commandPtrFinish);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+
+    if (now <= m_TimeStamps.ProposeSoakStartTime)
+    {
+        return;
+    }
+
+    qint64 offset = 0;
+    if (m_TimeStamps.ProposeSoakStartTime > m_PauseStartTime)
+    {
+        offset = now - m_TimeStamps.ProposeSoakStartTime;
+    }
+    else
+    {
+        offset = now - m_PauseStartTime;
+    }
+
+    // Send time update to GUI
+    MsgClasses::CmdUpdateProgramEndTime* commandUpdateProgramEndTime(new MsgClasses::CmdUpdateProgramEndTime(5000, offset/1000));
+    Q_ASSERT(commandUpdateProgramEndTime);
+    Global::tRefType tfRef = GetNewCommandRef();
+    SendCommand(tfRef, Global::CommandShPtr_t(commandUpdateProgramEndTime));
+
+    // Update end time and prompt the MSG box to info end user
+    m_EndTimeAndStepTime.UserSetEndTime += offset;
+    QDateTime endTime = QDateTime::fromMSecsSinceEpoch(m_EndTimeAndStepTime.UserSetEndTime);
+
+    RaiseEvent(EVENT_SCHEDULER_PAUSE_ENDTIME_UPDATE, QStringList()<<endTime.toString("yyyy-MM-dd hh:mm"));
 }
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
@@ -1640,9 +1687,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             // resume the program
             emit NotifyResume();
             LogDebug("The program is resume from pasue.");
+            m_IsResumeFromPause = true;
 
             // tell the main controller the program is resuming
-            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::SHOW_RESUME_MSG_DLG));
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
@@ -1976,6 +2024,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             else
             {
                 m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_StateAtPause = m_SchedulerMachine->GetCurrentState();
                 return CTRL_CMD_PAUSE;
             }
 
@@ -2189,6 +2238,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_pause_cmd_yes")
         {
             m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_StateAtPause = m_SchedulerMachine->GetCurrentState();
             QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
             quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
             if ((QString::number(Scenario).left(1) == "2" && QString::number(Scenario).right(1) =="2")
@@ -2200,13 +2250,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             }
             else
             {
-                LogDebug("Input CTRL_CMD_PAUSE");
+                LogDebug("Input CTRL_CMD_PAUSE");                
                 return CTRL_CMD_PAUSE;
             }
         }
         if (cmd == "rs_pause_cmd_no")
         {
             m_PauseStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_StateAtPause = m_SchedulerMachine->GetCurrentState();
             return CTRL_CMD_PAUSE;
         }
         if (cmd == "rs_pause_cmd_cancel")
@@ -3699,7 +3750,7 @@ void SchedulerMainThreadController::ReleasePressure()
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
-
+    CheckResuemFromPause(PSSM_PROCESSING);
     m_IsReleasePressureOfSoakFinish = false;
     // We only release pressure if neither P or V exists.
     if(!m_IsProcessing)
@@ -3978,6 +4029,8 @@ bool SchedulerMainThreadController::MoveRV(RVPosition_type type)
 void SchedulerMainThreadController::Fill()
 {
     RaiseEvent(EVENT_SCHEDULER_START_FILLING);
+
+    CheckResuemFromPause(PSSM_FILLING);
     CmdALFilling* cmd  = new CmdALFilling(500, this);
 
     // only cleaning program need to suck another 2 seconds after level sensor triggering.
@@ -4429,6 +4482,8 @@ void SchedulerMainThreadController::RCForceDrain()
 void SchedulerMainThreadController::Drain()
 {
     RaiseEvent(EVENT_SCHEDULER_DRAINING);
+
+    CheckResuemFromPause(PSSM_DRAINING);
     CmdALDraining* cmd  = new CmdALDraining(500, this);
 
     quint32 gapTime = m_EndTimeAndStepTime.GapTime;
@@ -5349,6 +5404,8 @@ void SchedulerMainThreadController::OnBackToBusy()
 
 void SchedulerMainThreadController::OnFillingHeatingRV()
 {
+
+    CheckResuemFromPause(PSSM_FILLING_RVROD_HEATING);
     quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
     MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
     Q_ASSERT(commandPtr);

@@ -433,12 +433,14 @@ void CSchedulerStateMachine::OnTasksDoneRSTissueProtect(bool flag)
 
 void CSchedulerStateMachine::OnRVMoveToSeal()
 {
+    mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_SEAL);
     mp_SchedulerThreadController->MoveRV(SEAL_POS);
     mp_SchedulerThreadController->StartTimer();
 }
 
 void CSchedulerStateMachine::InitRVMoveToTubeState()
 {
+    mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_MOVE_TO_TUBE);
     m_PssmMVTubeSeq = 0;
     mp_SchedulerThreadController->Pressure();
     m_PssmMVTubePressureTime = QDateTime::currentMSecsSinceEpoch();
@@ -470,6 +472,7 @@ void CSchedulerStateMachine::OnEnterBottleCheckState()
 
 void CSchedulerStateMachine::OnRVMoveToNextTube()
 {
+    mp_SchedulerThreadController->CheckResuemFromPause(PSSM_RV_POS_CHANGE);
     mp_SchedulerThreadController->MoveRV(NEXT_TUBE_POS);
     mp_SchedulerThreadController->StartTimer();
 }
@@ -2427,6 +2430,7 @@ void CSchedulerStateMachine::OnEnterPretest()
 void CSchedulerStateMachine::OnEnterHeatingLevelSensor()
 {
     mp_SchedulerThreadController->RaiseEvent(EVENT_SCHEDULER_HEATING_LEVEL_SENSOR_FOR_FILLING);
+    mp_SchedulerThreadController->CheckResuemFromPause(PSSM_FILLING_LEVELSENSOR_HEATING);
     mp_SchedulerThreadController->StartTimer();
 }
 }
